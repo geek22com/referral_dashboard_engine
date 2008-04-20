@@ -901,3 +901,40 @@ color: #6EA5A7;
 	float: left;
 	width: 855px;
 }
+
+/* feedback */
+.b-feedback {
+	position: fixed;
+	left: -250px;
+	top: 263px;
+	z-index: 5;
+	width: 272px;
+	
+	background: #000000;
+}
+
+.b-feedback img {
+	float: right;
+	cursor:pointer;
+	height: 175px;
+}
+
+.b-feedback:hover {
+	left: 0;
+}
+
+
+.b-feedback_content {
+	padding: 5px;
+	background: #444444;
+}
+
+.i-create_feedback_form {
+	float: right;
+	width: 200px;
+}
+
+.b-button_send_feedback {
+	padding-left: 70px;	
+}
+

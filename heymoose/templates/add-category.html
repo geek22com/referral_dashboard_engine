@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}
+Добавление записи в блог
+{% endblock %}
+{% block content %}
+				<ul>
+                    {% for category in params.categories %}
+                    <li><a href="{{ url_for('show_category', category_id=category.id, pagenum=0) }}">"{{ category.id }}. {{ category.title }}"</a></li>
+                    {% endfor %}
+                </ul>
+
+				<form id="blogform" action="{{ url_for('add_category') }}" method="post">
+					<label for="categorytitle">title:</label>
+					<input name="categorytitle" type="text" value="" /><br />
+					<input id="submit1" type="submit" name="submitButton" value="Подтвердить" />
+				</form>
+
+<div class="empty"></div>
+{% endblock %}
+

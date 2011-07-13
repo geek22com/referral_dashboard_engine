@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block title %}
+Личный кабинет
+{% endblock %}
+{% block content %}
+    <div id="top-navigation">
+        <a href="{{ url_for('main_page') }}" class="str">Главная</a>
+        <a href="{{ url_for('user_cabinet', username=g.user.username) }}" class="current" >Личный кабинет</a>
+    </div>
+	<div id="container">
+	        <h4>Здравствуйте, {{ g.user.username }}</h4>
+	        <div id="zakaz-box">
+			    <div id="zakaz-box-top">
+				    <div id="zakaz-top-left">
+					    <a href="{{ url_for('order_form') }}" class="create">Создать заказ</a>
+	    	        	 {% if not params.app_id %}
+			   	    <a href="{{ url_for('become_developer') }}" class="be-developer">Стать разработчиком</a>
+			   	    {% endif %}
+					 </div>
+					 	{% if params.app_id %}
+                   <div id="zakaz-top-right">
+					     <p class="app_id">Ваш app_id: <b>{{ params.app_id }}</b></p>
+						 <a class="key" href="">Ваш secret_key </a> <b class="put">(нажмите)</b>
+					   </div>
+					   {% endif %}			
+				</div>
+			<div id="user-balans">
+				{% if params.orders %}
+				<div id="balans-head">
+				    <p class="box-4">Текущие заказы</p>
+				    <p class="box-1">Баланс</p>
+				    <p class="box-1">Вопросы</p>
+				    <p class="box-1">Ответы</p>
+				</div>
+					{% for order in params.orders %}
+					    <div class="user-account">
+					    <a href="{{ url_for('show_order', order_id=order.id) }}" class="box-4">{{ order.title }}</a>
+					    <p class="box-1">{{ order.balance }}</p>
+					    <p class="box-1"><a href="#">4</a></p>
+				    	<p class="box-1">{{ order.answers_count }}</p>
+						<p class="box-right" align="right"><a href="#" class="add-vopros">Добавить вопрос</a></p>
+						<p class="box-right" align="right"><a href="#" class="popolnit">Пополнить баланс</a></p>
+						</div>
+					{% endfor %}
+				{% else %}
+				<h6>У вас еще нет заказов</h6>
+				{% endif %}
+			</div>
+			<div class="clear"></div>
+            </div> 
+	</div>
+<div class="empty"></div>
+{% endblock %}

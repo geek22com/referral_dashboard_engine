@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block title %}
+Создайте заказ
+{% endblock %}
+{% block content %}
+<div id="top-navigation">
+	    <a href="index.html" class="str">Главная</a>
+	    <a href="cabinet-inside-service.html" class="str">Личный кабинет</a>
+	    <a href="zakaz.html" class="current">Создание заказа</a>   		
+</div>
+<div id="container">
+        <h4>Создайте ваш заказ, {{ g.user.username }}</h4>
+			<p class="cabinet">Задайте параметры вашего заказа.</p>
+		{% with %}
+			{% set mes = get_flashed_messages(with_categories=true) | error_type('ordererror') %}
+			{% if mes %}
+				<ul class="error"><li>{{ mes[0][1].decode('utf8') }}</li></ul>
+			{% endif %}
+		{% endwith %}
+
+			<div id="zakaz-box">
+			<div id="zdelat-zakaz">
+                <form id="orderform" action="{{ url_for('create_order') }}" method="post">
+				    <p>Название заказа</p>
+					<p>{{ params.orderform.ordername(class="inp-bg", size="15", maxlength="15")}}</p>
+					<p>Баланс <a href="#">(Пополнить)</a></p>
+					<p>{{ params.orderform.orderbalance(class="inp-bg", size="15", maxlength="15")}}<label> Рублей</label></p>
+					<p class="left">Список вопросов</p>
+                    <p style="clear:both">
+						{{ params.orderform.orderquestions(class="redaktirovat-box", cols="40", rows="3")}}
+<!--						<textarea name="orderquestions" cols="40" rows="3" class="redaktirovat-box">
+             			{% if params.questionlist %}
+							{{ params.questionlist }}
+							{% endif %}
+							</textarea>
+-->
+					</p>
+                    <input type="submit" class="podtverdit" value="Подтвердить заказ" />
+					<input type="submit" class="sbros" value="Сброс" />
+	            </form>           				
+			</div>
+			<div class="clear"></div>
+            </div>    				
+</div>
+<div class="empty"></div>
+<script type="text/javascript">
+$(document).ready(function(){
+  var options = {
+    target: $(document),
+    beforeSubmit: showRequest, // функция, вызываемая перед передачей
+    success: showResponse, // функция, вызываемая при получении ответа
+    timeout: 3000 // тайм-аут
+  };
+
+  $('#orderform').submit(function() {
+    $(this).ajaxSubmit(options);
+    return false;
+  });
+});
+
+function showRequest(formData, jqForm, options) {
+	if (formData[1]['value'] == ''){
+		alert('Заполните поле название');
+		return false;
+	}else if(formData[2]['value'] == '' ){
+		alert('Установите баланс заказа');
+		return false;
+	}else if(formData[3]['value'] == ''){
+		alert('Введите вопросы для заказа')
+		return false;
+	}
+    return true;
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block title %}
+Описание API
+{% endblock %}
+{% block content %}
+	<div id="container">
+	    <div id="left-bar">
+		    <div id="navigation-left">
+			    <ul>
+                    <li><a href="{{ url_for('about') }}">О сервисе</a></li>
+                    <li><a href="{{ url_for('apicode') }}" class="activ">Описание API</a></li>
+                    <li><a href="{{ url_for('feedback') }}">Feedback/Support</a></li>
+				</ul>
+			</div>
+		</div>
+		<div id="center-bar">
+			    <h4>Описание API</h4>
+			    <p>Имя Григория Перельмана сегодня известно всем. За последние несколько лет он стал любимым героем желтой прессы. О нем сочиняют стихи и анекдоты. Снимают скрытой камерой. Еще бы - ведь этот странный человек отказался от миллиона </p>
+				<div class="border-top"></div>
+				<div class="border-bot"></div>
+				<h5>Как вообще это делать?</h5>
+				- <a href="#">Пельмени ставим в духовку</a> <br />
+                - <a href="#">Замораживаем с кастрюлей</a> <br />
+                - <a href="#">Как авторизовать пользователя к  холодильнику?</a> <br />
+                - <a href="#">Расчет баланса и стоимости продуктов по граммам</a> <br />
+                - <a href="#">Возвратные функции. Индукция. Рекурсия.</a> <br />
+				<h5>Для тех, кто в танке</h5>
+				- <a href="#">Пельмени ставим в духовку</a> <br />
+                - <a href="#">Замораживаем с кастрюлей</a> <br />
+                - <a href="#">Как авторизовать пользователя к  холодильнику?</a> <br />
+                - <a href="#">Расчет баланса и стоимости продуктов по граммам</a> <br />
+                - <a href="#">Возвратные функции. Индукция. Рекурсия.</a> <br />									
+		</div>
+	    <div id="right-bar">
+		    <h6>Описание функций</h6>
+			<h5>Пользователь</h5>
+			    <ul>
+			        <li><a href="#">users.getInfo</a></li>
+			        <li><a href="#">users.hasAppPermission</a></li>
+			        <li><a href="#">users.requirePermission</a></li>
+			        <li><a href="#">users.getInfo</a></li>
+			        <li><a href="#">users.isAppUser</a></li>
+			        <li><a href="#">users.requireInstallation</a></li>
+			        <li><a href="#">users.getInfo</a></li>
+			        <li><a href="#">users.isAppUser</a></li>
+			        <li><a href="#">:domain/:user</a></li>
+			        <li><a href="#">:domain/:user/apps/mm</a></li>
+				</ul>
+			<h5>Работа с балансом</h5>
+			    <ul>
+			        <li><a href="#">users.getInfo</a></li>
+			        <li><a href="#">users.hasAppPermission</a></li>
+			        <li><a href="#">users.requirePermission</a></li>
+			        <li><a href="#">users.isAppUser</a></li>
+			        <li><a href="#">users.requireInstallation</a></li>
+			        <li><a href="#">users.getInfo</a></li>
+			        <li><a href="#">users.isAppUser</a></li>
+			        <li><a href="#">users.hasAppPermission</a></li>
+				</ul>
+		</div>
+	</div>
+<div class="empty"></div>	
+{% endblock %}

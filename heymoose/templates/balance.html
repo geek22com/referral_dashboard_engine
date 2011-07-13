@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Balance{% endblock %}
+{% block content %}
+  <h2>Ваш баланс</h2>
+	{% if params %}
+  	<ul class="messages">
+  	<li>{{ params.inv_desc }}
+	<form action='{{ params.rkass_url }}' method=POST>
+	<input type=hidden name=MrchLogin value={{ params.rkass_login }}>
+	<input type=hidden name=OutSum value={{ params.out_summ }}>
+	<input type=hidden name=InvId value={{ params.inv_id }}>
+	<input type=hidden name=Desc value='{{ params.inv_desc }}'>
+	<input type=hidden name=SignatureValue value={{ params.rkass_crc }}>
+	<input type=hidden name=Shp_item value='{{ params.shp_item }}'>
+	<input type=hidden name=IncCurrLabel value={{ params.in_curr }}>
+	<input type=hidden name=Culture value={{ params.rkass_culture }}>
+	<input type=submit value='Пополнить'>
+	</form>
+	</li>
+	<li><p>Текущий остаток:</p></li>
+	</ul>
+	{% else %}
+	<p>Данная услуга для вас недоступна</p>
+	{% endif %}
+{% endblock %}
+

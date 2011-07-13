@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block title %}
+Список вопросов
+{% endblock %}
+{% block content %}
+    <div id="top-navigation">
+        <a href="{{ url_for('main_page') }}" class="str">Главная</a>
+        <a href="{{ url_for('user_cabinet', username=g.user.username) }}" class="str">Личный кабинет</a>
+        <a href="" class="current">Редактирование заказа</a>
+    </div>
+	<div id="container">
+		<div id="contant-box">
+	       <h4>Параметры заказа</h4>
+			<b>{{ params.order.title }}</b>
+			<p class="cabinet">Здесь вы можете отредактировать параметры заказа.</p>
+	<div id="zakaz-box">
+			<div id="zdelat-zakaz">
+                <form id="orderform" action="{{ url_for('edit_order', order_id=params.order.id) }}" method="post">
+				    <p>Название заказа</p>
+					<p>{{ params.orderform.ordername(class="inp-bg", size="15", maxlength="15")}}</p>
+					<p>Баланс <a href="#">(Пополнить)</a></p>
+					<p>{{ params.orderform.orderbalance(class="inp-bg", size="15", maxlength="15")}}<label> Рублей</label></p>
+					<p class="left">Список вопросов</p>
+                    <p style="clear:both">
+						{{ params.orderform.orderquestions(class="redaktirovat-box", cols="40", rows="3")}}
+<!--						<textarea name="orderquestions" cols="40" rows="3" class="redaktirovat-box">
+             			{% if params.questionlist %}
+							{{ params.questionlist }}
+							{% endif %}
+							</textarea>
+-->
+					</p>
+                    <input type="submit" class="podtverdit" value="Подтвердить заказ" />
+					<input type="submit" class="sbros" value="Сброс" />
+	            </form>
+			</div>
+			<div class="clear"></div>
+            </div>
+
+		</div>
+        <div id="right-bar">
+            <h4>Баланс заказа</h4>
+            <b>{{ params.order.balance }}</b>
+            <div id="balans-right"><a href="#" class="popolnit">Пополнить баланс</a></div>
+        </div>
+	</div>
+<div class="empty"></div>
+{% endblock %}

@@ -7,6 +7,7 @@
     <script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='./js/tooltip.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.form.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='./js/functions.js') }}"></script>
 
 	<!--[if IE ]>
 	<link rel="stylesheet" media="screen" type="text/css" title="Style" href="/css/ie.css" />
@@ -58,7 +59,7 @@
 		<li><a href="{{ url_for('blog', pagenum=0) }}">Блог</a></li>
 		<li><a href="{{ url_for('feedback') }}">Feedback/Support</a></li>
 		{% if params.user_id %}
-			<li><a href="{{ url_for('money_balance') }}">Баланс</a></li>
+			<li><a href="">Баланс</a></li>
 			<li><a href="{{ url_for('user_cabinet', username=g.user.username) }}">Кабинет</a></li>
 		{% endif %}
 	</ul>
@@ -66,6 +67,16 @@
 	<div id="rights">
 	    <p>© 2011 HeyMoose.com Все права защищены.</p>
 	</div>
+
+<div id="navigation-bot">
+{% if g.user.username == 'admin'%}
+<ul>
+		<li><a href="{{ url_for('add_blog') }}">Доюавить запись в блог</a></li>
+		<li><a href="{{ url_for('add_category') }}">Добавить категорию</a></li>
+		<li><a href="{{ url_for('import_blog') }}">Загрузить из файла</a></li>
+</ul>
+{% endif %}
+</div>
 
     </div>
 </body>

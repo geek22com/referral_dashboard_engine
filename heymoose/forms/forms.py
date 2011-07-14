@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField
+from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField, TextAreaField
 
 class LoginForm(Form):
 	username = TextField('username', [
@@ -30,12 +30,12 @@ class RegisterForm(Form):
 class FeedBackForm(Form):
 	email = TextField('Email Address', [
 					  validators.Email("Некорректный email адресс")])
-	comment = TextField('Comment', [validators.Required(message = ('Напишите ваше пожелание') )])
+	comment = TextAreaField('Comment', [validators.Required(message = ('Напишите ваше пожелание') )])
 	captcha = TextField('captcha', [])
 
 class OrderForm(Form):
 	ordername = TextField('ordername', [validators.Length(min=1, max=255, message=('Название заказа должна быть от 1 до 255 симолов')),
 						  				validators.Required(message = ('Введите название заказа'))])
 	orderbalance = IntegerField('orderbalance', [validators.Required(message = ('Укажите баланс для заказа'))])
-	orderquestions = TextField('orederquestions', [validators.Required(message = ('Введите вопросы'))])
+	orderquestions = TextAreaField('orederquestions', [validators.Required(message = ('Введите вопросы'))])
 

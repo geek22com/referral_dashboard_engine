@@ -13,32 +13,36 @@
 			    <div id="zakaz-box-top">
 				    <div id="zakaz-top-left">
 					    <a href="{{ url_for('order_form') }}" class="create">Создать заказ</a>
-	    	        	 {% if not params.app_id %}
+ 					{% if not params.app_id %}
 			   	    <a href="{{ url_for('become_developer') }}" class="be-developer">Стать разработчиком</a>
 			   	    {% endif %}
 					 </div>
 					 	{% if params.app_id %}
-                   <div id="zakaz-top-right">
+                   	   <div id="zakaz-top-right">
 					     <p class="app_id">Ваш app_id: <b>{{ params.app_id }}</b></p>
-						 <a class="key" href="">Ваш secret_key </a> <b class="put">(нажмите)</b>
+						 <a class="key" href="javascript:;" onclick="showTooltip()">Ваш secret_key </a> <b class="put">(нажмите)</b>
 					   </div>
-					   {% endif %}			
+					   {% endif %}
 				</div>
+				<div id="tooltip" class="key" style="display: none">
+					<h5>Скопируйте ключ и сохраните его у себя:</h5>
+		            <p>{{ params.secret_key }}</p>
+				</div>
+				<div class="clear"></div>
+
 			<div id="user-balans">
 				{% if params.orders %}
 				<div id="balans-head">
 				    <p class="box-4">Текущие заказы</p>
+					<p class="box-1">Номер заказа</p>
 				    <p class="box-1">Баланс</p>
-				    <p class="box-1">Вопросы</p>
-				    <p class="box-1">Ответы</p>
 				</div>
 					{% for order in params.orders %}
 					    <div class="user-account">
 					    <a href="{{ url_for('show_order', order_id=order.id) }}" class="box-4">{{ order.title }}</a>
-					    <p class="box-1">{{ order.balance }}</p>
-					    <p class="box-1"><a href="#">4</a></p>
-				    	<p class="box-1">{{ order.answers_count }}</p>
-						<p class="box-right" align="right"><a href="#" class="add-vopros">Добавить вопрос</a></p>
+					    <p class="box-1">{{ order.id }}</p>
+						<p class="box-1">{{ order.balance }}</p>
+						<p class="box-right" align="right"><a href="{{ url_for('delete_order', order_id=order.id) }}" onclick="return confirm('Вы уверены что хотите удалить заказ?')" class="add-vopros">Удалить заказ</a></p>
 						<p class="box-right" align="right"><a href="#" class="popolnit">Пополнить баланс</a></p>
 						</div>
 					{% endfor %}

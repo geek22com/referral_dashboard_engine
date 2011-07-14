@@ -19,25 +19,6 @@ def order_form_template(form_params=None):
 	g.params['orderform'] = order_form
 	return render_template('order-creation-form.html', params = g.params)
 
-@frontend.route('/edit_order/<order_id>', methods=['POST'])
-@auth_only
-def edit_order(order_id):
-	#TODO проверка данных
-	order_form = forms.OrderForm(request.form)
-	if request.method == "POST" and order_form.validate():
-		order = Order(owner_id = g.user.userid,
-					title = order_form.ordername.data,
-					balance = order_form.orderbalance.data,
-					body = order_form.orderquestions.data)
-		try:
-			order.save(order_id)
-		except:
-			pass
-		return redirect(url_for('user_cabinet', username=g.user.username))
-
-	flash_form_errors(order_form.errors.values(), 'ordererror')
-	return order_form_template(request.form)
-
 @frontend.route('/create_order', methods=['POST'])
 @auth_only
 def create_order():
@@ -57,15 +38,15 @@ def create_order():
 	flash_form_errors(order_form.errors.values(), 'ordererror')
 	return order_form_template(request.form)
 
-
-@frontend.route('/order/<order_id>')
+#TODO: Make it more simple, use AJAX for all forms
+@frontend.route('/order/<order_id>', methods = ['POST', 'GET'])
 @auth_only
 def show_order(order_id=None):
 	if not order_id:
 		return redirect(url_for('user_cabinet', username=g.user.username))
 
-	order_form = forms.OrderForm()
 	order = Order.load_order(g.user.userid, order_id)
+	order_form = forms.OrderForm()
 	if order:
 		g.params['order'] = order
 		order_form.ordername.data = order.title
@@ -74,8 +55,30 @@ def show_order(order_id=None):
 	else:
 		return redirect(url_for('user_cabinet', username=g.user.username))
 
+	if request.method == "POST":
+		order_form = forms.OrderForm(request.form)
+		if order_form.validate():
+			order = Order(owner_id = g.user.userid,
+						title = order_form.ordername.data,
+						balance = order_form.orderbalance.data,
+						body = order_form.orderquestions.data)
+			try:
+				order.save(order_id)
+			except:
+				pass
+			return redirect(url_for('user_cabinet', username=g.user.username))
+		flash_form_errors(order_form.errors.values(), 'ordererror')
+
 	g.params['orderform'] = order_form
 	return render_template('cabinet-questionlist.html', params=g.params)
+
+@frontend.route('/delete_order/<order_id>')
+@auth_only
+def delete_order(order_id):
+	if not order_id:
+		abort(404)
+	Order.delete_order(order_id)
+	return redirect(url_for('user_cabinet', username=g.user.username))
 
 @frontend.route('/order_form', methods=['POST', 'GET'])
 @auth_only

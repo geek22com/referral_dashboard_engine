@@ -25,7 +25,7 @@
 					<p>{{ params.orderform.ordername(class="inp-bg", size="15", maxlength="15")}}</p>
 					<p>Баланс <a href="#">(Пополнить)</a></p>
 					<p>{{ params.orderform.orderbalance(class="inp-bg", size="15", maxlength="15")}}<label> Рублей</label></p>
-					<p class="left">Список вопросов</p>
+					<p class="left">Введите список, вопросов через запятую.(В данный момент возможно добавить только вопросы со свободными ответами.)</p>
                     <p style="clear:both">
 						{{ params.orderform.orderquestions(class="redaktirovat-box", cols="40", rows="3")}}
 <!--						<textarea name="orderquestions" cols="40" rows="3" class="redaktirovat-box">
@@ -36,42 +36,13 @@
 -->
 					</p>
                     <input type="submit" class="podtverdit" value="Подтвердить заказ" />
-					<input type="submit" class="sbros" value="Сброс" />
+					<p class="box-right" align="right"><a href="{{ url_for('user_cabinet', username=g.user.username) }}" onclick="return confirm('Вы уверены что хотите отменить создание заказа?')" class="add-vopros">Отменить</a></p>
+
 	            </form>           				
 			</div>
 			<div class="clear"></div>
             </div>    				
 </div>
 <div class="empty"></div>
-<script type="text/javascript">
-$(document).ready(function(){
-  var options = {
-    target: $(document),
-    beforeSubmit: showRequest, // функция, вызываемая перед передачей
-    success: showResponse, // функция, вызываемая при получении ответа
-    timeout: 3000 // тайм-аут
-  };
-
-  $('#orderform').submit(function() {
-    $(this).ajaxSubmit(options);
-    return false;
-  });
-});
-
-function showRequest(formData, jqForm, options) {
-	if (formData[1]['value'] == ''){
-		alert('Заполните поле название');
-		return false;
-	}else if(formData[2]['value'] == '' ){
-		alert('Установите баланс заказа');
-		return false;
-	}else if(formData[3]['value'] == ''){
-		alert('Введите вопросы для заказа')
-		return false;
-	}
-    return true;
-}
-
-</script>
 
 {% endblock %}

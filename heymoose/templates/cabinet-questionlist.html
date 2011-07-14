@@ -13,9 +13,16 @@
 	       <h4>Параметры заказа</h4>
 			<b>{{ params.order.title }}</b>
 			<p class="cabinet">Здесь вы можете отредактировать параметры заказа.</p>
+		{% with %}
+            {% set mes = get_flashed_messages(with_categories=true) | error_type('ordererror') %}
+            {% if mes %}
+                <ul class="error"><li>{{ mes[0][1].decode('utf8') }}</li></ul>
+            {% endif %}
+        {% endwith %}
+
 	<div id="zakaz-box">
 			<div id="zdelat-zakaz">
-                <form id="orderform" action="{{ url_for('edit_order', order_id=params.order.id) }}" method="post">
+                <form id="orderform" action="{{ url_for('show_order', order_id=params.order.id) }}" method="post">
 				    <p>Название заказа</p>
 					<p>{{ params.orderform.ordername(class="inp-bg", size="15", maxlength="15")}}</p>
 					<p>Баланс <a href="#">(Пополнить)</a></p>
@@ -31,7 +38,9 @@
 -->
 					</p>
                     <input type="submit" class="podtverdit" value="Подтвердить заказ" />
-					<input type="submit" class="sbros" value="Сброс" />
+					<p class="box-right" align="right"><a href="{{ url_for('user_cabinet', username=g.user.username) }}" onclick="return confirm('Вы уверены что хотите отменить изменения?')" class="add-vopros">Отменить</a></p>
+
+
 	            </form>
 			</div>
 			<div class="clear"></div>

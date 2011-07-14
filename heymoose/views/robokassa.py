@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Платежи не работают.
 from flask import Flask, request, session, url_for, redirect, \
      render_template, abort, g, flash
 from heymoose.utils.decorators import auth_only
@@ -87,8 +88,8 @@ def create_rkass_params(user_id):
 
 	return params
 
-@frontend.route('/exec_payment', methods=['POST'])
-@auth_only
+#@frontend.route('/exec_payment', methods=['POST'])
+#@auth_only
 def exec_payment():
 	if request.method == 'POST':
 		order_id = request.form['order_id']
@@ -102,8 +103,8 @@ def exec_payment():
 		else:
 			return redirect(url_for('error_page'))
 
-@frontend.route('/robo_result', methods=['POST'])
-@auth_only
+#@frontend.route('/robo_result', methods=['POST'])
+#@auth_only
 def robo_result():
 	if request.method == 'POST':
 		params = deserialize_rkass_params(g.user, request.form)
@@ -113,8 +114,8 @@ def robo_result():
 		else:
 			return 'Fail'
 
-@frontend.route('/robo_fail', methods=['POST'])
-@auth_only
+#@frontend.route('/robo_fail', methods=['POST'])
+#@auth_only
 def robo_fail():
 	if request.method == 'POST':
 		params = deserialize_rkass_params(g.user, request.form)
@@ -124,8 +125,8 @@ def robo_fail():
 		else:
 			return 'Fail'
 
-@frontend.route('/robo_success', methods=['GET' ,'POST'])
-@auth_only
+#@frontend.route('/robo_success', methods=['GET' ,'POST'])
+#@auth_only
 def robo_success():
 	if request.method == 'POST':
 		params = deserialize_rkass_params(g.user, request.form)

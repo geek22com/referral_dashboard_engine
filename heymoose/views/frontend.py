@@ -55,7 +55,7 @@ def register_success():
 @auth_only
 def start_survey():
 	#return render_template('cabinet-inside-service.html', params=g.params)
-	return redirect(url_for('user_cabinet', username=g.user['name']))
+	return redirect(url_for('user_cabinet', username=g.user.username))
 
 @frontend.route('/<username>')
 @auth_only

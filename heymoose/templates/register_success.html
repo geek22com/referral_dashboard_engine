@@ -58,7 +58,7 @@
 		<li><a href="{{ url_for('blog', pagenum=0) }}">Блог</a></li>
 		<li><a href="{{ url_for('feedback') }}">Feedback/Support</a></li>
 		{% if params.user_id %}
-			<li><a href="{{ url_for('money_balance') }}">Баланс</a></li>
+			<li><a href="">Баланс</a></li>
 			<li><a href="{{ url_for('user_cabinet', username=g.user.username) }}">Кабинет</a></li>
 		{% endif %}
 	</ul>

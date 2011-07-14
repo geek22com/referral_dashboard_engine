@@ -19,7 +19,8 @@ class BaseModel(object):
 	def __init__(self, error=None):
 		pass
 
-	def execute(self, query, args):
+	@classmethod
+	def execute(cls, query, args):
 		connection.execute_query(query, args)
 
 	def query_one(self, query, args):
@@ -292,6 +293,12 @@ class Order(BaseModel):
 		query = "UPDATE " + self.table_name + " SET owner_id = %(owner_id)s, title=%(title)s, balance=%(balance)s, body=%(body)s WHERE id=%(id)s"
 		self.execute(query, args)
 		return True
+
+	@classmethod
+	def delete_order(cls, order_id):
+		args = {'id': order_id}
+		query = "DELETE FROM " + cls.table_name + " WHERE id=%(id)s"
+		cls.execute(query, args)
 
 	@classmethod
 	def load_orders(cls, owner_id, offset, limit=10):

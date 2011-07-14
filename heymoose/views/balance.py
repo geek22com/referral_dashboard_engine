@@ -12,8 +12,8 @@ import heymoose.forms.forms as forms
 #	Функции реализующие платежные операции на сайте heymoose.com
 #################################################################################################################
 
-@frontend.route('/show_balance/<order_id>')
-@auth_only
+#@frontend.route('/show_balance/<order_id>')
+#@auth_only
 def show_balance(order_id=None):
 	if not order_id:
 		return redirect(url_for('main_page'), username=g.user['name'])
@@ -25,8 +25,8 @@ def show_balance(order_id=None):
 	g.params['order_id'] = order_id
 	return render_template('show_balance.html', params=g.params)
 
-@frontend.route('/pay_balance/<order_id>')
-@auth_only
+#@frontend.route('/pay_balance/<order_id>')
+#@auth_only
 def pay_balance(order_id=None):
 	if not order_id:
 		return redirect(url_for('main_page'), username=g.user['name'])
@@ -34,8 +34,8 @@ def pay_balance(order_id=None):
 	g.params['order_id'] = order_id
 	return render_template('pay_balabce.html', params=g.params)
 
-@frontend.route('/balance')
-@auth_only
+#@frontend.route('/balance')
+#@auth_only
 def money_balance():
 	if not g.user:
 		return redirect(url_for('main_page'))

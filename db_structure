@@ -1,0 +1,900 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET escape_string_warning = off;
+
+--
+-- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
+--
+
+CREATE PROCEDURAL LANGUAGE plpgsql;
+
+
+ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
+
+SET search_path = public, pg_catalog;
+
+--
+-- Name: merge_developer(integer, text, text); Type: FUNCTION; Schema: public; Owner: qa
+--
+
+CREATE FUNCTION merge_developer(id_param integer, app_id_param text, secret_key_param text) RETURNS void
+    LANGUAGE plpgsql
+    AS $$BEGIN
+    LOOP
+        -- first try to update the key
+        UPDATE developers SET id = id_param, app_id=app_id_param, secret_key=secret_key_param WHERE id = id_param;
+        IF found THEN
+            RETURN;
+        END IF;
+        -- not there, so try to insert the key
+        -- if someone else inserts the same key concurrently,
+        -- we could get a unique-key failure
+        BEGIN
+            INSERT INTO developers(id, app_id, secret_key) VALUES (id_param, app_id_param, secret_key_param);
+            RETURN;
+        EXCEPTION WHEN unique_violation THEN
+            -- do nothing, and loop to try the UPDATE again
+        END;
+    END LOOP;
+END;
+$$;
+
+
+ALTER FUNCTION public.merge_developer(id_param integer, app_id_param text, secret_key_param text) OWNER TO qa;
+
+--
+-- Name: merge_user(text, text, text); Type: FUNCTION; Schema: public; Owner: qa
+--
+
+CREATE FUNCTION merge_user(email_p text, name_p text, passwordhash text) RETURNS void
+    LANGUAGE plpgsql
+    AS $$BEGIN
+    LOOP
+        -- first try to update the key
+        UPDATE users SET name=name_p, password=passwordhash WHERE email=email_p;
+        IF found THEN
+            RETURN;
+        END IF;
+        -- not there, so try to insert the key
+        -- if someone else inserts the same key concurrently,
+        -- we could get a unique-key failure
+        BEGIN
+            INSERT INTO users (name,email, password) VALUES (name_p, email_p, passwordhash);
+            RETURN;
+        EXCEPTION WHEN unique_violation THEN
+            -- do nothing, and loop to try the UPDATE again
+        END;
+    END LOOP;
+END;
+$$;
+
+
+ALTER FUNCTION public.merge_user(email_p text, name_p text, passwordhash text) OWNER TO qa;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: answers; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE answers (
+    id integer NOT NULL,
+    pub_date timestamp without time zone NOT NULL,
+    question_id bigint NOT NULL,
+    gamer_id bigint NOT NULL,
+    answer character varying(1024) NOT NULL
+);
+
+
+ALTER TABLE public.answers OWNER TO qa;
+
+--
+-- Name: answers_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE answers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.answers_id_seq OWNER TO qa;
+
+--
+-- Name: answers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE answers_id_seq OWNED BY answers.id;
+
+
+--
+-- Name: bills; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE bills (
+    id integer NOT NULL,
+    user_id bigint NOT NULL,
+    amount bigint NOT NULL,
+    currency character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.bills OWNER TO qa;
+
+--
+-- Name: bills_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE bills_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.bills_id_seq OWNER TO qa;
+
+--
+-- Name: bills_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE bills_id_seq OWNED BY bills.id;
+
+
+--
+-- Name: blog_category; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE blog_category (
+    id integer NOT NULL,
+    title character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.blog_category OWNER TO qa;
+
+--
+-- Name: blog_category_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE blog_category_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.blog_category_id_seq OWNER TO qa;
+
+--
+-- Name: blog_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE blog_category_id_seq OWNED BY blog_category.id;
+
+
+--
+-- Name: blog_records; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE blog_records (
+    id integer NOT NULL,
+    category_id bigint NOT NULL,
+    date timestamp without time zone NOT NULL,
+    title character varying(1024) NOT NULL,
+    body text NOT NULL,
+    image_path character varying(255)
+);
+
+
+ALTER TABLE public.blog_records OWNER TO qa;
+
+--
+-- Name: blog_records_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE blog_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.blog_records_id_seq OWNER TO qa;
+
+--
+-- Name: blog_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE blog_records_id_seq OWNED BY blog_records.id;
+
+
+--
+-- Name: captcha_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE captcha_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.captcha_id_seq OWNER TO qa;
+
+--
+-- Name: captcha; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE captcha (
+    id integer DEFAULT nextval('captcha_id_seq'::regclass) NOT NULL,
+    question text,
+    answer text
+);
+
+
+ALTER TABLE public.captcha OWNER TO qa;
+
+--
+-- Name: current_payment_number; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE current_payment_number (
+    id integer NOT NULL,
+    value bigint NOT NULL
+);
+
+
+ALTER TABLE public.current_payment_number OWNER TO qa;
+
+--
+-- Name: current_payment_number_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE current_payment_number_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.current_payment_number_id_seq OWNER TO qa;
+
+--
+-- Name: current_payment_number_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE current_payment_number_id_seq OWNED BY current_payment_number.id;
+
+
+--
+-- Name: developers; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE developers (
+    id integer NOT NULL,
+    app_id character varying(256) NOT NULL,
+    secret_key character varying(2048) NOT NULL
+);
+
+
+ALTER TABLE public.developers OWNER TO qa;
+
+--
+-- Name: developers_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE developers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.developers_id_seq OWNER TO qa;
+
+--
+-- Name: developers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE developers_id_seq OWNED BY developers.id;
+
+
+--
+-- Name: feedback; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE feedback (
+    id integer NOT NULL,
+    email character varying(255) NOT NULL,
+    body text NOT NULL
+);
+
+
+ALTER TABLE public.feedback OWNER TO qa;
+
+--
+-- Name: feedback_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE feedback_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.feedback_id_seq OWNER TO qa;
+
+--
+-- Name: feedback_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE feedback_id_seq OWNED BY feedback.id;
+
+
+--
+-- Name: gamers; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE gamers (
+    id integer NOT NULL,
+    name character varying(256) NOT NULL
+);
+
+
+ALTER TABLE public.gamers OWNER TO qa;
+
+--
+-- Name: gamers_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE gamers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.gamers_id_seq OWNER TO qa;
+
+--
+-- Name: gamers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE gamers_id_seq OWNED BY gamers.id;
+
+
+--
+-- Name: order_balance; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE order_balance (
+    id integer NOT NULL,
+    order_id bigint NOT NULL,
+    amount bigint NOT NULL,
+    currency character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.order_balance OWNER TO qa;
+
+--
+-- Name: order_balance_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE order_balance_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.order_balance_id_seq OWNER TO qa;
+
+--
+-- Name: order_balance_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE order_balance_id_seq OWNED BY order_balance.id;
+
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE orders (
+    id integer NOT NULL,
+    date timestamp without time zone NOT NULL,
+    owner_id bigint NOT NULL,
+    balance bigint NOT NULL,
+    title character varying(255) NOT NULL,
+    body text NOT NULL
+);
+
+
+ALTER TABLE public.orders OWNER TO qa;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_id_seq OWNER TO qa;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE orders_id_seq OWNED BY orders.id;
+
+
+--
+-- Name: owners; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE owners (
+    id integer NOT NULL,
+    questioner_id bigint NOT NULL,
+    question_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.owners OWNER TO qa;
+
+--
+-- Name: owners_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE owners_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.owners_id_seq OWNER TO qa;
+
+--
+-- Name: owners_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE owners_id_seq OWNED BY owners.id;
+
+
+--
+-- Name: payments; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE payments (
+    id integer NOT NULL,
+    payment_id bigint NOT NULL,
+    bill_id bigint NOT NULL,
+    order_id bigint NOT NULL,
+    status bigint NOT NULL,
+    amount bigint NOT NULL,
+    "desc" character varying(1024) NOT NULL,
+    currency character varying(255) NOT NULL,
+    culture character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.payments OWNER TO qa;
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE payments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.payments_id_seq OWNER TO qa;
+
+--
+-- Name: payments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE payments_id_seq OWNED BY payments.id;
+
+
+--
+-- Name: questions; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE questions (
+    id integer NOT NULL,
+    questioner_id bigint NOT NULL,
+    pub_date timestamp without time zone NOT NULL,
+    body text NOT NULL
+);
+
+
+ALTER TABLE public.questions OWNER TO qa;
+
+--
+-- Name: questions_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE questions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.questions_id_seq OWNER TO qa;
+
+--
+-- Name: questions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE questions_id_seq OWNED BY questions.id;
+
+
+--
+-- Name: robokassa; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE robokassa (
+    id integer NOT NULL,
+    server_url character varying(1024) NOT NULL,
+    login character varying(1024) NOT NULL,
+    pass1 character varying(2048) NOT NULL,
+    pass2 character varying(2048) NOT NULL
+);
+
+
+ALTER TABLE public.robokassa OWNER TO qa;
+
+--
+-- Name: robokassa_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE robokassa_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.robokassa_id_seq OWNER TO qa;
+
+--
+-- Name: robokassa_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE robokassa_id_seq OWNED BY robokassa.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    name character varying(1024) NOT NULL,
+    email character varying(1024) NOT NULL,
+    password character varying(4096) NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO qa;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: qa
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO qa;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: qa
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE answers ALTER COLUMN id SET DEFAULT nextval('answers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE bills ALTER COLUMN id SET DEFAULT nextval('bills_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE blog_category ALTER COLUMN id SET DEFAULT nextval('blog_category_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE blog_records ALTER COLUMN id SET DEFAULT nextval('blog_records_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE current_payment_number ALTER COLUMN id SET DEFAULT nextval('current_payment_number_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE developers ALTER COLUMN id SET DEFAULT nextval('developers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE feedback ALTER COLUMN id SET DEFAULT nextval('feedback_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE gamers ALTER COLUMN id SET DEFAULT nextval('gamers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE order_balance ALTER COLUMN id SET DEFAULT nextval('order_balance_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE orders ALTER COLUMN id SET DEFAULT nextval('orders_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE owners ALTER COLUMN id SET DEFAULT nextval('owners_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE payments ALTER COLUMN id SET DEFAULT nextval('payments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE questions ALTER COLUMN id SET DEFAULT nextval('questions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE robokassa ALTER COLUMN id SET DEFAULT nextval('robokassa_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: qa
+--
+
+ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: answers_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY answers
+    ADD CONSTRAINT answers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bills_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY bills
+    ADD CONSTRAINT bills_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: blog_category_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY blog_category
+    ADD CONSTRAINT blog_category_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: blog_records_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY blog_records
+    ADD CONSTRAINT blog_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: captcha_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY captcha
+    ADD CONSTRAINT captcha_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: current_payment_number_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY current_payment_number
+    ADD CONSTRAINT current_payment_number_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: developers_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY developers
+    ADD CONSTRAINT developers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT email_pkey UNIQUE (email);
+
+
+--
+-- Name: feedback_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY feedback
+    ADD CONSTRAINT feedback_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: gamers_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY gamers
+    ADD CONSTRAINT gamers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_balance_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY order_balance
+    ADD CONSTRAINT order_balance_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: owners_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY owners
+    ADD CONSTRAINT owners_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: payments_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY payments
+    ADD CONSTRAINT payments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: questions_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY questions
+    ADD CONSTRAINT questions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: robokassa_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY robokassa
+    ADD CONSTRAINT robokassa_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: qa; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email_unique; Type: INDEX; Schema: public; Owner: qa; Tablespace: 
+--
+
+CREATE UNIQUE INDEX email_unique ON users USING btree (email);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

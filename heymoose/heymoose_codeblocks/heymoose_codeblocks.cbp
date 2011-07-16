@@ -31,6 +31,54 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../__init__.py" />
+		<Unit filename="../db/__init__.py" />
+		<Unit filename="../db/connection.py" />
+		<Unit filename="../db/models.py" />
+		<Unit filename="../forms/__init__.py" />
+		<Unit filename="../forms/forms.py" />
+		<Unit filename="../settings/__init__.py" />
+		<Unit filename="../settings/debug_config.py" />
+		<Unit filename="../settings/production_config.py" />
+		<Unit filename="../static/css/ie.css" />
+		<Unit filename="../static/css/style.css" />
+		<Unit filename="../static/js/tooltip.js" />
+		<Unit filename="../templates/about.html" />
+		<Unit filename="../templates/add-blog.html" />
+		<Unit filename="../templates/add-category.html" />
+		<Unit filename="../templates/apicode.html" />
+		<Unit filename="../templates/backup_index.html" />
+		<Unit filename="../templates/balance.html" />
+		<Unit filename="../templates/blog-import.html" />
+		<Unit filename="../templates/cabinet-balance.html" />
+		<Unit filename="../templates/cabinet-blog.html" />
+		<Unit filename="../templates/cabinet-inside-service.html" />
+		<Unit filename="../templates/cabinet-questionlist.html" />
+		<Unit filename="../templates/category-blog.html" />
+		<Unit filename="../templates/feedback.html" />
+		<Unit filename="../templates/index.html" />
+		<Unit filename="../templates/layout.html" />
+		<Unit filename="../templates/login.html" />
+		<Unit filename="../templates/order-creation-form.html" />
+		<Unit filename="../templates/questions-import.html" />
+		<Unit filename="../templates/register.html" />
+		<Unit filename="../templates/register_success.html" />
+		<Unit filename="../tests/gen_qa.py" />
+		<Unit filename="../tests/get_model_test.py" />
+		<Unit filename="../tests/postgress_pool_test.py" />
+		<Unit filename="../utils/__init__.py" />
+		<Unit filename="../utils/decorators.py" />
+		<Unit filename="../utils/workers.py" />
+		<Unit filename="../views/__init__.py" />
+		<Unit filename="../views/admin.py" />
+		<Unit filename="../views/balance.py" />
+		<Unit filename="../views/blog.py" />
+		<Unit filename="../views/developer.py" />
+		<Unit filename="../views/frontend.py" />
+		<Unit filename="../views/info.py" />
+		<Unit filename="../views/order.py" />
+		<Unit filename="../views/robokassa.py" />
+		<Unit filename="../views/work.py" />
 		<Extensions>
 			<code_completion />
 			<debugger />

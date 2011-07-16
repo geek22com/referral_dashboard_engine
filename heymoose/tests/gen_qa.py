@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/home/kshilov/Prg/tuta/apache_configuration/frontend")
+sys.path.append("/usr/local/apache2/cgi-bin/heymoose_psql")
 from heymoose.db.connection import connection
 import random
 

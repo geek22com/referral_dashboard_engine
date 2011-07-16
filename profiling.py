@@ -1,6 +1,7 @@
 import hotshot
 import os
 import time
+import sys
 from decorator import decorator
 
 try:

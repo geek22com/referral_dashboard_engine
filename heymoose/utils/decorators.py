@@ -4,7 +4,7 @@ from heymoose.utils.workers import app_logger
 def auth_only(func):
 	def _inner_(*args, **kwargs):
 		if 'user_id' not in session:
-			app_logger.error('Not in session auth_only')
+			#app_logger.error('Not in session auth_only')
 			return redirect(url_for('register'))
 		return func(*args, **kwargs)
 	_inner_.__name__ = func.__name__

@@ -3,6 +3,10 @@
 <head>
     {% block head %}
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+	<script type="text/javascript" src="http://vkontakte.ru/js/api/share.js?11" charset="windows-1251"></script>
+	<link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='./images/favicon.ico') }}" />
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='./images/favicon.ico') }}" />
+
     <link rel="stylesheet" href="{{ url_for('static', filename='./css/style.css') }}" />
     <script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='./js/tooltip.js') }}"></script>

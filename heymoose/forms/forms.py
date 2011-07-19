@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField, TextAreaField
+from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField, TextAreaField, DecimalField
 
 class LoginForm(Form):
 	username = TextField('username', [
@@ -36,6 +36,7 @@ class FeedBackForm(Form):
 class OrderForm(Form):
 	ordername = TextField('ordername', [validators.Length(min=1, max=255, message=('Название заказа должна быть от 1 до 255 симолов')),
 						  				validators.Required(message = ('Введите название заказа'))])
-	orderbalance = IntegerField('orderbalance', [validators.Required(message = ('Укажите баланс для заказа'))])
+	orderbalance = IntegerField('orderbalance', [validators.Required(message = ('Укажите баланс для заказа')),
+						validators.NumberRange(min=1, max=3000000, message=('Допустимый баланс от 1 до 3000000 рублей'))])
 	orderquestions = TextAreaField('orederquestions', [validators.Required(message = ('Введите вопросы'))])
 

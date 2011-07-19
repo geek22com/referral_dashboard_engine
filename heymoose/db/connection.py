@@ -15,7 +15,8 @@ class HConnection(object):
 
 		try:
 			self.pool = ThreadedConnectionPool(minconn, maxconn, *args, **kwargs)
-		except:
+		except Exception as inst:
+			app_logger.error(inst)
 			app_logger.error(sys.exc_info())
 			sys.exit(1)
 		HConnection.connection = self
@@ -55,4 +56,4 @@ class HConnection(object):
 		
 		return res
 
-connection = HConnection(5, 20, database="social_sampler", host="127.0.0.1", user="qa", password="appatit")
+connection = HConnection(5, 4000, database="social_sampler", host="127.0.0.1", port=6432, user="qa", password="appatit")

@@ -7,6 +7,7 @@ from heymoose.utils.workers import app_logger
 import heymoose.forms.forms as forms
 from heymoose.views.frontend import frontend
 from heymoose.db.models import User
+import sys
 
 def fill_template_params(user):
 	params = {}
@@ -31,7 +32,9 @@ def before_request():
 	if 'user_id' in session:
 		try:
 			g.user = User.get_user_byid(session['user_id'])
-		except:
+		except Exception as inst:
+			app_logger.error(inst)
+			app_logger.error(sys.exc_info())
 			abort(404)
 		g.params = fill_template_params(g.user)
 

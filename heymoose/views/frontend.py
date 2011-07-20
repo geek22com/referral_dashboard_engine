@@ -117,11 +117,17 @@ def register():
 							email=register_form.email.data,
 							passwordhash=generate_password_hash(register_form.password.data))
 				user.save()
-				session['user_id'] = user.userid
+
+				#request user and loged him in
+				user = User.get_user(register_form.username.data)
+				if user:
+					session['user_id'] = user.userid
+				else:
+					redirect(url_for('register_success'))
 			except:
 				flash_form_errors([['Извините, регистрация временно не доступна']], 'registererror')
 
-			return redirect(url_for('register_success'))
+			return redirect(url_for('user_cabinet', username=user.username))
 
 	flash_form_errors(register_form.errors.values(), 'registererror')
 	return register_form_template(request.form, error)

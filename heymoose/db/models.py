@@ -410,13 +410,14 @@ class Category(BaseModel):
 
 class Blog(BaseModel):
 	table_name = "blog_records"
-	def __init__(self, category_id, title, body, image_path=None, date=None):
+	def __init__(self, category_id, title, body, annotation, image_path=None, date=None):
 		super(Blog, self).__init__()
 		self._category_id = category_id
 		self._title = title
 		self._body = body
 		self._image_path = image_path
 		self._date = date
+		self._annotation = annotation
 
 	@classmethod
 	def create_object(cls, item):
@@ -426,9 +427,21 @@ class Blog(BaseModel):
 		blog = cls(category_id = item['category_id'],
 					title = item['title'].decode('utf8'),
 					body = item['body'].decode('utf8'),
+					annotation = item['annotation'].decode('utf8'),
 					image_path=image_path,
 					date = item['date'])
+		blog._id = item['id']
 		return blog
+
+	@classmethod
+	def load_blog_by_id(cls, blog_id):
+		args = {"id": blog_id}
+		query = "SELECT * FROM " + cls.table_name + " WHERE id=%(id)s"
+		res = cls.query(query, args, one=True)
+		if res:
+			return cls.create_object(res)
+
+		return None
 
 	@classmethod
 	def load_blogs(cls, offset, limit=10):
@@ -462,18 +475,25 @@ class Blog(BaseModel):
 	def save_new(self):
 		args = {'category_id' : str(self._category_id),
 				'title' : self._title.encode('utf8'),
-				'body' : self._body.encode('utf8')}
+				'body' : self._body.encode('utf8'),
+				'annotation' : self._annotation.encode('utf8')}
 		if self._image_path:
 			args['image_path'] = self._image_path.encode('utf8')
-			query = "INSERT INTO " + self.table_name + " (category_id, title, body, image_path, date) VALUES(%(category_id)s, %(title)s, %(body)s, %(image_path)s, now())"
+			query = "INSERT INTO " + self.table_name + " (category_id, title, body, annotation, image_path, date) VALUES(%(category_id)s, %(title)s, %(body)s, %(annotation)s, %(image_path)s, now())"
 		else:
-			query = "INSERT INTO " + self.table_name + " (category_id, title, body, date) VALUES(%(category_id)s, %(title)s, %(body)s, now())"
+			query = "INSERT INTO " + self.table_name + " (category_id, title, body, annotation, date) VALUES(%(category_id)s, %(title)s, %(body)s, %(annotation)s, now())"
 
 		self.execute(query, args)
 
 	@property
+	def id(self):
+		return self._id
+	@property
 	def category_id(self):
 		return self._category_id
+	@property
+	def annotation(self):
+		return self._annotation
 	@property
 	def title(self):
 		return self._title

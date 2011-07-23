@@ -11,11 +11,11 @@
 		<div id="contant-box">
 	        <h4>Блоги из категории: {{ params.category.title }}</h4>
 			{% for next in params.blogs %}
-			<a href="" class="big">{{ next.title }}</a><p> added at: {{ next.date}}</p>
+			<a href="{{ url_for('blog_body', blog_id=next.id) }}" class="big">{{ next.title|safe }}</a><p> added at: {{ next.date}}</p>
 				{% if next.image_path %}
 					<img src="{{ url_for('static', filename=next.image_path) }}"  align="left" width="197" height="193" border="0" class="left-img" />
 				{% endif %}
-			<p>{{ next.body }}</p>
+			<p>{{ next.annotation | safe }}</p>
 			<div class="border-top"></div>
 			<div class="border-bot"></div>
 			{% endfor %}

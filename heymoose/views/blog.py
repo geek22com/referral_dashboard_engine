@@ -17,6 +17,21 @@ def set_prev_next(pagenum):
 	return prevpage, nextpage
 
 
+@frontend.route('/blog_body/<blog_id>')
+def blog_body(blog_id=None):
+	if int(blog_id) < 0:
+		abort(404)
+
+	categories = Category.load_categories()
+	if categories:
+		g.params['categories'] = categories
+
+	blog = Blog.load_blog_by_id(blog_id=int(blog_id))
+	if blog:
+		g.params['blog'] = blog
+	return render_template('current-blog.html', params=g.params)
+
+
 @frontend.route('/blog/<pagenum>')
 def blog(pagenum=None):
 	if int(pagenum) < 0:
@@ -58,7 +73,7 @@ def show_category(category_id=None, pagenum=None):
 		g.params['category'] = category
 
 	set_prev_next(pagenum)
-	return render_template('category-blog.html', params=g.params)
+	return render_template('cabinet-blog.html', params=g.params)
 
 @frontend.route('/add_blog', methods=['POST', 'GET'])
 @admin_only
@@ -80,6 +95,7 @@ def add_blog():
 			blog = Blog(request.form['blogcategory'],
 					  request.form['blogname'],
 					  request.form['blogtext'],
+					  request.form['annotation'],
 					  request.form['imagepath'])
 			blog.save_new()
 			return redirect(url_for('blog', pagenum=0))

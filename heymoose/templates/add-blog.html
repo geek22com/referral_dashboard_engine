@@ -16,6 +16,13 @@
 					<input name="blogcategory" type="text" /><br />
 					<label for="imagepath">Image Path:</label>
 					<input name="imagepath" type="text" /><br />
+					<label for="annotation">Краткая анотация:</label>
+					<textarea type="FILE" class="ta" name="annotation" rows="20" cols="20">
+						{% if params.annotation %}
+							{{ params.annotation }}
+						{% endif %}
+					</textarea><br />
+
 					<label for="blogtext">Содержимое блога:</label>
 					<textarea type="FILE" class="ta" name="blogtext" rows="20" cols="20">
 						{% if params.blogtext %}

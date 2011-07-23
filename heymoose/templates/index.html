@@ -11,65 +11,63 @@ $(document).ready(function(){
 Главная
 {% endblock %}
 {% block content %}
+	<div class="empty"></div>
 	<div id="informer-box">
-	    <div id="infotmer-top">
-		    <h3 class="vopros"><img src="{{ url_for('static', filename='./images/blank.png') }}" width="30" height="55"></h3>
-			<h3 class="vopros"><img src="{{ url_for('static', filename='./images/blank.png') }}" width="30" height="55"></h3>
-		</div>
-	    <div id="infotmer-center">
-		    <div id="informer-number-1">
-			    <h1 class="number">1</h1>
-				<div id="user-question">
-				    <p>Вы вводите ваш вопрос</p>
-				</div>
-				<h2 class="dollar">$</h2>
-			</div>
-		    <div id="informer-logo"></div>
-		    <div id="informer-number-2">
-				<h2 class="dollar">$</h2>
-                <div id="api">
-				    <p>Передача вопроса разработчикам через наш API</p>
-				</div>
-			    <h1 class="number">2</h1>				
-			</div>
-		</div>
-	    <div id="infotmer-bot">
-		    <div id="informer-number-3">
-			    <div id="case"></div>
-			    <h1 class="number">3</h1>	
-			</div>
-			<div id="mans">
-			    <p>Пользователи отвечают на вопрос</p>
-			</div>
-			<div id="cace-box">
-			    <h3 class="vopros"><img src="{{ url_for('static', filename='./images/blank.png') }}" width="30" height="55"></h3>
-                <div id="cace"><a href="#" title="Пользователь получает услугу взамен на ответ"></a></div>				
-			</div>
-		</div>
-	</div>
-	<div id="container">
-	<script type="text/javascript"><!--
-		document.write(VK.Share.button(false,{type: "custom", text: "<img src=\"http://vk.com/images/vk32.png?1\" />"}));
-	--></script>
+		<div id="replika1">
+			эй, лось!<br>
+			моей компании нужно провести опрос<br>
+			в интернете.<br>
+			ты поможешь мне?
+		</div><!--#replika1-->
+		<div id="replika2">
+			да, я помогу тебе.<br>
+			я умею проводить опросы в социальных сетях,<br>
+			используя мой api.
+		</div><!--#replika2-->
+		<div id="replika3">
+			эй, лось! я хочу увеличить<br>
+			доход от своих приложений<br>
+			в соц. сетях. ты поможешь мне?
+		</div><!--#replika3-->
+		<div id="replika4">
+			получи опрос,<br>
+			используя мой rest api,<br>
+			пришли ответы пользователей.<br>
+			а с меня - деньги.
+		</div><!--#replika4-->
+		<div id="replika5">
+			понимаешь, шарик,<br>
+			жена меня пилит.<br>
+			говорит, что я все деньги<br>
+			трачу на игры в соц. сетях.<br>
+			посоветуй что-нибудь.
+		</div><!--#replika5-->
+		<div id="replika6">
+			а ты играй в игры, которые<br>
+			подключились к heymoose.com
+		</div><!--#replika6-->
+		<div id="replika7">
+			гениально! теперь<br>
+			я могу отвечать на вопросы анкет<br>
+			и получать игровые артефакты.<br>
+			спасибо тебе, шарик, за совет.
+		</div><!--#replika7-->
+	</div><!--#informer-box-->
+	<a href="">
+	<div id="podrobnee">
+		подробнее
+	</div><!--#podrobnee-->
+	</a>
+    <div id="container">
+        <div id="isledovania-box">
+            <a href="{{ url_for('start_survey') }}" class="isledovania">Провести исследование</a>
 
-	    <div id="isledovania-box">
-		    <a href="{{ url_for('start_survey') }}" class="isledovania">Провести исследование</a>
-			<h2>Мы работаем только на результат</h2>
-			<p>Клиентов не интересуют корпоративные правила и регламенты.</p>
-			<h2>Еще один плюс сервиса</h2>
-			<p>А это возможно только тогда, когда рядовой персонал - продавцы, клерки, консультанты - может самостоятельно, без вмешательства руководства, </p>
-			<h2>Да, описание нужно!</h2>
-			<p>Любой покупатель хочет, чтобы к нему относились как к дорогому гостю, которому всегда идут навстречу.</p>
-		</div>
-		<div id="developer-box">
-		    <a href="{{ url_for('become_developer') }}" class="developer">Cтать разработчиком</a>
-			<h2>Мы работаем только на результат</h2>
-			<p>Клиентов не интересуют корпоративные правила и регламенты.</p>
-			<h2>Еще один плюс сервиса</h2>
-			<p>А это возможно только тогда, когда рядовой персонал - продавцы, клерки, консультанты - может самостоятельно, без вмешательства руководства, </p>
-			<h2>Да, описание нужно!</h2>
-			<p>Любой покупатель хочет, чтобы к нему относились как к дорогому гостю, которому всегда идут навстречу.</p>
-		</div>	
-	</div>
+           
+        </div><!--#isledovania-box-->
+        <div id="developer-box">
+            <a href="{{ url_for('become_developer') }}" class="developer">Cтать разработчиком</a>
+            
+        </div><!--#developer-box-->
+    </div><!--#container-->
 <div class="empty"></div>
 {% endblock %}

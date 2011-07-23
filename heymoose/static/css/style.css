@@ -14,9 +14,14 @@ p{
 	color:#767676;
 }
 h1,h2,h3 {
-	font-family:Century Gothic;
+	font-family: Arial;
 	font-style:italic;
 }
+
+h3{
+	color: #636363;
+}
+
 h4,h5,h6 {
 	font-family:Arial;
 }
@@ -51,14 +56,25 @@ b{
 	font-size:11px;
 	color:#636363;
 }
+
+#wrapper1{
+	background-color: green;
+}
+
 #sitebox{
-    width:960px;
 	min-height:100%;
 	_height:100%;
 	height:auto;
-	padding:0 32px;
+	padding:0;
 	margin:0 auto;
 }
+#sitebox1{
+	width: 960px;
+	margin:0 auto;
+}
+
+
+
 #top-bar{
     width:960px;
 	height:73px;
@@ -93,7 +109,7 @@ b{
 	margin-left:10px;
 }
 #user-box{
-    width:341px;
+    width:376px;
 	height:73px;
 	float:right;
 }
@@ -137,13 +153,13 @@ b{
 	background:#FFF url(../images/textarea-bg.png) no-repeat top left;
 	border:none;
 	padding:5px;
-	margin-bottom:15px;
+	margin-top:-15px;
 	overflow: auto;
 }
 .inp-enter{
-    width:79px;
+    width:113px;
 	height:23px;
-	background:url(../images/inp-enter.png) no-repeat bottom left;
+	background:url(../images/inp-enter1.png) no-repeat bottom left;
     color:#FFF;
     cursor:pointer;	
 }
@@ -163,36 +179,78 @@ b{
     color:#FFF;
 }
 #informer-box{
-    width:625px;
-	height:415px;
+    width: 411px;
+	height:452px;
 	margin:0 auto;
-	background-image:url(../images/informer-bg.png);
-	background-repeat:no-repeat;
-	background-position:top center;
 	margin-bottom:15px;
+	background: url(../images/comics5.png) no-repeat;
+	color: #333;
+	font: bold small-caps 10px/11px Arial;
+	text-align: center;
 }
-#informer-box p{
-	font-family:Century Gothic;
-	font-style:italic;
+
+#podrobnee{
+    width: 411px;
+	height:50px;
+	margin:0 auto;
+	margin-top: -10px;
+	background: url(../images/podrobnee.png) no-repeat;
+	color: #ddd;
+	font: bold small-caps 25px/50px Arial;
+	text-align: center;
 }
-#informer-box p{
-	font-size:14px;
-	text-align:center;
+
+
+
+#replika1{
+	margin-left: 2px;
+	position: absolute;
+	margin-top: 4px;
+	width: 194px;
 }
-#informer-box h1{
-	font-size:24px;
-	color:#FFF;
+
+#replika2{
+	margin-left: 2px;
+	position: absolute;
+	margin-top: 165px;
+	width: 200px;
 }
-#informer-box h2{
-	font-size:20px;
-	color:#FFF;
+
+#replika3{
+	margin-left: 202px;
+	position: absolute;
+	margin-top: 8px;
+	width: 200px;
 }
-#infotmer-top{
-    width:450px;
-	height:55px;
-    padding-left:175px;
-	padding-top:10px;
+
+#replika4{
+	margin-left: 202px;
+	position: absolute;
+	margin-top: 165px;
+	width: 200px;
 }
+
+#replika5{
+	margin-left: 2px;
+	position: absolute;
+	margin-top: 233px;
+	width: 200px;
+}
+
+#replika6{
+	margin-left: 0px;
+	position: absolute;
+	margin-top: 395px;
+	width: 180px;
+}
+
+#replika7{
+	margin-left: 202px;
+	position: absolute;
+	margin-top: 243px;
+	width: 200px;
+}
+
 h3.vopros{
     width:210px;
 	color:#35CBEF;
@@ -200,16 +258,7 @@ h3.vopros{
 	float:left;
 	font-style:normal;
 }
-#infotmer-center{
-    width:625px;
-	height:190px;
-	clear:both;
-}
-#informer-number-1{
-    width:225px;
-	height:170px;
-	float:left;
-}
+
 h1.number{
     width:28px;
 	height:40px;
@@ -220,9 +269,10 @@ h1.number{
 	padding-top:5px;
 	float:left;
     text-shadow: 0px -1px 0px #CF9B27;
+	margin-top: 10px;
 }
 #informer-number-1 .number{
-    margin-top:34px;
+    margin-top:24px;
 }
 #user-question{
     width:95px;
@@ -296,7 +346,7 @@ h2.dollar{
 	background-position:top center;
 }
 #informer-number-3 .number{
-    margin-top:43px;
+    margin-top:36px;
 	margin-left:58px;
 }
 #mans{
@@ -346,8 +396,6 @@ h2.dollar{
 #container h2{
 	font-size:18px;
 	font-weight:normal;
-	padding-left:30px;
-	background-image:url(../images/strelka.png);
 	background-repeat:no-repeat;
 	background-position:center left;
 }
@@ -356,15 +404,23 @@ h2.dollar{
 }
 #container p.feedback{
     padding-right:150px;
-	margin-bottom:15px;
+	margin-top:20px;
+	font: bold italic 16px/20px Arial;
+	color: #636363;
 }
+
+#feedback-box{
+	padding-top: 25px;
+}
+	
 #isledovania-box{
     width:389px;
 	height:auto;
 	padding:20px;
-	border:1px solid #E1E1E1;
+	border:0px solid #E1E1E1;
 	float:left;
 	margin-right:68px;
+	text-align: justify;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px; 
     -khtml-border-radius: 7px;
@@ -399,6 +455,14 @@ a.isledovania{
 	text-decoration:none;
 }
 
+#main-punkty{
+	height: 100px;
+}
+
+
+#podzagolovok{
+	padding-bottom: 7px;
+}
 #left-bar{
     width:160px;
 	height:auto;
@@ -430,6 +494,9 @@ a.isledovania{
     width:750px;
 	height:auto;
 	float:left;
+	font: normal 14px/20px Arial;
+	text-align: justify;
+	padding-left: 25px;
 }
 #contant-box a.big{
     width:auto;
@@ -447,12 +514,22 @@ a.isledovania{
 	font-weight:Arial;
 	font-weight:bold;
 }
+
+#contant-box ul{
+	list-style-type: circle;
+}
+
+#contant-box li{
+	padding: 20px 0 0;
+}
+
 #developer-box{
     width:389px;
 	height:auto;
 	padding:20px;
-	border:1px solid #E1E1E1;
+	border:0px solid #E1E1E1;
 	float:right;
+	text-align: justify;
     -moz-border-radius: 7px;
     -webkit-border-radius: 7px; 
     -khtml-border-radius: 7px;
@@ -531,7 +608,7 @@ a.developer{
 }
 #container p{
     color:#636363;
-	font-size:11px;
+	font-size:13px;
 }
 .border-top{
     width:100%;
@@ -544,15 +621,21 @@ a.developer{
 	height:20px;
 	border-top:1px solid #FFF;
 }
+
+#podfooter{
+	width: 960px;
+	margin: 0 auto;
+}
+
 #footer{
-    width:960px;
-	height:27px;
+    width:100%;
+	min-width: 960px;
+	height:57px;
 	background-color:#7C7C7C;
 	margin:0 auto;
 	clear:both;
-	padding:0px 30px;
 	padding-top:5px;
-	margin-top:-33px;
+	margin-top:-62px;
 }
 #footer p, #footer a{
     font-size:11px;
@@ -563,6 +646,7 @@ a.developer{
     width:723px;
 	height:27px;
 	float:left;
+	left: 50%;
 }
 #navigation-bot li{
     float:left;
@@ -577,8 +661,9 @@ a.developer{
 #rights{
     width:237px;
 	height:27px;
-	float:right;
+	float: right;
 	text-align:right;
+	padding-top: 3px;
 }
 #easyTooltip{
     width:162px;
@@ -784,6 +869,7 @@ a.be-developer{
     text-decoration:none;	
 	display:block;
 	font-size:12px;
+	float: right;
 }
 .add-vopros{
     width:113px;
@@ -914,8 +1000,9 @@ a.current:hover{
 	cursor:pointer;
 }
 #register-box{
+	margin-bottom: 60px;
     width:400px;
-	height:365px;
+	height:385px;
 	margin-top:20px;
 	border-left:1px solid #16D3F3;	
 	border-right:1px solid #16D3F3;
@@ -1056,6 +1143,12 @@ a.current:hover{
 	font-size:11px;
 }
 
+#apicode1{
+	color: #333;
+	text-align: justify;
+	font: 14px/20px Arial;
+}
+
 .error {
     margin: 10px 0;
     background: #FAE4E4;
@@ -1064,4 +1157,69 @@ a.current:hover{
     -webkit-border-radius: 2px;
     padding: 4px;
     font-size: 13px;
+}
+
+#menublock{
+	width: 100%; 
+	height: 30px; 
+	min-width: 1000px;
+	background-color: #7C7C7C;
+}
+
+ul#menu { 
+	height: 30px; 
+	font-size: 15px;
+	font-family: "Lucida Grande", Verdana, sans-serif; 
+	font-weight: bold; 
+	list-style-type: none; 
+	margin: 0; 
+	padding: 0; 
+}
+
+ul#menu li { 
+	display: block; 
+	float: left; 
+	margin: 0 0 0 5px;
+}
+
+ul#menu li a { 
+	height: 30px; 
+	color: #fff; 
+	text-decoration: none; 
+	display: block; 
+	float: left; 
+	line-height: 200%; 
+	padding: 2px 15px 0;
+}
+
+ul#menu li a:hover { 
+	color: #333; 
+}
+
+#follow{
+	top: 0;
+	float: right;
+	margin-top: -30px;
+}
+
+
+
+#vkfollow{
+	background: url(../images/vkfollow.png) no-repeat;
+	width: 30px;
+	height: 30px;
+	float: left;
+}
+
+#twfollow{
+	background: url(../images/twfollow.png) no-repeat;
+	width: 30px;
+	height: 30px;
+	float: left;
+}
+#fbfollow{
+	background: url(../images/fbfollow.png) no-repeat;
+	width: 30px;
+	height: 30px;
+	float: left;
 }

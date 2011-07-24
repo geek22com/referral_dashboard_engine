@@ -1,18 +1,12 @@
 {% extends "layout.html" %}
+{% from 'navigation-left.html' import navigation_left_menu %}
 {% block title %}
 О сервисе
 {% endblock %}
 {% block content %}
 	<div id="container">
-	    <div id="left-bar">
-		    <div id="navigation-left">
-			    <ul>
-			        <li><a href="{{ url_for('about') }}" class="activ">О сервисе</a></li>
-			        <li><a href="{{ url_for('apicode') }}">Описание API</a></li>
-			        <li><a href="{{ url_for('feedback') }}">Feedback/Support</a></li>
-				</ul>
-			</div>
-		</div>
+{{ navigation_left_menu(about='activ') }}
+
 		<div id="contant-box">
 			    <p><h3>Что мы предлагаем заказчикам:</h3>
 <ul>

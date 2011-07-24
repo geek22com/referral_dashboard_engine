@@ -8,10 +8,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='./css/style.css') }}" />
     <script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='./js/tooltip.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='./js/functions.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.form.js') }}"></script>
-	<!--[if IE ]>
-	<link rel="stylesheet" media="screen" type="text/css" title="Style" href="/css/ie.css" />
-	<![endif]-->	
+        <!-- Put this script tag to the <head> of your page -->
+        <script type="text/javascript" src="http://userapi.com/js/api/openapi.js?34"></script>
+
+        <script type="text/javascript">
+                VK.init({apiId: 2421312, onlyWidgets: true});
+        </script>
+        <!--[if IE ]>
+        <link rel="stylesheet" media="screen" type="text/css" title="Style" href="/css/ie.css" />
+        <![endif]-->
+
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
 </head>
@@ -23,7 +31,7 @@
 <li><a href="{{ url_for('main_page') }}" title="">Главная</a></li>
 <li><a href="{{ url_for('about') }}" title="">О проекте</a></li>
 <li><a href="{{ url_for('blog', pagenum=0) }}" title="">Блог</a></li>
-<li><a href="" title="">Контакты</a></li>
+<li><a href="{{ url_for('contacts') }}" title="">Контакты</a></li>
 <li><a href="{{ url_for('feedback') }}" title="">Feedback/Support</a></li>
 
 

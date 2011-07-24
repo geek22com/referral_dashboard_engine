@@ -9,14 +9,36 @@
 	</div>
 	<div id="container">
 		<div id="contant-box">
-			<h4>{{ params.blog.title|safe }}</h4><p> added at: {{ params.blog.date}}</p>
-				{% if params.blog.image_path %}
-					<img src="{{ url_for('static', filename=params.blog.image_path) }}"  align="left" width="197" height="193" border="0" class="left-img" />
-				{% endif %}
-			<p>{{ params.blog.body | safe }}</p>
-			<div class="border-top"></div>
-			<div class="border-bot"></div>
-		</div>
+			<div id="blog-box">
+				<h4>{{ params.blog.title|safe }}</h4><p> Добавленно: {{ params.blog.date}}</p>
+					{% if params.blog.image_path %}
+						<img src="{{ url_for('static', filename=params.blog.image_path) }}"  align="left" width="197" height="193" border="0" class="left-img" />
+					{% endif %}
+				{{ params.blog.body | safe }}
+				<div class="border-top">
+					<div id="vklike">
+						<!-- Put this div tag to the place, where the Like block will be -->
+						<div id="vk_like"></div>
+						<script type="text/javascript">
+							VK.Widgets.Like("vk_like", {type: "button", verb: 1});
+						</script>
+					</div><!--#vklike-->
+					
+					<div id="twlike">
+						<a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="hey_moose">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+					</div>
+					
+					<div id="fblike">
+						<div id="fb-root">
+						</div>
+						<script src="http://connect.facebook.net/ru_RU/all.js#appId=229664177074531&amp;xfbml=1">
+						</script>
+						<fb:like href="http://heymoose.com" send="false" layout="button_count" width="130" show_faces="true" font="arial"></fb:like>
+					</div><!--fblike-->
+				</div><!--.border-top-->
+				<div class="border-bot"></div>
+			</div><!--#blog-box-->
+		</div><!--#contant-box-->
 	    <div id="right-bar">
 		    <h6>Категории</h6>
 			    <ul>

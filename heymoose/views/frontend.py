@@ -28,6 +28,7 @@ from heymoose.views.blog import *
 from heymoose.views.developer import *
 from heymoose.views.order import *
 from heymoose.views.info import *
+from heymoose.views.survey import *
 from heymoose.tests.postgress_stres_test import *
 
 def register_form_template(form_params=None, error=None):

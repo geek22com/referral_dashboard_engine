@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from 'navigation-left.html' import navigation_left_menu %}
 {% block title %}
 Feedback
 {% endblock %}
@@ -11,15 +12,7 @@ Feedback
 		{% endwith %}
 
 	<div id="container">
-	    <div id="left-bar">
-		    <div id="navigation-left">
-			    <ul>
-                    <li><a href="{{ url_for('about') }}">О сервисе</a></li>
-                    <li><a href="{{ url_for('apicode') }}">Описание API</a></li>
-                    <li><a href="{{ url_for('feedback') }}" class="activ">Feedback/Support</a></li>
-				</ul>
-			</div>
-		</div>
+	{{ navigation_left_menu(feedback='activ') }}
 		<div id="contant-box">
 		    <h4>Feedback</h4>
 			<p class="feedback">Оставьте свои пожелания или замечания. </p>

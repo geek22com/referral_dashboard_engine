@@ -472,6 +472,21 @@ class Blog(BaseModel):
 
 		return None
 
+	def save(self):
+		args = {'category_id' : str(self._category_id),
+				'title' : self._title.encode('utf8'),
+				'body' : self._body.encode('utf8'),
+				'annotation' : self._annotation.encode('utf8'),
+				'id' : self._id}
+		if self._image_path:
+			args['image_path'] = self._image_path.encode('utf8')
+			query = "UPDATE " + self.table_name + " SET category_id = %(category_id)s, title = %(title)s, body = %(body)s, annotation = %(annotation)s, image_path = %(image_path)s, date = now() WHERE id=%(id)s"
+		else:
+			print "UPDATE blog with id = " + str(self._id)
+			query = "UPDATE " + self.table_name + " SET category_id = %(category_id)s, title = %(title)s, body = %(body)s, annotation = %(annotation)s, date = now() WHERE id=%(id)s"
+
+		self.execute(query, args)
+
 	def save_new(self):
 		args = {'category_id' : str(self._category_id),
 				'title' : self._title.encode('utf8'),
@@ -488,21 +503,43 @@ class Blog(BaseModel):
 	@property
 	def id(self):
 		return self._id
+
 	@property
 	def category_id(self):
 		return self._category_id
+	@category_id.setter
+	def category_id(self, value):
+		self._category_id = value
+
 	@property
 	def annotation(self):
 		return self._annotation
+	@annotation.setter
+	def annotation(self, value):
+		self._annotation = value
+
 	@property
 	def title(self):
 		return self._title
+	@title.setter
+	def title(self, value):
+		self._title = value
+
 	@property
 	def body(self):
 		return self._body
+	@body.setter
+	def body(self, value):
+		self._body = value
+
+
 	@property
 	def image_path(self):
 		return self._image_path
+	@image_path.setter
+	def image_path(self, value):
+		self._image_path = value
+
 	@property
 	def date(self):
 		return self._date

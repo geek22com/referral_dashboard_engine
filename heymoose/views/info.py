@@ -24,6 +24,10 @@ def feedback_form_template(form_params=None, error=None):
 def about():
 	return render_template('about.html', params=g.params)
 
+@frontend.route('/contacts')
+def contacts():
+	return render_template('contacts.html', params=g.params)
+
 @frontend.route('/apicode')
 def apicode():
 	return render_template('apicode.html', params=g.params)

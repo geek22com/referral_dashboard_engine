@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}
+Добавление записи в блог
+{% endblock %}
+{% block content %}
+				<ul>
+                    {% for category in params.categories %}
+                    <li><a href="{{ url_for('show_category', category_id=category.id, pagenum=0) }}">"{{ category.id }}. {{ category.title }}"</a></li>
+                    {% endfor %}
+                </ul>
+
+				<form id="blogform" action="{{ url_for('edit_blog', blog_id=params.blog_id) }}" method="post">
+					<label for="blogname">Название:</label>
+					<input name="blogname" type="text" value="{{ params.title | safe }}" /><br />
+					<label for="blogcategory">Категория:</label>
+					<input name="blogcategory" type="text" value="{{ params.category }}" /><br />
+					<label for="imagepath">Image Path:</label>
+					<input name="imagepath" type="text" /><br />
+					<label for="annotation">Краткая анотация:</label>
+					<textarea type="FILE" class="ta" name="annotation" rows="20" cols="20">
+						{% if params.annotation %}
+							{{ params.annotation }}
+						{% endif %}
+					</textarea><br />
+
+					<label for="blogtext">Содержимое блога:</label>
+					<textarea type="FILE" class="ta" name="blogtext" rows="20" cols="20">
+						{% if params.blogtext %}
+							{{ params.blogtext }}
+						{% endif %}
+					</textarea><br />
+					<input id="submit1" type="submit" name="submitButton" value="Подтвердить" />
+				</form>
+
+<div class="empty"></div>
+{% endblock %}
+

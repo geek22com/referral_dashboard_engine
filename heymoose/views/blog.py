@@ -75,6 +75,41 @@ def show_category(category_id=None, pagenum=None):
 	set_prev_next(pagenum)
 	return render_template('cabinet-blog.html', params=g.params)
 
+@frontend.route('/edit_blog/<blog_id>', methods=['POST', 'GET'])
+@admin_only
+def edit_blog(blog_id=None):
+	if not blog_id:
+		abort(404)
+
+	blog_id = int(blog_id)
+	if blog_id < 0:
+		abort(404)
+
+	categories = Category.load_categories()
+	if categories:
+		g.params['categories'] = categories
+
+	blog = Blog.load_blog_by_id(blog_id=blog_id)
+	if not blog:
+		return "No such blog"
+	g.params['blog_id'] = blog.id
+	if request.method == 'POST':
+		if request.form['blogname']:
+			blog.category_id = int(request.form['blogcategory'])
+			blog.title = request.form['blogname']
+			blog.annotation = request.form['annotation']
+			blog.body = request.form['blogtext']
+			blog.save()
+			return redirect(url_for('blog', pagenum=0))
+	else:
+		g.params['title'] = blog.title
+		g.params['category'] = blog.category_id
+		g.params['annotation'] = blog.annotation
+		g.params['blogtext'] = blog.body
+
+	return render_template('edit-blog.html', params=g.params)
+
+
 @frontend.route('/add_blog', methods=['POST', 'GET'])
 @admin_only
 def add_blog():

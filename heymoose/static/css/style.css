@@ -1316,3 +1316,8 @@ ul#menu li a:hover {
     padding: 7px;
 
 }
+
+.li_counter{
+        display:none;
+}
+

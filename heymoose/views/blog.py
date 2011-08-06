@@ -29,6 +29,8 @@ def blog_body(blog_id=None):
 	blog = Blog.load_blog_by_id(blog_id=int(blog_id))
 	if blog:
 		g.params['blog'] = blog
+	else:
+		abort(404)
 	return render_template('current-blog.html', params=g.params)
 
 

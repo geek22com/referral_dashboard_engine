@@ -17,6 +17,7 @@ from flask import Module
 from heymoose.utils.decorators import auth_only
 from heymoose.utils.decorators import admin_only
 from heymoose.utils.workers import app_logger
+from heymoose.utils.workers import heymoose_app
 from heymoose.db.models import User
 from heymoose.db.models import Captcha
 import heymoose.forms.forms as forms
@@ -141,9 +142,11 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('main_page'))
 
+def datetimeformat(value, format='%H:%M / %d-%m-%Y'):
+	return value.strftime(format)
 
 # add some filters to jinja
-#app.jinja_env.filters['datetimeformat'] = format_datetime
+heymoose_app.jinja_env.filters['datetimeformat'] = datetimeformat
 #app.jinja_env.filters['gravatar'] = gravatar_url
 
 

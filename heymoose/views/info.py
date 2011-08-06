@@ -28,6 +28,21 @@ def about():
 def contacts():
 	return render_template('contacts.html', params=g.params)
 
+@frontend.route('/audience')
+def audience():
+	return render_template('audience.html', params=g.params)
+
+@frontend.route('/survey_examples')
+def survey_examples():
+	return render_template('survey-examples.html', params=g.params)
+
+@frontend.route('/to_advertiser')
+def to_advertiser():
+        return render_template('to-advertiser.html', params=g.params)
+@frontend.route('/to_partner')
+def to_partner():
+        return render_template('to-partner.html', params=g.params)
+
 @frontend.route('/apicode')
 def apicode():
 	return render_template('apicode.html', params=g.params)

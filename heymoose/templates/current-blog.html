@@ -10,7 +10,8 @@
 	<div id="container">
 		<div id="contant-box">
 			<div id="blog-box">
-				<h4>{{ params.blog.title|safe }}</h4><p> Добавленно: {{ params.blog.date}}</p>
+{% if params.blog %}
+				<h4>{{ params.blog.title|safe }}</h4><p> Добавленно: {{ params.blog.date | datetimeformat }}</p>
 					{% if params.blog.image_path %}
 						<img src="{{ url_for('static', filename=params.blog.image_path) }}"  align="left" width="197" height="193" border="0" class="left-img" />
 					{% endif %}
@@ -37,7 +38,9 @@
 					</div><!--fblike-->
 				</div><!--.border-top-->
 				<div class="border-bot"></div>
+{% endif %}
 			</div><!--#blog-box-->
+
 		</div><!--#contant-box-->
 	    <div id="right-bar">
 		    <h6>Категории</h6>

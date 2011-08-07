@@ -14,6 +14,7 @@
 from connection import connection
 import random
 import string
+import hashlib
 
 class BaseModel(object):
 	def __init__(self, error=None):
@@ -235,6 +236,24 @@ class Developer(BaseModel):
 		d = [random.choice(string.letters + string.digits) for x in xrange(128)]
 		s = "".join(d)
 		return s
+
+	def check_sign(self, sig):
+		md5_hash = hashlib.md5()
+		md5_hash.update(str(self.app_id) + self.secret_key)
+		if str(md5_hash.hexdigest()) != str(sig):
+			return False
+
+		return True
+
+	@classmethod
+	def get_by_app_id(cls, app_id):
+		args = {'app_id': str(app_id)}
+		query = "SELECT * FROM " + cls.table_name + " WHERE app_id=%(app_id)s"
+		res = cls.query(query, args, one=True)
+		if not res:
+			return None
+
+		return cls.create_object(res)
 
 	@classmethod
 	def get_developer(cls, id):
@@ -570,3 +589,79 @@ class FeedBack(BaseModel):
 	@property
 	def comment(self):
 		return self._email
+
+class Offer(BaseModel):
+	table_name = "offers"
+	table_stat = "offers_stat"
+	def __init__(self, title, body, url):
+		super(Offer, self).__init__()
+		self._title = title
+		self._body = body
+		self._url = url
+
+	def save(self):
+		args = {'title' : self._title.encode('utf8'),
+				'body' : self._body.encode('utf8'),
+				'url' : self._url.encode('utf8')}
+		query = "INSERT INTO " + self.table_name + " (title, body, url, date) VALUES(%(title)s, %(body)s, %(url)s, now())"
+		self.execute(query, args)
+		return True
+
+	@classmethod
+	def get_offer_by_id(cls, offer_id):
+		args = {'id' : offer_id}
+		query = "SELECT * FROM " + cls.table_name + " WHERE id=%(id)s"
+		res = cls.query(query, args, one=True)
+		if res:
+			return cls.create_object(res)
+		return None
+
+	@classmethod
+	def create_object(cls, item):
+		offer = cls(item['title'].decode('utf8'),
+					item['body'].decode('utf8'),
+					item['url'].decode('utf8'))
+
+		offer._id = item['id']
+		return offer
+
+	def save_stat(self, user_id, app_id):
+		args = {'offer_id': self.id,
+				'user_id' : user_id,
+				'app_id' : app_id}
+		query = "INSERT INTO " + self.table_stat + " (offer_id, user_id, app_id, date) VALUES(%(offer_id)s, %(user_id)s, %(app_id)s, now())"
+		self.execute(query, args)
+		return True
+
+	@property
+	def id(self):
+		return self._id
+	@property
+	def title(self):
+		return self._title
+	@property
+	def body(self):
+		return self._body
+	@property
+	def url(self):
+		return self._url
+
+class OfferFormer(BaseModel):
+	table_name = "offers_by_dev"
+	offers_table_name = "offers"
+	def __init__(self):
+		super(OfferFormer, self).__init__()
+
+	@classmethod
+	def get_offer_form(cls):
+		args = {'limit' : 10,
+				'offset' : 0}
+		query = "SELECT * FROM " + cls.offers_table_name + " ORDER BY DATE LIMIT %(limit)s OFFSET %(offset)s"
+		res = cls.query(query, args)
+		lst = []
+		if res:
+			for next in res:
+				lst.append(Offer.create_object(next))
+			return lst
+
+		return None

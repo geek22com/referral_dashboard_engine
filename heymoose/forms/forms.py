@@ -40,3 +40,12 @@ class OrderForm(Form):
 						validators.NumberRange(min=1, max=3000000, message=('Допустимый баланс от 1 до 3000000 рублей'))])
 	orderquestions = TextAreaField('orederquestions', [validators.Required(message = ('Введите вопросы'))])
 
+class OfferForm(Form):
+	app_id = IntegerField('app_id', [validators.Required(),
+						validators.NumberRange(min=1, max=4000000000)])
+	sig = TextField('sig', [validators.Required()])
+	error_url = TextField('error_url', [validators.Optional()])
+	offer_id = IntegerField('offer_id', [validators.Optional(),
+										validators.NumberRange(min=1, max=4000000000)])
+	user_id = IntegerField('user_id', [validators.Optional(),
+										validators.NumberRange(min=1, max=4000000000)])

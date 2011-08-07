@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block title %}
+Добавьте новый оффер
+{% endblock %}
+{% block content %}
+				<form id="offerform" action="{{ url_for('add_offer') }}" method="post">
+					<label for="offertitle">Название оффера:</label>
+					<input name="offertitle" type="text" value="" /><br />
+					<label for="offerurl">Url оффера:</label>
+					<input name="offerurl" type="text" value="" /><br />
+					<label for="offerbody">Содержимое оффера:</label>
+					<textarea type="FILE" class="ta" name="offerbody" rows="20" cols="20">
+					</textarea><br />
+					<input id="submit1" type="submit" name="submitButton" value="Подтвердить" />
+				</form>
+
+<div class="empty"></div>
+{% endblock %}
+

@@ -1,0 +1,20 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+</head>
+<body>
+{% for next in params.offers %}
+<div>
+{{ next.body | safe }}
+<form id="offerform" action="{{ url_for('do_offer') }}" method="post">
+<input type="hidden" name="app_id" value="{{ params.developer.app_id }}">
+<input type="hidden" name="sig" value="{{ params.sig }}">
+<input type="hidden" name="offer_id" value="{{ next.id }}">
+<input type="hidden" name="error_url" value="{{ params.error_url }}">
+<input type="hidden" name="user_id" value="">
+<input type="submit" class="send" value="Пройти оффер" />
+</form>
+</div>
+{% endfor %}
+</body>
+</html>

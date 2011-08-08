@@ -256,6 +256,16 @@ class Developer(BaseModel):
 		return cls.create_object(res)
 
 	@classmethod
+	def get_vkontakte_app_developer(cls, name='app_user'):
+		args = {'name' : name}
+		query = "SELECT * FROM " + cls.table_name + " WHERE id = (SELECT id FROM " + User.table_name + " WHERE name=%(name)s)"
+		res = cls.query(query, args, one=True)
+		if not res:
+			return None
+
+		return cls.create_object(res)
+
+	@classmethod
 	def get_developer(cls, id):
 		args = {'id': id}
 		query = "SELECT * FROM " + cls.table_name + " WHERE id=%(id)s"
@@ -264,6 +274,7 @@ class Developer(BaseModel):
 			return None
 
 		return cls.create_object(res)
+
 
 	@classmethod
 	def create_object(cls, item):

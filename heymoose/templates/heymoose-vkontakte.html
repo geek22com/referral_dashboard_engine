@@ -1,25 +1,76 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<link rel="stylesheet" href="{{ url_for('static', filename='./vkontakte_app/css/style.css') }}" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
 <script src="http://vkontakte.ru/js/api/xd_connection.js?2" type="text/javascript"></script>
 </head>
 <body>
-	<table border = '1' width='607' height='500'>
-		<tr height='10'>
-			<td>Heymoose - получай голоса выполняя действия рекламодателей</td>
-		</tr>
-		<tr>
-			<td>
-			<div id='offer_list'>
-			</div>
-			</td>
-		</tr>
-	</table>
+<div id="opaco" class="hidden"></div> 
+<div id="popup" class="hidden"></div> 
+
+<div class="wrapper">
+    <div class="header">
+	    <a href="#" class="logo"></a>
+	    <div class="menublock">
+        	<ul class="css-menu">
+	        <li><a href="#">Все</a></li>
+        	<li><a href="#">Начатые</a></li>
+	        <li><a href="#" onClick="$('#faq-popup').togglePopup(); return false;">FAQ</a></li>
+        	<li><a href="#" onClick="$('#help-popup').togglePopup(); return false;">Помощь</a></li>
+	        <li><a href="#" onClick="$('#about-popup').togglePopup(); return false;">О нас</a></li>
+        	</ul>
+	    </div><!--menublock-->
+    </div><!--header-->
+
+    <div id='offer_list'>
+    </div><!--offer_list-->
+</div><!--wrapper-->
+  <div id="faq-popup" class="hidden">
+    <div class="faq">
+            <h1>
+                FAQs: часто задаваемые вопросы
+            </h1>
+            <ul>
+                <li><a href="#q1">Что такое HeyMoose?</a></li>
+                <li><a href="#q2">Что такое рекламное предложение?</a></li>
+            </ul>
+            <h3 id="q1">Что такое HeyMoose?</h3>
+            <p>HeyMoose это система, которая платит пользователям за выполнение, рекламных предложений.</p>
+            <h3 id="q1">Что такое рекламное предложение?</h3>
+            <p>Рекламное предложение это действие, за которое платит рекламодатель.</p>
+            <input type="button" value="Закрыть" onclick="$('#faq-popup').togglePopup(); return false;"/>
+    </div>
+ </div> <!-- faq-popup -->
+
+ <div id="help-popup" class="hidden">
+    <div class="help">
+            <h1>
+               Отправьте ваш вопрос или пожелание.
+            </h1>
+            <form method="post" action="/feedback">
+                     <h5>Ваш email:</h5>
+                     <input class="inp-bg" id="email" maxlength="150" name="email" size="15" type="text" value="">
+                     <h5>Сообщение:</h5>
+                     <textarea class="textarea-bg" cols="40" id="comment" name="comment" rows="3"></textarea>
+                    <input type="submit" class="send" value="Отправить">
+                    <input type="button" value="Закрыть" onclick="$('#help-popup').togglePopup(); return false;"/>
+            </form>
+    </div>
+ </div> <!-- help-popup -->
+
+ <div id="about-popup" class="hidden">
+    <div class="about">
+        <p>HeyMoose это система, которая платит пользователям за выполнение, рекламных предложений.</p>
+        <input type="button" value="Закрыть" onclick="$('#help-popup').togglePopup(); return false;"/>
+    </div>
+ </div> <!-- about-popup -->
+
 
 	<div style="display:none;">
 		<input type="hidden" id="happ_app_id" value="{{ params.happ.app_id }}">
 		<input type="hidden" id="happ_sig" value="{{ params.happ.sig }}">
+		<input type="hidden" id="happ_user_id" value="{{ params.happ.user_id }}">
 	</div>
 </body>
 <script type="text/javascript" src="{{ url_for('static', filename='./vkontakte_app/js/app.js') }}"></script>

@@ -23,5 +23,6 @@ def vkontakte_app():
 	req_sig.update(str(happ['app_id']) + secret)
 
 	happ['sig'] = req_sig.hexdigest()
+	happ['user_id'] = request.args.get('user_id', '0')
 	g.params['happ'] = happ
 	return render_template('heymoose-vkontakte.html', params=g.params)

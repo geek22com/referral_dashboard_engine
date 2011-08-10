@@ -1,0 +1,152 @@
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background: #EFEFEF;
+    height: 510px;
+    width: 100%;
+    font: 10pt Tahoma;
+    margin:0 auto;
+    max-width:1280px;
+    min-width:520px;
+}
+
+.hidden {
+   display: none;
+}
+
+.menublock {
+    margin:-25px 0px 0px 0px;
+}
+
+.header {
+    padding-top: 2px;
+    height: 70px;
+    width: 620px;
+    font: normal Arial;
+    background-color: #7C7C7C;
+    display: inline-block;
+}
+
+.logo {
+    background: url(../../images/logo.png) no-repeat;
+    width: 267px;
+    height: 65px;
+    display: block;
+    margin: 0 0 0 15px;
+}
+.wrapper {
+    height: 500px;
+    width: 100%;
+    margin: 0 10px 0 10px auto;
+    text-align: center;
+    overflow-y: scroll;
+}
+
+ul.css-menu {
+    list-style: none;
+    border-bottom: 1px #7C7C7C solid;
+    padding-bottom: 0px;
+    text-align: right;
+}
+
+ul.css-menu li {
+    display: inline;
+    margin-right: 1px;
+}
+
+ul.css-menu li a {
+    color: #000033;
+    text-decoration: none;
+    background: #EFEFEF;
+    border: 1px #bbbbcc solid;
+    border-bottom: none;
+    padding: 5px 14px 0px
+}
+
+ul.css-menu li a:hover {
+    padding: 14px 14px 0px 14px
+}
+
+ul.css-menu li a.selected {
+    color: #555566;
+    background: #ffffff;
+    border: 1px #888899 solid;
+    border-bottom: 1px #ffffff solid;
+    padding: 14px 14px 10px 14px
+}
+  /* Pop-up message and fading background */
+  #opaco {
+     background-color: #000000;
+     left: 0;
+     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";/* IE8 */
+     filter:progid:DXImageTransform.Microsoft.Alpha(opacity = 70); /* IE5+ */
+     filter: alpha(opacity=70);/* IE4- */
+     moz-opacity: 0; /* Mozilla */
+     -khtml-opacity: 0; /* Safari */
+     opacity: 0;  /* general CSS3 */
+     position: absolute;
+     top: 0;
+     width: 100%;
+     z-index: 10;
+   }
+
+  #popup {
+     background-color: #FFFFFF;
+     position: fixed;
+     /*width:300px;*/
+     left:50%;
+     top:50%;
+     /*min-width: 300px;*/
+     z-index: 11;
+     border: 10px solid #ddd;
+    /*-- CSS3 Box Shadows --*/
+    -webkit-box-shadow: 0px 0px 10px #000;
+    -moz-box-shadow: 0px 0px 10px #000;
+    box-shadow: 0px 0px 10px #000;
+    /*-- CSS3 Rounded Corners --*/
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+  }
+
+  #popup h3 {
+    margin-bottom: 10px;
+  }
+
+  #popup textarea {
+    display: block;
+    width: auto;
+    margin-bottom: 10px;
+  }
+
+  #popup p {
+    margin: 10px;
+    line-height: 1.3em;
+    font-size: 1.1em;
+    color: #444444;
+  }
+
+  #popup .close-btn {
+    margin: 10px;
+  }
+
+  .faq {
+    height: 300px;
+    padding: 10px;
+    overflow-y: scroll;
+  }
+
+  .help {
+    height: 300px;
+    padding: 10px;
+    overflow-y: scroll;
+  }
+  .about {
+    height: 300px;
+    padding: 10px;
+    overflow-y: scroll;
+  }
+

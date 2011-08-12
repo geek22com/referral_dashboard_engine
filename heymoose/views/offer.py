@@ -26,7 +26,9 @@ def add_offer():
 	if request.method == 'POST':
 		offer = Offer(title=request.form['offertitle'],
 						body=request.form['offerbody'],
-						url=request.form['offerurl'])
+						url=request.form['offerurl'],
+						time=request.form['offertime'],
+						voice=request.form['offervoice'])
 		if not offer:
 			abort(404)
 
@@ -84,4 +86,6 @@ def do_offer():
 		return redirect(location=offer.url)
 	else:
 		app_logger.debug('Bad request or form validate')
+		app_logger.debug(offer_form.errors)
+		app_logger.debug(request.method)
 		abort(400)

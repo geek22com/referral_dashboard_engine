@@ -604,17 +604,21 @@ class FeedBack(BaseModel):
 class Offer(BaseModel):
 	table_name = "offers"
 	table_stat = "offers_stat"
-	def __init__(self, title, body, url):
+	def __init__(self, title, body, url, time, voice):
 		super(Offer, self).__init__()
 		self._title = title
 		self._body = body
 		self._url = url
+		self._time = time
+		self._voice = voice
 
 	def save(self):
 		args = {'title' : self._title.encode('utf8'),
 				'body' : self._body.encode('utf8'),
-				'url' : self._url.encode('utf8')}
-		query = "INSERT INTO " + self.table_name + " (title, body, url, date) VALUES(%(title)s, %(body)s, %(url)s, now())"
+				'url' : self._url.encode('utf8'),
+				'time' : self._time.encode('utf8'),
+				'voice' : self._voice.encode('utf8')}
+		query = "INSERT INTO " + self.table_name + " (title, body, url, time, voice, date) VALUES(%(title)s, %(body)s, %(url)s, %(time)s, %(voice)s, now())"
 		self.execute(query, args)
 		return True
 
@@ -631,7 +635,9 @@ class Offer(BaseModel):
 	def create_object(cls, item):
 		offer = cls(item['title'].decode('utf8'),
 					item['body'].decode('utf8'),
-					item['url'].decode('utf8'))
+					item['url'].decode('utf8'),
+					item['time'],
+					item['voice'])
 
 		offer._id = item['id']
 		return offer
@@ -656,6 +662,12 @@ class Offer(BaseModel):
 	@property
 	def url(self):
 		return self._url
+	@property
+	def time(self):
+		return self._time
+	@property
+	def voice(self):
+		return self._voice
 
 class OfferFormer(BaseModel):
 	table_name = "offers_by_dev"

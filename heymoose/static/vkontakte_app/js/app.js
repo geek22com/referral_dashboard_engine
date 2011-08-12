@@ -1,30 +1,3 @@
-VK.init(function() {
-	load_offers();
-});
-
-function load_offers(){
-	var app_id = $('#happ_app_id').attr('value');
-	var sig = $('#happ_sig').attr('value');
-	var data = "app_id=" + app_id + "&sig=" + sig;
-	$.ajax({
-		type: "POST",		
-		url: "http://heymoose.com:8080/get_offers",
-		data : data,
-		context: document.body,
-		success: function(msg){
-			$('#offer_list').append(msg);
-			// Add user_id to template
-			$('.user_id').each(function(){
-				$(this).attr('value', $('#happ_user_id').attr('value'));
-			})
-
-		},
-		error: function(){ 
-			$('#offer_list').append("Извините, нет доступных предложений. Попробуйте позже");
-		}
-	});	
-}
-
 //additional properties for jQuery object
 $(document).ready(function(){
    //align element in the middle of the screen
@@ -66,4 +39,32 @@ $(document).ready(function(){
      }
    };
 });
+
+VK.init(function() {
+	load_offers();
+});
+
+function load_offers(){
+	var app_id = $('#happ_app_id').attr('value');
+	var sig = $('#happ_sig').attr('value');
+	var data = "app_id=" + app_id + "&sig=" + sig;
+	$.ajax({
+		type: "POST",		
+		url: "http://heymoose.com:8080/get_offers",
+		data : data,
+		context: document.body,
+		success: function(msg){
+			$('#offer_list').append(msg);
+			// Add user_id to template
+			$('.user_id').each(function(){
+				$(this).attr('value', $('#happ_user_id').attr('value'));
+			})
+
+		},
+		error: function(){ 
+			$('#offer_list').append("Извините, нет доступных предложений. Попробуйте позже");
+		}
+	});	
+}
+
 

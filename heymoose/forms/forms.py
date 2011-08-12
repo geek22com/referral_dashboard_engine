@@ -48,4 +48,4 @@ class OfferForm(Form):
 	offer_id = IntegerField('offer_id', [validators.Optional(),
 										validators.NumberRange(min=1, max=4000000000)])
 	user_id = IntegerField('user_id', [validators.Optional(),
-										validators.NumberRange(min=1, max=4000000000)])
+										validators.NumberRange(min=0, max=4000000000)])

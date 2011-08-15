@@ -78,11 +78,14 @@ def do_offer():
 			app_logger.debug('Bad check_sign ' + str(offer_form.sig.data))
 			abort(403)
 
+		if not Offer.isOfferAvailable(offer_form.user_id.data, offer_form.offer_id.data):
+			abort(403)
+
 		offer = Offer.get_offer_by_id(offer_form.offer_id.data)
 		if not offer:
 			return redirect(location=offer_form.error_url)
 
-		offer.save_stat(offer_form.user_id.data, developer.app_id)
+		offer.save_stat(offer_form.user_id.data, developer.app_id, offer.voice, 0)
 		return redirect(location=offer.url)
 	else:
 		app_logger.debug('Bad request or form validate')

@@ -603,7 +603,7 @@ class FeedBack(BaseModel):
 
 class Offer(BaseModel):
 	table_name = "offers"
-	table_stat = "offers_stat"
+	table_stat = "offers_in_action"
 	def __init__(self, title, body, url, time, voice):
 		super(Offer, self).__init__()
 		self._title = title
@@ -632,6 +632,16 @@ class Offer(BaseModel):
 		return None
 
 	@classmethod
+	def isOfferAvailable(cls, user_id, offer_id):
+		args = {'offer_id' : offer_id,
+				'user_id' : user_id}
+		query = "SELECT * FROM " + cls.table_stat + " WHERE offer_id=%(offer_id)s AND user_id=%(user_id)s"
+		res = cls.query(query, args, one=True)
+		if res:
+			return False
+		return True
+
+	@classmethod
 	def create_object(cls, item):
 		offer = cls(item['title'].decode('utf8'),
 					item['body'].decode('utf8'),
@@ -642,11 +652,14 @@ class Offer(BaseModel):
 		offer._id = item['id']
 		return offer
 
-	def save_stat(self, user_id, app_id):
+	def save_stat(self, user_id, app_id, voice_count, status):
 		args = {'offer_id': self.id,
 				'user_id' : user_id,
-				'app_id' : app_id}
-		query = "INSERT INTO " + self.table_stat + " (offer_id, user_id, app_id, date) VALUES(%(offer_id)s, %(user_id)s, %(app_id)s, now())"
+				'app_id' : app_id,
+				'voice_count' : voice_count,
+				'status' : status}
+
+		query = "INSERT INTO " + self.table_stat + " (offer_id, user_id, app_id, voice_count, status, date) VALUES(%(offer_id)s, %(user_id)s, %(app_id)s, %(voice_count)s, %(status)s, now())"
 		self.execute(query, args)
 		return True
 

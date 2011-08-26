@@ -1,4 +1,4 @@
-{% macro navigation_left_menu(about='', apicode='', feedback='', contacts='', survey='', partner='', advertiser='', audience='') -%}
+{% macro navigation_left_menu(about='', apicode='', feedback='', contacts='', survey='', partner='', advertiser='', audience='', price='') -%}
 <div id="left-bar">
 <div id="navigation-left">
 <ul>
@@ -8,7 +8,8 @@
 <li><a href="{{ url_for('contacts') }}" class="{{ contacts }}">Контакты</a></li>
 <!-- <li><a href="{{ url_for('survey_examples') }}" class="{{ survey }}">Примеры анкет</a></li> -->
 <li><a href="{{ url_for('to_partner') }}" class="{{ partner }}">Разработчикам</a></li>
-<li><a href="{{ url_for('to_advertiser') }}" class="{{ advertiser }}">Компаниям</a></li>
+<li><a href="{{ url_for('to_advertiser') }}" class="{{ advertiser }}">Наши услуги</a></li>
+<li><a href="{{ url_for('price') }}" class="{{ price }}">Цены</a></li>
 <li><a href="{{ url_for('audience') }}" class="{{ audience }}">Аудитория</a></li>
 </ul>
 </div>

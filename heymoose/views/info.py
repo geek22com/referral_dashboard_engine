@@ -47,6 +47,38 @@ def to_partner():
 def apicode():
 	return render_template('apicode.html', params=g.params)
 
+@frontend.route('/facebook_smm')
+def facebook_smm():
+	return render_template('facebook-smm.html', params=g.params)
+@frontend.route('/youtube_smm')
+def youtube_smm():
+	return render_template('youtube-smm.html', params=g.params)
+@frontend.route('/vkontakte_smm')
+def vkontakte_smm():
+	return render_template('vkontakte-smm.html', params=g.params)
+@frontend.route('/popular_smm')
+def popular_smm():
+	return render_template('popular-smm.html', params=g.params)
+@frontend.route('/blog_smm')
+def blog_smm():
+	return render_template('blog-smm.html', params=g.params)
+@frontend.route('/twitter_smm')
+def twitter_smm():
+	return render_template('twitter-smm.html', params=g.params)
+@frontend.route('/vrs_smm')
+def vrs_smm():
+	return render_template('vrs-smm.html', params=g.params)
+@frontend.route('/negativ_smm')
+def negativ_smm():
+	return render_template('negativ-smm.html', params=g.params)
+
+@frontend.route('/price')
+def price():
+	return render_template('price.html', params=g.params)
+
+
+
+
 @frontend.route('/feedback', methods=['GET', 'POST'])
 def feedback():
 	feedback_form = forms.FeedBackForm(request.form)

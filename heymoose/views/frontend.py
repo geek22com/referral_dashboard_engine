@@ -23,6 +23,7 @@ from heymoose.db.models import Captcha
 import heymoose.forms.forms as forms
 
 frontend = Module(__name__)
+from heymoose.views.facebook import *
 from heymoose.views.vkontakte import *
 from heymoose.views.offer import *
 from heymoose.views.work import *

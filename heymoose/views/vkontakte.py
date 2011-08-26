@@ -9,7 +9,7 @@ from heymoose.db.models import Developer
 import heymoose.forms.forms as forms
 import hashlib
 
-@frontend.route('/vkontakte_app', methods=['GET', 'POST'])
+@frontend.route('/vkontakte_app/', methods=['GET', 'POST'])
 def vkontakte_app():
 	happ = {}
 	app_developer = Developer.get_vkontakte_app_developer()

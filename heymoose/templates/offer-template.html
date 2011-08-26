@@ -14,7 +14,7 @@
 				{{ next.time }}
 				</div>
 				<div style="float: right; color: orange; height:20px; padding: 4px; margin-top: 7px;">
-		<form id="offerform" action="{{ url_for('do_offer') }}" method="post">
+		<form id="offerform" action="{{ url_for('do_offer') }}" method="post" target="_blank">
 		<input type="hidden" name="app_id" value="{{ params.developer.app_id }}">
 		<input type="hidden" name="sig" value="{{ params.sig }}">
 		<input type="hidden" name="offer_id" value="{{ next.id }}">

@@ -531,6 +531,12 @@ a.isledovania{
 	color: #222
 }
 
+#description-box{
+	clear: both;
+	padding-top: 15px;
+	color: #222
+}
+
 #blog-box h4{
 	color: #222;
 }
@@ -544,6 +550,24 @@ a.isledovania{
 #blog-box ul li{
 	padding-top: 4px;
 }
+
+#our-services ul li{
+	padding-top: 1px;
+}
+
+#our-services a{
+	padding-top: 1px;
+	color: #000000;
+        font-size:14px;
+	font-style:none;
+	font-weight:Arial;
+	font-weight:bold;
+}
+
+#our-services a:hover{
+	color: #CC0066;
+}
+
 
 #blog-box ol{
 	list-style-position: inside;
@@ -577,6 +601,8 @@ a.isledovania{
 
 #otstupvpravo20{
 	padding-left: 20px;
+        font: normal 14px/20px Arial;
+        text-align: justify;
 }
 
 

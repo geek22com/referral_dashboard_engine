@@ -79,7 +79,7 @@ def do_offer():
 			abort(403)
 
 		if not Offer.isOfferAvailable(offer_form.user_id.data, offer_form.offer_id.data):
-			abort(403)
+			return render_template('offer-error.html')
 
 		offer = Offer.get_offer_by_id(offer_form.offer_id.data)
 		if not offer:

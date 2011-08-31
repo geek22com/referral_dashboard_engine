@@ -40,9 +40,9 @@ $(document).ready(function(){
    };
 });
 
-VK.init(function() {
+//VK.init(function() {
 	load_offers();
-});
+//});
 
 function load_offers(){
 	var app_id = $('#happ_app_id').attr('value');
@@ -50,7 +50,8 @@ function load_offers(){
 	var data = "app_id=" + app_id + "&sig=" + sig;
 	$.ajax({
 		type: "POST",		
-		url: "http://heymoose.com:8080/get_offers",
+		//url: "http://heymoose.com:8080/get_offers",
+		url: "http://127.0.0.1:5000/get_offers",
 		data : data,
 		context: document.body,
 		success: function(msg){

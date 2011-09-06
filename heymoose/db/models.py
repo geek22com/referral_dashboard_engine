@@ -15,6 +15,8 @@ from connection import connection
 import random
 import string
 import hashlib
+import resource_user
+import resource_app
 
 class BaseModel(object):
 	def __init__(self, error=None):
@@ -83,40 +85,54 @@ class User(BaseModel):
 
 	@classmethod
 	def get_user_byid(cls, user_id):
-		args = {'id' : user_id}
-		query = "SELECT * FROM " + User.table_name + " WHERE id = %(id)s"
-		res = cls.query(query, args, one=True)
+		res = resource_user.get_user_by_id(user_id)
+		if res:
+			return cls.create_object(res)
+		else:
+			return None
+	@classmethod
+	def get_user_by_email(cls, email):
+		res = resource_user.get_user_by_email(email)
 		if res:
 			return cls.create_object(res)
 		else:
 			return None
 
-	@classmethod
-	def get_user(cls, username):
-		args = {'name' : username.encode('utf8')}
-		query = "SELECT * FROM " + User.table_name + " WHERE name = %(name)s"
-		res =cls.query(query, args, one=True)
-		if res:
-			return cls.create_object(res)
-		else:
-			return None
+#	@classmethod
+#	def get_user(cls, username):
+#		args = {'name' : username.encode('utf8')}
+#		query = "SELECT * FROM " + User.table_name + " WHERE name = %(name)s"
+#		res =cls.query(query, args, one=True)
+#		print "Get user by id: " + str(res)
+#		if res:
+#			return cls.create_object(res)
+#		else:
+#			return None
 
 	@classmethod
 	def check_user(cls, email):
-		args = {'email':email.encode('utf8')}
-		query = "SELECT * FROM " + User.table_name + " WHERE email = %(email)s"
-		res =cls.query(query, args, one=True)
+		#args = {'email':email.encode('utf8')}
+		#query = "SELECT * FROM " + User.table_name + " WHERE email = %(email)s"
+		#res =cls.query(query, args, one=True)
+		res = resource_user.get_user_by_email(email)
 		if res:
 			return cls.create_object(res)
 		else:
 			return None
 
 	def save(self):
-		args = {'name': self._username.encode('utf8'),
-				'email' : self._email.encode('utf8'),
-				'password' : self._passwordhash}
-		query = "SELECT merge_user(%(email)s, %(name)s, %(password)s)"
-		self.execute(query, args)
+		#args = {'name': self._username.encode('utf8'),
+		#		'email' : self._email.encode('utf8'),
+		#		'password' : self._passwordhash}
+		#query = "SELECT merge_user(%(email)s, %(name)s, %(password)s)"
+		#self.execute(query, args)
+		res = resource_user.add_user(self._email, self._passwordhash, self._username)
+
+	def become_developer(self, platform):
+		res = resource_app.become_developer(self._userid, platform)
+
+	def is_developer(self):
+		return getattr(self, "_app_id", False)
 
 	@classmethod
 	def create_object(cls, item):
@@ -124,6 +140,12 @@ class User(BaseModel):
 				   item['email'].decode('utf8'),
 				   item['password'])
 		user._userid = item['id']
+		
+		# Add developer params if exist
+		if type(item) is dict:
+			if item.has_key('app_id') and item.has_key('secret_key'):
+				user._app_id = item['app_id']
+				user._secret_key = item['secret_key']
 		return user
 
 	@property
@@ -146,6 +168,14 @@ class User(BaseModel):
 	@email.setter
 	def email(self, value):
 		self._email = value
+
+	@property
+	def app_id(self):
+		return self._app_id
+
+	@property
+	def secret_key(self):
+		return self._secret_key
 
 	@property
 	def userid(self):
@@ -296,47 +326,39 @@ class Developer(BaseModel):
 
 class Order(BaseModel):
 	table_name = "orders"
-	def __init__(self, owner_id, title, balance, body, date=None, id=None):
+	def __init__(self, owner_id, title, balance, body, cpa, date=None, id=None):
 		super(Order, self).__init__()
 		self._owner_id = owner_id
 		self._title = title
 		self._balance = balance
 		self._body = body
 		self._id = id
+		self._cpa = cpa
 		if date:
 			self._date = date
 
 	def save_new(self):
-		args = {'owner_id': self._owner_id,
-				'title' : self._title.encode('utf8'),
-				'balance' : self._balance,
-				'body' : self._body.encode('utf8')}
-		query = "INSERT INTO " + self.table_name + " (owner_id, balance, title, body, date) VALUES(%(owner_id)s, %(balance)s, %(title)s, %(body)s, now())"
-		self.execute(query, args)
+		res = resource_order.add_order(userId = self._owner_id,
+						title = self._title.encode('utf8'),
+						body = self._body.encode('utf8'),
+						balance = self._balance,
+						cpa = self._cpa)
 
-	def save(self, id):
-		args = {'id': id,
-				'owner_id': self._owner_id,
-				'title' : self._title.encode('utf8'),
-				'balance' : self._balance,
-				'body' : self._body.encode('utf8')}
-		query = "UPDATE " + self.table_name + " SET owner_id = %(owner_id)s, title=%(title)s, balance=%(balance)s, body=%(body)s WHERE id=%(id)s"
-		self.execute(query, args)
+	def save(self, id): # Do we need to differ edit from creation ?
+		res = resource_order.add_order(userId = self._owner_id,
+						title = self._title.encode('utf8'),
+						body = self._body.encode('utf8'),
+						balance = self._balance,
+						cpa = self._cpa)
 		return True
 
 	@classmethod
 	def delete_order(cls, order_id):
-		args = {'id': order_id}
-		query = "DELETE FROM " + cls.table_name + " WHERE id=%(id)s"
-		cls.execute(query, args)
+		pass
 
 	@classmethod
 	def load_orders(cls, owner_id, offset, limit=10):
-		args = {'owner_id':owner_id,
-				'offset': offset,
-				'limit': limit}
-		query = "SELECT * FROM " + cls.table_name + " WHERE owner_id = %(owner_id)s ORDER BY date LIMIT %(limit)s OFFSET %(offset)s"
-		res = cls.query(query, args)
+		res = resource_user.get_user_orders(user_id=owner_id)
 		lst = []
 		if res:
 			for next in res:
@@ -348,10 +370,7 @@ class Order(BaseModel):
 
 	@classmethod
 	def load_order(cls, owner_id, order_id):
-		args = {'order_id': order_id,
-				'owner_id': owner_id}
-		query = "SELECT * FROM " +  cls.table_name + " WHERE owner_id=%(owner_id)s and id=%(order_id)s"
-		res = cls.query(query, args, one=True)
+		res = resource_order.get_order(order_id=order_id)
 		if res:
 			return cls.create_object(res)
 
@@ -613,32 +632,15 @@ class Offer(BaseModel):
 		self._voice = voice
 
 	def save(self):
-		args = {'title' : self._title.encode('utf8'),
-				'body' : self._body.encode('utf8'),
-				'url' : self._url.encode('utf8'),
-				'time' : self._time.encode('utf8'),
-				'voice' : self._voice.encode('utf8')}
-		query = "INSERT INTO " + self.table_name + " (title, body, url, time, voice, date) VALUES(%(title)s, %(body)s, %(url)s, %(time)s, %(voice)s, now())"
-		self.execute(query, args)
 		return True
 
 	@classmethod
 	def get_offer_by_id(cls, offer_id):
-		args = {'id' : offer_id}
-		query = "SELECT * FROM " + cls.table_name + " WHERE id=%(id)s"
-		res = cls.query(query, args, one=True)
-		if res:
-			return cls.create_object(res)
 		return None
 
 	@classmethod
 	def isOfferAvailable(cls, user_id, offer_id):
-		args = {'offer_id' : offer_id,
-				'user_id' : user_id}
-		#query = "SELECT * FROM " + cls.table_stat + " WHERE offer_id=%(offer_id)s AND user_id=%(user_id)s"
-		query = "SELECT is_offer_available(%(user_id)s, %(offer_id)s)"
-		res = cls.query(query, args, one=True)
-		return res[0]
+		return False 
 
 	@classmethod
 	def create_object(cls, item):
@@ -652,14 +654,6 @@ class Offer(BaseModel):
 		return offer
 
 	def save_stat(self, user_id, app_id, voice_count, status):
-		args = {'offer_id': self.id,
-				'user_id' : user_id,
-				'app_id' : app_id,
-				'voice' : voice_count,
-				'status' : status}
-
-		query = "INSERT INTO " + self.table_stat + " (offer_id, user_id, app_id, voice, status, date) VALUES(%(offer_id)s, %(user_id)s, %(app_id)s, %(voice)s, %(status)s, now())"
-		self.execute(query, args)
 		return True
 
 	@property

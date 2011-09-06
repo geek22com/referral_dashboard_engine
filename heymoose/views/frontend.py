@@ -66,13 +66,13 @@ def start_survey():
 @frontend.route('/<username>')
 @auth_only
 def user_cabinet(username):
+	print "user_cabinet " + str(username)
 	if g.user is None:
 		abort(404)
 
-	developer_profile = Developer.get_developer(g.user.userid)
-	if developer_profile:
-		g.params['app_id'] = developer_profile.app_id
-		g.params['secret_key'] = developer_profile.secret_key
+	if g.user.is_developer():
+		g.params['app_id'] = g.user.app_id
+		g.params['secret_key'] = g.user.secret_key
 
 	orders = Order.load_orders(g.user.userid, 0)
 	if orders:
@@ -89,11 +89,12 @@ def login():
 
 	form_login = forms.LoginForm(request.form)
 	if request.method == 'POST' and form_login.validate():
-		user = User.get_user(form_login.username.data)
+		#user = User.get_user(form_login.username.data)
+		user = User.get_user_by_email(form_login.username.data)
 		if user is None:
 			flash_form_errors([['Такой пользователь не зарегистрирован']], 'loginerror')
-		elif not check_password_hash(user.passwordhash, form_login.password.data):
-			flash_form_errors([['Неверный пароль']], 'loginerror')
+#		elif not check_password_hash(user.passwordhash, form_login.password.data):
+#			flash_form_errors([['Неверный пароль']], 'loginerror')
 		else:
 			session['user_id'] = user.userid
 			return redirect(url_for('user_cabinet', username=form_login.username.data))
@@ -124,15 +125,21 @@ def register():
 				user.save()
 
 				#request user and loged him in
-				user = User.get_user(register_form.username.data)
+				user = User.get_user_by_email(register_form.email.data)
+				print "REGISTERED USER:"
+				print user
 				if user:
 					session['user_id'] = user.userid
 				else:
-					redirect(url_for('register_success'))
-			except:
+					#return redirect(url_for('register_success'))
+					raise Exception()
+
+				return redirect(url_for('user_cabinet', username=user.username))
+			except Exception as inst:
+				app_logger.error(inst)
+				app_logger.error(sys.exc_info())
 				flash_form_errors([['Извините, регистрация временно не доступна']], 'registererror')
 
-			return redirect(url_for('user_cabinet', username=user.username))
 
 	flash_form_errors(register_form.errors.values(), 'registererror')
 	return register_form_template(request.form, error)

@@ -105,10 +105,10 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
     	    </div>
 		{% else %}
 			<div id="user-box">
-			    <h5 class="user_login">Логин</h5><h5 class="user_login">Пароль</h5>
+			    <h5 class="user_login">Email</h5><h5 class="user_login">Пароль</h5>
     	        <form method="post" action="{{ url_for('login') }}">
-	                <input class="inp-bg" name="username" type="text" value="" size="15" maxlength="15"/>
-                	<input class="inp-bg" name="password" type="password" value="" size="15" maxlength="15" />
+	                <input class="inp-bg" name="username" type="text" value="" size="15" maxlength="45"/>
+                	<input class="inp-bg" name="password" type="password" value="" size="15" maxlength="45" />
             	    <input type="submit" class="inp-enter" value="Вход" />
   			    <div id="user-reg"><a href="{{ url_for('register') }}" class="user-register-top">Регистрация</a></div>
 	    	    </form>

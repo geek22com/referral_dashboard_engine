@@ -36,7 +36,8 @@ def before_request():
 			app_logger.error(inst)
 			app_logger.error(sys.exc_info())
 			abort(404)
-		g.params.update(fill_template_params(g.user))
+		if g.user:
+			g.params.update(fill_template_params(g.user))
 
 
 @frontend.after_request

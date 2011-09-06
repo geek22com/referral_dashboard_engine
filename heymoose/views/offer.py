@@ -69,6 +69,7 @@ def get_offers():
 def do_offer():
 	offer_form = forms.OfferForm(request.form)
 	if request.method == 'POST' and offer_form.validate():
+		user_id_int = offer_form.user_id.data / 4000000000  # Fix bug with Bigint in database
 		developer = Developer.get_by_app_id(offer_form.app_id.data)
 		if not developer:
 			app_logger.debug('No such developer ' + str(offer_form.app_id.data))
@@ -78,14 +79,14 @@ def do_offer():
 			app_logger.debug('Bad check_sign ' + str(offer_form.sig.data))
 			abort(403)
 
-		if not Offer.isOfferAvailable(offer_form.user_id.data, offer_form.offer_id.data):
+		if not Offer.isOfferAvailable(user_id_int, offer_form.offer_id.data):
 			return render_template('offer-error.html')
 
 		offer = Offer.get_offer_by_id(offer_form.offer_id.data)
 		if not offer:
 			return redirect(location=offer_form.error_url)
 
-		offer.save_stat(offer_form.user_id.data, developer.app_id, offer.voice, 0)
+		offer.save_stat(user_id_int, developer.app_id, offer.voice, 0)
 		return redirect(location=offer.url)
 	else:
 		app_logger.debug('Bad request or form validate')

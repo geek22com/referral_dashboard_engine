@@ -5,6 +5,7 @@ from heymoose.utils.workers import app_logger
 from xml_parser import xpath_to_string
 import sys
 
+# Using new REST API
 resource_path = "/orders"
 
 def order_to_dict(order_element):

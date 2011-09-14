@@ -80,6 +80,9 @@ class HReentrantConnection(object):
 		app_logger.debug('HReentrantConnection instance created')
 
 	def execute_query(self, query, args):
+		if not config.USE_DATABASE:
+			return False
+
 		try:
 			conn = psycopg2.connect(database=self.database,
 									host=self.host,
@@ -100,6 +103,9 @@ class HReentrantConnection(object):
 		return True
 
 	def select_query(self, query, args, one=False):
+		if not config.USE_DATABASE:
+			return []
+		
 		try:
 			conn = psycopg2.connect(database=self.database,
 									host=self.host,

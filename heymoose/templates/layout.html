@@ -99,7 +99,14 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 			<div id="user-box">
     	        <div id="user-info">
 	                <h5>Добрый день, {{ params.user_name }}</h5>
-                	<p>Ваш <a href="{{ url_for('user_cabinet', username=g.user.username) }}">кабинет</a></p>
+                	<p>Ваш <a href="{{ url_for('user_cabinet', username=g.user.nickname) }}">кабинет</a></p>
+                    {% if g.user.is_customer() %}
+                        <p>Ваш <a href="{{ url_for('pay_balance') }}">customer_balance</a>={{ g.user.customer_balance }}</p>
+                    {% endif %}
+
+                    {% if g.user.is_developer() %}
+                        <p>Ваш developer_balance={{ g.user.developer_balance }}</a></p>
+                    {% endif %}
             	</div>
         	    <a href="{{ url_for('logout') }}" class="inp-exit">Выйти</a>
     	    </div>
@@ -140,7 +147,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 		<li><a href="{{ url_for('feedback') }}">Feedback/Support</a></li>
 		{% if params.user_id %}
 			<li><a href="">Баланс</a></li>
-			<li><a href="{{ url_for('user_cabinet', username=g.user.username) }}">Кабинет</a></li>
+			<li><a href="{{ url_for('user_cabinet', username=g.user.nickname) }}">Кабинет</a></li>
 		{% endif %}
 	</ul>
 	</div>
@@ -149,7 +156,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 	</div>
 		</div><!--#podfooter-->
     </div><!--#footer-->
-{% if g.user.username == 'admin'%}
+{% if g.user.nickname == 'admin'%}
 <div id="navigation-bot">
 <ul>
 		<li><a href="{{ url_for('add_blog') }}" class="current"><p>Доюавить запись в блог</p></a></li>

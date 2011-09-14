@@ -11,5 +11,5 @@ connection = cursor.HConnection()
 lst = models.User.get(connection, id=1)
 for i in lst:
 	user = i 
-user.username = 12
+user.nickname = 12
 print user

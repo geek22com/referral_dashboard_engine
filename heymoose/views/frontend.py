@@ -15,11 +15,13 @@ import profiling
 
 from flask import Module
 from heymoose.utils.decorators import auth_only
+from heymoose.utils.decorators import role_not_detected_only
 from heymoose.utils.decorators import admin_only
 from heymoose.utils.workers import app_logger
 from heymoose.utils.workers import heymoose_app
 from heymoose.db.models import User
 from heymoose.db.models import Captcha
+import heymoose.settings.debug_config as config
 import heymoose.forms.forms as forms
 
 frontend = Module(__name__)
@@ -30,10 +32,13 @@ from heymoose.views.work import *
 from heymoose.views.balance import *
 from heymoose.views.blog import *
 from heymoose.views.developer import *
+from heymoose.views.customer import *
+from heymoose.views.app import *
 from heymoose.views.order import *
 from heymoose.views.info import *
 from heymoose.views.survey import *
 from heymoose.tests.postgress_stres_test import *
+import heymoose.db.resource_user as resource_user
 
 def register_form_template(form_params=None, error=None):
 	register_form = forms.RegisterForm()
@@ -57,11 +62,31 @@ def register_success():
 	g.params['loginform'] = forms.LoginForm()
 	return render_template('register_success.html', params=g.params)
 
+@frontend.route('/role_detect', methods=['GET', 'POST'])
+@role_not_detected_only
+def role_detect():
+	form_role = forms.RoleForm(request.form)
+	if request.method == 'POST' and form_role.validate():
+		try:
+			if not g.user:
+				raise Exception()
+
+			g.user.set_roles(resource_user.create_role(form_role.role.data))
+			return redirect(url_for('user_cabinet', username=g.user.nickname))
+		except Exception as inst:
+			app_logger.error(inst)
+			app_logger.error(sys.exc_info())
+			flash_form_errors([['Извините, попробуйте еще раз']], 'roleerror')
+
+	flash_form_errors([['Извините, попробуйте еще раз']], 'roleerror')
+	return render_template('role-selection.html', params=g.params)
+
+
+
 @frontend.route('/start_survey')
 @auth_only
 def start_survey():
-	#return render_template('cabinet-inside-service.html', params=g.params)
-	return redirect(url_for('user_cabinet', username=g.user.username))
+	return redirect(url_for('user_cabinet', username=g.user.nickname))
 
 @frontend.route('/<username>')
 @auth_only
@@ -71,12 +96,14 @@ def user_cabinet(username):
 		abort(404)
 
 	if g.user.is_developer():
-		g.params['app_id'] = g.user.app_id
-		g.params['secret_key'] = g.user.secret_key
+		apps = g.user.get_apps()
+		if apps:
+			g.params['apps'] = apps
 
-	orders = Order.load_orders(g.user.userid, 0)
-	if orders:
-		g.params['orders'] = orders
+	if g.user.is_customer():
+		orders = g.user.get_orders()
+		if orders:
+			g.params['orders'] = orders
 	return render_template('cabinet-inside-service.html', params=g.params)
 
 
@@ -93,10 +120,10 @@ def login():
 		user = User.get_user_by_email(form_login.username.data)
 		if user is None:
 			flash_form_errors([['Такой пользователь не зарегистрирован']], 'loginerror')
-#		elif not check_password_hash(user.passwordhash, form_login.password.data):
-#			flash_form_errors([['Неверный пароль']], 'loginerror')
+		elif not check_password_hash(user.passwordHash, form_login.password.data):
+			flash_form_errors([['Неверный логин или пароль']], 'loginerror')
 		else:
-			session['user_id'] = user.userid
+			session['user_id'] = user.id
 			return redirect(url_for('user_cabinet', username=form_login.username.data))
 
 	flash_form_errors(form_login.errors.values(), 'loginerror')
@@ -115,37 +142,35 @@ def register():
 		elif User.check_user(register_form.email.data) is not None:
 			flash_form_errors([['Введенный email уже используется']], 'registererror')
 		# Уязвимость, данные из поля капча и hidden не проверяются.
-		elif Captcha.check_captcha(request.form['captcha_id'], request.form['captcha_answer']) is None:
+		elif config.USE_DATABASE and Captcha.check_captcha(request.form['captcha_id'], request.form['captcha_answer']) is None:
 			flash_form_errors([['Каптча введена не верна']], 'registererror')
 		else:
 			try:
-				user = User(username=register_form.username.data,
+				user = User(nickname=register_form.username.data,
 							email=register_form.email.data,
-							passwordhash=generate_password_hash(register_form.password.data))
+							passwordHash=generate_password_hash(register_form.password.data),
+							roles=resource_user.create_role(register_form.role.data))
 				user.save()
-
 				#request user and loged him in
 				user = User.get_user_by_email(register_form.email.data)
-				print "REGISTERED USER:"
-				print user
 				if user:
-					session['user_id'] = user.userid
+					user.set_roles(resource_user.create_role(register_form.role.data))
+					session['user_id'] = user.id
 				else:
 					#return redirect(url_for('register_success'))
 					raise Exception()
 
-				return redirect(url_for('user_cabinet', username=user.username))
+				return redirect(url_for('user_cabinet', username=user.nickname))
 			except Exception as inst:
 				app_logger.error(inst)
 				app_logger.error(sys.exc_info())
 				flash_form_errors([['Извините, регистрация временно не доступна']], 'registererror')
 
-
 	flash_form_errors(register_form.errors.values(), 'registererror')
 	return register_form_template(request.form, error)
 
 @frontend.route('/logout')
-@auth_only
+@role_not_detected_only
 def logout():
     """Logs the user out."""
     flash('You were logged out')

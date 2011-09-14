@@ -16,9 +16,12 @@ import random
 import string
 import hashlib
 import resource_user
+import sys
 import resource_app
+import resource_order
+from heymoose.utils.workers import app_logger
 
-class BaseModel(object):
+class DataBaseModel(object):
 	def __init__(self, error=None):
 		pass
 
@@ -70,118 +73,175 @@ class BaseModel(object):
 		return lst
 
 
-class User(BaseModel):
-	table_name = 'users'
-	def __init__(self, username, email, passwordhash):
-		super(User, self).__init__()
-		self._username = username
-		self._email = email
-		self._passwordhash = passwordhash
-		self._userid = None
+class MetaModel(type):
+	def __new__(cls, name, bases, dct):
+		try:
+			attributes = dct['attributes']
+		except Exception as inst:
+			app_logger.error(inst)
+			app_logger.error(sys.exc_info())
+		return type.__new__(cls, name, bases, dct)
 
-	def __str__(self):
-		res = str(self._username) + " " + str(self._email) + " " + str(self._passwordhash) + " " + str(self._userid)
-		return res
+	def __init__(cls, name, bases, dct):
+		attributes = dct['attributes']
+		if not attributes:
+			return
+		for attr in attributes:
+			attr_name = "_" + attr
+			attr_getter = lambda self, attr_name=attr_name: getattr(self, attr_name) # clousure problem http://stackoverflow.com/questions/2295290/what-do-lambda-function-closures-capture-in-python
+			setattr(cls, attr, property(fget=attr_getter))
 
+class RestApiModel(object):
+	attributes = []
+	__metaclass__ = MetaModel
+	def __init__(self, **kwargs):
+		for k, v in kwargs.iteritems():
+			nm = "_" + k
+			setattr(self, nm, v)
+
+
+class User(RestApiModel):
+	attributes = ['id',
+					'email',
+					'passwordHash',
+					'nickname',
+					'orders',
+	                'customer_balance',
+	                'developer_balance',
+					'apps',
+					'roles']
+
+	#TODO deny ADMIN instance creation
+    
 	@classmethod
-	def get_user_byid(cls, user_id):
+	def get_user_by_id(cls, user_id):
 		res = resource_user.get_user_by_id(user_id)
 		if res:
-			return cls.create_object(res)
+			return User(**res)
 		else:
 			return None
+
 	@classmethod
 	def get_user_by_email(cls, email):
 		res = resource_user.get_user_by_email(email)
 		if res:
-			return cls.create_object(res)
+			return User(**res)
 		else:
 			return None
-
-#	@classmethod
-#	def get_user(cls, username):
-#		args = {'name' : username.encode('utf8')}
-#		query = "SELECT * FROM " + User.table_name + " WHERE name = %(name)s"
-#		res =cls.query(query, args, one=True)
-#		print "Get user by id: " + str(res)
-#		if res:
-#			return cls.create_object(res)
-#		else:
-#			return None
 
 	@classmethod
 	def check_user(cls, email):
-		#args = {'email':email.encode('utf8')}
-		#query = "SELECT * FROM " + User.table_name + " WHERE email = %(email)s"
-		#res =cls.query(query, args, one=True)
 		res = resource_user.get_user_by_email(email)
 		if res:
-			return cls.create_object(res)
+			return User(**res)
 		else:
 			return None
 
+	def create_order(self, **kwargs):
+		if self.is_customer():
+			return resource_order.add_order(**kwargs)
+		else:
+			return None
+
+	def create_app(self):
+		if self.is_developer():
+			return resource_app.add_app(self.id)
+		else:
+			return None
+
+	def get_apps(self):
+		try:
+			return [App(**app) for app in self.apps]
+		except Exception as inst:
+			app_logger.error(inst)
+			app_logger.error(sys.exc_info())
+			return []
+
+	def load_order(self, order_id):
+		try:
+			res = resource_order.get_order(order_id)
+			if res:
+				return Order(**res)
+			else:
+				return None
+		except Exception as inst:
+			app_logger.error(inst)
+			app_logger.error(sys.exc_info())
+			return None
+
+	def get_orders(self):
+		try:
+			return [Order(**order) for order in self.orders]
+		except Exception as inst:
+			app_logger.error(inst)
+			app_logger.error(sys.exc_info())
+			return []
+
+	def increase_balance(self, amount):
+		if self.is_customer() and amount>0:
+			try:
+				return resource_user.increase_customer_account(self.id, amount)
+			except Exception as inst:
+				app_logger.error(inst)
+				app_logger.error(sys.exc_info())
+				
+		return None
+		
 	def save(self):
-		#args = {'name': self._username.encode('utf8'),
-		#		'email' : self._email.encode('utf8'),
-		#		'password' : self._passwordhash}
-		#query = "SELECT merge_user(%(email)s, %(name)s, %(password)s)"
-		#self.execute(query, args)
-		res = resource_user.add_user(self._email, self._passwordhash, self._username)
+		res = resource_user.add_user(self.email, self.passwordHash, self.nickname)
+
+	def set_roles(self, roles):
+		for role in roles:
+			res = resource_user.set_user_role(self.id, role)
 
 	def become_developer(self, platform):
-		res = resource_app.become_developer(self._userid, platform)
+		res = resource_user.become_developer(self.id)
 
-	def is_developer(self):
-		return getattr(self, "_app_id", False)
+	def become_customer(self):
+		res = resource_user.become_customer(self.id)
 
-	@classmethod
-	def create_object(cls, item):
-		user = cls(item['name'].decode('utf8'),
-				   item['email'].decode('utf8'),
-				   item['password'])
-		user._userid = item['id']
+	def _check_role(self, role):
+		try:
+			if filter(lambda r: r == role, self.roles):
+				return True
+		except Exception as inst:
+			app_logger.error(inst)
+			app_logger.error(sys.exc_info())
+			return False
 		
-		# Add developer params if exist
-		if type(item) is dict:
-			if item.has_key('app_id') and item.has_key('secret_key'):
-				user._app_id = item['app_id']
-				user._secret_key = item['secret_key']
-		return user
+		return False
 
-	@property
-	def username(self):
-		return self._username
-	@username.setter
-	def username(self, value):
-		self._username = value
+	def is_somebody(self):
+		return getattr(self, 'roles', False)
+	
+	def is_developer(self):
+		return self._check_role(resource_user.user_roles['DEVELOPER'])
 
-	@property
-	def passwordhash(self):
-		return self._passwordhash
-	@passwordhash.setter
-	def passwordhash(self, value):
-		self._passwordhash = value
+	def is_customer(self):
+		return self._check_role(resource_user.user_roles['CUSTOMER'])
 
-	@property
-	def email(self):
-		return self._email
-	@email.setter
-	def email(self, value):
-		self._email = value
+	def is_admin(self):
+		return self._check_role(resource_user.user_roles['ADMIN'])
+       
+class Order(RestApiModel):
+	attributes = ['id',
+	              'title',
+	              'balance',
+	              'body',
+	              'cpa',
+	              'user_id']
 
-	@property
-	def app_id(self):
-		return self._app_id
+	#TODO: add correct body and cpa parameter
+	def save(self):
+		res = resource_order.add_order(self.user_id, self.title, '', self.balance, 1)
 
-	@property
-	def secret_key(self):
-		return self._secret_key
+class App(RestApiModel):
+	attributes = ['id',
+	              'secret',
+	              'user_id']
 
-	@property
-	def userid(self):
-		return self._userid
 
-class Captcha(BaseModel):
+class Captcha(DataBaseModel):
 	table_name = 'captcha'
 	def __init__(self, q_id, question, answer):
 		super(Captcha, self).__init__()
@@ -233,185 +293,8 @@ class Captcha(BaseModel):
 	def answer(self):
 		return self._answer
 
-class Developer(BaseModel):
-	table_name = "developers"
-	def __init__(self, id, app_id=None, secret_key=None):
-		super(Developer, self).__init__()
-		self._id = id
 
-		if not app_id:
-			self._app_id = self.generate_app_id()
-		else:
-			self._app_id = app_id
-
-		if not secret_key:
-			self._secret_key = self.generate_secret_key()
-		else:
-			self._secret_key = secret_key
-
-	def save(self):
-		args = {'id': self._id,
-				'app_id' : str(self._app_id),
-				'secret_key' : str(self._secret_key)}
-		query = "SELECT merge_developer(%(id)s, %(app_id)s, %(secret_key)s)"
-		self.execute(query, args)
-
-
-	def generate_app_id(self):
-		random.seed()
-		return int(random.random() * 10000000)
-
-	def generate_secret_key(self):
-		random.seed()
-		d = [random.choice(string.letters + string.digits) for x in xrange(128)]
-		s = "".join(d)
-		return s
-
-	def check_sign(self, sig):
-		md5_hash = hashlib.md5()
-		md5_hash.update(str(self.app_id) + self.secret_key)
-		if str(md5_hash.hexdigest()) != str(sig):
-			return False
-
-		return True
-
-	@classmethod
-	def get_by_app_id(cls, app_id):
-		args = {'app_id': str(app_id)}
-		query = "SELECT * FROM " + cls.table_name + " WHERE app_id=%(app_id)s"
-		res = cls.query(query, args, one=True)
-		if not res:
-			return None
-
-		return cls.create_object(res)
-
-	@classmethod
-	def get_vkontakte_app_developer(cls, name='app_user'):
-		args = {'name' : name}
-		query = "SELECT * FROM " + cls.table_name + " WHERE id = (SELECT id FROM " + User.table_name + " WHERE name=%(name)s)"
-		res = cls.query(query, args, one=True)
-		if not res:
-			return None
-
-		return cls.create_object(res)
-
-	@classmethod
-	def get_developer(cls, id):
-		args = {'id': id}
-		query = "SELECT * FROM " + cls.table_name + " WHERE id=%(id)s"
-		res = cls.query(query, args, one=True)
-		if not res:
-			return None
-
-		return cls.create_object(res)
-
-
-	@classmethod
-	def create_object(cls, item):
-		developer = cls(item['id'], item['app_id'], item['secret_key'])
-		return developer
-
-
-	@property
-	def id(self):
-		return self._id
-
-	@property
-	def app_id(self):
-		return self._app_id
-
-	@property
-	def secret_key(self):
-		return self._secret_key
-
-class Order(BaseModel):
-	table_name = "orders"
-	def __init__(self, owner_id, title, balance, body, cpa, date=None, id=None):
-		super(Order, self).__init__()
-		self._owner_id = owner_id
-		self._title = title
-		self._balance = balance
-		self._body = body
-		self._id = id
-		self._cpa = cpa
-		if date:
-			self._date = date
-
-	def save_new(self):
-		res = resource_order.add_order(userId = self._owner_id,
-						title = self._title.encode('utf8'),
-						body = self._body.encode('utf8'),
-						balance = self._balance,
-						cpa = self._cpa)
-
-	def save(self, id): # Do we need to differ edit from creation ?
-		res = resource_order.add_order(userId = self._owner_id,
-						title = self._title.encode('utf8'),
-						body = self._body.encode('utf8'),
-						balance = self._balance,
-						cpa = self._cpa)
-		return True
-
-	@classmethod
-	def delete_order(cls, order_id):
-		pass
-
-	@classmethod
-	def load_orders(cls, owner_id, offset, limit=10):
-		res = resource_user.get_user_orders(user_id=owner_id)
-		lst = []
-		if res:
-			for next in res:
-				lst.append(cls.create_object(next))
-			return lst
-
-		return None
-
-
-	@classmethod
-	def load_order(cls, owner_id, order_id):
-		res = resource_order.get_order(order_id=order_id)
-		if res:
-			return cls.create_object(res)
-
-		return None
-
-
-	@classmethod
-	def create_object(cls, item):
-		order = cls(item['owner_id'],
-					item['title'].decode('utf8'),
-					item['balance'],
-					item['body'].decode('utf8'),
-					item['date'],
-					item['id'])
-		return order
-
-	@property
-	def id(self):
-		return self._id
-
-	@property
-	def owner_id(self):
-		return self._owner_id
-
-	@property
-	def title(self):
-		return self._title
-
-	@property
-	def balance(self):
-		return self._balance
-
-	@property
-	def body(self):
-		return self._body
-
-	@property
-	def date(self):
-		return self._date
-
-class Category(BaseModel):
+class Category(DataBaseModel):
 	table_name = "blog_category"
 	def __init__(self, title):
 		super(Category, self).__init__()
@@ -457,7 +340,7 @@ class Category(BaseModel):
 
 		return None
 
-class Blog(BaseModel):
+class Blog(DataBaseModel):
 	table_name = "blog_records"
 	def __init__(self, category_id, title, body, annotation, image_path=None, date=None):
 		super(Blog, self).__init__()
@@ -593,7 +476,7 @@ class Blog(BaseModel):
 	def date(self):
 		return self._date
 
-class FeedBack(BaseModel):
+class FeedBack(DataBaseModel):
 	table_name = "feedback"
 	def __init__(self, email, comment):
 		super(FeedBack, self).__init__()
@@ -620,7 +503,7 @@ class FeedBack(BaseModel):
 	def comment(self):
 		return self._email
 
-class Offer(BaseModel):
+class Offer(DataBaseModel):
 	table_name = "offers"
 	table_stat = "offer_in_action"
 	def __init__(self, title, body, url, time, voice):
@@ -675,7 +558,7 @@ class Offer(BaseModel):
 	def voice(self):
 		return self._voice
 
-class OfferFormer(BaseModel):
+class OfferFormer(DataBaseModel):
 	table_name = "offers_by_dev"
 	offers_table_name = "offers"
 	def __init__(self):

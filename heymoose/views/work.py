@@ -13,8 +13,8 @@ def fill_template_params(user):
 	params = {}
 	if not user:
 		return params
-	params['user_id'] = user.userid
-	params['user_name'] = user.username
+	params['user_id'] = user.id
+	params['user_name'] = user.nickname
 	params['balance'] = 100
 	return params
 
@@ -31,7 +31,7 @@ def before_request():
 
 	if 'user_id' in session:
 		try:
-			g.user = User.get_user_byid(session['user_id'])
+			g.user = User.get_user_by_id(session['user_id'])
 		except Exception as inst:
 			app_logger.error(inst)
 			app_logger.error(sys.exc_info())

@@ -20,6 +20,7 @@
                         <h5>E-mail</h5>
                         <h5>Пароль</h5>
                         <h5>Подтвердить пароль</h5>
+						<h5>Необходимые вам услуги</h5>
 						<h5>{{ params.captcha.question }}</h5>
 					</div>
 				    <div id="register-right-box">
@@ -28,6 +29,12 @@
 							<p>{{ params.registerform.email(class="inp-bg", size="15", maxlength="150")}}</p>
 							<p>{{ params.registerform.password(class="inp-bg", size="15", maxlength="15")}}</p>
 							<p>{{ params.registerform.password2(class="inp-bg", size="15", maxlength="15")}}</p>
+							<p>
+							<select name='role'>
+							<option value="DEVELOPER">DEVELOPER</option>
+							<option value="CUSTOMER">CUSTOMER</option>
+							</select>	
+							</p>
 							<p><input class="inp-bg" name="captcha_answer" type="text" value="" size="15" maxlength="15" /></p>
 							<input type="hidden" name="captcha_id" value="{{ params.captcha.qid }}">
                             <input type="submit" class="register" value="Подтвердить" />

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField, TextAreaField, DecimalField
+from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField, TextAreaField, DecimalField, RadioField, SelectField
 
 class LoginForm(Form):
 	username = TextField('username', [
@@ -8,6 +8,9 @@ class LoginForm(Form):
 	password = PasswordField('password', [
 							 validators.Length(min=4, max=16, message = ('Некорректный пароль')),
 							 validators.Required(message = ('Введите пароль'))])
+
+class RoleForm(Form):
+	role = SelectField('role', choices=[("DEVELOPER","DEVELOPER"), ("CUSTOMER","CUSTOMER")])
 
 class RegisterForm(Form):
 	username = TextField('username', [
@@ -24,7 +27,7 @@ class RegisterForm(Form):
 	password2 = PasswordField('password2', [
 							 validators.Length(min=4, max=16, message = ('Длинна пароля должна быть от 4 до 16 символов')),
 							 validators.Required(message = ('Введенные пароли не совпадают'))])
-
+	role = SelectField('role', choices=[("DEVELOPER","DEVELOPER"), ("CUSTOMER","CUSTOMER")])
 	captcha = TextField('captcha', [])
 
 class FeedBackForm(Form):
@@ -38,7 +41,13 @@ class OrderForm(Form):
 						  				validators.Required(message = ('Введите название заказа'))])
 	orderbalance = IntegerField('orderbalance', [validators.Required(message = ('Укажите баланс для заказа')),
 						validators.NumberRange(min=1, max=3000000, message=('Допустимый баланс от 1 до 3000000 рублей'))])
-	orderquestions = TextAreaField('orederquestions', [validators.Required(message = ('Введите вопросы'))])
+	orderbody = TextField('orederbody', [validators.Required(message = ('Введите тело'))])
+	ordercpa = IntegerField('oredercpa', [validators.Required(message = ('Введите cpa'))])
+
+class BalanceForm(Form):
+	amount = IntegerField('orderbalance', [validators.Required(message = ('Укажите баланс')),
+						validators.NumberRange(min=1, max=3000000, message=('Допустимый баланс от 1 до 3000000 рублей'))])
+
 
 class OfferForm(Form):
 	app_id = IntegerField('app_id', [validators.Required(),

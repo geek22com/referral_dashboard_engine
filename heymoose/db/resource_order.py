@@ -36,6 +36,7 @@ def construct_order_from_xml(xml_string):
 		res['user_id'] = xpath_to_string(xml_string, '/order/user-id')
 		res['body'] = ''
 		res['cpa'] = 12
+		res['approved'] = ''
 		return res
 	except Exception as inst:
 		app_logger.error(inst)
@@ -78,3 +79,9 @@ def get_order(order_id):
 
 	app_logger.debug("load_order " + path)
 	return response_to_dict(response, func=construct_order_from_xml)
+
+def approve_order(order_id):
+	path = resource_path + "/" + str(order_id)
+
+	app_logger.debug("confirm_order " + path)
+	return api_request(path=path, type="PUT")

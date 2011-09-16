@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block title %}
+Личный кабинет
+{% endblock %}
+{% block content %}
+	<div id="container">
+	        <h4>Здравствуйте, {{ g.user.nickname }}</h4>
+
+        {% if g.user.is_admin() %}
+        <div id="zakaz-box">
+	    <div id="zakaz-box-top">
+			<div id="user-balans">
+				{% if params.actions %}
+					{% for action in params.actions %}
+					    <div class="user-account">
+                        <p class="box-4">{{ action.id }}</p>
+					    <p class="box-4">{{ action.performer_id }}</p>
+                        <p class="box-1">{{ action.offer_id }}</p>
+					    <p class="box-1">{{ action.done }}</p>
+						<p class="box-1">{{ action.deleted }}</p>
+                        <p class="box-1">{{ action.creation_time }}</p>
+                        <p class="box-right" align="right"><a href="{{ url_for('delete_action', action_id=action.id) }}" onclick="return confirm('Вы уверены что хотите удалить action?')" class="add-vopros">Удалить action</a></p>
+						<p class="box-right" align="right"><a href="{{ url_for('approve_action', action_id=action.id) }}" onclick="return confirm('Вы уверены что хотите подтвердить action?')" class="add-vopros">Подтвердить action</a></p>
+						</div>
+					{% endfor %}
+				{% else %}
+				{% endif %}
+			</div>
+
+			<div class="clear"></div>
+        </div>
+        </div>
+        {% else %} <!-- is_admin() -->
+        {% endif %}
+
+
+        {% if g.user.is_admin() %}
+        <div id="app-box">
+            <div id="app-box-top">
+                <div id="user-balans">
+				{% if params.orders %}
+					{% for order in params.orders %}
+					    <div class="user-account">
+                        <p class="box-4">{{ order.id }}</p>
+					    <p class="box-4">{{ order.title }}</p>
+                        <p class="box-1">{{ order.balance }}</p>
+					    <p class="box-1">{{ order.user_id }}</p>
+						<p class="box-1">{{ order.approved }}</p>
+						<p class="box-right" align="right"><a href="{{ url_for('approve_order', order_id=order.id) }}" onclick="return confirm('Вы уверены что хотите подтвердить order?')" class="add-vopros">Подтвердить order</a></p>
+						</div>
+					{% endfor %}
+				{% else %}
+				{% endif %}
+			</div>
+
+			<div class="clear"></div>
+            </div>
+        <div class="clear"></div>
+      </div>
+     {% else %} <!-- is_admin() -->
+     {% endif %} <!-- is_admin() -->
+
+        <div class="clear"></div>
+</div>
+<div class="empty"></div>
+{% endblock %}

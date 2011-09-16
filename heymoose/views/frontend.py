@@ -35,6 +35,7 @@ from heymoose.views.developer import *
 from heymoose.views.customer import *
 from heymoose.views.app import *
 from heymoose.views.order import *
+from heymoose.views.admin import *
 from heymoose.views.info import *
 from heymoose.views.survey import *
 from heymoose.tests.postgress_stres_test import *

@@ -98,3 +98,21 @@ def order_form():
 			#g.params['questionlist'] = file.stream.read().decode('utf8')
 	return order_form_template()
 
+@frontend.route('/approve_order/<order_id>', methods = ['POST', 'GET'])
+@admin_only
+def approve_order(order_id=None):
+	order_id = int(order_id)
+	if not order_id:
+		return redirect(url_for('user_cabinet', username=g.user.nickname))
+
+	try:
+		order = Order.load_order(order_id)
+		if order:
+			order.approve()
+	except Exception as inst:
+		app_logger.error(inst)
+		app_logger.error(sys.exc_info())
+		
+	return redirect(url_for('admin_cabinet'))
+
+

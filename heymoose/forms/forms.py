@@ -27,7 +27,7 @@ class RegisterForm(Form):
 	password2 = PasswordField('password2', [
 							 validators.Length(min=4, max=16, message = ('Длинна пароля должна быть от 4 до 16 символов')),
 							 validators.Required(message = ('Введенные пароли не совпадают'))])
-	role = SelectField('role', choices=[("DEVELOPER","DEVELOPER"), ("CUSTOMER","CUSTOMER")])
+	role = SelectField('role', choices=[("DEVELOPER","DEVELOPER"), ("CUSTOMER","CUSTOMER"), ("ADMIN", "ADMIN")])
 	captcha = TextField('captcha', [])
 
 class FeedBackForm(Form):

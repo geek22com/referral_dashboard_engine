@@ -19,6 +19,7 @@ import resource_user
 import sys
 import resource_app
 import resource_order
+import resource_action
 from heymoose.utils.workers import app_logger
 
 class DataBaseModel(object):
@@ -231,14 +232,57 @@ class Order(RestApiModel):
 	              'cpa',
 	              'user_id']
 
+	@classmethod
+	def load_order(cls, order_id):
+		try:
+			res = resource_order.get_order(order_id)
+			if res:
+				return Order(**res)
+		except Exception as inst:
+			app_logger.error(inst)
+			app_logger.error(sys.exc_info())
+
+		return None
+
 	#TODO: add correct body and cpa parameter
 	def save(self):
 		res = resource_order.add_order(self.user_id, self.title, '', self.balance, 1)
+
+	def approve(self):
+		return resource_order.approve_order(self.id)
 
 class App(RestApiModel):
 	attributes = ['id',
 	              'secret',
 	              'user_id']
+
+class Action(RestApiModel):
+	attributes = ['id',
+	              'performer_id',
+	              'offer_id',
+	              'done',
+	              'deleted',
+	              'creation_time']
+
+	@classmethod
+	def load_actions(cls, offset, limit):
+		try:
+			actions = resource_action.get_actions(offset, limit)
+			if actions:
+				return [Action(**action) for action in actions]
+		except Exception as inst:
+			app_logger.error(inst)
+			app_logger.error(sys.exc_info())
+
+		return None
+
+	@classmethod
+	def delete(cls, action_id):
+		return resource_action.delete_action(action_id)
+
+	@classmethod
+	def approve(cls, action_id):
+		return resource_action.approve_action(action_id)
 
 
 class Captcha(DataBaseModel):

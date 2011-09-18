@@ -6,7 +6,6 @@ from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
 from heymoose.db.models import Category
 from heymoose.db.models import Blog
-from heymoose.db.models import User
 from heymoose.db.models import FeedBack
 import random
 import string
@@ -31,7 +30,7 @@ def test_register():
 			email = gen_random_mail()
 			user = User(username=username,
 						email=email,
-						passwordhash=generate_password_hash("test_register"))
+						password_hash=generate_password_hash("test_register"))
 			before = datetime.now()
 			user.save()
 			after = datetime.now()

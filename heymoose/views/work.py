@@ -6,7 +6,6 @@ from heymoose.utils.decorators import admin_only
 from heymoose.utils.workers import app_logger
 import heymoose.forms.forms as forms
 from heymoose.views.frontend import frontend
-from heymoose.db.models import User
 import sys
 
 def fill_template_params(user):

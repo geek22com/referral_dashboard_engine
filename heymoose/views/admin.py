@@ -7,8 +7,6 @@ from heymoose.utils.decorators import customer_only
 from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
 import heymoose.forms.forms as forms
-from heymoose.db.models import Action
-from heymoose.db.models import User
 from heymoose.views.work import *
 
 

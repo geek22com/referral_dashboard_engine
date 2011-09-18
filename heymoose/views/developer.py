@@ -7,7 +7,6 @@ from heymoose.utils.decorators import developer_only
 from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
 import heymoose.forms.forms as forms
-from heymoose.db.models import User 
 
 @frontend.route('/become_customer')
 @developer_only

@@ -6,9 +6,6 @@ from heymoose.utils.decorators import admin_only
 from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
 import heymoose.forms.forms as forms
-#from heymoose.db.models import Developer
-from heymoose.db.models import Offer
-from heymoose.db.models import OfferFormer
 import hashlib
 
 def create_sig(developer):

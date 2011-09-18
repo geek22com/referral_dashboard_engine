@@ -19,7 +19,6 @@ from heymoose.utils.decorators import role_not_detected_only
 from heymoose.utils.decorators import admin_only
 from heymoose.utils.workers import app_logger
 from heymoose.utils.workers import heymoose_app
-from heymoose.db.models import User
 from heymoose.db.models import Captcha
 import heymoose.settings.debug_config as config
 import heymoose.forms.forms as forms
@@ -39,7 +38,6 @@ from heymoose.views.admin import *
 from heymoose.views.info import *
 from heymoose.views.survey import *
 from heymoose.tests.postgress_stres_test import *
-import heymoose.db.resource_user as resource_user
 
 def register_form_template(form_params=None, error=None):
 	register_form = forms.RegisterForm()
@@ -121,7 +119,7 @@ def login():
 		user = User.get_user_by_email(form_login.username.data)
 		if user is None:
 			flash_form_errors([['Такой пользователь не зарегистрирован']], 'loginerror')
-		elif not check_password_hash(user.passwordHash, form_login.password.data):
+		elif not check_password_hash(user.password_hash, form_login.password.data):
 			flash_form_errors([['Неверный логин или пароль']], 'loginerror')
 		else:
 			session['user_id'] = user.id
@@ -149,7 +147,7 @@ def register():
 			try:
 				user = User(nickname=register_form.username.data,
 							email=register_form.email.data,
-							passwordHash=generate_password_hash(register_form.password.data),
+							password_hash=generate_password_hash(register_form.password.data),
 							roles=resource_user.create_role(register_form.role.data))
 				user.save()
 				#request user and loged him in

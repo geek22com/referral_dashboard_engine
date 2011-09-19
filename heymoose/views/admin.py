@@ -4,17 +4,20 @@ from flask import Flask, request, session, url_for, redirect, \
 from heymoose.utils.decorators import auth_only
 from heymoose.utils.decorators import admin_only
 import heymoose.core.actions.actions as actions
+import heymoose.core.actions.orders as orders
 from heymoose.views.work import *
 
-
+#TODO: make paging in user interface
 @frontend.route('/admin_cabinet', methods = ['POST', 'GET'])
 @admin_only
 def admin_cabinet():
-	if not g.user:
-		abort(404)
+	
+	acs = actions.get_actions(0, 100)
+	if acs:
+		g.params['actions'] = acs
 
-	actions.get_actions(0, 100)
-	if actions:
-		g.params['actions'] = actions
-
+	ods = orders.get_orders(0, 100)
+	if ods:
+		g.params['orders'] = ods
+		
 	return render_template('admin-cabinet.html', params=g.params)

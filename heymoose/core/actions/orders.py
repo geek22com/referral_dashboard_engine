@@ -1,5 +1,5 @@
 from heymoose.core.actions.mappers import order_from_xml
-from heymoose.core.rest import post, put
+from heymoose.core.rest import post, put, get
 from heymoose.utils.workers import app_logger
 from restkit.errors import RequestFailed
 
@@ -24,3 +24,8 @@ def get_order(order_id):
 def approve_order(order_id):
 	path =  "{0}/{1}".format(resource_path, order_id)
 	put(path=path)
+
+def get_orders(offset, limit):
+	return map(order_from_xml, get(path=resource_path,
+									params_dict=dict(offset=offset,
+									limit=limit)))

@@ -156,13 +156,14 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 	</div>
 		</div><!--#podfooter-->
     </div><!--#footer-->
-{% if g.user.nickname == 'admin'%}
+{% if g.user and g.user.is_admin() %}
 <div id="navigation-bot">
 <ul>
 		<li><a href="{{ url_for('add_blog') }}" class="current"><p>Доюавить запись в блог</p></a></li>
 		<li><a href="{{ url_for('add_category') }}" class="current"><p>Добавить категорию</p></a></li>
 		<li><a href="{{ url_for('import_blog') }}" class="current"><p>Загрузить из файла</p></a></li>
 		<li><a href="{{ url_for('add_offer') }}" class="current"><p>Добавить оффер</p></a></li>
+        <li><a href="{{ url_for('admin_cabinet') }}" class="current"><p>Подтвердить офер</p></a></li>
 </ul>
 </div>
 {% endif %}

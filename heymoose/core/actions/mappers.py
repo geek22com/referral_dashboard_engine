@@ -15,7 +15,8 @@ def order_from_xml(order_element):
 				balance=get_value(order_element, 'balance', float),
 				body=get_value(order_element, 'body'),
 				cpa=get_value(order_element, 'cpa', float),
-				user_id=get_value(order_element, 'user_id', int))
+				user_id=get_value(order_element, 'user_id', int),
+				approved=get_value(order_element, 'approved', bool))
 
 def user_from_xml(user_element):
 	return User(id=get_attr(user_element, 'id', int),

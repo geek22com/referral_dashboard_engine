@@ -56,6 +56,7 @@ class Order(BaseModel):
 	              'balance',
 	              'body',
 	              'cpa',
+	              'approved',
 	              'user_id']
 
 

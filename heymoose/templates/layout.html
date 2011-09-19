@@ -95,7 +95,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 		<div id="top-bar">
 			<div id="logo-box">
 			<a href="{{ url_for('main_page') }}"><img src="{{ url_for('static', filename='./images/logo.png') }}" width="197" height="62" border="0" alt="logo" /></a> </div>
-		{% if params.user_id %}
+		{% if g.user %}
 			<div id="user-box">
     	        <div id="user-info">
 	                <h5>Добрый день, {{ params.user_name }}</h5>

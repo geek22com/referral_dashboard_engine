@@ -9,11 +9,4 @@ import heymoose.forms.forms as forms
 
 @frontend.route('/create_survey/<app_id>')
 def create_survey(app_id=None):
-	if not app_id:
-		abort(404)
-	try:
-		app_id = int(app_id)
-	except:
-		abort(404)
-
 	return render_template('survey-offer.html', params=g.params)

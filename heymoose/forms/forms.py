@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField, TextAreaField, DecimalField, RadioField, SelectField
+import heymoose.core.actions.roles as roles
 
 class LoginForm(Form):
 	username = TextField('username', [
@@ -10,7 +11,8 @@ class LoginForm(Form):
 							 validators.Required(message = ('Введите пароль'))])
 
 class RoleForm(Form):
-	role = SelectField('role', choices=[("DEVELOPER","DEVELOPER"), ("CUSTOMER","CUSTOMER")])
+	role = SelectField('role', choices=[(roles.DEVELOPER, roles.DEVELOPER),
+										(roles.CUSTOMER, roles.CUSTOMER)])
 
 class RegisterForm(Form):
 	username = TextField('username', [
@@ -27,7 +29,9 @@ class RegisterForm(Form):
 	password2 = PasswordField('password2', [
 							 validators.Length(min=4, max=16, message = ('Длинна пароля должна быть от 4 до 16 символов')),
 							 validators.Required(message = ('Введенные пароли не совпадают'))])
-	role = SelectField('role', choices=[("DEVELOPER","DEVELOPER"), ("CUSTOMER","CUSTOMER"), ("ADMIN", "ADMIN")])
+	role = SelectField('role', choices=[(roles.DEVELOPER, roles.DEVELOPER),
+										(roles.CUSTOMER, roles.CUSTOMER),
+										(roles.ADMIN, roles.ADMIN)])
 	captcha = TextField('captcha', [])
 
 class FeedBackForm(Form):

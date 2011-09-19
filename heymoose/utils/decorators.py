@@ -30,7 +30,7 @@ def customer_only(func):
         if 'user_id' not in session:
             return redirect(url_for('register'))
         if not g.user.is_customer():
-            return redirect(url_for('select_role'))
+            return redirect(url_for('role_detect'))
         return func(*args, **kwargs)
     _inner_.__name__ = func.__name__
     return _inner_
@@ -40,7 +40,7 @@ def developer_only(func):
         if 'user_id' not in session:
             return redirect(url_for('register'))
         if not g.user.is_developer():
-            return redirect(url_for('select_role'))
+            return redirect(url_for('role_detect'))
         return func(*args, **kwargs)
     _inner_.__name__ = func.__name__
     return _inner_

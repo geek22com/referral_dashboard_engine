@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys
+import heymoose.core.actions.roles as roles
 
 class MetaModel(type):
 	def __new__(cls, name, bases, dct):
@@ -38,6 +38,17 @@ class User(BaseModel):
 	              'apps',
 	              'roles']
 
+	def is_developer(self):
+		return roles.DEVELOPER in self.roles
+
+	def is_customer(self):
+		return roles.CUSTOMER in self.roles
+
+	def is_admin(self):
+		return roles.ADMIN in self.roles
+
+	def is_somebody(self):
+		return len(self.roles) > 0
 
 class Order(BaseModel):
 	attributes = ['id',

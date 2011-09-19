@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from heymoose.utils.workers import app_logger
+from heymoose.utils.workers import app_logger, app_error
 from restkit import request
 from restkit import Resource
 from restkit import forms
 from functools import  partial
+from restkit.errors import RequestFailed, RequestError
 import heymoose.settings.debug_config as config
 import sys
 from lxml import etree
@@ -14,44 +15,47 @@ TIMEOUT = 1
 URL_BASE = config.RESTAPI_SERVER
 TEST_PORT = 9345
 
-class NoResponse(Exception):
-    pass
-
-def create_resource(base):
+def create_resource(base=URL_BASE):
 	return Resource(base,
 	                timeout=TIMEOUT)
 
 def exec_request(http_call):
 	try:
 		return http_call()
-	except Exception as inst:
-		app_logger.error(inst)
-		app_logger.error(sys.exc_info())
-		if getattr(inst, 'response', False):
-			app_logger.error(inst.response.final_url)
-		raise NoResponse()
+	except (RequestFailed, RequestError) as inst:
+		# We need to know url for debug info, but the system has broken, so raise it to the higher level
+		app_logger.error(inst.response.final_url, exc_info=True)
+		raise 
 
 def get(path, base=URL_BASE, params_dict={}):
+	app_logger.debug("get: path={0} params_dict={1}".format(path, str(params_dict)))
 	resource = create_resource(base)
 	response = exec_request(partial(resource.get,
 	                            path=path,
 	                            params_dict=params_dict))
-	return etree.fromstring(response.body_string().decode('utf8'))
+
+	resp = response.body_string()
+	if response.charset != 'utf8':
+		resp = resp.decode('utf8')
+	return etree.fromstring(resp)
 
 
 def post(path, base=URL_BASE, params_dict={}):
+	app_logger.debug("post: path={0} payload={1}".format(path, forms.form_encode(params_dict)))
 	resource = create_resource()
 	exec_request(partial(resource.post,
 	                              path=path,
-	                              paylod=forms.form_encode(params_dict)))
+	                              payload=forms.form_encode(params_dict)))
 
 def put(path, base=URL_BASE, params_dict={}):
+	app_logger.debug("put: path={0} payload={1}".format(path, forms.form_encode(params_dict)))
 	resource = create_resource()
 	exec_request(partial(resource.put,
 	                              path=path,
-	                              paylod=forms.form_encode(params_dict)))
+	                              payload=forms.form_encode(params_dict)))
 
 def delete(path, base=URL_BASE):
+	app_logger.debug("delete: path={0}".format(path))
 	resource = create_resource()
 	exec_request(partial(resource.delete,
 	                              path=path))

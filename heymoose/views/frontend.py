@@ -14,14 +14,12 @@ import sys
 import profiling
 
 from flask import Module
-from heymoose.utils.decorators import auth_only
-from heymoose.utils.decorators import role_not_detected_only
-from heymoose.utils.decorators import admin_only
-from heymoose.utils.workers import app_logger
-from heymoose.utils.workers import heymoose_app
+from heymoose.utils.decorators import auth_only, role_not_detected_only, admin_only
+from heymoose.utils.workers import app_logger, heymoose_app
 from heymoose.db.models import Captcha
 import heymoose.settings.debug_config as config
 import heymoose.forms.forms as forms
+import heymoose.core.actions.users as users
 
 frontend = Module(__name__)
 from heymoose.views.facebook import *
@@ -67,10 +65,8 @@ def role_detect():
 	form_role = forms.RoleForm(request.form)
 	if request.method == 'POST' and form_role.validate():
 		try:
-			if not g.user:
-				raise Exception()
-
-			g.user.set_roles(resource_user.create_role(form_role.role.data))
+			users.add_user_role(user_id=g.user.id,
+								role=form_role.role.data)
 			return redirect(url_for('user_cabinet', username=g.user.nickname))
 		except Exception as inst:
 			app_logger.error(inst)
@@ -95,13 +91,17 @@ def user_cabinet(username):
 		abort(404)
 
 	if g.user.is_developer():
-		apps = g.user.get_apps()
+		apps = g.user.apps
 		if apps:
+			print "apps"
+			print apps
 			g.params['apps'] = apps
 
 	if g.user.is_customer():
-		orders = g.user.get_orders()
+		orders = g.user.orders
 		if orders:
+			print "orders"
+			print orders
 			g.params['orders'] = orders
 	return render_template('cabinet-inside-service.html', params=g.params)
 
@@ -116,7 +116,7 @@ def login():
 	form_login = forms.LoginForm(request.form)
 	if request.method == 'POST' and form_login.validate():
 		#user = User.get_user(form_login.username.data)
-		user = User.get_user_by_email(form_login.username.data)
+		user = users.get_user_by_email(form_login.username.data)
 		if user is None:
 			flash_form_errors([['Такой пользователь не зарегистрирован']], 'loginerror')
 		elif not check_password_hash(user.password_hash, form_login.password.data):
@@ -138,33 +138,22 @@ def register():
 	if request.method == 'POST' and register_form.validate():
 		if register_form.password.data != register_form.password2.data:
 			flash_form_errors([['Введенные пароли не совпадают']], 'registererror')
-		elif User.check_user(register_form.email.data) is not None:
+		elif users.get_user_by_email(register_form.email.data) is not None:
 			flash_form_errors([['Введенный email уже используется']], 'registererror')
 		# Уязвимость, данные из поля капча и hidden не проверяются.
 		elif config.USE_DATABASE and Captcha.check_captcha(request.form['captcha_id'], request.form['captcha_answer']) is None:
 			flash_form_errors([['Каптча введена не верна']], 'registererror')
 		else:
-			try:
-				user = User(nickname=register_form.username.data,
-							email=register_form.email.data,
-							password_hash=generate_password_hash(register_form.password.data),
-							roles=resource_user.create_role(register_form.role.data))
-				user.save()
-				#request user and loged him in
-				user = User.get_user_by_email(register_form.email.data)
-				if user:
-					user.set_roles(resource_user.create_role(register_form.role.data))
-					session['user_id'] = user.id
-				else:
-					#return redirect(url_for('register_success'))
-					raise Exception()
+			users.add_user(email=register_form.email.data,
+							passwordHash=generate_password_hash(register_form.password.data),
+							nickname=register_form.username.data)
 
+			#request user and loged him in
+			user = users.get_user_by_email(register_form.email.data, full=True)
+			if user:
+				users.add_user_role(user.id, register_form.role.data)
+				session['user_id'] = user.id
 				return redirect(url_for('user_cabinet', username=user.nickname))
-			except Exception as inst:
-				app_logger.error(inst)
-				app_logger.error(sys.exc_info())
-				flash_form_errors([['Извините, регистрация временно не доступна']], 'registererror')
-
 	flash_form_errors(register_form.errors.values(), 'registererror')
 	return register_form_template(request.form, error)
 

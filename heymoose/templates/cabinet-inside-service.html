@@ -29,7 +29,6 @@
 					    <p class="box-4">{{ order.title }}</p>
 					    <p class="box-1">{{ order.id }}</p>
 						<p class="box-1">{{ order.balance }}</p>
-						<p class="box-right" align="right"><a href="{{ url_for('delete_order', order_id=order.id) }}" onclick="return confirm('Вы уверены что хотите удалить заказ?')" class="add-vopros">Удалить заказ</a></p>
 						<p class="box-right" align="right"><a href="#" class="popolnit">Пополнить баланс</a></p>
 						</div>
 					{% endfor %}

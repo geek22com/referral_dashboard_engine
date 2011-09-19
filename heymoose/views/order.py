@@ -7,6 +7,7 @@ from heymoose.utils.decorators import customer_only
 from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
 import heymoose.forms.forms as forms
+import heymoose.core.actions.orders as orders
 from heymoose.views.work import *
 
 def order_form_template(form_params=None):
@@ -26,16 +27,11 @@ def create_order():
 	#TODO проверка данных
 	order_form = forms.OrderForm(request.form)
 	if request.method == "POST" and order_form.validate():
-		try:
-			g.user.create_order(userId=g.user.id,
-								title=order_form.ordername.data,
-			                    body=order_form.orderbody.data,
-								balance = order_form.orderbalance.data,
-			                    cpa=order_form.ordercpa.data)
-		except Exception as inst:
-			app_logger.error(inst)
-			app_logger.error(sys.exc_info())
-			
+		orders.add_order(userId=g.user.id,
+						title=order_form.ordername.data,
+						body=order_form.orderbody.data,
+						balance = order_form.orderbalance.data,
+						cpa=order_form.ordercpa.data)
 		return redirect(url_for('user_cabinet', username=g.user.nickname))
 
 	flash_form_errors(order_form.errors.values(), 'ordererror')
@@ -81,9 +77,6 @@ def create_order():
 @frontend.route('/delete_order/<order_id>')
 @customer_only
 def delete_order(order_id):
-	if not order_id:
-		abort(404)
-	#Order.delete_order(order_id)
 	return redirect(url_for('user_cabinet', username=g.user.nickname))
 
 @frontend.route('/order_form', methods=['POST', 'GET'])
@@ -103,14 +96,7 @@ def approve_order(order_id=None):
 	if not order_id:
 		return redirect(url_for('user_cabinet', username=g.user.nickname))
 
-	try:
-		order = Order.load_order(order_id)
-		if order:
-			order.approve()
-	except Exception as inst:
-		app_logger.error(inst)
-		app_logger.error(sys.exc_info())
-		
+	orders.approve_order(order_id)
 	return redirect(url_for('admin_cabinet'))
 
 

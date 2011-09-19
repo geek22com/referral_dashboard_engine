@@ -5,37 +5,36 @@ def role_from_xml(role_element):
 	return role_element.text
 
 def app_from_xml(app_element):
-	return App(id=get_attr(app_element, '@id', int),
-				secret=get_value(app_element, '/app/secret'),
-				user_id=get_value(app_element, '/app/user-id', int))
+	return App(id=get_attr(app_element, 'id', int),
+				secret=get_value(app_element, 'secret'),
+				user_id=get_value(app_element, 'user-id', int))
 
 def order_from_xml(order_element):
-	print order_element.text
-	return Order(id=get_attr(order_element, '@id', int),
-				title=get_value(order_element, '/order/title'),
-				balance=get_value(order_element, '/order/balance', float),
-				body=get_value(order_element, '/order/body'),
-				cpa=get_value(order_element, '/order/cpa', float),
-				user_id=get_value(order_element, '/order/user_id', int))
+	return Order(id=get_attr(order_element, 'id', int),
+				title=get_value(order_element, 'title'),
+				balance=get_value(order_element, 'balance', float),
+				body=get_value(order_element, 'body'),
+				cpa=get_value(order_element, 'cpa', float),
+				user_id=get_value(order_element, 'user_id', int))
 
 def user_from_xml(user_element):
-	return User(id=get_attr(user_element, '@id', int),
-				email=get_value(user_element, '/user/email'),
-				nicname=get_value(user_element, '/user/nickname'),
-				password_hash=get_value(user_element, '/user/password-hash'),
+	return User(id=get_attr(user_element, 'id', int),
+				email=get_value(user_element, 'email'),
+				nickname=get_value(user_element, 'nickname'),
+				password_hash=get_value(user_element, 'password-hash'),
 				apps=map(app_from_xml, user_element.xpath('/user/apps')),
-				orders=map(order_from_xml, user_element.xpath('/user/orders')),
+				orders=map(order_from_xml, user_element.xpath('/user/orders/order')),
 				roles=map(role_from_xml, user_element.xpath('/user/roles/role')),
-				customer_balance=get_value(user_element, '/user/customer-account', float),
-				developer_balance=get_value(user_element, '/user/developer-account', float))
+				customer_balance=get_value(user_element, 'customer-account', float),
+				developer_balance=get_value(user_element, 'developer-account', float))
 
 def action_from_xml(action_element):
-	return Action(id=get_attr(action_element, '@id', int),
-					performer_id=get_value(action_element, '/action/performer-id', int),
-					offer_id=get_value(action_element, '/action/offer-id', int),
-					done=get_value(action_element, '/action/done', bool),
-					deleted=get_value(action_element, '/action/deleted', bool),
-					creation_time=get_value(action_element, '/action/creation-time'))
+	return Action(id=get_attr(action_element, 'id', int),
+					performer_id=get_value(action_element, 'performer-id', int),
+					offer_id=get_value(action_element, 'offer-id', int),
+					done=get_value(action_element, 'done', bool),
+					deleted=get_value(action_element, 'deleted', bool),
+					creation_time=get_value(action_element, 'creation-time'))
 
 
 ### TESTS START HERE ###
@@ -75,6 +74,8 @@ class MapperTest(unittest.TestCase):
 
 		user = user_from_xml(etree.fromstring(xml))
 		self.assertTrue('DEVELOPER' in user.roles)
+		self.assertEqual(user.orders[0].title, 'title')
+		self.assertEqual(user.orders[0].balance, 20.0)
 
 	def test_action_mapper(self):
 		xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>

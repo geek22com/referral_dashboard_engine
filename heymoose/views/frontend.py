@@ -22,7 +22,8 @@ import heymoose.forms.forms as forms
 import heymoose.core.actions.users as users
 
 frontend = Module(__name__)
-from heymoose.views.facebook import *
+from heymoose.views.facebook_app.facebook import *
+from heymoose.views.facebook_app.oauth import *
 from heymoose.views.vkontakte import *
 from heymoose.views.offer import *
 from heymoose.views.work import *

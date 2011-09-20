@@ -27,7 +27,7 @@ def exec_request(http_call):
 		app_logger.error(inst.response.final_url, exc_info=True)
 		raise 
 
-def get(path, base=URL_BASE, params_dict={}):
+def get(path, base=URL_BASE, params_dict={}, renderer=etree.fromstring):
 	app_logger.debug("get: path={0} params_dict={1}".format(path, str(params_dict)))
 	resource = create_resource(base)
 	response = exec_request(partial(resource.get,
@@ -37,7 +37,7 @@ def get(path, base=URL_BASE, params_dict={}):
 	resp = response.body_string()
 	if response.charset != 'utf8':
 		resp = resp.decode('utf8')
-	return etree.fromstring(resp)
+	return renderer(resp)
 
 
 def post(path, base=URL_BASE, params_dict={}):

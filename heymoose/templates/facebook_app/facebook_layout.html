@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {% block head %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/style.css') }}" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+</head>
+<body>
+<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+  FB.init({
+    appId  : 'g.params.app_id',
+    status : true, // check login status
+    cookie : true, // enable cookies to allow the server to access the session
+    xfbml  : true, // parse XFBML
+    channelUrl : 'http://heymoose.com:8080/channel', // channel.html file
+    oauth  : true // enable OAuth 2.0
+  });
+</script>
+<div class="wrapper">
+    <div class="header">
+	    <a href="#" class="logo"></a>
+	    <div class="menublock">
+        	<ul class="css-menu">
+	        <li><a href="#" onclick="load_offers(); return false;">Все</a></li>
+        	<li><a href="#" onclick="load_stat()">Копилка</a></li>
+            <li><a href="#" onclick="load_gifts(); return false;">Подарки</a></li>
+	        <li><a href="#" onClick="load_faq(); return false;">FAQ</a></li>
+        	<li><a href="#" onClick="load_help(); return false;">Помощь</a></li>
+	        <li><a href="#" onClick="load_about(); return false;">О нас</a></li>
+        	</ul>
+	    </div><!--menublock-->
+    </div><!--header-->
+
+<div class='b-main-content'>
+</div><!--offer_list-->
+
+</div><!--wrapper-->
+	{% block content %}
+	{% endblock %}
+<div style="display:none;">
+    <input type="hidden" id="happ_app_id" value="{{ params.app_id }}">
+    <input type="hidden" id="happ_sig" value="{{ params.sig }}">
+    <input type="hidden" id="happ_user_id" value="{{ params.user_id }}">
+</div>
+</body>
+<div class="b-load-offers hidden">
+    <script type="text/javascript" src="{{ url_for('static', filename='./facebook_app/js/app.js') }}"></script>
+    <script type="text/javascript">
+    load_offers()
+    </script>
+</div>
+</html>

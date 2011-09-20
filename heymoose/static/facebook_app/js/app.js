@@ -40,15 +40,45 @@ $(document).ready(function(){
    };
 });
 
-load_offers();
+function load_stat(){
+    var tmpl = "stat";
+    var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
+    $('.b-main-content').load(url);
+}
+
+function load_faq(){
+    var tmpl = "faq";
+    var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
+    $('.b-main-content').load(url);
+}
+
+function load_help(){
+    var tmpl = "help";
+    var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
+    $('.b-main-content').load(url);
+}
+
+function load_about(){
+    var tmpl = "about";
+    var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
+    $('.b-main-content').load(url);
+}
+
+function load_gifts(){
+    var tmpl = "gifts";
+    var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
+    $('.b-main-content').load(url);
+}
 
 function load_offers(){
 	var app_id = $('#happ_app_id').attr('value');
 	var sig = $('#happ_sig').attr('value');
-	var data = "app_id=" + app_id + "&sig=" + sig;
-	$.ajax({
+	//var data = "app_id=" + app_id + "&sig=" + sig;
+    var data = {'app_id' : app_id, 'sig' : sig};
+    var url = "http://heymoose.com:8080/get_offers";
+/*	$.ajax({
 		type: "POST",		
-		url: "http://heymoose.com:8080/get_offers",
+		url: url,
 		data : data,
 		context: document.body,
 		success: function(msg){
@@ -62,7 +92,8 @@ function load_offers(){
 		error: function(){ 
 			$('#offer_list').append("Извините, нет доступных предложений. Попробуйте позже");
 		}
-	});	
+	});*/
+    $('.b-main-content').load(url, data);
 }
 
 

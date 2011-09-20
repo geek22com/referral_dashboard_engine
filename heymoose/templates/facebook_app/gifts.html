@@ -1,0 +1,35 @@
+<div class='b-gift-list'>
+    <form class="b-gift-send" method="post" action="">
+        {% if g.params.friends %}
+        <div class="b-choose-box">
+            <label class="b-choose-lable">Выберите друга</label>
+            <div class="b-list b-friends">
+                {% for friend in g.params.friends %}
+                    <div class="b-friend-desc">
+                        friend.name
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="b-divider"></div>
+
+        <div class="b-choose-box">
+            {% if g.params.gifts %}
+            <label class="b-choose-lable">Выберите подарок</label>
+            <div class="b-list b-gifts">
+                {% for gift in g.params.gifts %}
+                    <div class="b-gift-desc">
+                        gift.body
+                    </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="b-message">
+                У вас недостаточно очков, чтобы выбрать подарок.
+            </div>
+            {% endif %}
+        </div>
+    </form>
+</div><!--gift_list-->

@@ -3,3 +3,5 @@
 
 #User object:
 #   http://developers.facebook.com/docs/reference/api/user/
+
+#Create token class here if it simplify usage

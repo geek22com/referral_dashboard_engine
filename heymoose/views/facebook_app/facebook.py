@@ -6,16 +6,15 @@ from heymoose.utils.decorators import admin_only
 from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
 from heymoose.settings.debug_config import APP_ID, DEVELOPER_SECRET_KEY, APP_SECRET
+import heymoose.thirdparty.facebook.actions.oauth as oauth
+import heymoose.thirdparty.facebook.actions.base as base
 import heymoose.forms.forms as forms
-import hashlib
-import base64
-import json
-import hmac
 
-def base64_url_decode(data):
-		data = data.encode(u'ascii')
-		data += '=' * (4 - (len(data) % 4))
-		return base64.urlsafe_b64decode(data)
+def get_signed_request():
+	signed_request = request.form.get('signed_request', '').decode('utf8')
+	if not signed_request:
+		signed_request = session.get('signed_request', '')
+	return signed_request
 
 @frontend.route('/facebook_tmpl/<tmpl>', methods=['GET', 'POST'])
 def facebook_tmpl(tmpl):
@@ -24,33 +23,22 @@ def facebook_tmpl(tmpl):
 
 @frontend.route('/facebook_app/', methods=['GET', 'POST'])
 def facebook_app():
-		#TODO: make access_token expire test here
-		if not session['access_token']:
+		signed_request = get_signed_request()
+		if not oauth.validate_token(session.get('access_token', ''),
+									session.get('expires', '')):
+			oauth.invalidate_session(session)
+			session['signed_request'] = signed_request
 			return redirect(url_for('oauth_request'))
-		
-		g.params['app_id'] = APP_ID
 
-		secret = DEVELOPER_SECRET_KEY
-		req_sig = hashlib.md5()
-		req_sig.update(str(g.params['app_id']) + secret)
+		valid, data = base.decrypt_request(signed_request)
+		if valid:
+			g.params['app_id'] = APP_ID
+			g.params['user_id'] = data.get(u'user_id')
+			g.params['sig'] = base.sign_parameter(g.params['app_id'])
+		else:
+			app_logger.debug("facebook_app request Bad Signed")
+			abort(404)
 
-		g.params['sig'] = req_sig.hexdigest()
-		#worked facebook signed_request
-		signed_request = request.form.get('signed_request', '0').decode('utf8')
-		if signed_request:
-				sig, payload  = signed_request.split(u'.', 1)
-				sig = base64_url_decode(sig)
-				data = json.loads(base64_url_decode(payload))
-
-				expected_sig = hmac.new(APP_SECRET, msg=payload, digestmod=hashlib.sha256).digest()
-				if sig == expected_sig:
-						signed_request = data
-						user_id = data.get(u'user_id')
-						g.params['user_id'] = user_id
-						app_logger.debug('Going to print user info')
-						app_logger.debug(user_id)
-				else:
-						app_logger.debug('Bad signed_request')
 		return render_template('./facebook_app/heymoose-facebook.html', params=g.params)
 
 @frontend.route('/channel/', methods=['GET', 'POST'])

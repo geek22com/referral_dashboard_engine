@@ -36,7 +36,7 @@ def add_offer():
 
 @frontend.route('/get_offers', methods=['GET', 'POST'])
 def get_offers():
-	pass
+	return ""
 #	offer_form = forms.OfferForm(request.form)
 #	if request.method == 'POST' and offer_form.validate():
 #		developer = Developer.get_by_app_id(offer_form.app_id.data)

@@ -10,7 +10,9 @@ DB_PORT = 5432
 DB_CHARSET = 'utf8'
 SECRET_KEY = 'lola pola_mola_cola'
 RESTAPI_SERVER = 'http://localhost:5468'
-USE_DATABASE = True
+USE_DATABASE = False
+
+#SERVER_NAME = "heymoose.com:8080" #Cross domain cookie.
 
 APP_ID = "196817947051588"
 APP_SECRET = "3ca1d75b952eeef29625ffc42df61ddf"

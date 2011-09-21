@@ -6,8 +6,10 @@
             <div class="b-list b-friends">
                 {% for friend in g.params.friends %}
                     <div class="b-friend-desc">
-                        friend.name
+                        <img src="https://graph.facebook.com/{{ friend.id }}/picture"/>
+                        <label>{{ friend.name }}</label>
                     </div>
+
                 {% endfor %}
             </div>
         </div>

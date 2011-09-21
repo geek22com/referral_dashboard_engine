@@ -29,7 +29,6 @@
 	        <li><a href="#" onclick="load_offers(); return false;">Все</a></li>
         	<li><a href="#" onclick="load_stat()">Копилка</a></li>
             <li><a href="#" onclick="load_gifts(); return false;">Подарки</a></li>
-	        <li><a href="#" onClick="load_faq(); return false;">FAQ</a></li>
         	<li><a href="#" onClick="load_help(); return false;">Помощь</a></li>
 	        <li><a href="#" onClick="load_about(); return false;">О нас</a></li>
         	</ul>
@@ -42,11 +41,6 @@
 </div><!--wrapper-->
 	{% block content %}
 	{% endblock %}
-<div style="display:none;">
-    <input type="hidden" id="happ_app_id" value="{{ params.app_id }}">
-    <input type="hidden" id="happ_sig" value="{{ params.sig }}">
-    <input type="hidden" id="happ_user_id" value="{{ params.user_id }}">
-</div>
 </body>
 <div class="b-load-offers hidden">
     <script type="text/javascript" src="{{ url_for('static', filename='./facebook_app/js/app.js') }}"></script>

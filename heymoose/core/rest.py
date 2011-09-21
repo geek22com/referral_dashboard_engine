@@ -24,11 +24,12 @@ def exec_request(http_call):
 		return http_call()
 	except (RequestFailed, RequestError) as inst:
 		# We need to know url for debug info, but the system has broken, so raise it to the higher level
-		app_logger.error(inst.response.final_url, exc_info=True)
+		if getattr(inst, 'response', False):
+			app_logger.error(inst.response.final_url, exc_info=True)
 		raise 
 
 def get(path, base=URL_BASE, params_dict={}, renderer=etree.fromstring):
-	app_logger.debug("get: path={0} params_dict={1}".format(path, str(params_dict)))
+	app_logger.debug("get: base={0} path={1} params_dict={2}".format(base, path, str(params_dict)))
 	resource = create_resource(base)
 	response = exec_request(partial(resource.get,
 	                            path=path,
@@ -41,21 +42,21 @@ def get(path, base=URL_BASE, params_dict={}, renderer=etree.fromstring):
 
 
 def post(path, base=URL_BASE, params_dict={}):
-	app_logger.debug("post: path={0} payload={1}".format(path, forms.form_encode(params_dict)))
+	app_logger.debug("post: base={0} path={1} payload={2}".format(base, path, forms.form_encode(params_dict)))
 	resource = create_resource()
 	exec_request(partial(resource.post,
 	                              path=path,
 	                              payload=forms.form_encode(params_dict)))
 
 def put(path, base=URL_BASE, params_dict={}):
-	app_logger.debug("put: path={0} payload={1}".format(path, forms.form_encode(params_dict)))
+	app_logger.debug("put: base={0} path={1} payload={2}".format(base, path, forms.form_encode(params_dict)))
 	resource = create_resource()
 	exec_request(partial(resource.put,
 	                              path=path,
 	                              payload=forms.form_encode(params_dict)))
 
 def delete(path, base=URL_BASE):
-	app_logger.debug("delete: path={0}".format(path))
+	app_logger.debug("delete: base={0} path={1}".format(base, path))
 	resource = create_resource()
 	exec_request(partial(resource.delete,
 	                              path=path))

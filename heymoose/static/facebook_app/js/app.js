@@ -71,10 +71,10 @@ function load_gifts(){
 }
 
 function load_offers(){
-	var app_id = $('#happ_app_id').attr('value');
-	var sig = $('#happ_sig').attr('value');
-	//var data = "app_id=" + app_id + "&sig=" + sig;
-    var data = {'app_id' : app_id, 'sig' : sig};
+//	var app_id = $('#happ_app_id').attr('value');
+//	var sig = $('#happ_sig').attr('value');
+//	var data = "app_id=" + app_id + "&sig=" + sig;
+//    var data = {'app_id' : app_id, 'sig' : sig};
     var url = "http://heymoose.com:8080/get_offers";
 /*	$.ajax({
 		type: "POST",		
@@ -93,7 +93,7 @@ function load_offers(){
 			$('#offer_list').append("Извините, нет доступных предложений. Попробуйте позже");
 		}
 	});*/
-    $('.b-main-content').load(url, data);
+    $('.b-main-content').load(url);
 }
 
 

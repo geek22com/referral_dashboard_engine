@@ -16,6 +16,21 @@ def auth_only(func):
     _inner_.__name__ = func.__name__
     return _inner_
 
+def oauth_only(func):
+	def _inner_(*args, **kwargs):
+		if 'access_token' not in session:
+			app_logger.debug("oauth_only error: no access_token")
+			abort(404)
+		if 'facebook_user_id' not in session:
+			app_logger.debug("oauth_only error: no user_id")
+			abort(404)
+		g.access_token = session['access_token']
+		g.facebook_user_id = session['facebook_user_id']
+		return func(*args, **kwargs)
+	_inner_.__name__ = func.__name__
+	return _inner_
+
+
 def role_not_detected_only(func):
     def _inner_(*args, **kwargs):
         if 'user_id' not in session:

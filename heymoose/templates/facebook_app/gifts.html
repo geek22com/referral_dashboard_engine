@@ -1,37 +1,124 @@
 <div class='b-gift-list'>
-    <form class="b-gift-send" method="post" action="">
-        {% if g.params.friends %}
-        <div class="b-choose-box">
-            <label class="b-choose-lable">Выберите друга</label>
-            <div class="b-list b-friends">
-                {% for friend in g.params.friends %}
-                    <div class="b-friend-desc">
-                        <img src="https://graph.facebook.com/{{ friend.id }}/picture"/>
-                        <label>{{ friend.name }}</label>
-                    </div>
+    <form id="send" class="pm" method="post" action="/">
+        <div class="divider mtm mbm"></div>
+        <div class="clearfix">
+            <label class="fl prm">Выберите друга</label>
 
-                {% endfor %}
+            <div class="input_section fl clearfix">
+                <div id="select_friend">
+                    <div class="fl">
+                        <div id="typeahead" class="relative clearfix" data-source="/ajax/friends/"
+                             style="width: 352px;">
+                            <input type="text" class="input" name="typeahead" placeholder="Начните набирать имя..."
+                                   autocorrect="off" autocomplete="off">
+                            <input type="hidden" name="to">
+                        </div>
+                        <div id="selectedFriends"></div>
+                    </div>
+                    <div class="fr prs" style="line-height: 28px;">
+                        <a class="pointer" id="birthdaysLink"></a>
+                    </div>
+                </div>
             </div>
         </div>
-        {% endif %}
+        <div class="divider mtm mbm"></div>
+        <div class="clearfix relative">
+            <label class="fl prm">Выберите подарок
+            </label>
 
-        <div class="b-divider"></div>
-
-        <div class="b-choose-box">
-            {% if g.params.gifts %}
-            <label class="b-choose-lable">Выберите подарок</label>
-            <div class="b-list b-gifts">
-                {% for gift in g.params.gifts %}
-                    <div class="b-gift-desc">
-                        gift.body
+            <div class="input_section fl">
+                <div class="clearfix gifts">
+                    <div class="selector clearfix">
+                        <img src="../static/images/image1.png"
+                             class="gift fl" data-id="b44c40b1f1939b9fa2c00b0a2480b701" data-title="Pirate Hat"
+                             data-description="Arrrrrr! Tis national speak like a pirate day, so get yer hat on an' spread th' word by givin' this gift!"
+                             style="opacity: 0.5; ">
+                        <img src="../static/images/image2.png"
+                             class="gift fl" data-id="2d3afe50512c4850cca203366b29dd31" data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="../static/images/image3.png"
+                             class="gift fl" data-id="91cfe00ea9d8d132ae7a69be3bcc89aa" data-title="Stalker"
+                             data-description="Creepin' on Facebook all day and all night. Probably the weirdest gift to send to someone, but there are plenty of good uses for it. &lt;br /&gt;&lt;br /&gt;Great for birthdays, late nights, and weekends."
+                             style="opacity: 0.5; ">
+                        <img src="../static/images/image4.png"
+                             class="gift fl" data-id="c4101ae07acdda0b91dc3e3d649e4b34" data-title="Cake Slice"
+                             data-description="Tasty vanilla cake slice, great for birthdays!" style="opacity: 0.5; ">
+                        <img src="../static/images/image1.png"
+                             class="gift fl" data-id="3bacfcf6bad6cc3b43db24b2f4ac64a2" data-title="Flower Cupcake"
+                             data-description="Combining pretty flowers with delicious cupcakes, one couldn't ask for a better birthday treat!"
+                             style="opacity: 0.5; ">
+                        <img src="../static/images/image2.png"
+                             class="gift fl" data-id="513b43fb419e3f3ee5248d58de0ddf60" data-title="American Flag"
+                             data-description="A true symbol of freedom!" style="opacity: 0.5; ">
+                        <img src="../static/images/image3.png"
+                             class="gift fl hover" data-id="9f8ed0e14e95eb45adfd3d2fd441e667"
+                             data-title="Hugging Robots"
+                             data-description="These cute hugging robots love each other! They were the original logo for Free Gifts!"
+                             style="opacity: 1; ">
                     </div>
-                {% endfor %}
+                    <input type="hidden" name="gift">
+                    <input type="hidden" name="gift_id">
+
+                    <div class="selected clearfix hidden"></div>
+                    <div class="divider mtm mbm"></div>
+                    <div class="plm prm clearfix">
+                        <div class="fl">
+                            <span id="gift_title">Hugging Robots</span>
+                            <span class="cancel hidden"><a class="pointer">Выбрать другой</a></span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            {% else %}
-            <div class="b-message">
-                У вас недостаточно очков, чтобы выбрать подарок.
-            </div>
-            {% endif %}
+        </div>
+        <div class="divider mtm mbm"></div>
+        <div class="clearfix">
+        <label class="fl prm">Напишите сообщение</label>
+        <div class="input_section fl">
+            <textarea class="input" name="message" placeholder="Другу будет приятно..."></textarea>
+        </div>
+        </div>
+        <div class="divider mtm mbm"></div>
+        <div class="clearfix">
+        <label class="fl prm">&nbsp;</label>
+        <div class="input_section fl">
+            <input type="submit" class="button" value="Отправить подарок">
+        </div>
         </div>
     </form>
 </div><!--gift_list-->
+{% raw %}
+<script type="text/x-template" id="selectedTemplate">
+    <img src="{{src}}" class="fl mrm" />
+    <div class="tablecell">
+        <h4 class="mbs" id="gt">{{title}}</h4>
+        <span class="light">{{{description}}}</span>
+    </div>
+</script>
+<script type="text/x-template" id="dialogTemplate">
+    <div class="dialog pm">
+        <div class="dialog_title ps prm plm"><h4>{{{title}}}</h4></div>
+        <div class="pm dialog_content">
+            {{{text}}}
+        </div>
+        <div class="ps prm plm dialog_buttons clearfix tar">
+            <input type="button" class="button" value="Close" />
+        </div>
+    </div>
+</script>
+<script type="text/x-template" id="askTemplate">
+    <div class="dialog pm">
+        <div class="dialog_title ps prm plm"><h4>{{{title}}}</h4></div>
+        <div class="pl dialog_content">
+            {{{text}}}
+        </div>
+        <div class="pm dialog_buttons clearfix tar">
+            <input type="button" class="button silver" value="{{{no}}}" /> <input type="button" class="yes button" value="{{{yes}}}" />
+        </div>
+    </div>
+</script>
+{% endraw %}
+{% block head %}
+<script type="text/javascript" src="{{ url_for('static', filename='./facebook_app/js/mustache.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='./facebook_app/js/gifts.js') }}"></script>
+{% endblock %}

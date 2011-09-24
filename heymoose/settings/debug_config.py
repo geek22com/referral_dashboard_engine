@@ -19,5 +19,8 @@ APP_SECRET = "3ca1d75b952eeef29625ffc42df61ddf"
 DEVELOPER_SECRET_KEY = "3ca2a85b953ffef29625ffc11df61eee"
 FACEBOOK_SERVICE_URL = "http://www.facebook.com"
 FACEBOOK_GRAPH_URL = "https://graph.facebook.com"
+
+FACEBOOK_APP_DOMAIN = "http://heymoose.com:8080"
+FACEBOOK_APP_URL = "http://apps.facebook.com/heymoose/"
 print "ATTENTION DEBUG CONFIG IS USED"
 

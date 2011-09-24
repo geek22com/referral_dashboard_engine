@@ -3,47 +3,62 @@
 <head>
     {% block head %}
     <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/style.css') }}" />
+    <meta http-Equiv="Cache-Control" Content="no-cache">
+    <meta http-Equiv="Pragma" Content="no-cache">
+    <meta http-Equiv="Expires" Content="0">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/gifts.css') }}" />
+    <script type="text/javascript">
+        $.ajaxSetup ({
+         cache: false
+        });
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/common.css') }}?qwe" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/layout.css') }}?qweqw" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/effects.css') }}?qwew" />
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
 </head>
-<body>
+<body class="b-body">
 <div id="fb-root"></div>
 <script src="http://connect.facebook.net/en_US/all.js"></script>
 <script>
   FB.init({
-    appId  : 'g.params.app_id',
+    appId  : {{ g.params.app_id }},
     status : true, // check login status
     cookie : true, // enable cookies to allow the server to access the session
     xfbml  : true, // parse XFBML
     channelUrl : 'http://heymoose.com:8080/channel', // channel.html file
     oauth  : true // enable OAuth 2.0
   });
+  var app_domain = "{{ g.params.app_domain }}";
+  var _USER = {'uid':"{{ g.params.facebook_user_id }}",
+                'fullname':"{{g.params.facebook_user_fullname}}",
+                'firstname':"{{g.params.facebook_user_firstname}}",
+                'lastname':"{{g.params.facebook_user_lastname}}"};
 </script>
-<div class="wrapper">
-    <div class="header">
-	    <a href="#" class="logo"></a>
-	    <div class="menublock">
-        	<ul class="css-menu">
-	        <li><a href="#" onclick="load_offers(); return false;">Все</a></li>
-        	<li><a href="#" onclick="load_stat()">Копилка</a></li>
-            <li><a href="#" onclick="load_gifts(); return false;">Подарки</a></li>
-        	<li><a href="#" onClick="load_help(); return false;">Помощь</a></li>
-	        <li><a href="#" onClick="load_about(); return false;">О нас</a></li>
-        	</ul>
-	    </div><!--menublock-->
-    </div><!--header-->
-
-<div class='b-main-content'>
-</div><!--offer_list-->
-
-</div><!--wrapper-->
-	{% block content %}
-	{% endblock %}
+<div class="b-header i-cornersLarge">
+    <img class="b-header__logo" src="{{ url_for('static', filename='./images/logo.png') }}"/>
+    <div class="b-header__menu">
+        <ul class="b-header__menu__list">
+            <div class="m-header__menu__style">
+                <li class="b-header__menu__item"><a onclick="load_offers(); return false;"href="#">Все</a></li>
+                <li class="b-header__menu__item"><a onclick="load_stat(); return false;" href="#">Копилка</a></li>
+                <li class="b-header__menu__item"><a onclick="load_gifts(); return false;"href="#">Подарки</a></li>
+                <li class="b-header__menu__item"><a onClick="load_help(); return false;"href="#">Помощь</a></li>
+                <li class="b-header__menu__item"><a onClick="load_about(); return false;" href="#">О нас</a></li>
+            </div>
+        </ul>
+     </div>
+</div>
+    <div class="b-maincontent">
+	    {% block content %}
+	    {% endblock %}
+    </div>
+    <div class="b-footer i-cornersSmall">
+        <p class="b-footer__copyright"> HeyMoose ©2011 Бум</p>
+    </div>
 </body>
-<div class="b-load-offers hidden">
+<div class="hidden">
     <script type="text/javascript" src="{{ url_for('static', filename='./facebook_app/js/app.js') }}"></script>
     <script type="text/javascript">
     load_offers()

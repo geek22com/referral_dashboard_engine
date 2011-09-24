@@ -6,6 +6,7 @@ from flask import Flask, request, session, url_for, redirect, \
 from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
 import heymoose.thirdparty.facebook.actions.oauth as oauth
+from heymoose.settings.debug_config import FACEBOOK_APP_URL
 
 #TODO: is it simplier to store TokenObject in session?
 #Server-side flow implementation: http://developers.facebook.com/docs/authentication/
@@ -15,7 +16,8 @@ def oauth_request():
 		session['state'] = hashlib.md5(str(random.randint(0, 4000000000))).hexdigest()
 		return redirect(oauth.get_oauth_dialog_url(redirect_url=url_for('oauth_request',
 		                                                                _external=True),
-												csrf_protect=session['state']))
+												csrf_protect=session['state'],
+												scope='publish_stream'))
 
 	if session['state'] != request.args.get('state', ''):
 		app_logger.debug("CSRF attempt")
@@ -35,4 +37,4 @@ def oauth_request():
 	session['access_token'] = token
 	session['expires'] = oauth.expires_to_absolute_epoch(expires)
 
-	return redirect(url_for('facebook_app'))
+	return redirect(FACEBOOK_APP_URL)

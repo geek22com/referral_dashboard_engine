@@ -43,57 +43,39 @@ $(document).ready(function(){
 function load_stat(){
     var tmpl = "stat";
     var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
-    $('.b-main-content').load(url);
+    $('.b-maincontent').load(url);
 }
 
 function load_faq(){
     var tmpl = "faq";
     var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
-    $('.b-main-content').load(url);
+    $('.b-maincontent').load(url);
 }
 
 function load_help(){
     var tmpl = "help";
     var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
-    $('.b-main-content').load(url);
+    $('.b-maincontent').load(url);
 }
 
 function load_about(){
     var tmpl = "about";
     var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
-    $('.b-main-content').load(url);
+    $('.b-maincontent').load(url);
 }
 
 function load_gifts(){
     var tmpl = "gifts";
     var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
-    $('.b-main-content').load(url);
+    $('.b-maincontent').load(url);
 }
 
 function load_offers(){
-//	var app_id = $('#happ_app_id').attr('value');
-//	var sig = $('#happ_sig').attr('value');
-//	var data = "app_id=" + app_id + "&sig=" + sig;
-//    var data = {'app_id' : app_id, 'sig' : sig};
-    var url = "http://heymoose.com:8080/get_offers";
-/*	$.ajax({
-		type: "POST",		
-		url: url,
-		data : data,
-		context: document.body,
-		success: function(msg){
-			$('#offer_list').append(msg);
-			// Add user_id to template
-			$('.user_id').each(function(){
-				$(this).attr('value', $('#happ_user_id').attr('value'));
-			})
-
-		},
-		error: function(){ 
-			$('#offer_list').append("Извините, нет доступных предложений. Попробуйте позже");
-		}
-	});*/
-    $('.b-main-content').load(url);
+/*    var url = "http://heymoose.com:8080/get_offers";
+    $('.b-maincontent').load(url);*/
+    var tmpl = "offers";
+    var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
+    $('.b-maincontent').load(url);
 }
 
 

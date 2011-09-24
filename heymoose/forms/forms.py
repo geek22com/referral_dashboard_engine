@@ -53,6 +53,19 @@ class BalanceForm(Form):
 						validators.NumberRange(min=1, max=3000000, message=('Допустимый баланс от 1 до 3000000 рублей'))])
 
 
+class GiftForm(Form):
+	from_id = IntegerField('from_id', [validators.Required()])
+	to_id = IntegerField('to_id', [validators.Required()])
+	gift_id = TextField('gift_id', [validators.Required()])
+	message = TextField('message')
+
+
+class FacebookHelpForm(Form):
+	email = TextField('Email Address', [
+						validators.Email("Некорректный email адресс"),
+						validators.Required(message = ('Введите email адресс'))])
+	comment = TextAreaField('Comment', [validators.Required(message = ('Напишите ваше пожелание') )])
+
 class OfferForm(Form):
 	app_id = IntegerField('app_id', [validators.Required(),
 						validators.NumberRange(min=1, max=4000000000)])

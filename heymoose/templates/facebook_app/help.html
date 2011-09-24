@@ -1,12 +1,27 @@
-<div class="b-help">
-           <h1>
-              Отправьте ваш вопрос или пожелание.
-           </h1>
-           <form method="post" action="/feedback">
-                    <h5>Ваш email:</h5>
-                    <input class="inp-bg" id="email" maxlength="150" name="email" size="15" type="text" value="">
-                    <h5>Сообщение:</h5>
-                    <textarea class="textarea-bg" cols="40" id="comment" name="comment" rows="3"></textarea>
-                   <input type="submit" class="send" value="Отправить">
-           </form>
+<link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/help.css') }}" />
+<div class="b-help i-block">
+    <label class="b-help__title i-main_title">Отправьте ваш вопрос или пожелание</label>
+    <div class="i-mtm i-mbm"></div>
+    <div class="i-clearfix">
+        <form id="b-help__form" class="b-help__form i-clearfix" action="">
+            <div class="b-help__email i-clearfix">
+                <label class="b-help__email__label i-prm i-fl">Ваш email:</label>
+                <input class="b-help__email__input i-input i-fl" id="email" name="email" type="text" value="">
+            </div>
+            <div class="i-mtm i-mbm"></div>
+            <div class="b-help__message i-clearfix">
+                <label class="b-help__message__label i-prm i-fl">Сообщение:</label>
+                <textarea class="b-help__message__input i-input i-fl" name="comment"></textarea>
+
+                <div class="b-help__send i-clearfix">
+                    <label class="b-help__message__label i-fl i-prm">&nbsp;</label>
+                    <input type="submit" class="b-help__send__button i-fl i-button" value="Отправить">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="hidden">
+        <script type="text/javascript" src="{{ url_for('static', filename='./facebook_app/js/help.js') }}"></script>
+    </div>
+
 </div>

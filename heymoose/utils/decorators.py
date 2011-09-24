@@ -26,6 +26,7 @@ def oauth_only(func):
 			abort(404)
 		g.access_token = session['access_token']
 		g.facebook_user_id = session['facebook_user_id']
+		g.params['facebook_user_id'] = g.facebook_user_id
 		return func(*args, **kwargs)
 	_inner_.__name__ = func.__name__
 	return _inner_

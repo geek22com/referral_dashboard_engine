@@ -1,19 +1,27 @@
 (function() {
     $(function() {
         $("#b-help__form").submit(function(e) {
+            $(".b-help_error__text").addClass("i-hidden");
             e.preventDefault();
             var data = $(this).serializeObject();
-            var params = {
-                message: data.message,
-                name: data.giftName,
-                caption: "HeyMoose",
-                description: "sent you a gift. Click 'like' to show your appreciation!",
-                picture: data.gift,
-                method: "post",
-                link: app_domain,
-                actions: [{"name":"Send a Gift", "link": ""}]
-            };
-            $.post("/facebook_help", data);
+            if (!data.email || !data.comment)
+                return;
+            $.post("/facebook_help", data,
+                function(data) {
+                    obj = $.parseJSON(data);
+                    if (obj){
+                        for(var key in  obj){
+                            $(".b-help_error__text").text(obj[key].toString());
+                            $(".b-help_error__text").removeClass("i-hidden");
+                            break;
+                        }
+                    }else{
+                        $(".b-help_error__text").text("Спасибо, мы вам ответим.");
+                        $(".b-help__email__input").val("");
+                        $(".b-help__message__input").val("");
+                        $(".b-help_error__text").removeClass("i-hidden");
+                    }
+            });
         });
     });
 })();

@@ -1,13 +1,5 @@
 (function() {
 
-   function getKeys(obj){
-            var keys = [];
-            for(var key in obj){
-                keys.push(key);
-                }
-                return keys;
-            }
-
     var typeahead,
         birthdays,
         FRIENDS,

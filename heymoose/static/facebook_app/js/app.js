@@ -1,3 +1,11 @@
+function getKeys(obj){
+         var keys = [];
+         for(var key in obj){
+             keys.push(key);
+             }
+             return keys;
+         }
+
 //additional properties for jQuery object
 $(document).ready(function(){
    //align element in the middle of the screen

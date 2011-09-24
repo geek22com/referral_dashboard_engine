@@ -13,7 +13,7 @@
         });
     </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/common.css') }}?qwe" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/layout.css') }}?qweqw" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/layout.css') }}?qw" />
     <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/effects.css') }}?qwew" />
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
@@ -30,6 +30,7 @@
     channelUrl : 'http://heymoose.com:8080/channel', // channel.html file
     oauth  : true // enable OAuth 2.0
   });
+  FB.Canvas.setAutoResize(100);
   var app_domain = "{{ g.params.app_domain }}";
   var _USER = {'uid':"{{ g.params.facebook_user_id }}",
                 'fullname':"{{g.params.facebook_user_fullname}}",
@@ -59,7 +60,7 @@
     </div>
 </body>
 <div class="hidden">
-    <script type="text/javascript" src="{{ url_for('static', filename='./facebook_app/js/app.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='./facebook_app/js/app.js') }}?dfdf"></script>
     <script type="text/javascript">
     load_offers()
     </script>

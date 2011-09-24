@@ -62,9 +62,9 @@ class GiftForm(Form):
 
 class FacebookHelpForm(Form):
 	email = TextField('Email Address', [
-						validators.Email("Некорректный email адресс"),
-						validators.Required(message = ('Введите email адресс'))])
-	comment = TextAreaField('Comment', [validators.Required(message = ('Напишите ваше пожелание') )])
+						validators.Email(u"Некорректный email"),
+						validators.Required(message = (u'Введите email'))])
+	comment = TextAreaField('Comment', [validators.Required(message = (u'Напишите сообщение') )])
 
 class OfferForm(Form):
 	app_id = IntegerField('app_id', [validators.Required(),

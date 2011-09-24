@@ -266,3 +266,14 @@
     color: #627AAD !important;
     cursor: pointer;
 }
+
+/*Messages*/
+.i-error{
+    color: #DD6F6F;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: normal;
+}

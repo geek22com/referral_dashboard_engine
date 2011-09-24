@@ -1,7 +1,11 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/help.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/help.css') }}?sdfs" />
 <div class="b-help i-block">
     <label class="b-help__title i-main_title">Отправьте ваш вопрос или пожелание</label>
-    <div class="i-mtm i-mbm"></div>
+    <div class="i-mtl i-mbl"></div>
+    <div class="b-help_error i-error i-clearfix">
+        <label class="b-help_error__text i-prm i-fl"></label>
+    </div>
+    <div class="i-mtl i-mbl"></div>
     <div class="i-clearfix">
         <form id="b-help__form" class="b-help__form i-clearfix" action="">
             <div class="b-help__email i-clearfix">
@@ -21,7 +25,7 @@
         </form>
     </div>
     <div class="hidden">
-        <script type="text/javascript" src="{{ url_for('static', filename='./facebook_app/js/help.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='./facebook_app/js/help.js') }}?sdf"></script>
     </div>
 
 </div>

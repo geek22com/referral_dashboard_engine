@@ -25,6 +25,18 @@ def get_signed_request():
 def save_signed_request(signed_request):
 	session['signed_request'] = signed_request
 
+@frontend.route('/facebook_deauthorize/', methods=['POST'])
+def facebook_deauthorize():
+	signed_request = get_signed_request()
+
+	valid, data = base.decrypt_request(signed_request)
+	if valid:
+		app_logger.debug("facebook_deauthorize: user_id={0} remove app".format(data.get(u'user_id')))
+	else:
+		app_logger.debug("facebook_deauthorize: sign_error")
+
+	return ""
+
 @frontend.route('/facebook_app/', methods=['GET', 'POST'])
 def facebook_app():
 		signed_request = get_signed_request()
@@ -62,14 +74,14 @@ def channel():
 @frontend.route('/facebook_help', methods=['POST'])
 @oauth_only
 def facebook_help():
-	app_logger.debug("facebook_help {0}".format(request.form))
 	help_form = forms.FacebookHelpForm(request.form)
 	if not help_form.validate():
-		app_logger.debug("facebook_help validate error: {0}".format(help_form.errors))
-		abort(406)
-	app_logger.debug("facebook_help email={0} comment={1}".format(help_form.email.data,
-																	help_form.comment.data))
+		app_logger.debug("facebook_help validate error:")
+		return json.dumps(help_form.errors)
+	
+	app_logger.debug("facebook_help email={0}".format(help_form.email.data.decode('utf8')))
 	return ""
+
 @frontend.route('/facebook_send_gift', methods=['POST'])
 @oauth_only
 def facebook_send_gift():

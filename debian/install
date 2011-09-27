@@ -1,0 +1,5 @@
+frontend_deb.tar.gz tmp/
+frontend_nginx.conf etc/nginx/conf.d
+heymoose_production.py usr/share/nginx/www/frontend_production
+uwsgi etc/init.d
+

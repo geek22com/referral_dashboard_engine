@@ -1,0 +1,14 @@
+Source: frontend
+Section: unknown
+Priority: extra
+Maintainer: unknown <ksshilov@unknown>
+Build-Depends: cdbs, debhelper (>= 7.0.50~)
+Standards-Version: 3.9.1
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: git://git.debian.org/collab-maint/frontend.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/frontend.git;a=summary
+
+Package: frontend
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libxml2, libxml2-dev, libxslt1.1, libxslt1-dev, nginx (>= 1.0.6)
+Description: Heymoose frontend on flask

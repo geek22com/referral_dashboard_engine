@@ -11,7 +11,6 @@ from werkzeug import check_password_hash, generate_password_hash
 import random
 import string
 import sys
-import profiling
 
 from flask import Module
 from heymoose.utils.decorators import auth_only, role_not_detected_only, admin_only
@@ -176,6 +175,3 @@ heymoose_app.jinja_env.filters['datetimeformat'] = datetimeformat
 
 if __name__ == '__main__':
     app.run()
-
-############################ Profiling, Must be removed in production ##########################################
-

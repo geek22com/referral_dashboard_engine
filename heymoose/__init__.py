@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from flask import Flask
+from flaskext.mongoalchemy import MongoAlchemy
 
 app = Flask(__name__)
 app.config.from_pyfile("./settings/debug_config.py")
+mg = MongoAlchemy(app)
 
 def error_type(value, type):
 	return filter(lambda x: x[0] == type, value)

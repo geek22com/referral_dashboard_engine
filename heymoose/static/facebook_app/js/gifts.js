@@ -140,7 +140,7 @@
             /*And now send via FB api*/
             FB.api(data.to_id + "/feed", params, function(res) {
                     if(res && res.id) {
-                        FB.ui({method: 'apprequests', to: data.to_id, message: _USER.firstname + ' Послал вам подарок!'}, function() {
+                        FB.ui({method: 'apprequests', to: data.to_id, message: _USER.firstname + ' Послал вам подарок!'}, function(res) {
                             success(data);
                         });
                         // auto like?
@@ -155,8 +155,8 @@
                              link: app_domain,
                              picture: data.gift,
                              description: data.message
-                        }, function() {
-                            success(data);
+                        }, function(res) {
+                                success(data);
                         });
                     }
              });

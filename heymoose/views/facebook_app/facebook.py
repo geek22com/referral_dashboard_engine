@@ -3,6 +3,8 @@ import json
 from restkit.errors import RequestFailed
 from flask import Flask, request, session, url_for, redirect, \
 	 render_template, abort, g, flash
+from heymoose.thirdparty.facebook.mongo import performers
+from heymoose.thirdparty.facebook.mongo.data import Performer
 from heymoose.utils.decorators import auth_only
 from heymoose.utils.decorators import admin_only
 from heymoose.utils.workers import app_logger
@@ -40,29 +42,33 @@ def facebook_deauthorize():
 @frontend.route('/facebook_app/', methods=['GET', 'POST'])
 def facebook_app():
 		signed_request = get_signed_request()
-		if not oauth.validate_token(session.get('access_token', ''),
-									session.get('expires', '')):
-			oauth.invalidate_session(session)
-			save_signed_request(signed_request)
-			return redirect(url_for('oauth_request'))
-
 		valid, data = base.decrypt_request(signed_request)
 		if valid:
-			user = users.get_user(data.get(u'user_id'),
-									session['access_token'])
-			print user.keys()
-			session['facebook_app_id'] = APP_ID
-			g.params['app_id'] = APP_ID # We need this to init facebook javascript SDK
-			g.params['app_domain'] = FACEBOOK_APP_DOMAIN
-			g.params['facebook_user_id'] = user['id']
-			g.params['facebook_user_fullname'] = user['name']
-			g.params['facebook_user_firstname'] = user['first_name']
-			g.params['facebook_user_lastname'] = user['last_name']
-			session['facebook_user_id'] = user['id']
+			performer = Performer.query.filter(Performer.user_id == data.get(u'user_id', ''))
+			print type(performer)
+			print performer
+			print "aaaaaaaaa"
+			if not performer or performer.dirty:
+				performer = Performer(name = data.get(u'name',''),
+				                    dirty = False,
+								    oauth_token = data.get(u'oauth_token', ''),
+								    expires = data.get(u'expires', ''),
+								    user_id = data.get(u'user_id', ''),
+								    fullname = data.get(u'name'),
+								    firstname = data.get(u'first_nam'),
+								    lastname = data.get(u'last_name'))
+				performer.save()
 		else:
 			app_logger.debug("facebook_app request Bad Signed")
 			abort(404)
 
+		if not oauth.validate_token(performer.oauth_token, 
+		                            performer.expires):
+			performers.invalidate_performer(performer)
+			save_signed_request(signed_request)
+			return redirect(url_for('oauth_request'))
+
+		g.params['performer'] = performer
 		return render_template('./facebook_app/heymoose-facebook.html', params=g.params)
 
 

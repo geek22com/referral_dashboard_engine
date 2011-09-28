@@ -12,6 +12,10 @@
 
 PATH=/opt/uwsgi:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/local/bin/uwsgi
+if [ -f /usr/bin/uwsgi ]
+then
+	DAEMON=/usr/bin/uwsgi
+fi
 
 OWNER=uwsgi
 

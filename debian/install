@@ -3,4 +3,4 @@ frontend_nginx.conf etc/nginx/conf.d
 heymoose_production.py usr/share/nginx/www/frontend_production
 uwsgi etc/init.d
 config.py etc/frontend
-
+heymoose/static/* /usr/share/nginx/www/static

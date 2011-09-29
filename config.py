@@ -12,6 +12,7 @@ SECRET_KEY = 'lola pola_mola_cola'
 RESTAPI_SERVER = 'http://localhost:5468'
 USE_DATABASE = False
 
+STATIC_PATH = "/usr/share/nginx/www/static"
 
 APP_ID = "196817947051588"
 APP_SECRET = "3ca1d75b952eeef29625ffc42df61ddf"

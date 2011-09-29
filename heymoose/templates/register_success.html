@@ -3,10 +3,10 @@
 <head>
     {% block head %}
 	<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='./css/style.css') }}" />
-    <script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='./js/tooltip.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.form.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('.static', filename='./css/style.css') }}" />
+    <script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('.static', filename='./js/tooltip.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery.form.js') }}"></script>
 
 	<!--[if IE ]>
 	<link rel="stylesheet" media="screen" type="text/css" title="Style" href="/css/ie.css" />
@@ -18,7 +18,7 @@
 <div id="sitebox">
 		<div id="top-bar">
 			<div id="logo-box">
-			<a href="{{ url_for('main_page') }}"><img src="{{ url_for('static', filename='./images/logo.png') }}" width="197" height="62" border="0" alt="logo" /></a> </div>
+			<a href="{{ url_for('main_page') }}"><img src="{{ url_for('.static', filename='./images/logo.png') }}" width="197" height="62" border="0" alt="logo" /></a> </div>
 		{% if params.user_id %}
 			<div id="user-box">
     	        <div id="user-info">

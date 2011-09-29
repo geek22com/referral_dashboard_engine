@@ -8,6 +8,7 @@ from heymoose.views.frontend import frontend
 from heymoose.views.work import *
 from heymoose.db.models import FeedBack
 from heymoose.db.models import Captcha
+from heymoose.db.actions import captcha
 import heymoose.forms.forms as forms
 
 def feedback_form_template(form_params=None, error=None):
@@ -17,7 +18,7 @@ def feedback_form_template(form_params=None, error=None):
 		feedback_form.comment.data = form_params['comment']
 
 	g.params['feedbackform'] = feedback_form
-	g.params['captcha'] = Captcha.get_random()
+	g.params['captcha'] = captcha.get_random()
 	return render_template('feedback.html', params=g.params)
 
 @frontend.route('/about')
@@ -83,12 +84,12 @@ def price():
 def feedback():
 	feedback_form = forms.FeedBackForm(request.form)
 	if request.method == 'POST' and feedback_form.validate():
-		if Captcha.check_captcha(request.form['captcha_id'], request.form['captcha_answer']) is None:
+		if captcha.check_captcha(request.form['captcha_id'], request.form['captcha_answer']) is None:
 			flash_form_errors([['Каптча введена не верна']], 'feedbackerror')
 		else:
 			feedback = FeedBack(email = feedback_form.email.data,
-							comment = feedback_form.comment.data)
-			feedback.save_new()
+							body = feedback_form.comment.data)
+			feedback.save()
 			flash_form_errors([["Спасибо, мы обязательно учтем ваш отзыв"]], 'feedbackerror')
 			return redirect(url_for('feedback'))
 

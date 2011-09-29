@@ -38,7 +38,7 @@ class FeedBackForm(Form):
 	email = TextField('Email Address', [
 					  validators.Email("Некорректный email адресс")])
 	comment = TextAreaField('Comment', [validators.Required(message = ('Напишите ваше пожелание') )])
-	captcha = TextField('captcha', [])
+	captcha_answer = TextField('captcha_answer', [validators.Required(message = ('Введите каптчу'))])
 
 class OrderForm(Form):
 	ordername = TextField('ordername', [validators.Length(min=1, max=255, message=('Название заказа должна быть от 1 до 255 симолов')),

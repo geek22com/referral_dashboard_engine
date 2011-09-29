@@ -25,7 +25,7 @@ setup(
 			'heymoose' : ['static/js/*.js', 'static/css/*.css',
 				'static/facebook_app/js/*.js', 'static/facebook_app/css/*.css',
 				'static/vkontakte_app/js/.js', 'static/vkontakte_app/css/*.css']},
-    install_requires = ['flask>=0.7', 'wtforms', 'flask-mongoalchemy', 'uwsgi', 'psycopg2', 'lxml', 'restkit'],
+    install_requires = ['flask>=0.7', 'wtforms', 'flask-mongoalchemy', 'uwsgi', 'lxml', 'restkit'],
     long_description=read('README'),
 )
 

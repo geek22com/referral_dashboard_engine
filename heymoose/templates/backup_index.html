@@ -13,8 +13,8 @@ $(document).ready(function(){
 {% block content %}
 	<div id="informer-box">
 	    <div id="infotmer-top">
-		    <h3 class="vopros"><img src="{{ url_for('static', filename='./images/blank.png') }}" width="30" height="55"></h3>
-			<h3 class="vopros"><img src="{{ url_for('static', filename='./images/blank.png') }}" width="30" height="55"></h3>
+		    <h3 class="vopros"><img src="{{ url_for('.static', filename='./images/blank.png') }}" width="30" height="55"></h3>
+			<h3 class="vopros"><img src="{{ url_for('.static', filename='./images/blank.png') }}" width="30" height="55"></h3>
 		</div>
 	    <div id="infotmer-center">
 		    <div id="informer-number-1">
@@ -42,7 +42,7 @@ $(document).ready(function(){
 			    <p>Пользователи отвечают на вопрос</p>
 			</div>
 			<div id="cace-box">
-			    <h3 class="vopros"><img src="{{ url_for('static', filename='./images/blank.png') }}" width="30" height="55"></h3>
+			    <h3 class="vopros"><img src="{{ url_for('.static', filename='./images/blank.png') }}" width="30" height="55"></h3>
                 <div id="cace"><a href="#" title="Пользователь получает услугу взамен на ответ"></a></div>				
 			</div>
 		</div>

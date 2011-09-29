@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-<link rel="stylesheet" href="{{ url_for('static', filename='./vkontakte_app/css/style.css') }}" />
+<link rel="stylesheet" href="{{ url_for('.static', filename='./vkontakte_app/css/style.css') }}" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
 <script src="http://vkontakte.ru/js/api/xd_connection.js?2" type="text/javascript"></script>
 </head>
@@ -73,5 +73,5 @@
 		<input type="hidden" id="happ_user_id" value="{{ params.happ.user_id }}">
 	</div>
 </body>
-<script type="text/javascript" src="{{ url_for('static', filename='./vkontakte_app/js/app.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('.static', filename='./vkontakte_app/js/app.js') }}"></script>
 </html>

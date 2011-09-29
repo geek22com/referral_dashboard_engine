@@ -1,12 +1,15 @@
 from flaskext.mongoalchemy import BaseQuery
 from mongoalchemy.fields import NumberField
 from heymoose import mg
+from mongoalchemy.document import Index
 
 class Performer(mg.Document):
+	user_id_index = Index().ascending('user_id').unique()
+	
+	user_id = mg.StringField()
 	name = mg.StringField()
 	oauth_token = mg.StringField()
 	expires = mg.IntField()
-	user_id = mg.StringField()
 	dirty = mg.BoolField(default=False)
 	fullname = mg.StringField()
 	firstname = mg.StringField()

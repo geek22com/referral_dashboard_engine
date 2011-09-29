@@ -24,7 +24,7 @@ Feedback
 					 <p>{{ params.feedbackform.comment(class="textarea-bg", cols="40", rows="3") }}</p><br />
 	 				 <h5>{{ params.captcha.question }}</h5><br/>
 			 		 <p><input class="inp-bg" name="captcha_answer" type="text" value="" size="15" maxlength="15" /></p>
-					<input type="hidden" name="captcha_id" value="{{ params.captcha.qid }}">
+					<input type="hidden" name="captcha_id" value="{{ params.captcha.c_id }}">
                     <input type="submit" class="send" value="Отправить" />
 	            </form>
 			</div>

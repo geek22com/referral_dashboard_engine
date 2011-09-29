@@ -13,7 +13,7 @@
 {% if params.blog %}
 				<h4>{{ params.blog.title|safe }}</h4><p> Добавленно: {{ params.blog.date | datetimeformat }}</p>
 					{% if params.blog.image_path %}
-						<img src="{{ url_for('static', filename=params.blog.image_path) }}"  align="left" width="197" height="193" border="0" class="left-img" />
+						<img src="{{ url_for('.static', filename=params.blog.image_path) }}"  align="left" width="197" height="193" border="0" class="left-img" />
 					{% endif %}
 				{{ params.blog.body | safe }}
 				<div class="border-top">
@@ -46,7 +46,7 @@
 		    <h6>Категории</h6>
 			    <ul>
 					{% for category in params.categories %}
-					<li><a href="{{ url_for('show_category', category_id=category.id, pagenum=0) }}">{{ category.title }}</a></li>
+					<li><a href="{{ url_for('show_category', category_id=category.mongo_id, pagenum=0) }}">{{ category.title }}</a></li>
 					{% endfor %}
 					<li><a href="{{ url_for('blog', pagenum=0)}}">Все записи</a></li>
 				</ul>

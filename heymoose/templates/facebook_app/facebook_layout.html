@@ -12,9 +12,9 @@
          cache: false
         });
     </script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/common.css') }}?qwe" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/layout.css') }}?qw" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='./facebook_app/css/effects.css') }}?qwew" />
+    <link rel="stylesheet" href="{{ url_for('.static', filename='./facebook_app/css/common.css') }}?qwe" />
+    <link rel="stylesheet" href="{{ url_for('.static', filename='./facebook_app/css/layout.css') }}?qw" />
+    <link rel="stylesheet" href="{{ url_for('.static', filename='./facebook_app/css/effects.css') }}?qwew" />
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
 </head>
@@ -38,7 +38,7 @@
                 'lastname':"{{g.params.facebook_user_lastname}}"};
 </script>
 <div class="b-header i-cornersLarge">
-    <img class="b-header__logo" src="{{ url_for('static', filename='./images/logo.png') }}"/>
+    <img class="b-header__logo" src="{{ url_for('.static', filename='./images/logo.png') }}"/>
     <div class="b-header__menu">
         <ul class="b-header__menu__list">
             <div class="m-header__menu__style">
@@ -60,7 +60,7 @@
     </div>
 </body>
 <div class="hidden">
-    <script type="text/javascript" src="{{ url_for('static', filename='./facebook_app/js/app.js') }}?dfdf"></script>
+    <script type="text/javascript" src="{{ url_for('.static', filename='./facebook_app/js/app.js') }}?dfdf"></script>
     <script type="text/javascript">
     load_offers()
     </script>

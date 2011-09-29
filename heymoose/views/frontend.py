@@ -15,10 +15,10 @@ import sys
 from flask import Module
 from heymoose.utils.decorators import auth_only, role_not_detected_only, admin_only
 from heymoose.utils.workers import app_logger, heymoose_app
-from heymoose.db.models import Captcha
 import heymoose.settings.debug_config as config
 import heymoose.forms.forms as forms
 import heymoose.core.actions.users as users
+from heymoose.db.actions import captcha
 
 frontend = Module(__name__)
 from heymoose.views.facebook_app.facebook import *
@@ -45,7 +45,7 @@ def register_form_template(form_params=None, error=None):
 		register_form.password.data = form_params['password']
 		register_form.password2.data = form_params['password2']
 
-	g.params['captcha'] = Captcha.get_random()
+	g.params['captcha'] = captcha.get_random()
 	g.params['registerform'] = register_form
 	return render_template('register.html', params=g.params, error=error)
 
@@ -141,7 +141,7 @@ def register():
 		elif users.get_user_by_email(register_form.email.data) is not None:
 			flash_form_errors([['Введенный email уже используется']], 'registererror')
 		# Уязвимость, данные из поля капча и hidden не проверяются.
-		elif config.USE_DATABASE and Captcha.check_captcha(request.form['captcha_id'], request.form['captcha_answer']) is None:
+		elif config.USE_DATABASE and captcha.check_captcha(request.form['captcha_id'], request.form['captcha_answer']) is None:
 			flash_form_errors([['Каптча введена не верна']], 'registererror')
 		else:
 			users.add_user(email=register_form.email.data,

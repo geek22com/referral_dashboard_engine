@@ -1,6 +1,6 @@
 import sys
-sys.path.append("/usr/local/apache2/cgi-bin/heymoose_psql")
-from heymoose.db.connection import connection
+from heymoose import mg
+from heymoose.db.models import Captcha
 import random
 
 def next_qa():
@@ -14,6 +14,5 @@ for i in range(1000):
 	answer = str(first + second) 
 	args = {'question': question,
 			'answer': answer}
-	query = "INSERT INTO captcha (question, answer) VALUES(%(question)s, %(answer)s)"
-	connection.execute_query(query, args)
-
+	captcha = Captcha(c_id=i,answer=answer, question=question)
+	captcha.save()

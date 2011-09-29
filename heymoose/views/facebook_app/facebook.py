@@ -16,6 +16,7 @@ import heymoose.thirdparty.facebook.actions.social_graph as social_graph
 import heymoose.thirdparty.facebook.actions.users as users
 from heymoose.utils.decorators import oauth_only
 import heymoose.forms.forms as forms
+from heymoose.thirdparty.facebook.mongo import performers
 from heymoose.views.work import flash_form_errors
 
 def get_signed_request():
@@ -44,10 +45,7 @@ def facebook_app():
 		signed_request = get_signed_request()
 		valid, data = base.decrypt_request(signed_request)
 		if valid:
-			performer = Performer.query.filter(Performer.user_id == data.get(u'user_id', ''))
-			print type(performer)
-			print performer
-			print "aaaaaaaaa"
+			performer = performers.get_performer(data.get(u'user_id', ''))
 			if not performer or performer.dirty:
 				performer = Performer(name = data.get(u'name',''),
 				                    dirty = False,

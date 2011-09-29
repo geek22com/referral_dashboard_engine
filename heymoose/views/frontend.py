@@ -93,15 +93,11 @@ def user_cabinet(username):
 	if g.user.is_developer():
 		apps = g.user.apps
 		if apps:
-			print "apps"
-			print apps
 			g.params['apps'] = apps
 
 	if g.user.is_customer():
 		orders = g.user.orders
 		if orders:
-			print "orders"
-			print orders
 			g.params['orders'] = orders
 	return render_template('cabinet-inside-service.html', params=g.params)
 

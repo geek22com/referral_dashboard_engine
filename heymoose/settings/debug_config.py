@@ -23,6 +23,9 @@ FACEBOOK_GRAPH_URL = "https://graph.facebook.com"
 FACEBOOK_APP_DOMAIN = "http://heymoose.com:8080"
 FACEBOOK_APP_URL = "http://apps.facebook.com/heymoose/"
 
+BACKEND_PRIVATE_URL = "http://localhost"
+BACKEND_PRIVATE_PORT = 1234
+
 #Mongo parameters
 MONGOALCHEMY_SERVER_AUTH = False
 MONGOALCHEMY_DATABASE = 'facebook'

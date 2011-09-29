@@ -4,12 +4,16 @@ import urllib
 import time
 from restkit import RequestFailed
 from heymoose.core.rest import get
-from heymoose.settings.debug_config import APP_ID, APP_SECRET, FACEBOOK_SERVICE_URL, FACEBOOK_GRAPH_URL
+from heymoose import config
 import heymoose.thirdparty.facebook.actions.mappers as mappers
 from heymoose.utils.workers import app_logger
 
 OAUTH_DIALOG_PATH = "/dialog/oauth"
 OAUTH_TOKEN_PATH = "/oauth/access_token"
+APP_ID = config.get('APP_ID')
+APP_SECRET = config.get('APP_SECRET')
+FACEBOOK_SERVICE_URL = config.get('FACEBOOK_SERVICE_URL')
+FACEBOOK_GRAPH_URL = config.get('FACEBOOK_GRAPH_URL')
 
 #TODO: ADD CSRF protection
 def get_oauth_dialog_url(redirect_url, csrf_protect, scope=None):

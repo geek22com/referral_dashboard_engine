@@ -6,7 +6,8 @@ from flask import Flask, request, session, url_for, redirect, \
 from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
 import heymoose.thirdparty.facebook.actions.oauth as oauth
-from heymoose.settings.debug_config import FACEBOOK_APP_URL
+from heymoose import config
+FACEBOOK_APP_URL = config.get('FACEBOOK_APP_URL')
 
 #TODO: is it simplier to store TokenObject in session?
 #Server-side flow implementation: http://developers.facebook.com/docs/authentication/

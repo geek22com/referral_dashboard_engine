@@ -6,13 +6,13 @@ from restkit import Resource
 from restkit import forms
 from functools import  partial
 from restkit.errors import RequestFailed, RequestError
-import heymoose.settings.debug_config as config
+from heymoose import config
 import sys
 from lxml import etree
 
 TIMEOUT = 1
 
-URL_BASE = config.RESTAPI_SERVER
+URL_BASE = config.get('RESTAPI_SERVER')
 TEST_PORT = 9345
 
 def create_resource(base=URL_BASE):

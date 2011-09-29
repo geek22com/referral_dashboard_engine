@@ -9,7 +9,7 @@ from heymoose.utils.decorators import auth_only
 from heymoose.utils.decorators import admin_only
 from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
-from heymoose.settings.debug_config import APP_ID, DEVELOPER_SECRET_KEY, APP_SECRET, FACEBOOK_APP_DOMAIN
+from heymoose import config
 import heymoose.thirdparty.facebook.actions.oauth as oauth
 import heymoose.thirdparty.facebook.actions.base as base
 import heymoose.thirdparty.facebook.actions.social_graph as social_graph
@@ -18,6 +18,10 @@ from heymoose.utils.decorators import oauth_only
 import heymoose.forms.forms as forms
 from heymoose.thirdparty.facebook.mongo import performers
 from heymoose.views.work import flash_form_errors
+APP_ID = config.get('APP_ID')
+DEVELOPER_SECRET_KEY = config.get('DEVELOPER_SECRET_KEY')
+APP_SECRET = config.get('APP_SECRET')
+FACEBOOK_APP_DOMAIN = config.get('FACEBOOK_APP_DOMAIN')
 
 def get_signed_request():
 	signed_request = request.form.get('signed_request', '').decode('utf8')

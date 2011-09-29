@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from heymoose.settings.debug_config import APP_SECRET, DEVELOPER_SECRET_KEY
+from heymoose import config
 import hashlib
 import base64
 import json
@@ -20,7 +20,9 @@ def decrypt_request(signed_request):
 	sig = base64_url_decode(sig)
 	data = json.loads(base64_url_decode(payload))
 
-	expected_sig = hmac.new(APP_SECRET, msg=payload, digestmod=hashlib.sha256).digest()
+	expected_sig = hmac.new(config.get('APP_SECRET'),
+	                        msg=payload,
+	                        digestmod=hashlib.sha256).digest()
 	if sig != expected_sig:
 		app_logger.debug("Sig != expected_sig")
 		return (False, None)
@@ -29,5 +31,5 @@ def decrypt_request(signed_request):
 
 def sign_parameter(param):
 	req_sig = hashlib.md5()
-	req_sig.update(str(param) + DEVELOPER_SECRET_KEY)
+	req_sig.update(str(param) + config.get('DEVELOPER_SECRET_KEY'))
 	return req_sig.hexdigest()

@@ -15,6 +15,10 @@ class Performer(mg.Document):
 	firstname = mg.StringField()
 	lastname = mg.StringField()
 
+class Donations(mg.Document):
+	from_id = mg.StringField()
+	to_id = mg.StringField()
+	gift_id = mg.StringField()
 
 import unittest
 if __name__ == "__main__":

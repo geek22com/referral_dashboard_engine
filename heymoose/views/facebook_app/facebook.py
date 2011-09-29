@@ -17,6 +17,7 @@ import heymoose.thirdparty.facebook.actions.users as users
 from heymoose.utils.decorators import oauth_only
 import heymoose.forms.forms as forms
 from heymoose.thirdparty.facebook.mongo import performers
+from heymoose.thirdparty.facebook.mongo.data import Donations
 from heymoose.views.work import flash_form_errors
 APP_ID = config.get('APP_ID')
 DEVELOPER_SECRET_KEY = config.get('DEVELOPER_SECRET_KEY')
@@ -70,6 +71,7 @@ def facebook_app():
 			save_signed_request(signed_request)
 			return redirect(url_for('oauth_request'))
 
+		session['performer_id'] = performer.user_id
 		g.params['performer'] = performer
 		return render_template('./facebook_app/heymoose-facebook.html', params=g.params)
 
@@ -98,7 +100,10 @@ def facebook_send_gift():
 	if not gift_form.validate():
 		app_logger.debug("facebook_send_gift form validate error: {0}".format(gift_form.errors))
 		abort(406)
-
+	donation = Donations(from_id = gift_form.from_id.data,
+						to_id = gift_form.to_id.data,
+						gift_id = gift_form.gift_id.data)
+	donation.save()
 	app_logger.debug("facebook_send_gift from_id={0} to_id={1} gift_id={2}".format(gift_form.from_id.data,
 																					gift_form.to_id.data,
 																					gift_form.gift_id.data))

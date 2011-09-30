@@ -23,6 +23,7 @@ from heymoose.db.actions import captcha
 frontend = Module(__name__)
 from heymoose.views.facebook_app.facebook import *
 from heymoose.views.facebook_app.oauth import *
+from heymoose.views.facebook_app.callback import *
 from heymoose.views.vkontakte import *
 from heymoose.views.offer import *
 from heymoose.views.work import *

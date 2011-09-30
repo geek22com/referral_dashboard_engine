@@ -14,6 +14,7 @@
     <div>
         <form class="b-offer__form" action="">
             <input type="hidden" name="offer_id" value="12"/>
+              <input type="hidden" name="submitted" value=""/>
             <input class="b-offer__submit i-button" type="submit" value="Пройти оффер"/>
         </form>
     </div>
@@ -33,6 +34,7 @@
     <div>
         <form class="b-offer__form" action="">
             <input type="hidden" name="offer_id" value="12"/>
+            <input type="hidden" name="submitted" value=""/>
             <input class="b-offer__submit i-button" type="submit" value="Пройти оффер"/>
         </form>
     </div>
@@ -52,7 +54,11 @@
     <div>
         <form class="b-offer__form" action="">
             <input type="hidden" name="offer_id" value="12"/>
+            <input type="hidden" name="submitted" value=""/>
             <input class="b-offer__submit i-button" type="submit" value="Пройти оффер"/>
         </form>
+    </div>
+    <div class="hidden">
+        <script type="text/javascript" src="{{ url_for('.static', filename='./facebook_app/js/offers.js') }}"></script>
     </div>
 </div>

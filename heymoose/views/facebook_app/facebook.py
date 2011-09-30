@@ -4,7 +4,7 @@ from restkit.errors import RequestFailed
 from flask import Flask, request, session, url_for, redirect, \
 	 render_template, abort, g, flash
 from heymoose.thirdparty.facebook.mongo import performers
-from heymoose.thirdparty.facebook.mongo.data import Performer
+from heymoose.thirdparty.facebook.mongo.data import Performer, Offers, OffersStat, Gifts
 from heymoose.utils.decorators import auth_only
 from heymoose.utils.decorators import admin_only
 from heymoose.utils.workers import app_logger
@@ -88,6 +88,18 @@ def facebook_help():
 	app_logger.debug("facebook_help email={0}".format(help_form.email.data.decode('utf8')))
 	return ""
 
+@frontend.route('/facebook_do_offer', methods=['POST'])
+@oauth_only
+def facebook_do_offer():
+	offer_form = forms.OfferForm(request.form)
+	if not offer_form.validate():
+		app_logger.debug("facebook_do_offer offerform validate error: {0}".format(offer_form.errors))
+		abort(406)
+	offer_stat = OffersStat(performer_id = g.performer.user_id,
+							offer_id = offer_form.offer_id.data)
+	offer_stat.save()
+	return ""
+
 @frontend.route('/facebook_send_gift', methods=['POST'])
 @oauth_only
 def facebook_send_gift():
@@ -100,10 +112,18 @@ def facebook_send_gift():
 	if str(g.performer.user_id) != gift_form.from_id.data:
 		app_logger.debug("Break attempt from performer_id={0}".format(g.performer.user_id))
 
-	donation = Donations(from_id = g.performer.user_id,
-						to_id = gift_form.to_id.data,
-						gift_id = gift_form.gift_id.data)
-	donation.save()
+	gift = Gifts.query.filter(Gifts.mongo_id == gift_form.gift_id.data).first()
+	if not gift:
+		abort(407) #Show something in the interface
+
+	if gift.price > g.performer.amount:
+		abort(408) #Show something in the interface
+
+	g.performer.amount = g.performer.amount - gift.price
+	g.performer.donations += dict(to_id=gift_form.to_id.data,
+									gift_id=gift.mongo_id)
+	g.performer.save()
+	
 	app_logger.debug("facebook_send_gift from_id={0} to_id={1} gift_id={2}".format(g.performer.user_id,
 																					gift_form.to_id.data,
 																					gift_form.gift_id.data))
@@ -127,7 +147,16 @@ def facebook_gifts():
 		performers.invalidate_performer(g.performer)
 		g.performer.save()
 
+	g.params['gifts'] = Gifts.query.filter(Gifts.price <= g.performer.amount).all()
 	return render_template('./facebook_app/gifts.html', params=g.params)
+
+@frontend.route('/facebook_tmpl/stat', methods=['GET', 'POST'])
+@oauth_only
+def facebook_stat():
+	app_logger.debug("facebook_stat performer_id={0} request={1}".format(g.performer.user_id,
+		                                                                    request.url))
+	#g.params['offers'] = OffersStat.query.filter().all()
+	return render_template('./facebook_app/stat.html', params=g.params)
 
 @frontend.route('/facebook_tmpl/<tmpl>', methods=['GET', 'POST'])
 def facebook_tmpl(tmpl):

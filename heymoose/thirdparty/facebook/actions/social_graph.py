@@ -10,11 +10,7 @@ GRAPH_BASE = "https://graph.facebook.com"
 def get_friends(user_id, access_token):
 	path = "/{0}/friends".format(user_id)
 
-	try:
-		return friends_from_obj(get(base=GRAPH_BASE,
+	return friends_from_obj(get(base=GRAPH_BASE,
 									path=path,
 									params_dict=dict(access_token=access_token),
 									renderer=json.loads))
-	except RequestFailed:
-		#TODO: handle OAuthRequest error
-		raise

@@ -7,7 +7,6 @@ class Performer(mg.Document):
 	user_id_index = Index().ascending('user_id').unique()
 	
 	user_id = mg.StringField()
-	name = mg.StringField()
 	oauth_token = mg.StringField()
 	expires = mg.IntField()
 	dirty = mg.BoolField(default=False)

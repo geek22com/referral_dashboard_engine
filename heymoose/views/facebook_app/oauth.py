@@ -35,7 +35,9 @@ def oauth_request():
 		app_logger.debug("Access_token error")
 		abort(406) #Facebook send us OAuthRequest error
 
-	session['access_token'] = token
-	session['expires'] = oauth.expires_to_absolute_epoch(expires)
+	g.performer.oauth_token = token
+	g.performer.expires = oauth.expires_to_absolute_epoch(expires)
+	g.performer.save()
 
+	session.pop('state', None)
 	return redirect(FACEBOOK_APP_URL)

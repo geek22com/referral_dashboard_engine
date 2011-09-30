@@ -19,23 +19,11 @@ import heymoose.forms.forms as forms
 from heymoose.thirdparty.facebook.mongo import performers
 from heymoose.thirdparty.facebook.mongo.data import Donations
 from heymoose.views.work import flash_form_errors
-APP_ID = config.get('APP_ID')
-DEVELOPER_SECRET_KEY = config.get('DEVELOPER_SECRET_KEY')
-APP_SECRET = config.get('APP_SECRET')
-FACEBOOK_APP_DOMAIN = config.get('FACEBOOK_APP_DOMAIN')
 
-def get_signed_request():
-	signed_request = request.form.get('signed_request', '').decode('utf8')
-	if not signed_request:
-		signed_request = session.get('signed_request', '')
-	return signed_request
-
-def save_signed_request(signed_request):
-	session['signed_request'] = signed_request
-
-@frontend.route('/facebook_deauthorize/', methods=['POST'])
+@frontend.route('/facebook_deauthorize/', methods=['GET','POST'])
+@oauth_only
 def facebook_deauthorize():
-	signed_request = get_signed_request()
+	signed_request = request.form.get('signed_request', '').decode('utf8')
 
 	valid, data = base.decrypt_request(signed_request)
 	if valid:
@@ -45,34 +33,42 @@ def facebook_deauthorize():
 
 	return ""
 
+#This is entry point to facebook_app, Every user start from here, and in case of
+#not g.performer or g.performer.dirty you must redirect user here
 @frontend.route('/facebook_app/', methods=['GET', 'POST'])
 def facebook_app():
-		signed_request = get_signed_request()
-		valid, data = base.decrypt_request(signed_request)
-		if valid:
-			performer = performers.get_performer(data.get(u'user_id', ''))
-			if not performer or performer.dirty:
-				performer = Performer(name = data.get(u'name',''),
-				                    dirty = False,
+		if not g.performer:
+			signed_request = request.form.get('signed_request', '').decode('utf8')
+			valid, data = base.decrypt_request(signed_request)
+			if valid and data:
+				performer = Performer(dirty = False,
 								    oauth_token = data.get(u'oauth_token', ''),
 								    expires = data.get(u'expires', ''),
 								    user_id = data.get(u'user_id', ''),
-								    fullname = data.get(u'name'),
-								    firstname = data.get(u'first_nam'),
+							        fullname = data.get(u'name'),
+								    firstname = data.get(u'first_name'),
 								    lastname = data.get(u'last_name'))
 				performer.save()
-		else:
-			app_logger.debug("facebook_app request Bad Signed")
-			abort(404)
+				g.performer = performer
+				session['performer_id'] = g.performer.user_id
+			else:
+				app_logger.debug("facebook_app request Bad Signed")
+				abort(404)
 
-		if not oauth.validate_token(performer.oauth_token, 
-		                            performer.expires):
-			performers.invalidate_performer(performer)
-			save_signed_request(signed_request)
+		if not oauth.validate_token(g.performer.oauth_token,
+									g.performer.expires):
+			performers.invalidate_performer(g.performer)
+			g.performer.save()
 			return redirect(url_for('oauth_request'))
 
-		session['performer_id'] = performer.user_id
-		g.params['performer'] = performer
+		if g.performer.dirty:
+			fresh_performer_obj = users.get_user(g.performer.user_id,
+													g.performer.oauth_token)
+			performers.reload_performer_info(g.performer, fresh_performer_obj)
+			g.performer.save()
+
+		g.params['app_id'] = config.get('APP_ID')
+		g.params['app_domain'] = config.get('FACEBOOK_APP_DOMAIN')
 		return render_template('./facebook_app/heymoose-facebook.html', params=g.params)
 
 
@@ -100,11 +96,15 @@ def facebook_send_gift():
 	if not gift_form.validate():
 		app_logger.debug("facebook_send_gift form validate error: {0}".format(gift_form.errors))
 		abort(406)
-	donation = Donations(from_id = gift_form.from_id.data,
+
+	if str(g.performer.user_id) != gift_form.from_id.data:
+		app_logger.debug("Break attempt from performer_id={0}".format(g.performer.user_id))
+
+	donation = Donations(from_id = g.performer.user_id,
 						to_id = gift_form.to_id.data,
 						gift_id = gift_form.gift_id.data)
 	donation.save()
-	app_logger.debug("facebook_send_gift from_id={0} to_id={1} gift_id={2}".format(gift_form.from_id.data,
+	app_logger.debug("facebook_send_gift from_id={0} to_id={1} gift_id={2}".format(g.performer.user_id,
 																					gift_form.to_id.data,
 																					gift_form.gift_id.data))
 	return ""
@@ -117,9 +117,15 @@ def facebook_send_gift():
 @frontend.route('/facebook_tmpl/gifts', methods=['GET', 'POST'])
 @oauth_only
 def facebook_gifts():
-	app_logger.debug("facebook_gifts user_id={0} request={1}".format(g.facebook_user_id,
+	app_logger.debug("facebook_gifts user_id={0} request={1}".format(g.performer.user_id,
 	                                                                 request.url))
-	g.params['friends'] = social_graph.get_friends(g.facebook_user_id, g.access_token)
+	try:
+		g.params['friends'] = social_graph.get_friends(g.performer.user_id,
+		                                               g.performer.oauth_token)
+	except Exception:
+		#Facebook OAuth Error request
+		performers.invalidate_performer(g.performer)
+		g.performer.save()
 
 	return render_template('./facebook_app/gifts.html', params=g.params)
 

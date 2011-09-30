@@ -18,15 +18,8 @@ def auth_only(func):
 
 def oauth_only(func):
 	def _inner_(*args, **kwargs):
-		if 'access_token' not in session:
-			app_logger.debug("oauth_only error: no access_token")
-			abort(404)
-		if 'facebook_user_id' not in session:
-			app_logger.debug("oauth_only error: no user_id")
-			abort(404)
-		g.access_token = session['access_token']
-		g.facebook_user_id = session['facebook_user_id']
-		g.params['facebook_user_id'] = g.facebook_user_id
+		if not g.performer or g.performer.dirty:
+			return redirect(url_for('facebook_app'))
 		return func(*args, **kwargs)
 	_inner_.__name__ = func.__name__
 	return _inner_

@@ -32,10 +32,10 @@
   });
   FB.Canvas.setAutoResize(100);
   var app_domain = "{{ g.params.app_domain }}";
-  var _USER = {'uid':"{{ g.params.facebook_user_id }}",
-                'fullname':"{{g.params.facebook_user_fullname}}",
-                'firstname':"{{g.params.facebook_user_firstname}}",
-                'lastname':"{{g.params.facebook_user_lastname}}"};
+  var _USER = {'uid':"{{ g.performer.user_id }}",
+                'fullname':"{{g.performer.fullname}}",
+                'firstname':"{{g.performer.firstname}}",
+                'lastname':"{{g.performer.lastname}}"};
 </script>
 <div class="b-header i-cornersLarge">
     <img class="b-header__logo" src="{{ url_for('.static', filename='./images/logo.png') }}"/>

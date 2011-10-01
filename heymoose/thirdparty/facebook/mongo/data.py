@@ -8,8 +8,8 @@ class Performer(mg.Document):
 	user_id_index = Index().ascending('user_id').unique()
 
 	amount = mg.IntField(default=0)
-	donations = mg.ListField(dict, default=None) # We don't use separate collection,
-												# because mongo support transaction only for single collection
+	donations = mg.ListField(mg.DictField(mg.StringField()), default=None) # We don't use separate collection,
+																		# because mongo support transaction only for single collection
 
 	user_id = mg.StringField()
 	oauth_token = mg.StringField()

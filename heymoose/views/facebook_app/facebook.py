@@ -4,7 +4,7 @@ from restkit.errors import RequestFailed
 from flask import Flask, request, session, url_for, redirect, \
 	 render_template, abort, g, flash
 from heymoose.thirdparty.facebook.mongo import performers
-from heymoose.thirdparty.facebook.mongo.data import Performer, Offers, OffersStat, Gifts
+from heymoose.thirdparty.facebook.mongo.data import Performer, OffersStat, Gifts
 from heymoose.utils.decorators import auth_only
 from heymoose.utils.decorators import admin_only
 from heymoose.utils.workers import app_logger
@@ -17,7 +17,6 @@ import heymoose.thirdparty.facebook.actions.users as users
 from heymoose.utils.decorators import oauth_only
 import heymoose.forms.forms as forms
 from heymoose.thirdparty.facebook.mongo import performers
-from heymoose.thirdparty.facebook.mongo.data import Donations
 from heymoose.views.work import flash_form_errors
 
 @frontend.route('/facebook_deauthorize/', methods=['GET','POST'])

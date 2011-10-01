@@ -4,8 +4,11 @@ import os
 from flaskext.mongoalchemy import MongoAlchemy
 
 app = Flask(__name__)
-app.config.from_pyfile(os.getenv("FRONTEND_SETTINGS_PATH", 
-								 "/etc/frontend/config.py"))
+try:
+	config_path = DEBUG_CONFIG
+except NameError:
+	config_path=os.getenv("FRONTEND_SETTINGS_PATH", "/etc/frontend/config.py")
+app.config.from_pyfile(config_path)
 mg = MongoAlchemy(app)
 
 config=app.config

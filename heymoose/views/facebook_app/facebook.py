@@ -4,8 +4,9 @@ from restkit.errors import RequestFailed
 from flask import Flask, request, session, url_for, redirect, \
 	 render_template, abort, g, flash
 from heymoose.thirdparty.facebook.mongo import performers
-from heymoose.thirdparty.facebook.mongo.data import Performer, OffersStat, Gifts
-from heymoose.utils.decorators import auth_only
+from heymoose.thirdparty.facebook.mongo.data import Performer, Gifts
+from heymoose.thirdparty.facebook.mongo.performers import create_action_gift, get_available_gifts
+from heymoose.utils.decorators import auth_only, force_post
 from heymoose.utils.decorators import admin_only
 from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
@@ -17,8 +18,10 @@ import heymoose.thirdparty.facebook.actions.users as users
 from heymoose.utils.decorators import oauth_only
 import heymoose.forms.forms as forms
 from heymoose.thirdparty.facebook.mongo import performers
+from heymoose.core.actions.users import get_user_by_email
 from heymoose.views.work import flash_form_errors
-
+from hashlib import md5
+from heymoose.views.facebook_app.oauth import oauth_dialog_url
 @frontend.route('/facebook_deauthorize/', methods=['GET','POST'])
 @oauth_only
 def facebook_deauthorize():
@@ -35,39 +38,43 @@ def facebook_deauthorize():
 #This is entry point to facebook_app, Every user start from here, and in case of
 #not g.performer or g.performer.dirty you must redirect user here
 @frontend.route('/facebook_app/', methods=['GET', 'POST'])
+@force_post
 def facebook_app():
-		if not g.performer:
+		if not g.performer or g.performer.dirty:
 			signed_request = request.form.get('signed_request', '').decode('utf8')
 			valid, data = base.decrypt_request(signed_request)
 			if valid and data:
-				performer = Performer(dirty = False,
-								    oauth_token = data.get(u'oauth_token', ''),
-								    expires = data.get(u'expires', ''),
-								    user_id = data.get(u'user_id', ''),
-							        fullname = data.get(u'name'),
-								    firstname = data.get(u'first_name'),
-								    lastname = data.get(u'last_name'))
-				performer.save()
-				g.performer = performer
+				if not data.get(u'user_id', ''):
+					return redirect(url_for('javascript_redirect'))
+				g.performer = Performer(dirty = False,
+										oauth_token = data.get(u'oauth_token', ''),
+										expires = str(data.get(u'expires', '')),
+										user_id = data.get(u'user_id', ''),
+										fullname = data.get(u'name', ''),
+										firstname = data.get(u'first_name', ''),
+										lastname = data.get(u'last_name', ''))
+				g.performer.save()
 				session['performer_id'] = g.performer.user_id
 			else:
-				app_logger.debug("facebook_app request Bad Signed")
-				abort(404)
+				return redirect(url_for('javascript_redirect'))
 
 		if not oauth.validate_token(g.performer.oauth_token,
 									g.performer.expires):
 			performers.invalidate_performer(g.performer)
 			g.performer.save()
-			return redirect(url_for('oauth_request'))
 
-		if g.performer.dirty:
-			fresh_performer_obj = users.get_user(g.performer.user_id,
-													g.performer.oauth_token)
-			performers.reload_performer_info(g.performer, fresh_performer_obj)
-			g.performer.save()
+			return redirect(url_for('javascript_redirect'))
 
 		g.params['app_id'] = config.get('APP_ID')
 		g.params['app_domain'] = config.get('FACEBOOK_APP_DOMAIN')
+
+		#GET Heymoose app parameters
+		heymoose_developer = get_user_by_email('ks.shilov@gmail.com', full=True)
+		if heymoose_developer and len(heymoose_developer.apps) > 0:
+			g.params['heymoose_app_id'] = heymoose_developer.apps[0].id
+			m = md5()
+			m.update(heymoose_developer.apps[0].id + heymoose_developer.apps[0].secret)
+			g.params['heymoose_app_sig'] = m.hexdigest()
 		return render_template('./facebook_app/heymoose-facebook.html', params=g.params)
 
 
@@ -94,38 +101,32 @@ def facebook_do_offer():
 	if not offer_form.validate():
 		app_logger.debug("facebook_do_offer offerform validate error: {0}".format(offer_form.errors))
 		abort(406)
-	offer_stat = OffersStat(performer_id = g.performer.user_id,
-							offer_id = offer_form.offer_id.data)
-	offer_stat.save()
+#	offer_stat = OffersStat(performer_id = g.performer.user_id,
+#							offer_id = offer_form.offer_id.data)
+#	offer_stat.save()
 	return ""
 
 @frontend.route('/facebook_send_gift', methods=['POST'])
 @oauth_only
 def facebook_send_gift():
 	app_logger.debug("facebook_send_gift {0}".format(request.form))
+	print request.form
 	gift_form = forms.GiftForm(request.form)
 	if not gift_form.validate():
 		app_logger.debug("facebook_send_gift form validate error: {0}".format(gift_form.errors))
 		abort(406)
 
-	if str(g.performer.user_id) != gift_form.from_id.data:
-		app_logger.debug("Break attempt from performer_id={0}".format(g.performer.user_id))
-
 	gift = Gifts.query.filter(Gifts.mongo_id == gift_form.gift_id.data).first()
 	if not gift:
 		abort(407) #Show something in the interface
 
-	if gift.price > g.performer.amount:
-		abort(408) #Show something in the interface
-
-	g.performer.amount = g.performer.amount - gift.price
-	g.performer.donations += dict(to_id=gift_form.to_id.data,
-									gift_id=gift.mongo_id)
+	if not create_action_gift(g.performer, gift, gift_form.to_id.data):
+		abort(408)
+		
 	g.performer.save()
-	
 	app_logger.debug("facebook_send_gift from_id={0} to_id={1} gift_id={2}".format(g.performer.user_id,
 																					gift_form.to_id.data,
-																					gift_form.gift_id.data))
+																					gift.mongo_id))
 	return ""
 
 #Let's call it route polymorphism :)
@@ -146,7 +147,9 @@ def facebook_gifts():
 		performers.invalidate_performer(g.performer)
 		g.performer.save()
 
-	g.params['gifts'] = Gifts.query.filter(Gifts.price <= g.performer.amount).all()
+	g.params['gifts'] = get_available_gifts(g.performer)
+	print "Available gifts:"
+	print g.params['gifts']
 	return render_template('./facebook_app/gifts.html', params=g.params)
 
 @frontend.route('/facebook_tmpl/stat', methods=['GET', 'POST'])

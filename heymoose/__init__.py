@@ -21,4 +21,3 @@ app.jinja_env.filters['error_type'] = error_type
 from heymoose.views.frontend import frontend
 #app.register_module(admin, url_prefix='/admin')
 app.register_module(frontend)
-print "qqqqqqqqqqqqqq"

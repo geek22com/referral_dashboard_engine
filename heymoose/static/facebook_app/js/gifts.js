@@ -58,7 +58,7 @@
         FB.Canvas.scrollTo(0,0);
         if(Math.ceil(Math.random() * 2) == 1) {
             ask("Отлично!", _USER.firstname + ", Ваш подарок отправлен, Хотите рассказать друзьям о HeyMoose?", function() {
-                FB.ui({method: 'feed', 'link': 'http://apps.facebook.com/heymoose', picture: 'http://heymoose.com:8080/static/images/logo.png', name: 'Используйте HeyMoose', description: _USER.firstname + " рекомендует HeyMoose в Facebook!"}, 'Okay', 'No Thanks');
+                FB.ui({method: 'feed', 'link': 'http://apps.facebook.com/heymoose', picture: app_domain + '/static/images/logo.png', name: 'Используйте HeyMoose', description: _USER.firstname + " рекомендует HeyMoose в Facebook!"}, 'Okay', 'No Thanks');
             });
         } else {
             dialog("Отлично!", _USER.firstname + ', Ваш подарок отправлен! <div class="divider mtl mbl"></div><iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Ffacebook.com%2Fpages%2Fheymoosecom%2F247852878576419&amp;width=475&amp;colorscheme=light&amp;show_faces=true&amp;border_color&amp;stream=true&amp;header=false&amp;height=175" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:475px; height:175px;" allowTransparency="true"></iframe>');

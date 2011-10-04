@@ -50,39 +50,46 @@ $(document).ready(function(){
 
 function load_stat(){
     var tmpl = "stat";
-    var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
+    var url = app_domain + "/facebook_tmpl/" + tmpl;
     $('.b-maincontent').load(url);
 }
 
 function load_faq(){
     var tmpl = "faq";
-    var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
+    var url = app_domain + "/facebook_tmpl/" + tmpl;
     $('.b-maincontent').load(url);
 }
 
 function load_help(){
     var tmpl = "help";
-    var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
+    var url = app_domain + "/facebook_tmpl/" + tmpl;
     $('.b-maincontent').load(url);
 }
 
 function load_about(){
     var tmpl = "about";
-    var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
+    var url = app_domain + "/facebook_tmpl/" + tmpl;
     $('.b-maincontent').load(url);
 }
 
 function load_gifts(){
     var tmpl = "gifts";
-    var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
+    var url = app_domain + "/facebook_tmpl/" + tmpl;
     $('.b-maincontent').load(url);
 }
 
 function load_offers(){
 /*    var url = "http://heymoose.com:8080/get_offers";
     $('.b-maincontent').load(url);*/
+    var params = {
+        app : heymoose_app_id,
+        extId : _USER.uid,
+        sig : heymoose_app_sig
+    };
     var tmpl = "offers";
-    var url = "http://heymoose.com:8080/facebook_tmpl/" + tmpl;
+/*    var url = app_domain + "/rest_api/" + tmpl;
+    url += "?" + $.param(params)*/
+    var url = app_domain + "/facebook_tmpl/" + tmpl;
     $('.b-maincontent').load(url);
 }
 

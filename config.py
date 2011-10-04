@@ -23,7 +23,7 @@ FACEBOOK_SERVICE_URL = "http://www.facebook.com"
 FACEBOOK_GRAPH_URL = "https://graph.facebook.com"
 FACEBOOK_APP_DOMAIN = "http://heymoose.com:8080"
 FACEBOOK_APP_URL = "http://apps.facebook.com/heymoose/"
-
+FACEBOOK_AUTH_SCOPE = "publish_stream,email,create_event,sms,publish_actions,user_likes,user_about_me"
 BACKEND_PRIVATE_URL = "http://localhost"
 BACKEND_PRIVATE_PORT = 1234
 

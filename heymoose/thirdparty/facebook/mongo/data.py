@@ -7,41 +7,57 @@ from datetime import datetime
 class Performer(mg.Document):
 	user_id_index = Index().ascending('user_id').unique()
 
-	amount = mg.IntField(default=0)
-	donations = mg.ListField(mg.DictField(mg.StringField()), default=None) # We don't use separate collection,
-																		# because mongo support transaction only for single collection
-
 	user_id = mg.StringField()
 	oauth_token = mg.StringField()
-	expires = mg.IntField()
+	expires = mg.StringField()
 	dirty = mg.BoolField(default=False)
 	fullname = mg.StringField()
 	firstname = mg.StringField()
 	lastname = mg.StringField()
 
-class OffersStat(mg.Document):
-	performer_id_index = Index().ascending('performer_id').unique()
-	performer_id_index.ascending('offer_id').unique()
-
-	performer_id = mg.StringField()
-	offer_id = mg.StringField()
-	done = mg.BoolField(default=False)
-	date = mg.DateTimeField(default=datetime.now())
-
 class Gifts(mg.Document):
 	title = mg.StringField()
 	price = mg.IntField()
-	body = mg.StringField()
+	desc = mg.StringField()
+	path = mg.StringField()
+
+class AccountAction(mg.Document):
+	version_id_index = Index().ascending('version').unique()
+	version_id_index.ascending('performer_id').unique()
+	
+	version = mg.IntField(default=0)
+	balance = mg.IntField(default=0)
+	performer_id = mg.StringField()
+
+	recipient_id = mg.StringField(default="")
+	gift_id = mg.StringField(default="")
+
+	offer_id = mg.StringField(default="")
+	
+	operation = mg.EnumField(mg.StringField(), 'gift', 'offer')
+	date = mg.DateTimeField(default=datetime.now())
+
 
 import unittest
 if __name__ == "__main__":
 	class PerformerTest(unittest.TestCase):
-		def test_user_id(self):
-			user = Performer(user_id="qqqq",oauth_token="1223")
+		def test_user_creation(self):
+			user = Performer(user_id="12321321321",
+								oauth_token="qweqweqweqwe",
+								expires=123,
+								fullname="",
+								firstname="",
+								lastname="")
 			user.save()
-			q = Performer.query.filter(Performer.user_id =="qqqq").first()
-			print type(q)
-			print q
 
-
+		def test_send_gift(self):
+			for i in range(10):
+				action = AccountAction(version=i,
+										amount=10,
+										performer_id="12321321321",
+										operation="gift")
+				action.save()
+		def test_account_actions(self):
+			action = AccountAction.query.filter(AccountAction.performer_id == "12321321321").descending('version').first()
+			print action.version
 	unittest.main()

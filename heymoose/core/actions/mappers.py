@@ -7,7 +7,8 @@ def role_from_xml(role_element):
 def app_from_xml(app_element):
 	return App(id=get_attr(app_element, 'id', int),
 				secret=get_value(app_element, 'secret'),
-				user_id=get_value(app_element, 'user-id', int))
+				user_id=get_value(app_element, 'user-id', int),
+				callback=get_value(app_element, 'callback'))
 
 def order_from_xml(order_element):
 	return Order(id=get_attr(order_element, 'id', int),

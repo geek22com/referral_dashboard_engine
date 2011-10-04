@@ -5,6 +5,7 @@ import time
 from restkit import RequestFailed
 from heymoose.core.rest import get
 from heymoose import config
+from heymoose.thirdparty.facebook.actions import users
 import heymoose.thirdparty.facebook.actions.mappers as mappers
 from heymoose.utils.workers import app_logger
 
@@ -16,10 +17,9 @@ FACEBOOK_SERVICE_URL = config.get('FACEBOOK_SERVICE_URL')
 FACEBOOK_GRAPH_URL = config.get('FACEBOOK_GRAPH_URL')
 
 #TODO: ADD CSRF protection
-def get_oauth_dialog_url(redirect_url, csrf_protect, scope=None):
+def get_oauth_dialog_url(redirect_url, scope=None):
 	params = dict(client_id=APP_ID,
-					redirect_uri=redirect_url,
-					state=csrf_protect)
+					redirect_uri=redirect_url)
 	if scope:
 		params['scope'] = scope
 
@@ -46,6 +46,11 @@ def get_acces_token(redirect_url, code):
 def validate_token(access_token, expires):
 	if not access_token or not expires:
 		app_logger.debug("Invalid token token={0} expires={1}".format(access_token, expires))
+		return False
+
+	try:
+		user = users.get_user("me", access_token)
+	except Exception:
 		return False
 
 	if time.time() >= float(expires):

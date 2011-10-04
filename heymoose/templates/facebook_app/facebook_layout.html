@@ -31,12 +31,15 @@
     oauth  : true // enable OAuth 2.0
   });
   FB.Canvas.setAutoResize(100);
+  var heymoose_app_id = "{{ g.params.heymoose_app_id }}";
+  var heymoose_app_sig = "{{ g.params.heymoose_app_sig }}";
   var app_domain = "{{ g.params.app_domain }}";
   var _USER = {'uid':"{{ g.performer.user_id }}",
                 'fullname':"{{g.performer.fullname}}",
                 'firstname':"{{g.performer.firstname}}",
                 'lastname':"{{g.performer.lastname}}"};
 </script>
+<!-- <a href="#" onclick="FB.logout();">Logout</a> -->
 <div class="b-header i-cornersLarge">
     <img class="b-header__logo" src="{{ url_for('.static', filename='./images/logo.png') }}"/>
     <div class="b-header__menu">
@@ -60,7 +63,7 @@
     </div>
 </body>
 <div class="hidden">
-    <script type="text/javascript" src="{{ url_for('.static', filename='./facebook_app/js/app.js') }}?dfdf"></script>
+    <script type="text/javascript" src="{{ url_for('.static', filename='./facebook_app/js/app.js') }}?ddsfdsf"></script>
     <script type="text/javascript">
     load_offers()
     </script>

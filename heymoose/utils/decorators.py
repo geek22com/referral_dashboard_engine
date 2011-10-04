@@ -64,6 +64,15 @@ def admin_only(func):
     _inner_.__name__ = func.__name__
     return _inner_
 
+#WORKAROUND: this is problem of nginx we should read POST data before send response
+#http://www.mail-archive.com/uwsgi@lists.unbit.it/msg00809.html
+def force_post(func):
+	def _inner_(*args, **kwargs):
+		print request.form
+		return func(*args, **kwargs)
+	_inner_.__name__ = func.__name__
+	return _inner_
+
 
 def singleton(cls):
 	instances = {}

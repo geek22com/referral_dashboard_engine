@@ -63,7 +63,8 @@ class Order(BaseModel):
 class App(BaseModel):
 	attributes = ['id',
 	              'secret',
-	              'user_id']
+	              'user_id',
+	              'callback']
 
 
 class Action(BaseModel):

@@ -63,6 +63,7 @@
         } else {
             dialog("Отлично!", _USER.firstname + ', Ваш подарок отправлен! <div class="divider mtl mbl"></div><iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Ffacebook.com%2Fpages%2Fheymoosecom%2F247852878576419&amp;width=475&amp;colorscheme=light&amp;show_faces=true&amp;border_color&amp;stream=true&amp;header=false&amp;height=175" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:475px; height:175px;" allowTransparency="true"></iframe>');
         }
+        $.post("/facebook_send_gift", data);
     }
 
 
@@ -136,11 +137,12 @@
                 link: app_domain,
                 actions: [{"name":"Самые интересные способы зароботка в сети", "link": "http://apps.facebook.com/heymoose/"}]
             };
-            $.post("/facebook_send_gift", data);
+            disableInput();
             /*And now send via FB api*/
             FB.api(data.to_id + "/feed", params, function(res) {
                     if(res && res.id) {
                         FB.ui({method: 'apprequests', to: data.to_id, message: _USER.firstname + ' Послал вам подарок!'}, function(res) {
+                            enableInput();
                             success(data);
                         });
                         // auto like?
@@ -157,6 +159,7 @@
                              description: data.message
                         }, function(res) {
                                 success(data);
+                                enableInput();
                         });
                     }
              });

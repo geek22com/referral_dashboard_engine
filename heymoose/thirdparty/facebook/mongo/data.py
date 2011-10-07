@@ -3,6 +3,40 @@ from mongoalchemy.fields import NumberField
 from heymoose import mg
 from mongoalchemy.document import Index
 from datetime import datetime
+from pymongo import Connection
+import gridfs
+
+class GridfsField(mg.Field):
+	def __init__(self, **kwargs):
+		super(GridfsField, self).__init__(**kwargs)
+
+		self.db = Connection().gridfs_data
+		self.fs = gridfs.GridFS(self.db)
+
+	#edit binary data not implemented, we simply delete and writ enew data
+	#it is not bottleneck, because we are not going to edit gifts very often
+	def flush_data(self, data):
+		if not getattr(self, 'current_file_id', False):
+			print "Write new data"
+			return self.fs.put(data)
+		else:
+			print "Delete before write new data"
+			self.fs.delete(getattr(self,'current_file_id'))
+			return self.fs.put(data)
+		
+	def wrap(self, value):
+		return self.flush_data(value)
+
+	def unwrap(self, value):
+		data = self.fs.get(value)
+		if data:
+			self.current_file_id = value
+			return data.read()
+		else:
+			return None
+
+	def validate_wrap(self, value):
+		pass
 
 class Performer(mg.Document):
 	user_id_index = Index().ascending('user_id').unique()
@@ -19,7 +53,8 @@ class Gifts(mg.Document):
 	title = mg.StringField()
 	price = mg.IntField()
 	desc = mg.StringField()
-	path = mg.StringField()
+	data = GridfsField()
+	date = mg.DateTimeField(default=datetime.now())
 
 class AccountAction(mg.Document):
 	version_id_index = Index().ascending('version').unique()

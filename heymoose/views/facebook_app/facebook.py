@@ -66,7 +66,14 @@ def facebook_app():
 			return redirect(url_for('javascript_redirect'))
 
 		g.params['app_id'] = config.get('APP_ID')
-		g.params['app_domain'] = config.get('FACEBOOK_APP_DOMAIN')
+
+		#TODO: detect it from javascript
+		if request.is_secure:
+			app_logger.debug("Secure request")
+			g.params['app_domain'] = config.get('FACEBOOK_SECURE_APP_DOMAIN')
+		else:
+			app_logger.debug("insecure request")
+			g.params['app_domain'] = config.get('FACEBOOK_APP_DOMAIN')
 
 		#GET Heymoose app parameters
 		heymoose_developer = get_user_by_email('ks.shilov@gmail.com', full=True)
@@ -148,16 +155,22 @@ def facebook_gifts():
 		g.performer.save()
 
 	g.params['gifts'] = get_available_gifts(g.performer)
-	print "Available gifts:"
-	print g.params['gifts']
 	return render_template('./facebook_app/gifts.html', params=g.params)
+
+@frontend.route('/facebook_gift_data/<string:id>/', methods=['POST', 'GET'])
+@oauth_only
+def facebook_gift_data(id):
+	gift = Gifts.query.filter(Gifts.mongo_id == id).first()
+	if not gift:
+		abort(404)
+	return gift.data
+
 
 @frontend.route('/facebook_tmpl/stat', methods=['GET', 'POST'])
 @oauth_only
 def facebook_stat():
 	app_logger.debug("facebook_stat performer_id={0} request={1}".format(g.performer.user_id,
 		                                                                    request.url))
-	#g.params['offers'] = OffersStat.query.filter().all()
 	return render_template('./facebook_app/stat.html', params=g.params)
 
 @frontend.route('/facebook_tmpl/<tmpl>', methods=['GET', 'POST'])

@@ -47,7 +47,7 @@ class OrderForm(Form):
 						validators.NumberRange(min=1, max=3000000, message=('Допустимый баланс от 1 до 3000000 рублей'))])
 	orderbody = TextField('orederbody', [validators.Required(message = ('Введите тело'))])
 	ordercpa = IntegerField('oredercpa', [validators.Required(message = ('Введите cpa'))])
-
+	ordercallback = TextField('oredercallback', [validators.Required(message = ('Введите callback'))])
 class AppForm(Form):
 	appcallback = TextField('appcallback', [validators.Required(message = ('Введите callback'))])
 
@@ -65,7 +65,6 @@ class GiftAddForm(Form):
 	gifttitle = TextField('gifttitle', [validators.Required()])
 	giftprice = TextField('giftprice', [validators.Required()])
 	giftdesc = TextField('giftdesc', [validators.Required()])
-	giftpath = TextField('giftpath', [validators.Required()])
 
 class FacebookHelpForm(Form):
 	email = TextField('Email Address', [

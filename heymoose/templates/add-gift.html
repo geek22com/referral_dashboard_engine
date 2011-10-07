@@ -3,17 +3,18 @@
 Подарка
 {% endblock %}
 {% block content %}
-				<form id="giftform" action="{{ url_for('add_gift') }}" method="post">
+				<form id="giftform" enctype="multipart/form-data" action="{{ url_for('add_gift') }}" method="post">
 					<label for="gifttitle">Название:</label>
 					<input name="gifttitle" type="text" value="" /><br />
-					<label for="giftpath">Путь к подарку:</label>
-					<input name="giftpath" type="text" /><br />
 					<label for="giftprice">Цена подарка:</label>
 					<input name="giftprice" type="text" /><br />
 					<label for="giftdesc">Описание подарка:</label>
 					<textarea type="FILE" class="ta" name="giftdesc" rows="20" cols="20">
 					</textarea><br />
-					<input id="submit1" type="submit" name="submitButton" value="Подтвердить" />
+                    <input type="hidden" name="MAX_FILE_SIZE" value="100000">Загрузите картинку:
+                    <input name="giftimage" type="file"><br/>
+
+                	<input id="submit1" type="submit" name="submitButton" value="Подтвердить" />
 				</form>
 
 <div class="empty"></div>

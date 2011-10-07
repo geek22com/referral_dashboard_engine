@@ -8,11 +8,12 @@ def next_qa():
 	second = random.randint(1, 10)
 	return (first, second)
 
-for i in range(1000):
-	first, second = next_qa()
-	question = str(first) + " + " + str(second) + " =?"
-	answer = str(first + second) 
-	args = {'question': question,
-			'answer': answer}
-	captcha = Captcha(c_id=i,answer=answer, question=question)
-	captcha.save()
+def generate_captcha(): 
+	for i in range(1000):
+		first, second = next_qa()
+		question = str(first) + " + " + str(second) + " =?"
+		answer = str(first + second) 
+		args = {'question': question,
+				'answer': answer}
+		captcha = Captcha(c_id=i,answer=answer, question=question)
+		captcha.save()

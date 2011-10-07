@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}
+Доступные подарки
+{% endblock %}
+
+{% block content %}
+    <h1 id="">Подарки в базе:</h1>
+
+    <table border="1">
+        {% for gift in g.params.pagination.items %}
+        <tr>
+            <td>Title: {{ gift.title }}</td>
+            <td>Price: {{ gift.price }}</td>
+            <td>Desc: {{ gift.desc }}</td>
+            <td>Image: <image src="{{url_for('gift_data', id=gift.mongo_id)}}"/></td>
+        </tr>
+        {% endfor %}
+    </table>
+<div class="clear"></div>
+<div class="clear"></div>
+<div class="clear"></div>
+{% endblock %}

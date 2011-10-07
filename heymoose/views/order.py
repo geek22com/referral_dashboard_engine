@@ -27,13 +27,19 @@ def create_order():
 	#TODO проверка данных
 	order_form = forms.OrderForm(request.form)
 	if request.method == "POST" and order_form.validate():
+		file = request.files['orderimage']
+		image_data = file.stream.read()
+		print "Going to add order"
 		orders.add_order(userId=g.user.id,
 						title=order_form.ordername.data,
 						body=order_form.orderbody.data,
 						balance = order_form.orderbalance.data,
-						cpa=order_form.ordercpa.data)
+						cpa=order_form.ordercpa.data,
+		                callback=order_form.ordercallback.data,
+						image_data=image_data)
 		return redirect(url_for('user_cabinet', username=g.user.nickname))
 
+	print "Form error"
 	flash_form_errors(order_form.errors.values(), 'ordererror')
 	return order_form_template(request.form)
 

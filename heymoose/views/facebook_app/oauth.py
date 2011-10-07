@@ -12,6 +12,7 @@ import heymoose.thirdparty.facebook.actions.oauth as oauth
 from heymoose import config
 from heymoose.thirdparty.facebook.actions.oauth import OAUTH_DIALOG_PATH
 FACEBOOK_APP_URL = config.get('FACEBOOK_APP_URL')
+FACEBOOK_SECURE_APP_URL = config.get('FACEBOOK_SECURE_APP_URL')
 SCOPE = config.get('FACEBOOK_AUTH_SCOPE')
 
 def oauth_dialog_url():
@@ -62,5 +63,7 @@ def oauth_request():
 						    lastname = facebook_user.get(u'last_name', ''))
 	performer.save()
 	session['performer_id'] = performer.user_id
-
-	return redirect(FACEBOOK_APP_URL)
+	if request.is_secure:
+		return redirect(FACEBOOK_SECURE_APP_URL)
+	else:
+		return redirect(FACEBOOK_APP_URL)

@@ -47,7 +47,7 @@ class OrderForm(Form):
 						validators.NumberRange(min=1, max=3000000, message=('Допустимый баланс от 1 до 3000000 рублей'))])
 	orderbody = TextField('orederbody', [validators.Required(message = ('Введите тело'))])
 	ordercpa = IntegerField('oredercpa', [validators.Required(message = ('Введите cpa'))])
-	ordercallback = TextField('oredercallback', [validators.Required(message = ('Введите callback'))])
+	orderdesc = TextField('orederdesc', [validators.Required(message = ('Введите описание'))])
 	
 class AppForm(Form):
 	appcallback = TextField('appcallback', [validators.Required(message = ('Введите callback'))])

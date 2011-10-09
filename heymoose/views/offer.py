@@ -21,15 +21,12 @@ def test_offer():
 @admin_only
 def add_offer():
 	if request.method == 'POST':
-		offer = Offer(title=request.form['offertitle'],
-						body=request.form['offerbody'],
-						url=request.form['offerurl'],
-						time=request.form['offertime'],
-						voice=request.form['offervoice'])
+		file = request.files['offerimage']
+		offer_image = file.stream.read()
+
 		if not offer:
 			abort(404)
 
-		offer.save()
 		return redirect(url_for('add_offer'))
 
 	return render_template('add-offer.html', params=g.params)

@@ -5,7 +5,7 @@ from restkit.errors import RequestFailed
 
 resource_path = "/orders"
 
-def add_order(userId, title, body, balance, cpa, callback, image_data):
+def add_order(userId, title, body, balance, cpa, desc, image_data):
 	try:
 		post(path=resource_path,
 			params_dict=dict(userId=userId,
@@ -13,8 +13,9 @@ def add_order(userId, title, body, balance, cpa, callback, image_data):
 				body=body,
 	            balance=balance,
 				cpa=cpa,
-				callback=callback,
-				image_data=image_data))
+				description=desc,
+				image=image_data,
+				autoAprove="true"))
 	except RequestFailed:
 		return False
 	return True

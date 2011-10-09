@@ -23,14 +23,14 @@
                 <form id="orderform" action="{{ url_for('create_order') }}" enctype="multipart/form-data" method="post">
 				    <p>Название заказа</p>
 					<p>{{ params.orderform.ordername(class="inp-bg", size="15", maxlength="15")}}</p>
+                    <p>Описание заказа</p>
+					<p>{{ params.orderform.orderdesc(class="inp-bg", size="15", maxlength="15")}}</p>
 					<p>Баланс <a href="#">(Пополнить)</a></p>
 					<p>{{ params.orderform.orderbalance(class="inp-bg", size="15", maxlength="15")}}<label> Рублей</label></p>
 					<p>Введите url заказа.</p>
                     <p>{{ params.orderform.orderbody(class="inp-bg", size="15", maxlength="255")}}</p>
                     <p>Стоимость действия(cpa)</p>
 					<p>{{ params.orderform.ordercpa(class="inp-bg", size="15", maxlength="15")}}<label> Рублей</label></p>
-                    <p>Callback для подтверждения</p>
-					<p>{{ params.orderform.ordercallback(class="inp-bg", size="15", maxlength="15")}}</p>
                     <input type="hidden" name="MAX_FILE_SIZE" value="100000">Загрузите картинку:
                     <input name="orderimage" type="file"><br/>
                     <input type="submit" class="podtverdit" value="Подтвердить заказ" />

@@ -35,7 +35,7 @@ def create_order():
 						body=order_form.orderbody.data,
 						balance = order_form.orderbalance.data,
 						cpa=order_form.ordercpa.data,
-		                callback=order_form.ordercallback.data,
+		                desc=order_form.orderdesc.data,
 						image_data=image_data)
 		return redirect(url_for('user_cabinet', username=g.user.nickname))
 

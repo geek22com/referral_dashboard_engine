@@ -29,4 +29,8 @@ def get_value(etree_element, text, constr=unicode):
 	text = get_text(etree_element, text)
 	if not text:
 		return None
+	if text=="true":
+		return bool(True)
+	elif text=="false":
+		return bool(False)
 	return constr(text)

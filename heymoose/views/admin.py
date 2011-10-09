@@ -8,7 +8,7 @@ import heymoose.core.actions.orders as orders
 from heymoose.views.work import *
 
 #TODO: make paging in user interface
-@frontend.route('/admin_cabinet', methods = ['POST', 'GET'])
+@frontend.route('/admin_cabinet/', methods = ['POST', 'GET'])
 @admin_only
 def admin_cabinet():
 	

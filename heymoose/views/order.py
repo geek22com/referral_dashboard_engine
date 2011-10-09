@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import base64
 from flask import Flask, request, session, url_for, redirect, \
      render_template, abort, g, flash
 from heymoose.utils.decorators import auth_only
@@ -36,7 +37,7 @@ def create_order():
 						balance = order_form.orderbalance.data,
 						cpa=order_form.ordercpa.data,
 		                desc=order_form.orderdesc.data,
-						image_data=image_data)
+						image_data=base64.encodestring(image_data).strip('\n'))
 		return redirect(url_for('user_cabinet', username=g.user.nickname))
 
 	print "Form error"

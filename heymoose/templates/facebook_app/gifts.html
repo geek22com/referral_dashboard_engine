@@ -22,7 +22,7 @@
                     <div class="b-gift_select__selector i-clearfix" style="display: block; ">
                         {% if params.gifts %}
                             {% for gift in params.gifts %}
-                                <img src="{{url_for('facebook_gift_data', id=gift.mongo_id}}"
+                                <img src="{{url_for('facebook_gift_data', id=gift.mongo_id)}}"
                                      class="b-gift_select__gift_item" data-id="{{ gift.mongo_id }}"
                                      data-title="{{ gift.title }}"
                                      data-description="{{ gift.desc }} Price: {{ gift.price }}"

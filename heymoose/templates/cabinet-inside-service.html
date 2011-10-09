@@ -52,15 +52,23 @@
                 <div id="app-top-left">
                     <a href="{{ url_for('app_form') }}" class="create">Новый app</a>
                  </div>
+                <div id="user-balans">
+
                  {% if params.apps %}
+                <div id="balans-head">
+                    <p class="box-1">Id приложения</p>
+                    <p class="box-4">Secret приложения</p>
+                    <p class="box-4">Callback</p>
+                </div>
                     {% for app in params.apps %}
-                       <div id="zakaz-top-right">
-                         <p class="app_id">app_id Приложения: <b>{{ app.id }}</b></p>
-                        <a class="app_id">secret_key Приложения</a> <b>{{ app.secret }}</b>
-                        <a class="app_id">callback Приложения</a> <b>{{ app.callback }}</b>
-                    </div>
+                       <div class="user-account">
+                         <p class="box-1">{{ app.id }}</p>
+                        <p class="box-4">{{ app.secret }}</p>
+                        <p class="box-4">{{ app.callback }}</p>
+                         </div>
                     {% endfor %}
                  {% endif %}
+                  </div>
             </div>
         <div class="clear"></div>
       </div>

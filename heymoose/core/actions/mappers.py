@@ -24,7 +24,7 @@ def user_from_xml(user_element):
 				email=get_value(user_element, 'email'),
 				nickname=get_value(user_element, 'nickname'),
 				password_hash=get_value(user_element, 'password-hash'),
-				apps=map(app_from_xml, user_element.xpath('/user/apps')),
+				apps=map(app_from_xml, user_element.xpath('/user/app')),
 				orders=map(order_from_xml, user_element.xpath('/user/orders/order')),
 				roles=map(role_from_xml, user_element.xpath('/user/roles/role')),
 				customer_balance=get_value(user_element, 'customer-account', float),

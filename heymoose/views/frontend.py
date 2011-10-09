@@ -26,6 +26,7 @@ from heymoose.views.facebook_app.oauth import *
 from heymoose.views.facebook_app.callback import *
 from heymoose.views.vkontakte import *
 from heymoose.views.offer import *
+from heymoose.views.action import *
 from heymoose.views.work import *
 from heymoose.views.balance import *
 from heymoose.views.blog import *

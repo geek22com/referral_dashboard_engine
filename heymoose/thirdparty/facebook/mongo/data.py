@@ -69,7 +69,7 @@ class AccountAction(mg.Document):
 
 	offer_id = mg.StringField(default="")
 	
-	operation = mg.EnumField(mg.StringField(), 'gift', 'offer')
+	operation = mg.EnumField(mg.StringField(), 'gift', 'offer', 'mlm')
 	date = mg.DateTimeField(default=datetime.now())
 
 

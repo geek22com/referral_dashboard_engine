@@ -2,6 +2,8 @@ from heymoose.thirdparty.facebook.mongo.data import Performer, Gifts
 from heymoose.thirdparty.facebook.mongo.data import AccountAction
 from heymoose import mg
 from heymoose.thirdparty.facebook.actions import users
+from heymoose.utils.workers import app_logger
+
 def get_performer(id):
 	if not id:
 		return None
@@ -33,8 +35,25 @@ def create_action_gift(performer, gift, recipient_id):
 	new_action.save()
 	return True
 
-def create_action_offer(performer, offer_id, cost):
-	action = AccountAction.query.filter(AccountAction.performer_id == performer.user_id).descending('version').first()
+def create_action_mlm(performer_id, revenue):
+	action = AccountAction.query.filter(AccountAction.performer_id == performer_id).descending('version').first()
+	if not action:
+		app_logger.debug("Error: try to make negative balance performer_id:{0}".format(performer_id))
+		return False
+	else:
+		new_version = action.version + 1
+		new_balance = action.balance + revenue
+
+	new_action = AccountAction(version = new_version,
+								balance = new_balance,
+								performer_id = performer_id,
+								operation = "mlm")
+	new_action.save()
+	return True
+
+
+def create_action_offer(performer_id, offer_id, cost):
+	action = AccountAction.query.filter(AccountAction.performer_id == performer_id).descending('version').first()
 	if not action:
 		new_version = 0
 		new_balance = cost
@@ -44,7 +63,7 @@ def create_action_offer(performer, offer_id, cost):
 
 	new_action = AccountAction(version = new_version,
 								balance = new_balance,
-								performer_id = performer.user_id,
+								performer_id = performer_id,
 								offer_id = offer_id,
 								operation = "offer")
 	new_action.save()

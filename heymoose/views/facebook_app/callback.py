@@ -5,49 +5,29 @@ from flask import Flask, request, session, url_for, redirect, \
 	 render_template, abort, g, flash
 from heymoose.thirdparty.facebook.actions import base
 from heymoose.thirdparty.facebook.mongo import performers
+from heymoose.thirdparty.facebook.mongo.performers import create_action_offer, create_action_mlm
 from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
 from heymoose import config
 import heymoose.forms.forms as forms
+from heymoose.thirdparty.facebook.mongo.data import AccountAction
 
-def offer_callback(data):
-#	offer_stat = OffersStat.query.filter(OffersStat.performer_id == "1", OffersStat.offer_id == "12").first()
-#	if offer_stat:
-#		offer_stat.done = True
-#		offer_stat.save()
-#	else:
-#		offer_stat = OffersStat(performer_id="12",
-#								offer_id = "23",
-#								done = True)
-#		offer_stat.save()
-#		app_logger.debug("offer_callback on unexistend offerstat performer_id={0} offer_id={1}".format(1,2))
-#
-#	performer = performers.get_performer("12")
-#	if not performer:
-#		app_logger.debug("offer_callback on unexistend performer performer_id={0}".format(1,2))
-#
-#	performer.amount = performer.amount + 123
-#	performer.save()
-	pass
+@frontend.route('/offer_callback/', methods=['POST'])
+def offer_callback():
+	extId = request.form.get('extId').decode('utf8')
+	offerId = request.form.get('offerId').decode('utf8')
+	amount = request.form.get('amount').decode('utf8')
+	create_action_offer(extId, offerId, amount)
+	app_logger.debug("offer_callback for extId={0} offerId={1} amount={2}".format(extId, offerId, amount))
 
+@frontend.route('/mlm_callback/', methods=['POST'])
 def mlm_callback(data):
-	pass
-
-@frontend.route('/main_callback/', methods=['POST'])
-def main_callback():
-	signed_request = request.form.get('signed_request', '').decode('utf8')
-
-	valid, data = base.decrypt_request(signed_request)
-	if valid:
-		type = data.get('type')
-		if type == 'offer':
-			offer_callback(data)
-		elif type == 'mlm':
-			mlm_callback(data)
-		else:
-			app_logger.debug('main_callback: unknown callback type = {0}'.format(type))
-	else:
-		app_logger.debug("bad signed request: sign_error")
-
-	return ""
-
+	appId = request.form.get('appId').decode('utf8')
+	fromTime = request.form.get('fromTime').decode('utf8')
+	toTime = request.form.get('toTime').decode('utf8')
+	items = json.loads(request.form.get('items').decode('utf8'))
+	app_logger.debug("mlm callback called for appId={0} fromTime={1} toTime={2} items={3}".format(appId, fromTime, toTime, str(items)))
+	
+	for item in items:
+		if not create_action_mlm(item[u'extId'], item[u'passiveRevenue']):
+			app_logger.debug("Error try to calc negative revenue appId={0} fromTime={1} toTime={2}".format(appId, fromTime, toTime))

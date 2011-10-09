@@ -48,6 +48,7 @@ class OrderForm(Form):
 	orderbody = TextField('orederbody', [validators.Required(message = ('Введите тело'))])
 	ordercpa = IntegerField('oredercpa', [validators.Required(message = ('Введите cpa'))])
 	ordercallback = TextField('oredercallback', [validators.Required(message = ('Введите callback'))])
+	
 class AppForm(Form):
 	appcallback = TextField('appcallback', [validators.Required(message = ('Введите callback'))])
 

@@ -80,7 +80,7 @@ def facebook_app():
 		if heymoose_developer and len(heymoose_developer.apps) > 0:
 			g.params['heymoose_app_id'] = heymoose_developer.apps[0].id
 			m = md5()
-			m.update(heymoose_developer.apps[0].id + heymoose_developer.apps[0].secret)
+			m.update(unicode(heymoose_developer.apps[0].id) + unicode(heymoose_developer.apps[0].secret))
 			g.params['heymoose_app_sig'] = m.hexdigest()
 		else:
 			app_logger.debug("Can't get heymoose_developer so facebook_app will not be initialized correct developer:{0} len:{1}".format(heymoose_developer, len(heymoose_developer.apps)))

@@ -72,18 +72,12 @@ def init(options):
 					exchange=EXCHANGE_ACTION_NAME)
 
 def send_to_server(callback, params_dict):
-#	syslog.syslog(syslog.LOG_INFO, "send to appId={0} fromTime={1} toTime={2}".format(appId,
-#																					fromTime,
-#																					toTime))
 	url_object = urllib2.urlparse.urlparse(callback)
 	base = "{0}://{1}".format(url_object.scheme, url_object.hostname)
 	post(url_object.path,
 		base,
 		params_dict=params_dict)
 
-	syslog.syslog(syslog.LOG_INFO, "send {0} {1} {2}".format(url_object.path,
-															base,
-															str(params_dict)))
 
 def action_done_callback(msg):
 	if not msg.body:
@@ -91,7 +85,6 @@ def action_done_callback(msg):
 		return
 
 	message = json.loads(s=msg.body, encoding='utf8')
-	print "action_done_callback"
 	try:
 		send_to_server(message[u'callback'],
 		               params_dict=dict(extId=message[u'extId'],
@@ -99,7 +92,6 @@ def action_done_callback(msg):
 							amount=message[u'amount']))
 
 	except Exception as inst:
-		print "action_done_callback except"
 		syslog.syslog(syslog.LOG_ERR, "can't send message: {0}  exception: {1}".format(message, inst))
 
 	msg.channel.basic_ack(msg.delivery_tag)
@@ -110,7 +102,6 @@ def mlm_callback(msg):
 		return
 
 	message = json.loads(s=msg.body, encoding='utf8')
-	print "mlm_callback"
 	try:
 		send_to_server(message[u'callback'],
 		               params_dict=dict(items=json.dumps(message[u'items']),
@@ -118,7 +109,6 @@ def mlm_callback(msg):
 							fromTime=message[u'fromTime'],
 							toTime=message[u'toTime']))
 	except Exception as inst:
-		print "mlm_callback except"
 		syslog.syslog(syslog.LOG_ERR, "can't send message: {0}  exception: {1}".format(message, inst))
 
 	msg.channel.basic_ack(msg.delivery_tag)
@@ -161,9 +151,11 @@ def main():
 	init(options)
 	child_routine(options)
 
-import unittest
 if __name__ == "__main__":
-	class QueueTest(unittest.TestCase):
+	main()
+
+#	import unittest
+#	class QueueTest(unittest.TestCase):
 #		def test_example(self):
 #			pid = os.fork()
 #			if pid == 0:
@@ -189,32 +181,32 @@ if __name__ == "__main__":
 #
 #			while True:
 #				pass
-		def test_mlm_message(self):
-			body = """{"appId":1,"callback":"http://mlm.org/callback","fromTime":"2011-10-08T01:58:00.000+04:00","toTime":"2011-10-09T01:58:00.000+04:00","items":[{"extId":"ext2","passiveRevenue":"-0.90"},{"extId":"ext1","passiveRevenue":"0.90"}]}"""
-			body_action = """{"callback":"http://action.org/callback","extId":"ext1","offerId":"offer1","amount":"amount1"}"""
-			pid = os.fork()
-			if pid == 0:
-				main()
-
-			sleep(10)
-			conn = amqp.Connection()
-			ch = conn.channel()
-			ch.access_request('/data', active=True, read=True)
-
-			msg = amqp.Message(body)
-			ch.basic_publish(msg,
-		                 exchange=EXCHANGE_MLM_NAME,
-		                 routing_key=ROUTING_KEY)
-			sleep(5)
-			msg = amqp.Message(body_action)
-			ch.basic_publish(msg,
-		                 exchange=EXCHANGE_ACTION_NAME)
-
-			print "Send message"
-
-			while True:
-				pass
-
+#		def test_mlm_message(self):
+#			body = """{"appId":1,"callback":"http://mlm.org/callback","fromTime":"2011-10-08T01:58:00.000+04:00","toTime":"2011-10-09T01:58:00.000+04:00","items":[{"extId":"ext2","passiveRevenue":"-0.90"},{"extId":"ext1","passiveRevenue":"0.90"}]}"""
+#			body_action = """{"callback":"http://action.org/callback","extId":"ext1","offerId":"offer1","amount":"amount1"}"""
+#			pid = os.fork()
+#			if pid == 0:
+#				main()
+#
+#			sleep(10)
+#			conn = amqp.Connection()
+#			ch = conn.channel()
+#			ch.access_request('/data', active=True, read=True)
+#
+#			msg = amqp.Message(body)
+#			ch.basic_publish(msg,
+#		                 exchange=EXCHANGE_MLM_NAME,
+#		                 routing_key=ROUTING_KEY)
+#			sleep(5)
+#			msg = amqp.Message(body_action)
+#			ch.basic_publish(msg,
+#		                 exchange=EXCHANGE_ACTION_NAME)
+#
+#			print "Send message"
+#
+#			while True:
+#				pass
+#
 #		def test_action_message(self):
 #			body = """{"callback":"http://action.org/callback","extId":"ext1","offerId":"offer1","amount":"amount1"]}"""
 #			pid = os.fork()
@@ -233,5 +225,5 @@ if __name__ == "__main__":
 #
 #			while True:
 #				pass
-
-	unittest.main()
+#
+#	unittest.main()

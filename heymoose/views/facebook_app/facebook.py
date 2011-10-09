@@ -82,6 +82,8 @@ def facebook_app():
 			m = md5()
 			m.update(heymoose_developer.apps[0].id + heymoose_developer.apps[0].secret)
 			g.params['heymoose_app_sig'] = m.hexdigest()
+		else:
+			app_logger.debug("Can't get heymoose_developer so facebook_app will not be initialized correct developer:{0} len:{1}".format(heymoose_developer, len(heymoose_developer.apps)))
 		return render_template('./facebook_app/heymoose-facebook.html', params=g.params)
 
 

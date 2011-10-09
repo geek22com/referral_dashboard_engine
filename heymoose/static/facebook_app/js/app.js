@@ -74,8 +74,9 @@ function load_offers(){
     };
     var tmpl = "offers";
     var url = app_domain + "/rest_api/" + tmpl;
-    url += "?" + $.param(params)
-
+    url += "?" + $.param(params);
+    $('.b-maincontent').load(url);
+    
 /*    var url = app_domain + "/facebook_tmpl/" + tmpl;
     $('.b-maincontent').load(url);*/
 }

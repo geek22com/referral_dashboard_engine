@@ -53,7 +53,7 @@ class Performer(mg.Document):
 	
 class Gifts(mg.Document):
 	title = mg.StringField()
-	price = mg.IntField()
+	price = mg.FloatField()
 	desc = mg.StringField()
 	data = GridfsField()
 	date = mg.DateTimeField(default=datetime.now())

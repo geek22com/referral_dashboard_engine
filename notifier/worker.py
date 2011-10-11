@@ -29,7 +29,7 @@ QUEUE_MLM_NAME = "reports.notify"
 QUEUE_ACTION_NAME = "events.events"
 
 ROUTING_KEY = "notify"
-TIMEOUT = 20
+TIMEOUT = 1
 
 def create_resource(base):
 	return Resource(base,
@@ -38,11 +38,11 @@ def create_resource(base):
 def exec_request(http_call):
 	return http_call()
 
-def post(path, base, params_dict={}):
+def post(path, base, params_dict):
 	resource = create_resource(base)
 	exec_request(partial(resource.post,
 	                              path=path,
-	                              payload=forms.form_encode(params_dict)))
+	                              payload=params_dict))
 
 def init(options):
 	conn = amqp.Connection(options.host,

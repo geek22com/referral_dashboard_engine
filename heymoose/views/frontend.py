@@ -142,7 +142,7 @@ def register():
 		elif users.get_user_by_email(register_form.email.data) is not None:
 			flash_form_errors([['Введенный email уже используется']], 'registererror')
 		# Уязвимость, данные из поля капча и hidden не проверяются.
-		elif config.get('USE_DATABASE') and captcha.check_captcha(request.form['captcha_id'], request.form['captcha_answer']) is None:
+		elif captcha.check_captcha(request.form['captcha_id'], request.form['captcha_answer']) is None:
 			flash_form_errors([['Каптча введена не верна']], 'registererror')
 		else:
 			users.add_user(email=register_form.email.data,

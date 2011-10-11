@@ -3,6 +3,7 @@ import sys, os
 import md5
 import re
 from BeautifulSoup import BeautifulSoup
+from heymoose.thirdparty.facebook.mongo.performers import get_available_gifts
 
 cmd_folder = os.path.dirname(os.path.abspath("/home/kshilov/PycharmProjects/frontend/frontend-1.0/heymoose"))
 if cmd_folder not in sys.path:
@@ -123,176 +124,176 @@ if __name__ == "__main__":
 #				except Exception as inst:
 #					print inst
 
-			def test_action_notify(self):
-				performer1_balance = performers.get_performer_balance(PERFORMER_1_ID)
-				expect_balance = performer1_balance + 10
-				with app.test_client() as c:
-					rv = c.get('/set_cookie/{0}'.format(PERFORMER_1_ID))
-					rv = c.post('/main_callback/', data=dict(extId=PERFORMER_1_ID,
-															offerId=3,
-															amount=10))
+#			def test_action_notify(self):
+#				performer1_balance = performers.get_performer_balance(PERFORMER_1_ID)
+#				expect_balance = performer1_balance + 10
+#				with app.test_client() as c:
+#					rv = c.get('/set_cookie/{0}'.format(PERFORMER_1_ID))
+#					rv = c.post('/main_callback/', data=dict(extId=PERFORMER_1_ID,
+#															offerId=3,
+#															amount=10))
+#
+#				new_balance = performers.get_performer_balance(PERFORMER_1_ID)
+#				self.assertEqual(new_balance, expect_balance)
 
-				new_balance = performers.get_performer_balance(PERFORMER_1_ID)
-				self.assertEqual(new_balance, expect_balance)
-
-			def test_mlm_notify(self):
-				performer1_balance = performers.get_performer_balance(PERFORMER_1_ID)
-				performer2_balance = performers.get_performer_balance(PERFORMER_2_ID)
-
-				performer1_passive_revenue = 2
-				performer2_passive_revenue = -1
-
-				performer1_expect_balance = performer1_balance + performer1_passive_revenue
-				performer2_expect_balance = performer2_balance + performer2_passive_revenue
-
-				heymoose_developer = users.get_user_by_email('ks.shilov@gmail.com', full=True)
-				current_app = apps.active_apps(heymoose_developer.apps)[0] if heymoose_developer else None
-				self.assertFalse(not heymoose_developer)
-				self.assertFalse(not current_app)
-
-				heymoose_app_id = current_app.id
-
-				items = [{"extId":PERFORMER_1_ID,"passiveRevenue":performer1_passive_revenue},{"extId":PERFORMER_2_ID,"passiveRevenue":performer2_passive_revenue}]
-				with app.test_client() as c:
-					rv = c.post('/main_callback/', data=dict(items=json.dumps(items),
-															appId=heymoose_app_id,
-															fromTime="2011-10-08T01:58:00.000+04:00",
-															toTime="2011-10-09T01:58:00.000+04:00"))
-
-				performer1_new_balance = performers.get_performer_balance(PERFORMER_1_ID)
-				performer2_new_balance = performers.get_performer_balance(PERFORMER_2_ID)
-				self.assertEqual(performer1_new_balance, performer1_expect_balance)
-				self.assertEqual(performer2_new_balance, performer2_expect_balance)
-
-			def test_send_gift(self):
-				from_id = PERFORMER_2_ID
-				to_id = PERFORMER_1_ID
-
-				from_performer_balance = performers.get_performer_balance(from_id)
-				gifts = performers.get_available_gifts(from_id)
-				self.assertFalse(not gifts)
-				map(lambda gift: self.assertFalse(gift.price > from_performer_balance), gifts)
-
-				with app.test_client() as c:
-					rv = c.get('/set_cookie/{0}'.format(from_id))
-					rv = c.post('/facebook_send_gift', data=dict(to_id=to_id,
-																gift_id=str(gifts[0].mongo_id)),
-					                                    follow_redirects=True)
-					print rv.headers
-					self.assertEqual(rv.status_code, 200)
-
-
-			def test_gift(self):
-				performer1 = performers.get_performer(PERFORMER_1_ID)
-				performer1_balance = performers.get_performer_balance(performer1.user_id)
-
-				gifts = performers.get_available_gifts(performer1.user_id)
-				self.assertFalse(not gifts)
-				map(lambda gift: self.assertFalse(gift.price > performer1_balance), gifts)
-
-				with app.test_client() as c:
-					print dir(c)
-					rv = c.get('/set_cookie/{0}'.format(PERFORMER_1_ID))
-					rv = c.post('/facebook_send_gift', data=dict(to_id=PERFORMER_2_ID,
-																gift_id=str(gifts[0].mongo_id)),
-					                                    follow_redirects=True)
-					print rv.headers
-					self.assertEqual(rv.status_code, 200)
-
-				performer1_after_send_gift_balance = performers.get_performer_balance(PERFORMER_1_ID)
-				performer1_after_send_gift_expected_balance = performer1_balance - gifts[0].price
-				self.assertEqual(performer1_after_send_gift_balance, performer1_after_send_gift_expected_balance)
-
-				new_gifts = performers.get_available_gifts(performer1.user_id)
-				self.assertFalse(not new_gifts)
-				map(lambda gift: self.assertFalse(gift.price > performer1_after_send_gift_balance), new_gifts)
-
-				gift_action = AccountAction.query.filter(AccountAction.performer_id == PERFORMER_1_ID,
-														AccountAction.recipient_id == PERFORMER_2_ID,
-														AccountAction.operation == 'gift').all()
-				self.assertNotEqual(gift_action, None)
-
-
-			def test_performer_gifts(self):
-				gifts = performers.get_gifts(PERFORMER_1_ID)
-				print len(gifts)
-				print gifts[0]["gift"].data
-				
-			def test_performer_stat(self):
-				with app.test_client() as c:
-					rv = c.get('/set_cookie/{0}'.format(PERFORMER_1_ID))
-					rv = c.post('/facebook_tmpl/stat')
-
-					self.assertEqual(rv.status_code, 200)
-					print rv.data
-
-				
-			def test_app_access_token(self):
-				token = get_app_access_token()
-				self.assertNotEqual(token, None)
-
-			def test_invitations(self):
-				invite_from = None
-				if performers.is_performer_new(PERFORMER_REAL_IVAN_IVANOV):
-					invite_from = invitations.check_invite(PERFORMER_REAL_IVAN_IVANOV)
-				self.assertNotEqual(invite_from, None)
-
-				performer = Performer(dirty = False,
-										oauth_token = '',
-										expires = '',
-										user_id = PERFORMER_REAL_IVAN_IVANOV,
-										fullname = "Ivan Ivanov",
-										firstname = "Ivan",
-										lastname = "Ivanov")
-				performer.save()
-
-				if invite_from:
-					heymoose_developer = get_user_by_email(config.get('APP_EMAIL'), full=True)
-					current_app = apps.active_apps(heymoose_developer.apps)[0] if heymoose_developer else None
-					invitations.confirm_invite(performer.user_id, invite_from, current_app.id)
-
-
-				cur_invites = invites.get_invites(performer.user_id)
-				self.assertNotEqual(invites, None)
-
-				found_invite = None
-				for invite in cur_invites:
-					if invite.to_id == PERFORMER_REAL_IVAN_IVANOV:
-						found_invite = invite
-						break
-
-				self.assertNotEqual(found_invite, None)
-				print found_invite.from_id
-				print found_invite.to_id
-				print found_invite.date
-
-			def test_backend_invitations(self):
-				to_id = PERFORMER_3_ID
-				from_id = PERFORMER_1_ID
-				heymoose_developer = get_user_by_email(config.get('APP_EMAIL'), full=True)
-				current_app = apps.active_apps(heymoose_developer.apps)[0] if heymoose_developer else None
-				invitations.confirm_invite(to_id, from_id, current_app.id)
-
-			def test_collect_invitaions(self):
-				cur_invites = invites.get_invites(PERFORMER_REAL_IVAN_IVANOV)
-				self.assertNotEqual(invites, None)
-
-				found_invite = None
-				for invite in cur_invites:
-					if invite.to_id == PERFORMER_REAL_IVAN_IVANOV:
-						found_invite = invite
-						break
-
-				self.assertNotEqual(found_invite, None)
-				print found_invite.from_id
-				print found_invite.to_id
-				print found_invite.date
-
+#			def test_mlm_notify(self):
+#				performer1_balance = performers.get_performer_balance(PERFORMER_1_ID)
+#				performer2_balance = performers.get_performer_balance(PERFORMER_2_ID)
+#
+#				performer1_passive_revenue = 2
+#				performer2_passive_revenue = -1
+#
+#				performer1_expect_balance = performer1_balance + performer1_passive_revenue
+#				performer2_expect_balance = performer2_balance + performer2_passive_revenue
+#
+#				heymoose_developer = users.get_user_by_email('ks.shilov@gmail.com', full=True)
+#				current_app = apps.active_apps(heymoose_developer.apps)[0] if heymoose_developer else None
+#				self.assertFalse(not heymoose_developer)
+#				self.assertFalse(not current_app)
+#
+#				heymoose_app_id = current_app.id
+#
+#				items = [{"extId":PERFORMER_1_ID,"passiveRevenue":performer1_passive_revenue},{"extId":PERFORMER_2_ID,"passiveRevenue":performer2_passive_revenue}]
+#				with app.test_client() as c:
+#					rv = c.post('/main_callback/', data=dict(items=json.dumps(items),
+#															appId=heymoose_app_id,
+#															fromTime="2011-10-08T01:58:00.000+04:00",
+#															toTime="2011-10-09T01:58:00.000+04:00"))
+#
+#				performer1_new_balance = performers.get_performer_balance(PERFORMER_1_ID)
+#				performer2_new_balance = performers.get_performer_balance(PERFORMER_2_ID)
+#				self.assertEqual(performer1_new_balance, performer1_expect_balance)
+#				self.assertEqual(performer2_new_balance, performer2_expect_balance)
+#
+#			def test_send_gift(self):
+#				from_id = PERFORMER_2_ID
+#				to_id = PERFORMER_1_ID
+#
+#				from_performer_balance = performers.get_performer_balance(from_id)
+#				gifts = performers.get_available_gifts(from_id)
+#				self.assertFalse(not gifts)
+#				map(lambda gift: self.assertFalse(gift.price > from_performer_balance), gifts)
+#
+#				with app.test_client() as c:
+#					rv = c.get('/set_cookie/{0}'.format(from_id))
+#					rv = c.post('/facebook_send_gift', data=dict(to_id=to_id,
+#																gift_id=str(gifts[0].mongo_id)),
+#					                                    follow_redirects=True)
+#					print rv.headers
+#					self.assertEqual(rv.status_code, 200)
+#
+#
+#			def test_gift(self):
+#				performer1 = performers.get_performer(PERFORMER_1_ID)
+#				performer1_balance = performers.get_performer_balance(performer1.user_id)
+#
+#				gifts = performers.get_available_gifts(performer1.user_id)
+#				self.assertFalse(not gifts)
+#				map(lambda gift: self.assertFalse(gift.price > performer1_balance), gifts)
+#
+#				with app.test_client() as c:
+#					print dir(c)
+#					rv = c.get('/set_cookie/{0}'.format(PERFORMER_1_ID))
+#					rv = c.post('/facebook_send_gift', data=dict(to_id=PERFORMER_2_ID,
+#																gift_id=str(gifts[0].mongo_id)),
+#					                                    follow_redirects=True)
+#					print rv.headers
+#					self.assertEqual(rv.status_code, 200)
+#
+#				performer1_after_send_gift_balance = performers.get_performer_balance(PERFORMER_1_ID)
+#				performer1_after_send_gift_expected_balance = performer1_balance - gifts[0].price
+#				self.assertEqual(performer1_after_send_gift_balance, performer1_after_send_gift_expected_balance)
+#
+#				new_gifts = performers.get_available_gifts(performer1.user_id)
+#				self.assertFalse(not new_gifts)
+#				map(lambda gift: self.assertFalse(gift.price > performer1_after_send_gift_balance), new_gifts)
+#
+#				gift_action = AccountAction.query.filter(AccountAction.performer_id == PERFORMER_1_ID,
+#														AccountAction.recipient_id == PERFORMER_2_ID,
+#														AccountAction.operation == 'gift').all()
+#				self.assertNotEqual(gift_action, None)
+#
+#
+#			def test_performer_gifts(self):
+#				gifts = performers.get_gifts(PERFORMER_1_ID)
+#				print len(gifts)
+#				print gifts[0]["gift"].data
+#
+#			def test_performer_stat(self):
+#				with app.test_client() as c:
+#					rv = c.get('/set_cookie/{0}'.format(PERFORMER_1_ID))
+#					rv = c.post('/facebook_tmpl/stat')
+#
+#					self.assertEqual(rv.status_code, 200)
+#					print rv.data
+#
+#
+#			def test_app_access_token(self):
+#				token = get_app_access_token()
+#				self.assertNotEqual(token, None)
+#
+#			def test_invitations(self):
+#				invite_from = None
+#				if performers.is_performer_new(PERFORMER_REAL_IVAN_IVANOV):
+#					invite_from = invitations.check_invite(PERFORMER_REAL_IVAN_IVANOV)
+#				self.assertNotEqual(invite_from, None)
+#
+#				performer = Performer(dirty = False,
+#										oauth_token = '',
+#										expires = '',
+#										user_id = PERFORMER_REAL_IVAN_IVANOV,
+#										fullname = "Ivan Ivanov",
+#										firstname = "Ivan",
+#										lastname = "Ivanov")
+#				performer.save()
+#
+#				if invite_from:
+#					heymoose_developer = get_user_by_email(config.get('APP_EMAIL'), full=True)
+#					current_app = apps.active_apps(heymoose_developer.apps)[0] if heymoose_developer else None
+#					invitations.confirm_invite(performer.user_id, invite_from, current_app.id)
+#
+#
+#				cur_invites = invites.get_invites(performer.user_id)
+#				self.assertNotEqual(invites, None)
+#
+#				found_invite = None
+#				for invite in cur_invites:
+#					if invite.to_id == PERFORMER_REAL_IVAN_IVANOV:
+#						found_invite = invite
+#						break
+#
+#				self.assertNotEqual(found_invite, None)
+#				print found_invite.from_id
+#				print found_invite.to_id
+#				print found_invite.date
+#
+#			def test_backend_invitations(self):
+#				to_id = PERFORMER_3_ID
+#				from_id = PERFORMER_1_ID
+#				heymoose_developer = get_user_by_email(config.get('APP_EMAIL'), full=True)
+#				current_app = apps.active_apps(heymoose_developer.apps)[0] if heymoose_developer else None
+#				invitations.confirm_invite(to_id, from_id, current_app.id)
+#
+#			def test_collect_invitaions(self):
+#				cur_invites = invites.get_invites(PERFORMER_REAL_IVAN_IVANOV)
+#				self.assertNotEqual(invites, None)
+#
+#				found_invite = None
+#				for invite in cur_invites:
+#					if invite.to_id == PERFORMER_REAL_IVAN_IVANOV:
+#						found_invite = invite
+#						break
+#
+#				self.assertNotEqual(found_invite, None)
+#				print found_invite.from_id
+#				print found_invite.to_id
+#				print found_invite.date
+#
 		unittest.main()
 
 	finally:
 		# app.run() start another process inside, so to kill all
 		# this process we should send kill signal to gid (man kill)
-		#raw_input("Press Enter to continue...")
+		raw_input("Press Enter to continue...")
 		os.kill(-1*pid, signal.SIGTERM)
 		os.waitpid(pid, 0)

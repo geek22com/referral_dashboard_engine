@@ -82,7 +82,11 @@ def init(options):
 
 def send_to_server(callback, params_dict):
 	url_object = urllib2.urlparse.urlparse(callback)
-	base = "{0}://{1}".format(url_object.scheme, url_object.hostname)
+	if url_object.port:
+		base = "{0}://{1}:{2}".format(url_object.scheme, url_object.hostname, url_object.port)
+	else:
+		base = "{0}://{1}".format(url_object.scheme, url_object.hostname)
+		
 	post(url_object.path,
 		base,
 		params_dict=params_dict)
@@ -92,7 +96,6 @@ def action_done_callback(msg):
 	if not msg.body:
 		msg.channel.basic_ack(msg.delivery_tag)
 		return
-
 	message = json.loads(s=msg.body, encoding='utf8')
 	try:
 		send_to_server(message[u'callback'],
@@ -101,7 +104,7 @@ def action_done_callback(msg):
 							amount=message[u'amount']))
 
 	except Exception as inst:
-		syslog.syslog(syslog.LOG_ERR, "can't send message: {0}  exception: {1}".format(message, inst))
+		syslog.syslog(syslog.LOG_ERR, "can't send message: {0}  msg_body: {1}  exception: {2}".format(message, msg.body, inst))
 
 	msg.channel.basic_ack(msg.delivery_tag)
 
@@ -135,6 +138,16 @@ def child_routine(options):
 	ch.basic_consume(QUEUE_MLM_NAME, callback=mlm_callback)
 	ch.basic_consume(QUEUE_ACTION_NAME, callback=action_done_callback)
 
+	if options.hand_send_action:
+		syslog.syslog(syslog.LOG_INFO, "options.hand_send_action={0}".format(options.hand_send_action))
+		action_message = amqp.Message(options.hand_send_action)
+		action_done_callback(action_message)
+
+	if options.hand_send_mlm:
+		syslog.syslog(syslog.LOG_INFO, "options.hand_send_mlm={0}".format(options.hand_send_mlm))
+		mlm_message = amqp.Message(options.hand_send_mlm)
+		mlm_callback(mlm_message)
+
 	while ch.callbacks:
 		ch.wait()
 
@@ -160,12 +173,22 @@ def main():
 						help='Remove all exchanges and queues from MQ',
 						default=False)
 
+	parser.add_option('--hand_send_action', dest='hand_send_action',
+						help='resend action message by hand',
+						default=False)
+
+	parser.add_option('--hand_send_mlm', dest='hand_send_mlm',
+						help='resend mlm message by hand',
+						default=False)
+
+
 	options, args = parser.parse_args()
 	try:
 		init(options)
 		child_routine(options)
 	except Exception as inst:
 		syslog.syslog(syslog.LOG_ERR, "exception: {0}".format(inst))
+		syslog.syslog(syslog.LOG_ERR, "stacktrace: {0}".format(sys.exc_info()))
 
 if __name__ == "__main__":
 	main()

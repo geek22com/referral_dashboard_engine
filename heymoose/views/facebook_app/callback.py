@@ -16,7 +16,7 @@ from datetime import datetime
 def offer_callback(form):
 	extId = form.get('extId').decode('utf8')
 	offerId = form.get('offerId').decode('utf8')
-	amount = int(form.get('amount').decode('utf8'))
+	amount = float(form.get('amount').decode('utf8'))
 	create_action_offer(extId, offerId, amount)
 	app_logger.debug("offer_callback for extId={0} offerId={1} amount={2}".format(extId, offerId, amount))
 
@@ -28,7 +28,7 @@ def mlm_callback(form):
 	app_logger.debug("mlm callback called for appId={0} fromTime={1} toTime={2} items={3}".format(appId, fromTime, toTime, str(items)))
 	
 	for item in items:
-		if not create_action_mlm(item[u'extId'], int(item[u'passiveRevenue'])):
+		if not create_action_mlm(item[u'extId'], float(item[u'passiveRevenue'])):
 			app_logger.debug("Error try to calc negative revenue appId={0} fromTime={1} toTime={2}".format(appId, fromTime, toTime))
 
 

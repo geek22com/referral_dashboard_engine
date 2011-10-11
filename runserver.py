@@ -10,5 +10,5 @@ from heymoose.tests.gen_qa import generate_captcha
 
 if __name__ == '__main__':
 	generate_captcha()
-	app.run()
+	app.run(port=8989, debug=True)
 

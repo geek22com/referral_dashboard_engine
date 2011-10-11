@@ -71,7 +71,7 @@ class AccountAction(mg.Document):
 	version_id_index.ascending('performer_id').unique()
 	
 	version = mg.IntField(default=0)
-	balance = mg.IntField(default=0)
+	balance = mg.FloatField(default=0)
 	performer_id = mg.StringField()
 
 	recipient_id = mg.StringField(default="")

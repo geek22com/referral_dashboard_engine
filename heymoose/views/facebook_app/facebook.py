@@ -169,7 +169,7 @@ def facebook_gifts():
 	return render_template('./facebook_app/gifts.html', params=g.params)
 
 
-@frontend.route('/facebook_app/facebook_gift_data/<string:id>', methods=['POST', 'GET'])
+@frontend.route('/facebook_gift_data/<string:id>', methods=['POST', 'GET'])
 @oauth_only
 def facebook_gift_data(id):
 	gift = Gifts.query.filter(Gifts.mongo_id == id).first()

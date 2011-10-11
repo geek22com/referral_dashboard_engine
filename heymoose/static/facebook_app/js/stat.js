@@ -17,7 +17,7 @@
     }
 
     $(function() {
-        $(".b-invite_button").onclick(function(e){
+        $(".b-invite_button").click(function(e){
             disableInput();
             FB.ui({method: 'apprequests', message: _USER.firstname + ' Приглашает вас!'}, function(res) {
                 enableInput();

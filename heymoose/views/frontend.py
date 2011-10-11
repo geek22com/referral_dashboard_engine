@@ -11,10 +11,12 @@ from werkzeug import check_password_hash, generate_password_hash
 import random
 import string
 import sys
+import base64
 
 from flask import Module
 from heymoose.utils.decorators import auth_only, role_not_detected_only, admin_only
 from heymoose.utils.workers import app_logger, heymoose_app
+from heymoose.core.actions import apps
 from heymoose import config
 import heymoose.forms.forms as forms
 import heymoose.core.actions.users as users
@@ -94,9 +96,9 @@ def user_cabinet(username):
 		abort(404)
 
 	if g.user.is_developer():
-		apps = g.user.apps
-		if apps:
-			g.params['apps'] = apps
+		user_apps = apps.active_apps(g.user.apps)
+		if user_apps:
+			g.params['apps'] = user_apps
 
 	if g.user.is_customer():
 		orders = g.user.orders
@@ -167,8 +169,12 @@ def logout():
 def datetimeformat(value, format='%H:%M / %d-%m-%Y'):
 	return value.strftime(format)
 
+def base64filter(value):
+	return base64.encodestring(value).strip('\n')
+
 # add some filters to jinja
 heymoose_app.jinja_env.filters['datetimeformat'] = datetimeformat
+heymoose_app.jinja_env.filters['base64filter'] = base64filter
 #app.jinja_env.filters['gravatar'] = gravatar_url
 
 

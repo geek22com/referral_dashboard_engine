@@ -2,11 +2,14 @@
 DEBUG = True
 SECRET_KEY = 'lola pola_mola_cola'
 RESTAPI_SERVER = 'http://localhost:5468'
-USE_DATABASE = False
+USE_DATABASE = True
 
 APP_ID = "243934035656884"
 APP_SECRET = "054cec4abf69a4dd6fcaa4b75cd04f01"
 DEVELOPER_SECRET_KEY = "3ca2a85b953ffef29625ffc11df61eee"
+
+#backend parameters
+APP_EMAIL = "ks.shilov@gmail.com"
 
 #Facebook parameters
 FACEBOOK_SERVICE_URL = "http://www.facebook.com"

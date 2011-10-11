@@ -51,11 +51,19 @@ def init(options):
 	                       ssl=options.ssl)
 	
 	ch = conn.channel()
+	if options.hard_reset:
+		syslog.syslog(syslog.LOG_INFO, "notifier hard_reset: remove all exchanges and queues from MQ")
+		ch.exchange_delete(EXCHANGE_MLM_NAME)
+		ch.exchange_delete(EXCHANGE_ACTION_NAME)
+		ch.queue_delete(QUEUE_MLM_NAME)
+		ch.queue_delete(QUEUE_ACTION_NAME)
+		exit(0)
 
 	#MLM
 	ch.exchange_declare(EXCHANGE_MLM_NAME,
 						'direct',
-						auto_delete=False)
+						auto_delete=False,
+						durable=True)
 
 	ch.queue_declare(queue=QUEUE_MLM_NAME)
 	ch.queue_bind(queue=QUEUE_MLM_NAME,
@@ -64,8 +72,9 @@ def init(options):
 
 	#Action done
 	ch.exchange_declare(EXCHANGE_ACTION_NAME,
-						'direct',
-						auto_delete=False)
+						'fanout', # Fix after backend fix
+						auto_delete=False,
+						durable=True)
 
 	ch.queue_declare(queue=QUEUE_ACTION_NAME)
 	ch.queue_bind(queue=QUEUE_ACTION_NAME,
@@ -147,9 +156,16 @@ def main():
 	parser.add_option('--ssl', dest='ssl', action='store_true',
 						help='Enable SSL (default: not enabled)',
 						default=False)
+	parser.add_option('--hard_reset', dest='hard_reset', action='store_true',
+						help='Remove all exchanges and queues from MQ',
+						default=False)
+
 	options, args = parser.parse_args()
-	init(options)
-	child_routine(options)
+	try:
+		init(options)
+		child_routine(options)
+	except Exception as inst:
+		syslog.syslog(syslog.LOG_ERR, "exception: {0}".format(inst))
 
 if __name__ == "__main__":
 	main()

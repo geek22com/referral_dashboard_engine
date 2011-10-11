@@ -48,12 +48,22 @@ class Performer(mg.Document):
 	fullname = mg.StringField()
 	firstname = mg.StringField()
 	lastname = mg.StringField()
-
+	offers_count = mg.IntField(default=0)
+	date = mg.DateTimeField(default=datetime.now())
+	
 class Gifts(mg.Document):
 	title = mg.StringField()
 	price = mg.IntField()
 	desc = mg.StringField()
 	data = GridfsField()
+	date = mg.DateTimeField(default=datetime.now())
+
+class Invitations(mg.Document):
+	from_id_index = Index().ascending('from_id').unique()
+	from_id_index.ascending('to_id').unique()
+
+	from_id = mg.StringField()
+	to_id = mg.StringField()
 	date = mg.DateTimeField(default=datetime.now())
 
 class AccountAction(mg.Document):

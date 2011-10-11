@@ -16,6 +16,16 @@ def auth_only(func):
     _inner_.__name__ = func.__name__
     return _inner_
 
+#Dangerous
+def test_only(func):
+	def _inner_(*args, **kwargs):
+		if  request.host != "localhost":
+			abort(404)
+		return func(*args, **kwargs)
+	_inner_.__name__ = func.__name__
+	return _inner_
+
+
 def oauth_only(func):
 	def _inner_(*args, **kwargs):
 		if not g.performer or g.performer.dirty:

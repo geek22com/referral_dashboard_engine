@@ -3,10 +3,12 @@ import json
 from restkit.errors import RequestFailed
 from flask import Flask, request, session, url_for, redirect, \
 	 render_template, abort, g, flash
-from heymoose.thirdparty.facebook.mongo import performers
+from heymoose.core.actions import apps
+from heymoose.thirdparty.facebook.actions import invitations
+from heymoose.thirdparty.facebook.mongo import performers, invites
 from heymoose.thirdparty.facebook.mongo.data import Performer, Gifts
 from heymoose.thirdparty.facebook.mongo.performers import create_action_gift, get_available_gifts
-from heymoose.utils.decorators import auth_only, force_post
+from heymoose.utils.decorators import auth_only, force_post, test_only
 from heymoose.utils.decorators import admin_only
 from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
@@ -46,6 +48,11 @@ def facebook_app():
 			if valid and data:
 				if not data.get(u'user_id', ''):
 					return redirect(url_for('javascript_redirect'))
+
+				invite_from = None
+				if performers.is_performer_new(data.get(u'user_id', '')):
+					invite_from = invitations.check_invite(data.get(u'user_id', ''))
+					
 				g.performer = Performer(dirty = False,
 										oauth_token = data.get(u'oauth_token', ''),
 										expires = str(data.get(u'expires', '')),
@@ -54,6 +61,13 @@ def facebook_app():
 										firstname = data.get(u'first_name', ''),
 										lastname = data.get(u'last_name', ''))
 				g.performer.save()
+				#We need to be sure that all invited performers are in our db
+				#So to reduce mistakes, implement it after save
+				if invite_from:
+					heymoose_developer = get_user_by_email(config.get('APP_EMAIL'), full=True)
+					current_app = apps.active_apps(heymoose_developer.apps)[0] if heymoose_developer else None
+					invitations.confirm_invite(g.performer.user_id, invite_from, current_app.id)
+					
 				session['performer_id'] = g.performer.user_id
 			else:
 				return redirect(url_for('javascript_redirect'))
@@ -76,11 +90,12 @@ def facebook_app():
 			g.params['app_domain'] = config.get('FACEBOOK_APP_DOMAIN')
 
 		#GET Heymoose app parameters
-		heymoose_developer = get_user_by_email('ks.shilov@gmail.com', full=True)
-		if heymoose_developer and len(heymoose_developer.apps) > 0:
-			g.params['heymoose_app_id'] = heymoose_developer.apps[0].id
+		heymoose_developer = get_user_by_email(config.get('APP_EMAIL'), full=True)
+		current_app = apps.active_apps(heymoose_developer.apps)[0] if heymoose_developer else None
+		if heymoose_developer and current_app:
+			g.params['heymoose_app_id'] = current_app.id
 			m = md5()
-			m.update(unicode(heymoose_developer.apps[0].id) + unicode(heymoose_developer.apps[0].secret))
+			m.update(unicode(current_app.id) + unicode(current_app.secret))
 			g.params['heymoose_app_sig'] = m.hexdigest()
 		else:
 			app_logger.debug("Can't get heymoose_developer so facebook_app will not be initialized correct developer:{0} len:{1}".format(heymoose_developer, len(heymoose_developer.apps)))
@@ -106,20 +121,14 @@ def facebook_help():
 @frontend.route('/facebook_do_offer', methods=['POST'])
 @oauth_only
 def facebook_do_offer():
-	offer_form = forms.OfferForm(request.form)
-	if not offer_form.validate():
-		app_logger.debug("facebook_do_offer offerform validate error: {0}".format(offer_form.errors))
-		abort(406)
-#	offer_stat = OffersStat(performer_id = g.performer.user_id,
-#							offer_id = offer_form.offer_id.data)
-#	offer_stat.save()
+	performers.contribute_offer(g.performer)
+	g.performer.save()
 	return ""
 
 @frontend.route('/facebook_send_gift', methods=['POST'])
 @oauth_only
 def facebook_send_gift():
 	app_logger.debug("facebook_send_gift {0}".format(request.form))
-	print request.form
 	gift_form = forms.GiftForm(request.form)
 	if not gift_form.validate():
 		app_logger.debug("facebook_send_gift form validate error: {0}".format(gift_form.errors))
@@ -156,10 +165,11 @@ def facebook_gifts():
 		performers.invalidate_performer(g.performer)
 		g.performer.save()
 
-	g.params['gifts'] = get_available_gifts(g.performer)
+	g.params['gifts'] = get_available_gifts(g.performer.user_id)
 	return render_template('./facebook_app/gifts.html', params=g.params)
 
-@frontend.route('/facebook_gift_data/<string:id>/', methods=['POST', 'GET'])
+
+@frontend.route('/facebook_gift_data/<string:id>', methods=['POST', 'GET'])
 @oauth_only
 def facebook_gift_data(id):
 	gift = Gifts.query.filter(Gifts.mongo_id == id).first()
@@ -173,6 +183,10 @@ def facebook_gift_data(id):
 def facebook_stat():
 	app_logger.debug("facebook_stat performer_id={0} request={1}".format(g.performer.user_id,
 		                                                                    request.url))
+	g.params['balance'] = performers.get_performer_balance(g.performer.user_id)
+	g.params['offers_count'] = g.performer.offers_count
+	g.params['gifts'] = performers.get_gifts(g.performer.user_id)
+	g.params['invites'] = invites.get_invites(g.performer.user_id)
 	return render_template('./facebook_app/stat.html', params=g.params)
 
 @frontend.route('/facebook_tmpl/<tmpl>', methods=['GET', 'POST'])
@@ -180,3 +194,11 @@ def facebook_tmpl(tmpl):
 	app_logger.debug("facebook_tmpl/<tmpl>")
 	template = "./facebook_app/{0}.html".format(tmpl)
 	return render_template(template, params=g.params)
+
+
+###For test purposes only
+@frontend.route('/set_cookie/<id>', methods=['GET', 'POST'])
+@test_only
+def set_cookie(id):
+	session['performer_id'] = id
+	return ""

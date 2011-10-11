@@ -27,7 +27,21 @@ def get_oauth_dialog_url(redirect_url, scope=None):
 	
 	return "{0}{1}?{2}".format(FACEBOOK_SERVICE_URL, OAUTH_DIALOG_PATH, params_encoded)
 
-def get_acces_token(redirect_url, code):
+def get_app_access_token():
+	try:
+		app_access_token_obj = get(base=FACEBOOK_GRAPH_URL,
+								path=OAUTH_TOKEN_PATH,
+								params_dict=dict(client_id=APP_ID,
+													client_secret=APP_SECRET,
+													grant_type="client_credentials"),
+								renderer=urlparse.parse_qs)
+	except RequestFailed as inst:
+		app_logger.debug("get_app_access_token: INVITES won't work {0}".format(inst))
+		return None
+	
+	return mappers.app_token_from_obj(app_access_token_obj)
+
+def get_access_token(redirect_url, code):
 	try:
 		access_token_obj = get(base=FACEBOOK_GRAPH_URL,
 							path=OAUTH_TOKEN_PATH,

@@ -11,6 +11,7 @@
                 });
                 return false;
             }else{
+                alert("Оффер можно проходить только 1 раз");
                 return true;
             }
         });

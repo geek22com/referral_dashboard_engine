@@ -33,3 +33,10 @@ def create_app():
 
 	flash_form_errors(app_form.errors.values(), 'apperror')
 	return app_form_template(request.form)
+
+@frontend.route('/delete_app/<app_id>', methods=['POST', 'GET'])
+@developer_only
+def delete_app(app_id):
+	print "Going to delete app"
+	apps.delete_app(app_id)
+	return redirect(url_for('user_cabinet', username=g.user.nickname))

@@ -15,13 +15,11 @@ def before_request():
 	g.user = None
 	g.performer = None
 	g.params = {}
-
 	if 'user_id' in session:
 		g.user = users.get_user_by_id(session['user_id'])
 
 	if 'performer_id' in session:
 		g.performer = performers.get_performer(session['performer_id'])
-
 
 @frontend.after_request
 def after_request(response):

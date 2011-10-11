@@ -58,7 +58,7 @@ class BalanceForm(Form):
 
 
 class GiftForm(Form):
-	to_id = IntegerField('to_id', [validators.Required()])
+	to_id = TextField('to_id', [validators.Required()])
 	gift_id = TextField('gift_id', [validators.Required()])
 	message = TextField('message')
 

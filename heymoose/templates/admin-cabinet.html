@@ -11,16 +11,27 @@
 	    <div id="zakaz-box-top">
 			<div id="user-balans">
 				{% if params.actions %}
+                <div id="balans-head">
+                    <p class="box-1">action_id</p>
+                    <p class="box-1">performer_id</p>
+                    <p class="box-1">offer_id</p>
+                    <p class="box-1">done</p>
+                    <p class="box-1">deleted</p>
+                    <p class="box-1">creation_time</p>
+                    <p class="box-4">delete</p>
+                    <p class="box-3">approve</p>
+                </div>
+
 					{% for action in params.actions %}
 					    <div class="user-account">
-                        <p class="box-4">{{ action.id }}</p>
-					    <p class="box-4">{{ action.performer_id }}</p>
+                        <p class="box-1">{{ action.id }}</p>
+					    <p class="box-1">{{ action.performer_id }}</p>
                         <p class="box-1">{{ action.offer_id }}</p>
 					    <p class="box-1">{{ action.done }}</p>
 						<p class="box-1">{{ action.deleted }}</p>
                         <p class="box-1">{{ action.creation_time }}</p>
-                        <p class="box-right" align="right"><a href="{{ url_for('delete_action', action_id=action.id) }}" onclick="return confirm('Вы уверены что хотите удалить action?')" class="add-vopros">Удалить action</a></p>
-						<p class="box-right" align="right"><a href="{{ url_for('approve_action', action_id=action.id) }}" onclick="return confirm('Вы уверены что хотите подтвердить action?')" class="add-vopros">Подтвердить action</a></p>
+                        <p class="box-4"><a href="{{ url_for('delete_action', action_id=action.id) }}" onclick="return confirm('Вы уверены что хотите удалить action?')" class="add-vopros">Удалить action</a></p>
+                        <p class="box-3"><a href="{{ url_for('approve_action', action_id=action.id) }}" onclick="return confirm('Вы уверены что хотите подтвердить action?')" class="add-vopros">Подтвердить action</a></p>
 						</div>
 					{% endfor %}
 				{% else %}

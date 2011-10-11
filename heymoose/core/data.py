@@ -64,7 +64,8 @@ class App(BaseModel):
 	attributes = ['id',
 	              'secret',
 	              'user_id',
-	              'callback']
+	              'callback',
+	              'deleted']
 
 
 class Action(BaseModel):

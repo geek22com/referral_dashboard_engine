@@ -21,7 +21,7 @@ def add_gift():
 			file = request.files['giftimage']
 			data = file.stream.read()
 			gift = Gifts(title=gift_form.gifttitle.data,
-						price=int(gift_form.giftprice.data),
+						price=float(gift_form.giftprice.data),
 						desc=gift_form.giftdesc.data,
 						data=data)
 			gift.save()

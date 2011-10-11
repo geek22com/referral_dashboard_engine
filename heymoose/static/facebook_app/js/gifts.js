@@ -57,8 +57,10 @@
     function success(data) {
         FB.Canvas.scrollTo(0,0);
         if(Math.ceil(Math.random() * 2) == 1) {
-            ask("Отлично!", _USER.firstname + ", Ваш подарок отправлен, Хотите рассказать друзьям о HeyMoose?", function() {
-                FB.ui({method: 'feed', 'link': 'http://apps.facebook.com/heymoose', picture: app_domain + '/static/images/logo.png', name: 'Используйте HeyMoose', description: _USER.firstname + " рекомендует HeyMoose в Facebook!"}, 'Okay', 'No Thanks');
+            ask("Отлично!", _USER.firstname + ", Ваш подарок отправлен, Хотите рассказать друзьям о HeyMoose?", function(res) {
+                if (res){
+                    FB.ui({method: 'feed', 'link': 'http://apps.facebook.com/heymoose', picture: app_domain + '/static/images/logo.png', name: 'Используйте HeyMoose', description: _USER.firstname + " рекомендует HeyMoose в Facebook!"}, 'Okay', 'No Thanks');
+                }
             });
         } else {
             dialog("Отлично!", _USER.firstname + ', Ваш подарок отправлен! <div class="divider mtl mbl"></div><iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Ffacebook.com%2Fpages%2Fheymoosecom%2F247852878576419&amp;width=475&amp;colorscheme=light&amp;show_faces=true&amp;border_color&amp;stream=true&amp;header=false&amp;height=175" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:475px; height:175px;" allowTransparency="true"></iframe>');
@@ -139,14 +141,18 @@
             };
             disableInput();
             /*And now send via FB api*/
-            FB.api(data.to_id + "/feed", params, function(res) {
+            FB.api(data.to_id + "/feed", $.param(params), function(res) {
                     if(res && res.id) {
                         FB.ui({method: 'apprequests', to: data.to_id, message: _USER.firstname + ' Послал вам подарок!'}, function(res) {
+                            if (res){
+                                success(data);
+                            }
                             enableInput();
-                            success(data);
                         });
-                        // auto like?
-                        FB.api(res.id + '/likes', {method: 'post'});
+                        if (res){
+                            // auto like?
+                            FB.api(res.id + '/likes', {method: 'post'});
+                        }
                     } else {
                         // fall back to sending a private message if wall posting didn't work
                         FB.ui({
@@ -158,7 +164,9 @@
                              picture: data.gift,
                              description: data.message
                         }, function(res) {
-                                success(data);
+                                if (res){
+                                    success(data);
+                                }
                                 enableInput();
                         });
                     }

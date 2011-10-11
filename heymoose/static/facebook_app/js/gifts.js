@@ -141,14 +141,16 @@
             };
             disableInput();
             /*And now send via FB api*/
-            FB.api(data.to_id + "/feed", $.param(params), function(res) {
+            FB.api(data.to_id + "/feed", params, function(res) {
                     if(res && res.id) {
+                        enableInput();
                         FB.ui({method: 'apprequests', to: data.to_id, message: _USER.firstname + ' Послал вам подарок!'}, function(res) {
                             if (res){
                                 success(data);
                             }
                             enableInput();
                         });
+
                         if (res){
                             // auto like?
                             FB.api(res.id + '/likes', {method: 'post'});

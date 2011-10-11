@@ -13,15 +13,11 @@
 <div class="b-main__invites i-block">
     <label class="b-invites__title i-main_title i-common_tab">Приглашения:</label>
     {% if g.params.invites %}
-        <fb:user-table cols="3">
         {% for invite in g.params.invites %}
             {% if invite.from_id == g.performer.user_id %}
-            <label class="b-invites_label i-common_text"><fb:user-item uid="{{invite.to_id}}"/></label>
-            {% else %}
-            <label class="b-invites_label i-common_text"><fb:user-item uid="{{invite.from_id}}"/></label>
+            <label class="b-invites_label i-common_text"><a href="http://facebook.com/{{invite.to_id}}"><img src="http://graph.facebook.com/{{invite.to_id}}/picture"/></a></label>
             {% endif %}
         {%endfor%}
-        </fb:user-table>
     {% else %}
     <div class="b-main__noinvites">
         <label class="b-main__noinvites i-common_text">Упс, вы пока никого не пригласили.</label>
@@ -35,12 +31,12 @@
             {% if gift_action.to_id %}
                 <div class="b-giftsdone__gift">
                     <img class="b-giftsdone__img" src="data:image;base64,{{gift_action.gift.data|base64filter}}"/>
-                    <label class="b-giftsdone__label i-common_text">Вы подарили:<fb:user-item uid="{{gift_action.to_id}}"/></label>
+                    <label class="b-giftsdone__label i-common_text">Вы подарили:<a href="http://facebook.com/{{gift_action.to_id}}"><img src="http://graph.facebook.com/{{gift_action.to_id}}/picture"/></a></label>
                 </div>
             {% else %}
                 <div class="b-giftsdone__gift">
                     <img class="b-giftsdone__img" src="data:image;base64,{{gift_action.gift.data|base64filter}}"/>
-                    <label class="b-giftsdone__label i-common_text">Вам подарил:<fb:user-item uid="{{gift_action.from_id}}"/></label>
+                    <label class="b-giftsdone__label i-common_text">Вам подарил:<a href="http://facebook.com/{{gift_action.from_id}}"><img src="http://graph.facebook.com/{{gift_action.from_id}}/picture"/></a></label>
                 </div>
             {% endif %}
         {% endfor %}

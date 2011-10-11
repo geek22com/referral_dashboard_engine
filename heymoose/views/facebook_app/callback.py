@@ -32,7 +32,7 @@ def mlm_callback(form):
 			app_logger.debug("Error try to calc negative revenue appId={0} fromTime={1} toTime={2}".format(appId, fromTime, toTime))
 
 
-@frontend.route('/main_callback/', methods=['POST'])
+@frontend.route('/main_callback', methods=['POST'])
 def main_callback():
 	app_logger.debug("main_callback form:{0}".format(request.form))
 	try:

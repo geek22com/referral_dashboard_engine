@@ -1,0 +1,81 @@
+.b-widget_black {
+	font: 12px /18px Verdana, Tahoma, Arial, sans-serif;
+	padding: 10px;
+	margin-bottom: 20px;
+	background: url(../images/glass_black.png) transparent;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+}
+.b-widget_black__form__input {
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	
+	overflow: hidden;
+	height: 24px;
+	background: white;
+	border: solid 1px white;
+	text-align: center;
+	margin-bottom: 10px;
+	outline: 0;
+	border: 0;
+}
+.b-widget_black__inner_box {
+	border-radius: 12px;
+	-moz-border-radius: 12px;
+	-webkit-border-radius: 12px;
+	background: url(../images/big_grey.png) 0 -10px no-repeat #393939;
+	padding: 20px;
+}
+.b-widget_black__form {
+	display: block;
+}
+.b-widget_black__form__label {
+	font-size: 11px;
+	color: white;
+	cursor: pointer;
+}
+.b-widget_black__h4 {
+	font-size: 14px;
+	color: white;
+	margin-bottom: 10px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: inherit;
+	margin: 0;
+	padding: 0;
+	display: block;
+	-webkit-margin-before: 1.33em;
+	-webkit-margin-after: 1.33em;
+	-webkit-margin-start: 0px;
+	-webkit-margin-end: 0px;
+}
+.b-widget_black__recoveryPassword {
+}
+.b-widget_black__sign_up {
+}
+.focus {
+	box-shadow: 0 0 10px 1px white;
+	-moz-box-shadow: 0 0 10px 1px white;
+	-webkit-box-shadow: 0 0 10px 1px white
+}
+.b-widget_black__button {
+	background: #3DA115 url(../images/button_green_bg.png) repeat-x;
+	border: solid 1px white;
+	color: white;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	height: 28px;
+	line-height: 25px;
+	padding: 0 20px;
+	display: table;
+	vertical-align: middle;
+	-moz-box-shadow: 1px 1px 1px 1px #999;
+	box-shadow: 1px 1px 1px 1px #999;
+	cursor: pointer;
+	text-decoration: none !important;
+	margin-bottom: 10px;
+}
+

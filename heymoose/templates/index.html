@@ -1,73 +1,184 @@
-{% extends "layout.html" %}
-{% block head %}
-{{ super() }}
-<script type="text/javascript">
-$(document).ready(function(){
-	$("a").easyTooltip();
-});
-</script>
-{% endblock %}
-{% block title %}
-Главная
-{% endblock %}
-{% block content %}
-	<div class="empty"></div>
-	<div id="informer-box">
-		<div id="replika1">
-			эй, лось!<br>
-			моей компании нужна реклама в соц.<br>
-			сетях.<br>
-			ты поможешь мне?
-		</div><!--#replika1-->
-		<div id="replika2">
-			да, я помогу тебе.<br>
-			я умею точно добраться до целевой аудитории,<br>
-			используя мою платформу.
-		</div><!--#replika2-->
-		<div id="replika3">
-			эй, лось! я хочу увеличить<br>
-			доход от своих приложений<br>
-			в соц. сетях. ты поможешь мне?
-		</div><!--#replika3-->
-		<div id="replika4">
-			интегрируй heymoose 
-			в свое приложение<br>
-			 пользователь получит артефакт в обмен на действие<br>
-			а с меня - деньги.
-		</div><!--#replika4-->
-		<div id="replika5">
-			понимаешь, шарик,<br>
-			жена меня пилит.<br>
-			говорит, что я все деньги<br>
-			трачу на игры в соц. сетях.<br>
-			посоветуй что-нибудь.
-		</div><!--#replika5-->
-		<div id="replika6">
-			а ты играй в игры, которые<br>
-			подключились к heymoose.com
-		</div><!--#replika6-->
-		<div id="replika7">
-			гениально! теперь<br>
-			я могу получать артефакты в обмен<br>
-			на действия.<br>
-			спасибо тебе, шарик, за совет.
-		</div><!--#replika7-->
-	</div><!--#informer-box-->
-	<a href="{{ url_for('about') }}">
-	<div id="podrobnee">
-		подробнее
-	</div><!--#podrobnee-->
-	</a>
-    <div id="container">
-        <div id="isledovania-box">
-            <a href="{{ url_for('start_survey') }}" class="isledovania">Провести исследование</a>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>heymoose</title>
+		<link rel=stylesheet href="../static/css/common.css" type="text/css" media=screen>
+		<!-- заменить на minimum если не требуется -->
+		<script type="text/javascript" src="../static/js/jquery.js"></script>
+		<!-- Социальная панель -->
+		<script type="text/javascript" src="../static/js/socializ.js"></script>
+		<link rel=stylesheet href="../static/css/socializ.css" type="text/css" media=screen>
+		
+		<!-- панель регистрации или виджет black-box-->
+		<link rel=stylesheet href="../static/css/widget_black.css" type="text/css" media=screen>
+	</head>
+	<body class="b-body">
+				<!-- Обертка единого стиля для контента и заголовка -->
+				<div class="m-bottom_layer">
+					<!-- Заголовок -->
+					<div class="b-header">
+				
+						
+						
+						<div class="b-header__menu">
+							<ul>
+								<li><a href="#" title="О проекте">О проекте</a></li>
+								<li><a href="#" title="Регистрация">Регистрация</a></li>
+								<li><a href="#" title="Блог">Блог</a></li>
+								<li><a href="#" title="Рекламодателям">Рекламодателям</a></li>
+								<li><a href="#" title="Разработчикам">Разработчикам</a></li>
+								<li><a href="#" title="Контакты">Контакты</a></li>
+							</ul>
+						</div>
+						
+						<a href="index.html" class="b-header__logo"></a>
+						<!-- Социальная панель -->
+						<div class="b-socialpanel">
+							<script type="text/javascript">socializ(encodeURIComponent('Hey moose!'), encodeURIComponent('Универсальная платформа для рекламодателей'))</script>
+						</div>
+				
+					</div>
+					<!-- Контент -->
+					<div class="b-main_content">
+						<!-- Экран для слайдов -->
+						<div class="b-screen">
+							<div class="b-screen__slide">
+								<!--<img style="margin: 10px 0px;; width: 630px; height: 380px;" src="../static/images/content/sjd.jpg">-->
+								
+								
+								<!-- slide for main page -->
+								<!-- <div>
+								<img style="margin: 10px 40px;; width: 800px; height: 380px;" src="../static/images/content/sdj7.jpg">
+								</div>
+								<div style="position: absolute; font-size: 32px; margin-left: 40px; top: 208px; color: white;">
+									<span style="color: #99CCFF;">H e y <span>
+										<span style="color: #FFCC00;">M o o s e</span><br> 
+										<br>
+										<div style="font-size: 19px;">
+										<ul>
+										<li>Для <span style="color: #FFCC00; font-size: 22px;">разработчиков</span>:<br>
+											<span style="color: white; font-size: 20px;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspДополнительный способ монетизации</span><br><br></li>
+										<li>Для <span style="color: #FFCC00; font-size: 22px;">рекламодателей</span>:<br>
+											<span style="color: white; font-size: 20px;">
+												<ul>
+												<li>Большая аудитория</li> 
+												<li>Мощный маркетинг</li>
+												</ul>
+												</span><br></li>
+										<li>Для <span style="color: #FFCC00; font-size: 22px;">пользователей</span>:<br>
+											<span style="color: white; font-size: 20px;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspЭкономия при покупках в сети</span><br><br></li>
+										</ul>
+										</div>
+								</div> -->
+							</div>
 
-           
-        </div><!--#isledovania-box-->
-        <div id="developer-box">
-            <a href="{{ url_for('become_developer') }}" class="developer">Cтать разработчиком</a>
-            
-        </div><!--#developer-box-->
-    </div><!--#container-->
-<div class="empty"></div>
-{% endblock %}
+						</div>
+						<div class="b-widgets i-clearfix">
+								<div class="b-left_column">
+									<div class="b-widget"  style="background: #eeeeee;">
+									<div style="text-align: center;">
+									<h3>Чернушка</h3> 
+									</div>
+									<hr>
+									<br>
+									<div style="text-align: center;">
+									<img src="../static/images/content/2.jpg"/>
+									</div>
+									<br><br>
+									Это началось где-то через год после гибели отца в 
+автокатастрофе. Ничего необычного: ехал ночью,<br>
+									
+<br> дорога была обледенелой, на крутом 
+повороте машину занесло, а там крутой откос. Не он первый там разбился, не он 
+последний. 
+									</div>	
+									
+									<div class="b-widget">
+									<div style="text-align: center;">
+									<h3>Яша и паяльник</h3> 
+									</div>
+									<hr>
+									<br>
+									<img src="../static/images/content/3.jpg"/><br>
+										Яша взял паяльную лампу.			
+									</div>
+								</div>
+								<div class="b-middle_column">
+									<div class="b-widget">
+									<div style="text-align: center;">
+									<h3>Adidas Way</h3>
+									</div>
+									<br>
+									<div style="text-align: center;">
+										<img src="../static/images/content/4.jpg"/>
+									</div>
+									<br><br>
+									Вставали в четыре, пол пятого, на крайнем рассвете, выпивали по стакану водки. 
+									</div>
+								</div>
+								<div class="b-right_column">
+
+									
+							<!-- будущее всплывающее окно регистрации -->
+							<div class="b-widget_black">
+                    			<div id="login" class="b-widget_black__inner_box">
+              						<h4 class="b-widget_black__h4">Авторизация</h4>
+                         			<form class="b-widget_black__form" action="...." method="post">
+                             			<label class="b-widget_black__form__label">Логин </label>
+                             			<div class="b-widget_black__form__input focus">
+                              				<input type="text" name="name">
+                             			</div>                         
+                            			<label class="b-widget_black__form__label">Пароль</label>
+                           				<div class="b-widget_black__form__input focus">
+                                			<input type="password" name="password">                         
+                            			</div>
+                            			<button type="submit" class="b-widget_black__button">Я все заполнил</button>
+                        			</form>
+                        			<div>
+                            			<a class="b-widget_black__sign_up">Регистрация</a> 
+                            				<br> 
+                            			<a class="b-widget_black__recoveryPassword" href="#">Забыли пароль?</a>
+                        			</div>
+                    			</div>
+                			</div>
+
+									<div class="b-widget"  style="background: #eeeeee;">
+									<img src="../static/images/content/1.jpg"/><br>
+								тся, есть какой-то закон против распространителен без­ответственных слухов, — угрюмым тоном промолвил Таггерт. — Да­вайте пропустим еще по маленькой.
+Он раздраженно махнул официанту. 			
+									</div>
+									<div class="b-widget" style="background: #ccddff;">
+									<img src="../static/images/content/2.jpg"/><br>
+								тся, есть какой-то закон против распространителен без­ответственных слухов, — угрюмым тоном промолвил Таггерт. — Да­вайте пропустим еще по маленькой.
+Он раздраженно махнул официанту. 			
+									</div>		
+									
+								</div>
+						</div>
+					</div>
+
+					
+					
+					<!-- Прилипание подвала к нижней части экрана реализовано
+					с помощью отрицательного расположения. Т.е. подвал наезжает
+					на главный контент - следующий div как раз существует
+					для того, чтобы оставить место подвалу -->
+					<div class="b-footerspace"/>
+				</div>
+			</div>
+			<!-- Подвал -->
+			<div class="b-footer">
+				<div class="b-footer__shadowline"></div>
+				<div class="b-footer__topshadow"></div>
+				<div class="b-footer_content">
+						<div class="b-footer_content__menu"></div>
+						<div class="b-footer_content__separator"></div>					
+						<div class="b-footer_content__bottom_separator">
+							<div class="copyright">© 2011 Bravik, LLC.</div>
+						</div>
+				</div>
+			
+	</body>
+</html>

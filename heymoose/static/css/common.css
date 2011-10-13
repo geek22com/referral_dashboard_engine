@@ -71,7 +71,7 @@
 }
 
 .b-main_content {
-	/*min-height: 800px;*/
+	min-height: 400px;
 	/*padding:30px 30px 30px 30px;*/
 	font-weight: normal;
 	-moz-border-radius: 22px;
@@ -200,5 +200,37 @@
 	height: 0;
 	line-height: 0;
 	visibility: hidden;
+}
+
+
+
+/* Common style for tables */
+.b-table {
+
+}
+
+.b-table_row {
+	width: 100%;
+}
+
+.b-table_cell {
+	width: 20%;
+	float: left;
+}
+
+/* table modificators */
+.i-table_header {
+	font-family: verdana, sans-serif;
+	font-weight: bold;
+	color: #686868;
+	font-size: 120%;
+}
+
+.i-table_even_row {
+	background: #7EB6BA;
+}
+
+.i-table_not_odd_row {
+	background: white;
 }
 

@@ -202,44 +202,167 @@
 	visibility: hidden;
 }
 
+.i-persone {
+	/*background: url(../images/content/sjd.jpg) no-repeat center center fixed;*/	 
+}
 
+.i-widget_persone {
+	
+}
 
 /* Common style for tables */
 .b-table {
+	
 }
 
 .b-table_row {
 	width: 100%;
+	font: 16px Helvetica, Arial, sans-serif;
 }
 
 .b-table_cell {
 	width: 20%;
 	float: left;
+	padding: 2px 10px 2px 10px;
 }
 
 /* table modificators */
 .i-table_header {
 	font-family: verdana, sans-serif;
 	font-weight: bold;
-	color: #686868;
+	color: #444444;
 	font-size: 120%;
+	background: #6EA5A7;
 }
 
 .i-table_even_row {
-	background: #7EB6BA;
+	background: #9FD8DA;
 }
 
 .i-table_even_row:hover {
-	background: #9FD8DA;
+	background: #AFE9EB;
 }
 
 
 .i-table_odd_row {
-	background: #DDDDDD;
+	background: #FFFF66;
 }
 
 .i-table_odd_row:hover {
-	background: #EEEEEE;
+	background: #FFFF99;
+}
+
+/* style modificators for table orders 
+ *  prefix hd - header styles
+ * 
+ * 
+ * */
+.i-order_cell_number {
+	width: 70px;
+	text-align: center;
+}
+
+.i-order_cell_descr {
+	width: 350px;
+	text-align: left;
+}
+
+.i-order_cell_balance {
+	width: 100px;
+	text-align: right;
+}
+
+.i-order_cell_val_offer {
+	width: 100px;
+	text-align: right;
+}
+
+.i-order_cell_status {
+	width: 190px;
+	text-align: left;
+}
+
+.i-order_hd_cell_number {
+	width: 70px;
+	text-align: center;
+}
+
+.i-order_hd_cell_descr {
+	width: 350px;
+	text-align: center;
+}
+
+.i-order_hd_cell_balance {
+	width: 100px;
+	text-align: center;
+}
+
+.i-order_hd_cell_val_offer {
+	width: 100px;
+	text-align: center;
+}
+
+.i-order_hd_cell_status {
+	width: 190px;
+	text-align: center;
+}
+
+.i-status_wait {
+	color: #555555;
+}
+
+.i-status_approved {
+	color: green;
 }
 
 
+/* style modificators for table application 
+ *  prefix hd - header styles
+ * 
+ * 
+ * */
+.i-apps_cell_id {
+	width: 70px;
+	text-align: center;
+}
+
+.i-apps_cell_secret {
+	width: 350px;
+	text-align: center;
+}
+
+.i-apps_cell_callback {
+	width: 400px;
+	text-align: left;
+}
+
+.i-apps_hd_cell_id {
+	width: 70px;
+	text-align: center;
+}
+
+.i-apps_hd_cell_secret {
+	width: 350px;
+	text-align: center;
+}
+
+.i-apps_hd_cell_callback {
+	width: 400px;
+	text-align: center;
+}
+
+.b-widget_h2 {
+	font-family: verdana, sans-serif;
+	font-weight: bold;
+	color: #444444;
+	font-size: 120%;
+	text-align: center;
+}
+
+.b-content_h2 {
+	font-family: verdana, sans-serif;
+	font-weight: bold;
+	color: #444444;
+	font-size: 120%;
+	text-align: center;
+}

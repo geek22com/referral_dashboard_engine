@@ -5,14 +5,44 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>heymoose</title>
 		<link rel=stylesheet href="../static/css/common.css" type="text/css" media=screen>
-		<!-- заменить на minimum если не требуется -->
+		
+		<!-- jquery и его плагины -->
 		<script type="text/javascript" src="../static/js/jquery.js"></script>
+		<script type="text/javascript" src="../static/js/jquery_plugins/timers.js"></script>
+
+		
 		<!-- Социальная панель -->
 		<script type="text/javascript" src="../static/js/socializ.js"></script>
 		<link rel=stylesheet href="../static/css/socializ.css" type="text/css" media=screen>
 		
 		<!-- панель регистрации или виджет black-box-->
 		<link rel=stylesheet href="../static/css/widget_black.css" type="text/css" media=screen>
+		
+		
+		<!-- загрузка слайдов -->
+		<script>	
+		$(document).ready(function(){
+			var slide_counter = 1;
+			var slide_counter_limit = 3;
+			
+			$(".b-screen__slide").fadeOut(1);
+			$(".b-screen__slide").load("../static/slides/slide" + slide_counter + ".html");              
+			$(".b-screen__slide").fadeIn(1000);
+
+			window.setInterval(function() {
+				$(".b-screen__slide").fadeOut(1000, function() {
+ 					$(".b-screen__slide").load("../static/slides/slide" + slide_counter + ".html");
+				});
+				$(".b-screen__slide").fadeIn(1000);
+				
+				slide_counter++;
+				if(slide_counter > slide_counter_limit) {
+					slide_counter = 1;
+				}
+
+			}, 10000);	
+		});
+		</script>
 	</head>
 	<body class="b-body">
 				<!-- Обертка единого стиля для контента и заголовка -->
@@ -45,33 +75,7 @@
 						<!-- Экран для слайдов -->
 						<div class="b-screen">
 							<div class="b-screen__slide">
-								<!--<img style="margin: 10px 0px;; width: 630px; height: 380px;" src="../static/images/content/sjd.jpg">-->
-								
-								
-								<!-- slide for main page -->
-								<div>
-								<img style="margin: 10px 40px;; width: 800px; height: 380px;" src="../static/images/content/sdj7.jpg">
-								</div>
-								<div style="position: absolute; font-size: 32px; margin-left: 40px; top: 208px; color: white;">
-									<span style="color: #99CCFF;">H e y <span>
-										<span style="color: #FFCC00;">M o o s e</span><br> 
-										<br>
-										<div style="font-size: 19px;">
-										<ul>
-										<li>Для <span style="color: #FFCC00; font-size: 22px;">разработчиков</span>:<br>
-											<span style="color: white; font-size: 20px;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspДополнительный способ монетизации</span><br><br></li>
-										<li>Для <span style="color: #FFCC00; font-size: 22px;">рекламодателей</span>:<br>
-											<span style="color: white; font-size: 20px;">
-												<ul>
-												<li>Большая аудитория</li> 
-												<li>Мощный маркетинг</li>
-												</ul>
-												</span><br></li>
-										<li>Для <span style="color: #FFCC00; font-size: 22px;">пользователей</span>:<br>
-											<span style="color: white; font-size: 20px;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspЭкономия при покупках в сети</span><br><br></li>
-										</ul>
-										</div>
-								</div>
+
 							</div>
 
 						</div>

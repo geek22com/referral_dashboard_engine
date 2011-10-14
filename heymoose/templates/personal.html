@@ -18,24 +18,31 @@
 		<script>
 			$(document).ready(function(){
 			
-
-			$(".b-header").animate({width: "90%"}, 350{alert ("The animation has finished running.");});
+				/*
+				$(".b-table_row").hover(function() {
+					if(oldHeight != 2*$(".b-table_row").height()) {
+					}
+				});*/
+				
+				/*$(".b-table_row").hover(
+					function () {
+						var oldHeight = $(".b-table_row").height();
+						$(".b-table_row").animate({height: oldHeight*2}, 1000);	    					
+				  	},
+  					function () {
+						var oldHeight = $(".b-table_row").height();
+						$(".b-table_row").animate({height: oldHeight/2}, 1000);	    					
+ 					}
+				);*/
+ 
+				
+			
+				//var oldHeight = 2*$(".b-table_row").height();
+				//$(".b-table_row").animate({height: oldHeight*2}, 1000);
 
 
 			});
 		</script>
-<!--
- $(document).ready(function(){
-
-    $("#right").click(function(){
-      $(".block").animate({"left": "+=50px"}, "slow");
-    });
-
-    $("#left").click(function(){
-      $(".block").animate({"left": "-=50px"}, "slow");
-    });
-
-  });->>
 
 	</head>
 	<body class="b-body">
@@ -61,45 +68,89 @@
 					
 					</div>
 					<!-- Контент -->
-					<div class="b-main_content">
+					<div class="b-main_content i-persone">
 						
-						
-<div class="b-widget">
+<div class="b-persone_header">
+	<h2 class="b-content_h2">Личный кабинет</h2>
+</div>
+
+
+
+<div class="b-widget i-widget_persone">
+	<h3 class="b-widget_h3">Заказы</h3>
+	<div class="b-widget_descr">
+		
+	</div>
 	<div class="b-table">
 		<div class="b-table_row i-table_header i-clearfix">
-			<div class="b-table_cell">Номер</div>
-			<div class="b-table_cell">Описание</div>
-			<div class="b-table_cell">Баланс</div>
-			<div class="b-table_cell">Стоимость оффера (CPA)</div>
-			<div class="b-table_cell">Статус</div>
+			<div class="b-table_cell i-order_hd_cell_number">Номер</div>
+			<div class="b-table_cell i-order_hd_cell_descr">Описание</div>
+			<div class="b-table_cell i-order_hd_cell_balance">Баланс</div>
+			<div class="b-table_cell i-order_hd_cell_val_offer">(CPA)</div>
+			<div class="b-table_cell i-order_hd_cell_status">Статус</div>
 		</div>
 		<div class="b-table_row i-table_even_row i-clearfix">
-			<div class="b-table_cell">1</div>
-			<div class="b-table_cell">Sony и девайсы, социальная реклама плееров серии A</div>
-			<div class="b-table_cell">2225000</div>
-			<div class="b-table_cell">150</div>
-			<div class="b-table_cell">Ожидает утверждения</div>
+			<div class="b-table_cell i-order_cell_number">1</div>
+			<div class="b-table_cell i-order_cell_descr">Sony и девайсы, социальная реклама плееров серии A</div>
+			<div class="b-table_cell i-order_cell_balance">2225000</div>
+			<div class="b-table_cell i-order_cell_val_offer">150</div>
+			<div class="b-table_cell i-order_cell_status i-status_wait">Ожидает утверждения</div>
 		</div>
 		<div class="b-table_row i-table_odd_row i-clearfix">
-			<div class="b-table_cell">2</div>
-			<div class="b-table_cell">Рекламный пакет samsung</div>
-			<div class="b-table_cell">1250000</div>
-			<div class="b-table_cell">200</div>
-			<div class="b-table_cell">Утвержден</div>
+			<div class="b-table_cell i-order_cell_number">2</div>
+			<div class="b-table_cell i-order_cell_descr">Рекламный пакет samsung</div>
+			<div class="b-table_cell i-order_cell_balance">1250000</div>
+			<div class="b-table_cell i-order_cell_val_offer">200</div>
+			<div class="b-table_cell i-order_cell_status i-status_wait">Ожидает утверждения</div>
 		</div>
 		<div class="b-table_row i-table_even_row i-clearfix">
-			<div class="b-table_cell">3</div>
-			<div class="b-table_cell">Билайн и партнеры - новые тарифы</div>
-			<div class="b-table_cell">1250000</div>
-			<div class="b-table_cell">110</div>
-			<div class="b-table_cell">Утвержден</div>
+			<div class="b-table_cell i-order_cell_number">3</div>
+			<div class="b-table_cell i-order_cell_descr">Билайн и партнеры - новые тарифы</div>
+			<div class="b-table_cell i-order_cell_balance">1250000</div>
+			<div class="b-table_cell i-order_cell_val_offer">110</div>
+			<div class="b-table_cell i-order_cell_status i-status_approved">Утвержден</div>
 		</div>
 		<div class="b-table_row i-table_odd_row i-clearfix">
-			<div class="b-table_cell">4</div>
-			<div class="b-table_cell">Реклама интимной гигиены</div>
-			<div class="b-table_cell">1250000</div>
-			<div class="b-table_cell">200</div>
-			<div class="b-table_cell">Утвержден</div>
+			<div class="b-table_cell i-order_cell_number">4</div>
+			<div class="b-table_cell i-order_cell_descr">Реклама интимной гигиены</div>
+			<div class="b-table_cell i-order_cell_balance">1250000</div>
+			<div class="b-table_cell i-order_cell_val_offer">200</div>
+			<div class="b-table_cell i-order_cell_status i-status_approved">Утвержден</div>
+		</div>
+	</div>
+	
+	
+</div>
+
+<br>
+<br>
+<div class="b-widget i-widget_persone">
+	<h3 class="b-widget_h3">Приложения</h3>
+	<div class="b-table">
+		<div class="b-table_row i-table_header i-clearfix">
+			<div class="b-table_cell i-apps_hd_cell_id">id</div>
+			<div class="b-table_cell i-apps_hd_cell_secret">Secret</div>
+			<div class="b-table_cell i-apps_hd_cell_callback">Callabck</div>
+		</div>
+		<div class="b-table_row i-table_even_row i-clearfix">
+			<div class="b-table_cell i-apps_cell_id">1</div>
+			<div class="b-table_cell i-apps_cell_secret">39f390ca-eb72-4a90-badd-993e60710b42</div>
+			<div class="b-table_cell i-apps_cell_callback">www.iam.com/header.aspx?dbhjedvj</div>
+		</div>
+		<div class="b-table_row i-table_odd_row i-clearfix">
+			<div class="b-table_cell i-apps_cell_id">2</div>
+			<div class="b-table_cell i-apps_cell_secret">39f390ca-eb72-4a90-badd-993e60710b42</div>
+			<div class="b-table_cell i-apps_cell_callback">mixture/dhkjdlkdfk/dbhgdlhfjd</div>
+		</div>
+		<div class="b-table_row i-table_even_row i-clearfix">
+			<div class="b-table_cell i-apps_cell_id">3</div>
+			<div class="b-table_cell i-apps_cell_secret">39f390ca-eb72-4a90-badd-993e60710b42</div>
+			<div class="b-table_cell i-apps_cell_callback">http://mydengi.ru/idt2i012e3070</div>
+		</div>
+		<div class="b-table_row i-table_odd_row i-clearfix">
+			<div class="b-table_cell i-apps_cell_id">4</div>
+			<div class="b-table_cell i-apps_cell_secret">39f390ca-eb72-4a90-badd-993e60710b42</div>
+			<div class="b-table_cell i-apps_cell_callback">http://mydengi.ru/index.php?request=bwelihdew98w0dewe0</div>
 		</div>
 	</div>
 	

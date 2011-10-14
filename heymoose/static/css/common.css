@@ -206,7 +206,6 @@
 
 /* Common style for tables */
 .b-table {
-
 }
 
 .b-table_row {
@@ -230,7 +229,17 @@
 	background: #7EB6BA;
 }
 
-.i-table_not_odd_row {
-	background: white;
+.i-table_even_row:hover {
+	background: #9FD8DA;
 }
+
+
+.i-table_odd_row {
+	background: #DDDDDD;
+}
+
+.i-table_odd_row:hover {
+	background: #EEEEEE;
+}
+
 

@@ -285,7 +285,7 @@
 }
 
 .i-create_order_form {
-	float: left;
+	float: right;
 }
 
 .i-table_panel_row ul li a {
@@ -781,13 +781,39 @@
 	color: #FFFF66;
 	margin: 4px 10px 4px 10px;
 	padding: 0 10px 0 10px;
-	
+		
 }
 
 .i-form_descr {
 font: 12px /18px Verdana, Tahoma, Arial, sans-serif;
 font-weight: bolder;
 color: #6EA5A7;
+}
+
+.i-text-area {
+	height: 100px;
+}
+
+.i-file_button {
+	opacity: 0;
+	opacity:0;
+	filter:alpha(opacity:0);
+}
+
+.i-file_image {
+	background: url(../images/button_overflow.png);
+}
+
+/*.i-file_top_layer {
+	cursor:pointer;
+	position: relative;
+	top: -25px;
+	color: black;
+}*/
+
+.i-personal {
+	width: 300px;
+	margin-right: 0px;
 }
 
 

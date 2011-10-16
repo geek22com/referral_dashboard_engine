@@ -1,0 +1,136 @@
+			.b-reg_header {
+				padding: 10px;
+				margin: 10px;
+				font: 12px   /18px Verdana, Tahoma, Arial, sans-serif;
+				font-weight: bolder;
+				font-size: 20px;
+				color: #6EA5A7;
+				text-align: center;
+			}
+			.b-reg_content {
+				margin: 10px;
+				font: 12px   /18px Verdana, Tahoma, Arial, sans-serif;
+				font-weight: bolder;
+				color: #6EA5A7;
+			}
+			.b-reg_footer {
+				font: 12px   /18px Verdana, Tahoma, Arial, sans-serif;
+				font-weight: bolder;
+				color: #6EA5A7;
+				margin: 10px;
+				padding: 10px;
+			}
+			.b-register_descr {
+				margin: 10px;
+				padding: 10px;
+				width: 300px;
+				height: 100%;
+				float: left;
+				background: #222222;
+				-moz-border-radius: 12px;
+				-khtml-border-radius: 12px;
+				-webkit-border-radius: 12px;
+			}
+			
+			.b-register_form {
+				margin: 10px;
+				padding: 10px 10px 10px 10px;
+				float: right;
+				width: 500px;
+				background: #FFCC99;
+				-moz-border-radius: 12px;
+				-khtml-border-radius: 12px;
+				-webkit-border-radius: 12px;
+				background: #222222;
+			}
+
+			.b-reg_form_header {
+				padding: 10px;
+				margin: 10px;
+				text-align: center;
+			}
+			.b-reg_form_content {
+				margin: 10px;
+			}
+			.b-reg_form_footer {
+				padding: 10px;
+				margin: 10px 130px;
+			}
+			.b-error_text {
+				margin: 10px 50px;
+				padding: 10px;
+				color: #FFCC99;				
+			}
+
+			.b-input_wrap {
+				float: right;
+			}
+			
+			.i-reg_form_row {
+				margin: 0 auto;
+			}
+			.i-reg_form_cell {
+				padding: 2px 0px 0px 0px;
+			}
+			.i-reg_form_content {
+				/* из-за clear-fix ?*/
+				margin: 0 45px;
+				width: 100%;
+			}
+			.b-form_label {
+				position: relative;
+				font: 12px  /18px Verdana, Tahoma, Arial, sans-serif;
+				font-size: 100%;
+				color: #bbbbbb;
+			}
+			.b-input_wrap {
+				position: relative;
+				background: white;
+				width: 100%;
+				height: 26px;
+				float: left;
+				font-weight: normal;
+				-moz-border-radius: 30px;
+				-khtml-border-radius: 30px;
+				-webkit-border-radius: 30px;
+				border-radius: 12px;
+				background: white;
+				margin: 5px 5px 5px 5px;
+			}
+			.b-input_wrap:hover {
+				box-shadow: 0 0 10px 1px white;
+				-moz-box-shadow: 0 0 10px 1px white;
+				-webkit-box-shadow: 0 0 10px 1px white;
+			}
+			.b-rinput {
+				width: 85%;
+				height: 85%;
+				margin: 1px 0px 1px 12px;
+				border: none;
+				overflow: hidden;
+				border: 0;
+				outline: 0;
+				background: white;
+			}
+			.i-submit_button {
+				height: 26px;
+				width: 200px;
+				display: block;
+				-moz-border-radius: 30px;
+				-khtml-border-radius: 30px;
+				-webkit-border-radius: 30px;
+				text-align: center;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.i-role_button {
+				height: 26px;
+				width: 100%;
+				display: block;
+				-moz-border-radius: 30px;
+				-khtml-border-radius: 30px;
+				-webkit-border-radius: 30px;
+				text-align: center;
+				margin-left: auto;
+				margin-right: auto;
+			}

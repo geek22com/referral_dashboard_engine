@@ -5,184 +5,198 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>heymoose</title>
 		<link rel=stylesheet href="../static/css/common.css" type="text/css" media=screen>
-		
 		<!-- jquery и его плагины -->
 		<script type="text/javascript" src="../static/js/jquery.js"></script>
 		<script type="text/javascript" src="../static/js/jquery_plugins/timers.js"></script>
-
-		
 		<!-- Социальная панель -->
 		<script type="text/javascript" src="../static/js/socializ.js"></script>
 		<link rel=stylesheet href="../static/css/socializ.css" type="text/css" media=screen>
-		
 		<!-- панель регистрации или виджет black-box-->
 		<link rel=stylesheet href="../static/css/widget_black.css" type="text/css" media=screen>
-		
-		
 		<!-- загрузка слайдов -->
-		<script>	
-		$(document).ready(function(){
-			var slide_counter = 1;
-			var slide_counter_limit = 3;
-			
-			$(".b-screen__slide").fadeOut(1);
-			$(".b-screen__slide").load("../static/slides/slide" + slide_counter + ".html");              
-			$(".b-screen__slide").fadeIn(1000);
+		<script>
+			$(document).ready(function() {
 
-			window.setInterval(function() {
-				$(".b-screen__slide").fadeOut(1000, function() {
- 					$(".b-screen__slide").load("../static/slides/slide" + slide_counter + ".html");
-				});
-				$(".b-screen__slide").fadeIn(1000);
+					// Показ слайдов
+					var slide_counter = 1;
+					var slide_counter_limit = 3;
+
+					$(".b-screen__slide").fadeOut(1);
+					$(".b-screen__slide").load("../static/slides/slide" + slide_counter + ".html");
+					$(".b-screen__slide").fadeIn(1000);
+
+					window.setInterval(function() {
+						$(".b-screen__slide").fadeOut(1000, function() {
+							$(".b-screen__slide").load("../static/slides/slide" + slide_counter + ".html");
+						});
+						$(".b-screen__slide").fadeIn(1000);
+						slide_counter++;
+						if(slide_counter > slide_counter_limit) {
+							slide_counter = 1;
+						}
+
+					}, 10000);
 				
-				slide_counter++;
-				if(slide_counter > slide_counter_limit) {
-					slide_counter = 1;
-				}
+			});
 
-			}, 10000);	
-		});
 		</script>
 	</head>
 	<body class="b-body">
-				<!-- Обертка единого стиля для контента и заголовка -->
-				<div class="m-bottom_layer">
-					<!-- Заголовок -->
-					<div class="b-header">
-				
-						
-						
-						<div class="b-header__menu">
-							<ul>
-								<li><a href="#" title="О проекте">О проекте</a></li>
-								<li><a href="#" title="Регистрация">Регистрация</a></li>
-								<li><a href="#" title="Блог">Блог</a></li>
-								<li><a href="#" title="Рекламодателям">Рекламодателям</a></li>
-								<li><a href="#" title="Разработчикам">Разработчикам</a></li>
-								<li><a href="#" title="Контакты">Контакты</a></li>
-							</ul>
-						</div>
-						
-						<a href="index.html" class="b-header__logo"></a>
-						<!-- Социальная панель -->
-						<div class="b-socialpanel">
-							<script type="text/javascript">socializ(encodeURIComponent('Hey moose!'), encodeURIComponent('Универсальная платформа для рекламодателей'))</script>
-						</div>
-				
-					</div>
-					<!-- Контент -->
-					<div class="b-main_content">
-						<!-- Экран для слайдов -->
-						<div class="b-screen">
-							<div class="b-screen__slide">
-
+		<!-- Обертка единого стиля для контента и заголовка -->
+		<div class="m-bottom_layer">
+			<!-- Заголовок -->
+			<div class="b-header">
+				<div class="b-header__menu">
+					<ul>
+						<li>
+							<a href="personal.html" title="О проекте">О проекте</a>
+						</li>
+						<li>
+							<a href="registration.html" title="Регистрация">Регистрация</a>
+						</li>
+						<li>
+							<a href="blog.html" title="Блог">Блог</a>
+						</li>
+						<li>
+							<a href="advertiser.html" title="Рекламодателям">Рекламодателям</a>
+						</li>
+						<li>
+							<a href="developer.html" title="Разработчикам">Разработчикам</a>
+						</li>
+						<li>
+							<a href="contats.html" title="Контакты">Контакты</a>
+						</li>
+						<li>
+							<div class="b-login_widget">
+								<form class="b-login_form" action="..." method="get">
+									<div class="b-input_wrap_email">
+										<input class="b-input" type="email">
+									</div>
+									<div class="b-input_wrap_password">
+										<input class="b-input" type="password">
+									</div>
+									<input class="b-input_button" type="button" value="Войти">
+								</form>
 							</div>
-
-						</div>
-						<div class="b-widgets i-clearfix">
-								<div class="b-left_column">
-									<div class="b-widget"  style="background: #eeeeee;">
-									<div style="text-align: center;">
-									<h3>Чернушка</h3> 
-									</div>
-									<hr>
-									<br>
-									<div style="text-align: center;">
-									<img src="../static/images/content/2.jpg"/>
-									</div>
-									<br><br>
-									Это началось где-то через год после гибели отца в 
-автокатастрофе. Ничего необычного: ехал ночью,<br>
-									
-<br> дорога была обледенелой, на крутом 
-повороте машину занесло, а там крутой откос. Не он первый там разбился, не он 
-последний. 
-									</div>	
-									
-									<div class="b-widget">
-									<div style="text-align: center;">
-									<h3>Яша и паяльник</h3> 
-									</div>
-									<hr>
-									<br>
-									<img src="../static/images/content/3.jpg"/><br>
-										Яша взял паяльную лампу.			
-									</div>
-								</div>
-								<div class="b-middle_column">
-									<div class="b-widget">
-									<div style="text-align: center;">
-									<h3>Adidas Way</h3>
-									</div>
-									<br>
-									<div style="text-align: center;">
-										<img src="../static/images/content/4.jpg"/>
-									</div>
-									<br><br>
-									Вставали в четыре, пол пятого, на крайнем рассвете, выпивали по стакану водки. 
-									</div>
-								</div>
-								<div class="b-right_column">
-
-									
-							<!-- будущее всплывающее окно регистрации -->
-							<div class="b-widget_black">
-                    			<div id="login" class="b-widget_black__inner_box">
-              						<h4 class="b-widget_black__h4">Авторизация</h4>
-                         			<form class="b-widget_black__form" action="...." method="post">
-                             			<label class="b-widget_black__form__label">Логин </label>
-                             			<div class="b-widget_black__form__input focus">
-                              				<input type="text" name="name">
-                             			</div>                         
-                            			<label class="b-widget_black__form__label">Пароль</label>
-                           				<div class="b-widget_black__form__input focus">
-                                			<input type="password" name="password">                         
-                            			</div>
-                            			<button type="submit" class="b-widget_black__button">Я все заполнил</button>
-                        			</form>
-                        			<div>
-                            			<a class="b-widget_black__sign_up">Регистрация</a> 
-                            				<br> 
-                            			<a class="b-widget_black__recoveryPassword" href="#">Забыли пароль?</a>
-                        			</div>
-                    			</div>
-                			</div>
-
-									<div class="b-widget"  style="background: #eeeeee;">
-									<img src="../static/images/content/1.jpg"/><br>
-								тся, есть какой-то закон против распространителен без­ответственных слухов, — угрюмым тоном промолвил Таггерт. — Да­вайте пропустим еще по маленькой.
-Он раздраженно махнул официанту. 			
-									</div>
-									<div class="b-widget" style="background: #ccddff;">
-									<img src="../static/images/content/2.jpg"/><br>
-								тся, есть какой-то закон против распространителен без­ответственных слухов, — угрюмым тоном промолвил Таггерт. — Да­вайте пропустим еще по маленькой.
-Он раздраженно махнул официанту. 			
-									</div>		
-									
-								</div>
-						</div>
-					</div>
-
-					
-					
-					<!-- Прилипание подвала к нижней части экрана реализовано
-					с помощью отрицательного расположения. Т.е. подвал наезжает
-					на главный контент - следующий div как раз существует
-					для того, чтобы оставить место подвалу -->
-					<div class="b-footerspace"/>
+						</li>
+					</ul>
+				</div>
+				<a href="index.html" class="b-header__logo"></a>
+				<!-- Социальная панель -->
+				<div class="b-socialpanel">
+					<script type="text/javascript">socializ(encodeURIComponent('Hey moose!'), encodeURIComponent('Универсальная платформа для рекламодателей'))</script>
 				</div>
 			</div>
-			<!-- Подвал -->
-			<div class="b-footer">
-				<div class="b-footer__shadowline"></div>
-				<div class="b-footer__topshadow"></div>
-				<div class="b-footer_content">
-						<div class="b-footer_content__menu"></div>
-						<div class="b-footer_content__separator"></div>					
-						<div class="b-footer_content__bottom_separator">
-							<div class="copyright">© 2011 Bravik, LLC.</div>
-						</div>
+			<!-- Контент -->
+			<div class="b-main_content">
+				<!-- Экран для слайдов -->
+				<div class="b-screen">
+					<div class="b-screen__slide"></div>
 				</div>
-			
+				<div class="b-widgets i-clearfix">
+					<div class="b-left_column">
+						<div class="b-widget"  style="background: #eeeeee;">
+							<div style="text-align: center;">
+								<h3>Чернушка</h3>
+							</div>
+							<hr>
+							<br>
+							<div style="text-align: center;">
+								<img src="../static/images/content/2.jpg"/>
+							</div>
+							<br>
+							<br>
+							Это началось где-то через год после гибели отца в
+							автокатастрофе. Ничего необычного: ехал ночью,
+							<br>
+							<br>
+							дорога была обледенелой, на крутом
+							повороте машину занесло, а там крутой откос. Не он первый там разбился, не он
+							последний.
+						</div>
+						<div class="b-widget">
+							<div style="text-align: center;">
+								<h3>Яша и паяльник</h3>
+							</div>
+							<hr>
+							<br>
+							<img src="../static/images/content/3.jpg"/>
+							<br>
+							Яша взял паяльную лампу.
+						</div>
+					</div>
+					<div class="b-middle_column">
+						<div class="b-widget">
+							<div style="text-align: center;">
+								<h3>Adidas Way</h3>
+							</div>
+							<br>
+							<div style="text-align: center;">
+								<img src="../static/images/content/4.jpg"/>
+							</div>
+							<br>
+							<br>
+							Вставали в четыре, пол пятого, на крайнем рассвете, выпивали по стакану водки.
+						</div>
+					</div>
+					<div class="b-right_column">
+						<!-- будущее всплывающее окно регистрации -->
+						<div class="b-widget_black">
+							<div id="login" class="b-widget_black__inner_box">
+								<h4 class="b-widget_black__h4">Авторизация</h4>
+								<form class="b-widget_black__form" action="...." method="post">
+									<label class="b-widget_black__form__label">Логин </label>
+									<div class="b-widget_black__form__input focus">
+										<input type="text" name="name">
+									</div>
+									<label class="b-widget_black__form__label">Пароль</label>
+									<div class="b-widget_black__form__input focus">
+										<input type="password" name="password">
+									</div>
+									<button type="submit" class="b-widget_black__button">
+										Я все заполнил
+									</button>
+								</form>
+								<div>
+									<a class="b-widget_black__sign_up">Регистрация</a>
+									<br>
+									<a class="b-widget_black__recoveryPassword" href="#">Забыли пароль?</a>
+								</div>
+							</div>
+						</div>
+						<div class="b-widget"  style="background: #eeeeee;">
+							<img src="../static/images/content/1.jpg"/>
+							<br>
+							тся, есть какой-то закон против распространителен без­ответственных слухов, — угрюмым тоном промолвил Таггерт. — Да­вайте пропустим еще по маленькой.
+							Он раздраженно махнул официанту.
+						</div>
+						<div class="b-widget" style="background: #ccddff;">
+							<img src="../static/images/content/2.jpg"/>
+							<br>
+							тся, есть какой-то закон против распространителен без­ответственных слухов, — угрюмым тоном промолвил Таггерт. — Да­вайте пропустим еще по маленькой.
+							Он раздраженно махнул официанту.
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Прилипание подвала к нижней части экрана реализовано
+			с помощью отрицательного расположения. Т.е. подвал наезжает
+			на главный контент - следующий div как раз существует
+			для того, чтобы оставить место подвалу -->
+			<div class="b-footerspace"/>
+		</div>
+		</div> <!-- Подвал -->
+		<div class="b-footer">
+			<div class="b-footer__shadowline"></div>
+			<div class="b-footer__topshadow"></div>
+			<div class="b-footer_content">
+				<div class="b-footer_content__menu"></div>
+				<div class="b-footer_content__separator"></div>
+				<div class="b-footer_content__bottom_separator">
+					<div class="copyright">
+						© 2011 Bravik, LLC.
+					</div>
+				</div>
+			</div>
 	</body>
 </html>

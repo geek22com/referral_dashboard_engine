@@ -13,42 +13,63 @@
 	
 	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
-.b-header__menu ul {
+
+
+.b-header__menu {
+	margin: 0px 0px 0px 0px;
 	
-	opacity: 0.7;
+	/*opacity: 0.7;*/
+	/*background: black;*/
+	background: url(../images/header_panel_bg.png);
 	/*background: white;*/
 	-moz-box-shadow: rgba(00,00,00,1) 0 4px 18px;
 	-webkit-box-shadow: rgba(00,00,00,1) 0 4px 18px;
 	-khtml-box-shadow: rgba(00,00,00,1) 0 4px 18px;
 	box-shadow: rgba(00,00,00,1) 0 4px 18px;
-	margin: 0px;
-	padding: 0;
+
 	height: 30px;
 	width: 960px;
-	list-style-type: none;
-	font-size: 14px;
+
+	font-size: 13px;
+	font-weight: bold;
 	font-family: Arial, Verdana, Helvitica, sans-serif;
 	
 	-moz-border-radius: 11px;
 	-khtml-border-radius: 11px;
 	-webkit-border-radius: 11px;
 	border-radius: 6px;
+	
+	
+	background-size: auto 100%;
+	-moz-background-size: auto 100%;
+	-webkot-background-size: auto 100%;
+	-khtml-background-size: auto 100%;
+	-o-background-size: auto 100%;
+}
+
+.b-header__menu ul {
+	list-style-type: none;
+	padding: 0px 10px 0px 10px;
+	margin: 0px 0px 0px 0px;
 }
 .b-header__menu ul li a {
 	display: block;
 	float: left;
-	color: #000000;
+	/*color: #000000;*/
+	color: #BBBBBB;
 	text-decoration: none;
 	text-align: center;
-	margin-left: 10px;
+	margin-left: 0px;
 	margin-right: 0px;
-	padding: 8px 15px 5px 15px;
+	padding: 7px 12px 5px 12px;
 	height: 17px;
 }
 .b-header__menu ul li a:hover {
 	color: white;
-	background-color: black;
-	/*background:url(fon2.png) repeat-x*/
+	/*	background-color: black;*/
+	background: url(../images/header_panel_bg_hover.png);
+	/*background:url(fon2.png) repeat-x*/	
+	
 }
 .b-header {
 	width: 960px;
@@ -60,6 +81,9 @@
 	float: left;
 	margin-top: 10px;
 	background-image: url(../images/logo.png);
+}
+.b-header__logo:hover {
+	cursor: pointer;
 }
 
 
@@ -136,7 +160,8 @@
 	text-align: center;
 }
 .b-screen {
-	height: 400px;
+	position: relative;
+	min-height: 400px;
 	width: 900px;
 	margin: 50px 30px 30px;
 	font-weight: normal;
@@ -207,7 +232,8 @@
 }
 
 .i-widget_persone {
-	
+	background: white;
+	margin: 10px;
 }
 
 /* Common style for tables */
@@ -217,7 +243,10 @@
 
 .b-table_row {
 	width: 100%;
-	font: 16px Helvetica, Arial, sans-serif;
+	/*font: 15px Helvetica, Arial, sans-serif;*/
+	font-family: verdana, sans-serif;
+	font-size: 14px;
+	color: #333333;
 }
 
 .b-table_cell {
@@ -228,12 +257,41 @@
 
 /* table modificators */
 .i-table_header {
-	font-family: verdana, sans-serif;
+	/*font-family: verdana, sans-serif;*/
 	font-weight: bold;
-	color: #444444;
-	font-size: 120%;
-	background: #6EA5A7;
+	color: #EEEEEE;
+	font-size: 100%;
+	color: #222222;
 }
+
+.i-table_panel_row {
+	width: 100%;
+		
+	-webkit-border-radius: 5px 5px 0px 0px;
+	-khtml-border-radius: 5px 5px 0px 0px;
+	border-radius: 5px 5px 0px 0px;
+	
+}
+
+.i-row_layer {
+	background: black;
+	color: white;
+	width: 100%;	
+	
+	-moz-box-shadow: rgba(00,00,00,1) 0 4px 18px;
+	-webkit-box-shadow: rgba(00,00,00,1) 0 4px 18px;
+	-khtml-box-shadow: rgba(00,00,00,1) 0 4px 18px;
+	box-shadow: rgba(00,00,00,1) 0 4px 18px;
+}
+
+.i-create_order_form {
+	float: left;
+}
+
+.i-table_panel_row ul li a {
+	padding: 4px 12px 8px 12px;
+}
+
 
 .i-table_even_row {
 	background: #9FD8DA;
@@ -258,53 +316,75 @@
  * 
  * */
 .i-order_cell_number {
+	padding: 4px 10px 3px 10px;
 	width: 70px;
 	text-align: center;
+	line-height: 1.3;
 }
 
 .i-order_cell_descr {
+	padding: 4px 10px 3px 10px;
 	width: 350px;
 	text-align: left;
+	line-height: 1.3;
 }
 
 .i-order_cell_balance {
+	padding: 4px 10px 3px 10px;
 	width: 100px;
 	text-align: right;
+	line-height: 1.3;
 }
 
 .i-order_cell_val_offer {
+	padding: 4px 10px 3px 10px;
 	width: 100px;
 	text-align: right;
+	line-height: 1.3;
 }
 
 .i-order_cell_status {
-	width: 190px;
+	padding: 4px 10px 3px 10px;
+	width: 170px;
 	text-align: left;
+	line-height: 1.3;
+	float: right;
 }
 
 .i-order_hd_cell_number {
+	padding: 8px 10px 6px 10px;
 	width: 70px;
 	text-align: center;
+	line-height: 1.3;
 }
 
 .i-order_hd_cell_descr {
+	padding: 8px 10px 6px 10px;
 	width: 350px;
 	text-align: center;
+	line-height: 1.3;
 }
 
 .i-order_hd_cell_balance {
+	padding: 8px 10px 6px 10px;
 	width: 100px;
 	text-align: center;
+	line-height: 1.3;
 }
 
 .i-order_hd_cell_val_offer {
+	padding: 8px 10px 6px 10px;
 	width: 100px;
 	text-align: center;
+	line-height: 1.3;
 }
 
 .i-order_hd_cell_status {
-	width: 190px;
+	padding: 8px 10px 6px 10px;
+	width: 170px;
 	text-align: center;
+	line-height: 1.3;
+	float: right;
 }
 
 .i-status_wait {
@@ -322,33 +402,45 @@
  * 
  * */
 .i-apps_cell_id {
+	padding: 4px 10px 3px 10px;
 	width: 70px;
 	text-align: center;
+	line-height: 1.3;
 }
 
 .i-apps_cell_secret {
+	padding: 4px 10px 3px 10px;
 	width: 350px;
 	text-align: center;
+	line-height: 1.3;
 }
 
 .i-apps_cell_callback {
+	padding: 4px 10px 3px 10px;
 	width: 400px;
 	text-align: left;
+	line-height: 1.3;
 }
 
 .i-apps_hd_cell_id {
+	padding: 8px 10px 6px 10px;
 	width: 70px;
 	text-align: center;
+	line-height: 1.3;
 }
 
 .i-apps_hd_cell_secret {
+	padding: 8px 10px 6px 10px;
 	width: 350px;
 	text-align: center;
+	line-height: 1.3;
 }
 
 .i-apps_hd_cell_callback {
+	padding: 8px 10px 6px 10px;
 	width: 400px;
 	text-align: center;
+	line-height: 1.3;
 }
 
 .b-widget_h2 {
@@ -366,3 +458,337 @@
 	font-size: 120%;
 	text-align: center;
 }
+
+
+/*  Шняга для слайдов */
+.b-comics {
+	color: #333;
+	font: bold small-caps 10px/11px Arial;
+	text-align: center;
+}
+
+
+
+/* Стили форм */
+.b-login_widget {
+	float: right;
+	/*margin: top right bottom left */
+	margin: 1px 10px 0px 0px;
+}
+
+
+.b-login_form {
+}
+
+.b-input_wrap_email {
+	background: white;
+	width: 120px;
+	height: 17px;
+	float: left;
+	font-weight: normal;
+	-moz-border-radius: 20px;
+	-khtml-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 9px;
+	margin: 4px 3px 0px;
+	background: white;
+	border: #262626 2px solid;
+}
+
+.b-input_wrap_email:hover {
+	border: white 2px solid;
+	box-shadow: 0 0 10px 1px white;
+	-moz-box-shadow: 0 0 10px 1px white;
+	-webkit-box-shadow: 0 0 10px 1px white;
+}
+
+.b-input_wrap_password {
+	background: white;
+	width: 120px;
+	height: 17px;
+	float: left;
+	font-weight: normal;
+	-moz-border-radius: 20px;
+	-khtml-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 9px;
+	margin: 4px 3px;
+	background: white;
+	border: #262626 2px solid;
+}
+
+.b-input_wrap_password:hover {
+	border: white 2px solid;
+	box-shadow: 0 0 10px 1px white;
+	-moz-box-shadow: 0 0 10px 1px white;
+	-webkit-box-shadow: 0 0 10px 1px white;
+}
+
+
+.b-input_wrap_button_login {
+	background: white;
+	width: 60px;
+	height: 17px;
+	float: left;
+	font-weight: normal;
+	-moz-border-radius: 20px;
+	-khtml-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 9px;
+	margin: 4px 3px;
+	background: white;
+	border: #262626 2px solid;
+}
+
+
+
+.b-input {
+	width: 105px;
+	height: 14px;
+	margin: 1px 7px; 1px 7px;
+	border: none;
+	/*visibility: hidden;*/
+	
+	overflow: hidden;
+	border: 0;
+	outline: 0;
+	
+	background: white;
+	
+	
+	
+	/*border: solid 1px white;*/
+}
+
+
+
+.b-input:focus {
+	box-shadow: 0 0 10px 1px white;
+	-moz-box-shadow: 0 0 10px 1px white;
+	-webkit-box-shadow: 0 0 10px 1px white;
+}
+
+.b-input_button {
+	margin: 5px;
+	background: #9FD8DA;
+	border: none;
+	overflow: hidden;
+	
+	font-size: 13px;
+	font-weight: bold;
+	font-family: Arial, Verdana, Helvitica, sans-serif;
+	color: #222222;
+	
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	
+	box-shadow: 0 0 10px 1px #9FD8DA;
+	-moz-box-shadow: 0 0 10px 1px #9FD8DA;
+	-webkit-box-shadow: 0 0 10px 1px #9FD8DA;
+}
+
+.b-input_button:hover {
+	box-shadow: 0 0 10px 1px white;
+	-moz-box-shadow: 0 0 10px 1px white;
+	-webkit-box-shadow: 0 0 10px 1px white;
+	color: black;
+}
+
+.b-input_button:focus {
+	box-shadow: 0 0 10px 1px white;
+	-moz-box-shadow: 0 0 10px 1px white;
+	-webkit-box-shadow: 0 0 10px 1px white;
+	color: black;
+}
+
+/* registration */
+
+			.b-reg_header {
+				padding: 10px;
+				margin: 10px;
+				font: 12px   /18px Verdana, Tahoma, Arial, sans-serif;
+				font-weight: bolder;
+				font-size: 20px;
+				color: #6EA5A7;
+				text-align: center;
+			}
+			.b-reg_content {
+				margin: 10px;
+				font: 12px   /18px Verdana, Tahoma, Arial, sans-serif;
+				font-weight: bolder;
+				color: #6EA5A7;
+			}
+			.b-reg_footer {
+				font: 12px   /18px Verdana, Tahoma, Arial, sans-serif;
+				font-weight: bolder;
+				color: #6EA5A7;
+				margin: 10px;
+				padding: 10px;
+			}
+			.b-register_descr {
+				margin: 10px;
+				padding: 30px 20px 20px 20px;
+				width: 280px;
+				height: 100%;
+				float: left;
+				background: #222222;
+				-moz-border-radius: 12px;
+				-khtml-border-radius: 12px;
+				-webkit-border-radius: 12px;
+				
+				font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+				color: #6A6A6A;
+				color: #AAAAAA;
+				font-weight: normal;
+				font-size: 16px;
+			}
+			.b-register_form {
+				margin: 10px;
+				padding: 10px 10px 10px 10px;
+				/*float: right;*/
+				width: 500px;
+				background: #FFCC99;
+				-moz-border-radius: 12px;
+				-khtml-border-radius: 12px;
+				-webkit-border-radius: 12px;
+				background: #222222;
+			}
+
+			.b-reg_form_header {
+				padding: 10px;
+				margin: 10px;
+				text-align: center;
+			}
+			.b-reg_form_content {
+				margin: 10px;
+			}
+			.b-reg_form_footer {
+				padding: 10px;
+				margin: 10px 130px;
+			}
+			.b-error_text {
+				margin: 10px 50px;
+				padding: 10px;
+				color: #FFCC99;				
+			}
+
+			.i-reg_form_row {
+				margin: 0 auto;
+			}
+
+			.i-reg_form_cell {
+				width: 40%;
+				padding: 2px 10px 2px 10px;
+			}
+			.i-reg_form_content {
+				/* из-за clear-fix ?*/
+				margin: 0 45px;
+				width: 100%;
+			}
+			.b-form_label {
+				position: relative;
+				font: 12px  /18px Verdana, Tahoma, Arial, sans-serif;
+				font-size: 100%;
+				color: #bbbbbb;
+				display: block;
+				margin: 8px 0px;
+			}
+			.b-input_wrap {
+				position: relative;
+				background: white;
+				width: 100%;
+				height: 26px;
+				float: left;
+				font-weight: normal;
+				-moz-border-radius: 30px;
+				-khtml-border-radius: 30px;
+				-webkit-border-radius: 30px;
+				border-radius: 12px;
+				background: white;
+				margin: 5px 5px 5px 5px;
+			}
+			.b-input_wrap:hover {
+				box-shadow: 0 0 10px 1px white;
+				-moz-box-shadow: 0 0 10px 1px white;
+				-webkit-box-shadow: 0 0 10px 1px white;
+			}
+			.b-rinput {
+				width: 85%;
+				height: 85%;
+				margin: 1px 0px 1px 12px;
+				border: none;
+				overflow: hidden;
+				border: 0;
+				outline: 0;
+				background: white;
+			}
+			.i-submit_button {
+				height: 26px;
+				width: 200px;
+				display: block;
+				-moz-border-radius: 30px;
+				-khtml-border-radius: 30px;
+				-webkit-border-radius: 30px;
+				text-align: center;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.i-role_button {
+				height: 26px;
+				width: 100%;
+				display: block;
+				margin: 6px 5px 6px 5px;
+				-moz-border-radius: 30px;
+				-khtml-border-radius: 30px;
+				-webkit-border-radius: 30px;
+				text-align: center;
+				/*margin-left: auto;
+				margin-right: auto;*/
+			}
+			.i-input_with_error {
+				box-shadow: 0 0 10px 1px red;
+				-moz-box-shadow: 0 0 10px 1px red;
+				-webkit-box-shadow: 0 0 10px 1px red;
+			}
+			
+			.i-input_focused{
+				box-shadow: 0 0 10px 1px green;
+				-moz-box-shadow: 0 0 10px 1px green;
+				-webkit-box-shadow: 0 0 10px 1px green;
+			}
+
+			.i-register_form {
+				float: right;
+			}
+
+/* create order form modificators*/
+.i-cancel_button {
+	background: #FFFF99;
+}
+
+
+.b-our_balance_widget {
+	/*box-shadow: 0 0 10px 1px black;
+	-moz-box-shadow: 0 0 10px 1px black;
+	-webkit-box-shadow: 0 0 10px 1px black;
+	
+	-moz-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-webkit-border-radius: 5px;*/
+	
+	float: right;
+	color: #FFFF66;
+	margin: 4px 10px 4px 10px;
+	padding: 0 10px 0 10px;
+	
+}
+
+.i-form_descr {
+font: 12px /18px Verdana, Tahoma, Arial, sans-serif;
+font-weight: bolder;
+color: #6EA5A7;
+}
+
+
+

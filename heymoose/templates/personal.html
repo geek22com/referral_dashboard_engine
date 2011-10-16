@@ -5,184 +5,579 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>heymoose</title>
 		<link rel=stylesheet href="../static/css/common.css" type="text/css" media=screen>
-		<!-- заменить на minimum если не требуется -->
+		<!-- jquery и его плагины -->
 		<script type="text/javascript" src="../static/js/jquery.js"></script>
+		<script type="text/javascript" src="../static/js/jquery_plugins/timers.js"></script>
 		<!-- Социальная панель -->
 		<script type="text/javascript" src="../static/js/socializ.js"></script>
 		<link rel=stylesheet href="../static/css/socializ.css" type="text/css" media=screen>
-		
 		<!-- панель регистрации или виджет black-box-->
-		<link rel=stylesheet href="../static/css/widget_black.css" type="text/css" media=screen>		
-
-		<!-- effects for tables -->
+		<link rel=stylesheet href="../static/css/widget_black.css" type="text/css" media=screen>
+		<!-- загрузка слайдов -->
 		<script>
-			$(document).ready(function(){
-			
-				/*
-				$(".b-table_row").hover(function() {
-					if(oldHeight != 2*$(".b-table_row").height()) {
-					}
-				});*/
+			$(document).ready(function() {
 				
-				/*$(".b-table_row").hover(
-					function () {
-						var oldHeight = $(".b-table_row").height();
-						$(".b-table_row").animate({height: oldHeight*2}, 1000);	    					
-				  	},
-  					function () {
-						var oldHeight = $(".b-table_row").height();
-						$(".b-table_row").animate({height: oldHeight/2}, 1000);	    					
- 					}
-				);*/
- 
+								
 				
-			
-				//var oldHeight = 2*$(".b-table_row").height();
-				//$(".b-table_row").animate({height: oldHeight*2}, 1000);
+				
+				// ===== Функционал разработчика =====
+				
+				// Скроем ненужные формы
+				$("#create_app_layer").slideUp(1);
+				$("#create_app_layer").children().fadeOut(1);
 
+				// Отображение формы добавления заказа
+				$("#create_app").click(function() {
+					// скрыть другие формы
+					hideAnotherLayersApp();	
+					
+					$("#create_app_layer").slideDown(300);
+					// TODO: add foreach
+					$("#create_app_layer").children().fadeIn(500);
+					return false;
+				});
+				
+				// Кнопка отмены на форме добавления приложения
+				$("#create_app_cancel").click(function() {
+					$("#create_app_layer").children().fadeOut(300);
+					//TODO: add foreach
+					$("#create_app_layer").slideUp(500);
+				});
+				
+				// Скрытие всех форм разработчика
+				function hideAnotherLayersApp() {
+					$("#create_app_layer").children().fadeOut(300);
+					//TODO: add foreach
+					$("#create_app_layer").slideUp(500);
+				}
+				
+				
+				
+				
+				
+				// ===== Функционал рекламодателя =====
+				
+				// Скроем ненужные формы
+				$("#create_order_layer").slideUp(1);
+				$("#create_order_layer").children().fadeOut(1);
+				$("#fill_balance_layer").slideUp(1);
+				$("#fill_balance_layer").children().fadeOut(1);
+
+				// Отображение формы добавления заказа
+				$("#create_order").click(function() {
+					// скрыть другие формы
+					hideAnotherLayersAdv();	
+					
+					$("#create_order_layer").slideDown(300);
+					// TODO: add foreach
+					$("#create_order_layer").children().fadeIn(500);
+					return false;
+				});
+				
+				// Отображение формы пополнения баланса
+				$("#fill_balance").click(function() {
+					// скрыть другие формы
+					hideAnotherLayersAdv();
+					
+					$("#fill_balance_layer").slideDown(300);
+					// TODO: add foreach
+					$("#fill_balance_layer").children().fadeIn(500);
+					return false;
+				});
+				
+				// Кнопка отмены на форме добавления заказа
+				$("#create_order_cancel").click(function() {
+					$("#create_order_layer").children().fadeOut(300);
+					//TODO: add foreach
+					$("#create_order_layer").slideUp(500);
+				});
+				
+				// Кнопка отмены на форме пополнения баланса
+				$("#fill_balance_cancel").click(function() {					
+					$("#fill_balance_layer").children().fadeOut(300);
+					//TODO: add foreach
+					$("#fill_balance_layer").slideUp(500);
+				});
+				
+				
+				// Скрытие всех форм рекламодателя
+				function hideAnotherLayersAdv() {
+					$("#fill_balance_layer").children().fadeOut(300);
+					//TODO: add foreach
+					$("#fill_balance_layer").slideUp(500);
+					
+					$("#create_order_layer").children().fadeOut(300);
+					//TODO: add foreach
+					$("#create_order_layer").slideUp(500);
+				}
+
+				// ===== Функционал валидации =====
+				// Отображает ошибку в дескрипшене формы
+				function showError(error, error_text_element, error_input_element) {
+					error_input_element.parent().addClass('i-input_with_error');
+					
+					//$('#fill_balance_error').slideDown(200);
+					//$('#fill_balance_error').text(error);
+					
+					error_text_element.slideDown(200);
+					error_text_element.text(error);
+				}
+				
+				function clearError(element) {
+					$('.b-error_text').slideUp(200);
+					$(element).parent().removeClass('i-input_with_error');
+					//$('.b-rinput').parent().removeClass('i-input_focused');
+				}
+				
+				// События формы
+				$(".b-rinput").keypress(function() {
+					clearError(this);
+				});	
+				
+				// спрячем error
+				$('b-error_text').slideUp(1);
+
+
+				// ===== Функцинал валидации рекламодателя ======
+				
+				
+				// ----- пополнить баланс ------
+				
+				// Валидация формы пополнения баланса
+				$("#fill_balance_form").submit(function() {
+					customer_balance = $('#customer_balance').val();
+										
+					if(customer_balance == "") {
+						showError("Заполните, пожалуйста, баланс", $('#fill_balance_error'), $('#customer_balance'));
+						return false;
+					}
+					
+					return true;
+				});
+		
+				// ----- создать заказ ------
+		
+				// ===== Функцинал валидации разработчика ======
+				
+				// ----- создать приложение ------
+				$("#create_app_form").submit(function() {
+					app_calback = $('#app_callback').val();
+										
+					if(app_calback == "") {
+						showError("Заполните, пожалуйста, URL", $('#create_app_error'), $('#app_callback'));
+						return false;
+					}
+					
+					return true;
+				});
 
 			});
-		</script>
 
+		</script>
 	</head>
 	<body class="b-body">
-				<!-- Обертка единого стиля для контента и заголовка -->
-				<div class="m-bottom_layer">
-					<!-- Заголовок -->
-					<div class="b-header">
-				
-						
-						
-						<div class="b-header__menu">
-							<ul>
-								<li><a href="#" title="О проекте">О проекте</a></li>
-								<li><a href="#" title="Регистрация">Регистрация</a></li>
-								<li><a href="#" title="Блог">Блог</a></li>
-								<li><a href="#" title="Рекламодателям">Рекламодателям</a></li>
-								<li><a href="#" title="Разработчикам">Разработчикам</a></li>
-								<li><a href="#" title="Контакты">Контакты</a></li>
-							</ul>
-						</div>
-						
-						<a href="index.html" class="b-header__logo"></a>
-					
-					</div>
-					<!-- Контент -->
-					<div class="b-main_content i-persone">
-						
-<div class="b-persone_header">
-	<h2 class="b-content_h2">Личный кабинет</h2>
-</div>
-
-
-
-<div class="b-widget i-widget_persone">
-	<h3 class="b-widget_h3">Заказы</h3>
-	<div class="b-widget_descr">
-		
-	</div>
-	<div class="b-table">
-		<div class="b-table_row i-table_header i-clearfix">
-			<div class="b-table_cell i-order_hd_cell_number">Номер</div>
-			<div class="b-table_cell i-order_hd_cell_descr">Описание</div>
-			<div class="b-table_cell i-order_hd_cell_balance">Баланс</div>
-			<div class="b-table_cell i-order_hd_cell_val_offer">(CPA)</div>
-			<div class="b-table_cell i-order_hd_cell_status">Статус</div>
-		</div>
-		<div class="b-table_row i-table_even_row i-clearfix">
-			<div class="b-table_cell i-order_cell_number">1</div>
-			<div class="b-table_cell i-order_cell_descr">Sony и девайсы, социальная реклама плееров серии A</div>
-			<div class="b-table_cell i-order_cell_balance">2225000</div>
-			<div class="b-table_cell i-order_cell_val_offer">150</div>
-			<div class="b-table_cell i-order_cell_status i-status_wait">Ожидает утверждения</div>
-		</div>
-		<div class="b-table_row i-table_odd_row i-clearfix">
-			<div class="b-table_cell i-order_cell_number">2</div>
-			<div class="b-table_cell i-order_cell_descr">Рекламный пакет samsung</div>
-			<div class="b-table_cell i-order_cell_balance">1250000</div>
-			<div class="b-table_cell i-order_cell_val_offer">200</div>
-			<div class="b-table_cell i-order_cell_status i-status_wait">Ожидает утверждения</div>
-		</div>
-		<div class="b-table_row i-table_even_row i-clearfix">
-			<div class="b-table_cell i-order_cell_number">3</div>
-			<div class="b-table_cell i-order_cell_descr">Билайн и партнеры - новые тарифы</div>
-			<div class="b-table_cell i-order_cell_balance">1250000</div>
-			<div class="b-table_cell i-order_cell_val_offer">110</div>
-			<div class="b-table_cell i-order_cell_status i-status_approved">Утвержден</div>
-		</div>
-		<div class="b-table_row i-table_odd_row i-clearfix">
-			<div class="b-table_cell i-order_cell_number">4</div>
-			<div class="b-table_cell i-order_cell_descr">Реклама интимной гигиены</div>
-			<div class="b-table_cell i-order_cell_balance">1250000</div>
-			<div class="b-table_cell i-order_cell_val_offer">200</div>
-			<div class="b-table_cell i-order_cell_status i-status_approved">Утвержден</div>
-		</div>
-	</div>
-	
-	
-</div>
-
-<br>
-<br>
-<div class="b-widget i-widget_persone">
-	<h3 class="b-widget_h3">Приложения</h3>
-	<div class="b-table">
-		<div class="b-table_row i-table_header i-clearfix">
-			<div class="b-table_cell i-apps_hd_cell_id">id</div>
-			<div class="b-table_cell i-apps_hd_cell_secret">Secret</div>
-			<div class="b-table_cell i-apps_hd_cell_callback">Callabck</div>
-		</div>
-		<div class="b-table_row i-table_even_row i-clearfix">
-			<div class="b-table_cell i-apps_cell_id">1</div>
-			<div class="b-table_cell i-apps_cell_secret">39f390ca-eb72-4a90-badd-993e60710b42</div>
-			<div class="b-table_cell i-apps_cell_callback">www.iam.com/header.aspx?dbhjedvj</div>
-		</div>
-		<div class="b-table_row i-table_odd_row i-clearfix">
-			<div class="b-table_cell i-apps_cell_id">2</div>
-			<div class="b-table_cell i-apps_cell_secret">39f390ca-eb72-4a90-badd-993e60710b42</div>
-			<div class="b-table_cell i-apps_cell_callback">mixture/dhkjdlkdfk/dbhgdlhfjd</div>
-		</div>
-		<div class="b-table_row i-table_even_row i-clearfix">
-			<div class="b-table_cell i-apps_cell_id">3</div>
-			<div class="b-table_cell i-apps_cell_secret">39f390ca-eb72-4a90-badd-993e60710b42</div>
-			<div class="b-table_cell i-apps_cell_callback">http://mydengi.ru/idt2i012e3070</div>
-		</div>
-		<div class="b-table_row i-table_odd_row i-clearfix">
-			<div class="b-table_cell i-apps_cell_id">4</div>
-			<div class="b-table_cell i-apps_cell_secret">39f390ca-eb72-4a90-badd-993e60710b42</div>
-			<div class="b-table_cell i-apps_cell_callback">http://mydengi.ru/index.php?request=bwelihdew98w0dewe0</div>
-		</div>
-	</div>
-	
-</div>
-						
-						
-						
-						<!--<div class="b-widgets i-clearfix">
-							
-						</div>-->
-					</div>
-
-					
-					
-					<!-- Прилипание подвала к нижней части экрана реализовано
-					с помощью отрицательного расположения. Т.е. подвал наезжает
-					на главный контент - следующий div как раз существует
-					для того, чтобы оставить место подвалу -->
-					<div class="b-footerspace"/>
+		<!-- Обертка единого стиля для контента и заголовка -->
+		<div class="m-bottom_layer">
+			<!-- Заголовок -->
+			<div class="b-header">
+				<div class="b-header__menu">
+					<ul>
+						<li>
+							<a href="personal.html" title="О проекте">О проекте</a>
+						</li>
+						<li>
+							<a href="registration.html" title="Регистрация">Регистрация</a>
+						</li>
+						<li>
+							<a href="blog.html" title="Блог">Блог</a>
+						</li>
+						<li>
+							<a href="advertiser.html" title="Рекламодателям">Рекламодателям</a>
+						</li>
+						<li>
+							<a href="developer.html" title="Разработчикам">Разработчикам</a>
+						</li>
+						<li>
+							<a href="contats.html" title="Контакты">Контакты</a>
+						</li>
+						<li>
+							<div class="b-login_widget">
+								<form class="b-login_form" action="..." method="get">
+									<div class="b-input_wrap_email">
+										<input class="b-input" type="email">
+									</div>
+									<div class="b-input_wrap_password">
+										<input class="b-input" type="password">
+									</div>
+									<input class="b-input_button" type="button" value="Войти">
+								</form>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<a href="index.html" class="b-header__logo"></a>
+				<!-- Социальная панель -->
+				<div class="b-socialpanel">
+					<script type="text/javascript">socializ(encodeURIComponent('Hey moose!'), encodeURIComponent('Универсальная платформа для рекламодателей'))</script>
 				</div>
 			</div>
-			<!-- Подвал -->
-			<div class="b-footer">
-				<div class="b-footer__shadowline"></div>
-				<div class="b-footer__topshadow"></div>
-				<div class="b-footer_content">
-						<div class="b-footer_content__menu"></div>
-						<div class="b-footer_content__separator"></div>					
-						<div class="b-footer_content__bottom_separator">
-							<div class="copyright">© 2011 Bravik, LLC.</div>
-						</div>
+			<!-- Контент -->
+			<div class="b-main_content">
+				<div class="b-persone_header">
+					<h2 class="b-content_h2">Личный кабинет</h2>
 				</div>
-			
+				<div class="b-widget i-widget_persone">
+					<h3 class="b-widget_h3">Заказы</h3>
+					<div class="b-widget_descr"></div>
+					<div class="b-table">
+						<div class="b-header__menu i-table_panel_row i-clearfix">
+								<ul>
+									<li>
+										<a id="create_order" href="" title="Создать заказ">Создать заказ</a>
+									</li>
+									<li>
+										<a id="fill_balance" href="" title="Пополнить заказ">Пополнить баланс</a>
+									</li>
+								</ul>
+								<div id="adv_balance" class="b-our_balance_widget">Ваш баланс: 12203033</div>
+						</div>
+							<div id="fill_balance_layer" class="b-table_row i-row_layer i-clearfix">
+							
+							
+							<form id="fill_balance_form" class="b-register_form i-create_order_form" action="..." method="post">
+							<div class="b-reg_form_header i-form_descr">
+								Заполните, пожалуйста, поля формы
+							</div>
+							<div class="b-table i-reg_form_content">
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Баланс</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="customer_balance" class="b-rinput" type="text">
+										</div>
+									</div>
+								</div>
+
+								<div class="b-reg_form_footer">
+									<div class="b-table_cell i-reg_form_cell">
+										<input id="fill_balance_cancel" class="b-input_button i-cancel_button" type="button" value="Отменить">
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<input id="fill_balance_accept" class="b-input_button i-submit_order_button" type="submit" value="Подтвердить">
+									</div>
+								</div>
+							</div>
+							<div id="fill_balance_error_wrap" class="b-reg_form_error">
+								<div id="fill_balance_error" class="b-error_text"></div>
+							</div>
+						</form>
+							
+							
+						</div>
+						<div id="create_order_layer" class="b-table_row i-row_layer i-clearfix">
+							
+							
+							<form id="create_order_form" class="b-register_form i-create_order_form" action="..." method="post">
+							<div class="b-reg_form_header i-form_descr">
+								Заполните, пожалуйста, параметры заказа
+							</div>
+							<div class="b-table i-reg_form_content">
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Название заказа</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="order_name" class="b-rinput" type="text">
+										</div>
+									</div>
+								</div>
+								
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Описание</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="order_descr" class="b-rinput" type="text">
+										</div>
+									</div>
+								</div>
+								
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Баланс</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="order_balance" class="b-rinput" type="text">
+										</div>
+									</div>
+								</div>
+								
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Стоимость действия (CPA)</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="order_cpa" class="b-rinput" type="text">
+										</div>
+									</div>
+								</div>
+								
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">URL</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="order_url" class="b-rinput" type="text">
+										</div>
+									</div>
+								</div>
+
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Картинка заказа</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_button i-role_button">
+											<input id="order_image" class="b-rinput" type="file">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="b-reg_form_footer">
+									<div class="b-table_cell i-reg_form_cell">
+										<input id="create_order_cancel" class="b-input_button i-cancel_button" type="button" value="Отменить">
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<input id="create_order_accept" class="b-input_button i-submit_order_button" type="submit" value="Подтвердить">
+									</div>
+							</div>
+							<div class="b-reg_form_error">
+								<div id="add_order_error" class="b-error_text"></div>
+							</div>
+						</form>
+							
+							
+						</div>
+						<div class="b-table_row i-table_header i-clearfix">
+							<div class="b-table_cell i-order_hd_cell_number">
+								Номер
+							</div>
+							<div class="b-table_cell i-order_hd_cell_descr">
+								Описание
+							</div>
+							<div class="b-table_cell i-order_hd_cell_balance">
+								Баланс
+							</div>
+							<div class="b-table_cell i-order_hd_cell_val_offer">
+								(CPA)
+							</div>
+							<div class="b-table_cell i-order_hd_cell_status">
+								Статус
+							</div>
+						</div>
+						<div class="b-table_row i-table_even_row i-clearfix">
+							<div class="b-table_cell i-order_cell_number">
+								1
+							</div>
+							<div class="b-table_cell i-order_cell_descr">
+								Sony и девайсы, социальная реклама плееров серии A
+							</div>
+							<div class="b-table_cell i-order_cell_balance">
+								2225000
+							</div>
+							<div class="b-table_cell i-order_cell_val_offer">
+								150
+							</div>
+							<div class="b-table_cell i-order_cell_status i-status_wait">
+								Ожидает утверждения
+							</div>
+						</div>
+						<div class="b-table_row i-table_odd_row i-clearfix">
+							<div class="b-table_cell i-order_cell_number">
+								2
+							</div>
+							<div class="b-table_cell i-order_cell_descr">
+								Рекламный пакет samsung
+							</div>
+							<div class="b-table_cell i-order_cell_balance">
+								1250000
+							</div>
+							<div class="b-table_cell i-order_cell_val_offer">
+								200
+							</div>
+							<div class="b-table_cell i-order_cell_status i-status_wait">
+								Ожидает утверждения
+							</div>
+						</div>
+						<div class="b-table_row i-table_even_row i-clearfix">
+							<div class="b-table_cell i-order_cell_number">
+								3
+							</div>
+							<div class="b-table_cell i-order_cell_descr">
+								Билайн и партнеры - новые тарифы
+							</div>
+							<div class="b-table_cell i-order_cell_balance">
+								1250000
+							</div>
+							<div class="b-table_cell i-order_cell_val_offer">
+								110
+							</div>
+							<div class="b-table_cell i-order_cell_status i-status_approved">
+								Утвержден
+							</div>
+						</div>
+						<div class="b-table_row i-table_odd_row i-clearfix">
+							<div class="b-table_cell i-order_cell_number">
+								4
+							</div>
+							<div class="b-table_cell i-order_cell_descr">
+								Реклама интимной гигиены
+							</div>
+							<div class="b-table_cell i-order_cell_balance">
+								1250000
+							</div>
+							<div class="b-table_cell i-order_cell_val_offer">
+								200
+							</div>
+							<div class="b-table_cell i-order_cell_status i-status_approved">
+								Утвержден
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<br>
+				<div class="b-widget i-widget_persone">
+					<h3 class="b-widget_h3">Приложения</h3>
+					<div class="b-table">
+						<div class="b-header__menu i-table_panel_row i-clearfix">
+								<ul>
+									<li>
+										<a id="create_app" href="" title="Создать приложение">Создать приложение</a>
+									</li>
+								</ul>
+								<div id="dev_balance" class="b-our_balance_widget">Ваш баланс: 12203033</div>
+						</div>
+						
+							<div id="create_app_layer" class="b-table_row i-row_layer i-clearfix">
+							
+							
+							<form id="create_app_form" class="b-register_form i-create_order_form" action="..." method="post">
+							<div class="b-reg_form_header i-form_descr">
+								Заполните, пожалуйста, поля формы
+							</div>
+							<div class="b-table i-reg_form_content">
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Callback вашего приложения</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="app_callback" class="b-rinput" type="text">
+										</div>
+									</div>
+								</div>
+
+								<div class="b-reg_form_footer">
+									<div class="b-table_cell i-reg_form_cell">
+										<input id="create_app_cancel" class="b-input_button i-cancel_button" type="button" value="Отменить">
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<input id="create_app_accept" class="b-input_button i-submit_order_button" type="submit" value="Подтвердить">
+									</div>
+								</div>
+							</div>
+							<div id="create_app_error_wrap" class="b-reg_form_error">
+								<div id="create_app_error" class="b-error_text"></div>
+							</div>
+							</form>
+							
+							
+						</div>
+						
+						<div class="b-table_row i-table_header i-clearfix">
+							<div class="b-table_cell i-apps_hd_cell_id">
+								id
+							</div>
+							<div class="b-table_cell i-apps_hd_cell_secret">
+								Secret
+							</div>
+							<div class="b-table_cell i-apps_hd_cell_callback">
+								Callabck
+							</div>
+						</div>
+						<div class="b-table_row i-table_even_row i-clearfix">
+							<div class="b-table_cell i-apps_cell_id">
+								1
+							</div>
+							<div class="b-table_cell i-apps_cell_secret">
+								39f390ca-eb72-4a90-badd-993e60710b42
+							</div>
+							<div class="b-table_cell i-apps_cell_callback">
+								www.iam.com/header.aspx?dbhjedvj
+							</div>
+						</div>
+						<div class="b-table_row i-table_odd_row i-clearfix">
+							<div class="b-table_cell i-apps_cell_id">
+								2
+							</div>
+							<div class="b-table_cell i-apps_cell_secret">
+								39f390ca-eb72-4a90-badd-993e60710b42
+							</div>
+							<div class="b-table_cell i-apps_cell_callback">
+								mixture/dhkjdlkdfk/dbhgdlhfjd
+							</div>
+						</div>
+						<div class="b-table_row i-table_even_row i-clearfix">
+							<div class="b-table_cell i-apps_cell_id">
+								3
+							</div>
+							<div class="b-table_cell i-apps_cell_secret">
+								39f390ca-eb72-4a90-badd-993e60710b42
+							</div>
+							<div class="b-table_cell i-apps_cell_callback">
+								http://mydengi.ru/idt2i012e3070
+							</div>
+						</div>
+						<div class="b-table_row i-table_odd_row i-clearfix">
+							<div class="b-table_cell i-apps_cell_id">
+								4
+							</div>
+							<div class="b-table_cell i-apps_cell_secret">
+								39f390ca-eb72-4a90-badd-993e60710b42
+							</div>
+							<div class="b-table_cell i-apps_cell_callback">
+								http://mydengi.ru/index.php?request=bwelihdew98w0dewe0
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Прилипание подвала к нижней части экрана реализовано
+			с помощью отрицательного расположения. Т.е. подвал наезжает
+			на главный контент - следующий div как раз существует
+			для того, чтобы оставить место подвалу -->
+			<div class="b-footerspace"/>
+		</div>
+		</div> <!-- Подвал -->
+		<div class="b-footer">
+			<div class="b-footer__shadowline"></div>
+			<div class="b-footer__topshadow"></div>
+			<div class="b-footer_content">
+				<div class="b-footer_content__menu"></div>
+				<div class="b-footer_content__separator"></div>
+				<div class="b-footer_content__bottom_separator">
+					<div class="copyright">
+						© 2011 Bravik, LLC.
+					</div>
+				</div>
+			</div>
 	</body>
 </html>

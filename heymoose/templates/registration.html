@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>heymoose</title>
+		<link rel=stylesheet href="../static/css/common.css" type="text/css" media=screen>
+		<!-- jquery и его плагины -->
+		<script type="text/javascript" src="../static/js/jquery.js"></script>
+		<script type="text/javascript" src="../static/js/jquery_plugins/timers.js"></script>
+		<!-- Социальная панель -->
+		<script type="text/javascript" src="../static/js/socializ.js"></script>
+		<link rel=stylesheet href="../static/css/socializ.css" type="text/css" media=screen>
+		<!-- панель регистрации или виджет black-box-->
+		<link rel=stylesheet href="../static/css/widget_black.css" type="text/css" media=screen>
+		<!-- загрузка слайдов -->
+		<script>
+			$(document).ready(function() {
+				// спрячем error
+				$('.b-error_text').slideUp(1);
+				
+				// Отображает ошибку в дескрипшене регистрационной панели
+				function showError(error, element) {
+					//$('.b-reg_form_error').add("<div class="b-error_text">Ошибка нах!</div>")
+					element.addClass('i-input_with_error');
+					$('.b-error_text').slideDown(200);
+					$('.b-error_text').text(error);
+				}
+				
+				function clearError(element) {
+					$('.b-error_text').slideUp(200);
+					$(element).parent().removeClass('i-input_with_error');
+					//$('.b-rinput').parent().removeClass('i-input_focused');
+				}
+				
+				/*$('.b-rinput').bind('focusin',function() {
+					$(this).parent().addClass('i-input_focused');
+				});*/
+				
+				// События формы
+				$(".b-rinput").keypress(function() {
+					clearError(this);
+					//clearError(".b-rinput");
+				});	
+
+				
+				// Валидация формы регистрации
+				$("#register_form").submit(function() {
+					username = $('#username').val();
+					password = $('#password').val();
+					repassword = $('#repassword').val();
+					email = $('#email').val();
+					capcha = $('#capcha').val();
+					
+					if(username == "") {
+						showError("Заполните, пожалуйста, имя пользователя", $('#username').parent());
+						return false;
+					}
+					
+					if(email == "") {
+						showError("Напишите, пожалуйста, свой электронный адресс", $('#email').parent());
+						return false;
+					}
+					
+					if(password == "") {
+						showError("Напишите, пожалуйста, пароль", $('#password').parent());
+						return false;
+					}
+					
+					if(repassword == "") {
+						showError("Подтвердите пароль", $('#repassword').parent());
+						return false;
+					}
+					
+					if(repassword != password) {
+						showError("Пароли не совпадают", $('#repassword').parent());
+						return false;
+					}
+					
+					if(capcha == "") {
+						showError("Заполните капчу", $('#capcha').parent());
+						return false;
+					}
+					
+					
+					return true;
+				});
+			});
+
+		</script>
+	</head>
+	<body class="b-body">
+		<!-- Обертка единого стиля для контента и заголовка -->
+		<div class="m-bottom_layer">
+			<!-- Заголовок -->
+			<div class="b-header">
+				<div class="b-header__menu">
+					<ul>
+						<li>
+							<a href="personal.html" title="О проекте">О проекте</a>
+						</li>
+						<li>
+							<a href="registration.html" title="Регистрация">Регистрация</a>
+						</li>
+						<li>
+							<a href="blog.html" title="Блог">Блог</a>
+						</li>
+						<li>
+							<a href="advertiser.html" title="Рекламодателям">Рекламодателям</a>
+						</li>
+						<li>
+							<a href="developer.html" title="Разработчикам">Разработчикам</a>
+						</li>
+						<li>
+							<a href="contats.html" title="Контакты">Контакты</a>
+						</li>
+						<li>
+							<div class="b-login_widget">
+								<form class="b-login_form" action="..." method="get">
+									<div class="b-input_wrap_email">
+										<input class="b-input" type="email">
+									</div>
+									<div class="b-input_wrap_password">
+										<input class="b-input" type="password">
+									</div>
+									<input class="b-input_button" type="button" value="Войти">
+								</form>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<a href="index.html" class="b-header__logo"></a>
+				<!-- Социальная панель -->
+				<div class="b-socialpanel">
+					<script type="text/javascript">socializ(encodeURIComponent('Hey moose!'), encodeURIComponent('Универсальная платформа для рекламодателей'))</script>
+				</div>
+			</div>
+			<!-- Контент -->
+			<div class="b-main_content">
+				<div class="b-screen">
+					<div class="b-reg_header">
+						<br>
+						Регистрация
+					</div>
+					<div class="b-reg_content i-clearfix">
+						<div class="b-register_descr">
+							<img src="../static/images/loser.png">
+							&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font: 12px/18px Verdana, Tahoma, Arial, sans-serif; font-weight: bold; color: #6EA5A7;"></span><br><br>Вы можете зарегистрироваться в системе 
+							<span style="color: #FFFF66;font-weight: bold;">Hey</span><span style="color: #9FD8DA; font-weight: bold;">Moose</span> как<br>
+							<ul>
+								<li><div style="color: #FFFF66">Разработчик</div></li>
+								<li><div style="color: #FFFF66">Рекламодатель</div></li>
+							</ul>
+							Вне зависимости от того, какую роль вы выбрали, в дальнейшем вы легко сможете ее изменить.
+						</div>
+						<form id="register_form" class="b-register_form i-register_form" action="..." method="post">
+							<div class="b-reg_form_header">
+								Заполните, пожалуйста, поля формы
+							</div>
+							<div class="b-table i-reg_form_content">
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Имя пользователя</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="username" class="b-rinput" type="text">
+										</div>
+									</div>
+								</div>
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Email</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="email" class="b-rinput" type="email">
+										</div>
+									</div>
+								</div>
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Пароль</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="password" class="b-rinput" type="password">
+										</div>
+									</div>
+								</div>
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Повторите пароль</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="repassword" class="b-rinput" type="password">
+										</div>
+									</div>
+								</div>
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Кто вы</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<select class="b-input_button i-role_button">
+											<option value="CUSTOMER">Рекламодатель</option>
+											<option value="DEVELOPER">Разработчик</option>
+										</select>
+									</div>
+								</div>
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-reg_form_cell">
+										<label class="b-form_label i-reg_label">Капча</label>
+									</div>
+									<div class="b-table_cell i-reg_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="capcha" class="b-rinput" type="text">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="b-reg_form_footer">
+								<input id="register" class="b-input_button i-submit_button" type="submit" value="Подтвердить">
+							</div>
+							<div class="b-reg_form_error">
+								<div class="b-error_text"></div>
+							</div>
+						</form>
+					</div>
+					<div class="b-reg_footer">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		</div> <!-- Прилипание подвала к нижней части экрана реализовано
+		с помощью отрицательного расположения. Т.е. подвал наезжает
+		на главный контент - следующий div как раз существует
+		для того, чтобы оставить место подвалу -->
+		<div class="b-footerspace"/>
+		</div>
+		</div> <!-- Подвал -->
+		<div class="b-footer">
+			<div class="b-footer__shadowline"></div>
+			<div class="b-footer__topshadow"></div>
+			<div class="b-footer_content">
+				<div class="b-footer_content__menu"></div>
+				<div class="b-footer_content__separator"></div>
+				<div class="b-footer_content__bottom_separator">
+					<div class="copyright">
+						© 2011 Bravik, LLC.
+					</div>
+				</div>
+			</div>
+	</body>
+</html>

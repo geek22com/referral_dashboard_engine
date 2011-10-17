@@ -25,7 +25,6 @@ from heymoose.views.work import flash_form_errors
 from hashlib import md5
 from heymoose.views.facebook_app.oauth import oauth_dialog_url
 @frontend.route('/facebook_deauthorize/', methods=['GET','POST'])
-@oauth_only
 def facebook_deauthorize():
 	signed_request = request.form.get('signed_request', '').decode('utf8')
 

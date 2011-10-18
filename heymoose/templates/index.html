@@ -3,7 +3,7 @@
 Главная
 {% endblock %}
 {% block content %}
-	<!-- Экран для слайдов -->
+<!-- Экран для слайдов -->
 				<div class="b-screen">
 					<div class="b-screen__slide"></div>
 				</div>
@@ -53,43 +53,4 @@
 							Вставали в четыре, пол пятого, на крайнем рассвете, выпивали по стакану водки.
 						</div>
 					</div>
-					<div class="b-right_column">
-						<!-- будущее всплывающее окно регистрации -->
-						<div class="b-widget_black">
-							<div id="login" class="b-widget_black__inner_box">
-								<h4 class="b-widget_black__h4">Авторизация</h4>
-								<form class="b-widget_black__form" action="...." method="post">
-									<label class="b-widget_black__form__label">Логин </label>
-									<div class="b-widget_black__form__input focus">
-										<input type="text" name="name">
-									</div>
-									<label class="b-widget_black__form__label">Пароль</label>
-									<div class="b-widget_black__form__input focus">
-										<input type="password" name="password">
-									</div>
-									<button type="submit" class="b-widget_black__button">
-										Я все заполнил
-									</button>
-								</form>
-								<div>
-									<a class="b-widget_black__sign_up">Регистрация</a>
-									<br>
-									<a class="b-widget_black__recoveryPassword" href="#">Забыли пароль?</a>
-								</div>
-							</div>
-						</div>
-						<div class="b-widget"  style="background: #eeeeee;">
-							<img src="{{ url_for('.static', filename='./images/content/1.jpg') }}"/>
-							<br>
-							тся, есть какой-то закон против распространителен без­ответственных слухов, — угрюмым тоном промолвил Таггерт. — Да­вайте пропустим еще по маленькой.
-							Он раздраженно махнул официанту.
-						</div>
-						<div class="b-widget" style="background: #ccddff;">
-							<img src="{{ url_for('.static', filename='./images/content/2.jpg') }}"/>
-							<br>
-							тся, есть какой-то закон против распространителен без­ответственных слухов, — угрюмым тоном промолвил Таггерт. — Да­вайте пропустим еще по маленькой.
-							Он раздраженно махнул официанту.
-						</div>
-					</div>
-				</div>
 {% endblock %}

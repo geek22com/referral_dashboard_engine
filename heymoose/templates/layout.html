@@ -89,9 +89,15 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 						<li>
 							<a href="{{ url_for('about') }}" title="О проекте">О проекте</a>
 						</li>
+                        {% if g.user %}
+                        <li>
+                            <a href="{{ url_for('user_cabinet', username=g.user.nickname) }}" title="Кабинет">Личный кабинет</a>
+                        </li>
+                        {% else %}
 						<li>
 							<a href="{{ url_for('register') }}" title="Регистрация">Регистрация</a>
 						</li>
+                        {% endif %}
 						<li>
 							<a href="{{ url_for('blog', pagenum=0) }}" title="Блог">Блог</a>
 						</li>
@@ -104,19 +110,33 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 						<li>
 							<a href="{{ url_for('contacts') }}" title="Контакты">Контакты</a>
 						</li>
+                        {% if not g.user %}
 						<li>
 							<div class="b-login_widget">
-								<form class="b-login_form" action="..." method="get">
+								<form class="b-login_form" action="{{ url_for('login') }}" method="post">
 									<div class="b-input_wrap_email">
-										<input class="b-input" placeholder="email" type="email">
+										<input class="b-input" name="username" placeholder="email" type="email">
 									</div>
 									<div class="b-input_wrap_password">
-										<input class="b-input" placeholder="пароль" type="password">
+										<input class="b-input" name="password" placeholder="пароль" type="password">
 									</div>
 									<input class="b-input_button" type="button" value="Войти">
 								</form>
 							</div>
+                            {% with %}
+					        {% set mes = get_flashed_messages(with_categories=true) | error_type('loginerror') %}
+					        {% if mes %}
+						        <ul class="error"><li>{{ mes[0][1].decode('utf8') }}</li></ul>
+					        {% endif %}
+				            {% endwith %}
 						</li>
+                        {% else %}
+                         <li>
+                             <div class="b-login_widget">
+                                 <a href="{{ url_for('logout') }}" class="b-input_button">Выйти</a>
+                             </div>
+                         </li>
+                        {% endif %}
 					</ul>
 				</div>
 				<a href="{{ url_for('main_page') }}" class="b-header__logo"></a>

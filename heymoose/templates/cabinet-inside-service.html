@@ -167,8 +167,9 @@
 {% endblock %}
 {% block content %}
 <div class="b-persone_header">
-					<h2 class="b-content_h2">Личный кабинет</h2>
+					<h2 class="b-content_h2">Здравствуйте, {{ g.user.nickname }}</h2>
 				</div>
+                {% if g.user.is_customer() %}
 				<div class="b-widget i-widget_persone">
 					<h3 class="b-widget_h3">Заказы</h3>
 					<div class="b-widget_descr"></div>
@@ -182,7 +183,7 @@
 										<a id="fill_balance" href="" title="Пополнить заказ">Пополнить баланс</a>
 									</li>
 								</ul>
-								<div id="adv_balance" class="b-our_balance_widget">Ваш баланс: 12203033</div>
+								<div id="adv_balance" class="b-our_balance_widget">Ваш баланс: {{  g.user.customer_balance }}</div>
 						</div>
 							<div id="fill_balance_layer" class="b-table_row i-row_layer i-clearfix">
 
@@ -191,7 +192,7 @@
 
 							</div>
 
-							<form id="fill_balance_form" class="b-register_form i-create_order_form" action="..." method="post">
+							<form id="fill_balance_form" class="b-register_form i-create_order_form" action="{{ url_for('pay_balance') }}" method="post">
 							<div class="b-reg_form_header i-form_descr">
 								Заполните, пожалуйста, поля формы
 							</div>
@@ -202,7 +203,7 @@
 									</div>
 									<div class="b-table_cell i-reg_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											<input id="customer_balance" class="b-rinput" type="text">
+											<input name="amount" id="customer_balance" class="b-rinput" type="text">
 										</div>
 									</div>
 								</div>
@@ -217,7 +218,14 @@
 								</div>
 							</div>
 							<div id="fill_balance_error_wrap" class="b-reg_form_error">
-								<div id="fill_balance_error" class="b-error_text"></div>
+								<div id="fill_balance_error" class="b-error_text">
+                                    {% with %}
+			                            {% set mes = get_flashed_messages(with_categories=true) | error_type('payerror') %}
+			                            {% if mes %}
+				                            {{ mes[0][1].decode('utf8') }}
+                               			{% endif %}
+		                            {% endwith %}
+								</div>
 							</div>
 						</form>
 
@@ -229,7 +237,7 @@
 																ghjghj hjgjhgjgj jgjhgj  hgjgjhg gjhghjg ggjghjgj hggjgj gjhgj ghjgjg ghgj ghjgj
 								<br>ghjghg
 							</div>
-							<form id="create_order_form" class="b-register_form i-create_order_form" action="..." method="post">
+							<form id="create_order_form" class="b-register_form i-create_order_form" action="{{ url_for('create_order') }}" enctype="multipart/form-data" method="post">
 							<div class="b-reg_form_header i-form_descr">
 								Заполните, пожалуйста, параметры заказа
 							</div>
@@ -240,7 +248,7 @@
 									</div>
 									<div class="b-table_cell i-reg_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											<input id="order_name" class="b-rinput" type="text">
+											<input name="ordername" id="order_name" class="b-rinput" type="text">
 										</div>
 									</div>
 								</div>
@@ -251,7 +259,7 @@
 									</div>
 									<div class="b-table_cell i-reg_form_cell">
 										<div class="b-input_wrap i-reg_input i-text-area">
-											<textarea class="b-rinput" name="Name" rows="8" cols="21"></textarea>
+											<textarea class="b-rinput" name="orderdesc" rows="8" cols="21"></textarea>
 											<!--<input id="order_descr" class="b-rinput" type="text">-->
 										</div>
 									</div>
@@ -263,7 +271,7 @@
 									</div>
 									<div class="b-table_cell i-reg_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											<input id="order_balance" class="b-rinput" type="text">
+											<input id="order_balance" name="orderbalance" class="b-rinput" type="text">
 										</div>
 									</div>
 								</div>
@@ -274,7 +282,7 @@
 									</div>
 									<div class="b-table_cell i-reg_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											<input id="order_cpa" class="b-rinput" type="text">
+											<input id="order_cpa" name="ordercpa" class="b-rinput" type="text">
 										</div>
 									</div>
 								</div>
@@ -285,7 +293,7 @@
 									</div>
 									<div class="b-table_cell i-reg_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											<input id="order_url" class="b-rinput" type="text">
+											<input id="order_url" name="orderbody" class="b-rinput" type="text">
 										</div>
 									</div>
 								</div>
@@ -296,7 +304,7 @@
 									</div>
 									<div class="b-table_cell i-reg_form_cell">
 										<div class="b-input_button i-role_button">
-											<input id="order_image" class="b-rinput i-submit_button i-file_button" type="file">
+											<input id="order_image" name="orderimage" class="b-rinput i-submit_button i-file_button" type="file">
 											<!--<div class="i-file_top_layer">Выберирете картинку</div>-->
 										</div>
 									</div>
@@ -311,18 +319,21 @@
 									</div>
 							</div>
 							<div class="b-reg_form_error">
-								<div id="add_order_error" class="b-error_text"></div>
+								<div id="add_order_error" class="b-error_text">
+                                    {% with %}
+			                        {% set mes = get_flashed_messages(with_categories=true) | error_type('ordererror') %}
+			                        {% if mes %}
+				                    {{ mes[0][1].decode('utf8') }}
+			                        {% endif %}
+		                            {% endwith %}
+								</div>
 							</div>
 						</form>
-
-
 						</div>
+
 						<div class="b-table_row i-table_header i-clearfix">
 							<div class="b-table_cell i-order_hd_cell_number">
 								Номер
-							</div>
-							<div class="b-table_cell i-order_hd_cell_descr">
-								Описание
 							</div>
 							<div class="b-table_cell i-order_hd_cell_balance">
 								Баланс
@@ -334,78 +345,38 @@
 								Статус
 							</div>
 						</div>
-						<div class="b-table_row i-table_even_row i-clearfix">
-							<div class="b-table_cell i-order_cell_number">
-								1
-							</div>
-							<div class="b-table_cell i-order_cell_descr">
-								Sony и девайсы, социальная реклама плееров серии A
-							</div>
-							<div class="b-table_cell i-order_cell_balance">
-								2225000
-							</div>
-							<div class="b-table_cell i-order_cell_val_offer">
-								150
-							</div>
-							<div class="b-table_cell i-order_cell_status i-status_wait">
-								Ожидает утверждения
-							</div>
-						</div>
-						<div class="b-table_row i-table_odd_row i-clearfix">
-							<div class="b-table_cell i-order_cell_number">
-								2
-							</div>
-							<div class="b-table_cell i-order_cell_descr">
-								Рекламный пакет samsung
-							</div>
-							<div class="b-table_cell i-order_cell_balance">
-								1250000
-							</div>
-							<div class="b-table_cell i-order_cell_val_offer">
-								200
-							</div>
-							<div class="b-table_cell i-order_cell_status i-status_wait">
-								Ожидает утверждения
-							</div>
-						</div>
-						<div class="b-table_row i-table_even_row i-clearfix">
-							<div class="b-table_cell i-order_cell_number">
-								3
-							</div>
-							<div class="b-table_cell i-order_cell_descr">
-								Билайн и партнеры - новые тарифы
-							</div>
-							<div class="b-table_cell i-order_cell_balance">
-								1250000
-							</div>
-							<div class="b-table_cell i-order_cell_val_offer">
-								110
-							</div>
-							<div class="b-table_cell i-order_cell_status i-status_approved">
-								Утвержден
-							</div>
-						</div>
-						<div class="b-table_row i-table_odd_row i-clearfix">
-							<div class="b-table_cell i-order_cell_number">
-								4
-							</div>
-							<div class="b-table_cell i-order_cell_descr">
-								Реклама интимной гигиены
-							</div>
-							<div class="b-table_cell i-order_cell_balance">
-								1250000
-							</div>
-							<div class="b-table_cell i-order_cell_val_offer">
-								200
-							</div>
-							<div class="b-table_cell i-order_cell_status i-status_approved">
-								Утвержден
-							</div>
-						</div>
+                        {% if params.orders %}
+                            {% for order in params.orders %}
+						    <div class="b-table_row i-table_even_row i-clearfix"> <!-- i-table_odd_row -->
+							    <div class="b-table_cell i-order_cell_number">
+								    {{ order.id }}
+							    </div>
+							    <div class="b-table_cell i-order_cell_balance">
+								    {{ order.balance }}
+							    </div>
+							    <div class="b-table_cell i-order_cell_val_offer">
+								    {{ order.cpa }}
+							    </div>
+							    <div class="b-table_cell i-order_cell_status i-status_wait">
+								    {% if order.approved %}
+                                        Утвержден
+                                    {% else %}
+                                        Ожидает утверждения
+                                    {% endif %}
+							    </div>
+						    </div>
+                            {% endfor %}
+                        {% else %}
+                        {% endif %}
+
 					</div>
 				</div>
+                {% else %}
+                    <a href="{{ url_for('become_customer') }}" class="be-developer">Стать рекламодателем</a>
+                {% endif %}
 				<br>
 				<br>
+                {% if g.user.is_developer() %}
 				<div class="b-widget i-widget_persone">
 					<h3 class="b-widget_h3">Приложения</h3>
 					<div class="b-table">
@@ -415,14 +386,14 @@
 										<a id="create_app" href="" title="Создать приложение">Создать приложение</a>
 									</li>
 								</ul>
-								<div id="dev_balance" class="b-our_balance_widget">Ваш баланс: 12203033</div>
+								<div id="dev_balance" class="b-our_balance_widget">Ваш баланс: {{ g.user.developer_balance }}</div>
 						</div>
 
 							<div id="create_app_layer" class="b-table_row i-row_layer i-clearfix">
 							<div class="b-register_descr i-personal">
 							</div>
 
-							<form id="create_app_form" class="b-register_form i-create_order_form" action="..." method="post">
+							<form id="create_app_form" class="b-register_form i-create_order_form" action="{{ url_for('create_app') }}" method="post">
 							<div class="b-reg_form_header i-form_descr">
 								Заполните, пожалуйста, поля формы
 							</div>
@@ -433,7 +404,7 @@
 									</div>
 									<div class="b-table_cell i-reg_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											<input id="app_callback" class="b-rinput" type="text">
+											<input id="app_callback" name="appcallback" class="b-rinput" type="text">
 										</div>
 									</div>
 								</div>
@@ -448,12 +419,17 @@
 								</div>
 							</div>
 							<div id="create_app_error_wrap" class="b-reg_form_error">
-								<div id="create_app_error" class="b-error_text"></div>
+								<div id="create_app_error" class="b-error_text">
+                                    {% with %}
+			                            {% set mes = get_flashed_messages(with_categories=true) | error_type('apperror') %}
+			                            {% if mes %}
+				                            {{ mes[0][1].decode('utf8') }}
+			                            {% endif %}
+		                            {% endwith %}
+								</div>
 							</div>
 							</form>
-
-
-						</div>
+                        </div>
 
 						<div class="b-table_row i-table_header i-clearfix">
 							<div class="b-table_cell i-apps_hd_cell_id">
@@ -466,50 +442,24 @@
 								Callabck
 							</div>
 						</div>
-						<div class="b-table_row i-table_even_row i-clearfix">
-							<div class="b-table_cell i-apps_cell_id">
-								1
-							</div>
-							<div class="b-table_cell i-apps_cell_secret">
-								39f390ca-eb72-4a90-badd-993e60710b42
-							</div>
-							<div class="b-table_cell i-apps_cell_callback">
-								www.iam.com/header.aspx?dbhjedvj
-							</div>
-						</div>
-						<div class="b-table_row i-table_odd_row i-clearfix">
-							<div class="b-table_cell i-apps_cell_id">
-								2
-							</div>
-							<div class="b-table_cell i-apps_cell_secret">
-								39f390ca-eb72-4a90-badd-993e60710b42
-							</div>
-							<div class="b-table_cell i-apps_cell_callback">
-								mixture/dhkjdlkdfk/dbhgdlhfjd
-							</div>
-						</div>
-						<div class="b-table_row i-table_even_row i-clearfix">
-							<div class="b-table_cell i-apps_cell_id">
-								3
-							</div>
-							<div class="b-table_cell i-apps_cell_secret">
-								39f390ca-eb72-4a90-badd-993e60710b42
-							</div>
-							<div class="b-table_cell i-apps_cell_callback">
-								http://mydengi.ru/idt2i012e3070
-							</div>
-						</div>
-						<div class="b-table_row i-table_odd_row i-clearfix">
-							<div class="b-table_cell i-apps_cell_id">
-								4
-							</div>
-							<div class="b-table_cell i-apps_cell_secret">
-								39f390ca-eb72-4a90-badd-993e60710b42
-							</div>
-							<div class="b-table_cell i-apps_cell_callback">
-								http://mydengi.ru/index.php?request=bwelihdew98w0dewe0
-							</div>
-						</div>
+                        {% if params.apps %}
+                            {% for app in params.apps %}
+						    <div class="b-table_row i-table_even_row i-clearfix">
+							    <div class="b-table_cell i-apps_cell_id">
+								    {{ app.id }}
+							    </div>
+							    <div class="b-table_cell i-apps_cell_secret">
+								    {{ app.secret }}
+							    </div>
+							    <div class="b-table_cell i-apps_cell_callback">
+								    {{ app.callback }}
+							    </div>
+						    </div>
+                            {% endfor %}
+                        {% endif %}
 					</div>
 				</div>
+                {% else %}
+                    <a href="{{ url_for('become_developer') }}" class="be-developer">Стать разработчиком</a>
+                {% endif %}
 {% endblock %}

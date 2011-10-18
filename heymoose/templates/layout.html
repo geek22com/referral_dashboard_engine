@@ -2,28 +2,49 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     {% block head %}
-	<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-	<link rel="shortcut icon" type="image/png" href="../static/images/favicon.ico" />
-	<link rel="icon" type="image/png" href="../static/images/favicon.ico" />
-    <link rel="stylesheet" href="{{ url_for('.static', filename='./css/style.css') }}" />
-    <script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('.static', filename='./js/tooltip.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('.static', filename='./js/functions.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery.form.js') }}"></script>
-        <!-- Put this script tag to the <head> of your page -->
-        <script type="text/javascript" src="http://userapi.com/js/api/openapi.js?34"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>heymoose</title>
+		<link rel=stylesheet href="{{ url_for('.static', filename='./css/common.css) }}" type="text/css" media=screen>
+		<!-- jquery и его плагины -->
+		<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery.js) }}"></script>
+		<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery_plugins/timers.js) }}"></script>
+		<!-- Социальная панель -->
+		<script type="text/javascript" src="{{ url_for('.static', filename='./js/socializ.js) }}"></script>
+		<link rel=stylesheet href="{{ url_for('.static', filename='./css/socializ.css) }}" type="text/css" media=screen>
+		<!-- панель регистрации или виджет black-box-->
+		<link rel=stylesheet href="{{ url_for('.static', filename='./css/widget_black.css) }}" type="text/css" media=screen>
+		<!-- загрузка слайдов -->
+		<script>
+			$(document).ready(function() {
 
-        <script type="text/javascript">
-                VK.init({apiId: 2421312, onlyWidgets: true});
-        </script>
-        <!--[if IE ]>
-        <link rel="stylesheet" media="screen" type="text/css" title="Style" href="/css/ie.css" />
-        <![endif]-->
+					// Показ слайдов
+					var slide_counter = 1;
+					var slide_counter_limit = 3;
+
+					$(".b-screen__slide").fadeOut(1);
+					$(".b-screen__slide").load("/static/slides/slide" + slide_counter + ".html");
+					$(".b-screen__slide").fadeIn(1000);
+
+					window.setInterval(function() {
+						$(".b-screen__slide").fadeOut(1000, function() {
+							$(".b-screen__slide").load("/static/slides/slide" + slide_counter + ".html");
+						});
+						$(".b-screen__slide").fadeIn(1000);
+						slide_counter++;
+						if(slide_counter > slide_counter_limit) {
+							slide_counter = 1;
+						}
+
+					}, 10000);
+
+			});
+
+		</script>
 
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
 </head>
-<body>
+<body class="b-body">
 <div class="li_counter">
 <!-- Yandex.Metrika informer -->
 <a href="http://metrika.yandex.ru/stat/?id=8819377&amp;from=informer"
@@ -58,104 +79,75 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 //--></script><!--/LiveInternet-->
 
 </div>
-<div id="sitebox">
-	<div id="menublock">
-<ul id="menu">
-<li><a href="{{ url_for('main_page') }}" title="">Главная</a></li>
-<li><a href="{{ url_for('about') }}" title="">О проекте</a></li>
-<li><a href="{{ url_for('blog', pagenum=0) }}" title="">Блог</a></li>
-<li><a href="{{ url_for('contacts') }}" title="">Контакты</a></li>
-<li><a href="{{ url_for('to_partner') }}" class="{{ partner }}">Разработчикам</a></li>
-<li><a href="{{ url_for('to_advertiser') }}" class="{{ advertiser }}">Наши услуги</a></li>
-<li><a href="{{ url_for('price') }}" class="{{ price }}">Цены</a></li>
-<li><a href="{{ url_for('feedback') }}" title="">Feedback/Support</a></li>
-
-
-</ul>
-<div id="follow">
-
-	<a href="http://vkontakte.ru/heymoose" target="_blank">
-	<div id="vkfollow">
-
-	</div><!--#vkfollow-->
-	</a>
-	<a href="http://twitter.com/hey_moose" target="_blank">
-	<div id="twfollow">
-	
-	</div><!--#twfollow-->
-	</a>
-	<a href="http://www.facebook.com/pages/heymoosecom/247852878576419" target="_blank">
-	<div id="fbfollow">
-		
-	</div><!--#fbfollow-->
-	</a>
-</div><!--#follow-->
-</div><!--#menublock-->
-<div id="sitebox1">
-		<div id="top-bar">
-			<div id="logo-box">
-			<a href="{{ url_for('main_page') }}"><img src="{{ url_for('.static', filename='./images/logo.png') }}" width="197" height="62" border="0" alt="logo" /></a> </div>
-		{% if g.user %}
-			<div id="user-box">
-    	        <div id="user-info">
-	                <h5>Добрый день, {{ params.user_name }}</h5>
-                	<p>Ваш <a href="{{ url_for('user_cabinet', username=g.user.nickname) }}">кабинет</a></p>
-                    {% if g.user.is_customer() %}
-                        <p>Ваш <a href="{{ url_for('pay_balance') }}">customer_balance</a>={{ g.user.customer_balance }}</p>
-                    {% endif %}
-
-                    {% if g.user.is_developer() %}
-                        <p>Ваш developer_balance={{ g.user.developer_balance }}</a></p>
-                    {% endif %}
-            	</div>
-        	    <a href="{{ url_for('logout') }}" class="inp-exit">Выйти</a>
-    	    </div>
-		{% else %}
-			<div id="user-box">
-			    <h5 class="user_login">Email</h5><h5 class="user_login">Пароль</h5>
-    	        <form method="post" action="{{ url_for('login') }}">
-	                <input class="inp-bg" name="username" type="text" value="" size="15" maxlength="45"/>
-                	<input class="inp-bg" name="password" type="password" value="" size="15" maxlength="45" />
-            	    <input type="submit" class="inp-enter" value="Вход" />
-  			    <div id="user-reg"><a href="{{ url_for('register') }}" class="user-register-top">Регистрация</a></div>
-	    	    </form>
-				{% with %}
-					{% set mes = get_flashed_messages(with_categories=true) | error_type('loginerror') %}
-					{% if mes %}
-						<ul class="error"><li>{{ mes[0][1].decode('utf8') }}</li></ul>
-					{% endif %}
-				{% endwith %}
+<!-- Обертка единого стиля для контента и заголовка -->
+		<div class="m-bottom_layer">
+			<!-- Заголовок -->
+			<div class="b-header">
+				<div class="b-header__menu">
+					<ul>
+						<li>
+							<a href="{{ url_for('about') }}" title="О проекте">О проекте</a>
+						</li>
+						<li>
+							<a href="registration.html" title="Регистрация">Регистрация</a>
+						</li>
+						<li>
+							<a href="{{ url_for('blog', pagenum=0) }}" title="Блог">Блог</a>
+						</li>
+						<li>
+							<a href="{{ url_for('to_advertiser') }}" title="Рекламодателям">Рекламодателям</a>
+						</li>
+						<li>
+							<a href="{{ url_for('to_partner') }}" title="Разработчикам">Разработчикам</a>
+						</li>
+						<li>
+							<a href="{{ url_for('contacts') }}" title="Контакты">Контакты</a>
+						</li>
+						<li>
+							<div class="b-login_widget">
+								<form class="b-login_form" action="..." method="get">
+									<div class="b-input_wrap_email">
+										<input class="b-input" placeholder="email" type="email">
+									</div>
+									<div class="b-input_wrap_password">
+										<input class="b-input" placeholder="пароль" type="password">
+									</div>
+									<input class="b-input_button" type="button" value="Войти">
+								</form>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<a href="{{ url_for('main_page') }}" class="b-header__logo"></a>
+				<!-- Социальная панель -->
+				<div class="b-socialpanel">
+					<script type="text/javascript">socializ(encodeURIComponent('Hey moose!'), encodeURIComponent('Универсальная платформа для рекламодателей'))</script>
+				</div>
 			</div>
-		{% endif %}
+<!-- Контент -->
+<div class="b-main_content">
+{% block content %}
+{% endblock %}
+</div>
+    	<!-- Прилипание подвала к нижней части экрана реализовано
+			с помощью отрицательного расположения. Т.е. подвал наезжает
+			на главный контент - следующий div как раз существует
+			для того, чтобы оставить место подвалу -->
+		<div class="b-footerspace"/>
 		</div>
-
-
-
-	{% block content %}
-	{% endblock %}
-	</div><!--#sitebox1-->
-</div><!--#sitebox-->
-
-    <div id="footer">
-		<div id="podfooter">
-    <div id="navigation-bot">
-	<ul>
-	    <li><a href="{{ url_for('about') }}">О проекте</a></li>
-	    <li><a href="{{ url_for('become_developer') }}">Стать разработчиком</a></li>
-	    <li><a href="{{ url_for('start_survey') }}">Провести исследование</a></li>
-		<li><a href="{{ url_for('blog', pagenum=0) }}">Блог</a></li>
-		<li><a href="{{ url_for('feedback') }}">Feedback/Support</a></li>
-		{% if params.user_id %}
-			<li><a href="">Баланс</a></li>
-			<li><a href="{{ url_for('user_cabinet', username=g.user.nickname) }}">Кабинет</a></li>
-		{% endif %}
-	</ul>
-	</div>
-	<div id="rights">
-	    <p>© 2011 HeyMoose.com Все права защищены</p>
-	</div>
-		</div><!--#podfooter-->
-    </div><!--#footer-->
+		</div> <!-- Подвал -->
+		<div class="b-footer">
+			<div class="b-footer__shadowline"></div>
+			<div class="b-footer__topshadow"></div>
+			<div class="b-footer_content">
+				<div class="b-footer_content__menu"></div>
+				<div class="b-footer_content__separator"></div>
+				<div class="b-footer_content__bottom_separator">
+					<div class="copyright">
+						© 2011 Bravik, LLC.
+					</div>
+				</div>
+			</div>
 {% if g.user and g.user.is_admin() %}
 <div id="navigation-bot">
 <ul>

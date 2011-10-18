@@ -1,73 +1,95 @@
 {% extends "layout.html" %}
-{% block head %}
-{{ super() }}
-<script type="text/javascript">
-$(document).ready(function(){
-	$("a").easyTooltip();
-});
-</script>
-{% endblock %}
 {% block title %}
 Главная
 {% endblock %}
 {% block content %}
-	<div class="empty"></div>
-	<div id="informer-box">
-		<div id="replika1">
-			эй, лось!<br>
-			моей компании нужна реклама в соц.<br>
-			сетях.<br>
-			ты поможешь мне?
-		</div><!--#replika1-->
-		<div id="replika2">
-			да, я помогу тебе.<br>
-			я умею точно добраться до целевой аудитории,<br>
-			используя мою платформу.
-		</div><!--#replika2-->
-		<div id="replika3">
-			эй, лось! я хочу увеличить<br>
-			доход от своих приложений<br>
-			в соц. сетях. ты поможешь мне?
-		</div><!--#replika3-->
-		<div id="replika4">
-			интегрируй heymoose 
-			в свое приложение<br>
-			 пользователь получит артефакт в обмен на действие<br>
-			а с меня - деньги.
-		</div><!--#replika4-->
-		<div id="replika5">
-			понимаешь, шарик,<br>
-			жена меня пилит.<br>
-			говорит, что я все деньги<br>
-			трачу на игры в соц. сетях.<br>
-			посоветуй что-нибудь.
-		</div><!--#replika5-->
-		<div id="replika6">
-			а ты играй в игры, которые<br>
-			подключились к heymoose.com
-		</div><!--#replika6-->
-		<div id="replika7">
-			гениально! теперь<br>
-			я могу получать артефакты в обмен<br>
-			на действия.<br>
-			спасибо тебе, шарик, за совет.
-		</div><!--#replika7-->
-	</div><!--#informer-box-->
-	<a href="{{ url_for('about') }}">
-	<div id="podrobnee">
-		подробнее
-	</div><!--#podrobnee-->
-	</a>
-    <div id="container">
-        <div id="isledovania-box">
-            <a href="{{ url_for('start_survey') }}" class="isledovania">Провести исследование</a>
-
-           
-        </div><!--#isledovania-box-->
-        <div id="developer-box">
-            <a href="{{ url_for('become_developer') }}" class="developer">Cтать разработчиком</a>
-            
-        </div><!--#developer-box-->
-    </div><!--#container-->
-<div class="empty"></div>
+	<!-- Экран для слайдов -->
+				<div class="b-screen">
+					<div class="b-screen__slide"></div>
+				</div>
+				<div class="b-widgets i-clearfix">
+					<div class="b-left_column">
+						<div class="b-widget"  style="background: #eeeeee;">
+							<div style="text-align: center;">
+								<h3>Чернушка</h3>
+							</div>
+							<hr>
+							<br>
+							<div style="text-align: center;">
+								<img src="{{ url_for('.static', filename='./images/content/2.jpg') }}"/>
+							</div>
+							<br>
+							<br>
+							Это началось где-то через год после гибели отца в
+							автокатастрофе. Ничего необычного: ехал ночью,
+							<br>
+							<br>
+							дорога была обледенелой, на крутом
+							повороте машину занесло, а там крутой откос. Не он первый там разбился, не он
+							последний.
+						</div>
+						<div class="b-widget">
+							<div style="text-align: center;">
+								<h3>Яша и паяльник</h3>
+							</div>
+							<hr>
+							<br>
+							<img src="{{ url_for('.static', filename='./images/content/3.jpg') }}"/>
+							<br>
+							Яша взял паяльную лампу.
+						</div>
+					</div>
+					<div class="b-middle_column">
+						<div class="b-widget">
+							<div style="text-align: center;">
+								<h3>Adidas Way</h3>
+							</div>
+							<br>
+							<div style="text-align: center;">
+								<img src="{{ url_for('.static', filename='./images/content/4.jpg') }}"/>
+							</div>
+							<br>
+							<br>
+							Вставали в четыре, пол пятого, на крайнем рассвете, выпивали по стакану водки.
+						</div>
+					</div>
+					<div class="b-right_column">
+						<!-- будущее всплывающее окно регистрации -->
+						<div class="b-widget_black">
+							<div id="login" class="b-widget_black__inner_box">
+								<h4 class="b-widget_black__h4">Авторизация</h4>
+								<form class="b-widget_black__form" action="...." method="post">
+									<label class="b-widget_black__form__label">Логин </label>
+									<div class="b-widget_black__form__input focus">
+										<input type="text" name="name">
+									</div>
+									<label class="b-widget_black__form__label">Пароль</label>
+									<div class="b-widget_black__form__input focus">
+										<input type="password" name="password">
+									</div>
+									<button type="submit" class="b-widget_black__button">
+										Я все заполнил
+									</button>
+								</form>
+								<div>
+									<a class="b-widget_black__sign_up">Регистрация</a>
+									<br>
+									<a class="b-widget_black__recoveryPassword" href="#">Забыли пароль?</a>
+								</div>
+							</div>
+						</div>
+						<div class="b-widget"  style="background: #eeeeee;">
+							<img src="{{ url_for('.static', filename='./images/content/1.jpg') }}"/>
+							<br>
+							тся, есть какой-то закон против распространителен без­ответственных слухов, — угрюмым тоном промолвил Таггерт. — Да­вайте пропустим еще по маленькой.
+							Он раздраженно махнул официанту.
+						</div>
+						<div class="b-widget" style="background: #ccddff;">
+							<img src="{{ url_for('.static', filename='./images/content/2.jpg') }}"/>
+							<br>
+							тся, есть какой-то закон против распространителен без­ответственных слухов, — угрюмым тоном промолвил Таггерт. — Да­вайте пропустим еще по маленькой.
+							Он раздраженно махнул официанту.
+						</div>
+					</div>
+				</div>
 {% endblock %}

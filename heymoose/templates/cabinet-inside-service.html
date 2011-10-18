@@ -2,169 +2,7 @@
 {% block title %}
 Личный кабинет
 {% endblock %}
-{% block head %}
-{{ super() }}
-<script>
-			$(document).ready(function() {
 
-
-
-
-				// ===== Функционал разработчика =====
-
-				// Скроем ненужные формы
-				$("#create_app_layer").slideUp(1);
-				$("#create_app_layer").children().fadeOut(1);
-
-				// Отображение формы добавления заказа
-				$("#create_app").click(function() {
-					// скрыть другие формы
-					hideAnotherLayersApp();
-
-					$("#create_app_layer").slideDown(300);
-					// TODO: add foreach
-					$("#create_app_layer").children().fadeIn(500);
-					return false;
-				});
-
-				// Кнопка отмены на форме добавления приложения
-				$("#create_app_cancel").click(function() {
-					$("#create_app_layer").children().fadeOut(300);
-					//TODO: add foreach
-					$("#create_app_layer").slideUp(500);
-				});
-
-				// Скрытие всех форм разработчика
-				function hideAnotherLayersApp() {
-					$("#create_app_layer").children().fadeOut(300);
-					//TODO: add foreach
-					$("#create_app_layer").slideUp(500);
-				}
-
-
-
-
-
-				// ===== Функционал рекламодателя =====
-
-				// Скроем ненужные формы
-				$("#create_order_layer").slideUp(1);
-				$("#create_order_layer").children().fadeOut(1);
-				$("#fill_balance_layer").slideUp(1);
-				$("#fill_balance_layer").children().fadeOut(1);
-
-				// Отображение формы добавления заказа
-				$("#create_order").click(function() {
-					// скрыть другие формы
-					hideAnotherLayersAdv();
-
-					$("#create_order_layer").slideDown(300);
-					// TODO: add foreach
-					$("#create_order_layer").children().fadeIn(500);
-					return false;
-				});
-
-				// Отображение формы пополнения баланса
-				$("#fill_balance").click(function() {
-					// скрыть другие формы
-					hideAnotherLayersAdv();
-
-					$("#fill_balance_layer").slideDown(300);
-					// TODO: add foreach
-					$("#fill_balance_layer").children().fadeIn(500);
-					return false;
-				});
-
-				// Кнопка отмены на форме добавления заказа
-				$("#create_order_cancel").click(function() {
-					$("#create_order_layer").children().fadeOut(300);
-					//TODO: add foreach
-					$("#create_order_layer").slideUp(500);
-				});
-
-				// Кнопка отмены на форме пополнения баланса
-				$("#fill_balance_cancel").click(function() {
-					$("#fill_balance_layer").children().fadeOut(300);
-					//TODO: add foreach
-					$("#fill_balance_layer").slideUp(500);
-				});
-
-
-				// Скрытие всех форм рекламодателя
-				function hideAnotherLayersAdv() {
-					$("#fill_balance_layer").children().fadeOut(300);
-					//TODO: add foreach
-					$("#fill_balance_layer").slideUp(500);
-
-					$("#create_order_layer").children().fadeOut(300);
-					//TODO: add foreach
-					$("#create_order_layer").slideUp(500);
-				}
-
-				// ===== Функционал валидации =====
-				// Отображает ошибку в дескрипшене формы
-				function showError(error, error_text_element, error_input_element) {
-					error_input_element.parent().addClass('i-input_with_error');
-
-					//$('#fill_balance_error').slideDown(200);
-					//$('#fill_balance_error').text(error);
-
-					error_text_element.slideDown(200);
-					error_text_element.text(error);
-				}
-
-				function clearError(element) {
-					$('.b-error_text').slideUp(200);
-					$(element).parent().removeClass('i-input_with_error');
-					//$('.b-rinput').parent().removeClass('i-input_focused');
-				}
-
-				// События формы
-				$(".b-rinput").keypress(function() {
-					clearError(this);
-				});
-
-				// спрячем error
-				$('b-error_text').slideUp(1);
-
-
-				// ===== Функцинал валидации рекламодателя ======
-
-
-				// ----- пополнить баланс ------
-
-				// Валидация формы пополнения баланса
-				$("#fill_balance_form").submit(function() {
-					customer_balance = $('#customer_balance').val();
-
-					if(customer_balance == "") {
-						showError("Заполните, пожалуйста, баланс", $('#fill_balance_error'), $('#customer_balance'));
-						return false;
-					}
-
-					return true;
-				});
-
-				// ----- создать заказ ------
-
-				// ===== Функцинал валидации разработчика ======
-
-				// ----- создать приложение ------
-				$("#create_app_form").submit(function() {
-					app_calback = $('#app_callback').val();
-
-					if(app_calback == "") {
-						showError("Заполните, пожалуйста, URL", $('#create_app_error'), $('#app_callback'));
-						return false;
-					}
-
-					return true;
-				});
-
-			});
-
-		</script>
-{% endblock %}
 {% block content %}
 <div class="b-persone_header">
 					<h2 class="b-content_h2">Здравствуйте, {{ g.user.nickname }}</h2>
@@ -182,10 +20,15 @@
 									<li>
 										<a id="fill_balance" href="" title="Пополнить заказ">Пополнить баланс</a>
 									</li>
+									{% if not g.user.is_developer() %}
+									<li>
+										<a href="{{ url_for('become_developer') }}" title="Получить функционал разработчика">Получить функционал разработчика</a>
+									</li>
+									{% endif %}
 								</ul>
 								<div id="adv_balance" class="b-our_balance_widget">Ваш баланс: {{  g.user.customer_balance }}</div>
-						</div>
-							<div id="fill_balance_layer" class="b-table_row i-row_layer i-clearfix">
+						</div> 
+							<div id="fill_balance_layer" class="b-table_row i-row_layer i-clearfix i-hide">
 
 
 							<div class="b-register_descr  i-personal">
@@ -231,7 +74,7 @@
 
 
 						</div>
-						<div id="create_order_layer" class="b-table_row i-row_layer i-clearfix">
+						<div id="create_order_layer" class="b-table_row i-row_layer i-clearfix i-hide">
 
 							<div class="b-register_descr i-personal">
 																ghjghj hjgjhgjgj jgjhgj  hgjgjhg gjhghjg ggjghjgj hggjgj gjhgj ghjgjg ghgj ghjgj
@@ -303,9 +146,10 @@
 										<label class="b-form_label i-reg_label">Картинка заказа</label>
 									</div>
 									<div class="b-table_cell i-reg_form_cell">
-										<div class="b-input_button i-role_button">
-											<input id="order_image" name="orderimage" class="b-rinput i-submit_button i-file_button" type="file">
+										<div>
+											<!--<input id="order_image" name="orderimage" class="b-rinput i-submit_button i-file_button" type="file">-->
 											<!--<div class="i-file_top_layer">Выберирете картинку</div>-->
+											<input id="order_image" name="orderimage"  type="file">
 										</div>
 									</div>
 								</div>
@@ -357,13 +201,14 @@
 							    <div class="b-table_cell i-order_cell_val_offer">
 								    {{ order.cpa }}
 							    </div>
+							    {% if order.approved %}
+							    <div class="b-table_cell i-order_cell_status i-status_approved">
+							    	Утвержден
+							   	{% else %}
 							    <div class="b-table_cell i-order_cell_status i-status_wait">
-								    {% if order.approved %}
-                                        Утвержден
-                                    {% else %}
-                                        Ожидает утверждения
-                                    {% endif %}
+							        Ожидает утверждения
 							    </div>
+							    {% endif %}
 						    </div>
                             {% endfor %}
                         {% else %}
@@ -371,8 +216,6 @@
 
 					</div>
 				</div>
-                {% else %}
-                    <a href="{{ url_for('become_customer') }}" class="be-developer">Стать рекламодателем</a>
                 {% endif %}
 				<br>
 				<br>
@@ -385,11 +228,16 @@
 									<li>
 										<a id="create_app" href="" title="Создать приложение">Создать приложение</a>
 									</li>
+									{% if not g.user.is_customer() %}
+									<li>
+										<a href="{{ url_for('become_customer') }}" title="Получить функционал рекламодателя">Получить функционал рекламодателя</a>
+									</li>
+									{% endif %}
 								</ul>
 								<div id="dev_balance" class="b-our_balance_widget">Ваш баланс: {{ g.user.developer_balance }}</div>
 						</div>
 
-							<div id="create_app_layer" class="b-table_row i-row_layer i-clearfix">
+							<div id="create_app_layer" class="b-table_row i-row_layer i-clearfix i-hide">
 							<div class="b-register_descr i-personal">
 							</div>
 
@@ -459,7 +307,58 @@
                         {% endif %}
 					</div>
 				</div>
-                {% else %}
-                    <a href="{{ url_for('become_developer') }}" class="be-developer">Стать разработчиком</a>
                 {% endif %}
+                
+                <script>
+			$(document).ready(function() {
+
+
+				
+				$("#fill_balance").click(function() {	
+					if($("#fill_balance_layer").hasClass("i-hide")) {
+						$("#fill_balance_layer").removeClass("i-hide");
+					} else {
+						$("#fill_balance_layer").addClass("i-hide");
+					}
+					return false;
+				});
+				
+				$("#create_order").click(function() {
+					if($("#create_order_layer").hasClass("i-hide")) {
+						$("#create_order_layer").removeClass("i-hide");
+					} else {
+						$("#create_order_layer").addClass("i-hide");
+					}
+					return false;
+				});
+				
+				$("#create_app").click(function() {
+					if($("#create_app_layer").hasClass("i-hide")) {
+						$("#create_app_layer").removeClass("i-hide");
+					} else {
+						$("#create_app_layer").addClass("i-hide");
+					}
+					return false;
+				});
+				
+				$("#create_order_cancel").click(function() {
+					$("#create_order_layer").addClass("i-hide");
+					return false;
+				});
+
+				$("#fill_balance_cancel").click(function() {
+					$("#fill_balance_layer").addClass("i-hide");
+					return false;
+				});
+
+				$("#create_app_cancel").click(function() {
+					$("#create_app_layer").addClass("i-hide");
+					return false;
+				});
+
+
+			});
+
+		</script>
+                
 {% endblock %}

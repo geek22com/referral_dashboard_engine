@@ -5,7 +5,33 @@
 {% block content %}
 <!-- Экран для слайдов -->
 				<div class="b-screen">
-					<div class="b-screen__slide"></div>
+					<div class="b-screen__slide">
+						
+								<div>
+								<img style="margin: 10px 40px;; width: 800px; height: 380px;" src="../static/images/content/sdj7.jpg">
+								</div>
+								<div style="position: absolute; font-size: 32px; margin-left: 40px; top: 40px; color: white;">
+									<span style="color: #99CCFF;">H e y <span>
+										<span style="color: #FFCC00;">M o o s e</span><br> 
+										<br>
+										<div style="font-size: 19px;">
+										<ul>
+										<li>Для <span style="color: #FFCC00; font-size: 22px;">разработчиков</span>:<br>
+											<span style="color: white; font-size: 20px;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspДополнительный способ монетизации</span><br><br></li>
+										<li>Для <span style="color: #FFCC00; font-size: 22px;">рекламодателей</span>:<br>
+											<span style="color: white; font-size: 20px;">
+												<ul class="i-wihtout_decoration">
+													<li>Большая аудитория</li> 
+													<li>Точный таргетинг</li>
+												</ul>
+												</span><br></li>
+										<li>Для <span style="color: #FFCC00; font-size: 22px;">пользователей</span>:<br>
+											<span style="color: white; font-size: 20px;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspЭкономия при покупках в сети</span><br><br></li>
+										</ul>
+										</div>
+								</div>
+						
+					</div>
 				</div>
 				<div class="b-widgets i-clearfix">
 					<div class="b-left_column">
@@ -53,4 +79,19 @@
 							Вставали в четыре, пол пятого, на крайнем рассвете, выпивали по стакану водки.
 						</div>
 					</div>
+					<div class="b-right_column">
+						<div class="b-widget">
+							<div style="text-align: center;">
+								<h3>Adidas Way</h3>
+							</div>
+							<br>
+							<div style="text-align: center;">
+								<img src="{{ url_for('.static', filename='./images/content/4.jpg') }}"/>
+							</div>
+							<br>
+							<br>
+							Вставали в четыре, пол пятого, на крайнем рассвете, выпивали по стакану водки.
+						</div>
+					</div>
+				</div>
 {% endblock %}

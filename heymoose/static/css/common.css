@@ -4,17 +4,18 @@
 	padding: 0;
 	width: 100%;
 	height: 100%;
-	background: url(../images/background.jpg) no-repeat center center fixed;
+	background: url(../images/background.jpg);
+	background-repeat: 	no-repeat;
+	background-position: center;
+	/*background: url(../images/background.jpg) no-repeat center center fixed;*/
+	/*background: #476669;*/
 	/*background: url(../images/content/sjd.jpg) no-repeat center center fixed;	*/
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-	
 	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
-
-
 .b-header__menu {
 	margin: 0px 0px 0px 0px;
 	
@@ -26,7 +27,9 @@
 	-webkit-box-shadow: rgba(00,00,00,1) 0 4px 18px;
 	-khtml-box-shadow: rgba(00,00,00,1) 0 4px 18px;
 	box-shadow: rgba(00,00,00,1) 0 4px 18px;
-
+	
+	
+    
 	height: 30px;
 	width: 960px;
 
@@ -109,6 +112,8 @@
 	-webkit-box-shadow: rgba(00,00,00,1) 0 4px 18px;
 	-khtml-box-shadow: rgba(00,00,00,1) 0 4px 18px;
 	box-shadow: rgba(00,00,00,1) 0 4px 18px;
+	
+
 }
 .m-bottom_layer {
 	width: 960px;
@@ -345,10 +350,11 @@
 
 .i-order_cell_status {
 	padding: 4px 10px 3px 10px;
-	width: 170px;
+	width: 300px;
 	text-align: left;
 	line-height: 1.3;
 	float: right;
+	
 }
 
 .i-order_hd_cell_number {
@@ -368,20 +374,20 @@
 .i-order_hd_cell_balance {
 	padding: 8px 10px 6px 10px;
 	width: 100px;
-	text-align: center;
+	text-align: right;
 	line-height: 1.3;
 }
 
 .i-order_hd_cell_val_offer {
 	padding: 8px 10px 6px 10px;
 	width: 100px;
-	text-align: center;
+	text-align: right;
 	line-height: 1.3;
 }
 
 .i-order_hd_cell_status {
 	padding: 8px 10px 6px 10px;
-	width: 170px;
+	width: 400px;
 	text-align: center;
 	line-height: 1.3;
 	float: right;
@@ -816,5 +822,26 @@ color: #6EA5A7;
 	margin-right: 0px;
 }
 
+.i-hide {
+	visibility: hidden;
+	display: none;
+}
+
+.i-become {
+	float: right;
+}
+
+.i-wihtout_decoration {
+	list-style-type: none;
+	text-decoration: none;
+}
 
 
+.b-login_error {
+	padding: 5px 20px 5px 20px;
+	background: #121c1d;
+	border: none;
+	color: #f65c50;
+	font-weight:  bold;
+	float: right;
+}

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    {% block head %}
+	{% block head %}
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>heymoose</title>
 		<link rel=stylesheet href="{{ url_for('.static', filename='./css/common.css') }}" type="text/css" media=screen>
@@ -13,33 +13,25 @@
 		<link rel=stylesheet href="{{ url_for('.static', filename='./css/socializ.css') }}" type="text/css" media=screen>
 		<!-- панель регистрации или виджет black-box-->
 		<link rel=stylesheet href="{{ url_for('.static', filename='./css/widget_black.css') }}" type="text/css" media=screen>
-		<!-- загрузка слайдов -->
-		<script>
-			$(document).ready(function() {
-
-					// Показ слайдов
-					var slide_counter = 1;
-					var slide_counter_limit = 3;
-
-					$(".b-screen__slide").fadeOut(1);
-					$(".b-screen__slide").load("/static/slides/slide" + slide_counter + ".html");
-					$(".b-screen__slide").fadeIn(1000);
-
-					window.setInterval(function() {
-						$(".b-screen__slide").fadeOut(1000, function() {
-							$(".b-screen__slide").load("/static/slides/slide" + slide_counter + ".html");
-						});
-						$(".b-screen__slide").fadeIn(1000);
-						slide_counter++;
-						if(slide_counter > slide_counter_limit) {
-							slide_counter = 1;
-						}
-
-					}, 10000);
-
-			});
-
-		</script>
+		<!--[if IE]>
+			<style type="text/css">
+				.b-body {
+					background-color: #7eb6ba;
+					margin: 0;
+					padding: 0;
+					width: 100%;
+					height: 100%;
+					background-repeat: 	no-repeat;
+					background-position: center;
+					
+					-webkit-background-size: cover;
+					-moz-background-size: cover;
+					-o-background-size: cover;
+					background-size: cover;
+					font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+				}
+			</style>
+		<![endif]-->
 
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
@@ -66,10 +58,10 @@ style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" tit
 <script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
 <noscript><div style="display:none;" ><img src="//mc.yandex.ru/watch/8819377" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
-
+>
 <!--LiveInternet counter--><script type="text/javascript"><!--
 document.write("<a href='http://www.liveinternet.ru/click' "+
-"target=_blank><img style="display:none;" src='//counter.yadro.ru/hit?t44.6;r"+
+"target=_blank><img class='i-hide' src='//counter.yadro.ru/hit?t44.6;r"+
 escape(document.referrer)+((typeof(screen)=="undefined")?"":
 ";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
 screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
@@ -115,48 +107,49 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 							<div class="b-login_widget">
 								<form class="b-login_form" action="{{ url_for('login') }}" method="post">
 									<div class="b-input_wrap_email">
-										<input class="b-input" name="username" placeholder="email" type="email">
+										<input class="b-input" name="username" title="email" placeholder="email" type="email">
 									</div>
 									<div class="b-input_wrap_password">
-										<input class="b-input" name="password" placeholder="пароль" type="password">
+										<input class="b-input" name="password" title="password" placeholder="пароль" type="password">
 									</div>
 									<input class="b-input_button" type="submit" value="Войти">
 								</form>
 							</div>
-                            {% with %}
-					        {% set mes = get_flashed_messages(with_categories=true) | error_type('loginerror') %}
-					        {% if mes %}
-						        {{ mes[0][1].decode('utf8') }}
-					        {% endif %}
-				            {% endwith %}
 						</li>
                         {% else %}
-                         <li>
-                             <div class="b-login_widget">
-                                 <a href="{{ url_for('logout') }}" class="b-input_button">Выйти</a>
-                             </div>
+                         <li class="i-become">
+     							<a href="{{ url_for('logout') }}"  title="Выйти">Выйти</a>
                          </li>
                         {% endif %}
 					</ul>
 				</div>
 				<a href="{{ url_for('main_page') }}" class="b-header__logo"></a>
-				<!-- Социальная панель -->
-				<div class="b-socialpanel">
-					<script type="text/javascript">socializ(encodeURIComponent('Hey moose!'), encodeURIComponent('Универсальная платформа для рекламодателей'))</script>
-				</div>
+				
+							
+				            {% with %}
+					        {% set mes = get_flashed_messages(with_categories=true) | error_type('loginerror') %}
+					        {% if mes %}
+					       	 	<div class="b-widget b-login_error">
+						        {{ mes[0][1].decode('utf8') }}
+						         </div>
+					        {% endif %}
+				            {% endwith %}
+				           
+
 			</div>
-<!-- Контент -->
-<div class="b-main_content">
-{% block content %}
-{% endblock %}
-</div>
+			<!-- Контент -->
+			<div class="b-main_content">
+			{% block content %}
+			{% endblock %}
+			</div>
+			<div class="b-footerspace"></div>
+		</div>
     	<!-- Прилипание подвала к нижней части экрана реализовано
 			с помощью отрицательного расположения. Т.е. подвал наезжает
 			на главный контент - следующий div как раз существует
 			для того, чтобы оставить место подвалу -->
-		<div class="b-footerspace"/>
-		</div>
-		</div> <!-- Подвал -->
+
+
 		<div class="b-footer">
 			<div class="b-footer__shadowline"></div>
 			<div class="b-footer__topshadow"></div>
@@ -169,6 +162,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 					</div>
 				</div>
 			</div>
+		</div>
 {% if g.user and g.user.is_admin() %}
 <div id="navigation-bot">
 <ul>

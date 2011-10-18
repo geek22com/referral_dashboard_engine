@@ -90,7 +90,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 							<a href="{{ url_for('about') }}" title="О проекте">О проекте</a>
 						</li>
 						<li>
-							<a href="registration.html" title="Регистрация">Регистрация</a>
+							<a href="{{ url_for('register') }}" title="Регистрация">Регистрация</a>
 						</li>
 						<li>
 							<a href="{{ url_for('blog', pagenum=0) }}" title="Блог">Блог</a>

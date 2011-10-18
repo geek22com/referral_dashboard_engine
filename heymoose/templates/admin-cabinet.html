@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block title %}
+Личный кабинет
+{% endblock %}
+{% block content %}
+	<div id="container">
+	        <h4>Здравствуйте, {{ g.user.nickname }}</h4>
+
+        {% if g.user.is_admin() %}
+        {% if params.actions%}
+        <div class="b-table_row i-table_header i-clearfix">
+    		<div class="b-table_cell i-order_hd_cell_number">action_id</div>
+	    	<div class="b-table_cell i-order_hd_cell_balance">performer_id</div>
+		    <div class="b-table_cell i-order_hd_cell_val_offer">offer_id</div>
+		    <div class="b-table_cell i-order_hd_cell_status">done</div>
+            <div class="b-table_cell i-order_hd_cell_status">deleted</div>
+            <div class="b-table_cell i-order_hd_cell_status">creation_time</div>
+            <div class="b-table_cell i-order_hd_cell_status">delete</div>
+            <div class="b-table_cell i-order_hd_cell_status">approve</div>
+		</div>
+        {% for actions in params.actions %}
+	    <div class="b-table_row i-table_even_row i-clearfix"> <!-- i-table_odd_row -->
+    	    <div class="b-table_cell i-order_cell_number">{{ action.id }}</div>
+	        <div class="b-table_cell i-order_cell_balance">{{ action.performer_id }}</div>
+	        <div class="b-table_cell i-order_cell_val_offer">{{ action.offer_id }}</div>
+	        <div class="b-table_cell i-order_cell_status i-status_wait">{{ action.done }}</div>
+            <div class="b-table_cell i-order_cell_status i-status_wait">{{ action.deleted }}</div>
+            <div class="b-table_cell i-order_cell_status i-status_wait">{{ action.creation_time }}</div>
+            <div class="b-table_cell i-order_cell_status i-status_wait"><a href="{{ url_for('delete_action', action_id=action.id) }}" onclick="return confirm('Вы уверены что хотите удалить action?')" class="add-vopros">Удалить action</a></div>
+            <div class="b-table_cell i-order_cell_status i-status_wait"><a href="{{ url_for('approve_action', action_id=action.id) }}" onclick="return confirm('Вы уверены что хотите подтвердить action?')" class="add-vopros">Подтвердить action</a></div>
+	    </div>
+        {% endfor %}
+        {% endif %}
+        {% endif %}
+
+        {% if g.user.is_admin() %}
+        {% if params.orders %}
+        <div class="b-table_row i-table_header i-clearfix">
+    		<div class="b-table_cell i-order_hd_cell_number">id</div>
+	    	<div class="b-table_cell i-order_hd_cell_balance">title</div>
+		    <div class="b-table_cell i-order_hd_cell_val_offer">balance</div>
+		    <div class="b-table_cell i-order_hd_cell_status">user_id</div>
+            <div class="b-table_cell i-order_hd_cell_status">approved</div>
+            <div class="b-table_cell i-order_hd_cell_status">cpa</div>
+		</div>
+        {% for actions in params.actions %}
+	    <div class="b-table_row i-table_even_row i-clearfix"> <!-- i-table_odd_row -->
+    	    <div class="b-table_cell i-order_cell_number">{{ order.id }}</div>
+	        <div class="b-table_cell i-order_cell_balance">{{ order.title }}</div>
+	        <div class="b-table_cell i-order_cell_val_offer">{{ order.balance }}</div>
+	        <div class="b-table_cell i-order_cell_status i-status_wait">{{ order.user_id }}</div>
+            <div class="b-table_cell i-order_cell_status i-status_wait">{{ order.approved }}</div>
+            <div class="b-table_cell i-order_cell_status i-status_wait">{{ order.cpa }}</div>
+            <div class="b-table_cell i-order_cell_status i-status_wait"><a href="{{ url_for('approve_order', order_id=order.id) }}" onclick="return confirm('Вы уверены что хотите подтвердить order?')" class="add-vopros">Подтвердить order</a></div>
+	    </div>
+        {% endfor %}
+        {%endif%}
+        {%endif%}
+{% endblock %}

@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {% block head %}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>heymoose</title>
+		<link rel=stylesheet href="{{ url_for('.static', filename='./css/common.css') }}" type="text/css" media=screen>
+		<!-- jquery и его плагины -->
+		<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery_plugins/timers.js') }}"></script>
+		<!-- Социальная панель -->
+		<script type="text/javascript" src="{{ url_for('.static', filename='./js/socializ.js') }}"></script>
+		<link rel=stylesheet href="{{ url_for('.static', filename='./css/socializ.css') }}" type="text/css" media=screen>
+		<!-- панель регистрации или виджет black-box-->
+		<link rel=stylesheet href="{{ url_for('.static', filename='./css/widget_black.css') }}" type="text/css" media=screen>
+		<!-- загрузка слайдов -->
+		<script>
+			$(document).ready(function() {
+
+					// Показ слайдов
+					var slide_counter = 1;
+					var slide_counter_limit = 3;
+
+					$(".b-screen__slide").fadeOut(1);
+					$(".b-screen__slide").load("/static/slides/slide" + slide_counter + ".html");
+					$(".b-screen__slide").fadeIn(1000);
+
+					window.setInterval(function() {
+						$(".b-screen__slide").fadeOut(1000, function() {
+							$(".b-screen__slide").load("/static/slides/slide" + slide_counter + ".html");
+						});
+						$(".b-screen__slide").fadeIn(1000);
+						slide_counter++;
+						if(slide_counter > slide_counter_limit) {
+							slide_counter = 1;
+						}
+
+					}, 10000);
+
+			});
+
+		</script>
+
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+</head>
+<body class="b-body">
+<div style="display:none;" class="li_counter">
+<!-- Yandex.Metrika informer -->
+<a href="http://metrika.yandex.ru/stat/?id=8819377&amp;from=informer"
+target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/8819377/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" /></a>
+<!-- /Yandex.Metrika informer -->
+
+<!-- Yandex.Metrika counter -->
+<div style="display:none;"><script type="text/javascript">
+(function(w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter8819377 = new Ya.Metrika({id:8819377, enableAll: true});
+        }
+        catch(e) { }
+    });
+})(window, "yandex_metrika_callbacks");
+</script></div>
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+<noscript><div style="display:none;" ><img src="//mc.yandex.ru/watch/8819377" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<!--LiveInternet counter--><script type="text/javascript"><!--
+document.write("<a href='http://www.liveinternet.ru/click' "+
+"target=_blank><img style="display:none;" src='//counter.yadro.ru/hit?t44.6;r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";"+Math.random()+
+"' alt='' title='LiveInternet' "+
+"border='0' width='31' height='31'><\/a>")
+//--></script><!--/LiveInternet-->
+
+
+</div>
+<!-- Обертка единого стиля для контента и заголовка -->
+		<div class="m-bottom_layer">
+			<!-- Заголовок -->
+			<div class="b-header">
+				<div class="b-header__menu">
+					<ul>
+						<li>
+							<a href="{{ url_for('about') }}" title="О проекте">О проекте</a>
+						</li>
+                        {% if g.user %}
+                        <li>
+                            <a href="{{ url_for('user_cabinet', username=g.user.nickname) }}" title="Кабинет">Личный кабинет</a>
+                        </li>
+                        {% else %}
+						<li>
+							<a href="{{ url_for('register') }}" title="Регистрация">Регистрация</a>
+						</li>
+                        {% endif %}
+						<li>
+							<a href="{{ url_for('blog', pagenum=0) }}" title="Блог">Блог</a>
+						</li>
+						<li>
+							<a href="{{ url_for('to_advertiser') }}" title="Рекламодателям">Рекламодателям</a>
+						</li>
+						<li>
+							<a href="{{ url_for('to_partner') }}" title="Разработчикам">Разработчикам</a>
+						</li>
+						<li>
+							<a href="{{ url_for('contacts') }}" title="Контакты">Контакты</a>
+						</li>
+                        {% if not g.user %}
+						<li>
+							<div class="b-login_widget">
+								<form class="b-login_form" action="{{ url_for('login') }}" method="post">
+									<div class="b-input_wrap_email">
+										<input class="b-input" name="username" placeholder="email" type="email">
+									</div>
+									<div class="b-input_wrap_password">
+										<input class="b-input" name="password" placeholder="пароль" type="password">
+									</div>
+									<input class="b-input_button" type="submit" value="Войти">
+								</form>
+							</div>
+                            {% with %}
+					        {% set mes = get_flashed_messages(with_categories=true) | error_type('loginerror') %}
+					        {% if mes %}
+						        {{ mes[0][1].decode('utf8') }}
+					        {% endif %}
+				            {% endwith %}
+						</li>
+                        {% else %}
+                         <li>
+                             <div class="b-login_widget">
+                                 <a href="{{ url_for('logout') }}" class="b-input_button">Выйти</a>
+                             </div>
+                         </li>
+                        {% endif %}
+					</ul>
+				</div>
+				<a href="{{ url_for('main_page') }}" class="b-header__logo"></a>
+				<!-- Социальная панель -->
+				<div class="b-socialpanel">
+					<script type="text/javascript">socializ(encodeURIComponent('Hey moose!'), encodeURIComponent('Универсальная платформа для рекламодателей'))</script>
+				</div>
+			</div>
+<!-- Контент -->
+<div class="b-main_content">
+{% block content %}
+{% endblock %}
+</div>
+    	<!-- Прилипание подвала к нижней части экрана реализовано
+			с помощью отрицательного расположения. Т.е. подвал наезжает
+			на главный контент - следующий div как раз существует
+			для того, чтобы оставить место подвалу -->
+		<div class="b-footerspace"/>
+		</div>
+		</div> <!-- Подвал -->
+		<div class="b-footer">
+			<div class="b-footer__shadowline"></div>
+			<div class="b-footer__topshadow"></div>
+			<div class="b-footer_content">
+				<div class="b-footer_content__menu"></div>
+				<div class="b-footer_content__separator"></div>
+				<div class="b-footer_content__bottom_separator">
+					<div class="copyright">
+						© 2011 Bravik, LLC.
+					</div>
+				</div>
+			</div>
+{% if g.user and g.user.is_admin() %}
+<div id="navigation-bot">
+<ul>
+		<li><a href="{{ url_for('add_blog') }}" class="current"><p>Доюавить запись в блог</p></a></li>
+		<li><a href="{{ url_for('add_category') }}" class="current"><p>Добавить категорию</p></a></li>
+		<li><a href="{{ url_for('import_blog') }}" class="current"><p>Загрузить из файла</p></a></li>
+        <li><a href="{{ url_for('admin_cabinet') }}" class="current"><p>Подтверждение</p></a></li>
+        <li><a href="{{ url_for('add_gift') }}" class="current"><p>Добавить подарок</p></a></li>
+        <li><a href="{{ url_for('show_gifts') }}" class="current"><p>Показать подарки</p></a></li>
+</ul>
+</div>
+{% endif %}
+
+
+</body>
+</html>

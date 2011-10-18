@@ -19,7 +19,7 @@ def paybalance_form_template(form_params=None, error=None):
 		paybalance_form.amount.data = form_params['amount']
 
 	g.params['paybalanceform'] = paybalance_form
-	return render_template('customer-balance.html', params=g.params)
+	return render_template('cabinet-inside-service.html', params=g.params)
 
 @frontend.route('/become_developer')
 @customer_only

@@ -120,13 +120,13 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 									<div class="b-input_wrap_password">
 										<input class="b-input" name="password" placeholder="пароль" type="password">
 									</div>
-									<input class="b-input_button" type="button" value="Войти">
+									<input class="b-input_button" type="submit" value="Войти">
 								</form>
 							</div>
                             {% with %}
 					        {% set mes = get_flashed_messages(with_categories=true) | error_type('loginerror') %}
 					        {% if mes %}
-						        <ul class="error"><li>{{ mes[0][1].decode('utf8') }}</li></ul>
+						        {{ mes[0][1].decode('utf8') }}
 					        {% endif %}
 				            {% endwith %}
 						</li>

@@ -94,9 +94,8 @@
 	-webkit-box-shadow: rgba(00,00,00,1) 0 4px 18px;
 	-khtml-box-shadow: rgba(00,00,00,1) 0 4px 18px;
 	box-shadow: rgba(00,00,00,1) 0 4px 18px;
-	
-
 }
+
 .m-bottom_layer {
 	width: 960px;
 	margin: 0px auto;
@@ -184,6 +183,13 @@
 	border-radius: 10px;
 	background: white;
 	border: 1px solid #e5e5e5;
+}
+
+.i-widget_info{
+	font-size: 18px;
+}
+.i-widget_mainpage_size{
+	height: 600px;
 }
 .b-left_column {
 	margin: 0;

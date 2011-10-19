@@ -1,10 +1,10 @@
 import sys, os
-cmd_folder = os.path.dirname(os.path.abspath("/home/iceberg/heymoose/heymoose"))
+cmd_folder = os.path.dirname(os.path.abspath("/home/kshilov/PycharmProjects/frontend_new_templates/heymoose"))
 if cmd_folder not in sys.path:
 	sys.path.insert(0, cmd_folder)
 
 import __builtin__
-__builtin__.DEBUG_CONFIG="/home/iceberg/heymoose/config_debug.py"
+__builtin__.DEBUG_CONFIG="/home/kshilov/PycharmProjects/frontend_new_templates/config_debug.py"
 from heymoose import app
 from heymoose.tests.gen_qa import generate_captcha
 

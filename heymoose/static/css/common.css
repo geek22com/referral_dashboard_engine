@@ -1,21 +1,3 @@
-.b-body {
-	background-color: #7eb6ba;
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	height: 100%;
-	background: url(../images/background.jpg);
-	background-repeat: 	no-repeat;
-	background-position: center;
-	/*background: url(../images/background.jpg) no-repeat center center fixed;*/
-	/*background: #476669;*/
-	/*background: url(../images/content/sjd.jpg) no-repeat center center fixed;	*/
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-}
 .b-header__menu {
 	margin: 0px 0px 0px 0px;
 	

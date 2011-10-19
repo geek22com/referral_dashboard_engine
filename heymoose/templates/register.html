@@ -1,82 +1,5 @@
 {% extends "layout.html" %}
 {% block title %}Регистрация{% endblock %}
-{% block head %}
-{{ super() }}
-<script>
-			$(document).ready(function() {
-				// спрячем error
-				$('.b-error_text').slideUp(1);
-
-				// Отображает ошибку в дескрипшене регистрационной панели
-				function showError(error, element) {
-					//$('.b-reg_form_error').add("<div class="b-error_text">Ошибка нах!</div>")
-					element.addClass('i-input_with_error');
-					$('.b-error_text').slideDown(200);
-					$('.b-error_text').text(error);
-				}
-
-				function clearError(element) {
-					$('.b-error_text').slideUp(200);
-					$(element).parent().removeClass('i-input_with_error');
-					//$('.b-rinput').parent().removeClass('i-input_focused');
-				}
-
-				/*$('.b-rinput').bind('focusin',function() {
-					$(this).parent().addClass('i-input_focused');
-				});*/
-
-				// События формы
-				$(".b-rinput").keypress(function() {
-					clearError(this);
-					//clearError(".b-rinput");
-				});
-
-
-				// Валидация формы регистрации
-				$("#register_form").submit(function() {
-					username = $('#username').val();
-					password = $('#password').val();
-					repassword = $('#repassword').val();
-					email = $('#email').val();
-					capcha = $('#capcha').val();
-
-					if(username == "") {
-						showError("Заполните, пожалуйста, имя пользователя", $('#username').parent());
-						return false;
-					}
-
-					if(email == "") {
-						showError("Напишите, пожалуйста, свой электронный адресс", $('#email').parent());
-						return false;
-					}
-
-					if(password == "") {
-						showError("Напишите, пожалуйста, пароль", $('#password').parent());
-						return false;
-					}
-
-					if(repassword == "") {
-						showError("Подтвердите пароль", $('#repassword').parent());
-						return false;
-					}
-
-					if(repassword != password) {
-						showError("Пароли не совпадают", $('#repassword').parent());
-						return false;
-					}
-
-					if(capcha == "") {
-						showError("Заполните капчу", $('#capcha').parent());
-						return false;
-					}
-
-
-					return true;
-				});
-			});
-
-		</script>
-{% endblock %}
 {% block content %}
 	<div class="b-screen">
 					<div class="b-reg_header">
@@ -166,7 +89,14 @@
 								<input id="register" class="b-input_button i-submit_button" type="submit" value="Подтвердить">
 							</div>
 							<div class="b-reg_form_error">
-								<div class="b-error_text"></div>
+                                {% with %}
+			                    {% set mes = get_flashed_messages(with_categories=true) | error_type('registererror') %}
+			                    {% if mes %}
+				                    <div class="b-error_text">{{ mes[0][1].decode('utf8') }}</div>
+			                    {% else %}
+                                    <div class="b-error_text i-hide"></div>
+                                {% endif %}
+		                        {% endwith %}
 							</div>
 						</form>
 					</div>
@@ -174,4 +104,75 @@
 
 					</div>
 	</div>
+<script>
+			$(document).ready(function() {
+				// Отображает ошибку в дескрипшене регистрационной панели
+				function showError(error, element) {
+					//$('.b-reg_form_error').add("<div class="b-error_text">Ошибка нах!</div>")
+					element.addClass('i-input_with_error');
+					$('.b-error_text').removeClass("i-hide");
+					$('.b-error_text').text(error);
+				}
+
+				function clearError(element) {
+					$('.b-error_text').addClass("i-hide");
+					$(element).parent().removeClass('i-input_with_error');
+					//$('.b-rinput').parent().removeClass('i-input_focused');
+				}
+
+				/*$('.b-rinput').bind('focusin',function() {
+					$(this).parent().addClass('i-input_focused');
+				});*/
+
+				// События формы
+				$(".b-rinput").keypress(function() {
+					clearError(this);
+					//clearError(".b-rinput");
+				});
+
+
+				// Валидация формы регистрации
+				$("#register_form").submit(function() {
+					username = $('#username').val();
+					password = $('#password').val();
+					repassword = $('#repassword').val();
+					email = $('#email').val();
+					capcha = $('#capcha').val();
+
+					if(username == "") {
+						showError("Заполните, пожалуйста, имя пользователя", $('#username').parent());
+						return false;
+					}
+
+					if(email == "") {
+						showError("Напишите, пожалуйста, свой электронный адресс", $('#email').parent());
+						return false;
+					}
+
+					if(password == "") {
+						showError("Напишите, пожалуйста, пароль", $('#password').parent());
+						return false;
+					}
+
+					if(repassword == "") {
+						showError("Подтвердите пароль", $('#repassword').parent());
+						return false;
+					}
+
+					if(repassword != password) {
+						showError("Пароли не совпадают", $('#repassword').parent());
+						return false;
+					}
+
+					if(capcha == "") {
+						showError("Заполните капчу", $('#capcha').parent());
+						return false;
+					}
+
+
+					return true;
+				});
+			});
+
+		</script>
 {% endblock %}

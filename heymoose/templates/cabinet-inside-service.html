@@ -358,16 +358,74 @@
                 /*End of Show/hide forms*/
 
                 /*Validation*/
-                $("#create_order_form").submit(function(){
-                function validateURL(textval) {
-                  var urlregex = '/^(https?:\/\/){1,1}([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
-                  return urlregex.test(textval);
-                }
+                $("#create_order_form").submit(function(e){
+					var customer_balance = {{ g.user.customer_balance }};
+					try{
+						
+						if ($("#order_name").val() == ""){
+							$("#add_order_error").text("Введите название заказа");
+							return false;
+						}
+						
+						if ($("#order_desc").val() == ""){
+							$("#add_order_error").text("Введите описание заказа");
+							return false;
+						}
 
-                if (!validateURL($("#order_url").val())){
-                    $("#add_order_error").text("URL должен начинаться с http:// и не содержать русскмъ букв");
-                }
+						var order_balance = parseInt($("#order_balance").val());
+						if ($("#order_balance").val() == "" || order_balance <= 0 || order_balance > customer_balance || order_balance > 3000000 || isNaN(order_balance)){
+							$("#add_order_error").text("Допустимый для вас баланс: от 1 до " + customer_balance + " рублей");
+							return false;
+						}
+
+						var order_cpa = parseInt($("#order_cpa").val());
+						if ($("#order_cpa").val() == "" || order_cpa <= 0 || order_cpa > order_balance || isNaN(order_cpa)){
+							$("#add_order_error").text("Допустимый cpa для заказа : от 1 до " + order_balance + " рублей");
+							return false;
+						}
+						
+	                	if (!validateURL($("#order_url").val())){
+    	                	$("#add_order_error").text("Некорректный URL: http://*.*");
+							return false;
+						}
+
+						if ($("#order_image").val() == ""){
+							$("#add_order_error").text("Загрузите картинку");
+							return false;
+						}
+						return true;
+					}catch(e){
+						alert(e);
+						return false;
+					}
                 });
+
+				$("#fill_balance_form").submit(function(){
+					try{
+						var new_balance = parseInt($("#customer_balance").val());
+	                    if ($("#customer_balance").val() == "" || new_balance > 3000000 || new_balance <= 0 || isNaN(new_balance)){
+    	                       $("#fill_balance_error").text("Допустимый баланс: от 1 до 3000000");
+        	                   return false;
+            	        }
+						return true;
+					}catch(e){
+						alert(e);
+						return false;
+					}
+				});
+
+				$("#create_app_form").submit(function(){
+					try{
+                        if (!validateURL($("#app_callback").val())){
+                            $("#create_app_error").text("Некорректный callback URL: http://*.*");
+                            return false;
+                        }
+						return true;
+					}catch(e){
+						alert(e);
+						return false;
+					}
+				});
           });
 
 

@@ -14,7 +14,7 @@
 		<!-- панель регистрации или виджет black-box-->
 		<link rel=stylesheet href="{{ url_for('.static', filename='./css/widget_black.css') }}" type="text/css" media=screen>
 
-        <!--[if !IE]>
+        <!--[if !IE]><!-->
     		<style type="text/css">
 				.b-body {
                     background-color: #7eb6ba;
@@ -22,7 +22,7 @@
                     padding: 0;
                     width: 100%;
                     height: 100%;
-                    background: url(../images/background.jpg);
+                    background: url({{ url_for('.static', filename='./images/background.jpg') }});
                     background-repeat: 	no-repeat;
                     background-position: center;
                     /*background: url(../images/background.jpg) no-repeat center center fixed;*/
@@ -35,7 +35,7 @@
                     font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
                 }
 			</style>
-        <![endif]-->
+        <!--<![endif]-->
 
         <!--[if IE]>
 			<style type="text/css">

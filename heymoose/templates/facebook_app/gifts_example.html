@@ -1,0 +1,165 @@
+<link rel="stylesheet" href="{{ url_for('.static', filename='./facebook_app/css/gifts.css') }}?ddd"/>
+<div> <!-- All content must be in div to load styles properly -->
+    <div class="b-friend_select i-block i-clearfix">
+        <label class="b-friend_select__label i-fl i-prm">Выберите друга:</label>
+<!--   <input class="b-friend_select__input i-fl i-input" placeholder="Начните набирать имя..."/> -->
+        <select id="b-friends_select" class="b-friend_select__input i-fl i-input">
+            <option value="0">Выберите друга</option>
+            {% if params.friends %}
+                {% for friend in params.friends %}
+                    <option value="{{ friend.id }}">{{ friend.name }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+    </div>
+    <form id="b-gifts_from__send" class="pm" method="post" action="/">
+        <input type="hidden" name="from_id" value="{{ g.params.facebook_user_id }}">
+        <div class="b-gift_select i-block i-clearfix">
+            <label class="b-gift_select__label i-fl i-prm">Выберите подарок:</label>
+
+            <div class="b-gift_select__input i-fl i-clearfix">
+                <div class="b-gift_select__gifts">
+                    <div class="b-gift_select__selector i-clearfix" style="display: block; ">
+                        <img src="{{ url_for('.static', filename='./images/image1.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="b44c40b1f1939b9fa2c00b0a2480b701"
+                             data-title="Pirate Hat"
+                             data-description="Arrrrrr! Tis national speak like a pirate day, so get yer hat on an' spread th' word by givin' this gift!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image2.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image3.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image4.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image5.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image6.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image7.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image8.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image9.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image10.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image11.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image12.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image13.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image14.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+                        <img src="{{ url_for('.static', filename='./images/image15.png', _external=True) }}"
+                             class="b-gift_select__gift_item" data-id="2d3afe50512c4850cca203366b29dd31"
+                             data-title="Bebe The Bichon"
+                             data-description="Bebe is such a cute little puppy, she loves attention. Send her to all your animal loving friends!"
+                             style="opacity: 0.5; ">
+
+                    </div>
+                    <input type="hidden" name="gift" value="">
+                    <input type="hidden" name="gift_id" value="">
+
+                    <div class="b-gift_select__selected i-hidden i-clearfix" style="display: none; "></div>
+                    <div class="m-gift_divider i-mtm i-mbm"></div>
+                    <div class="b-gift_select__selected_params i-clearfix i-plm i-prm">
+                        <div class="i-fl">
+                            <span class="b-selected_params__title" id="gift_title">&nbsp;</span>
+                            <span class="b-selecter_params__other i-cancel i-hidden"><a class="i-pointer">Выбрать
+                                другой</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="b-gift_message i-block i-clearfix">
+        <label class="b-gift_message__label i-fl i-prm">Напишите сообщение</label>
+        <textarea class="b-gift_message__input  i-input i-fl" name="message"
+                  placeholder="Другу будет приятно..."></textarea>
+
+        <div class="b-gift_send i-clearfix">
+            <label class="b-gift_send__label i-fl i-prm">&nbsp;</label>
+            <input type="submit" class="b-gift_send__button i-button" value="Отправить подарок">
+        </div>
+    </div>
+    </form>
+
+    {% raw %}
+    <script type="text/x-template" id="selectedTemplate">
+        <img src="{{src}}" class="i-fl i-mrm"/>
+
+        <div class="i-tablecell">
+            <h4 class="i-mbs" id="gt">{{title}}</h4>
+            <span class="i-light">{{{description}}}</span>
+        </div>
+    </script>
+    <script type="text/x-template" id="dialogTemplate">
+        <div class="i-dialog i-pm">
+            <div class="i-dialog_title i-ps i-prm i-plm"><h4>{{{title}}}</h4></div>
+            <div class="i-pm i-dialog_content">
+                {{{text}}}
+            </div>
+            <div class="i-ps i-prm i-plm i-dialog_buttons i-clearfix i-tar">
+                <input type="button" class="i-button" value="Close"/>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-template" id="askTemplate">
+        <div class="i-dialog i-pm">
+            <div class="i-dialog_title i-ps i-prm i-plm"><h4>{{{title}}}</h4></div>
+            <div class="i-pl i-dialog_content">
+                {{{text}}}
+            </div>
+            <div class="i-pm i-dialog_buttons i-clearfix i-tar">
+                <input type="button" class="i-button i-silver" value="{{{no}}}"/> <input type="button"
+                                                                                         class="i-yes i-button"
+                                                                                         value="{{{yes}}}"/>
+            </div>
+        </div>
+    </script>
+    {% endraw %}
+    <div class="hidden">
+        <script type="text/javascript" src="{{ url_for('.static', filename='./facebook_app/js/mustache.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('.static', filename='./facebook_app/js/gifts.js') }}"></script>
+    </div>
+</div>

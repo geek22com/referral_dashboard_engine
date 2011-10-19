@@ -1,0 +1,17 @@
+.b-giftsdone__img{
+    position: relative;
+    height: 30px;
+    width: 40px;
+}
+
+.b-giftsdone__label{
+    position: relative;
+    bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.b-giftsdone__friend{
+    position: relative;
+    left: 10px;
+    font-size: 17px;
+}

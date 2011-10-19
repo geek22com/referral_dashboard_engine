@@ -1,0 +1,74 @@
+.b-friend_select{
+}
+
+.b-gift_select{
+}
+
+.b-gift_message{
+}
+
+.b-gift_send{
+    clear: both;
+}
+
+.b-gift_send__button{
+    margin-top: 10px;
+}
+
+.b-friend_select__label{
+    width: 125px;
+    text-align: right;
+}
+
+.b-gift_select__label{
+    width: 125px;
+    text-align: right;
+}
+
+.b-gift_message__label{
+    width: 125px;
+    text-align: right;
+}
+.b-gift_send__label{
+    width: 125px;
+    text-align: right;
+}
+
+.b-left_layout{
+}
+
+.b-friend_select__input{
+    width: 340px;
+}
+
+.b-gift_message__input{
+    width: 340px;
+    height: 42px;
+}
+.b-gift_select__gifts{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    height: 296px;
+    overflow: hidden;
+}
+.b-gift_select__input{
+    width: 470px;
+}
+.m-gift_divider{
+    background-color: #fff;
+    height: 0px;
+    border-bottom: 1px dashed #ccc;
+}
+
+.b-selected_params__title{
+    color: #627aad;
+}
+
+.b-gift_select__gifts.giftSelected .b-selected_params__title {
+    display: none;
+}
+
+.b-gift_select__gifts.giftSelected .b-selecter_params__other {
+    display: block;
+}

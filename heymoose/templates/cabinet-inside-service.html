@@ -354,57 +354,23 @@
 					$("#create_app_layer").addClass("i-hide");
 					return false;
 				});
+
                 /*End of Show/hide forms*/
 
                 /*Validation*/
-                jQuery.validator.addMethod(
-                  "checkCpa",
-                  function(value, element) {
-                    if (parseInt(element.value) > parseInt($("#order_balance").val()))
-                    {
-                      return false;
-                    }
-                    else return true;
-                  },
-                  "Cpa не может превышать баланс заказа."
-                );
-                $(document).ready(function() {
-                            var customer_balance = 100;
-                            $("#create_order_form").validate({
-                                           rules: {
-                                               ordername: "required",
-                                               orderdesc: "required",
-                                               orderbalance: {
-                                                required: true,
-                                                min: 1,
-                                                max: customer_balance
-                                               },
-                                               ordercpa: {
-                                                required: true,
-                                                min: 1,
-                                                checkCpa: true
-                                               },
-                                                orderbody: {
-                                                    required: true,
-                                                    url: true
-                                                },
-                                                orderimage: {
-                                                    required: true
-                                                }
-                                           },
-                                           messages: {
-                                               ordername: "Пожалуйста введите название.",
-                                               orderdesc: "Пожалуйста введите описание.",
-                                               orderbalance: "Введите баланс заказа не превышающий ваш текущий баланс",
-                                               ordercpa: "Введите cpa не превышающий баланс заказа",
-                                               orderbody: "Введите правильный url начинающийся http://",
-                                               orderimage: "Загрузите картинку"
-                                           }
-                                       });
-            });
+                $("#create_order_form").submit(function(){
+                function validateURL(textval) {
+                  var urlregex = '/^(https?:\/\/){1,1}([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+                  return urlregex.test(textval);
+                }
 
-                /*End of validation*/
-			});
+                if (!validateURL($("#order_url").val())){
+                    $("#add_order_error").text("URL должен начинаться с http:// и не содержать русскмъ букв");
+                }
+                });
+          });
+
+
 
 		</script>
                 

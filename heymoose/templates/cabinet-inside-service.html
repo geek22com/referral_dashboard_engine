@@ -27,7 +27,7 @@
 									{% endif %}
 								</ul>
 								<div id="adv_balance" class="b-our_balance_widget">Ваш баланс: {{  g.user.customer_balance }}</div>
-						</div> 
+						</div>
 							<div id="fill_balance_layer" class="b-table_row i-row_layer i-clearfix i-hide">
 
 
@@ -102,7 +102,7 @@
 									</div>
 									<div class="b-table_cell i-reg_form_cell">
 										<div class="b-input_wrap i-reg_input i-text-area">
-											<textarea class="b-rinput" name="orderdesc" rows="8" cols="21"></textarea>
+											<textarea class="b-rinput" name="orderdesc" id="order_desc" rows="8" cols="21"></textarea>
 											<!--<input id="order_descr" class="b-rinput" type="text">-->
 										</div>
 									</div>
@@ -312,9 +312,8 @@
                 <script>
 			$(document).ready(function() {
 
-
-				
-				$("#fill_balance").click(function() {	
+                /*Show hide forms*/
+				$("#fill_balance").click(function() {
 					if($("#fill_balance_layer").hasClass("i-hide")) {
 						$("#fill_balance_layer").removeClass("i-hide");
 					} else {
@@ -355,8 +354,56 @@
 					$("#create_app_layer").addClass("i-hide");
 					return false;
 				});
+                /*End of Show/hide forms*/
 
+                /*Validation*/
+                jQuery.validator.addMethod(
+                  "checkCpa",
+                  function(value, element) {
+                    if (parseInt(element.value) > parseInt($("#order_balance").val()))
+                    {
+                      return false;
+                    }
+                    else return true;
+                  },
+                  "Cpa не может превышать баланс заказа."
+                );
+                $(document).ready(function() {
+                            var customer_balance = 100;
+                            $("#create_order_form").validate({
+                                           rules: {
+                                               ordername: "required",
+                                               orderdesc: "required",
+                                               orderbalance: {
+                                                required: true,
+                                                min: 1,
+                                                max: customer_balance
+                                               },
+                                               ordercpa: {
+                                                required: true,
+                                                min: 1,
+                                                checkCpa: true
+                                               },
+                                                orderbody: {
+                                                    required: true,
+                                                    url: true
+                                                },
+                                                orderimage: {
+                                                    required: true
+                                                }
+                                           },
+                                           messages: {
+                                               ordername: "Пожалуйста введите название.",
+                                               orderdesc: "Пожалуйста введите описание.",
+                                               orderbalance: "Введите баланс заказа не превышающий ваш текущий баланс",
+                                               ordercpa: "Введите cpa не превышающий баланс заказа",
+                                               orderbody: "Введите правильный url начинающийся http://",
+                                               orderimage: "Загрузите картинку"
+                                           }
+                                       });
+            });
 
+                /*End of validation*/
 			});
 
 		</script>

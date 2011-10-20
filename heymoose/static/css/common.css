@@ -186,10 +186,10 @@
 }
 
 .i-widget_info{
-	font-size: 18px;
+	font-size: 16px;
 }
 .i-widget_mainpage_size{
-	height: 600px;
+	height: 500px;
 }
 .b-left_column {
 	margin: 0;
@@ -832,4 +832,12 @@ color: #6EA5A7;
 	color: #f65c50;
 	font-weight:  bold;
 	float: right;
+}
+
+.i-widget_bg_left {
+	background: #EEFFEE;
+}
+
+.i-widget_bg_right {
+	background: #FFEEFF;
 }

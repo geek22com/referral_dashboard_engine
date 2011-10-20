@@ -17,7 +17,7 @@
    Best used on prepositions and ampersands. */
 
 .alt {
-  color: #666;
+  /*color: #666;*/
   font-family: "Warnock Pro", "Goudy Old Style","Palatino","Book Antiqua", Georgia, serif;
   font-style: italic;
   font-weight: normal;
@@ -93,6 +93,13 @@ hr {
 }
 
 .i-moose {
-	color: #558899;
+	color: #335577;
+}
+
+.i-center {
+	text-align: center;
+}
+.i-gray {
+	color: #333;
 }
 

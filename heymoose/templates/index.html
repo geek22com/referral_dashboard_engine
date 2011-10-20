@@ -36,48 +36,65 @@
 				</div>
 				<div class="b-widgets i-clearfix">
 					<div class="b-left_column">
-						<div class="b-widget i-widget_mainpage_size i-widget_info">
-							<div style="text-align: center;">
-								<h4 class="caps i-moose">Рекламодателям</h4>
-								<hr>
-							</div>
+						<div class="b-widget i-widget_mainpage_size i-widget_info i-widget_bg_left">
 							<br>
 							<div style="text-align: center;">
 								<img src="{{ url_for('.static', filename='./images/one.png') }}"/>
 							</div>
 							<br>
+							<div style="text-align: center;">
+								<a href="{{ url_for('to_advertiser') }}"> 
+									<img src="{{ url_for('.static', filename='./images/to-advertise.png') }}"/>
+								</a>
+								<!--<h3 class="alt i-moose">Рекламодателям</h3>-->
+								
+							</div>
+							<hr>
 							<br>
-							Новый вид рекламмы - офферы, с оплатой только за результат. Возможность размещения в играх и социальных сетях.
+							<p>
+								Новый вид рекламмы - офферы - оплата только за результат. Возможность размещения в играх и социальных сетях.
+							</p>
 						</div>
 					</div>
 					<div class="b-middle_column">
-						<div class="b-widget i-widget_mainpage_size i-widget_info">
-							<div style="text-align: center;">
-								<h4 class="caps i-hey">Игрокам</h4>
-								<hr>
-							</div>
-							<br>
-							<div style="text-align: center;">
-								<img src="{{ url_for('.static', filename='./images/three.png') }}"/>
-							</div>
-							<br>
-							<br>
-							Возможность получать виртуальную валюту в играх, в качестве бонуса за действия. Получайте скидки, при покупке товаров в интернете. 
-						</div>
-					</div>
-					<div class="b-right_column">
-						<div class="b-widget i-widget_mainpage_size i-widget_info">
-							<div style="text-align: center;">
-								<h4 class="caps i-moose">Издателям и магазинам</h4>
-								<hr>
-							</div>
+						<div class="b-widget i-widget_mainpage_size i-widget_info i-widget_bg_middle">
 							<br>
 							<div style="text-align: center;">
 								<img src="{{ url_for('.static', filename='./images/two.png') }}"/>
 							</div>
 							<br>
+							<div style="text-align: center;">
+								<a href="{{ url_for('to_partner') }}">
+									<img src="{{ url_for('.static', filename='./images/to-developers.png') }}"/>
+								</a>
+								<!-- <h3 class="alt i-moose">Издателям и магазинам</h3>-->
+							</div>
+							<hr>
 							<br>
-							Повышайте доход от ваших приложений, за счет предложения альтернативного способа оплаты товаров и услуг, выгодного всем трем сторонам.
+							<p>
+								Повышайте доход от ваших приложений, за счет предложения альтернативного способа оплаты товаров и услуг, выгодного всем трем сторонам.
+							</p>
+						</div>
+					</div>
+					<div class="b-right_column">
+						<div class="b-widget i-widget_mainpage_size i-widget_info i-widget_bg_right">
+							<br>
+							<div style="text-align: center;">
+								<img src="{{ url_for('.static', filename='./images/three.png') }}"/>
+							</div>
+							<br>
+							<div style="text-align: center;">
+								
+									<img src="{{ url_for('.static', filename='./images/to-gamers.png') }}"/>
+								
+								<!--<h3 class="alt i-moose">Игрокам</h3>-->
+								
+							</div>
+							<hr>
+							<br>
+							<p>
+							Возможность получать виртуальную валюту в играх, в качестве бонуса за действия. Получайте скидки, при покупке товаров в интернете. 
+							</p>
 						</div>
 					</div>
 				</div>

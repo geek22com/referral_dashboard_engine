@@ -5,6 +5,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>heymoose</title>
 		<link rel=stylesheet href="{{ url_for('.static', filename='./css/common.css') }}" type="text/css" media=screen>
+		
+		<!-- Стили текста и его раположения -->
+		<link rel=stylesheet href="{{ url_for('.static', filename='./css/typography.css') }}" type="text/css" media=screen>
+		<link rel=stylesheet href="{{ url_for('.static', filename='./css/screen.css') }}" type="text/css" media=screen>
+		
 		<!-- jquery и его плагины -->
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 		<script type="text/javascript">
@@ -14,9 +19,6 @@
 			}
 		</script>
 
-		<!-- Социальная панель -->
-		<script type="text/javascript" src="{{ url_for('.static', filename='./js/socializ.js') }}"></script>
-		<link rel=stylesheet href="{{ url_for('.static', filename='./css/socializ.css') }}" type="text/css" media=screen>
 		<!-- панель регистрации или виджет black-box-->
 		<link rel=stylesheet href="{{ url_for('.static', filename='./css/widget_black.css') }}" type="text/css" media=screen>
 

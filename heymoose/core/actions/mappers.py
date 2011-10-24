@@ -30,6 +30,7 @@ def user_from_xml(user_element):
 				orders=map(order_from_xml, user_element.xpath('/user/orders/order')),
 				roles=map(role_from_xml, user_element.xpath('/user/roles/role')),
 				customer_balance=get_value(user_element, 'customer-account', float),
+                customer_secret=get_value(user_element, 'customer-secret'),
 				developer_balance=get_value(user_element, 'developer-account', float))
 
 def action_from_xml(action_element):

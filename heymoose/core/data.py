@@ -34,6 +34,7 @@ class User(BaseModel):
 	              'nickname',
 	              'orders',
 	              'customer_balance',
+                  'customer_secret',
 	              'developer_balance',
 	              'apps',
 	              'roles']

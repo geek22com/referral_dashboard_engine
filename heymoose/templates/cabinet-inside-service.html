@@ -15,14 +15,14 @@
 						<div class="b-header__menu i-table_panel_row i-clearfix">
 								<ul>
 									<li>
-										<a id="create_order" href="" title="Создать заказ">Создать заказ</a>
+										<a class="b-header__menu_inactive" id="create_order" href="" title="Создать заказ">Создать заказ</a>
 									</li>
 									<li>
-										<a id="fill_balance" href="" title="Пополнить заказ">Пополнить баланс</a>
+										<a class="b-header__menu_inactive" id="fill_balance" href="" title="Пополнить заказ">Пополнить баланс</a>
 									</li>
 									{% if not g.user.is_developer() %}
 									<li>
-										<a href="{{ url_for('become_developer') }}" title="Получить функционал разработчика">Получить функционал разработчика</a>
+										<a class="b-header__menu_inactive" href="{{ url_for('become_developer') }}" title="Получить функционал разработчика">Получить функционал разработчика</a>
 									</li>
 									{% endif %}
 								</ul>
@@ -172,9 +172,7 @@
 							</div>
 						</form>
 						</div>
-                        <div>
-                            Secret: {{ g.user.customer_secret }}
-                        </div>
+
 						<div class="b-table_row i-table_header i-clearfix">
 							<div class="b-table_cell i-order_hd_cell_number">
 								Номер
@@ -226,16 +224,28 @@
 						<div class="b-header__menu i-table_panel_row i-clearfix">
 								<ul>
 									<li>
-										<a id="create_app" href="" title="Создать приложение">Создать приложение</a>
+										<a class="b-header__menu_inactive" id="create_app" href="" title="Создать приложение">Создать приложение</a>
 									</li>
 									{% if not g.user.is_customer() %}
 									<li>
-										<a href="{{ url_for('become_customer') }}" title="Получить функционал рекламодателя">Получить функционал рекламодателя</a>
+										<a class="b-header__menu_inactive" href="{{ url_for('become_customer') }}" title="Получить функционал рекламодателя">Получить функционал рекламодателя</a>
 									</li>
 									{% endif %}
+									<li>
+										<a class="b-header__menu_inactive" id="show_secret_key" href="" title="Показать secret key">Показать secret key</a>
+									</li>
 								</ul>
+
 								<div id="dev_balance" class="b-our_balance_widget">Ваш баланс: {{ g.user.developer_balance }}</div>
+
+						
 						</div>
+
+							<div id="show_secret_key_layer" class="b-table_row i-row_layer i-clearfix i-hide">	
+								<div class="b-register_form i-show_secret_key_form">
+                            		Ваш secret key: {{ g.user.customer_secret }}
+                        		</div>
+							</div>
 
 							<div id="create_app_layer" class="b-table_row i-row_layer i-clearfix i-hide">
 							<div class="b-register_descr i-personal">
@@ -295,13 +305,10 @@
 							<div class="b-table_cell i-apps_hd_cell_id">
 								id
 							</div>
-							<div class="b-table_cell i-apps_hd_cell_secret">
-								Secret
-							</div>
 							<div class="b-table_cell i-apps_hd_cell_callback">
 								Callabck
 							</div>
-                            <div class="b-table_cell i-apps_hd_cell_callback">
+                            <div class="b-table_cell i-apps_hd_cell_url">
                                 Url
                             </div>
 						</div>
@@ -311,13 +318,11 @@
 							    <div class="b-table_cell i-apps_cell_id">
 								    {{ app.id }}
 							    </div>
-							    <div class="b-table_cell i-apps_cell_secret">
-								    {{ app.secret }}
-							    </div>
+
 							    <div class="b-table_cell i-apps_cell_callback">
 								    {{ app.callback }}
 							    </div>
-       						    <div class="b-table_cell i-apps_cell_callback">
+       						    <div class="b-table_cell i-apps_cell_url">
 								    {{ app.url }}
 							    </div>
 						    </div>
@@ -331,11 +336,26 @@
 			$(document).ready(function() {
 
                 /*Show hide forms*/
+               	$("#show_secret_key").click(function() {
+					if($("#show_secret_key_layer").hasClass("i-hide")) {
+						$("#show_secret_key_layer").removeClass("i-hide");
+						$("#show_secret_key").text('Сркыть secret key');
+						$("#show_secret_key").attr('title','Сркыть secret key');
+					} else {
+						$("#show_secret_key_layer").addClass("i-hide");
+						$("#show_secret_key").text('Покзать secret key');
+						$("#show_secret_key").attr('title','Показать secret key');
+					}
+					return false;
+				});
+               
 				$("#fill_balance").click(function() {
 					if($("#fill_balance_layer").hasClass("i-hide")) {
 						$("#fill_balance_layer").removeClass("i-hide");
+						$("#fill_balance").addClass("b-header__menu_selected");
 					} else {
 						$("#fill_balance_layer").addClass("i-hide");
+						$("#fill_balance").removeClass("b-header__menu_selected");
 					}
 					return false;
 				});
@@ -343,8 +363,10 @@
 				$("#create_order").click(function() {
 					if($("#create_order_layer").hasClass("i-hide")) {
 						$("#create_order_layer").removeClass("i-hide");
+						$("#create_order").addClass("b-header__menu_selected");
 					} else {
 						$("#create_order_layer").addClass("i-hide");
+						$("#create_order").removeClass("b-header__menu_selected");
 					}
 					return false;
 				});
@@ -352,24 +374,29 @@
 				$("#create_app").click(function() {
 					if($("#create_app_layer").hasClass("i-hide")) {
 						$("#create_app_layer").removeClass("i-hide");
+						$("#create_app").addClass("b-header__menu_selected");
 					} else {
 						$("#create_app_layer").addClass("i-hide");
+						$("#create_app").removeClass("b-header__menu_selected");
 					}
 					return false;
 				});
 				
 				$("#create_order_cancel").click(function() {
 					$("#create_order_layer").addClass("i-hide");
+					$("#create_order").removeClass("b-header__menu_selected");
 					return false;
 				});
 
 				$("#fill_balance_cancel").click(function() {
 					$("#fill_balance_layer").addClass("i-hide");
+					$("#fill_balance").removeClass("b-header__menu_selected");
 					return false;
 				});
 
 				$("#create_app_cancel").click(function() {
 					$("#create_app_layer").addClass("i-hide");
+					$("#create_app").removeClass("b-header__menu_selected");
 					return false;
 				});
 

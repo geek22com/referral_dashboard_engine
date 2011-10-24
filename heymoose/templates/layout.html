@@ -67,8 +67,24 @@
 
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
+    
+    
+    
+<script language="JavaScript" type="text/javascript">
+	function highlight(){
+		var tags=document.getElementsByTagName("a");
+  		for(i in tags){
+    		if(tags[i].className.split(' ',4)[0]=="i-nav"){
+        		if(document.location.href==tags[i].href){
+        			tags[i].className += " b-header__menu_selected";
+    			}
+  			}
+  		}
+	}
+</script>
+    
 </head>
-<body class="b-body">
+<body class="b-body" onload="highlight()">
 <div style="display:none;" class="li_counter">
 <!-- Yandex.Metrika informer -->
 <a href="http://metrika.yandex.ru/stat/?id=8819377&amp;from=informer"
@@ -111,32 +127,32 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 				<div class="b-header__menu">
 					<ul>
 						<li>
-							<a href="{{ url_for('about') }}" title="О проекте">О проекте</a>
+							<a class="i-nav b-header__menu_inactive" href="{{ url_for('about') }}" title="О проекте">О проекте</a>
 						</li>
                         {% if g.user %}
                         <li>
-                            <a href="{{ url_for('user_cabinet', username=g.user.nickname) }}" title="Кабинет">Личный кабинет</a>
+                            <a class="i-nav b-header__menu_inactive" href="{{ url_for('user_cabinet', username=g.user.nickname) }}" title="Кабинет">Личный кабинет</a>
                         </li>
                         {% else %}
 						<li>
-							<a href="{{ url_for('register') }}" title="Регистрация">Регистрация</a>
+							<a class="i-nav b-header__menu_inactive" href="{{ url_for('register') }}" title="Регистрация">Регистрация</a>
 						</li>
                         {% endif %}
 						<li>
-							<a href="{{ url_for('blog', pagenum=0) }}" title="Блог">Блог</a>
+							<a class="i-nav b-header__menu_inactive" href="{{ url_for('blog', pagenum=0) }}" title="Блог">Блог</a>
 						</li>
 						<li>
-							<a href="{{ url_for('to_advertiser') }}" title="Рекламодателям">Рекламодателям</a>
+							<a class="i-nav b-header__menu_inactive" href="{{ url_for('to_advertiser') }}" title="Рекламодателям">Рекламодателям</a>
 						</li>
 						<li>
-							<a href="{{ url_for('to_partner') }}" title="Разработчикам">Разработчикам</a>
+							<a class="i-nav b-header__menu_inactive" href="{{ url_for('to_partner') }}" title="Разработчикам">Разработчикам</a>
 						</li>
 						<li>
-							<a href="{{ url_for('contacts') }}" title="Контакты">Контакты</a>
+							<a class="i-nav b-header__menu_inactive" href="{{ url_for('contacts') }}" title="Контакты">Контакты</a>
 						</li>
                         {% if not g.user %}
 						<li>
-							<div class="b-login_widget">
+							<div class="b-login_widget  b-header__menu_inactive">
 								<form class="b-login_form" action="{{ url_for('login') }}" method="post">
 									<div class="b-input_wrap_email">
 										<input class="b-input" name="username" title="email" placeholder="email" type="email">
@@ -150,7 +166,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 						</li>
                         {% else %}
                          <li class="i-become">
-     							<a href="{{ url_for('logout') }}"  title="Выйти">Выйти</a>
+     							<a class="b-header__menu_inactive" href="{{ url_for('logout') }}"  title="Выйти">Выйти</a>
                          </li>
                         {% endif %}
 					</ul>
@@ -207,7 +223,6 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 </ul>
 </div>
 {% endif %}
-
 
 </body>
 </html>

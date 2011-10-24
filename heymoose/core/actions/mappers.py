@@ -9,6 +9,7 @@ def app_from_xml(app_element):
 				secret=get_value(app_element, 'secret'),
 				user_id=get_value(app_element, 'user-id', int),
 				callback=get_value(app_element, 'callback'),
+                url=get_value(app_element, 'url'),
 				deleted=get_value(app_element, 'deleted', bool))
 
 def order_from_xml(order_element):

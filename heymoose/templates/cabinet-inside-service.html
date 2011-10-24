@@ -299,6 +299,9 @@
 							<div class="b-table_cell i-apps_hd_cell_callback">
 								Callabck
 							</div>
+                            <div class="b-table_cell i-apps_hd_cell_callback">
+                                Url
+                            </div>
 						</div>
                         {% if params.apps %}
                             {% for app in params.apps %}
@@ -311,6 +314,9 @@
 							    </div>
 							    <div class="b-table_cell i-apps_cell_callback">
 								    {{ app.callback }}
+							    </div>
+       						    <div class="b-table_cell i-apps_cell_callback">
+								    {{ app.url }}
 							    </div>
 						    </div>
                             {% endfor %}

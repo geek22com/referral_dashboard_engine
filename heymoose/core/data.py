@@ -65,7 +65,8 @@ class App(BaseModel):
 	              'secret',
 	              'user_id',
 	              'callback',
-	              'deleted']
+	              'deleted',
+                  'url']
 
 
 class Action(BaseModel):

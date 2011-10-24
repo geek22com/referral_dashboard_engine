@@ -51,6 +51,7 @@ class OrderForm(Form):
 	
 class AppForm(Form):
 	appcallback = TextField('appcallback', [validators.Required(message = ('Введите callback'))])
+	appurl = TextField('appurl', [validators.Required(message = ('Введите appurl для возврата в ваше приложение'))])
 
 class BalanceForm(Form):
 	amount = IntegerField('orderbalance', [validators.Required(message = ('Укажите баланс')),

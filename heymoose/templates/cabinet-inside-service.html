@@ -255,6 +255,18 @@
 									</div>
 								</div>
 
+                                <div class="b-table_row i-reg_form_row i-clearfix">
+                                    <div class="b-table_cell i-reg_form_cell">
+                                        <label class="b-form_label i-reg_label">URL для возврата в приложение</label>
+                                    </div>
+                                    <div class="b-table_cell i-reg_form_cell">
+                                        <div class="b-input_wrap i-reg_input">
+                                            <input id="app_url" name="appurl" class="b-rinput" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+
+
 								<div class="b-reg_form_footer">
 									<div class="b-table_cell i-reg_form_cell">
 										<input id="create_app_cancel" class="b-input_button i-cancel_button" type="button" value="Отменить">
@@ -418,6 +430,11 @@
                             $("#create_app_error").text("Некорректный callback URL: http://*.*");
                             return false;
                         }
+                        if (!validateURL($("#app_url").val())){
+                            $("#create_app_error").text("Некорректный URL: http://*.*");
+                            return false;
+                        }
+
 						return true;
 					}catch(e){
 						alert(e);

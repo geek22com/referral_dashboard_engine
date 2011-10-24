@@ -6,10 +6,11 @@ from heymoose.utils.workers import app_logger
 
 resource_path = "/apps"
 
-def add_app(user_id, callback):
+def add_app(user_id, callback, url):
 	post(path=resource_path,
 		params_dict=dict(userId=user_id,
-						callback=callback))
+						callback=callback,
+                        url=url))
 
 def delete_app(app_id):
 	path = "{0}/{1}".format(resource_path, app_id)

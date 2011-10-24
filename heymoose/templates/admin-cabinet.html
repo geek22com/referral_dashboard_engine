@@ -18,7 +18,7 @@
             <div class="b-table_cell i-order_hd_cell_status">delete</div>
             <div class="b-table_cell i-order_hd_cell_status">approve</div>
 		</div>
-        {% for actions in params.actions %}
+        {% for action in params.actions %}
 	    <div class="b-table_row i-table_even_row i-clearfix"> <!-- i-table_odd_row -->
     	    <div class="b-table_cell i-order_cell_number">{{ action.id }}</div>
 	        <div class="b-table_cell i-order_cell_balance">{{ action.performer_id }}</div>
@@ -43,7 +43,7 @@
             <div class="b-table_cell i-order_hd_cell_status">approved</div>
             <div class="b-table_cell i-order_hd_cell_status">cpa</div>
 		</div>
-        {% for actions in params.actions %}
+        {% for order in params.orders %}
 	    <div class="b-table_row i-table_even_row i-clearfix"> <!-- i-table_odd_row -->
     	    <div class="b-table_cell i-order_cell_number">{{ order.id }}</div>
 	        <div class="b-table_cell i-order_cell_balance">{{ order.title }}</div>

@@ -11,7 +11,6 @@ from heymoose.views.work import *
 @frontend.route('/admin_cabinet/', methods = ['POST', 'GET'])
 @admin_only
 def admin_cabinet():
-	
 	acs = actions.get_actions(0, 100)
 	if acs:
 		g.params['actions'] = acs

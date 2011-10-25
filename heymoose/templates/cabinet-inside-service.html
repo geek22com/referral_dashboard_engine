@@ -39,11 +39,11 @@
 							<div id="fill_balance_layer" class="b-table_row i-row_layer i-clearfix i-hide">
 
 
-							<div class="b-register_descr  i-personal">
+							<div class="b-register_descr  i-fill_balance_descr">
 
 							</div>
 
-							<form id="fill_balance_form" class="b-register_form i-create_order_form" action="{{ url_for('pay_balance') }}" method="post">
+							<form id="fill_balance_form" class="b-register_form i-fill_balance_form" action="{{ url_for('pay_balance') }}" method="post">
 							<div class="b-reg_form_header i-form_descr">
 								Заполните, пожалуйста, поля формы
 							</div>
@@ -84,7 +84,7 @@
 						</div>
 						<div id="create_order_layer" class="b-table_row i-row_layer i-clearfix i-hide">
 
-							<div class="b-register_descr i-personal">
+							<div class="b-register_descr i-create_order_descr">
 							</div>
 							<form id="create_order_form" class="b-register_form i-create_order_form" action="{{ url_for('create_order') }}" enctype="multipart/form-data" method="post">
 							<div class="b-reg_form_header i-form_descr">
@@ -247,10 +247,10 @@
 						</div>
 
 							<div id="create_app_layer" class="b-table_row i-row_layer i-clearfix i-hide">
-							<div class="b-register_descr i-personal">
+							<div class="b-register_descr i-create_app_descr">
 							</div>
 
-							<form id="create_app_form" class="b-register_form i-create_order_form" action="{{ url_for('create_app') }}" method="post">
+							<form id="create_app_form" class="b-register_form i-create_app_form" action="{{ url_for('create_app') }}" method="post">
 							<div class="b-reg_form_header i-form_descr">
 								Заполните, пожалуйста, поля формы
 							</div>

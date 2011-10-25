@@ -285,6 +285,33 @@
 
 .i-create_order_form {
 	float: right;
+	width: 500px;
+}
+
+.i-fill_balance_form {
+	float: right;
+	width: 500px;
+}
+
+.i-create_app_form {
+	float: right;
+	width: 600px;
+}
+
+.i-create_order_descr {
+	width: 280px;
+	margin-right: 0px;
+}
+
+.i-fill_balance_descr {
+	width: 280px;
+	margin-right: 0px;
+}
+
+
+.i-create_app_descr {
+	width: 190px;
+	margin-right: 0px;
 }
 
 .i-table_panel_row ul li a {
@@ -643,7 +670,7 @@
 			.b-register_descr {
 				margin: 10px;
 				padding: 30px 20px 20px 20px;
-				width: 280px;
+
 				height: 100%;
 				float: left;
 				background: #222222;
@@ -657,11 +684,13 @@
 				font-weight: normal;
 				font-size: 16px;
 			}
+			
+			
+			
 			.b-register_form {
 				margin: 10px;
 				padding: 10px 10px 10px 10px;
 				/*float: right;*/
-				width: 500px;
 				background: #FFCC99;
 				-moz-border-radius: 12px;
 				-khtml-border-radius: 12px;
@@ -689,6 +718,9 @@
 
 			.i-reg_form_row {
 				margin: 0 auto;
+			}
+			.i-register_descr {
+				width: 280px;
 			}
 
 			.i-reg_form_cell {
@@ -774,7 +806,10 @@
 
 			.i-register_form {
 				float: right;
+				width: 500px;
 			}
+			
+
 
 /* create order form modificators*/
 .i-cancel_button {

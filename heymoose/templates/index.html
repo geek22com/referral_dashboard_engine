@@ -8,17 +8,18 @@
 					<div class="b-screen__slide">
 						
 								<div>
-								<img style="margin: 10px 430px; width: 450px; height: 380px;" src="{{url_for('.static', filename='./images/moose.jpg')}}">
+								<img style="margin: 10px 380px; width: 500px; height: 380px;" src="{{url_for('.static', filename='./images/moose.jpg')}}">
 
 								</div>
-								<div style="position: absolute; font-size: 32px; margin-left: 40px; top: 40px; color: white;">
-									<span style="color: #99CCFF;">H e y </span>
-									<span style="color: #FFCC00;">M o o s e</span><br> 
-									<br>
+								<div style="position: absolute; font-size: 32px; margin-left: 40px; top: 30px; color: white;">
+									<div style="padding: 0px 0px 20px;">
+										<span style="color: #99CCFF;">H e y </span>
+										<span style="color: #FFCC00;">M o o s e</span><br> 
+									</div>
 									<div style="font-size: 19px;">
 										<ul>
 										<li>Для <span style="color: #FFCC00;">разработчиков</span>:<br>
-											<span style="color: white; font-size: 20px;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspДополнительный способ монетизации</span><br><br></li>
+											<span style="color: white; font-size: 20px;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspДополнительный способ <br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspмонетизации</span><br><br></li>
 										<li>Для <span style="color: #FFCC00;">рекламодателей</span>:<br>
 											<span style="color: white; font-size: 20px;">
 												<ul class="i-wihtout_decoration">
@@ -99,8 +100,11 @@
 							</div>
 							<br>
 							<div style="text-align: center;">
-								
+								<a href="{{ url_for('about') }}#user_info_header" target="blank_">
+								<!--<a href="{{ url_for('to_partner') }}">-->
 									<img src="{{ url_for('.static', filename='./images/to-gamers.png') }}"/>
+								</a>								
+	
 								
 								<!--<h3 class="alt i-moose">Игрокам</h3>-->
 								
@@ -108,7 +112,7 @@
 							<hr>
 							<br>
 							<p>
-							Возможность получать виртуальную валюту в играх, в качестве бонуса за действия. Получайте скидки, при покупке товаров в интернете. 
+							Возможность получать виртуальную валюту в играх в качестве бонуса за действия. Получайте скидки при покупке товаров в интернете. 
 							</p>
 							
 								

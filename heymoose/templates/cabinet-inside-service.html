@@ -20,6 +20,9 @@
 									<li>
 										<a class="b-header__menu_inactive" id="fill_balance" href="" title="Пополнить заказ">Пополнить баланс</a>
 									</li>
+									<li>
+										<a class="b-header__menu_inactive" id="show_secret_key" href="" title="Показать secret key">Показать secret key</a>
+									</li>
 									{% if not g.user.is_developer() %}
 									<li>
 										<a class="b-header__menu_inactive" href="{{ url_for('become_developer') }}" title="Получить функционал разработчика">Получить функционал разработчика</a>
@@ -28,6 +31,11 @@
 								</ul>
 								<div id="adv_balance" class="b-our_balance_widget">Ваш баланс: {{  g.user.customer_balance }}</div>
 						</div>
+							<div id="show_secret_key_layer" class="b-table_row i-row_layer i-clearfix i-hide">	
+								<div class="b-register_form i-show_secret_key_form">
+                            		Ваш secret key: {{ g.user.customer_secret }}
+                        		</div>
+							</div>
 							<div id="fill_balance_layer" class="b-table_row i-row_layer i-clearfix i-hide">
 
 
@@ -231,21 +239,12 @@
 										<a class="b-header__menu_inactive" href="{{ url_for('become_customer') }}" title="Получить функционал рекламодателя">Получить функционал рекламодателя</a>
 									</li>
 									{% endif %}
-									<li>
-										<a class="b-header__menu_inactive" id="show_secret_key" href="" title="Показать secret key">Показать secret key</a>
-									</li>
 								</ul>
 
 								<div id="dev_balance" class="b-our_balance_widget">Ваш баланс: {{ g.user.developer_balance }}</div>
 
 						
 						</div>
-
-							<div id="show_secret_key_layer" class="b-table_row i-row_layer i-clearfix i-hide">	
-								<div class="b-register_form i-show_secret_key_form">
-                            		Ваш secret key: {{ g.user.customer_secret }}
-                        		</div>
-							</div>
 
 							<div id="create_app_layer" class="b-table_row i-row_layer i-clearfix i-hide">
 							<div class="b-register_descr i-personal">
@@ -305,6 +304,9 @@
 							<div class="b-table_cell i-apps_hd_cell_id">
 								id
 							</div>
+							<div class="b-table_cell i-apps_hd_cell_secret">
+								Secret key
+							</div>
 							<div class="b-table_cell i-apps_hd_cell_callback">
 								Callabck
 							</div>
@@ -318,7 +320,9 @@
 							    <div class="b-table_cell i-apps_cell_id">
 								    {{ app.id }}
 							    </div>
-
+							    <div class="b-table_cell i-apps_cell_secret">
+								    {{ app.secret }}
+							    </div>
 							    <div class="b-table_cell i-apps_cell_callback">
 								    {{ app.callback }}
 							    </div>

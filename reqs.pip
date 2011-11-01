@@ -1,0 +1,7 @@
+flask>=0.7
+wtforms
+flask-mongoalchemy
+uwsgi
+lxml
+restkit
+amqplib

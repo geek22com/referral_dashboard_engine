@@ -10,7 +10,6 @@ if project_path not in sys.path:
 import __builtin__
 __builtin__.DEBUG_CONFIG = config_path
 
-
 from heymoose import app
 from heymoose.tests.gen_qa import generate_captcha
 

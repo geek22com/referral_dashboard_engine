@@ -119,7 +119,30 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 //--></script><!--/LiveInternet-->
 
 
+
+
+
 </div>
+
+
+
+
+
+<div class="b-feedback"> 
+	<img src="{{ url_for('.static', filename='./images/feedback.png') }}" />
+	<div class="b-feedback_content">
+    	<form  action="{{ url_for('feedback') }}" enctype="multipart/form-data" method="post">
+			<textarea class="b-rinput" name="orderdesc" id="order_desc" rows="8" cols="18"></textarea>
+			<div class="b-button_send_feedback">
+			
+				<input class="b-input_button i-submit_order_button" type="submit" value="Отправить">
+			</div>
+		</form>
+
+  	</div>
+</div>
+
+
 <!-- Обертка единого стиля для контента и заголовка -->
 		<div class="m-bottom_layer">
 			<!-- Заголовок -->

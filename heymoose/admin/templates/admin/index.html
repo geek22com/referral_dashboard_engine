@@ -19,6 +19,7 @@
 	еще не придумано, как именно это будет выглядеть.
 </p>
 
+{#
 <h2>Действия</h2>
 {% if params.actions %}
 	<table class="zebra-stripped">
@@ -48,35 +49,7 @@
 {% else %}
 	<p>Еще не было выполнено ни одного действия.</p>
 {% endif %}
+#}
 
-<h2>Заказы</h2>
-{% if params.orders %}
-	<table class="zebra-stripped">
-		<thead>
-			<tr>
-				<th class="header">ИД</th>
-				<th class="header">Название</th>
-				<th class="header">Баланс</th>
-				<th class="header">Заказчик</th>
-				<th class="header">Подтвержден</th>
-				<th class="header">CPA</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for order in params.orders %}
-			<tr>
-				<td>{{ order.id }}</td>
-				<td>{{ order.title }}</td>
-				<td>{{ order.balance }}</td>
-				<td>{{ order.user_id }}</td>
-				<td>{{ order.approved }}</td>
-				<td>{{ order.cpa }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-{% else %}
-	<p>Еще не было создано ни одного заказа.</p>
-{% endif %}
 
 {% endblock %}

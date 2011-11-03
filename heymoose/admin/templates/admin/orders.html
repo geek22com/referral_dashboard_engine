@@ -3,5 +3,36 @@
 {% block activetab %}list{% endblock %}
 
 {% block tabcontent %}
-Привет
+
+{% if orders %}
+	<table class="zebra-stripped">
+		<thead>
+			<tr>
+				<th class="header">ИД</th>
+				<th class="header">Название</th>
+				<th class="header">Баланс</th>
+				<th class="header">Заказчик</th>
+				<th class="header">Подтвержден</th>
+				<th class="header">CPA</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for order in orders %}
+			<tr>
+				<td>{{ order.id }}</td>
+				<td>{{ order.title }}</td>
+				<td>{{ order.balance }}</td>
+				<td>{{ order.user_id }}</td>
+				<td>{{ order.approved }}</td>
+				<td>{{ order.cpa }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearboth alert-message block-message info" style="clear: both;">
+		<p><strong>Список пуст.</strong> Еще не было создано ни одного заказа.</p>
+	</div>
+{% endif %}
+
 {% endblock %}

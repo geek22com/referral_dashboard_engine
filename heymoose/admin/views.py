@@ -6,19 +6,15 @@ from heymoose.core import actions
 @bp.route('/')
 #@admin_only
 def index():
-	print request.url_rule
-	
-	acs = actions.actions.get_actions(0, 100)
-	if acs: g.params['actions'] = acs
+	#acs = actions.actions.get_actions(0, 100)
+	#if acs: g.params['actions'] = acs
 
-	ods = actions.orders.get_orders(0, 100)
-	if ods: g.params['orders'] = ods
-		
 	return render_template('admin/index.html', params=g.params)
 
 @bp.route('/orders/')
 def orders():
-	return render_template('admin/orders.html')
+	ods = actions.orders.get_orders(0, 100)
+	return render_template('admin/orders.html', orders=ods)
 
 @bp.route('/orders/stats')
 def orders_stats():

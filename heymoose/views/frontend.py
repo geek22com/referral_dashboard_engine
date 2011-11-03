@@ -93,6 +93,9 @@ def start_survey():
 def user_cabinet():
 	if g.user is None:
 		abort(403)
+		
+	if g.user.is_admin():
+		return redirect(url_for('admin.index'))
 
 	if g.user.is_developer():
 		user_apps = apps.active_apps(g.user.apps)

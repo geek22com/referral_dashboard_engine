@@ -1,0 +1,31 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Заказы{% endblock %}
+
+{% block activemenu %}orders{% endblock %}
+
+{% block extrahead %}
+<script type="text/javascript">
+	$(function() { 
+		$('li#tab-{% block activetab %}{% endblock %}').addClass('active');
+	})
+</script>
+{% endblock %}
+
+{% block breadcrumbs %}
+<li><a href="{{ url_for('.index') }}">Панель управления</a> <span class="divider">/</span></li>
+<li>Заказы <span class="divider">/</span></li>
+{% endblock %}
+
+{% block pageheader %}
+<h1>Заказы</h1>
+{% endblock %}
+
+{% block content %}
+<ul class="tabs">
+	<li id="tab-list"><a href="{{ url_for('.orders') }}">Список</a></li>
+	<li id="tab-stats"><a href="{{ url_for('.orders_stats') }}">Статистика</a></li>
+</ul>
+
+{% block tabcontent %}{% endblock %}
+{% endblock %}

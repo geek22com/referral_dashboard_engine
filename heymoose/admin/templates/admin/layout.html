@@ -35,6 +35,7 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#topbar').dropdown();
+			$('li#menu-item-{% block activemenu %}{% endblock %}').addClass('active');
 		})
 	</script>
 	
@@ -45,30 +46,32 @@
 	<div class="topbar" id="topbar">
 		<div class="fill">
 			<div class="container">
-				<a class="brand" href="#">Администрирование HeyMoose</a>
+				<span class="brand">
+					Администрирование <a href="{{ url_for('frontend.main_page') }}">HeyMoose</a>
+				</span>
 
 				<ul class="nav">
-					<li class="active"><a href="#">Панель управления</a></li>
+					<li id="menu-item-index"><a href="{{ url_for('.index') }}">Панель управления</a></li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#">Разработчики</a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Разработчики</a></li>
-							<li><a href="#">Приложения</a></li>
+							<li id="menu-item-developers"><a href="#">Разработчики</a></li>
+							<li id="menu-item-apps"><a href="#">Приложения</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
-						<a class="dropdown-toggle" href="#">Заказчики</a>
+						<a class="dropdown-toggle" href="#">Рекламодатели</a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Заказчики</a></li>
-							<li><a href="#">Заказы</a></li>
-							<li><a href="#">Офферы</a></li>
+							<li id="menu-item-customers"><a href="#">Рекламодатели</a></li>
+							<li id="menu-item-orders"><a href="{{ url_for('.orders') }}">Заказы</a></li>
+							<li id="menu-item-offers"><a href="#">Офферы</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#">Исполнители</a>
 						<ul class="dropdown-menu">
-							<li><a href="#">Исполнители</a></li>
-							<li><a href="#">Действия</a></li>
+							<li id="menu-item-performers"><a href="#">Исполнители</a></li>
+							<li id="menu-item-actions"><a href="#">Действия</a></li>
 						</ul>
 					</li>
 				</ul>

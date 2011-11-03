@@ -1,4 +1,4 @@
-from flask import render_template, g
+from flask import request, render_template, g
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions
 
@@ -6,12 +6,25 @@ from heymoose.core import actions
 @bp.route('/')
 #@admin_only
 def index():
+	print request.url_rule
+	
 	acs = actions.actions.get_actions(0, 100)
-	if acs:
-		g.params['actions'] = acs
+	if acs: g.params['actions'] = acs
 
 	ods = actions.orders.get_orders(0, 100)
-	if ods:
-		g.params['orders'] = ods
+	if ods: g.params['orders'] = ods
 		
 	return render_template('admin/index.html', params=g.params)
+
+@bp.route('/orders/')
+def orders():
+	return render_template('admin/orders.html')
+
+@bp.route('/orders/stats')
+def orders_stats():
+	return render_template('admin/orders-stats.html')
+
+@bp.route('/orders/<int:id>')
+def orders_info(id):
+	return 'OK'
+

@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	{% block head %}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>
+		{% block fulltitle %}
+			{% block title %}Страница{% endblock %} :: Администрирование HeyMoose
+		{% endblock %}
+	</title>
+	
+	<link rel="stylesheet" type="text/css" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" media="screen">
+	
+	<style type="text/css">
+		body {
+			background: url({{ url_for('.static', filename='./images/background.png') }}) repeat scroll 0 0 transparent;
+			padding-top: 40px;
+		}
+		
+		.content {
+			background-color: #FFF;
+			min-height: 800px;
+			padding: 20px;
+		}
+		
+		.container > footer p {
+			text-align: center;
+			color: #BFBFBF;
+		}
+	</style>
+	
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="http://twitter.github.com/bootstrap/1.3.0/bootstrap-dropdown.js"></script>
+	
+	<script type="text/javascript">
+		$(function() {
+			$('#topbar').dropdown();
+		})
+	</script>
+	
+	{% block extrahead %}{% endblock %}
+	{% endblock %}
+</head>
+<body>
+	<div class="topbar" id="topbar">
+		<div class="fill">
+			<div class="container">
+				<a class="brand" href="#">Администрирование HeyMoose</a>
+
+				<ul class="nav">
+					<li class="active"><a href="#">Панель управления</a></li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" href="#">Разработчики</a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Разработчики</a></li>
+							<li><a href="#">Приложения</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" href="#">Заказчики</a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Заказчики</a></li>
+							<li><a href="#">Заказы</a></li>
+							<li><a href="#">Офферы</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a class="dropdown-toggle" href="#">Исполнители</a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Исполнители</a></li>
+							<li><a href="#">Действия</a></li>
+						</ul>
+					</li>
+				</ul>
+				
+				<ul class="nav secondary-nav">
+					<li class="dropdown">
+						<a class="dropdown-toggle" href="#">{{ g.user.nickname }}</a>
+						<ul class="dropdown-menu">
+							<li><a href="#">Выйти</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="content">
+			{% block breadcrumbs_container %}
+			<ul class="breadcrumb">
+				{% block breadcrumbs %}{% endblock %}
+			</ul>
+			{% endblock %}
+			
+			{% block pageheader_container %}
+			<div class="page-header">
+				{% block pageheader %}{% endblock %}
+			</div>
+			{% endblock %}
+			
+			{% block content %}
+			{% endblock %}
+		</div>
+		
+		<footer>
+			<p>&copy; 2011 Bravik, LLC.</p>
+		</footer>
+	</div>
+</body>
+</html>

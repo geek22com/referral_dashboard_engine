@@ -1,0 +1,80 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Панель управления{% endblock %}
+
+{% block breadcrumbs %}
+<li>Панель управления <span class="divider">/</span></li>
+{% endblock %}
+
+{% block pageheader %}
+<h1>Панель управления</h1>
+{% endblock %}
+
+{% block content %}
+<p>
+	По-хорошему, тут должна быть какая-то агрегированная информация о состоянии каждой сущности,
+	чтобы администратор мог "окинуть взглядом" всю систему, не лазая по разным разделам. Но пока
+	еще не придумано, как именно это будет выглядеть.
+</p>
+
+<h2>Действия</h2>
+{% if params.actions %}
+	<table class="zebra-stripped">
+		<thead>
+			<tr>
+				<th class="header">ИД</th>
+				<th class="header">ИД исполнителя</th>
+				<th class="header">ИД оффера</th>
+				<th class="header">Выполнено</th>
+				<th class="header">Дата создания</th>
+				<th class="header">Удалено</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for action in params.actions %}
+			<tr>
+				<td>{{ action.id }}</td>
+				<td>{{ action.performer_id }}</td>
+				<td>{{ action.offer_id }}</td>
+				<td>{{ action.done }}</td>
+				<td>{{ action.creation_time }}</td>
+				<td>{{ action.deleted }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>Еще не было выполнено ни одного действия.</p>
+{% endif %}
+
+<h2>Заказы</h2>
+{% if params.orders %}
+	<table class="zebra-stripped">
+		<thead>
+			<tr>
+				<th class="header">ИД</th>
+				<th class="header">Название</th>
+				<th class="header">Баланс</th>
+				<th class="header">Заказчик</th>
+				<th class="header">Подтвержден</th>
+				<th class="header">CPA</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for order in params.orders %}
+			<tr>
+				<td>{{ order.id }}</td>
+				<td>{{ order.title }}</td>
+				<td>{{ order.balance }}</td>
+				<td>{{ order.user_id }}</td>
+				<td>{{ order.approved }}</td>
+				<td>{{ order.cpa }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>Еще не было создано ни одного заказа.</p>
+{% endif %}
+
+{% endblock %}

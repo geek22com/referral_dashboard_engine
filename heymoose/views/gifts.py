@@ -28,7 +28,7 @@ def add_gift():
 		else:
 			app_logger.debug("add_gift validate error: {0}".format(gift_form.errors))
 			abort(404)
-		return redirect(url_for('user_cabinet', username=g.user.nickname))
+		return redirect(url_for('user_cabinet'))
 	return render_template('add-gift.html', params=g.params)
 
 @frontend.route('/show_gifts/', methods=['POST', 'GET'])

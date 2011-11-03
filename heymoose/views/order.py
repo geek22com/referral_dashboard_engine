@@ -38,7 +38,7 @@ def create_order():
 						cpa=order_form.ordercpa.data,
 		                desc=order_form.orderdesc.data,
 						image_data=base64.encodestring(image_data).strip('\n'))
-		return redirect(url_for('user_cabinet', username=g.user.nickname))
+		return redirect(url_for('user_cabinet'))
 
 	print "Form error"
 	flash_form_errors(order_form.errors.values(), 'ordererror')
@@ -49,7 +49,7 @@ def create_order():
 #@customer_only
 #def show_order(order_id=None):
 #	if not order_id:
-#		return redirect(url_for('user_cabinet', username=g.user.nickname))
+#		return redirect(url_for('user_cabinet'))
 #
 #	order = g.user.load_order(order_id)
 #	order_form = forms.OrderForm()
@@ -60,7 +60,7 @@ def create_order():
 #		order_form.orderbody.data = order.body
 #		order_form.ordercpa.data = order.cpa
 #	else:
-#		return redirect(url_for('user_cabinet', username=g.user.nickname))
+#		return redirect(url_for('user_cabinet'))
 #
 #	if request.method == "POST":
 #		order_form = forms.OrderForm(request.form)
@@ -75,7 +75,7 @@ def create_order():
 #				app_logger.error(inst)
 #				app_logger.error(sys.exc_info())
 #
-#			return redirect(url_for('user_cabinet', username=g.user.nickname))
+#			return redirect(url_for('user_cabinet'))
 #		flash_form_errors(order_form.errors.values(), 'ordererror')
 #
 #	g.params['orderform'] = order_form
@@ -84,7 +84,7 @@ def create_order():
 @frontend.route('/delete_order/<order_id>')
 @customer_only
 def delete_order(order_id):
-	return redirect(url_for('user_cabinet', username=g.user.nickname))
+	return redirect(url_for('user_cabinet'))
 
 @frontend.route('/order_form', methods=['POST', 'GET'])
 @customer_only
@@ -101,7 +101,7 @@ def order_form():
 def approve_order(order_id=None):
 	order_id = int(order_id)
 	if not order_id:
-		return redirect(url_for('user_cabinet', username=g.user.nickname))
+		return redirect(url_for('user_cabinet'))
 
 	orders.approve_order(order_id)
 	return redirect(url_for('admin_cabinet'))

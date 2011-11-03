@@ -30,7 +30,7 @@ def create_app():
 		apps.add_app(user_id=g.user.id,
 						callback=app_form.appcallback.data,
                         url=app_form.appurl.data)
-		return redirect(url_for('user_cabinet', username=g.user.nickname))
+		return redirect(url_for('user_cabinet'))
 
 	flash_form_errors(app_form.errors.values(), 'apperror')
 	return app_form_template(request.form)
@@ -40,4 +40,4 @@ def create_app():
 def delete_app(app_id):
 	print "Going to delete app"
 	apps.delete_app(app_id)
-	return redirect(url_for('user_cabinet', username=g.user.nickname))
+	return redirect(url_for('user_cabinet'))

@@ -72,7 +72,7 @@ def role_detect():
 		try:
 			users.add_user_role(user_id=g.user.id,
 								role=form_role.role.data)
-			return redirect(url_for('user_cabinet', username=g.user.nickname))
+			return redirect(url_for('user_cabinet'))
 		except Exception as inst:
 			app_logger.error(inst)
 			app_logger.error(sys.exc_info())
@@ -86,14 +86,13 @@ def role_detect():
 @frontend.route('/start_survey')
 @auth_only
 def start_survey():
-	return redirect(url_for('user_cabinet', username=g.user.nickname))
+	return redirect(url_for('user_cabinet'))
 
-@frontend.route('/<username>')
+@frontend.route('/cabinet')
 @auth_only
-def user_cabinet(username):
-	print "user_cabinet " + str(username)
+def user_cabinet():
 	if g.user is None:
-		abort(404)
+		abort(403)
 
 	if g.user.is_developer():
 		user_apps = apps.active_apps(g.user.apps)
@@ -124,7 +123,7 @@ def login():
 			flash_form_errors([['Неверный логин или пароль']], 'loginerror')
 		else:
 			session['user_id'] = user.id
-			return redirect(url_for('user_cabinet', username=form_login.username.data))
+			return redirect(url_for('user_cabinet'))
 
 	flash_form_errors(form_login.errors.values(), 'loginerror')
 	return redirect(url_for('main_page'))
@@ -154,17 +153,17 @@ def register():
 			if user:
 				users.add_user_role(user.id, register_form.role.data)
 				session['user_id'] = user.id
-				return redirect(url_for('user_cabinet', username=user.nickname))
+				return redirect(url_for('user_cabinet'))
 	flash_form_errors(register_form.errors.values(), 'registererror')
 	return register_form_template(request.form, error)
 
 @frontend.route('/logout')
 @role_not_detected_only
 def logout():
-    """Logs the user out."""
-    flash('You were logged out')
-    session.pop('user_id', None)
-    return redirect(url_for('main_page'))
+	"""Logs the user out."""
+	flash('You were logged out')
+	session.pop('user_id', None)
+	return redirect(url_for('main_page'))
 
 def datetimeformat(value, format='%H:%M / %d-%m-%Y'):
 	return value.strftime(format)
@@ -179,4 +178,4 @@ heymoose_app.jinja_env.filters['base64filter'] = base64filter
 
 
 if __name__ == '__main__':
-    app.run()
+	app.run()

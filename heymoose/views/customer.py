@@ -27,7 +27,7 @@ def become_developer():
 	if g.user and not g.user.is_developer():
 		users.become_developer(g.user.id)
 
-	return redirect(url_for('user_cabinet', username=g.user.nickname))
+	return redirect(url_for('user_cabinet'))
 
 
 @frontend.route('/pay_balance', methods=['GET', 'POST'])
@@ -36,7 +36,7 @@ def pay_balance():
 	balance_form = forms.BalanceForm(request.form)
 	if request.method == 'POST' and balance_form.validate():
 		users.increase_customer_balance(g.user.id, int(balance_form.amount.data))
-		return redirect(url_for('user_cabinet', username=g.user.nickname))
+		return redirect(url_for('user_cabinet'))
 
 	flash_form_errors(balance_form.errors.values(), 'payerror')
 	return paybalance_form_template()

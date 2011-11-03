@@ -154,7 +154,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 						</li>
                         {% if g.user %}
                         <li>
-                            <a class="i-nav b-header__menu_inactive" href="{{ url_for('user_cabinet', username=g.user.nickname) }}" title="Кабинет">Личный кабинет</a>
+                            <a class="i-nav b-header__menu_inactive" href="{{ url_for('user_cabinet') }}" title="Кабинет">Личный кабинет</a>
                         </li>
                         {% else %}
 						<li>

@@ -16,7 +16,7 @@ import heymoose.core.actions.actions as actions
 def approve_action(action_id=None):
 	action_id = int(action_id)
 	if not action_id:
-		return redirect(url_for('user_cabinet', username=g.user.nickname))
+		return redirect(url_for('user_cabinet'))
 
 	actions.approve_action(action_id)
 	return redirect(url_for('admin_cabinet'))
@@ -26,7 +26,7 @@ def approve_action(action_id=None):
 def delete_action(action_id=None):
 	action_id = int(action_id)
 	if not action_id:
-		return redirect(url_for('user_cabinet', username=g.user.nickname))
+		return redirect(url_for('user_cabinet'))
 
 	actions.delete_action(action_id)
 	return redirect(url_for('admin_cabinet'))

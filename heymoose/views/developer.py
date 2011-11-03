@@ -15,6 +15,6 @@ def become_customer():
 	if g.user and not g.user.is_customer():
 		users.become_customer(g.user.id)
 
-	return redirect(url_for('user_cabinet', username=g.user.nickname))
+	return redirect(url_for('user_cabinet'))
 
 

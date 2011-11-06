@@ -809,6 +809,11 @@
 				width: 500px;
 			}
 			
+			.i-feedback_form {
+				float: right;
+				width: 350px;
+			}
+			
 
 
 /* create order form modificators*/
@@ -905,10 +910,10 @@ color: #6EA5A7;
 /* feedback */
 .b-feedback {
 	position: fixed;
-	left: -250px;
+	left: -400px;
 	top: 263px;
 	z-index: 5;
-	width: 272px;
+	width: 420px;
 	
 	background: #000000;
 }
@@ -925,8 +930,7 @@ color: #6EA5A7;
 
 
 .b-feedback_content {
-	padding: 5px;
-	background: #444444;
+	padding: 0px;
 }
 
 .i-create_feedback_form {
@@ -936,5 +940,13 @@ color: #6EA5A7;
 
 .b-button_send_feedback {
 	padding-left: 70px;	
+}
+
+.i-feedback_color {
+	background: #262626;
+}
+
+.i-fb_form_cell {
+	width: 150px;
 }
 

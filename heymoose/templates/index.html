@@ -51,113 +51,79 @@
 					</div>
 				</div>
 				<div class="b-widgets i-clearfix">
-
-			
-						<div class="b-widget">
-	
-	
-	<h3 class="alt">Как это работает</h3>
-	<hr>
-	<div  class="i-clearfix">
-	<h4 >
-	<img style="float:left;" src="{{ url_for('.static', filename='./images/man.jpg') }}" />
-	
-	Привычные форматы показа рекламы в интернете рассчитаны на массовость. 
-	Это приводит к тому, что в подавляющем большинстве случаев вы платите за
-	клики не заинтересованных в вашем продукте пользователей. А теперь давайте 
-	посмотрим на примере как работает HeyMoose.  <br>
-	Представьте, что вы владеете школой покера и сейчас ваша цель - увеличить количество 
-	клиентов. Вы делаете привлекательную рекламу и идете на HeyMoose.com. 
-	</div>
-	<div class="i-clearfix">
-		<div style="float: left; width:420px;">
-			<div style="background: #DDDDDD; height: 30px;">
-			<h3 class="alt">1. Личный кабинет</h3>
-			</div>
-			<hr>
-			<h4 style="letter-spacing: 0;" class="i-gray">
-				<img style="float:right;" src="{{ url_for('.static', filename='./images/site_small.jpg') }}" />
-				Вы заходите в личный кабинет и добавляете свой заказ. <strong>Указываете ключевые слова</strong>
-			на основе которых HeyMoose подберет целевую аудиторию для вашего заказа.
-			</h4>
-		</div>
-		<div style="float: right; width:420px">
-			<div style="background: #DDDDDD; height: 30px;">
-			<h3 class="alt">2. Создание заказа</h3>
-			</div>
-			<hr>
-			<h4 class="i-gray">
-				<img style="float:right;" src="{{ url_for('.static', filename='./images/order.jpg') }}" />	
-				После создания заказа HeyMoose начнет подбирать вам целевую аудиторию площадки.
-			</h4>	
-		</div>
-		
-	</div>
-		<div class="i-clearfix">
-		<div style="float: left; width:420px;">
-			<div style="background: #DDDDDD; height: 30px;">
-			<h3 class="alt">3. Выполнение заказа</h3>
-			</div>
-			<hr>
-			<h4 style="letter-spacing: 0;" class="i-gray">
-				<img style="float:right;" src="{{ url_for('.static', filename='./images/heymoose_cards.jpg') }}" />
-				Вы заходите в личный кабинет и добавляете свой заказ. <strong>Указываете ключевые слова</strong>
-			на основе которых HeyMoose подберет целевую аудиторию для вашего заказа.
-			</h4>
-		</div>
-		<div style="float: right; width:420px">
-			<div style="background: #DDDDDD; height: 30px;">
-			<h3 class="alt">4. Ваш результат</h3>
-			</div>
-			<hr>
-			<h4 class="i-gray">
-				<img style="float:right;" src="{{ url_for('.static', filename='./images/order.jpg') }}" />	
-				После создания заказа HeyMoose начнет подбирать вам целевую аудиторию площадки.
-			</h4>	
-		</div>
-		
-	</div>
-	</h4>
-<hr>
-<br>
-<h3 class="alt">Как это работает?</h3>
-<hr>
-<p>
-В личном кабинете, вы устанавливаете бюджет кампании и цену оффера. В HeyMoose реализованны механизмы для защиты от накруток.
-</p>
-<br>
-<h3 class="alt">Примеры рекламных предложений</h3>
-<hr>
-<h4 class="i-moose">Продажи</h4>
-<ul>
-<li>Приобрести товар в интернет-магазине</li>
-<li>Заказать услугу</li>
-<li>Подписаться на журнал</li>
-<li>Купить программу</li>
-</ul>
-
-<h4 class="i-moose">Аудитория</h4>
-<ul>
-<li>Сделать страницу стартовой</li>
-<li>Подписаться на рассылку</li>
-<li>Добавить в друзья</li>
-</ul>
-
-<h4 class="i-moose">Информация</h4>
-<ul>
-<li>Зарегистрироваться</li>
-<li>Посоветовать другу</li>
-<li>Разместить ссылку</li>
-</ul>
-
-<h4 class="i-moose">Преимущества HeyMoose:</h4>
-<ul>
-<li>Оплата только за результат</li>
-<li>Доступ к огромной аудитории социальных сетей</li>
-<li>Возможность таргетировать аудиторию (пол, возраст, место жительства, интересы и т.д.)</li>
-<li>Прозрачный механизм формирования цен и статистика</li>
-</ul>
+					<div class="b-left_column">
+						<div class="b-widget i-widget_mainpage_size i-widget_info i-widget_bg_left">
+							<br>
+							<div style="text-align: center;">
+								<img src="{{ url_for('.static', filename='./images/one.png') }}"/>
+							</div>
+							<br>
+							<div style="text-align: center;">
+								<a href="{{ url_for('to_advertiser') }}"> 
+									<img src="{{ url_for('.static', filename='./images/to-advertise.png') }}"/>
+								</a>
+								<!--<h3 class="alt i-moose">Рекламодателям</h3>-->
+								
+							</div>
+							<hr>
+							<br>
+							<p>
+								Новый вид рекламмы - офферы - оплата только за результат. Возможность размещения в играх и социальных сетях.
+							</p>
 						</div>
-		
+					</div>
+					<div class="b-middle_column">
+						<div class="b-widget i-widget_mainpage_size i-widget_info i-widget_bg_middle">
+							<br>
+							<div style="text-align: center;">
+								<img src="{{ url_for('.static', filename='./images/two.png') }}"/>
+							</div>
+							<br>
+							<div style="text-align: center;">
+								<a href="{{ url_for('to_partner') }}">
+									<img src="{{ url_for('.static', filename='./images/to-developers.png') }}"/>
+								</a>
+								<!-- <h3 class="alt i-moose">Издателям и магазинам</h3>-->
+							</div>
+							<hr>
+							<br>
+							<p>
+								Повышайте доход от ваших приложений, за счет предложения альтернативного способа оплаты товаров и услуг, выгодного всем трем сторонам.
+							</p>
+						</div>
+					</div>
+					<div class="b-right_column">
+						<div class="b-widget i-widget_mainpage_size i-widget_info i-widget_bg_right">
+							<br>
+							<div style="text-align: center;">
+								<img src="{{ url_for('.static', filename='./images/three.png') }}"/>
+							</div>
+							<br>
+							<div style="text-align: center;">
+								<a href="{{ url_for('about') }}#user_info_header" target="blank_">
+								<!--<a href="{{ url_for('to_partner') }}">-->
+									<img src="{{ url_for('.static', filename='./images/to-gamers.png') }}"/>
+								</a>								
+	
+								
+								<!--<h3 class="alt i-moose">Игрокам</h3>-->
+								
+							</div>
+							<hr>
+							<br>
+							<p>
+							Возможность получать виртуальную валюту в играх в качестве бонуса за действия. Получайте скидки при покупке товаров в интернете. 
+							</p>
+							
+								
+								
+									
+									
+
+									
+
+							</p>
+						</div>
+					</div>
 				</div>
 {% endblock %}

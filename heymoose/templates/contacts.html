@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
 <div class="b-widget i-widget_info">
-	<h3>Как с нами связаться:</h3>
+	<h3 class="alt">Как с нами связаться:</h3>
 	<ul>
 		<li>
 			<a href="mailto:info@heymoose.com">email: info@heymoose.com</a>
@@ -13,5 +13,69 @@
 			phone: +7(905)7101992
 		</li>
 	</ul>
+	<h3 class="alt">Вы можете оставить контакты и мы с вами свяжемся:</h3>
+
+	
+							<form id="register_form" class="b-register_form" action="..." method="post">
+							<div class="b-table i-reg_form_content">
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-register_form_cell">
+										<label class="b-form_label i-reg_label">Имя</label>
+									</div>
+									<div class="b-table_cell i-register_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="username" class="b-rinput" type="text">
+										</div>
+									</div>
+								</div>
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-register_form_cell">
+										<label class="b-form_label i-reg_label">Email</label>
+									</div>
+									<div class="b-table_cell i-register_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="email" class="b-rinput" type="email">
+										</div>
+									</div>
+								</div>
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-register_form_cell">
+										<label class="b-form_label i-reg_label">Телефон</label>
+									</div>
+									<div class="b-table_cell i-register_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="password" class="b-rinput" type="password">
+										</div>
+									</div>
+								</div>
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-register_form_cell">
+										<label class="b-form_label i-reg_label">Описание</label>
+									</div>
+									<div class="b-table_cell i-register_form_cell">
+										<div class="b-input_wrap i-reg_input i-text-area">
+											<textarea class="b-rinput" name="orderdesc" id="order_desc" rows="8" cols="21"></textarea>
+										</div>
+									</div>
+								</div>
+								<div class="b-table_row i-reg_form_row i-clearfix">
+									<div class="b-table_cell i-register_form_cell">
+										<label class="b-form_label i-reg_label">Капча</label>
+									</div>
+									<div class="b-table_cell i-register_form_cell">
+										<div class="b-input_wrap i-reg_input">
+											<input id="capcha" class="b-rinput" type="input">
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+							<div class="b-reg_form_footer">
+								<input id="register" class="b-input_button i-submit_button" type="submit" value="Подтвердить">
+							</div>
+
+							</form>
+							
 </div>
 {% endblock %}

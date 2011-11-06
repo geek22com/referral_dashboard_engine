@@ -5,12 +5,18 @@ from heymoose.thirdparty.facebook.mongo import performers
 from heymoose.utils.workers import app_logger
 from heymoose.views.frontend import frontend
 import heymoose.core.actions.users as users
+import heymoose.forms.forms as forms
+from heymoose.db.actions import captcha
 
 @app.before_request
 def before_request():
 	g.user = None
 	g.performer = None
 	g.params = {}
+	
+	g.params['feedbackform'] = forms.FeedBackForm()
+	g.params['feedback_captcha'] = captcha.get_random()
+	
 	if 'user_id' in session:
 		g.user = users.get_user_by_id(session['user_id'])
 

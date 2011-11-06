@@ -4,6 +4,7 @@ from flask import Flask, request, session, url_for, redirect, \
 from heymoose.utils.decorators import auth_only
 from heymoose.utils.decorators import developer_only
 from heymoose.views.work import *
+import heymoose.forms.forms as forms
 import heymoose.core.actions.apps as apps
 
 def app_form_template(form_params=None):

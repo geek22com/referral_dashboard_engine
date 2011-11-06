@@ -2,12 +2,13 @@
 
 {% block title %}Заказы{% endblock %}
 
-{% block activemenu %}orders{% endblock %}
+{% set activemenu = "orders" %}
 
 {% block extrahead %}
+{% set activetab = activetab|default('list') %}
 <script type="text/javascript">
 	$(function() { 
-		$('li#tab-{% block activetab %}{% endblock %}').addClass('active');
+		$('li#tab-{{ activetab }}').addClass('active');
 	})
 </script>
 {% endblock %}

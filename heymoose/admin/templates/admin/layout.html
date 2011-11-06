@@ -36,10 +36,11 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 	<script type="text/javascript" src="http://twitter.github.com/bootstrap/1.3.0/bootstrap-dropdown.js"></script>
 	
+	{% set activemenu = activemenu|default('index') %}
 	<script type="text/javascript">
 		$(function() {
 			$('#topbar').dropdown();
-			$('li#menu-item-{% block activemenu %}{% endblock %}').addClass('active');
+			$('li#menu-item-{{ activemenu }}').addClass('active');
 		})
 	</script>
 	

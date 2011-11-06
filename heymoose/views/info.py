@@ -15,8 +15,8 @@ import heymoose.forms.forms as forms
 def feedback_form_template(form_params=None, error=None):
 	feedback_form = forms.FeedBackForm()
 	if form_params:
-		feedback_form.email.data = form_params['email']
-		feedback_form.comment.data = form_params['comment']
+		feedback_form.feedback_email.data = form_params['feedback_email']
+		feedback_form.feedback_comment.data = form_params['feedback_comment']
 
 	g.params['feedbackform'] = feedback_form
 	g.params['feedback_captcha'] = captcha.get_random()
@@ -111,11 +111,11 @@ def price():
 def feedback():
 	feedback_form = forms.FeedBackForm(request.form)
 	if request.method == 'POST' and feedback_form.validate():
-		if captcha.check_captcha(request.form['captcha_id'], feedback_form.captcha_answer.data) is None:
+		if captcha.check_captcha(request.form['captcha_id'], feedback_form.feedback_captcha_answer.data) is None:
 			flash_form_errors([['Каптча введена не верно']], 'feedbackerror')
 		else:
-			feedback = FeedBack(email = feedback_form.email.data,
-							body = feedback_form.comment.data)
+			feedback = FeedBack(email = feedback_form.feedback_email.data,
+							body = feedback_form.feedback_comment.data)
 			feedback.save()
 			flash_form_errors([["Спасибо, мы обязательно учтем ваш отзыв"]], 'feedbackerror')
 			return redirect(url_for('feedback'))

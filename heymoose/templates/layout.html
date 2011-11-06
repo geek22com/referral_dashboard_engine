@@ -134,7 +134,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 									</div>
 									<div class="b-table_cell i-fb_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											{{ g.params.feedbackform.email(class="b-rinput", type="email") }}
+											{{ g.params.feedbackform.feedback_email(class="b-rinput", type="email") }}
 										</div>
 									</div>
 								</div>
@@ -145,7 +145,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 									</div>
 									<div class="b-table_cell i-fb_form_cell">
 										<div class="b-input_wrap i-reg_input i-text-area">
-											{{ g.params.feedbackform.comment(class="b-rinput", rows="8", cols="21") }}
+											{{ g.params.feedbackform.feedback_comment(class="b-rinput", rows="8", cols="21") }}
 										</div>
 									</div>
 								</div>
@@ -156,7 +156,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 									</div>
 									<div class="b-table_cell i-fb_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											{{ g.params.feedbackform.captcha_answer(class="b-rinput", type="text") }}
+											{{ g.params.feedbackform.feedback_captcha_answer(class="b-rinput", type="text") }}
                                             <input type="hidden" name="captcha_id" value="{{ g.params.feedback_captcha.c_id }}">
 										</div>
 									</div>

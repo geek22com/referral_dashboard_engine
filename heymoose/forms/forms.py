@@ -35,10 +35,10 @@ class RegisterForm(Form):
 	captcha = TextField('captcha', [])
 
 class FeedBackForm(Form):
-	email = TextField('Email Address', [
+	feedback_email = TextField('Email Address', [
 					  validators.Email("Некорректный email адресс")])
-	comment = TextAreaField('Comment', [validators.Required(message = ('Напишите ваше пожелание') )])
-	captcha_answer = TextField('captcha_answer', [validators.Required(message = ('Введите каптчу'))])
+	feedback_comment = TextAreaField('Comment', [validators.Required(message = ('Напишите ваше пожелание') )])
+	feedback_captcha_answer = TextField('captcha_answer', [validators.Required(message = ('Введите каптчу'))])
 
 class ContactForm(Form):
 	name = TextField('contactname')

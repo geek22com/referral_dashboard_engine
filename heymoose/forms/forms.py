@@ -40,6 +40,16 @@ class FeedBackForm(Form):
 	comment = TextAreaField('Comment', [validators.Required(message = ('Напишите ваше пожелание') )])
 	captcha_answer = TextField('captcha_answer', [validators.Required(message = ('Введите каптчу'))])
 
+class ContactForm(Form):
+	name = TextField('contactname')
+	email = TextField('contactemail', [
+					  validators.Email("Некорректный email адресс")])
+	phone = TextField('contactphone', [
+					  validators.Required("Введите ваш номер телефона, чтобы мы могли позвонить вам.")])
+	comment = TextAreaField('contactcomment')
+	captcha_answer = TextField('captcha_answer', [validators.Required(message = ('Введите каптчу'))])
+
+
 class OrderForm(Form):
 	ordername = TextField('ordername', [validators.Length(min=1, max=255, message=('Название заказа должна быть от 1 до 255 симолов')),
 						  				validators.Required(message = ('Введите название заказа'))])

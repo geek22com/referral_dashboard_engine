@@ -32,6 +32,14 @@ class Blog(mongo.Document):
 	annotation = mongo.StringField()
 	date = mongo.DateTimeField(default=datetime.now())
 
+class Contact(mongo.Document):
+	name = mongo.StringField()
+	email = mongo.StringField()
+	phone = mongo.StringField()
+	desc = mongo.StringField()
+	date = mongo.DateTimeField(default=datetime.now())
+
+
 class FeedBack(mongo.Document):
 	email = mongo.StringField()
 	body = mongo.StringField()

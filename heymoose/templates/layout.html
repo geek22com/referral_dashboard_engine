@@ -125,18 +125,8 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 	<div class="i-feedback_image">
 		<img style="margin-top: 60px;" src="{{ url_for('.static', filename='./images/feedback.png') }}" />
 	</div>
-	<!--<div class="b-feedback_content">
-    	<form  action="{{ url_for('feedback') }}" enctype="multipart/form-data" method="post">
-			<textarea class="b-rinput" name="orderdesc" id="order_desc" rows="8" cols="18"></textarea>
-			<div class="b-button_send_feedback">
-			
-				<input class="b-input_button i-submit_order_button" type="submit" value="Отправить">
-			</div>
-		</form>
-
- </div>-->
   		<div class="b-feedback_content">
-  						<form class="b-register_form i-feedback_form" action="..." method="post">
+  						<form class="b-register_form i-feedback_form" action="{{url_for('feedback')}}" method="post">
   							<div class="b-table">
   								<div class="b-table_row i-reg_form_row i-clearfix">
 									<div class="b-table_cell i-fb_form_cell">
@@ -144,7 +134,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 									</div>
 									<div class="b-table_cell i-fb_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											<input id="feedback_email" class="b-rinput" type="email">
+											{{ g.params.feedbackform.email(class="b-rinput", type="email") }}
 										</div>
 									</div>
 								</div>
@@ -155,25 +145,35 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 									</div>
 									<div class="b-table_cell i-fb_form_cell">
 										<div class="b-input_wrap i-reg_input i-text-area">
-											<textarea class="b-rinput" name="orderdesc" id="feedback_order_desc" rows="8" cols="21"></textarea>
-											<!--<input id="order_descr" class="b-rinput" type="text">-->
+											{{ g.params.feedbackform.comment(class="b-rinput", rows="8", cols="21") }}
 										</div>
 									</div>
 								</div>
 								
 								<div class="b-table_row i-reg_form_row i-clearfix">
 									<div class="b-table_cell i-fb_form_cell">
-										<label class="b-form_label i-reg_label">Капча</label>
+										<label class="b-form_label i-reg_label">{{ g.params.feedback_captcha.question }}</label>
 									</div>
 									<div class="b-table_cell i-fb_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											<input id="feedback_capcha" class="b-rinput" type="text">
+											{{ g.params.feedbackform.captcha_answer(class="b-rinput", type="text") }}
+                                            <input type="hidden" name="captcha_id" value="{{ g.params.feedback_captcha.c_id }}">
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="b-reg_form_footer">
 								<input id="feedback_register" class="b-input_button i-submit_button" type="submit" value="Подтвердить">
+							</div>
+							<div class="b-reg_form_error">
+                                {% with %}
+			                    {% set mes = get_flashed_messages(with_categories=true) | error_type('feedbackerror') %}
+			                    {% if mes %}
+				                    <div class="b-error_text">{{ mes[0][1].decode('utf8') }}</div>
+			                    {% else %}
+                                    <div class="b-error_text i-hide"></div>
+                                {% endif %}
+		                        {% endwith %}
 							</div>
   						</form>
   	</div>

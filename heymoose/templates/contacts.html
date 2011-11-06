@@ -16,7 +16,7 @@
 	<h3 class="alt">Вы можете оставить контакты и мы с вами свяжемся:</h3>
 
 	
-							<form id="register_form" class="b-register_form" action="..." method="post">
+							<form id="register_form" class="b-register_form" action="{{ url_for('contacts') }}" method="post">
 							<div class="b-table i-reg_form_content">
 								<div class="b-table_row i-reg_form_row i-clearfix">
 									<div class="b-table_cell i-register_form_cell">
@@ -24,7 +24,7 @@
 									</div>
 									<div class="b-table_cell i-register_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											<input id="username" class="b-rinput" type="text">
+											{{ g.params.contactform.name(class="b-rinput", type="text") }}
 										</div>
 									</div>
 								</div>
@@ -34,7 +34,7 @@
 									</div>
 									<div class="b-table_cell i-register_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											<input id="email" class="b-rinput" type="email">
+											{{ g.params.contactform.email(class="b-rinput", type="email") }}
 										</div>
 									</div>
 								</div>
@@ -44,7 +44,7 @@
 									</div>
 									<div class="b-table_cell i-register_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											<input id="password" class="b-rinput" type="password">
+											{{ g.params.contactform.phone(class="b-rinput", type="text") }}
 										</div>
 									</div>
 								</div>
@@ -54,17 +54,18 @@
 									</div>
 									<div class="b-table_cell i-register_form_cell">
 										<div class="b-input_wrap i-reg_input i-text-area">
-											<textarea class="b-rinput" name="orderdesc" id="order_desc" rows="8" cols="21"></textarea>
+											{{ g.params.contactform.comment(class="b-rinput", rows="8", cols="21") }}
 										</div>
 									</div>
 								</div>
 								<div class="b-table_row i-reg_form_row i-clearfix">
 									<div class="b-table_cell i-register_form_cell">
-										<label class="b-form_label i-reg_label">Капча</label>
+										<label class="b-form_label i-reg_label">{{ g.params.contact_captcha.question }}</label>
 									</div>
 									<div class="b-table_cell i-register_form_cell">
 										<div class="b-input_wrap i-reg_input">
-											<input id="capcha" class="b-rinput" type="input">
+											{{ g.params.contactform.captcha_answer(class="b-rinput", type="text") }}
+											<input type="hidden" name="captcha_id" value="{{ g.params.contact_captcha.c_id }}">
 										</div>
 									</div>
 								</div>
@@ -72,9 +73,18 @@
 
 							</div>
 							<div class="b-reg_form_footer">
-								<input id="register" class="b-input_button i-submit_button" type="submit" value="Подтвердить">
+								<input class="b-input_button i-submit_button" type="submit" value="Подтвердить">
 							</div>
-
+							<div class="b-reg_form_error">
+                                {% with %}
+			                    {% set mes = get_flashed_messages(with_categories=true) | error_type('contactinfoerror') %}
+			                    {% if mes %}
+				                    <div class="b-error_text">{{ mes[0][1].decode('utf8') }}</div>
+			                    {% else %}
+                                    <div class="b-error_text i-hide"></div>
+                                {% endif %}
+		                        {% endwith %}
+							</div>
 							</form>
 							
 </div>

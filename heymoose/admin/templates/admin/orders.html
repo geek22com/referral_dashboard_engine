@@ -28,7 +28,7 @@
 				<td>{{ order.title }}</td>
 				<td>{{ order.balance }}</td>
 				<td>{{ order.user_id }}</td>
-				<td>{{ order.approved }}</td>
+				<td>{{ macros.to_icon(order.approved) }}</td>
 				<td>{{ order.cpa }}</td>
 			</tr>
 			{% endfor %}

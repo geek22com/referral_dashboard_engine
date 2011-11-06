@@ -2,11 +2,8 @@
 
 {% block title %}Панель управления{% endblock %}
 
-{% block activemenu %}index{% endblock %}
-
-{% block breadcrumbs %}
-<li>Панель управления <span class="divider">/</span></li>
-{% endblock %}
+{% set activemenu = "index" %}
+{% set breadcrumbs = [('Панель управления', url_for('.index'))] %}
 
 {% block pageheader %}
 <h1>Панель управления</h1>

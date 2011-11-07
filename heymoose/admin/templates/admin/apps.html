@@ -1,0 +1,43 @@
+{% extends "admin/apps-layout.html" %}
+
+{% set breadcrumbs = [
+	('Панель управления', url_for('.index')),
+	('Приложения', url_for('.apps'))
+]%}
+
+{% set activetab = 'list' %}
+
+{% block tabcontent %}
+
+{% if apps %}
+	<table class="zebra-striped">
+		<thead>
+			<tr>
+				<th class="header">ИД</th>
+				<th class="header">Callback</th>
+				<th class="header">Разработчик</th>
+				<th class="header">URL</th>
+				<th class="header">Секретный ключ</th>
+				<th class="header">Удалено</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for app in apps %}
+			<tr>
+				<td>{{ app.id }}</td>
+				<td><a href="{{ url_for('.apps_info', id=app.id) }}">{{ app.callback }}</a></td>
+				<td>{{ app.user_id }} (<a href="{{ url_for('.apps_info', id=app.user_id) }}">профиль</a>)</td>
+				<td>{{ app.url }}</td>
+				<td>{{ app.secret }}</td>
+				<td>{{ macros.to_icon(app.deleted) }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearboth alert-message block-message info" style="clear: both;">
+		<p><strong>Список пуст.</strong> Еще не было добавлено ни одного приложения.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

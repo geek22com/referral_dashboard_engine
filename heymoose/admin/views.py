@@ -34,6 +34,20 @@ def orders_info_stats(id):
 	return render_template('admin/orders-info-stats.html', order=order)
 
 
+@bp.route('/apps/')
+def apps():
+	aps = []
+	return render_template('admin/apps.html', apps=aps)
+
+@bp.route('/apps/stats')
+def apps_stats():
+	return render_template('admin/apps-stats.html')
+
+@bp.route('/apps/<int:id>')
+def apps_info():
+	return 'OK'
+
+
 @bp.route('/customers/<int:id>')
 def customers_info(id):
 	customer = actions.users.get_user_by_id(id, True)

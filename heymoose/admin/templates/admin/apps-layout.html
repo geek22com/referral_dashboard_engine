@@ -1,0 +1,27 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Приложения{% endblock %}
+
+{% set activemenu = "apps" %}
+
+{% block extrahead %}
+{% set activetab = activetab|default('list') %}
+<script type="text/javascript">
+	$(function() { 
+		$('li#tab-{{ activetab }}').addClass('active');
+	})
+</script>
+{% endblock %}
+
+{% block pageheader %}
+<h1>Приложения</h1>
+{% endblock %}
+
+{% block content %}
+<ul class="tabs">
+	<li id="tab-list"><a href="{{ url_for('.apps') }}">Список</a></li>
+	<li id="tab-stats"><a href="{{ url_for('.apps_stats') }}">Статистика</a></li>
+</ul>
+
+{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "admin/apps-layout.html" %}
+
+{% set breadcrumbs = [
+	('Панель управления', url_for('.index')),
+	('Приложения', url_for('.apps')),
+	('Статистика', url_for('.apps_stats'))
+]%}
+
+{% set activetab = 'stats' %}

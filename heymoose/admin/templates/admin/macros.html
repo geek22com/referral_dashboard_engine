@@ -1,0 +1,7 @@
+{% macro to_icon(value) -%}
+	{% if not value %}
+		<img src="{{ url_for('.static', filename='./img/icon-no.gif') }}" alt="нет" />
+	{% else %}
+		<img src="{{ url_for('.static', filename='./img/icon-yes.gif') }}" alt="да" />
+	{% endif %}
+{% endmacro -%}

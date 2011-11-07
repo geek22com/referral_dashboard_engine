@@ -26,7 +26,7 @@
 			<tr>
 				<td>{{ app.id }}</td>
 				<td><a href="{{ url_for('.apps_info', id=app.id) }}">{{ app.callback }}</a></td>
-				<td>{{ app.user_id }} (<a href="{{ url_for('.apps_info', id=app.user_id) }}">профиль</a>)</td>
+				<td>{{ app.user_id }} (<a href="{{ url_for('.developers_info', id=app.user_id) }}">профиль</a>)</td>
 				<td>{{ app.url }}</td>
 				<td>{{ app.secret }}</td>
 				<td>{{ macros.to_icon(app.deleted) }}</td>

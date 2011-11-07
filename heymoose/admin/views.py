@@ -51,5 +51,13 @@ def apps_info():
 @bp.route('/customers/<int:id>')
 def customers_info(id):
 	customer = actions.users.get_user_by_id(id, True)
+	if not customer.is_customer(): abort(404)
 	return '{0} ({1})'.format(customer.nickname, customer.email)
+
+
+@bp.route('/developers/<int:id>')
+def developers_info(id):
+	developer = actions.users.get_user_by_id(id, True)
+	if not developer.is_developer(): abort(404)
+	return '{0} ({1})'.format(developer.nickname, developer.email)
 

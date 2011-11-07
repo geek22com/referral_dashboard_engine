@@ -1,6 +1,8 @@
-from flask import render_template, g
+from flask import render_template, g, abort
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions
+
+from restkit.errors import ResourceError
 
 #TODO: make paging in user interface
 @bp.route('/')
@@ -22,7 +24,19 @@ def orders_stats():
 
 @bp.route('/orders/<int:id>')
 def orders_info(id):
-	return 'OK'
+	try:
+		order = actions.orders.get_order(id)
+	except ResourceError as e:
+		abort(e.status_int)
+	return render_template('admin/orders-info.html', order=order)
+
+@bp.route('/orders/<int:id>/stats')
+def orders_info_stats(id):
+	try:
+		order = actions.orders.get_order(id)
+	except ResourceError as e:
+		abort(e.status_int)
+	return render_template('admin/orders-info-stats.html', order=order)
 
 
 @bp.route('/customers/<int:id>')

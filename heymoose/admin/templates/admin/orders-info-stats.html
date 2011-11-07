@@ -1,0 +1,10 @@
+{% extends "admin/orders-info-layout.html" %}
+
+{% set breadcrumbs = [
+	('Панель управления', url_for('.index')),
+	('Заказы', url_for('.orders')),
+	('Заказ №{0}'.format(order.id), url_for('.orders_info', id=order.id)),
+	('Статистика', url_for('.orders_info_stats', id=order.id))
+]%}
+
+{% set activetab = 'stats' %}

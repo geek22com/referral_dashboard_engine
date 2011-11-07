@@ -1,0 +1,25 @@
+{% extends "admin/orders-info-layout.html" %}
+
+{% set breadcrumbs = [
+	('Панель управления', url_for('.index')),
+	('Заказы', url_for('.orders')),
+	('Заказ №{0}'.format(order.id), url_for('.orders_info', id=order.id))
+]%}
+
+{% set activetab = 'list' %}
+
+{% block tabcontent %}
+<table class="bordered-table">
+	<thead></thead>
+	<tbody>
+		<tr><th class="key">Название</th><td>{{ order.title }}</td></tr>
+		<tr><th>Баланс</th><td>{{ order.balance }}</td></tr>
+		<tr><th>Заказчик</th><td><a href="{{ url_for('.customers_info', id=order.user_id) }}">профиль</a></td></tr>
+		<tr><th>Подтвержден</th><td>{{ macros.to_icon(order.approved) }}</td></tr>
+		<tr><th>CPA</th><td>{{ order.cpa }}</td></tr>
+		<tr><th>Создан</th><td>{{ order.creation_time }}</td></tr>
+		<tr><th>Описание</th><td><p>TODO</p></td></tr>
+	</tbody>
+</table>
+
+{% endblock %}

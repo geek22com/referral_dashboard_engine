@@ -1,0 +1,28 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Заказ №{{ order.id }}{% endblock %}
+
+{% set activemenu = "orders" %}
+
+{% block extrahead %}
+{% set activetab = activetab|default('list') %}
+<script type="text/javascript">
+	$(function() { 
+		$('li#tab-{{ activetab }}').addClass('active');
+	})
+</script>
+{% endblock %}
+
+{% block pageheader %}
+<h1>Заказ №{{ order.id }} <small>{{ order.title }}</small></h1>
+{% endblock %}
+
+{% block content %}
+<ul class="tabs">
+	<li id="tab-list"><a href="{{ url_for('.orders_info', id=order.id) }}">Общее</a></li>
+	<li id="tab-stats"><a href="{{ url_for('.orders_info_stats', id=order.id) }}">Статистика</a></li>
+</ul>
+
+{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+{% endblock %}
+

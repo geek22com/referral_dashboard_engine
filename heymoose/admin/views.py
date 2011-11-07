@@ -1,4 +1,4 @@
-from flask import request, render_template, g
+from flask import render_template, g
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions
 
@@ -23,4 +23,10 @@ def orders_stats():
 @bp.route('/orders/<int:id>')
 def orders_info(id):
 	return 'OK'
+
+
+@bp.route('/customers/<int:id>')
+def customers_info(id):
+	customer = actions.users.get_user_by_id(id, True)
+	return '{0} ({1})'.format(customer.nickname, customer.email)
 

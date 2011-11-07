@@ -1,5 +1,6 @@
 from heymoose.core.actions.base import get_value, get_attr
 from heymoose.core.data import User, App, Order, Action
+from datetime import datetime
 
 def role_from_xml(role_element):
 	return role_element.text
@@ -18,8 +19,9 @@ def order_from_xml(order_element):
 				balance=get_value(order_element, 'balance', float),
 				body=get_value(order_element, 'body'),
 				cpa=get_value(order_element, 'cpa', float),
-				user_id=get_value(order_element, 'user_id', int),
-				approved=get_value(order_element, 'approved', bool))
+				user_id=get_value(order_element, 'user-id', int),
+				approved=get_value(order_element, 'approved', bool),
+				creation_time=get_value(order_element, 'creation-time'))
 
 def user_from_xml(user_element):
 	return User(id=get_attr(user_element, 'id', int),

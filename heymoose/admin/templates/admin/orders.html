@@ -19,17 +19,19 @@
 				<th class="header">Заказчик</th>
 				<th class="header">Подтвержден</th>
 				<th class="header">CPA</th>
+				<th class="header">Создан</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for order in orders %}
 			<tr>
 				<td>{{ order.id }}</td>
-				<td>{{ order.title }}</td>
+				<td><a href="{{ url_for('.orders_info', id=order.id) }}">{{ order.title }}</a></td>
 				<td>{{ order.balance }}</td>
-				<td>{{ order.user_id }}</td>
+				<td><a href="{{ url_for('.customers_info', id=order.user_id) }}">{{ order.user_id }}</a></td>
 				<td>{{ macros.to_icon(order.approved) }}</td>
 				<td>{{ order.cpa }}</td>
+				<td>{{ order.creation_time }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

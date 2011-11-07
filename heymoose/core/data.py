@@ -58,7 +58,8 @@ class Order(BaseModel):
 	              'body',
 	              'cpa',
 	              'approved',
-	              'user_id']
+	              'user_id',
+	              'creation_time']
 
 
 class App(BaseModel):

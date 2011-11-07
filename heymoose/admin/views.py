@@ -1,6 +1,7 @@
 from flask import render_template, g, abort
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions
+from heymoose.utils.shortcuts import do_or_abort
 
 from restkit.errors import ResourceError
 
@@ -24,18 +25,12 @@ def orders_stats():
 
 @bp.route('/orders/<int:id>')
 def orders_info(id):
-	try:
-		order = actions.orders.get_order(id)
-	except ResourceError as e:
-		abort(e.status_int)
+	order = do_or_abort(actions.orders.get_order, id)
 	return render_template('admin/orders-info.html', order=order)
 
 @bp.route('/orders/<int:id>/stats')
 def orders_info_stats(id):
-	try:
-		order = actions.orders.get_order(id)
-	except ResourceError as e:
-		abort(e.status_int)
+	order = do_or_abort(actions.orders.get_order, id)
 	return render_template('admin/orders-info-stats.html', order=order)
 
 

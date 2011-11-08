@@ -13,6 +13,11 @@
 </script>
 {% endblock %}
 
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Приложения', url_for('.apps')) }}
+{% endblock %}
+
 {% block pageheader %}
 <h1>Приложения</h1>
 {% endblock %}

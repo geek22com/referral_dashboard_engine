@@ -13,6 +13,12 @@
 </script>
 {% endblock %}
 
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Заказы', url_for('.orders')) }}
+	{{ macros.breadcrumb('Заказ № {0}'.format(order.id), url_for('.orders_info', id=order.id)) }}
+{% endblock %}
+
 {% block pageheader %}
 <h1>Заказ №{{ order.id }} <small>{{ order.title }}</small></h1>
 {% endblock %}

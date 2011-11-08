@@ -47,6 +47,9 @@
 		$(function() {
 			$('#topbar').dropdown();
 			$('li#menu-item-{{ activemenu }}').addClass('active');
+			
+			// Remove link and divider from last breadcrumb
+			$('ul.breadcrumb li:last').text($('ul.breadcrumb li:last a').html());
 		})
 	</script>
 	
@@ -101,19 +104,11 @@
 	
 	<div class="container">
 		<div class="content">
-			{% set breadcrumbs = breadcrumbs|default([]) %}
 			{% block breadcrumbs_container %}
 			<ul class="breadcrumb">
-				{% for breadcrumb in breadcrumbs %}
-					{% if loop.last %}
-						<li>{{ breadcrumb[0] }}</li>
-					{% else %}
-						<li>
-							<a href="{{ breadcrumb[1] }}">{{ breadcrumb[0] }}</a>
-							<span class="divider">/</span>
-						</li>
-					{% endif %}
-				{% endfor %}
+				{% block breadcrumbs %}
+					{{ macros.breadcrumb('Панель управления', url_for('.index')) }}
+				{% endblock %}
 			</ul>
 			{% endblock %}
 			

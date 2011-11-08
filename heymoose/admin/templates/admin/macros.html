@@ -5,3 +5,7 @@
 		<img src="{{ url_for('.static', filename='./img/icon-yes.gif') }}" alt="да" />
 	{% endif %}
 {% endmacro -%}
+
+{% macro breadcrumb(title, href) %}
+	<li><a href="{{ href }}">{{ title }}</a> <span class="divider">/</span></li>
+{% endmacro %}

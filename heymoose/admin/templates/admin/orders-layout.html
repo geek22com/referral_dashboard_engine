@@ -13,6 +13,11 @@
 </script>
 {% endblock %}
 
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Заказы', url_for('.orders')) }}
+{% endblock %}
+
 {% block pageheader %}
 <h1>Заказы</h1>
 {% endblock %}

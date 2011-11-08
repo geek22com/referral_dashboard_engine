@@ -3,8 +3,6 @@ from heymoose.admin import blueprint as bp
 from heymoose.core import actions
 from heymoose.utils.shortcuts import do_or_abort
 
-from restkit.errors import ResourceError
-
 #TODO: make paging in user interface
 @bp.route('/')
 #@admin_only

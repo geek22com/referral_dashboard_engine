@@ -24,11 +24,11 @@ PYTHONBREW = $(PYTHONBREW_PATH)/bin/pythonbrew
 dev-install-deps:
 	echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" > \
 		/etc/apt/sources.list.d/heymoose-frontend-dev.list
-	apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
-	apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+	#apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
+	#apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
 	apt-get update
 	apt-get install build-essential libxml2 libxml2-dev libxslt1.1 libxslt1-dev \
-		python-pip python-dev python-virtualenv mongodb-10gen
+		python-pip python-dev python-virtualenv mongodb-10gen curl
 
 # Installs pythonbrew, creates virtual environment and installs all required
 # python packages for development.

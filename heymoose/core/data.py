@@ -53,19 +53,23 @@ class User(BaseModel):
 
 class Order(BaseModel):
 	attributes = ['id',
-	              'title',
-	              'balance',
-	              'body',
-	              'cpa',
+				  'balance',
+				  'user',
+				  'user_id',
+				  'cpa',
 	              'approved',
-	              'user_id',
-	              'creation_time']
+	              'deleted',
+	              'creation_time',
+	              'title',
+	              'body',
+	              'description']
 
 
 class App(BaseModel):
 	attributes = ['id',
 	              'secret',
 	              'user_id',
+	              'user',
 	              'callback',
 	              'deleted',
                   'url']

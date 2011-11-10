@@ -15,7 +15,7 @@ def admin_cabinet():
 	if acs:
 		g.params['actions'] = acs
 
-	ods = orders.get_orders(0, 100)
+	ods = orders.get_orders(offset=0, limit=100, full=True)
 	if ods:
 		g.params['orders'] = ods
 		

@@ -20,15 +20,13 @@ def add_order(userId, title, body, balance, cpa, desc, image_data):
 		return False
 	return True
 
-def get_order(order_id):
+def get_order(order_id, **kwargs):
 	path = "{0}/{1}".format(resource_path, order_id)
-	return order_from_xml(get(path=path))
+	return order_from_xml(get(path=path, params_dict=kwargs))
 
 def approve_order(order_id):
 	path =  "{0}/{1}".format(resource_path, order_id)
 	put(path=path)
 
-def get_orders(offset, limit):
-	return map(order_from_xml, get(path=resource_path,
-									params_dict=dict(offset=offset,
-									limit=limit)))
+def get_orders(**kwargs):
+	return map(order_from_xml, get(path=resource_path, params_dict=kwargs))

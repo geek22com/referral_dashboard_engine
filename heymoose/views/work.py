@@ -18,7 +18,7 @@ def before_request():
 	g.params['feedback_captcha'] = captcha.get_random()
 	
 	if 'user_id' in session:
-		g.user = users.get_user_by_id(session['user_id'])
+		g.user = users.get_user_by_id(session['user_id'], full=True)
 
 	if 'performer_id' in session:
 		g.performer = performers.get_performer(session['performer_id'])

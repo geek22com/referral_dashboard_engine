@@ -26,18 +26,14 @@ def add_user(email, passwordHash, nickname):
 	                      passwordHash=passwordHash,
 	                      nickname=nickname))
 
-def get_user_by_id(id, full=True):
+def get_user_by_id(id, **kwargs):
 	path = "{0}/{1}".format(resource_path, id)
-#	app_logger.debug(path, exc_info=True)
-	return user_from_xml(get(path=path,
-	                         params_dict=dict(full=full)))
+	return user_from_xml(get(path=path, params_dict=kwargs))
 
-def get_user_by_email(email, full=False):
-#	app_logger.debug(resource_path, exc_info=True)
+def get_user_by_email(email, **kwargs):
 	try:
-		return user_from_xml(get(path=resource_path,
-								params_dict=dict(email=email,
-								                 full=full)))
+		kwargs.update(dict(email=email))
+		return user_from_xml(get(path=resource_path, params_dict=kwargs))
 	except ResourceNotFound:
 		return None
 	

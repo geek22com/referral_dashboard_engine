@@ -2,7 +2,6 @@
 
 from heymoose.core.actions.mappers import app_from_xml
 from heymoose.core.rest import post, put, delete, get
-from heymoose.utils.workers import app_logger
 
 resource_path = "/apps"
 
@@ -32,3 +31,6 @@ def active_apps(apps):
 		if not app.deleted:
 			active.append(app)
 	return active
+
+def get_apps(**kwargs):
+	return map(app_from_xml, get(path=resource_path, params_dict=kwargs))

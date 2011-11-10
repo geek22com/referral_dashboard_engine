@@ -34,3 +34,6 @@ def get_value(etree_element, text, constr=unicode):
 	elif text=="false":
 		return bool(False)
 	return constr(text)
+
+def get_child(etree_element, name):
+	return etree_element.find(name)

@@ -9,28 +9,28 @@
 		<thead>
 			<tr>
 				<th class="header">ИД</th>
-				<th class="header">Callback</th>
-				<th class="header">Разработчик</th>
-				<th class="header">URL</th>
 				<th class="header">Секретный ключ</th>
-				<th class="header">Удалено</th>
+				<th class="header">Разработчик</th>
+				<th class="header">Callback</th>
+				<th class="header">URL</th>
+				<th class="header">Уд.</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for app in apps %}
 			<tr>
 				<td>{{ app.id }}</td>
-				<td><a href="{{ url_for('.apps_info', id=app.id) }}">{{ app.callback }}</a></td>
-				<td>{{ app.user_id }} (<a href="{{ url_for('.developers_info', id=app.user_id) }}">профиль</a>)</td>
+				<td><a href="{{ url_for('.apps_info', id=app.id) }}">{{ app.secret }}</a></td>
+				<td><a href="{{ url_for('.developers_info', id=app.user.id) }}">{{ app.user.nickname }} ({{ app.user.email }})</a></td>
+				<td>{{ app.callback }}</td>
 				<td>{{ app.url }}</td>
-				<td>{{ app.secret }}</td>
-				<td>{{ macros.to_icon(app.deleted) }}</td>
+				<td>{{ macros.deleted(app.deleted) }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 {% else %}
-	<div class="clearboth alert-message block-message info" style="clear: both;">
+	<div class="clearboth alert-message block-message info">
 		<p><strong>Список пуст.</strong> Еще не было добавлено ни одного приложения.</p>
 	</div>
 {% endif %}

@@ -8,11 +8,12 @@
 	<tbody>
 		<tr><th class="key">Название</th><td>{{ order.title }}</td></tr>
 		<tr><th>Баланс</th><td>{{ order.balance }}</td></tr>
-		<tr><th>Заказчик</th><td><a href="{{ url_for('.customers_info', id=order.user_id) }}">профиль</a></td></tr>
+		<tr><th>Заказчик</th><td><a href="{{ url_for('.customers_info', id=order.user.id) }}">{{ order.user.nickname }} ({{ order.user.email }})</a></td></tr>
 		<tr><th>Подтвержден</th><td>{{ macros.to_icon(order.approved) }}</td></tr>
 		<tr><th>CPA</th><td>{{ order.cpa }}</td></tr>
-		<tr><th>Создан</th><td>{{ order.creation_time }}</td></tr>
-		<tr><th>Описание</th><td><p>TODO</p></td></tr>
+		<tr><th>Создан</th><td>{{ order.creation_time|datetimeformat }}</td></tr>
+		<tr><th>Тело</th><td><p>{{ order.body }}</p></td></tr>
+		<tr><th>Описание</th><td><p>{{ order.description }}</p></td></tr>
 	</tbody>
 </table>
 

@@ -1,29 +1,37 @@
-from heymoose.core.actions.base import get_value, get_attr
+from heymoose.core.actions.base import get_value, get_attr, get_child
 from heymoose.core.data import User, App, Order, Action
-from datetime import datetime
+from heymoose.utils.convert import datetime_from_api
 
 def role_from_xml(role_element):
+	if role_element is None: return None
 	return role_element.text
 
 def app_from_xml(app_element):
+	if app_element is None: return None
 	return App(id=get_attr(app_element, 'id', int),
 				secret=get_value(app_element, 'secret'),
 				user_id=get_value(app_element, 'user-id', int),
+				user=user_from_xml(get_child(app_element, 'user')),
 				callback=get_value(app_element, 'callback'),
                 url=get_value(app_element, 'url'),
 				deleted=get_value(app_element, 'deleted', bool))
 
 def order_from_xml(order_element):
+	if order_element is None: return None
 	return Order(id=get_attr(order_element, 'id', int),
-				title=get_value(order_element, 'title'),
 				balance=get_value(order_element, 'balance', float),
-				body=get_value(order_element, 'body'),
-				cpa=get_value(order_element, 'cpa', float),
+				user=user_from_xml(get_child(order_element, 'user')),
 				user_id=get_value(order_element, 'user-id', int),
+				cpa=get_value(order_element, 'cpa', float),
 				approved=get_value(order_element, 'approved', bool),
-				creation_time=get_value(order_element, 'creation-time'))
+				deleted=get_value(order_element, 'deleted', bool),
+				creation_time=datetime_from_api(get_value(order_element, 'creation-time')),
+				title=get_value(order_element, 'title'),
+				body=get_value(order_element, 'body'),
+				description=get_value(order_element, 'description'))
 
 def user_from_xml(user_element):
+	if user_element is None: return None
 	return User(id=get_attr(user_element, 'id', int),
 				email=get_value(user_element, 'email'),
 				nickname=get_value(user_element, 'nickname'),
@@ -36,12 +44,13 @@ def user_from_xml(user_element):
 				developer_balance=get_value(user_element, 'developer-account', float))
 
 def action_from_xml(action_element):
+	if action_element is None: return None
 	return Action(id=get_attr(action_element, 'id', int),
 					performer_id=get_value(action_element, 'performer-id', int),
 					offer_id=get_value(action_element, 'offer-id', int),
 					done=get_value(action_element, 'done', bool),
 					deleted=get_value(action_element, 'deleted', bool),
-					creation_time=get_value(action_element, 'creation-time'))
+					creation_time=datetime_from_api(get_value(action_element, 'creation-time')))
 
 
 ### TESTS START HERE ###

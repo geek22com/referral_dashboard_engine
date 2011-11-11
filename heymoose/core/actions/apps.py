@@ -15,9 +15,9 @@ def delete_app(app_id):
 	path = "{0}/{1}".format(resource_path, app_id)
 	delete(path=path)
 
-def get_app(app_id):
+def get_app(app_id, **kwargs):
 	path = "{0}/{1}".format(resource_path, app_id)
-	return app_from_xml(get(path=path))
+	return app_from_xml(get(path=path, params_dict=kwargs))
 
 def regenerate_secret(app_id):
 	path = "{0}/{1}".format(resource_path, app_id)

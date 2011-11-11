@@ -1,0 +1,17 @@
+{% extends "admin/apps-info-layout.html" %}
+
+{% set activetab = 'info' %}
+
+{% block tabcontent %}
+<table class="bordered-table">
+	<thead></thead>
+	<tbody>
+		<tr><th class="key">Секретный ключ</th><td>{{ app.secret }}</td></tr>
+		<tr><th>Разработчик</th><td><a href="{{ url_for('.developers_info', id=app.user.id) }}">{{ app.user.nickname }} ({{ app.user.email }})</a></td></tr>
+		<tr><th>Callback</th><td>{{ app.callback }}</td></tr>
+		<tr><th>URL</th><td>{{ app.url }}</td></tr>
+		<tr><th>Создано</th><td>{{ app.creation_time|datetimeformat }}</td></tr>
+	</tbody>
+</table>
+
+{% endblock %}

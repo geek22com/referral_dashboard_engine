@@ -72,7 +72,8 @@ class App(BaseModel):
 	              'user',
 	              'callback',
 	              'deleted',
-                  'url']
+                  'url',
+                  'creation_time']
 
 
 class Action(BaseModel):

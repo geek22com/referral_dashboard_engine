@@ -28,7 +28,7 @@ def orders_info(id):
 
 @bp.route('/orders/<int:id>/stats')
 def orders_info_stats(id):
-	order = do_or_abort(actions.orders.get_order, id)
+	order = do_or_abort(actions.orders.get_order, id, full=True)
 	return render_template('admin/orders-info-stats.html', order=order)
 
 
@@ -43,7 +43,13 @@ def apps_stats():
 
 @bp.route('/apps/<int:id>')
 def apps_info(id):
-	return 'OK'
+	app = do_or_abort(actions.apps.get_app, id, full=True)
+	return render_template('admin/apps-info.html', app=app)
+
+@bp.route('/apps/<int:id>/stats')
+def apps_info_stats(id):
+	app = do_or_abort(actions.apps.get_app, id, full=True)
+	return render_template('admin/apps-info-stats.html', app=app)
 
 
 @bp.route('/customers/<int:id>')

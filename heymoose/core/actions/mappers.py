@@ -14,7 +14,8 @@ def app_from_xml(app_element):
 				user=user_from_xml(get_child(app_element, 'user')),
 				callback=get_value(app_element, 'callback'),
                 url=get_value(app_element, 'url'),
-				deleted=get_value(app_element, 'deleted', bool))
+				deleted=get_value(app_element, 'deleted', bool),
+				creation_time=datetime_from_api(get_value(app_element, 'creation-time')))
 
 def order_from_xml(order_element):
 	if order_element is None: return None

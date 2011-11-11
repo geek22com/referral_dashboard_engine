@@ -13,6 +13,7 @@
 				<th class="header">Разработчик</th>
 				<th class="header">Callback</th>
 				<th class="header">URL</th>
+				<th class="header">Создано</th>
 				<th class="header">Уд.</th>
 			</tr>
 		</thead>
@@ -24,6 +25,7 @@
 				<td><a href="{{ url_for('.developers_info', id=app.user.id) }}">{{ app.user.nickname }} ({{ app.user.email }})</a></td>
 				<td>{{ app.callback }}</td>
 				<td>{{ app.url }}</td>
+				<td>{{ app.creation_time|datetimeformat }}</td>
 				<td>{{ macros.deleted(app.deleted) }}</td>
 			</tr>
 			{% endfor %}

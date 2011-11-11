@@ -168,17 +168,5 @@ def logout():
 	session.pop('user_id', None)
 	return redirect(url_for('main_page'))
 
-def datetimeformat(value, format='%H:%M / %d-%m-%Y'):
-	return value.strftime(format)
-
-def base64filter(value):
-	return base64.encodestring(value).strip('\n')
-
-# add some filters to jinja
-heymoose_app.jinja_env.filters['datetimeformat'] = datetimeformat
-heymoose_app.jinja_env.filters['base64filter'] = base64filter
-#app.jinja_env.filters['gravatar'] = gravatar_url
-
-
 if __name__ == '__main__':
 	app.run()

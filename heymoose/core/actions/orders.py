@@ -5,7 +5,9 @@ from restkit.errors import RequestFailed
 
 resource_path = "/orders"
 
-def add_order(userId, title, body, balance, cpa, desc, image_data):
+# Adds a new order. Possible kwargs: male (bool), minAge (int), maxAge (int).
+def add_order(userId, title, body, balance, cpa, desc, image_data, autoApprove=True, 
+			allowNegativeBalance=True, **kwargs):
 	try:
 		post(path=resource_path,
 			params_dict=dict(userId=userId,
@@ -15,7 +17,9 @@ def add_order(userId, title, body, balance, cpa, desc, image_data):
 				cpa=cpa,
 				description=desc,
 				image=image_data,
-				autoAprove="true"))
+				autoApprove=autoApprove,
+				allowNegativeBalance=allowNegativeBalance,
+				**kwargs))
 	except RequestFailed:
 		return False
 	return True

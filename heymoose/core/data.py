@@ -57,12 +57,16 @@ class Order(BaseModel):
 				  'user',
 				  'user_id',
 				  'cpa',
-	              'approved',
-	              'deleted',
+	              'disabled',
 	              'creation_time',
 	              'title',
 	              'body',
-	              'description']
+	              'description',
+	              'auto_approve',
+	              'allow_negative_balance',
+	              'male',
+	              'min_age',
+	              'max_age']
 
 
 class App(BaseModel):

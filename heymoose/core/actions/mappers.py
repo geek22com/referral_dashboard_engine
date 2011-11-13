@@ -20,16 +20,23 @@ def app_from_xml(app_element):
 def order_from_xml(order_element):
 	if order_element is None: return None
 	return Order(id=get_attr(order_element, 'id', int),
-				balance=get_value(order_element, 'balance', float),
 				user=user_from_xml(get_child(order_element, 'user')),
 				user_id=get_value(order_element, 'user-id', int),
 				cpa=get_value(order_element, 'cpa', float),
-				approved=get_value(order_element, 'approved', bool),
-				deleted=get_value(order_element, 'deleted', bool),
+				disabled=get_value(order_element, 'disabled', bool),
 				creation_time=datetime_from_api(get_value(order_element, 'creation-time')),
+				# Account fields
+				balance=get_value(order_element, 'balance', float),
+				allow_negative_balance=get_value(order_element, 'allow-negative-balance', bool),
+				# Offer fields
 				title=get_value(order_element, 'title'),
 				body=get_value(order_element, 'body'),
-				description=get_value(order_element, 'description'))
+				description=get_value(order_element, 'description'),
+				auto_approve=get_value(order_element, 'auto-approve'),
+				# Targeting fields
+				male=get_value(order_element, 'male'),
+				min_age=get_value(order_element, 'min-age'),
+				max_age=get_value(order_element, 'max-age'))
 
 def user_from_xml(user_element):
 	if user_element is None: return None

@@ -8,27 +8,29 @@
 	<table class="zebra-striped">
 		<thead>
 			<tr>
-				<th class="header">ИД</th>
+				<th class="header right">ИД</th>
 				<th class="header">Название</th>
-				<th class="header">Баланс</th>
 				<th class="header">Заказчик</th>
-				<th class="header">CPA</th>
-				<th class="header">Создан</th>
-				<th class="header">Подтв.</th>
-				<th class="header">Уд.</th>
+				<th class="header right">Баланс</th>
+				<th class="header right">CPA</th>
+				<th class="header center">Пол</th>
+				<th class="header">Возраст</th>
+				<th class="header center">Создан</th>
+				<th class="header center">Активен</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for order in orders %}
 			<tr>
-				<td>{{ order.id }}</td>
+				<td class="right">{{ order.id }}</td>
 				<td><a href="{{ url_for('.orders_info', id=order.id) }}">{{ order.title }}</a></td>
-				<td>{{ order.balance }}</td>
 				<td>{{ macros.customer_href(order.user) }}</td>
-				<td>{{ order.cpa }}</td>
-				<td>{{ order.creation_time|datetimeformat }}</td>
-				<td>{{ macros.to_icon(order.approved) }}</td>
-				<td>{{ macros.deleted(order.deleted) }}</td>
+				<td class="right">{{ order.balance }}</td>
+				<td class="right">{{ order.cpa }}</td>
+				<td class="center">{{ macros.order_gender(order.male) }}</td>
+				<td>{{ macros.order_age(order.min_age, order.max_age) }}</td>
+				<td class="center">{{ order.creation_time|datetimeformat }}</td>
+				<td class="center">{{ macros.to_icon(not order.disabled) }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

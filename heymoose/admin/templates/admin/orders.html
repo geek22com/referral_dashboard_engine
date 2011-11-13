@@ -24,7 +24,7 @@
 				<td>{{ order.id }}</td>
 				<td><a href="{{ url_for('.orders_info', id=order.id) }}">{{ order.title }}</a></td>
 				<td>{{ order.balance }}</td>
-				<td><a href="{{ url_for('.customers_info', id=order.user.id) }}">{{ order.user.nickname }} ({{ order.user.email }})</a></td>
+				<td>{{ macros.customer_href(order.user) }}</td>
 				<td>{{ order.cpa }}</td>
 				<td>{{ order.creation_time|datetimeformat }}</td>
 				<td>{{ macros.to_icon(order.approved) }}</td>

@@ -15,3 +15,11 @@
 {% macro breadcrumb(title, href) %}
 	<li><a href="{{ href }}">{{ title }}</a> <span class="divider">/</span></li>
 {% endmacro %}
+
+{% macro developer_href(user) %}
+	<a href="{{ url_for('.developers_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
+{% endmacro %}
+
+{% macro customer_href(user) %}
+	<a href="{{ url_for('.customers_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
+{% endmacro %}

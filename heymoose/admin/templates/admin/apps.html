@@ -22,7 +22,7 @@
 			<tr>
 				<td>{{ app.id }}</td>
 				<td><a href="{{ url_for('.apps_info', id=app.id) }}">{{ app.secret }}</a></td>
-				<td><a href="{{ url_for('.developers_info', id=app.user.id) }}">{{ app.user.nickname }} ({{ app.user.email }})</a></td>
+				<td>{{ macros.developer_href(app.user) }}</td>
 				<td>{{ app.callback }}</td>
 				<td>{{ app.url }}</td>
 				<td>{{ app.creation_time|datetimeformat }}</td>

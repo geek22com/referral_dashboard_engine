@@ -52,6 +52,10 @@ def action_from_xml(action_element):
 					done=get_value(action_element, 'done', bool),
 					deleted=get_value(action_element, 'deleted', bool),
 					creation_time=datetime_from_api(get_value(action_element, 'creation-time')))
+	
+	
+def count_from_xml(count_element):
+	return int(count_element.text)
 
 
 ### TESTS START HERE ###

@@ -1,4 +1,4 @@
-from heymoose.core.actions.mappers import order_from_xml
+from heymoose.core.actions.mappers import order_from_xml, count_from_xml
 from heymoose.core.rest import post, put, get
 from heymoose.utils.workers import app_logger
 from restkit.errors import RequestFailed
@@ -30,3 +30,7 @@ def approve_order(order_id):
 
 def get_orders(**kwargs):
 	return map(order_from_xml, get(path=resource_path, params_dict=kwargs))
+
+def get_orders_count():
+	path = "{0}/{1}".format(resource_path, "count")
+	return count_from_xml(get(path=path))

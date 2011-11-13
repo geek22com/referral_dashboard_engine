@@ -33,6 +33,7 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	{{ macros.paginate(pages, '.orders') }}
 {% else %}
 	<div class="clearboth alert-message block-message info">
 		<p><strong>Список пуст.</strong> Еще не было создано ни одного заказа.</p>

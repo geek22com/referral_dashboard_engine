@@ -1,7 +1,10 @@
-from flask import render_template, g, abort
+from flask import render_template, g, abort, request
+from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions
-from heymoose.utils.shortcuts import do_or_abort
+from heymoose.utils import convert
+from heymoose.utils.shortcuts import do_or_abort, paginate
+
 
 #TODO: make paging in user interface
 @bp.route('/')
@@ -12,10 +15,15 @@ def index():
 
 	return render_template('admin/index.html', params=g.params)
 
+
 @bp.route('/orders/')
 def orders():
-	ods = actions.orders.get_orders(offset=0, limit=100, full=True)
-	return render_template('admin/orders.html', orders=ods)
+	page = convert.to_int(request.args.get('page'), 1)
+	count = actions.orders.get_orders_count()
+	per_page = app.config.get('ADMIN_ORDERS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	ods = actions.orders.get_orders(offset=offset, limit=limit, full=True)
+	return render_template('admin/orders.html', orders=ods, pages=pages)
 
 @bp.route('/orders/stats')
 def orders_stats():
@@ -34,8 +42,12 @@ def orders_info_stats(id):
 
 @bp.route('/apps/')
 def apps():
-	aps = do_or_abort(actions.apps.get_apps, offset=0, limit=100, full=True)
-	return render_template('admin/apps.html', apps=aps)
+	page = convert.to_int(request.args.get('page'), 1)
+	count = actions.apps.get_apps_count()
+	per_page = app.config.get('ADMIN_APPS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	aps = do_or_abort(actions.apps.get_apps, offset=offset, limit=limit, full=True)
+	return render_template('admin/apps.html', apps=aps, pages=pages)
 
 @bp.route('/apps/stats')
 def apps_stats():

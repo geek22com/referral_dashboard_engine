@@ -1,6 +1,6 @@
 #TODO: generate url smth like this: url('qq').path('id').path('roles')
 
-from heymoose.core.actions.mappers import app_from_xml
+from heymoose.core.actions.mappers import app_from_xml, count_from_xml
 from heymoose.core.rest import post, put, delete, get
 
 resource_path = "/apps"
@@ -34,3 +34,7 @@ def active_apps(apps):
 
 def get_apps(**kwargs):
 	return map(app_from_xml, get(path=resource_path, params_dict=kwargs))
+
+def get_apps_count():
+	path = "{0}/{1}".format(resource_path, "count")
+	return count_from_xml(get(path=path))

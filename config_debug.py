@@ -12,9 +12,10 @@ DEVELOPER_SECRET_KEY = "3ca2a85b953ffef29625ffc11df61eee"
 APP_EMAIL = "ks.shilov@gmail.com"
 
 # Admin parameters
+ADMIN_PAGES_RANGE = 7
 ADMIN_ORDERS_PER_PAGE = 20
 ADMIN_APPS_PER_PAGE = 20
-ADMIN_ACTIONS_PER_PAGE = 20 
+ADMIN_ACTIONS_PER_PAGE = 20
 
 #Facebook parameters
 FACEBOOK_SERVICE_URL = "http://www.facebook.com"

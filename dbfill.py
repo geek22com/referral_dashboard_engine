@@ -75,8 +75,6 @@ def fill_db():
 	
 	# Create actions for apps and offers
 	platforms = ('VKONTAKTE', 'FACEBOOK', 'ODNOKLASSNIKI')
-	#api.do_offer(orders[0].id, apps[0].id, 1, platforms[0], apps[0].secret)
-	
 	for app in apps:
 		for order in orders:
 			for i in range(actions_per_app_and_order):

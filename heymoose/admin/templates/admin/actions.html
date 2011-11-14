@@ -13,7 +13,7 @@
 				<th class="header">Заказ</th>
 				<th class="header center">Окончено</th>
 				<th class="header center">Создано</th>
-				<th class="header center">Подтв.</th>
+				<th class="header center">Подтверждено</th>
 				<th class="header right">Попытки</th>
 				<th class="header center">Удалено</th>
 			</tr>
@@ -33,7 +33,7 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	{{ macros.paginate(pages, '.orders') }}
+	{{ macros.paginate(pages, '.actions') }}
 {% else %}
 	<div class="clearboth alert-message block-message info">
 		<p><strong>Список пуст.</strong> Еще не было создано ни одного действия.</p>

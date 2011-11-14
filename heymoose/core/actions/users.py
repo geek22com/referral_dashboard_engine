@@ -20,7 +20,6 @@ def become_customer(user_id):
 	                     roles.CUSTOMER)
 
 def add_user(email, passwordHash, nickname):
-#	app_logger.debug(resource_path, exc_info=True)
 	post(path=resource_path,
 	     params_dict=dict(email=email,
 	                      passwordHash=passwordHash,

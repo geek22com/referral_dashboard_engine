@@ -1,4 +1,4 @@
-#Thu Nov 10 23:33:01 MSK 2011
+#Mon Nov 14 12:13:41 MSK 2011
 eclipse.preferences.version=1
 encoding//heymoose/__init__.py=utf-8
 encoding//heymoose/core/actions/base.py=utf-8
@@ -7,7 +7,6 @@ encoding//heymoose/core/rest.py=utf-8
 encoding//heymoose/db/models.py=utf-8
 encoding//heymoose/forms/forms.py=utf-8
 encoding//heymoose/views/action.py=utf-8
-encoding//heymoose/views/admin.py=utf-8
 encoding//heymoose/views/app.py=utf-8
 encoding//heymoose/views/balance.py=utf-8
 encoding//heymoose/views/customer.py=utf-8

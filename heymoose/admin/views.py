@@ -78,3 +78,4 @@ def developers_info(id):
 	if not developer.is_developer(): abort(404)
 	return '{0} ({1})'.format(developer.nickname, developer.email)
 
+

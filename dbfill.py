@@ -1,5 +1,6 @@
 from werkzeug import generate_password_hash
 from heymoose.core import actions
+from heymoose.core.actions import api
 import time
 
 pw = generate_password_hash('password')
@@ -10,9 +11,10 @@ customers_count = 10
 developers_count = 10
 orders_per_customer = 10
 apps_per_developer = 1
+actions_per_app_and_order = 1
 
 def fill_db():
-	# Dummy query forces server to regenerate schema
+	# Dummy request forces server to regenerate schema
 	actions.orders.get_orders()
 	time.sleep(1)
 	
@@ -41,6 +43,7 @@ def fill_db():
 		developers.append(developer)
 	
 	# Create and enable orders for customers
+	orders = []
 	genders = (None, True, False)
 	for i in range(orders_per_customer):
 		for customer in customers:
@@ -56,14 +59,33 @@ def fill_db():
 				minAge=i + customer.id + 1,
 				maxAge=i + customer.id + 15)
 			actions.orders.enable_order(id)
+			orders.append(actions.orders.get_order(id))
 			
 	# Create apps for developers
+	apps = []
 	for i in range(apps_per_developer):
 		for developer in developers:
-			actions.apps.add_app(
+			id = actions.apps.add_app(
 				user_id=developer.id,
 				callback='http://google.com',
 				url='http://google.com')
+			apps.append(actions.apps.get_app(id))
+			
+	
+	
+	# Create actions for apps and offers
+	platforms = ('VKONTAKTE', 'FACEBOOK', 'ODNOKLASSNIKI')
+	#api.do_offer(orders[0].id, apps[0].id, 1, platforms[0], apps[0].secret)
+	
+	for app in apps:
+		for order in orders:
+			for i in range(actions_per_app_and_order):
+				api.do_offer(
+					offer_id=order.id,
+					app_id=app.id,
+					uid=app.id + order.id + i,
+					platform=platforms[app.id % 3], # One platform per app!
+					secret=app.secret)
 	
 
 if __name__ == '__main__':

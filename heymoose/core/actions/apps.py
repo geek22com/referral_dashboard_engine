@@ -6,10 +6,11 @@ from heymoose.core.rest import post, put, delete, get
 resource_path = "/apps"
 
 def add_app(user_id, callback, url):
-	post(path=resource_path,
+	id = post(path=resource_path,
 		params_dict=dict(userId=user_id,
 						callback=callback,
                         url=url))
+	return int(id)
 
 def delete_app(app_id):
 	path = "{0}/{1}".format(resource_path, app_id)

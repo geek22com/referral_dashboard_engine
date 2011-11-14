@@ -3,10 +3,10 @@
 {% set activetab = 'info' %}
 
 {% block tabcontent %}
-<table class="bordered-table">
+<table class="bordered-table key-value">
 	<thead></thead>
 	<tbody>
-		<tr><th class="key">Название</th><td>{{ order.title }}</td></tr>
+		<tr><th>Название</th><td>{{ order.title }}</td></tr>
 		<tr><th>Заказчик</th><td>{{ macros.customer_href(order.user) }}</td></tr>
 		<tr><th>Тело</th><td><p>{{ order.body }}</p></td></tr>
 		<tr><th>Описание</th><td><p>{{ order.description }}</p></td></tr>
@@ -16,20 +16,20 @@
 </table>
 
 <h2>Счет и ставки</h2>
-<table class="bordered-table">
+<table class="bordered-table key-value">
 	<thead></thead>
 	<tbody>
-		<tr><th class="key">Баланс</th><td>{{ order.balance }}</td></tr>
+		<tr><th>Баланс</th><td>{{ order.balance }}</td></tr>
 		<tr><th>CPA</th><td>{{ order.cpa }}</td></tr>
 		<tr><th>Разрешен отриц. баланс</th><td>{{ macros.to_icon(order.allow_negative_balance) }}</td></tr>
 	</tbody>
 </table>
 
 <h2>Таргетинг</h2>
-<table class="bordered-table">
+<table class="bordered-table key-value">
 	<thead></thead>
 	<tbody>
-		<tr><th class="key">Пол</th><td>{{ macros.order_gender(order.male) }}</td></tr>
+		<tr><th>Пол</th><td>{{ macros.order_gender(order.male) }}</td></tr>
 		<tr><th>Возраст</th><td>{{ macros.order_age(order.min_age, order.max_age) }}</td></tr>
 	</tbody>
 </table>

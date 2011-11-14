@@ -3,10 +3,10 @@
 {% set activetab = 'info' %}
 
 {% block tabcontent %}
-<table class="bordered-table">
+<table class="bordered-table key-value">
 	<thead></thead>
 	<tbody>
-		<tr><th class="key">Секретный ключ</th><td>{{ app.secret }}</td></tr>
+		<tr><th>Секретный ключ</th><td>{{ app.secret }}</td></tr>
 		<tr><th>Разработчик</th><td>{{ macros.developer_href(app.user) }}</td></tr>
 		<tr><th>Callback</th><td>{{ app.callback }}</td></tr>
 		<tr><th>URL</th><td>{{ app.url }}</td></tr>

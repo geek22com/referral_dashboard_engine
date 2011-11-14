@@ -1,0 +1,8 @@
+{% extends "admin/actions-layout.html" %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Статистика', url_for('.actions_stats')) }}
+{% endblock %}
+
+{% set activetab = 'stats' %}

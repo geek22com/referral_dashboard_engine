@@ -56,9 +56,12 @@ def action_from_xml(action_element):
 	return Action(id=get_attr(action_element, 'id', int),
 					performer_id=get_value(action_element, 'performer-id', int),
 					offer_id=get_value(action_element, 'offer-id', int),
+					order=order_from_xml(get_child(action_element, 'order')),
 					done=get_value(action_element, 'done', bool),
 					deleted=get_value(action_element, 'deleted', bool),
-					creation_time=datetime_from_api(get_value(action_element, 'creation-time')))
+					creation_time=datetime_from_api(get_value(action_element, 'creation-time')),
+					approve_time=datetime_from_api(get_value(action_element, 'approve-time')),
+					attempts=get_value(action_element, 'attempts'))
 	
 	
 def count_from_xml(count_element):

@@ -1,0 +1,32 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Действия{% endblock %}
+
+{% set activemenu = "actions" %}
+
+{% block extrahead %}
+{% set activetab = activetab|default('list') %}
+<script type="text/javascript">
+	$(function() { 
+		$('li#tab-{{ activetab }}').addClass('active');
+	})
+</script>
+{% endblock %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Действия', url_for('.actions')) }}
+{% endblock %}
+
+{% block pageheader %}
+<h1>Действия</h1>
+{% endblock %}
+
+{% block content %}
+<ul class="tabs">
+	<li id="tab-list"><a href="{{ url_for('.actions') }}">Список</a></li>
+	<li id="tab-stats"><a href="{{ url_for('.actions_stats') }}">Статистика</a></li>
+</ul>
+
+{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+{% endblock %}

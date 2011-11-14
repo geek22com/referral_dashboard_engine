@@ -83,7 +83,11 @@ class App(BaseModel):
 class Action(BaseModel):
 	attributes = ['id',
 	              'performer_id',
+	              'performer',
 	              'offer_id',
+	              'order',
 	              'done',
 	              'deleted',
-	              'creation_time']
+	              'creation_time',
+	              'approve_time',
+	              'attempts']

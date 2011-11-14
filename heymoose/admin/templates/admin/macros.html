@@ -54,6 +54,9 @@
 {% endif %}
 {% endmacro %}
 
+{% macro order_href(order) %}
+	<a href="{{ url_for('.orders_info', id=order.id) }}">{{ order.title }}</a>
+{% endmacro %}
 
 {% macro order_gender(gender) %}
 {% if gender == True %}муж{% elif gender == False %}жен{% else %}любой{% endif %}

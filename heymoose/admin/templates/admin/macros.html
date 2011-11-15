@@ -16,6 +16,10 @@
 	<li><a href="{{ href }}">{{ title }}</a> <span class="divider">/</span></li>
 {% endmacro %}
 
+{% macro user_href(user) %}
+	<a href="{{ url_for('.users_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
+{% endmacro %}
+
 {% macro developer_href(user) %}
 	<a href="{{ url_for('.developers_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
 {% endmacro %}

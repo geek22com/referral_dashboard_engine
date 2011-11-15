@@ -97,3 +97,22 @@ def actions_info_stats(id):
 	action = do_or_abort(a.actions.get_action, id, full=True)
 	return render_template('admin/actions-info-stats.html', action=action)
 
+
+@bp.route('/users/')
+def users():
+	page = convert.to_int(request.args.get('page'), 1)
+	count = a.users.get_users_count()
+	per_page = app.config.get('ADMIN_USERS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	usrs = do_or_abort(a.users.get_users, offset=offset, limit=limit, full=True)
+	return render_template('admin/users.html', users=usrs, pages=pages)
+
+@bp.route('/users/stats')
+def users_stats():
+	return render_template('admin/users-stats.html')
+
+@bp.route('/users/<int:id>')
+def users_info(id):
+	return 'OK'
+
+

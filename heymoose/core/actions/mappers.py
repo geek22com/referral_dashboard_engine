@@ -44,9 +44,9 @@ def user_from_xml(user_element):
 				email=get_value(user_element, 'email'),
 				nickname=get_value(user_element, 'nickname'),
 				password_hash=get_value(user_element, 'password-hash'),
-				apps=map(app_from_xml, user_element.xpath('/user/app')),
-				orders=map(order_from_xml, user_element.xpath('/user/orders/order')),
-				roles=map(role_from_xml, user_element.xpath('/user/roles/role')),
+				apps=map(app_from_xml, user_element.xpath('./app')),
+				orders=map(order_from_xml, user_element.xpath('./orders/order')),
+				roles=map(role_from_xml, user_element.xpath('./roles/role')),
 				customer_balance=get_value(user_element, 'customer-account', float),
                 customer_secret=get_value(user_element, 'customer-secret'),
 				developer_balance=get_value(user_element, 'developer-account', float))
@@ -54,14 +54,14 @@ def user_from_xml(user_element):
 def action_from_xml(action_element):
 	if action_element is None: return None
 	return Action(id=get_attr(action_element, 'id', int),
-					performer_id=get_value(action_element, 'performer-id', int),
-					offer_id=get_value(action_element, 'offer-id', int),
-					order=order_from_xml(get_child(action_element, 'order')),
-					done=get_value(action_element, 'done', bool),
-					deleted=get_value(action_element, 'deleted', bool),
-					creation_time=datetime_from_api(get_value(action_element, 'creation-time')),
-					approve_time=datetime_from_api(get_value(action_element, 'approve-time')),
-					attempts=get_value(action_element, 'attempts'))
+				performer_id=get_value(action_element, 'performer-id', int),
+				offer_id=get_value(action_element, 'offer-id', int),
+				order=order_from_xml(get_child(action_element, 'order')),
+				done=get_value(action_element, 'done', bool),
+				deleted=get_value(action_element, 'deleted', bool),
+				creation_time=datetime_from_api(get_value(action_element, 'creation-time')),
+				approve_time=datetime_from_api(get_value(action_element, 'approve-time')),
+				attempts=get_value(action_element, 'attempts'))
 	
 	
 def count_from_xml(count_element):

@@ -1,12 +1,11 @@
-from heymoose.utils.workers import app_debug, app_logger
-from heymoose.core.actions.mappers import user_from_xml
+from heymoose.core.actions.mappers import user_from_xml, count_from_xml
 from heymoose.core.rest import get, put, post
 from heymoose.core.actions import roles
 from restkit.errors import ResourceNotFound
+
 resource_path = "/users"
 
 def add_user_role(user_id, role):
-#	app_logger.debug("params: user_id=%d role=%s".format(user_id, role))
 	path = "{0}/{1}".format(resource_path, user_id)
 	put(path=path,
 	    params_dict=dict(role=role))
@@ -36,8 +35,14 @@ def get_user_by_email(email, **kwargs):
 	except ResourceNotFound:
 		return None
 	
+def get_users(**kwargs):
+	path = "{0}/{1}".format(resource_path, 'list')
+	return map(user_from_xml, get(path=path, params_dict=kwargs))
+
+def get_users_count(**kwargs):
+	path = "{0}/{1}/{2}".format(resource_path, 'list', 'count')
+	return count_from_xml(get(path=path, params_dict=kwargs))
+	
 def increase_customer_balance(user_id, amount):
 	path =  "{0}/{1}/customer-account".format(resource_path, user_id)
-#	app_logger.debug(path, exc_info=True)
-	put(path=path,
-		params_dict=dict(amount=amount))
+	put(path=path, params_dict=dict(amount=amount))

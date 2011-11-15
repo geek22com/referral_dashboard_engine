@@ -1,0 +1,8 @@
+{% extends "admin/users-layout.html" %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Статистика', url_for('.users_stats')) }}
+{% endblock %}
+
+{% set activetab = 'stats' %}

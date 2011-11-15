@@ -60,20 +60,6 @@ def apps_info_stats(id):
 	return render_template('admin/apps-info-stats.html', app=app)
 
 
-@bp.route('/customers/<int:id>')
-def customers_info(id):
-	customer = do_or_abort(a.users.get_user_by_id, id, full=True)
-	if not customer.is_customer(): abort(404)
-	return '{0} ({1})'.format(customer.nickname, customer.email)
-
-
-@bp.route('/developers/<int:id>')
-def developers_info(id):
-	developer = do_or_abort(a.users.get_user_by_id, id, full=True)
-	if not developer.is_developer(): abort(404)
-	return '{0} ({1})'.format(developer.nickname, developer.email)
-
-
 @bp.route('/actions/')
 def actions():
 	page = convert.to_int(request.args.get('page'), 1)

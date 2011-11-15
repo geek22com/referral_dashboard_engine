@@ -7,7 +7,7 @@
 	<thead></thead>
 	<tbody>
 		<tr><th>Секретный ключ</th><td>{{ app.secret }}</td></tr>
-		<tr><th>Разработчик</th><td>{{ macros.developer_href(app.user) }}</td></tr>
+		<tr><th>Разработчик</th><td>{{ macros.user_href(app.user) }}</td></tr>
 		<tr><th>Callback</th><td>{{ app.callback }}</td></tr>
 		<tr><th>URL</th><td>{{ app.url }}</td></tr>
 		<tr><th>Создано</th><td>{{ app.creation_time|datetimeformat }}</td></tr>

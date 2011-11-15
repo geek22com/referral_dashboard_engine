@@ -7,7 +7,7 @@
 	<thead></thead>
 	<tbody>
 		<tr><th>Название</th><td>{{ order.title }}</td></tr>
-		<tr><th>Заказчик</th><td>{{ macros.customer_href(order.user) }}</td></tr>
+		<tr><th>Заказчик</th><td>{{ macros.user_href(order.user) }}</td></tr>
 		<tr><th>Тело</th><td><p>{{ order.body }}</p></td></tr>
 		<tr><th>Описание</th><td><p>{{ order.description }}</p></td></tr>
 		<tr><th>Создан</th><td>{{ order.creation_time|datetimeformat }}</td></tr>

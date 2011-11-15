@@ -20,14 +20,6 @@
 	<a href="{{ url_for('.users_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
 {% endmacro %}
 
-{% macro developer_href(user) %}
-	<a href="{{ url_for('.developers_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
-{% endmacro %}
-
-{% macro customer_href(user) %}
-	<a href="{{ url_for('.customers_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
-{% endmacro %}
-
 {% macro paginate(pages, rule) %}
 {% if pages.count > 1 %}
 <div class="pagination center">

@@ -19,7 +19,7 @@ def approve_action(action_id=None):
 		return redirect(url_for('user_cabinet'))
 
 	actions.approve_action(action_id)
-	return redirect(url_for('admin_cabinet'))
+	return redirect(url_for('admin.index'))
 
 @frontend.route('/delete_action/<action_id>', methods = ['POST', 'GET'])
 @admin_only
@@ -29,5 +29,5 @@ def delete_action(action_id=None):
 		return redirect(url_for('user_cabinet'))
 
 	actions.delete_action(action_id)
-	return redirect(url_for('admin_cabinet'))
+	return redirect(url_for('admin.index'))
 

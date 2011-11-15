@@ -104,6 +104,6 @@ def approve_order(order_id=None):
 		return redirect(url_for('user_cabinet'))
 
 	orders.approve_order(order_id)
-	return redirect(url_for('admin_cabinet'))
+	return redirect(url_for('admin.index'))
 
 

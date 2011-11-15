@@ -113,6 +113,12 @@ def users_stats():
 
 @bp.route('/users/<int:id>')
 def users_info(id):
-	return 'OK'
+	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	return render_template('admin/users-info.html', user=user)
+
+@bp.route('/users/<int:id>/stats')
+def users_info_stats(id):
+	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	return render_template('admin/users-info-stats.html', user=user)
 
 

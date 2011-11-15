@@ -87,3 +87,13 @@ def actions():
 def actions_stats():
 	return render_template('admin/actions-stats.html')
 
+@bp.route('/actions/<int:id>')
+def actions_info(id):
+	action = do_or_abort(a.actions.get_action, id, full=True)
+	return render_template('admin/actions-info.html', action=action)
+
+@bp.route('/actions/<int:id>/stats')
+def actions_info_stats(id):
+	action = do_or_abort(a.actions.get_action, id, full=True)
+	return render_template('admin/actions-info-stats.html', action=action)
+

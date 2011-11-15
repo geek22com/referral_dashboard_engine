@@ -1,0 +1,37 @@
+{% extends "admin/layout.html" %}
+
+{% set action_title = 'Действие №{0} по заказу №{1} ({2})'.format(action.id, 
+	action.order.id, action.order.title) %}	
+
+{% block title %}{{ action_title }}{% endblock %}
+
+{% set activemenu = "actions" %}
+
+{% block extrahead %}
+{% set activetab = activetab|default('info') %}
+<script type="text/javascript">
+	$(function() { 
+		$('li#tab-{{ activetab }}').addClass('active');
+	})
+</script>
+{% endblock %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Действия', url_for('.actions')) }}
+	{{ macros.breadcrumb(action_title, url_for('.actions_info', id=action.id)) }}
+{% endblock %}
+
+{% block pageheader %}
+<h1>{{ action_title }}</h1>
+{% endblock %}
+
+{% block content %}
+<ul class="tabs">
+	<li id="tab-info"><a href="{{ url_for('.actions_info', id=action.id) }}">Общее</a></li>
+	<li id="tab-stats"><a href="{{ url_for('.actions_info_stats', id=action.id) }}">Статистика</a></li>
+</ul>
+
+{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+{% endblock %}
+

@@ -21,7 +21,7 @@
 		<tbody>
 			{% for action in actions %}
 			<tr>
-				<td class="right">{{ action.id }}</td>
+				<td class="right"><a href="{{ url_for('.actions_info', id=action.id) }}">{{ action.id }}</a></td>
 				<td>{{ action.performer_id }}</td>
 				<td>{{ macros.order_href(action.order) }}</td>
 				<td class="center">{{ macros.to_icon(action.done) }}</td>

@@ -71,8 +71,6 @@ def fill_db():
 				url='http://google.com')
 			apps.append(actions.apps.get_app(id))
 			
-	
-	
 	# Create actions for apps and offers
 	platforms = ('VKONTAKTE', 'FACEBOOK', 'ODNOKLASSNIKI')
 	for app in apps:

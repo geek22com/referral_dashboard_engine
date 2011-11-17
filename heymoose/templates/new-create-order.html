@@ -1,0 +1,169 @@
+{% extends "new_cabinet_layout.html" %}
+{% set activetab = 'create-order' %}
+
+{% block tabcontent %}
+{% if not g.user.customer_balance %}
+<div class="clearboth alert-message block-message info">
+	<p><strong>Нулевой баланс</strong>Пополните баланс во вкладке "Пополнить баланс"</p>
+</div>
+
+{% else %}
+
+<form id="create_order_form" action="{{ url_for('create_order') }}" enctype="multipart/form-data" method="post">
+        <div class="clearfix">
+            <label for="ordername">Название</label>
+            <div class="input">
+              {{ g.params.orderform.ordername(class="medium", size="30", type="text") }}
+            </div>
+          </div><!-- /clearfix -->
+          
+          <div class="clearfix">
+            <label for="orderdesc">Описание</label>
+            <div class="input">
+              {{ g.params.orderform.orderdesc(class="large", rows="5", cols="20") }}
+            </div>
+          </div><!-- /clearfix -->
+
+          <div class="clearfix">
+            <label for="orderbalance">Баланс</label>
+            <div class="input">
+              {{ g.params.orderform.orderbalance(class="medium") }}
+            </div>
+          </div><!-- /clearfix -->
+
+          <div class="clearfix">
+            <label for="ordercpa">Стоимость действия(CPA)</label>
+            <div class="input">
+              {{ g.params.orderform.ordercpa(class="medium") }}
+            </div>
+          </div><!-- /clearfix -->
+
+          <div class="clearfix">
+            <label for="orderbody">URL(лендинг)</label>
+            <div class="input">
+              {{ g.params.orderform.orderbody(class="medium") }}
+            </div>
+          </div><!-- /clearfix -->
+
+          <div class="clearfix">
+            <label for="orderautoaprove">Автоподтверждение</label>
+            <div class="input">
+              {{ g.params.orderform.orderautoaprove(class="medium") }}
+            </div>
+          </div><!-- /clearfix -->
+
+          <div class="clearfix">
+            <label for="orderallownegativebalance">Разрешить кредит</label>
+            <div class="input">
+              {{ g.params.orderform.orderallownegativebalance(class="medium") }}
+            </div>
+          </div><!-- /clearfix -->
+
+		  <div class="clearfix">
+            <label for="ordermale">Выберите пол</label>
+            <div class="input">
+              {{ g.params.orderform.ordermale(class="medium") }}
+            </div>
+          </div><!-- /clearfix -->
+          
+          <div class="clearfix">
+            <label for="orderminage">Возраст: </label>
+            <div class="input">
+              от  {{ g.params.orderform.orderminage(class="mini", size="3") }}  до {{ g.params.orderform.ordermaxage(class="mini", size="3") }}
+            </div>
+          </div><!-- /clearfix -->
+
+		  <div class="clearfix">
+            <label for="orderimage">Выберите картинку</label>
+            <div class="input">
+              <input id="order_image" name="orderimage"  type="file">
+            </div>
+          </div><!-- /clearfix -->
+<div class="clearfix">
+	<input class="btn primary" type="submit" value="Подтвердить"/> 
+</div>
+</form>
+
+
+{% with %}
+{% set mes = get_flashed_messages(with_categories=true) | error_type('ordererror') %}
+{% if mes %}
+<div id="add_order_error" class="clearfix clearboth alert-message block-message error">
+<p>{{ mes[0][1].decode('utf8') }}</p>
+</div>
+{% endif %}
+{% endwith %}
+
+<div id="error_message" class="clearfix clearboth alert-message block-message error hide">
+</div>
+
+
+<script>
+$(document).ready(function() {
+	function showError(error, element) {
+		//$('.b-reg_form_error').add("<div class="b-error_text">Ошибка нах!</div>")
+		$('#error_message').removeClass("hide");
+		$('#error_message').text(error);
+	}
+
+	function clearError(element) {
+		$('#add_order_error').addClass("hide");
+		$('#error_message').addClass("hide");
+	}
+
+	// События формы
+	$(".input").keypress(function() {
+		clearError(this);
+	});
+
+	  /*Validation*/
+	$("#create_order_form").submit(function(e){
+		var customer_balance = {{ g.user.customer_balance }};
+		ordername = $('#ordername').val();
+		orderdesc = $('#orderdesc').val();
+		orderbalance = parseInt($('#orderbalance').val());
+		ordercpa = parseInt($('#ordercpa').val());
+		orderurl = $('#orderbody').val();
+		orderimage = $('#orderimage').val();
+
+		try{
+			
+			if (ordername == ""){
+				showError("Введите название заказа", $('#ordername').parent());
+				return false;
+			}
+			
+			if (orderdesc == ""){
+				showError("Введите описание заказа", $('#orderdesc').parent());
+				return false;
+			}
+	
+			if ($("#orderbalance").val() == "" || orderbalance <= 0 || orderbalance > customer_balance || orderbalance > 3000000 || isNaN(orderbalance)){
+				showError("Допустимый для вас баланс: от 1 до " + customer_balance + " рублей", $('#orederbalance').parent());
+				return false;
+			}
+			
+			if ($("#ordercpa").val() == "" || ordercpa <= 0 || ordercpa > orderbalance || isNaN(ordercpa)){
+				showError("Допустимый cpa для заказа : от 1 до " + orderbalance + " рублей", $('#oredercpa').parent());
+				return false;
+			}
+			
+	    	if (!validateURL(orderurl)){
+	    		showError("Некорректный URL: http://*.*", $('#orderurl').parent());
+				return false;
+			}
+	
+			if (orderimage == ""){
+				showError("Загрузите картинку", $('#orderimage').parent());
+				return false;
+			}
+			return true;
+		}catch(e){
+			alert(e);
+			return false;
+		}
+	}); 
+});
+</script>
+{% endif %}
+{% endblock %}

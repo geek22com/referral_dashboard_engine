@@ -7,7 +7,7 @@ resource_path = "/orders"
 
 # Adds a new order. Possible kwargs: male (bool), minAge (int), maxAge (int).
 def add_order(userId, title, body, balance, cpa, desc, image_data, autoApprove=True, 
-			allowNegativeBalance=True, **kwargs):
+			allowNegativeBalance=True, male=None, minAge=0, maxAge=0, **kwargs):
 	try:
 		post(path=resource_path,
 			params_dict=dict(userId=userId,
@@ -19,6 +19,9 @@ def add_order(userId, title, body, balance, cpa, desc, image_data, autoApprove=T
 				image=image_data,
 				autoApprove=autoApprove,
 				allowNegativeBalance=allowNegativeBalance,
+				male=male,
+				minAge=minAge,
+				maxAge=maxAge,
 				**kwargs))
 	except RequestFailed:
 		return False

@@ -51,12 +51,13 @@ def register_form_template(form_params=None, error=None):
 
 	g.params['captcha'] = captcha.get_random()
 	g.params['registerform'] = register_form
-	return render_template('register.html', params=g.params, error=error)
+	return render_template('new_register.html', params=g.params, error=error)
 
 @frontend.route('/')
 def main_page():
-	g.params['loginform'] = forms.LoginForm()
-	return render_template('index.html', params=g.params)
+    g.params['loginform'] = forms.LoginForm()
+    #return render_template('index.html', params=g.params)
+    return render_template('new_index.html', params=g.params)
 
 @frontend.route('/register_success')
 def register_success():
@@ -66,19 +67,20 @@ def register_success():
 @frontend.route('/role_detect', methods=['GET', 'POST'])
 @role_not_detected_only
 def role_detect():
-	form_role = forms.RoleForm(request.form)
-	if request.method == 'POST' and form_role.validate():
-		try:
-			users.add_user_role(user_id=g.user.id,
-								role=form_role.role.data)
-			return redirect(url_for('user_cabinet'))
-		except Exception as inst:
-			app_logger.error(inst)
-			app_logger.error(sys.exc_info())
-			flash_form_errors([['Извините, попробуйте еще раз']], 'roleerror')
-
-	flash_form_errors([['Извините, попробуйте еще раз']], 'roleerror')
-	return render_template('role-selection.html', params=g.params)
+    form_role = forms.RoleForm(request.form)
+    if request.method == 'POST' and form_role.validate():
+        try:
+            users.add_user_role(user_id=g.user.id,
+                                role=form_role.role.data)
+            return redirect(url_for('user_cabinet'))
+        except Exception as inst:
+            app_logger.error(inst)
+            app_logger.error(sys.exc_info())
+            flash_form_errors([['Извините, попробуйте еще раз']], 'roleerror')
+    
+    g.params['roleform'] = form_role 
+    flash_form_errors([['Извините, попробуйте еще раз']], 'roleerror')
+    return render_template('new-role-selection.html', params=g.params)
 
 
 
@@ -90,24 +92,26 @@ def start_survey():
 @frontend.route('/cabinet')
 @auth_only
 def user_cabinet():
-	if g.user is None:
-		abort(403)
-		
-	if g.user.is_admin():
-		return redirect(url_for('admin.index'))
+    if g.user is None:
+        abort(403)
+        
+    if g.user.is_admin():
+        return redirect(url_for('admin.index'))
 
-	if g.user.is_developer():
-		user_apps = apps.active_apps(g.user.apps)
-		if user_apps:
-			g.params['apps'] = user_apps
+    if g.user.is_developer():
+        return redirect(url_for('cabinet_apps'))
+        
+    if g.user.is_customer():
+        return redirect(url_for('cabinet_orders'))
+    
+    app_loger.error("Shit happened user has unknown role in user_cabinet")
+    abort(404)
 
-	if g.user.is_customer():
-		orders = g.user.orders
-		if orders:
-			g.params['orders'] = orders
-	return render_template('cabinet-inside-service.html', params=g.params)
-
-
+@frontend.route('/cabinet/info')
+@auth_only
+def cabinet_info():
+    return render_template('new-cabinet-info.html')
+    
 @frontend.route('/login', methods=['GET', 'POST'])
 def login():
 	"""Logs the user in."""
@@ -132,32 +136,33 @@ def login():
 
 @frontend.route('/register', methods=['GET', 'POST'])
 def register():
-	"""Registers the user."""
-	if g.user:
-		return redirect(url_for('main_page'))
-	error = None
-	register_form = forms.RegisterForm(request.form)
-	if request.method == 'POST' and register_form.validate():
-		if register_form.password.data != register_form.password2.data:
-			flash_form_errors([['Введенные пароли не совпадают']], 'registererror')
-		elif users.get_user_by_email(register_form.email.data) is not None:
-			flash_form_errors([['Введенный email уже используется']], 'registererror')
-		# Уязвимость, данные из поля капча и hidden не проверяются.
-		elif captcha.check_captcha(request.form['captcha_id'], request.form['captcha_answer']) is None:
-			flash_form_errors([['Каптча введена не верна']], 'registererror')
-		else:
-			users.add_user(email=register_form.email.data,
-							passwordHash=generate_password_hash(register_form.password.data),
-							nickname=register_form.username.data)
+    """Registers the user."""
+    if g.user:
+        return redirect(url_for('main_page'))
+    error = None
+    register_form = forms.RegisterForm(request.form)
+    if request.method == 'POST' and register_form.validate():
+        if register_form.password.data != register_form.password2.data:
+            flash_form_errors([['Введенные пароли не совпадают']], 'registererror')
+        elif users.get_user_by_email(register_form.email.data) is not None:
+            flash_form_errors([['Введенный email уже используется']], 'registererror')
+        # Уязвимость, данные из поля капча и hidden не проверяются.
+        elif captcha.check_captcha(request.form['captcha_id'], register_form.captcha.data) is None:
+            flash_form_errors([['Капча не верна, попробуйте еще раз']], 'registererror')
+        else:
+            users.add_user(email=register_form.email.data,
+                            passwordHash=generate_password_hash(register_form.password.data),
+                            nickname=register_form.username.data)
 
-			#request user and loged him in
-			user = users.get_user_by_email(register_form.email.data, full=True)
-			if user:
-				users.add_user_role(user.id, register_form.role.data)
-				session['user_id'] = user.id
-				return redirect(url_for('user_cabinet'))
-	flash_form_errors(register_form.errors.values(), 'registererror')
-	return register_form_template(request.form, error)
+            #request user and loged him in
+            user = users.get_user_by_email(register_form.email.data, full=True)
+            if user:
+                users.add_user_role(user.id, register_form.role.data)
+                session['user_id'] = user.id
+                return redirect(url_for('user_cabinet'))
+    
+    flash_form_errors(register_form.errors.values(), 'registererror')
+    return register_form_template(request.form, error)
 
 @frontend.route('/logout')
 @role_not_detected_only

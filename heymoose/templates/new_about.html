@@ -1,0 +1,16 @@
+{% extends "new_layout.html" %}
+
+{% block title %}Heymoose - партнерская сеть{% endblock %}
+
+{% set activemenu = "about" %}
+
+{% block pageheader %}
+<h3> В данный момент проект находится в стадии бета тестирования </h3>
+{% endblock %}
+
+{% block content %}
+<div class="alert-message block-message info">
+      <h4>Свяжитесь с нами</h4>
+      <p><strong><a href="{{ url_for('contacts') }}" class="btn primary">Контакты</a></strong></p>
+</div>
+{% endblock %}

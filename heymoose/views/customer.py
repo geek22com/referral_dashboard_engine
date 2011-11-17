@@ -19,7 +19,7 @@ def paybalance_form_template(form_params=None, error=None):
 		paybalance_form.amount.data = form_params['amount']
 
 	g.params['paybalanceform'] = paybalance_form
-	return render_template('cabinet-inside-service.html', params=g.params)
+	return render_template('new-pay-balance.html', params=g.params)
 
 @frontend.route('/become_developer')
 @customer_only
@@ -30,7 +30,7 @@ def become_developer():
 	return redirect(url_for('user_cabinet'))
 
 
-@frontend.route('/pay_balance', methods=['GET', 'POST'])
+@frontend.route('/cabinet/pay_balance', methods=['GET', 'POST'])
 @customer_only
 def pay_balance():
 	balance_form = forms.BalanceForm(request.form)

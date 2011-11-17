@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	{% import 'admin/macros.html' as macros %}
+	
+	{% block head %}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>
+		{% block fulltitle %}
+			{% block title %}Страница{% endblock %} :: HeyMoose
+		{% endblock %}
+	</title>
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='./css/bootstrap.min.css') }}" media="screen">
+	<script type="text/javascript">
+			function validateURL(s){
+				var regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+				return regexp.test(s);
+			}
+	</script>
+
+	<style type="text/css">
+		body {
+			background: url({{ url_for('.static', filename='./img/background.png') }}) repeat scroll 0 0 transparent;
+			padding-top: 40px;
+		}
+		
+		.content {
+			background-color: #FFF;
+			min-height: 800px;
+			padding: 20px;
+		}
+		
+		.container > footer p {
+			text-align: center;
+			color: #BFBFBF;
+		}
+		
+		div.clearboth {
+			clear: both;
+		}
+		
+		th.key {
+			width: 30%;
+		}
+		
+		.center { text-align: center; }
+		.left { text-align: left; }
+		.right { text-align: right; }
+	</style>
+	
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery-latest.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-dropdown.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-modal.js') }}"></script>
+	
+	{% set activemenu = activemenu|default('main_page') %}
+	<script type="text/javascript">
+		$(function() {
+			$('#topbar').dropdown();
+			$('li#menu-item-{{ activemenu }}').addClass('active');
+		})
+	</script>
+	
+	{% block extrahead %}{% endblock %}
+	{% endblock %}
+</head>
+<body>
+<div style="display:none;" class="li_counter">
+<!-- Yandex.Metrika informer -->
+<a href="http://metrika.yandex.ru/stat/?id=8819377&amp;from=informer"
+target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/8819377/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" /></a>
+<!-- /Yandex.Metrika informer -->
+
+<!-- Yandex.Metrika counter -->
+<div style="display:none;"><script type="text/javascript">
+(function(w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter8819377 = new Ya.Metrika({id:8819377, enableAll: true});
+        }
+        catch(e) { }
+    });
+})(window, "yandex_metrika_callbacks");
+</script></div>
+<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+<noscript><div style="display:none;" ><img src="//mc.yandex.ru/watch/8819377" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+>
+<!--LiveInternet counter--><script type="text/javascript"><!--
+document.write("<a href='http://www.liveinternet.ru/click' "+
+"target=_blank><img class='i-hide' src='//counter.yadro.ru/hit?t44.6;r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";"+Math.random()+
+"' alt='' title='LiveInternet' "+
+"border='0' width='31' height='31'><\/a>")
+//--></script><!--/LiveInternet-->
+</div>
+	<div class="topbar" id="topbar">
+		<div class="fill">
+			<div class="container">
+				<span class="brand">
+					<a href="{{ url_for('main_page') }}">HeyMoose</a>
+				</span>
+
+				<ul class="nav">
+					<li id="menu-item-about"><a href="{{ url_for('about') }}">О проекте</a></li>
+					{% if g.user %}
+					<li id="menu-item-cabinet"><a href="{{ url_for('user_cabinet', username=g.user.nickname) }}">Личный кабинет</a></li>
+					{% else %}
+					<li id="menu-item-register"><a href="{{ url_for('register') }}">Регистрация</a></li>
+					{% endif %}
+					<!--
+					<li id="menu-item-advert"><a href="{{ url_for('to_advertiser') }}">Рекламодателям</a></li>
+					<li id="menu-item-partner"><a href="{{ url_for('to_partner') }}">Разработчикам</a></li>
+					-->
+					<li id="menu-item-contacts"><a href="{{ url_for('contacts') }}">Контакты</a></li>
+				</ul>
+				
+				<ul class="nav secondary-nav">
+					{% if g.user %}
+					<li class="dropdown">
+						<a class="dropdown-toggle" href="#">{{ g.user.nickname }}</a>
+						<ul class="dropdown-menu">
+							<li><a href="{{ url_for('frontend.logout') }}">Выйти</a></li>
+						</ul>
+					</li>
+					{% else %}
+					<li id="menu-item-login"><a href="#" data-controls-modal="login-modal" data-backdrop="true" data-keyboard="true">Войти</a></li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="content">
+			{% block pageheader_container %}
+			<div class="page-header">
+				{% block pageheader %}{% endblock %}
+			</div>
+			{% endblock %}
+			
+			{% block content %}
+			{% endblock %}
+		</div>
+		
+		<footer>
+			<p>&copy; 2011 Bravik, LLC.</p>
+		</footer>
+	</div>
+{% if not g.user%}
+<div id="login-modal" class="modal" style="display: none; ">
+	<div class="modal-header">
+		<a href="#" class="close">×</a>
+		<h3>Heymoose вход</h3>
+	</div>
+<div class="modal-body span16">
+<form id="login-form" action="{{url_for('login')}}" method="post">	
+	<div class="clearfix">
+		<label for="username">Email</label>
+		<div class="input">
+		{{g.params.loginform.username(class="medium", title="email", type="email")}}
+		</div>	
+	</div>
+	
+	<div class="clearfix">
+		<label for="password">Password</label>
+		<div class="input">
+		{{g.params.loginform.password(class="medium", title="password", type="password")}}			
+		</div>
+	</div>
+</form>	
+</div>
+<div class="modal-footer">
+	<input onclick="$('#login-form').submit();" type="submit" class="btn primary" value="Войти">
+</div>
+</div>
+{% endif %}
+	
+</body>
+</html>

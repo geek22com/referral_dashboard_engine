@@ -13,8 +13,18 @@ def app_form_template(form_params=None):
 		app_form.appcallback.data = form_params['appcallback']
 
 	g.params['appform'] = app_form
-	return render_template('app-creation-form.html', params = g.params)
+	return render_template('new-app-create.html', params = g.params)
 
+
+@frontend.route('/cabinet/apps', methods=['GET', 'POST'])
+@auth_only
+def cabinet_apps():
+    user_apps = apps.active_apps(g.user.apps)
+    if user_apps:
+        g.params['apps'] = user_apps
+    g.params['appform'] = forms.AppForm()
+    
+    return render_template('cabinet_apps.html', params=g.params)
 
 @frontend.route('/app_form', methods=['GET'])
 @developer_only
@@ -22,7 +32,7 @@ def app_form():
 	return app_form_template()
 
 
-@frontend.route('/create_app', methods=['POST'])
+@frontend.route('/cabinet/create_app', methods=['POST','GET'])
 @developer_only
 def create_app():
 	#TODO проверка данных

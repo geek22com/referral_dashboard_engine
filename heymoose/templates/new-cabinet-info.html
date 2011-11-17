@@ -1,0 +1,36 @@
+{% extends "new_cabinet_layout.html" %}
+{% set activetab = 'cabinet-info' %}
+
+{% block tabcontent %}
+<table class="bordered-table zebra-striped">
+	<tbody>
+		<tr>
+			<td class="right">Nickname</td>
+			<td>{{ g.user.nickname }}</td>
+		</tr>
+	
+		<tr>
+			<td class="right">Email</td>
+			<td>{{ g.user.email }}</td>
+		</tr>
+		{% if g.user.is_customer() %}
+		<tr>
+			<td class="right">Баланс рекламодателя</td>
+			<td>{{ g.user.customer_balance }}</td>
+		</tr>
+		<tr>
+			<td class="right">Secret рекламодателя</td>
+			<td>{{ g.user.customer_secret }}</td>
+		</tr>
+		{% endif %}
+		
+		{% if g.user.is_developer() %}
+		<tr>
+			<td class="right">Баланс разработчика</td>
+			<td>{{ g.user.developer_balance }}</td>
+		</tr>
+		{% endif %}
+
+	</tbody>
+</table>
+{% endblock %}

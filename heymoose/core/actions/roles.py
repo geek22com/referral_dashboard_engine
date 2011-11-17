@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 DEVELOPER='DEVELOPER'
 CUSTOMER='CUSTOMER'
 ADMIN='ADMIN'

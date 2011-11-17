@@ -1,2 +1,12 @@
 *.pyc
 .idea
+debian
+.pc
+frontend_deb.tar.gz
+frontend_deb.tar.gz.cdbs-config_list
+services
+Chat
+Cities
+Tetris
+vk_mp3
+VkGuiExample.swf

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField, TextAreaField, DecimalField, RadioField, SelectField
+from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField, TextAreaField, DecimalField, RadioField, SelectField, FileField
 import heymoose.core.actions.roles as roles
 
 class LoginForm(Form):
@@ -30,8 +30,7 @@ class RegisterForm(Form):
 							 validators.Length(min=4, max=16, message = ('Длинна пароля должна быть от 4 до 16 символов')),
 							 validators.Required(message = ('Введенные пароли не совпадают'))])
 	role = SelectField('role', choices=[(roles.DEVELOPER, roles.DEVELOPER),
-										(roles.CUSTOMER, roles.CUSTOMER),
-										(roles.ADMIN, roles.ADMIN)])
+										(roles.CUSTOMER, roles.CUSTOMER)])
 	captcha = TextField('captcha', [])
 
 class FeedBackForm(Form):
@@ -51,13 +50,19 @@ class ContactForm(Form):
 
 
 class OrderForm(Form):
-	ordername = TextField('ordername', [validators.Length(min=1, max=255, message=('Название заказа должна быть от 1 до 255 симолов')),
+	ordername = TextField('ordername', [validators.Length(min=1, max=50, message=('Название заказа должно быть от 1 до 50 симолов')),
 						  				validators.Required(message = ('Введите название заказа'))])
+	orderdesc = TextAreaField('orederdesc', [validators.Length(min=1, max=200, message=('Описание заказа должно быть от 1 до 200 символов')),
+											validators.Required(message = ('Введите описание'))])
+	orderbody = TextField('orederbody', [validators.Required(message = ('Введите тело'))])
 	orderbalance = IntegerField('orderbalance', [validators.Required(message = ('Укажите баланс для заказа')),
 						validators.NumberRange(min=1, max=3000000, message=('Допустимый баланс от 1 до 3000000 рублей'))])
-	orderbody = TextField('orederbody', [validators.Required(message = ('Введите тело'))])
 	ordercpa = IntegerField('oredercpa', [validators.Required(message = ('Введите cpa'))])
-	orderdesc = TextAreaField('orederdesc', [validators.Required(message = ('Введите описание'))])
+	orderautoaprove = BooleanField('orderautoaprove', default=False)
+	orderallownegativebalance = BooleanField('orderallownegativebalance', default=False)
+	ordermale = SelectField('ordermale', choices=[('True','male'),('False','female'),('None','all')])
+	orderminage = IntegerField('orderminage', [validators.NumberRange(min=1, max=170, message=('Допустимый возраст: от 1 до 170 лет'))])
+	ordermaxage = IntegerField('ordermaxage', [validators.NumberRange(min=1, max=170, message=('Допустимый возраст: от 1 до 170 лет'))])
 	
 class AppForm(Form):
 	appcallback = TextField('appcallback', [validators.Required(message = ('Введите callback'))])

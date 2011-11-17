@@ -12,98 +12,55 @@ import heymoose.core.actions.orders as orders
 from heymoose.views.work import *
 
 def order_form_template(form_params=None):
-	order_form = forms.OrderForm()
-	if form_params:
-		order_form.ordername.data = form_params['ordername']
-		order_form.orderbalance.data = form_params['orderbalance']
-		order_form.orderbody.data = form_params['orderbody']
-		order_form.ordercpa.data = form_params['ordercpa']
+    order_form = forms.OrderForm()
+    if form_params:
+        order_form.ordername.data = form_params['ordername']
+        order_form.orderdesc.data = form_params['orderdesc']
+        order_form.orderbalance.data = form_params['orderbalance']
+        order_form.orderbody.data = form_params['orderbody']
+        order_form.ordercpa.data = form_params['ordercpa']
 
-	g.params['orderform'] = order_form
-	return render_template('order-creation-form.html', params = g.params)
+    g.params['orderform'] = order_form
+    return render_template('new-create-order.html', params = g.params)
 
-@frontend.route('/create_order', methods=['POST'])
+@frontend.route('/cabinet/orders', methods=['POST', 'GET'])
+@auth_only
+def cabinet_orders():
+    orders = g.user.orders
+    if orders:
+        g.params['orders'] = orders
+    g.params['orderform'] = forms.OrderForm()
+        
+    return render_template('cabinet_orders.html', params = g.params)
+
+@frontend.route('/cabinet/create_order', methods=['POST', 'GET'])
 @customer_only
 def create_order():
-	#TODO проверка данных
-	order_form = forms.OrderForm(request.form)
-	if request.method == "POST" and order_form.validate():
-		file = request.files['orderimage']
-		image_data = file.stream.read()
-		print "Going to add order"
-		orders.add_order(userId=g.user.id,
-						title=order_form.ordername.data,
-						body=order_form.orderbody.data,
-						balance = order_form.orderbalance.data,
-						cpa=order_form.ordercpa.data,
-		                desc=order_form.orderdesc.data,
-						image_data=base64.encodestring(image_data).strip('\n'))
-		return redirect(url_for('user_cabinet'))
+    #TODO проверка данных
+    order_form = forms.OrderForm(request.form)
+    if request.method == "POST" and order_form.validate():
+        file = request.files['orderimage']
+        image_data = file.stream.read()
 
-	print "Form error"
-	flash_form_errors(order_form.errors.values(), 'ordererror')
-	return order_form_template(request.form)
+        orders.add_order(userId=g.user.id,
+                        title=order_form.ordername.data,
+                        body=order_form.orderbody.data,
+                        balance = order_form.orderbalance.data,
+                        cpa=order_form.ordercpa.data,
+                        desc=order_form.orderdesc.data,
+                        image_data=base64.encodestring(image_data).strip('\n'),
+                        autoApprove=order_form.orderautoaprove.data,
+                        allowNegativeBalance=order_form.orderallownegativebalance.data,
+                        male=order_form.ordermale.data,
+                        minAge=order_form.orderminage.data,
+                        maxAge=order_form.ordermaxage.data)
+        return redirect(url_for('user_cabinet'))
 
-##TODO: Make it more simple, use AJAX for all forms
-#@frontend.route('/order/<order_id>', methods = ['POST', 'GET'])
-#@customer_only
-#def show_order(order_id=None):
-#	if not order_id:
-#		return redirect(url_for('user_cabinet'))
-#
-#	order = g.user.load_order(order_id)
-#	order_form = forms.OrderForm()
-#	if order:
-#		g.params['order'] = order
-#		order_form.ordername.data = order.title
-#		order_form.orderbalance.data = order.balance
-#		order_form.orderbody.data = order.body
-#		order_form.ordercpa.data = order.cpa
-#	else:
-#		return redirect(url_for('user_cabinet'))
-#
-#	if request.method == "POST":
-#		order_form = forms.OrderForm(request.form)
-#		if order_form.validate():
-#			try:
-#				g.user.create_order(userId=g.user.id,
-#									title=order_form.ordername.data,
-#				                    body=order_form.orderbody.data,
-#									balance = order_form.orderbalance.data,
-#				                    cpa=order_form.ordercpa.data)
-#			except Exception as inst:
-#				app_logger.error(inst)
-#				app_logger.error(sys.exc_info())
-#
-#			return redirect(url_for('user_cabinet'))
-#		flash_form_errors(order_form.errors.values(), 'ordererror')
-#
-#	g.params['orderform'] = order_form
-#	return render_template('cabinet-questionlist.html', params=g.params)
+    flash_form_errors(order_form.errors.values(), 'ordererror')
+    return order_form_template(request.form)
+
 
 @frontend.route('/delete_order/<order_id>')
 @customer_only
 def delete_order(order_id):
 	return redirect(url_for('user_cabinet'))
-
-@frontend.route('/order_form', methods=['POST', 'GET'])
-@customer_only
-def order_form():
-	if request.method == 'POST':
-		pass
-		#file = request.files['questionlist']
-		#if file:
-			#g.params['questionlist'] = file.stream.read().decode('utf8')
-	return order_form_template()
-
-@frontend.route('/approve_order/<order_id>', methods = ['POST', 'GET'])
-@admin_only
-def approve_order(order_id=None):
-	order_id = int(order_id)
-	if not order_id:
-		return redirect(url_for('user_cabinet'))
-
-	orders.approve_order(order_id)
-	return redirect(url_for('admin_cabinet'))
-
-

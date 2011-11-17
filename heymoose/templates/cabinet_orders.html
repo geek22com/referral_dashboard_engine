@@ -1,0 +1,77 @@
+{% extends "new_cabinet_layout.html" %}
+{% set activetab = 'orders' %}
+
+{% block tabcontent %}
+
+{% if not g.user.is_customer() %}
+<a href="{{ url_for('become_customer') }}" class="btn primary">Запрос</a> функционала рекламодателя.
+{% else %}
+
+
+{% if g.params.orders %}
+	<table class="bordered-table zebra-striped">
+		<thead>
+			<tr>
+				<th class="header">ИД</th>
+				<th class="header">Название</th>
+				<th class="header">URL</th>
+				<th class="header">Баланс</th>
+				<th class="header">CPA</th>
+				<th class="header">Автоподтверждение</th>
+				<th class="header">Кредит</th>
+				<th class="header">Пол</th>
+				<th class="header">Возраст от</th>
+				<th class="header">Возраст до</th>
+				<th class="header">Состояние</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for order in g.params.orders %}
+			<tr>
+				<td>{{ order.id }}</td>
+				<td>{{ order.title }}</td>
+				<td>{{ order.body }}</td>
+				<td>{{ order.balance }}</td>
+				<td>{{ order.cpa }}</td>
+				<td>{{ macros.to_icon(order.auto_approve) }}</td>
+				<td>{{ macros.to_icon(order.allow_negative_balance) }}</td>
+
+				{% if order.male == None %}
+				<td>Все</td>
+				{% elif order.male == False %}
+				<td>Жен</td>
+				{% else %}
+				<td>Муж</td>
+				{% endif %}
+				
+				{% if not order.min_age %}
+				<td>Любой</td>
+				{% else %}
+				<td>{{ order.min_age }}</td>
+				{% endif %}
+				
+				{% if not order.max_age %}
+				<td>Любой</td>
+				{% else %}
+				<td>{{ order.max_age }}</td>
+				{% endif %}
+				
+				
+				{% if order.disabled %}
+				<td>Не активен</td>
+				{% else %}
+				<td>Активен</td>
+				{% endif %}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearboth alert-message block-message info">
+		<p><strong>Список пуст.</strong> Чтобы создать заказ перейдите во вкладку "Создать заказ"</p>
+	</div>
+{% endif %}
+
+{% endif %}
+
+{% endblock %}

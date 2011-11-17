@@ -1,0 +1,165 @@
+{% extends "new_layout.html" %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% set activemenu = "user_cabinet" %}
+{% set breadcrumbs = [('Личный кабинет', url_for('user_cabinet'))] %}
+
+{% block pageheader %}
+<h1>Здравствуйте {{g.user.nickname}}</h1>
+{% endblock %}
+
+{% block content %}
+<ul class="tabs">
+		{% if g.user.is_customer() %}
+        	<li id="tab-orders" class="active"><a href="#"></a>Заказы</li>
+        	<li id ="tab-apps"><a href="#"></a>Приложения</li>
+        	<li id="tab-balance"><a href="#"></a>Пополнить баланс</li>
+        {% else %}
+        	<li id="tab-" class="active"><a href="#"></a>Приложения</li>
+        	<li><a href="#"></a>Заказы</li>
+       	{% endif %}
+        <li><a href="#">Создать заказ</a></li>
+        <li><a href="#">Создать приложение</a></li>
+        <li><a href="#">Личные данные</a></li>
+</ul>
+{% block %}
+{% endblock %}
+
+<div class="page-header">
+   	<h1>Создание заказа</h1>
+</div>
+
+<div class="row">
+	<div class="span16">
+		<form id="create_order_form" action="{{ url_for('create_order') }}" enctype="multipart/form-data" method="post">
+          <div class="clearfix">
+            <label for="ordername">Название</label>
+            <div class="input">
+              {{ g.params.orderform.ordername(class="medium", size="30", type="text") }}
+            </div>
+          </div><!-- /clearfix -->
+          
+          <div class="clearfix">
+            <label for="orderdesc">Описание</label>
+            <div class="input">
+              {{ g.params.orderform.orderdesc(class="large", rows="5", cols="20") }}
+            </div>
+          </div><!-- /clearfix -->
+
+          <div class="clearfix">
+            <label for="orderbalance">Баланс</label>
+            <div class="input">
+              {{ g.params.orderform.orderbalance(class="medium") }}
+            </div>
+          </div><!-- /clearfix -->
+
+          <div class="clearfix">
+            <label for="ordercpa">Стоимость действия(CPA)</label>
+            <div class="input">
+              {{ g.params.orderform.ordercpa(class="medium") }}
+            </div>
+          </div><!-- /clearfix -->
+
+          <div class="clearfix">
+            <label for="orderbody">URL(лендинг)</label>
+            <div class="input">
+              {{ g.params.orderform.orderbody(class="medium") }}
+            </div>
+          </div><!-- /clearfix -->
+
+          <div class="clearfix">
+            <label for="orderautoaprove">Подтверждение</label>
+            <div class="input">
+              {{ g.params.orderform.orderautoaprove(class="medium") }}
+            </div>
+          </div><!-- /clearfix -->
+
+          <div class="clearfix">
+            <label for="orderallownegativebalance">Разрешить кредит</label>
+            <div class="input">
+              {{ g.params.orderform.orderallownegativebalance(class="medium") }}
+            </div>
+          </div><!-- /clearfix -->
+
+		  <div class="clearfix">
+            <label for="ordermale">Выберите пол</label>
+            <div class="input">
+              {{ g.params.orderform.ordermale(class="medium") }}
+            </div>
+          </div><!-- /clearfix -->
+          
+          <div class="clearfix">
+            <label for="orderminage">Возраст: </label>
+            <div class="input">
+              от  {{ g.params.orderform.orderminage(class="mini", size="3") }}  до {{ g.params.orderform.ordermaxage(class="mini", size="3") }}
+            </div>
+          </div><!-- /clearfix -->
+
+		  <div class="clearfix">
+            <label for="orderimage">Выберите картинку</label>
+            <div class="input">
+              {{ g.params.orderform.orderimage(class="xxlarge") }}
+            </div>
+          </div><!-- /clearfix -->
+          <input type="submit" class="btn primary" value="Отправить">
+		</form>
+		<div class="clearfix" id="add_order_error">
+                  {% with %}
+                  {% set mes = get_flashed_messages(with_categories=true) | error_type('ordererror') %}
+                  {% if mes %}
+                  {{ mes[0][1].decode('utf8') }}
+                  {% endif %}
+                  {% endwith %}
+		</div><!-- /clearfix -->
+	</div>
+</div>
+
+
+</body>
+<script>
+  /*Validation*/
+                $("#create_order_form").submit(function(e){
+					var customer_balance = {{ g.user.customer_balance }};
+					try{
+						
+						if ($("#ordername").val() == ""){
+							$("#add_order_error").text("Введите название заказа");
+							return false;
+						}
+						
+						if ($("#orderdesc").val() == ""){
+							$("#add_order_error").text("Введите описание заказа");
+							return false;
+						}
+
+						var order_balance = parseInt($("#orderbalance").val());
+						if ($("#orderbalance").val() == "" || order_balance <= 0 || order_balance > customer_balance || order_balance > 3000000 || isNaN(order_balance)){
+							$("#add_order_error").text("Допустимый для вас баланс: от 1 до " + customer_balance + " рублей");
+							return false;
+						}
+
+						var order_cpa = parseInt($("#ordercpa").val());
+						if ($("#ordercpa").val() == "" || order_cpa <= 0 || order_cpa > order_balance || isNaN(order_cpa)){
+							$("#add_order_error").text("Допустимый cpa для заказа : от 1 до " + order_balance + " рублей");
+							return false;
+						}
+						
+	                	if (!validateURL($("#orderbody").val())){
+    	                	$("#add_order_error").text("Некорректный URL: http://*.*");
+							return false;
+						}
+
+						if ($("#orderimage").val() == ""){
+							$("#add_order_error").text("Загрузите картинку");
+							return false;
+						}
+						return true;
+					}catch(e){
+						alert(e);
+						return false;
+					}
+                });
+</script>
+</html>
+

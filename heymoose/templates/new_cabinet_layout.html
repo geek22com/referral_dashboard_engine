@@ -1,0 +1,40 @@
+{% extends "new_layout.html" %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% set activemenu = 'cabinet' %}
+
+{% block extrahead %}
+{% set activetab = activetab|default('list') %}
+<script type="text/javascript">
+	$(function() { 
+		$('li#tab-{{ activetab }}').addClass('active');
+	})
+</script>
+{% endblock %}
+
+{% block content %}
+<ul class="tabs">
+	{% if g.user.is_developer() %}
+	<li id="tab-apps"><a href="{{ url_for('cabinet_apps') }}">Приложения</a></li>
+	<li id="tab-orders"><a href="{{ url_for('cabinet_orders') }}">Заказы</a></li>
+	{% else %}
+	<li id="tab-orders"><a href="{{ url_for('cabinet_orders') }}">Заказы</a></li>
+	<li id="tab-apps"><a href="{{ url_for('cabinet_apps') }}">Приложения</a></li>
+	{% endif %}
+	
+	{% if g.user.is_customer() %}
+	<li id="tab-pay-balance"><a href="{{ url_for('pay_balance') }}">Пополнить баланс</a></li>
+	<li id="tab-create-order"><a href="{{ url_for('create_order') }}">Создать заказ</a></li>
+	{% endif %}
+	
+	{% if g.user.is_developer() %}
+	<li id="tab-create-app"><a href="{{ url_for('create_app') }}">Создать приложение</a></li>
+	{% endif %}
+	
+	<li id="tab-cabinet-info"><a href="{{ url_for('cabinet_info') }}">Личные данные</a></li>
+</ul>
+
+{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+
+{% endblock %}

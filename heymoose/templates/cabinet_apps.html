@@ -1,0 +1,39 @@
+{% extends "new_cabinet_layout.html" %}
+{% set activetab = 'apps' %}
+
+{% block tabcontent %}
+
+{% if not g.user.is_developer() %}
+<a href="{{ url_for('become_developer') }}" class="btn primary">Запрос</a> функционала разработчика.
+{% else %}
+
+{% if g.params.apps %}
+	<table class="bordered-table zebra-striped">
+		<thead>
+			<tr>
+				<th class="header right">ИД</th>
+				<th class="header">Callback Url</th>
+				<th class="header">App Url</th>
+				<th class="header right">Secret Key</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for app in g.params.apps %}
+			<tr>
+				<td class="right">{{ app.id }}</td>
+				<td>{{ app.callback }}</td>
+				<td>{{ app.url }}</td>
+				<td class="right">{{ app.secret }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearboth alert-message block-message info">
+		<p><strong>Список пуст.</strong> Чтобы добавить приложение перейдите во вкладку "Создать приложение"</p>
+	</div>
+{% endif %}
+
+{% endif %}
+
+{% endblock %}

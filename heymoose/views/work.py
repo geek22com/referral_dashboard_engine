@@ -10,18 +10,20 @@ from heymoose.db.actions import captcha
 
 @app.before_request
 def before_request():
-	g.user = None
-	g.performer = None
-	g.params = {}
-	
-	g.params['feedbackform'] = forms.FeedBackForm()
-	g.params['feedback_captcha'] = captcha.get_random()
-	
-	if 'user_id' in session:
-		g.user = users.get_user_by_id(session['user_id'], full=True)
+    g.user = None
+    g.performer = None
+    g.params = {}
+    
+    g.params['feedbackform'] = forms.FeedBackForm()
+    g.params['feedback_captcha'] = captcha.get_random()
+    
+    g.params['loginform'] = forms.LoginForm()
+    
+    if 'user_id' in session:
+        g.user = users.get_user_by_id(session['user_id'], full=True)
 
-	if 'performer_id' in session:
-		g.performer = performers.get_performer(session['performer_id'])
+    if 'performer_id' in session:
+        g.performer = performers.get_performer(session['performer_id'])
 
 @app.after_request
 def after_request(response):

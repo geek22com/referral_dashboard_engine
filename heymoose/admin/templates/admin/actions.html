@@ -11,11 +11,12 @@
 				<th class="header right">ИД</th>
 				<th class="header">Исполнитель</th>
 				<th class="header">Заказ</th>
+				<th class="header">Приложение</th>
 				<th class="header center">Окончено</th>
 				<th class="header center">Создано</th>
 				<th class="header center">Подтверждено</th>
 				<th class="header right">Попытки</th>
-				<th class="header center">Удалено</th>
+				<th class="header center">Уд.</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -24,6 +25,7 @@
 				<td class="right"><a href="{{ url_for('.actions_info', id=action.id) }}">{{ action.id }}</a></td>
 				<td>{{ action.performer_id }}</td>
 				<td>{{ macros.order_href(action.order) }}</td>
+				<td>{{ macros.app_href(action.app) }}</td>
 				<td class="center">{{ macros.to_icon(action.done) }}</td>
 				<td class="center">{{ action.creation_time|datetimeformat }}</td>
 				<td class="center">{{ action.approve_time|datetimeformat }}</td>

@@ -58,6 +58,10 @@
 {% if gender == True %}муж{% elif gender == False %}жен{% else %}любой{% endif %}
 {% endmacro %}
 
+{% macro app_href(app) %}
+	<a href="{{ url_for('.apps_info', id=app.id) }}">{{ app.url }}</a>
+{% endmacro %}
+
 {% macro order_age(min, max) %}
 {% if min == None and max == None %}
 	любой

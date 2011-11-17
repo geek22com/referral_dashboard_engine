@@ -21,7 +21,7 @@
 			{% for app in apps %}
 			<tr>
 				<td class="right">{{ app.id }}</td>
-				<td><a href="{{ url_for('.apps_info', id=app.id) }}">{{ app.url }}</a></td>
+				<td>{{ macros.app_href(app) }}</td>
 				<td>{{ app.callback }}</td>
 				<td>{{ macros.user_href(app.user) }}</td>
 				<td>{{ app.platform }}</td>

@@ -8,6 +8,7 @@
 	<tbody>
 		<tr><th>Исполнитель</th><td>{{ action.performer_id }}</td></tr>
 		<tr><th>Заказ</th><td>{{ macros.order_href(action.order) }}</td></tr>
+		<tr><th>Приложение</th><td>{{ macros.app_href(action.app) }}</td></tr>
 		<tr><th>Окончено</th><td>{{ macros.to_icon(action.done) }}</td></tr>
 		<tr><th>Создано</th><td>{{ action.creation_time|datetimeformat }}</td></tr>
 		<tr><th>Подтверждено</th><td>{{ action.approve_time|datetimeformat }}</td></tr>

@@ -87,6 +87,7 @@ class Action(BaseModel):
 	              'performer',
 	              'offer_id',
 	              'order',
+	              'app',
 	              'done',
 	              'deleted',
 	              'creation_time',

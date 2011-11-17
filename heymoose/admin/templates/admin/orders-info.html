@@ -2,7 +2,63 @@
 
 {% set activetab = 'info' %}
 
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			function enableButton(btn) {
+				btn.removeAttr('disabled');
+			}
+			
+			function disableButton(btn) {
+				btn.attr('disabled', 'disabled');
+			}
+			
+			var btnEnable = $('#btn-enable');
+			var btnDisable = $('#btn-disable');
+			var btnToDisable = {% if order.disabled %}btnDisable{% else %}btnEnable{% endif %};
+			disableButton(btnToDisable);
+			
+			var urlDisable = '{{ url_for('.ajax_orders_disable', id=order.id) }}';
+			var urlEnable = '{{ url_for('.ajax_orders_enable', id=order.id) }}';
+			
+			btnEnable.click(function() {
+				if (confirm('Активировать заказ?')) {
+					$.post(urlEnable)
+						.success(function() {
+							disableButton(btnEnable);
+							enableButton(btnDisable);
+							toIcon($('#icon-enabled'), true);
+						})
+						.error(function(data) {
+							alert('Не удалось активировать заказ. Ошибка ' + data.status);
+						});
+				}
+			});
+			
+			btnDisable.click(function() {
+				if (confirm('Деактивировать заказ?')) {
+					$.post(urlDisable)
+						.success(function() {
+							disableButton(btnDisable);
+							enableButton(btnEnable);
+							toIcon($('#icon-enabled'), false);
+						})
+						.error(function(data) {
+							alert('Не удалось деактивировать заказ. Ошибка ' + data.status);
+						})
+				}
+			});
+		});
+	</script>
+{% endblock %}
+
 {% block tabcontent %}
+<div class="info-actions well clearboth">
+	<button id="btn-enable" class="btn success">Активировать</button>
+	<button id="btn-disable" class="btn danger">Деактивировать</button>
+</div>
+
 <table class="bordered-table key-value">
 	<thead></thead>
 	<tbody>
@@ -11,7 +67,7 @@
 		<tr><th>Тело</th><td><p>{{ order.body }}</p></td></tr>
 		<tr><th>Описание</th><td><p>{{ order.description }}</p></td></tr>
 		<tr><th>Создан</th><td>{{ order.creation_time|datetimeformat }}</td></tr>
-		<tr><th>Активен</th><td>{{ macros.to_icon(not order.disabled) }}</td></tr>
+		<tr><th>Активен</th><td id="icon-enabled">{{ macros.to_icon(not order.disabled) }}</td></tr>
 	</tbody>
 </table>
 

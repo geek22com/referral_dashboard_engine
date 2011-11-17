@@ -34,6 +34,11 @@
 			clear: both;
 		}
 		
+		div.info-actions {
+			padding: 14px 20px;
+			text-align: right;
+		}
+		
 		table.key-value tbody tr th {
 			width: 30%;
 		}
@@ -45,6 +50,7 @@
 	
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 	<script type="text/javascript" src="http://twitter.github.com/bootstrap/1.3.0/bootstrap-dropdown.js"></script>
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/admin.js') }}"></script>
 	
 	{% set activemenu = activemenu|default('index') %}
 	<script type="text/javascript">

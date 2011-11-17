@@ -1,4 +1,4 @@
-from flask import render_template, g, abort, request
+from flask import render_template, g, abort, request, make_response
 from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions as a
@@ -106,5 +106,16 @@ def users_info(id):
 def users_info_stats(id):
 	user = do_or_abort(a.users.get_user_by_id, id, full=True)
 	return render_template('admin/users-info-stats.html', user=user)
+
+
+@bp.route('/orders/<int:id>/q/enable', methods=['POST'])
+def ajax_orders_enable(id):
+	do_or_abort(a.orders.enable_order, id)
+	return 'OK'
+
+@bp.route('/orders/<int:id>/q/disable', methods=['POST'])
+def ajax_orders_disable(id):
+	do_or_abort(a.orders.disable_order, id)
+	return 'OK'
 
 

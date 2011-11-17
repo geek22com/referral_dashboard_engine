@@ -83,5 +83,6 @@ def fill_db():
 					platform=platforms[app.id % 3], # One platform per app!
 					secret=app.secret)
 	
+	
 if __name__ == '__main__':
 	fill_db()

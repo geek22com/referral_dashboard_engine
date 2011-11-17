@@ -8,25 +8,25 @@
 	<table class="zebra-striped">
 		<thead>
 			<tr>
-				<th class="header">ИД</th>
-				<th class="header">Секретный ключ</th>
-				<th class="header">Разработчик</th>
-				<th class="header">Callback</th>
+				<th class="header right">ИД</th>
 				<th class="header">URL</th>
-				<th class="header">Создано</th>
-				<th class="header">Уд.</th>
+				<th class="header">Callback</th>
+				<th class="header">Разработчик</th>
+				<th class="header">Платформа</th>
+				<th class="header center">Создано</th>
+				<th class="header center">Удалено</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for app in apps %}
 			<tr>
-				<td>{{ app.id }}</td>
-				<td><a href="{{ url_for('.apps_info', id=app.id) }}">{{ app.secret }}</a></td>
-				<td>{{ macros.user_href(app.user) }}</td>
+				<td class="right">{{ app.id }}</td>
+				<td><a href="{{ url_for('.apps_info', id=app.id) }}">{{ app.url }}</a></td>
 				<td>{{ app.callback }}</td>
-				<td>{{ app.url }}</td>
-				<td>{{ app.creation_time|datetimeformat }}</td>
-				<td>{{ macros.deleted(app.deleted) }}</td>
+				<td>{{ macros.user_href(app.user) }}</td>
+				<td>{{ app.platform }}</td>
+				<td class="center">{{ app.creation_time|datetimeformat }}</td>
+				<td class="center">{{ macros.deleted(app.deleted) }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

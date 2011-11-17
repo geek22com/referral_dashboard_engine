@@ -74,6 +74,7 @@ class App(BaseModel):
 	              'secret',
 	              'user_id',
 	              'user',
+	              'platform',
 	              'callback',
 	              'deleted',
                   'url',

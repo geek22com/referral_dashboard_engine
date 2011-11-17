@@ -12,6 +12,7 @@ def app_from_xml(app_element):
 				secret=get_value(app_element, 'secret'),
 				user_id=get_value(app_element, 'user-id', int),
 				user=user_from_xml(get_child(app_element, 'user')),
+				platform=get_value(app_element, 'platform'),
 				callback=get_value(app_element, 'callback'),
                 url=get_value(app_element, 'url'),
 				deleted=get_value(app_element, 'deleted', bool),

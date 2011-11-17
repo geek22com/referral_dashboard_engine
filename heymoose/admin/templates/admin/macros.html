@@ -16,37 +16,33 @@
 	<li><a href="{{ href }}">{{ title }}</a> <span class="divider">/</span></li>
 {% endmacro %}
 
-{% macro developer_href(user) %}
-	<a href="{{ url_for('.developers_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
-{% endmacro %}
-
-{% macro customer_href(user) %}
-	<a href="{{ url_for('.customers_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
+{% macro user_href(user) %}
+	<a href="{{ url_for('.users_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
 {% endmacro %}
 
 {% macro paginate(pages, rule) %}
 {% if pages.count > 1 %}
-<div class="pagination">
+<div class="pagination center">
 	<ul>
 		{% if pages.current != 1 %}
 		<li class="prev"><a href="{{ url_for(rule, page=1, **kwargs) }}">&#8606;</a></li>
-		<li class="prev"><a href="{{ url_for(rule, page=pages.current-1, **kwargs) }}">&larr;</a></li>
+		<li><a href="{{ url_for(rule, page=pages.current-1, **kwargs) }}">&larr;</a></li>
 		{% else %}
 		<li class="prev disabled"><a>&#8606;</a></li>
-		<li class="prev disabled"><a>&larr;</a></li>
+		<li class="disabled"><a>&larr;</a></li>
 		{% endif %}
 		
-		{% for page in range(1, pages.count+1) %}
+		{% for page in pages.range %}
 		<li {% if page == pages.current %}class="active"{% endif %}>
 			<a href="{{ url_for(rule, page=page, **kwargs) }}">{{ page }}</a>
 		</li>
 		{% endfor %}
 		
 		{% if pages.current != pages.count %}
-		<li class="next"><a href="{{ url_for(rule, page=pages.current+1, **kwargs) }}">&rarr;</a></li>
+		<li><a href="{{ url_for(rule, page=pages.current+1, **kwargs) }}">&rarr;</a></li>
 		<li class="next"><a href="{{ url_for(rule, page=pages.count, **kwargs) }}">&#8608;</a></li>
 		{% else %}
-		<li class="next disabled"><a>&rarr;</a></li>
+		<li class="disabled"><a>&rarr;</a></li>
 		<li class="next disabled"><a>&#8608;</a></li>
 		{% endif %}
 	</ul>

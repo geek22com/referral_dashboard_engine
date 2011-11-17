@@ -60,20 +60,6 @@ def apps_info_stats(id):
 	return render_template('admin/apps-info-stats.html', app=app)
 
 
-@bp.route('/customers/<int:id>')
-def customers_info(id):
-	customer = do_or_abort(a.users.get_user_by_id, id, full=True)
-	if not customer.is_customer(): abort(404)
-	return '{0} ({1})'.format(customer.nickname, customer.email)
-
-
-@bp.route('/developers/<int:id>')
-def developers_info(id):
-	developer = do_or_abort(a.users.get_user_by_id, id, full=True)
-	if not developer.is_developer(): abort(404)
-	return '{0} ({1})'.format(developer.nickname, developer.email)
-
-
 @bp.route('/actions/')
 def actions():
 	page = convert.to_int(request.args.get('page'), 1)
@@ -86,4 +72,39 @@ def actions():
 @bp.route('/actions/stats')
 def actions_stats():
 	return render_template('admin/actions-stats.html')
+
+@bp.route('/actions/<int:id>')
+def actions_info(id):
+	action = do_or_abort(a.actions.get_action, id, full=True)
+	return render_template('admin/actions-info.html', action=action)
+
+@bp.route('/actions/<int:id>/stats')
+def actions_info_stats(id):
+	action = do_or_abort(a.actions.get_action, id, full=True)
+	return render_template('admin/actions-info-stats.html', action=action)
+
+
+@bp.route('/users/')
+def users():
+	page = convert.to_int(request.args.get('page'), 1)
+	count = a.users.get_users_count()
+	per_page = app.config.get('ADMIN_USERS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	usrs = do_or_abort(a.users.get_users, offset=offset, limit=limit, full=True)
+	return render_template('admin/users.html', users=usrs, pages=pages)
+
+@bp.route('/users/stats')
+def users_stats():
+	return render_template('admin/users-stats.html')
+
+@bp.route('/users/<int:id>')
+def users_info(id):
+	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	return render_template('admin/users-info.html', user=user)
+
+@bp.route('/users/<int:id>/stats')
+def users_info_stats(id):
+	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	return render_template('admin/users-info-stats.html', user=user)
+
 

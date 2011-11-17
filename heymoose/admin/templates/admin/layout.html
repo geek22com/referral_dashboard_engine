@@ -34,7 +34,7 @@
 			clear: both;
 		}
 		
-		th.key {
+		table.key-value tbody tr th {
 			width: 30%;
 		}
 		
@@ -70,28 +70,10 @@
 
 				<ul class="nav">
 					<li id="menu-item-index"><a href="{{ url_for('.index') }}">Панель управления</a></li>
-					<li class="dropdown">
-						<a class="dropdown-toggle" href="#">Разработчики</a>
-						<ul class="dropdown-menu">
-							<li id="menu-item-developers"><a href="#">Разработчики</a></li>
-							<li id="menu-item-apps"><a href="{{ url_for('.apps') }}">Приложения</a></li>
-						</ul>
-					</li>
-					<li class="dropdown">
-						<a class="dropdown-toggle" href="#">Рекламодатели</a>
-						<ul class="dropdown-menu">
-							<li id="menu-item-customers"><a href="#">Рекламодатели</a></li>
-							<li id="menu-item-orders"><a href="{{ url_for('.orders') }}">Заказы</a></li>
-							<li id="menu-item-offers"><a href="#">Офферы</a></li>
-						</ul>
-					</li>
-					<li class="dropdown">
-						<a class="dropdown-toggle" href="#">Исполнители</a>
-						<ul class="dropdown-menu">
-							<li id="menu-item-performers"><a href="#">Исполнители</a></li>
-							<li id="menu-item-actions"><a href="{{ url_for('.actions') }}">Действия</a></li>
-						</ul>
-					</li>
+					<li id="menu-item-users"><a href="{{ url_for('.users') }}">Пользователи</a></li>
+					<li id="menu-item-apps"><a href="{{ url_for('.apps') }}">Приложения</a></li>
+					<li id="menu-item-orders"><a href="{{ url_for('.orders') }}">Заказы</a></li>
+					<li id="menu-item-actions"><a href="{{ url_for('.actions') }}">Действия</a></li>
 				</ul>
 				
 				<ul class="nav secondary-nav">

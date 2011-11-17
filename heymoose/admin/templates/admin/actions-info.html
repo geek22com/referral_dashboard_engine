@@ -1,0 +1,21 @@
+{% extends "admin/actions-info-layout.html" %}
+
+{% set activetab = 'info' %}
+
+{% block tabcontent %}
+<table class="bordered-table key-value">
+	<thead></thead>
+	<tbody>
+		<tr><th>Исполнитель</th><td>{{ action.performer_id }}</td></tr>
+		<tr><th>Заказ</th><td>{{ macros.order_href(action.order) }}</td></tr>
+		<tr><th>Окончено</th><td>{{ macros.to_icon(action.done) }}</td></tr>
+		<tr><th>Создано</th><td>{{ action.creation_time|datetimeformat }}</td></tr>
+		<tr><th>Подтверждено</th><td>{{ action.approve_time|datetimeformat }}</td></tr>
+		<tr><th>Количество попыток</th><td>{{ action.attempts }}</td></tr>
+		{% if action.deleted %}
+		<tr><th></th><td>{{ macros.deleted(action.deleted) }} Действие удалено</td></tr>
+		{% endif %}
+	</tbody>
+</table>
+
+{% endblock %}

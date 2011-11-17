@@ -5,7 +5,7 @@
 {% set activemenu = "orders" %}
 
 {% block extrahead %}
-{% set activetab = activetab|default('list') %}
+{% set activetab = activetab|default('info') %}
 <script type="text/javascript">
 	$(function() { 
 		$('li#tab-{{ activetab }}').addClass('active');

@@ -64,3 +64,23 @@ def create_order():
 @customer_only
 def delete_order(order_id):
 	return redirect(url_for('user_cabinet'))
+
+@frontend.route('/order_form', methods=['POST', 'GET'])
+@customer_only
+def order_form():
+	if request.method == 'POST':
+		pass
+		#file = request.files['questionlist']
+		#if file:
+			#g.params['questionlist'] = file.stream.read().decode('utf8')
+	return order_form_template()
+
+@frontend.route('/approve_order/<order_id>', methods = ['POST', 'GET'])
+@admin_only
+def approve_order(order_id=None):
+	order_id = int(order_id)
+	if not order_id:
+		return redirect(url_for('user_cabinet'))
+
+	orders.approve_order(order_id)
+	return redirect(url_for('admin.index'))

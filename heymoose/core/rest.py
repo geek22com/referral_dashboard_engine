@@ -44,9 +44,11 @@ def get(path, base=URL_BASE, params_dict={}, renderer=etree.fromstring):
 def post(path, base=URL_BASE, params_dict={}):
 	app_logger.debug("post: base={0} path={1} payload={2}".format(base, path, forms.form_encode(params_dict)))
 	resource = create_resource()
-	exec_request(partial(resource.post,
-	                              path=path,
-	                              payload=forms.form_encode(params_dict)))
+	response = exec_request(partial(resource.post, path=path, payload=forms.form_encode(params_dict)))
+	resp = response.body_string()
+	if response.charset != 'utf8':
+		resp = resp.decode('utf8')
+	return resp
 
 def put(path, base=URL_BASE, params_dict={}):
 	app_logger.debug("put: base={0} path={1} payload={2}".format(base, path, forms.form_encode(params_dict)))

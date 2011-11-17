@@ -1,0 +1,34 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Пользователь {{ user.nickname }}{% endblock %}
+
+{% set activemenu = "users" %}
+
+{% block extrahead %}
+{% set activetab = activetab|default('info') %}
+<script type="text/javascript">
+	$(function() { 
+		$('li#tab-{{ activetab }}').addClass('active');
+	})
+</script>
+{% endblock %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Пользователи', url_for('.users')) }}
+	{{ macros.breadcrumb(self.title(), url_for('.users_info', id=user.id)) }}
+{% endblock %}
+
+{% block pageheader %}
+<h1>{{ self.title() }} <small>{{ user.email }}</small></h1>
+{% endblock %}
+
+{% block content %}
+<ul class="tabs">
+	<li id="tab-info"><a href="{{ url_for('.users_info', id=user.id) }}">Общее</a></li>
+	<li id="tab-stats"><a href="{{ url_for('.users_info_stats', id=user.id) }}">Статистика</a></li>
+</ul>
+
+{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+{% endblock %}
+

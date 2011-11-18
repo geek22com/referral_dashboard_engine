@@ -46,6 +46,9 @@ dev-undeploy:
 dev-run:
 	$(ENV_PY) runserver.py
 
+dev-db:
+	$(ENV_PY) dbfill.py
+
 all:
 	rm -rf ./frontend_deb
 	mkdir ./frontend_deb

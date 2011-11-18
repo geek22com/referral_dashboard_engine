@@ -1,3 +1,14 @@
+import os, sys
+
+this_path = os.path.realpath(os.path.dirname(__file__))
+project_path = os.path.join(this_path, "heymoose")
+config_path = os.path.join(this_path, "config_debug.py")
+
+if project_path not in sys.path:
+	sys.path.insert(0, project_path)
+
+os.environ["FRONTEND_SETTINGS_PATH"] = config_path
+
 from werkzeug import generate_password_hash
 from heymoose.core import actions
 from heymoose.core.actions import api

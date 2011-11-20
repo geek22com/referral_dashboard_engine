@@ -4,5 +4,6 @@ heymoose_production.py usr/share/nginx/www/frontend_production
 uwsgi etc/init.d
 config.py etc/frontend
 heymoose/static/* /usr/share/nginx/www/static
+heymoose/admin/static/* /usr/share/nginx/www/static
 notifier/worker.py /usr/local/notifier
 notifier/notifier /etc/init.d

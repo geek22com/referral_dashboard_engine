@@ -40,7 +40,8 @@ def create_app():
 	if request.method == "POST" and app_form.validate():
 		apps.add_app(user_id=g.user.id,
 						callback=app_form.appcallback.data,
-                        url=app_form.appurl.data)
+                        url=app_form.appurl.data,
+                        platform=app_form.appplatform.data)
 		return redirect(url_for('user_cabinet'))
 
 	flash_form_errors(app_form.errors.values(), 'apperror')

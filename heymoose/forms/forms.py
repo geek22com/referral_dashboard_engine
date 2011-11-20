@@ -67,7 +67,8 @@ class OrderForm(Form):
 class AppForm(Form):
 	appcallback = TextField('appcallback', [validators.Required(message = ('Введите callback'))])
 	appurl = TextField('appurl', [validators.Required(message = ('Введите appurl для возврата в ваше приложение'))])
-
+	appplatform = SelectField('appplatform', choices=[('VKONTAKTE','VKONTAKTE'),('FACEBOOK','FACEBOOK'),('ODNOKLASSNIKI','ODNOKLASSNIKI')])
+	
 class BalanceForm(Form):
 	amount = IntegerField('orderbalance', [validators.Required(message = ('Укажите баланс')),
 						validators.NumberRange(min=1, max=3000000, message=('Допустимый баланс от 1 до 3000000 рублей'))])

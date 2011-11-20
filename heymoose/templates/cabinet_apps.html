@@ -15,6 +15,7 @@
 				<th class="header">Callback Url</th>
 				<th class="header">App Url</th>
 				<th class="header right">Secret Key</th>
+				<th class="header right">Платформа</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -24,6 +25,7 @@
 				<td>{{ app.callback }}</td>
 				<td>{{ app.url }}</td>
 				<td class="right">{{ app.secret }}</td>
+				<td class="right">{{ app.platform }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

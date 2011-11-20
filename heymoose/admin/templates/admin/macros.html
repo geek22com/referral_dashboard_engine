@@ -16,10 +16,6 @@
 	<li><a href="{{ href }}">{{ title }}</a> <span class="divider">/</span></li>
 {% endmacro %}
 
-{% macro user_href(user) %}
-	<a href="{{ url_for('.users_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
-{% endmacro %}
-
 {% macro paginate(pages, rule) %}
 {% if pages.count > 1 %}
 <div class="pagination center">
@@ -50,16 +46,24 @@
 {% endif %}
 {% endmacro %}
 
+{% macro user_href(user) %}
+	<a href="{{ url_for('.users_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
+{% endmacro %}
+
+{% macro performer_href(performer) %}
+	<a href="{{ url_for('.performers_info', id=performer.id) }}">{{ performer.ext_id }} ({{ performer.platform }})</a>
+{% endmacro %}
+
 {% macro order_href(order) %}
 	<a href="{{ url_for('.orders_info', id=order.id) }}">{{ order.title }}</a>
 {% endmacro %}
 
-{% macro order_gender(gender) %}
-{% if gender == True %}муж{% elif gender == False %}жен{% else %}любой{% endif %}
-{% endmacro %}
-
 {% macro app_href(app) %}
 	<a href="{{ url_for('.apps_info', id=app.id) }}">{{ app.url }}</a>
+{% endmacro %}
+
+{% macro order_gender(gender) %}
+{% if gender == True %}муж{% elif gender == False %}жен{% else %}любой{% endif %}
 {% endmacro %}
 
 {% macro order_age(min, max) %}
@@ -73,4 +77,8 @@
 		{% if max != None %}до {{ max }}{% endif %}
 	{% endif %}
 {% endif %}
+{% endmacro %}
+
+{% macro performer_gender(gender) %}
+{% if gender == True %}муж{% elif gender == False %}жен{% else %}неизв.{% endif %}
 {% endmacro %}

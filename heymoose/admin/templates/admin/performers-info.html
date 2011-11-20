@@ -1,0 +1,34 @@
+{% extends "admin/performers-info-layout.html" %}
+
+{% set activetab = 'info' %}
+
+{% block tabcontent %}
+<table class="bordered-table key-value">
+	<thead></thead>
+	<tbody>
+		<tr><th>UID</th><td>{{ performer.ext_id }}</td></tr>
+		<tr><th>Платформа</th><td>{{ performer.platform }}</td></tr>
+		<tr>
+			<th>Приглашение от</th>
+			<td>
+				{% if performer.inviter %}
+					{{ macros.performer_href(performer.inviter) }}
+				{% else %}
+					&mdash;
+				{% endif %}
+			</td>
+		</tr>
+		<tr><th>Создан</th><td>{{ performer.creation_time|datetimeformat }}</td></tr>
+	</tbody>
+</table>
+
+<h2>Личная информация</h2>
+<table class="bordered-table key-value">
+	<thead></thead>
+	<tbody>
+		<tr><th>Год рождения</th><td>{{ performer.year|default('неизв.', true) }}</td></tr>
+		<tr><th>Пол</th><td>{{ macros.performer_gender(performer.male) }}</td></tr>
+	</tbody>
+</table>
+
+{% endblock %}

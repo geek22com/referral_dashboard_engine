@@ -1,0 +1,47 @@
+{% extends "admin/performers-layout.html" %}
+
+{% set activetab = 'list' %}
+
+{% block tabcontent %}
+
+{% if performers %}
+	<table class="zebra-striped">
+		<thead>
+			<tr>
+				<th class="header right">ИД</th>
+				<th class="header">UID</th>
+				<th class="header">Платформа</th>
+				<th class="header">Приглашение от</th>
+				<th class="header center">Год рожд.</th>
+				<th class="header center">Пол</th>
+				<th class="header center">Создан</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for performer in performers %}
+			<tr>
+				<td class="right"><a href="{{ url_for('.performers_info', id=performer.id) }}">{{ performer.id }}</a></td>
+				<td>{{ performer.ext_id }}</td>
+				<td>{{ performer.platform }}</td>
+				<td>
+					{% if performer.inviter %}
+						{{ macros.performer_href(performer.inviter) }}
+					{% else %}
+						&mdash;
+					{% endif %}
+				</td>
+				<td class="center">{{ performer.year|default('неизв.', true) }}</td>
+				<td class="center">{{ macros.performer_gender(performer.male) }}</td>
+				<td class="center">{{ performer.creation_time|datetimeformat }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{{ macros.paginate(pages, '.performers') }}
+{% else %}
+	<div class="clearboth alert-message block-message info">
+		<p><strong>Список пуст.</strong> Еще не было зарегистрировано ни одного исполнителя.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

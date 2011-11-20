@@ -94,3 +94,13 @@ class Action(BaseModel):
 	              'creation_time',
 	              'approve_time',
 	              'attempts']
+	
+	
+class Performer(BaseModel):
+	attributes = ['id',
+				  'ext_id',
+				  'platform',
+				  'creation_time',
+				  'inviter',
+				  'male',
+				  'year']

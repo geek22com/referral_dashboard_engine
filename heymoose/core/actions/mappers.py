@@ -57,6 +57,7 @@ def action_from_xml(action_element):
 	if action_element is None: return None
 	return Action(id=get_attr(action_element, 'id', int),
 				performer_id=get_value(action_element, 'performer-id', int),
+				performer=performer_from_xml(get_child(action_element, 'performer')),
 				offer_id=get_value(action_element, 'offer-id', int),
 				order=order_from_xml(get_child(action_element, 'order')),
 				app=app_from_xml(get_child(action_element, 'app')),

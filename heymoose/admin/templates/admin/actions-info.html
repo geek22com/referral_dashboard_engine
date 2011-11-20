@@ -6,7 +6,7 @@
 <table class="bordered-table key-value">
 	<thead></thead>
 	<tbody>
-		<tr><th>Исполнитель</th><td>{{ action.performer_id }}</td></tr>
+		<tr><th>Исполнитель</th><td>{{ macros.performer_href(action.performer) }}</td></tr>
 		<tr><th>Заказ</th><td>{{ macros.order_href(action.order) }}</td></tr>
 		<tr><th>Приложение</th><td>{{ macros.app_href(action.app) }}</td></tr>
 		<tr><th>Окончено</th><td>{{ macros.to_icon(action.done) }}</td></tr>

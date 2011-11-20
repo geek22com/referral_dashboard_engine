@@ -62,7 +62,7 @@ def fill_db():
 				userId=customer.id,
 				title='order {0}-{1}'.format(customer.id, i),
 				body='http://ya.ru',
-				balance=i*10 + customer.id*10 + 10,
+				balance=i*100 + customer.id*10 + 10,
 				cpa=i + customer.id + 1,
 				desc='The best order from {0} number {1}'.format(customer.nickname, i),
 				image_data='aaaa',

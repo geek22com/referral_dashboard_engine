@@ -63,6 +63,7 @@ class Order(BaseModel):
 	              'body',
 	              'description',
 	              'auto_approve',
+	              'reentrant',
 	              'allow_negative_balance',
 	              'male',
 	              'min_age',

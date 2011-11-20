@@ -68,6 +68,8 @@
 		<tr><th>Описание</th><td><p>{{ order.description }}</p></td></tr>
 		<tr><th>Создан</th><td>{{ order.creation_time|datetimeformat }}</td></tr>
 		<tr><th>Активен</th><td id="icon-enabled">{{ macros.to_icon(not order.disabled) }}</td></tr>
+		<tr><th>Авто-подтверждение</th><td>{{ macros.to_icon(order.auto_approve) }}</td></tr>
+		<tr><th>Повторное прохождение</th><td>{{ macros.to_icon(order.reentrant) }}</td></tr>
 	</tbody>
 </table>
 

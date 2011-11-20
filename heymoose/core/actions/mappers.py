@@ -34,6 +34,7 @@ def order_from_xml(order_element):
 				body=get_value(order_element, 'body'),
 				description=get_value(order_element, 'description'),
 				auto_approve=get_value(order_element, 'auto-approve', bool),
+				reentrant=get_value(order_element, 'reentrant', bool),
 				# Targeting fields
 				male=get_value(order_element, 'male', bool),
 				min_age=get_value(order_element, 'min-age'),

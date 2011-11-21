@@ -187,17 +187,20 @@ def ajax_orders_info_stats_ctr(id):
 	dtend = fend(to)
 	
 	# Generate some test random data
-	checkpoints = times.datetime_range(times.MINUTELY, dtstart=dtbegin, until=dtend)
-	clicks = [random.choice(checkpoints) for _x in range(10)]
+	#checkpoints = times.datetime_range(times.MINUTELY, dtstart=dtbegin, until=dtend)
+	#clicks = [random.choice(checkpoints) for _x in range(10)]
 	#shows = [random.choice(checkpoints) for _x in range(10000)]
-	shows = sh.get_shows_range(dtbegin, dtend, offerId=order.id) # TODO: need offer_id
+	
+	# But this is real data from backend
+	acts = a.actions.get_actions_range(dtbegin, dtend, offerId=order.offer_id)
+	shows = sh.get_shows_range(dtbegin, dtend, offerId=order.offer_id)
 	
 	# List of all times in interval with period depending on group
 	keys = times.datetime_range(freq, dtstart=dtbegin, until=dtend)
 	
 	# Fill result dict with test data
 	result = dict([(key, [0, 0]) for key in keys])
-	for click in clicks: result[fbegin(click)][0] += 1
+	for act in acts: result[fbegin(act.creation_time)][0] += 1
 	for show in shows: result[fbegin(show.show_time)][1] += 1
 	
 	# This magic expression transforms dict to list of dicts sorted by datetime	

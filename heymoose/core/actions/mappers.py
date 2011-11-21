@@ -30,6 +30,7 @@ def order_from_xml(order_element):
 				balance=get_value(order_element, 'balance', float),
 				allow_negative_balance=get_value(order_element, 'allow-negative-balance', bool),
 				# Offer fields
+				offer_id=get_value(order_element, 'offer-id', int),
 				title=get_value(order_element, 'title'),
 				body=get_value(order_element, 'body'),
 				description=get_value(order_element, 'description'),

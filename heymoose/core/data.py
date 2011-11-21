@@ -59,6 +59,7 @@ class Order(BaseModel):
 				  'cpa',
 	              'disabled',
 	              'creation_time',
+	              'offer_id',
 	              'title',
 	              'body',
 	              'description',

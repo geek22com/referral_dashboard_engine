@@ -11,7 +11,9 @@
 		{% endblock %}
 	</title>
 	
-	<link rel="stylesheet" type="text/css" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.8.16/themes/flick/jquery-ui.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='./css/timepicker-addon.css') }}" media="all" />
 	
 	<style type="text/css">
 		body {
@@ -34,8 +36,16 @@
 			clear: both;
 		}
 		
-		div.info-actions {
+		div.well {
 			padding: 14px 20px;
+			clear: both;
+		}
+		
+		div.well form {
+			margin: 0;
+		}
+		
+		div.info-actions {
 			text-align: right;
 			clear: both;
 		}
@@ -47,15 +57,30 @@
 		.center { text-align: center; }
 		.left { text-align: left; }
 		.right { text-align: right; }
+		.float-right { float: right; }
+		
+		div.scroll-area-x {
+			overflow-x: scroll;
+		}
+		
+		div.ui-datepicker {
+			font-size: 12px;
+		}
 	</style>
 	
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.8.16/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="http://jqueryui.com/ui/i18n/jquery.ui.datepicker-ru.js"></script>
 	<script type="text/javascript" src="http://twitter.github.com/bootstrap/1.3.0/bootstrap-dropdown.js"></script>
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('.static', filename='./js/admin.js') }}"></script>
 	
 	{% set activemenu = activemenu|default('index') %}
 	<script type="text/javascript">
 		$(function() {
+			// Make datepicker Russian by default
+			$.datepicker.setDefaults($.datepicker.regional['ru']);
+			
 			$('#topbar').dropdown();
 			$('li#menu-item-{{ activemenu }}').addClass('active');
 			

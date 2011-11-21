@@ -8,6 +8,11 @@ APP_ID = "243934035656884"
 APP_SECRET = "054cec4abf69a4dd6fcaa4b75cd04f01"
 DEVELOPER_SECRET_KEY = "3ca2a85b953ffef29625ffc11df61eee"
 
+DATETIME_FORMAT = '%d.%m.%Y %H:%M:%S'
+DATETIME_NOSEC_FORMAT = DATETIME_FORMAT[:-3]
+DATE_FORMAT = DATETIME_FORMAT.split(' ')[0]
+DATE_FORMAT = DATETIME_FORMAT.split(' ')[1]
+
 #backend parameters
 APP_EMAIL = "ks.shilov@gmail.com"
 

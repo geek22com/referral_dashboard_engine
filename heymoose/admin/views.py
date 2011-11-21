@@ -3,6 +3,7 @@ from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions as a
 from heymoose.core.actions import performers as perf
+from heymoose.core.actions import shows as sh
 from heymoose.utils import convert, times
 from heymoose.utils.shortcuts import do_or_abort, paginate
 import random
@@ -146,7 +147,7 @@ def ajax_orders_disable(id):
 
 @bp.route('/orders/<int:id>/stats/q/ctr/')
 def ajax_orders_info_stats_ctr(id):
-	_order = do_or_abort(a.orders.get_order, id, full=True)
+	order = do_or_abort(a.orders.get_order, id, full=True)
 	
 	# Some parameters for aggregation
 	config = dict(
@@ -187,8 +188,9 @@ def ajax_orders_info_stats_ctr(id):
 	
 	# Generate some test random data
 	checkpoints = times.datetime_range(times.MINUTELY, dtstart=dtbegin, until=dtend)
-	clicks = [random.choice(checkpoints) for _x in range(10000)]
-	shows = [random.choice(checkpoints) for _x in range(10000)]
+	clicks = [random.choice(checkpoints) for _x in range(10)]
+	#shows = [random.choice(checkpoints) for _x in range(10000)]
+	shows = sh.get_shows_range(dtbegin, dtend, offerId=order.id) # TODO: need offer_id
 	
 	# List of all times in interval with period depending on group
 	keys = times.datetime_range(freq, dtstart=dtbegin, until=dtend)
@@ -196,7 +198,7 @@ def ajax_orders_info_stats_ctr(id):
 	# Fill result dict with test data
 	result = dict([(key, [0, 0]) for key in keys])
 	for click in clicks: result[fbegin(click)][0] += 1
-	for show in shows: result[fbegin(show)][1] += 1
+	for show in shows: result[fbegin(show.show_time)][1] += 1
 	
 	# This magic expression transforms dict to list of dicts sorted by datetime	
 	json_result = [dict(time=format(key), clicks=value[0], shows=value[1]) \

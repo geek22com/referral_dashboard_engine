@@ -1,5 +1,5 @@
 from heymoose.core.actions.base import get_value, get_attr, get_child
-from heymoose.core.data import User, App, Order, Action, Performer
+from heymoose.core.data import User, App, Order, Action, Performer, OrderShow
 from heymoose.utils.convert import datetime_from_api
 
 def role_from_xml(role_element):
@@ -76,6 +76,12 @@ def performer_from_xml(performer_element):
 				inviter=performer_from_xml(get_child(performer_element, 'inviter')),
 				male=get_value(performer_element, 'male', bool),
 				year=get_value(performer_element, 'year', int))
+	
+	
+def order_show_from_xml(show_element):
+	if show_element is None: return None
+	return OrderShow(id=get_attr(show_element, 'id', int),
+				show_time=datetime_from_api(show_element.text))
 	
 	
 def count_from_xml(count_element):

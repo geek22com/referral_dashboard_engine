@@ -104,3 +104,8 @@ class Performer(BaseModel):
 				  'inviter',
 				  'male',
 				  'year']
+	
+	
+class OrderShow(BaseModel):
+	attributes = ['id',
+				  'show_time']

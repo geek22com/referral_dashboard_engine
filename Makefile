@@ -48,6 +48,9 @@ dev-run:
 
 dev-db:
 	$(ENV_PY) dbfill.py
+	
+dev-py:
+	$(ENV_PY)
 
 all:
 	rm -rf ./frontend_deb

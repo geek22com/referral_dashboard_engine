@@ -1,4 +1,5 @@
 from heymoose.core.rest import get
+from heymoose.core.actions.apps import get_app
 import hashlib
 
 resource_path = "/api"
@@ -20,7 +21,8 @@ def api_get(params, secret):
 	return get(path=resource_path, params_dict=params, renderer=unicode)
 
 # For debug perposes
-def do_offer(offer_id, app_id, uid, platform, secret):
+def do_offer(offer_id, app_id, uid, platform, secret=None):
+	if secret is None: secret = get_app(app_id).secret
 	params = dict(
 		method='doOffer',
 		app_id=app_id,
@@ -29,10 +31,23 @@ def do_offer(offer_id, app_id, uid, platform, secret):
 		platform=platform)
 	return api_get(params, secret)
 
-def get_offers(app_id, uid, secret):
+def get_offers(app_id, uid, secret=None):
+	if secret is None: secret = get_app(app_id).secret
 	params = dict(
 		method='getOffers',
 		app_id=app_id,
 		uid=uid)
 	return api_get(params, secret)
+
+def introduce_performer(app_id, uid, sex, year, secret=None):
+	if secret is None: secret = get_app(app_id).secret
+	params = dict(
+		method='introducePerformer',
+		app_id=app_id,
+		uid=uid,
+		sex=sex,
+		year=year)
+	return api_get(params, secret)
+	
+	
 	

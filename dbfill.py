@@ -12,7 +12,8 @@ os.environ["FRONTEND_SETTINGS_PATH"] = config_path
 from werkzeug import generate_password_hash
 from heymoose.core import actions
 from heymoose.core.actions import api
-import time
+from heymoose.core.actions import performers as perf
+import time, random
 
 pw = generate_password_hash('password')
 email_admin = 'a@a.ru'
@@ -71,6 +72,8 @@ def fill_db():
 				maxAge=i + customer.id + 15)
 			actions.orders.enable_order(id)
 			orders.append(actions.orders.get_order(id))
+	
+	platforms = ('VKONTAKTE', 'FACEBOOK', 'ODNOKLASSNIKI')
 			
 	# Create apps for developers
 	apps = []
@@ -79,11 +82,11 @@ def fill_db():
 			id = actions.apps.add_app(
 				user_id=developer.id,
 				callback='http://google.com',
-				url='http://google.com')
+				url='http://google.com',
+				platform=platforms[i % 3])
 			apps.append(actions.apps.get_app(id))
 			
 	# Create actions for apps and offers
-	platforms = ('VKONTAKTE', 'FACEBOOK', 'ODNOKLASSNIKI')
 	for app in apps:
 		for order in orders:
 			for i in range(actions_per_app_and_order):
@@ -94,6 +97,32 @@ def fill_db():
 					platform=platforms[app.id % 3], # One platform per app!
 					secret=app.secret)
 	
+	# Get all created performers
+	actions_count = len(apps) * len(orders)
+	performers = []
+	for i in range(1, actions_count+1):
+		try:
+			performers.append(perf.get_performer(i))
+		except:
+			print 'No performer with uid {0}'.format(i)
+	
+	# Introduce our performers
+	for app in apps:
+		for performer in performers:
+			if app.platform == performer.platform:
+				api.introduce_performer(
+					app.id,
+					uid=performer.ext_id,
+					sex=random.choice(['MALE', 'FEMALE']),
+					year=random.randint(1970, 2006),
+					secret=app.secret)
+				
+	# Generate some random shows for offers
+	for app in apps:
+		for performer in performers:
+			if app.platform == performer.platform and random.choice([True, False]):
+				api.get_offers(app.id, performer.ext_id, app.secret)
+
 	
 if __name__ == '__main__':
 	fill_db()

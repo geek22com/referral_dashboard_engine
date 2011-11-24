@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+		addedToStage="onAddedToStage(event)">
+	<fx:Script>
+		<![CDATA[
+        import com.heymoose.HeyMoose;
+		import com.heymoose.statics.HeyMooseBirthDate;
+		import com.heymoose.statics.HeyMoosePlatform;
+		import com.heymoose.utils.chain.Chain;
+		import com.heymoose.statics.HeyMooseSex;
+
+		import mx.controls.Alert;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+
+		import vk.APIConnection;
+
+		[Bindable]
+		public var sex:String;
+		[Bindable]
+		public var year:String;
+
+
+		private function onAddedToStage( e:Event ):void
+		{
+			var flashVars:Object = stage.loaderInfo.parameters as Object;
+			if ( !flashVars.api_id )
+			{
+				flashVars['api_id'] = '1946559';
+				flashVars['viewer_id'] = '1507618';
+				flashVars['sid'] = '0166fdafdd0f28055cf74e7de09b86ce3dea16812a9f06d7862b0910f48686';
+				flashVars['secret'] = 'e74fe1dfca';
+			}
+
+			var VK:APIConnection = new APIConnection( flashVars );
+
+			// Example of API request
+			VK.api( 'getProfiles', { uids: flashVars['viewer_id'], fields:'sex,bdate' }, fetchUserInfo, onApiRequestFail );
+		}
+
+
+		private function fetchUserInfo( data:Object ):void
+		{
+			sex = HeyMooseSex.convert( data[0]['sex'], HeyMoosePlatform.vkontakte );
+			year = HeyMooseBirthDate.convert( data[0]['bdate'], HeyMoosePlatform.vkontakte );
+		}
+
+
+		private function onApiRequestFail( data:Object ):void
+		{
+			trace( "Error: " + data.error_msg + "\n" );
+		}
+
+
+		private function button1_clickHandler( event:MouseEvent ):void
+		{
+			var lib:HeyMoose = HeyMoose.instance;
+			lib.init( 16, "67c629b3-ebe7-411d-a793-238a43c29463", "1507618", HeyMoosePlatform.vkontakte, rewardCallback );
+
+			var chain:Chain = new Chain( this );
+			chain.addAsyncCommand( lib.introducePerformer, [sex, year] );
+			chain.addAsyncCommand( lib.getOffers, [filterTB.text], showOffer );
+			chain.start();
+		}
+
+
+		private function showOffer( result:ResultEvent ):void
+		{
+			Alert.show( result.result.toString() );
+		}
+
+
+		private function rewardCallback( payment:int ):String
+		{
+			var coins:int = payment * 100;
+			var str:String
+			if ( coins % 10 == 1 )
+			{
+				str = " Золотой";
+			} else
+			{
+				str = " Золотых";
+			}
+			return coins.toString() + str;
+		}
+		]]>
+	</fx:Script>
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+		<s:Label text="Sex: {sex}"/>
+		<s:Label text="Year: {year}"/>
+		<s:TextInput id="filterTB" prompt="filter" text="1:5,2:1"/>
+		<s:Button click="button1_clickHandler(event)" label="Get offers1"/>
+	</s:VGroup>
+
+</s:Application>

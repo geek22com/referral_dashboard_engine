@@ -46,11 +46,15 @@ dev-undeploy:
 dev-run:
 	$(ENV_PY) runserver.py
 
+dev-reset:
+	sudo -u postgres psql -c "drop database heymoose;"
+	sudo -u postgres psql -c "create database heymoose;"
+
 dev-db:
 	$(ENV_PY) dbfill.py
 	
 dev-py:
-	$(ENV_PY)
+	$(ENV_PY) $(arg)
 
 all:
 	rm -rf ./frontend_deb

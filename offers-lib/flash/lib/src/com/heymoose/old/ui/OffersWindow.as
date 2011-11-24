@@ -1,8 +1,8 @@
 package com.heymoose.old.ui
 {
 
-	import com.heymoose.events.RPCEvent;
-	import com.heymoose.rpc.OffersService;
+	import com.heymoose.old.events.RPCEvent;
+	import com.heymoose.old.rpc.OffersService;
 
 	import flash.text.TextField;
 	import flash.text.TextFormat;

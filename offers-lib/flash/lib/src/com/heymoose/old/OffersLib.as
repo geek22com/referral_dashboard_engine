@@ -2,9 +2,9 @@ package
 com.heymoose.old
 {
 
-	import com.heymoose.rpc.OffersService;
-	import com.heymoose.ui.OfferBanner;
-	import com.heymoose.ui.OffersWindow;
+	import com.heymoose.old.rpc.OffersService;
+	import com.heymoose.old.ui.OfferBanner;
+	import com.heymoose.old.ui.OffersWindow;
 
 	import flash.display.MovieClip;
 

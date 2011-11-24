@@ -1,8 +1,8 @@
 package com.heymoose.old.ui
 {
 
-	import com.heymoose.events.OfferEvent;
-	import com.heymoose.rpc.OffersService;
+	import com.heymoose.old.events.OfferEvent;
+	import com.heymoose.old.rpc.OffersService;
 
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -10,7 +10,7 @@ package com.heymoose.old.ui
 	import flash.events.MouseEvent;
 	import flash.net.*;
 
-	[Event(name = OfferEvent.OFFER_CLICKED, type = "com.heymoose.events.OfferEvent")]
+	[Event(name = OfferEvent.OFFER_CLICKED, type = "com.heymoose.old.events.OfferEvent")]
 	[Event(name = Event.CLOSE, type = "flash.events.Event")]
 	public class OffersWindowBase extends MovieClip
 	{

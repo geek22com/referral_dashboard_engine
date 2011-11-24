@@ -1,15 +1,15 @@
 package com.heymoose.old.ui
 {
 
-	import com.heymoose.events.OfferEvent;
-	import com.heymoose.rpc.OffersService;
+	import com.heymoose.old.events.OfferEvent;
+	import com.heymoose.old.rpc.OffersService;
 
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 
-	[Event(name = OfferEvent.OFFER_CLICKED, type = "com.heymoose.events.OfferEvent")]
+	[Event(name = OfferEvent.OFFER_CLICKED, type = "com.heymoose.old.events.OfferEvent")]
 	public class OfferBanner extends MovieClip
 	{
 		private var timer:Timer;

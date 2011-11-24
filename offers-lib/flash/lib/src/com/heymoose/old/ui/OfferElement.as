@@ -1,8 +1,8 @@
 package com.heymoose.old.ui
 {
 
-	import com.heymoose.events.OfferEvent;
-	import com.heymoose.ext.Base64;
+	import com.heymoose.old.events.OfferEvent;
+	import com.heymoose.old.ext.Base64;
 
 	import flash.display.DisplayObject;
 	import flash.display.GradientType;

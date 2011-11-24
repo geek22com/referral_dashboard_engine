@@ -2,8 +2,8 @@ package com.heymoose.old.rpc
 {
 
 	import com.adobe.json.serialization.JSON;
-	import com.heymoose.events.RPCErrorEvent;
-	import com.heymoose.events.RPCEvent;
+	import com.heymoose.old.events.RPCErrorEvent;
+	import com.heymoose.old.events.RPCEvent;
 	import com.heymoose.utils.crypto.MD5;
 
 	import flash.events.Event;
@@ -16,11 +16,11 @@ package com.heymoose.old.rpc
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 
-	[Event(name=RPCEvent.OFFERS_LOADED, type="com.heymoose.events.RPCEvent")]
-	[Event(name=RPCEvent.ACCEPTANCES_LOADED, type="com.heymoose.events.RPCEvent")]
+	[Event(name=RPCEvent.OFFERS_LOADED, type="com.heymoose.old.events.RPCEvent")]
+	[Event(name=RPCEvent.ACCEPTANCES_LOADED, type="com.heymoose.old.events.RPCEvent")]
 	[Event(name=IOErrorEvent.IO_ERROR, type="flash.events.IOErrorEvent")]
 	[Event(name=SecurityErrorEvent.SECURITY_ERROR, type="flash.events.SecurityErrorEvent")]
-	[Event(name=RPCErrorEvent.RPC_ERROR, type="com.heymoose.events.RPCErrorEvent")]
+	[Event(name=RPCErrorEvent.RPC_ERROR, type="com.heymoose.old.events.RPCErrorEvent")]
 	public class OffersService extends EventDispatcher
 	{
 		private var baseUrl:String;

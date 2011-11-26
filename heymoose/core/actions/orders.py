@@ -6,13 +6,13 @@ from restkit.errors import RequestFailed
 resource_path = "/orders"
 
 # Adds a new order. Possible kwargs: male (bool), minAge (int), maxAge (int).
-def add_order(userId, title, body, balance, cpa, desc, image_data, autoApprove=True, 
-			allowNegativeBalance=True, male=None, minAge=0, maxAge=0, **kwargs):
+def add_order(userId, title, url, balance, cpa, desc, image_data, autoApprove=True, 
+			allowNegativeBalance=True, male=None, minAge=0, maxAge=0, type="REGULAR", **kwargs):
 	try:
 		id = post(path=resource_path,
 			params_dict=dict(userId=userId,
 				title=title,
-				body=body,
+				url=url,
 	            balance=balance,
 				cpa=cpa,
 				description=desc,
@@ -22,6 +22,7 @@ def add_order(userId, title, body, balance, cpa, desc, image_data, autoApprove=T
 				male=male,
 				minAge=minAge,
 				maxAge=maxAge,
+				type=type,
 				**kwargs))
 		return int(id)
 	except RequestFailed:

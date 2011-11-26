@@ -32,7 +32,7 @@ def order_from_xml(order_element):
 				# Offer fields
 				offer_id=get_value(order_element, 'offer-id', int),
 				title=get_value(order_element, 'title'),
-				body=get_value(order_element, 'body'),
+				url=get_value(order_element, 'url'),
 				description=get_value(order_element, 'description'),
 				auto_approve=get_value(order_element, 'auto-approve', bool),
 				reentrant=get_value(order_element, 'reentrant', bool),

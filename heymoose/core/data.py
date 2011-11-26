@@ -61,7 +61,7 @@ class Order(BaseModel):
 	              'creation_time',
 	              'offer_id',
 	              'title',
-	              'body',
+	              'url',
 	              'description',
 	              'auto_approve',
 	              'reentrant',

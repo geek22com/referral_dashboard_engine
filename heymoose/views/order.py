@@ -44,7 +44,7 @@ def create_order():
 
         orders.add_order(userId=g.user.id,
                         title=order_form.ordername.data,
-                        body=order_form.orderbody.data,
+                        url=order_form.orderbody.data,
                         balance = order_form.orderbalance.data,
                         cpa=order_form.ordercpa.data,
                         desc=order_form.orderdesc.data,

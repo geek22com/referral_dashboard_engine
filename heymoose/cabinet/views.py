@@ -141,6 +141,20 @@ def apps_new():
 		return redirect(url_for('.apps'))
 	return render_template('cabinet/apps-new.html', form=form)
 
+@bp.route('/apps/<int:id>/')
+@developer_only
+def apps_info(id):
+	app = do_or_abort(actions.apps.get_app, id, full=True)
+	if app.user.id != g.user.id: abort(404)
+	return render_template('cabinet/apps-info.html', app=app)
+
+@bp.route('/apps/<int:id>/stats')
+@developer_only
+def apps_info_stats(id):
+	app = do_or_abort(actions.apps.get_app, id, full=True)
+	if app.user.id != g.user.id: abort(404)
+	return render_template('cabinet/apps-info-stats.html', app=app)
+
 
 @bp.route('/info')
 def info():

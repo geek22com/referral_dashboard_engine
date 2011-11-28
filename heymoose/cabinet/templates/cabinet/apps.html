@@ -19,7 +19,7 @@
 			{% for app in apps %}
 			<tr>
 				<td class="right">{{ app.id }}</td>
-				<td>{{ app.callback }}</td>
+				<td>{{ macros.app_href(app) }}</td>
 				<td>{{ app.url }}</td>
 				<td>{{ app.secret }}</td>
 				<td>{{ app.platform }}</td>

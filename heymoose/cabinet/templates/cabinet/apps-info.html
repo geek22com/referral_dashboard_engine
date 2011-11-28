@@ -1,0 +1,17 @@
+{% extends "cabinet/apps-info-layout.html" %}
+
+{% set activetab = 'info' %}
+
+{% block tabcontent %}
+<table class="bordered-table key-value">
+	<thead></thead>
+	<tbody>
+		<tr><th>Секретный ключ</th><td>{{ app.secret }}</td></tr>
+		<tr><th>Платформа</th><td>{{ app.platform }}</td></tr>
+		<tr><th>Callback</th><td>{{ app.callback }}</td></tr>
+		<tr><th>URL</th><td>{{ app.url }}</td></tr>
+		<tr><th>Создано</th><td>{{ app.creation_time|datetimeformat }}</td></tr>
+	</tbody>
+</table>
+
+{% endblock %}

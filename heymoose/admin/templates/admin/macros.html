@@ -82,3 +82,39 @@
 {% macro performer_gender(gender) %}
 {% if gender == True %}муж{% elif gender == False %}жен{% else %}неизв.{% endif %}
 {% endmacro %}
+
+{% macro formfield(field, inline=None) %}
+	<div class="clearfix {% if field.errors %}error{% endif %}">
+		{% for validator in field.validators %}
+			{% if validator|classname in ('Required', 'FileRequired') %}
+				{{ kwargs|addclass('validate-required') }}
+				<span style="display: none;" id="{{ field.id }}-msg-required">{{ kwargs.pop('msg_required', '') or validator.message }}</span>
+			{% elif validator|classname == 'Length' %}
+				{{ kwargs|addclass('validate-length') }}
+				<span style="display: none;" id="{{ field.id }}-min">{{ kwargs.pop('min_length', '') or validator.min }}</span>
+				<span style="display: none;" id="{{ field.id }}-max">{{ kwargs.pop('max_length', '') or validator.max }}</span>
+				<span style="display: none;" id="{{ field.id }}-msg-length">{{ kwargs.pop('msg_length', '') or validator.message }}</span>
+			{% elif validator|classname in ('NumberRange', 'NumberRangeEx') %}
+				{{ kwargs|addclass('validate-range') }}
+				<span style="display: none;" id="{{ field.id }}-min">{{ kwargs.pop('min_range', '') or validator.min }}</span>
+				<span style="display: none;" id="{{ field.id }}-max">{{ kwargs.pop('max_range', '') or validator.max }}</span>
+				<span style="display: none;" id="{{ field.id }}-msg-range">{{ kwargs.pop('msg_range', '') or validator.message }}</span>
+			{% elif validator|classname in ('URL', 'URLWithParams') %}
+				{{ kwargs|addclass('validate-url') }}
+				<span style="display: none;" id="{{ field.id }}-msg-url">{{ kwargs.pop('msg_url', '') or validator.message }}</span>
+			{% endif %}
+		{% endfor %}
+		
+		{{ field.label }}
+		<div class="input">
+			{{ field(**kwargs) }}
+			{% if inline %}<span class="help-inline">{{ inline }}</span>{% endif %}
+			
+			{% if field.errors %}
+			{% for error in field.errors %}
+			<span class="help-block">{{ error }}</span>
+			{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+{% endmacro %}

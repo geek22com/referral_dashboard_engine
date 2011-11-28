@@ -3,7 +3,6 @@
 {% block title %}Личный кабинет{% endblock %}
 
 {% set activemenu = "user_cabinet" %}
-{% set breadcrumbs = [('Личный кабинет', url_for('user_cabinet'))] %}
 
 {% block pageheader %}
 <h1>Здравствуйте {{g.user.nickname}}</h1>
@@ -11,17 +10,17 @@
 
 {% block content %}
 <ul class="tabs">
-		{% if g.user.is_customer() %}
-        	<li id="tab-orders" class="active"><a href="#"></a>Заказы</li>
-        	<li id ="tab-apps"><a href="#"></a>Приложения</li>
-        	<li id="tab-balance"><a href="#"></a>Пополнить баланс</li>
-        {% else %}
-        	<li id="tab-" class="active"><a href="#"></a>Приложения</li>
-        	<li><a href="#"></a>Заказы</li>
-       	{% endif %}
-        <li><a href="#">Создать заказ</a></li>
-        <li><a href="#">Создать приложение</a></li>
-        <li><a href="#">Личные данные</a></li>
+	{% if g.user.is_customer() %}
+    	<li id="tab-orders" class="active"><a href="#"></a>Заказы</li>
+    	<li id ="tab-apps"><a href="#"></a>Приложения</li>
+    	<li id="tab-balance"><a href="#"></a>Пополнить баланс</li>
+    {% else %}
+    	<li id="tab-" class="active"><a href="#"></a>Приложения</li>
+    	<li><a href="#"></a>Заказы</li>
+   	{% endif %}
+    <li><a href="#">Создать заказ</a></li>
+    <li><a href="#">Создать приложение</a></li>
+    <li><a href="#">Личные данные</a></li>
 </ul>
 {% block %}
 {% endblock %}

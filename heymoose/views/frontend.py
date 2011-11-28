@@ -55,9 +55,9 @@ def register_form_template(form_params=None, error=None):
 
 @frontend.route('/')
 def main_page():
-    g.params['loginform'] = forms.LoginForm()
-    #return render_template('index.html', params=g.params)
-    return render_template('new_index.html', params=g.params)
+	g.params['loginform'] = forms.LoginForm()
+	#return render_template('index.html', params=g.params)
+	return render_template('new_index.html', params=g.params)
 
 @frontend.route('/register_success')
 def register_success():
@@ -72,7 +72,7 @@ def role_detect():
         try:
             users.add_user_role(user_id=g.user.id,
                                 role=form_role.role.data)
-            return redirect(url_for('user_cabinet'))
+            return redirect(url_for('cabinet.index'))
         except Exception as inst:
             app_logger.error(inst)
             app_logger.error(sys.exc_info())
@@ -89,6 +89,7 @@ def role_detect():
 def start_survey():
 	return redirect(url_for('user_cabinet'))
 
+'''
 @frontend.route('/cabinet')
 @auth_only
 def user_cabinet():
@@ -111,6 +112,7 @@ def user_cabinet():
 @auth_only
 def cabinet_info():
     return render_template('new-cabinet-info.html')
+'''
     
 @frontend.route('/login', methods=['GET', 'POST'])
 def login():
@@ -129,7 +131,7 @@ def login():
 			flash_form_errors([['Неверный логин или пароль']], 'loginerror')
 		else:
 			session['user_id'] = user.id
-			return redirect(url_for('user_cabinet'))
+			return redirect(url_for('cabinet.index'))
 
 	flash_form_errors(form_login.errors.values(), 'loginerror')
 	return redirect(url_for('main_page'))

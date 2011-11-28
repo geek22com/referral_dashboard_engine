@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	{% import 'admin/macros.html' as macros %}
+	
+	{% block head %}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>
+		{% block fulltitle %}
+			{% block title %}Страница{% endblock %} :: Личный кабинет HeyMoose
+		{% endblock %}
+	</title>
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='./css/bootstrap.min.css') }}" media="screen">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='./css/jquery-ui.css') }}" media="all" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='./css/timepicker-addon.css') }}" media="all" />
+	
+	<style type="text/css">
+		body {
+			background: url({{ url_for('.static', filename='./img/background.png') }}) repeat scroll 0 0 transparent;
+			padding-top: 40px;
+		}
+		
+		.content {
+			background-color: #FFF;
+			min-height: 800px;
+			padding: 20px;
+		}
+		
+		.container > footer p {
+			text-align: center;
+			color: #BFBFBF;
+		}
+		
+		div.clearboth {
+			clear: both;
+		}
+		
+		div.well {
+			padding: 14px 20px;
+			clear: both;
+		}
+		
+		div.well form {
+			margin: 0;
+		}
+		
+		div.info-actions {
+			text-align: right;
+			clear: both;
+		}
+		
+		table.key-value tbody tr th {
+			width: 30%;
+		}
+		
+		.center { text-align: center; }
+		.left { text-align: left; }
+		.right { text-align: right; }
+		.float-right { float: right; }
+		
+		.bold { font-weight: bold; }
+		
+		div.scroll-area-x {
+			overflow-x: scroll;
+		}
+		
+		div.ui-datepicker {
+			font-size: 12px;
+		}
+		
+		.widelabels label {	width: 200px;}
+		.widelabels .input { margin-left: 220px; }
+		.widelabels .well { padding-left: 0px; }
+		.widelabels .actions { padding-left: 220px; }
+		
+		ul.breadcrumb span.status {
+			float: right;
+			padding-top: 3px;
+		}
+	</style>
+	
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery-latest.js') }}"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.8.16/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="http://jqueryui.com/ui/i18n/jquery.ui.datepicker-ru.js"></script>
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-dropdown.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-modal.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-alerts.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/wtvalidate.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/wtvalidate.twitter.js') }}"></script>
+	
+	{% set activemenu = activemenu|default('orders') %}
+	<script type="text/javascript">
+		$(function() {
+			// Make datepicker Russian by default
+			$.datepicker.setDefaults($.datepicker.regional['ru']);
+			
+			$('#topbar').dropdown();
+			$('li#menu-item-{{ activemenu }}').addClass('active');
+			
+			$('.alert-message').alert();
+			
+			// Remove link and divider from last breadcrumb
+			$('ul.breadcrumb li:last').not('.status').text($('ul.breadcrumb li:last a').html());
+		})
+	</script>
+	
+	{% block extrahead %}{% endblock %}
+	{% endblock %}
+</head>
+<body>
+	<div class="topbar" id="topbar">
+		<div class="fill">
+			<div class="container">
+				<span class="brand">
+					Личный кабинет <a href="{{ url_for('frontend.main_page') }}">HeyMoose</a>
+				</span>
+
+				<ul class="nav">
+					<li id="menu-item-orders"><a href="{{ url_for('.orders') }}">Заказы</a></li>
+					<li id="menu-item-apps"><a href="{{ url_for('.apps') }}">Приложения</a></li>
+					<li id="menu-item-info"><a href="{{ url_for('.info') }}">Профиль</a></li>
+				</ul>
+				
+				<ul class="nav secondary-nav">
+					<li class="dropdown">
+						<a class="dropdown-toggle" href="#">{{ g.user.nickname }}</a>
+						<ul class="dropdown-menu">
+							<li><a href="{{ url_for('frontend.logout') }}">Выйти</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="content">
+			{% block breadcrumbs_container %}
+			<ul class="breadcrumb">
+				{% block breadcrumbs %}
+				{% endblock %}
+				
+				{% if g.user.is_customer() %}
+				<span class="status">Ваш баланс: {{ g.user.customer_balance }} руб</span>
+				{% endif %}
+			</ul>
+			{% endblock %}
+			
+			{% block pageheader_container %}
+			<div class="page-header">
+				{% block pageheader %}{% endblock %}
+			</div>
+			{% endblock %}
+			
+			{% block flash_messages %}
+				{% with messages = get_flashed_messages(with_categories=True) %}
+				{% for category, message in messages %}
+				<div class="alert-message {{ category }} fade in">
+					<a class="close" href="#">×</a>
+					<p>{{ message }}</p>
+				</div>
+				{% endfor %}
+				{% endwith %}
+			{% endblock %}
+			
+			{% block content %}
+			{% endblock %}
+		</div>
+		
+		<footer>
+			<p>&copy; 2011 Bravik, LLC.</p>
+		</footer>
+	</div>
+</body>
+</html>

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField, TextAreaField, DecimalField, RadioField, SelectField, FileField
 import heymoose.core.actions.roles as roles
+import validators as myvalidators
+import fields as myfields
 
 class LoginForm(Form):
 	username = TextField('username', [
@@ -50,28 +52,63 @@ class ContactForm(Form):
 
 
 class OrderForm(Form):
-	ordername = TextField('ordername', [validators.Length(min=1, max=50, message=('Название заказа должно быть от 1 до 50 симолов')),
-						  				validators.Required(message = ('Введите название заказа'))])
-	orderdesc = TextAreaField('orederdesc', [validators.Length(min=1, max=200, message=('Описание заказа должно быть от 1 до 200 символов')),
-											validators.Required(message = ('Введите описание'))])
-	orderbody = TextField('orederbody', [validators.Required(message = ('Введите тело'))])
-	orderbalance = IntegerField('orderbalance', [validators.Required(message = ('Укажите баланс для заказа')),
-						validators.NumberRange(min=1, max=3000000, message=('Допустимый баланс от 1 до 3000000 рублей'))])
-	ordercpa = IntegerField('oredercpa', [validators.Required(message = ('Введите cpa'))])
-	orderautoaprove = BooleanField('orderautoaprove', default=False)
-	orderallownegativebalance = BooleanField('orderallownegativebalance', default=False)
-	ordermale = SelectField('ordermale', choices=[('True','male'),('False','female'),('None','all')])
-	orderminage = IntegerField('orderminage', [validators.NumberRange(min=1, max=170, message=('Допустимый возраст: от 1 до 170 лет'))])
-	ordermaxage = IntegerField('ordermaxage', [validators.NumberRange(min=1, max=170, message=('Допустимый возраст: от 1 до 170 лет'))])
+	ordername = TextField(u'Название', [
+		validators.Length(min=1, max=50, message=(u'Название заказа должно быть от 1 до 50 символов')),
+		validators.Required(message = (u'Введите название заказа'))
+	])
+	orderurl = TextField(u'URL', [
+		validators.Required(message = (u'Введите URL')),
+		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
+	])
+	orderbalance = IntegerField(u'Баланс', [
+		validators.Required(message = (u'Укажите баланс для заказа')),
+		validators.NumberRange(min=1, max=3000000, message=(u'Такой баланс недопустим'))
+	])
+	ordercpa = IntegerField(u'Стоимость действия (CPA)', [validators.Required(message = (u'Введите CPA'))])
+	orderautoapprove = BooleanField(u'Автоподтверждение', default=False)
+	orderallownegativebalance = BooleanField(u'Разрешить кредит', default=False)
+	ordermale = SelectField(u'Пол', choices=[(u'True', u'мужской'), (u'False', u'женский'), (u'', u'любой')], default='')
+	orderminage = myfields.NullableIntegerField(u'Минимальный возраст', [myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))])
+	ordermaxage = myfields.NullableIntegerField(u'Максимальный возраст', [myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))])
+	
+class RegularOrderForm(OrderForm):
+	orderdesc = TextAreaField(u'Описание', [
+		validators.Length(min=1, max=200, message=(u'Описание заказа должно быть от 1 до 200 символов')),
+		validators.Required(message = (u'Введите описание'))
+	])
+	orderimage = FileField(u'Выберите изображение', [myvalidators.FileRequired(message=u'Выберите изображение на диске')])
+
+class BannerOrderForm(OrderForm):
+	orderimage = FileField(u'Выберите изображение', [
+		myvalidators.FileRequired(message=u'Выберите изображение на диске')
+	])
+	
+class VideoOrderForm(OrderForm):
+	ordervideourl = TextField(u'URL видеозаписи', [
+		validators.Required(message = (u'Введите URL')),
+		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
+	])
 	
 class AppForm(Form):
-	appcallback = TextField('appcallback', [validators.Required(message = ('Введите callback'))])
-	appurl = TextField('appurl', [validators.Required(message = ('Введите appurl для возврата в ваше приложение'))])
-	appplatform = SelectField('appplatform', choices=[('VKONTAKTE','VKONTAKTE'),('FACEBOOK','FACEBOOK'),('ODNOKLASSNIKI','ODNOKLASSNIKI')])
+	appcallback = TextField(u'Callback', [
+		validators.Required(message = u'Введите callback для вашего приложения'),
+		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
+	])
+	appurl = TextField(u'URL', [
+		validators.Required(message = u'Введите URL для возврата в ваше приложение'),
+		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
+	])
+	appplatform = SelectField(u'Платформа', choices=[
+		('VKONTAKTE', u'ВКонтакте'),
+		('FACEBOOK', u'Facebook'),
+		('ODNOKLASSNIKI', u'Одноклассники')
+	])
 	
 class BalanceForm(Form):
-	amount = IntegerField('orderbalance', [validators.Required(message = ('Укажите баланс')),
-						validators.NumberRange(min=1, max=3000000, message=('Допустимый баланс от 1 до 3000000 рублей'))])
+	amount = IntegerField(u'Сумма пополнения', [
+		validators.Required(message = u'Укажите баланс'),
+		validators.NumberRange(min=1, max=3000000, message=u'Допустимый баланс от 1 до 3000000 рублей')
+	])
 
 
 class GiftForm(Form):

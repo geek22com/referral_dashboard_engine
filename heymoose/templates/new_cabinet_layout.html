@@ -13,6 +13,10 @@
 </script>
 {% endblock %}
 
+{% block counters %}{% endblock %}
+
+{% block pageheader %}<h1>Личный кабинет</h1>{% endblock %}
+
 {% block content %}
 <ul class="tabs">
 	{% if g.user.is_developer() %}

@@ -35,6 +35,7 @@ def get_offers(app_id, uid, secret=None):
 	if secret is None: secret = get_app(app_id).secret
 	params = dict(
 		method='getOffers',
+		format='JSON',
 		app_id=app_id,
 		uid=uid)
 	return api_get(params, secret)

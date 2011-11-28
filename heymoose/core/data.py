@@ -50,6 +50,12 @@ class User(BaseModel):
 
 	def is_somebody(self):
 		return len(self.roles) > 0
+	
+	
+class OrderTypes:
+	ALL = ('REGULAR', 'BANNER', 'VIDEO')
+	REGULAR, BANNER, VIDEO = ALL
+	
 
 class Order(BaseModel):
 	attributes = ['id',
@@ -62,13 +68,20 @@ class Order(BaseModel):
 	              'offer_id',
 	              'title',
 	              'url',
+	              'type',
+	              'video_url',
 	              'description',
+	              'image',
 	              'auto_approve',
 	              'reentrant',
 	              'allow_negative_balance',
 	              'male',
 	              'min_age',
 	              'max_age']
+	
+	def is_regular(self): return self.type == OrderTypes.REGULAR
+	def is_banner(self): return self.type == OrderTypes.BANNER
+	def is_video(self):	return self.type == OrderTypes.VIDEO
 
 
 class App(BaseModel):

@@ -29,13 +29,17 @@ def order_from_xml(order_element):
 				# Account fields
 				balance=get_value(order_element, 'balance', float),
 				allow_negative_balance=get_value(order_element, 'allow-negative-balance', bool),
-				# Offer fields
+				# Common offer fields
 				offer_id=get_value(order_element, 'offer-id', int),
 				title=get_value(order_element, 'title'),
 				url=get_value(order_element, 'url'),
-				description=get_value(order_element, 'description'),
 				auto_approve=get_value(order_element, 'auto-approve', bool),
 				reentrant=get_value(order_element, 'reentrant', bool),
+				type=get_value(order_element, 'type'),
+				# Regular offer fields
+				description=get_value(order_element, 'description'),
+				# Video offer fields
+				video_url=get_value(order_element, 'video-url'),
 				# Targeting fields
 				male=get_value(order_element, 'male', bool),
 				min_age=get_value(order_element, 'min-age'),

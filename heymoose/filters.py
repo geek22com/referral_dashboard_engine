@@ -27,12 +27,26 @@ def base64filter(value):
 	return base64.encodestring(value).strip('\n')
 
 
+def addclass(value, cls):
+	if 'class' not in value:
+		value['class'] = cls
+	else:
+		value['class'] += ' ' + cls;
+	return ''
+
+
+def classname(value):
+	return value.__class__.__name__
+
+
 app.jinja_env.filters['error_type'] = error_type
 app.jinja_env.filters['datetimeformat'] = datetimeformat
 app.jinja_env.filters['datetime_nosec'] = datetime_nosec
 app.jinja_env.filters['dateformat'] = dateformat
 app.jinja_env.filters['timeformat'] = timeformat
 app.jinja_env.filters['base64filter'] = base64filter
+app.jinja_env.filters['addclass'] = addclass
+app.jinja_env.filters['classname'] = classname
 app.jinja_env.filters['delta'] = times.delta
 
 app.jinja_env.globals['now'] = datetime.now

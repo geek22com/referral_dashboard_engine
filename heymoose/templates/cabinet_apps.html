@@ -4,7 +4,15 @@
 {% block tabcontent %}
 
 {% if not g.user.is_developer() %}
-<a href="{{ url_for('become_developer') }}" class="btn primary">Запрос</a> функционала разработчика.
+	<div class="clearfix alert-message block-message error">
+		<p>
+			<strong>Вы не являетесь разработчиком.</strong> Однако, вы можете легко это исправить,
+			нажав кнопку ниже.
+		</p>
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('become_developer') }}">Запросить функционал разработчика</a>
+		</div>
+	</div>
 {% else %}
 
 {% if g.params.apps %}

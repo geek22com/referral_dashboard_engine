@@ -1,63 +1,54 @@
 # -*- coding: utf-8 -*-
 import base64
-from flask import Flask, request, session, url_for, redirect, \
-     render_template, abort, g, flash
-from heymoose.utils.decorators import auth_only
-from heymoose.utils.decorators import admin_only
-from heymoose.utils.decorators import customer_only
-from heymoose.utils.workers import app_logger
-from heymoose.views.frontend import frontend
+from flask import request, url_for, redirect, render_template
+from heymoose.utils.decorators import auth_only, admin_only, customer_only
 import heymoose.forms.forms as forms
 import heymoose.core.actions.orders as orders
 from heymoose.views.work import *
 
 def order_form_template(form_params=None):
-    order_form = forms.OrderForm()
-    if form_params:
-        order_form.ordername.data = form_params['ordername']
-        order_form.orderdesc.data = form_params['orderdesc']
-        order_form.orderbalance.data = form_params['orderbalance']
-        order_form.orderbody.data = form_params['orderbody']
-        order_form.ordercpa.data = form_params['ordercpa']
-
-    g.params['orderform'] = order_form
-    return render_template('new-create-order.html', params = g.params)
-
-@frontend.route('/cabinet/orders', methods=['POST', 'GET'])
+	order_form = forms.OrderForm()
+	if form_params:
+		order_form.ordername.data = form_params['ordername']
+		order_form.orderdesc.data = form_params['orderdesc']
+		order_form.orderbalance.data = form_params['orderbalance']
+		order_form.orderbody.data = form_params['orderbody']
+		order_form.ordercpa.data = form_params['ordercpa']
+	
+	g.params['orderform'] = order_form
+	return render_template('new-create-order.html', params = g.params)
+'''
+@frontend.route('/cabinet/orders/')
 @auth_only
 def cabinet_orders():
-    orders = g.user.orders
-    if orders:
-        g.params['orders'] = orders
-    g.params['orderform'] = forms.OrderForm()
-        
-    return render_template('cabinet_orders.html', params = g.params)
+	return render_template('cabinet_orders.html', orders=g.user.orders)
 
 @frontend.route('/cabinet/create_order', methods=['POST', 'GET'])
 @customer_only
 def create_order():
-    #TODO проверка данных
-    order_form = forms.OrderForm(request.form)
-    if request.method == "POST" and order_form.validate():
-        file = request.files['orderimage']
-        image_data = file.stream.read()
-
-        orders.add_order(userId=g.user.id,
-                        title=order_form.ordername.data,
-                        url=order_form.orderbody.data,
-                        balance = order_form.orderbalance.data,
-                        cpa=order_form.ordercpa.data,
-                        desc=order_form.orderdesc.data,
-                        image_data=base64.encodestring(image_data).strip('\n'),
-                        autoApprove=order_form.orderautoaprove.data,
-                        allowNegativeBalance=order_form.orderallownegativebalance.data,
-                        male=order_form.ordermale.data,
-                        minAge=order_form.orderminage.data,
-                        maxAge=order_form.ordermaxage.data)
-        return redirect(url_for('user_cabinet'))
-
-    flash_form_errors(order_form.errors.values(), 'ordererror')
-    return order_form_template(request.form)
+	#TODO проверка данных
+	order_form = forms.OrderForm(request.form)
+	if request.method == "POST" and order_form.validate():
+		file = request.files['orderimage']
+		image_data = file.stream.read()
+	
+		orders.add_order(user_id=g.user.id,
+	                    title=order_form.ordername.data,
+	                    url=order_form.orderbody.data,
+	                    balance = order_form.orderbalance.data,
+	                    cpa=order_form.ordercpa.data,
+	                    desc=order_form.orderdesc.data,
+	                    image_data=base64.encodestring(image_data).strip('\n'),
+	                    autoApprove=order_form.orderautoaprove.data,
+	                    allowNegativeBalance=order_form.orderallownegativebalance.data,
+	                    male=order_form.ordermale.data,
+	                    minAge=order_form.orderminage.data,
+	                    maxAge=order_form.ordermaxage.data)
+		return redirect(url_for('user_cabinet'))
+	
+	flash_form_errors(order_form.errors.values(), 'ordererror')
+	return order_form_template(request.form)
+'''
 
 
 @frontend.route('/delete_order/<order_id>')

@@ -1,22 +1,8 @@
-{% extends "new_cabinet_layout.html" %}
+{% extends "cabinet/orders-layout.html" %}
 
-{% set activetab = 'orders' %}
+{% set activetab = 'list' %}
 
 {% block tabcontent %}
-
-{% if not g.user.is_customer() %}
-	<div class="clearfix alert-message block-message error">
-		<p>
-			<strong>Вы не являетесь рекламодателем.</strong> Однако, вы можете легко это исправить,
-			нажав кнопку ниже.
-		</p>
-		<div class="alert-actions">
-			<a class="btn small" href="{{ url_for('become_customer') }}">Запросить функционал рекламодателя</a>
-		</div>
-	</div>
-{% else %}
-
-
 {% if orders %}
 	<table class="bordered-table zebra-striped">
 		<thead>
@@ -56,11 +42,9 @@
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Вы еще не создали ни одного заказа.</p>
 		<div class="alert-actions">
-			<a class="btn small" href="{{ url_for('create_order') }}">Создать заказ</a>
+			<a class="btn small" href="{{ url_for('.orders_new') }}">Создать заказ</a>
 		</div>
 	</div>
-{% endif %}
-
 {% endif %}
 
 {% endblock %}

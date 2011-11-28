@@ -1,32 +1,80 @@
 from heymoose.core.actions.mappers import order_from_xml, count_from_xml
 from heymoose.core.rest import post, put, get, delete
-from heymoose.utils.workers import app_logger
+from heymoose.core.data import OrderTypes
 from restkit.errors import RequestFailed
 
 resource_path = "/orders"
 
-# Adds a new order. Possible kwargs: male (bool), minAge (int), maxAge (int).
-def add_order(userId, title, url, balance, cpa, desc, image_data, autoApprove=True, 
-			allowNegativeBalance=True, male=None, minAge=0, maxAge=0, type="REGULAR", **kwargs):
-	try:
-		id = post(path=resource_path,
-			params_dict=dict(userId=userId,
+
+def add_order(user_id, title, url, balance, cpa, type, auto_approve=True,
+			allow_negative_balance=True, male=None, min_age=None, max_age=None, **kwargs):
+	params_dict = dict(
+		userId=user_id,
+		title=title,
+		url=url,
+        balance=balance,
+		cpa=cpa,
+		autoApprove=auto_approve,
+		allowNegativeBalance=allow_negative_balance,
+		type=type,
+		**kwargs)
+	
+	if min_age is not None and min_age > 0: params_dict.update(minAge=min_age)
+	if max_age is not None and max_age > 0: params_dict.update(maxAge=max_age)
+	if male is not None and male in (True, False): params_dict.update(male=male)
+	
+	id = post(path=resource_path, params_dict=params_dict)
+	return int(id)
+
+
+def add_regular_order(user_id, title, url, balance, cpa, description, image, auto_approve=True,
+					allow_negative_balance=True, male=None, min_age=None, max_age=None):
+	return add_order(user_id=user_id,
 				title=title,
 				url=url,
-	            balance=balance,
+				balance=balance,
 				cpa=cpa,
-				description=desc,
-				image=image_data,
-				autoApprove=autoApprove,
-				allowNegativeBalance=allowNegativeBalance,
+				auto_approve=auto_approve,
+				allow_negative_balance=allow_negative_balance,
 				male=male,
-				minAge=minAge,
-				maxAge=maxAge,
-				type=type,
-				**kwargs))
-		return int(id)
-	except RequestFailed:
-		return None
+				min_age=min_age,
+				max_age=max_age,
+				type=OrderTypes.REGULAR,
+				description=description,
+				image=image)
+	
+	
+def add_banner_order(user_id, title, url, balance, cpa, image, auto_approve=True,
+					allow_negative_balance=True, male=None, min_age=None, max_age=None):
+	return add_order(user_id=user_id,
+				title=title,
+				url=url,
+				balance=balance,
+				cpa=cpa,
+				auto_approve=auto_approve,
+				allow_negative_balance=allow_negative_balance,
+				male=male,
+				min_age=min_age,
+				max_age=max_age,
+				type=OrderTypes.BANNER,
+				image=image)
+
+
+def add_video_order(user_id, title, url, balance, cpa, video_url, auto_approve=True,
+					allow_negative_balance=True, male=None, min_age=None, max_age=None):
+	return add_order(user_id=user_id,
+				title=title,
+				url=url,
+				balance=balance,
+				cpa=cpa,
+				auto_approve=auto_approve,
+				allow_negative_balance=allow_negative_balance,
+				male=male,
+				min_age=min_age,
+				max_age=max_age,
+				type=OrderTypes.VIDEO,
+				videoUrl=video_url)
+
 
 def get_order(order_id, **kwargs):
 	path = "{0}/{1}".format(resource_path, order_id)

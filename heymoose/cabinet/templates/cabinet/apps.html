@@ -1,0 +1,39 @@
+{% extends "cabinet/apps-layout.html" %}
+
+{% set activetab = 'list' %}
+
+{% block tabcontent %}
+
+{% if apps %}
+	<table class="bordered-table zebra-striped">
+		<thead>
+			<tr>
+				<th class="header right">ИД</th>
+				<th class="header">Callback URL</th>
+				<th class="header">URL приложения</th>
+				<th class="header">Секретный ключ</th>
+				<th class="header">Платформа</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for app in apps %}
+			<tr>
+				<td class="right">{{ app.id }}</td>
+				<td>{{ app.callback }}</td>
+				<td>{{ app.url }}</td>
+				<td>{{ app.secret }}</td>
+				<td>{{ app.platform }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Вы еще не добавили ни одного приложения.</p>
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.apps_new') }}">Добавить приложение</a>
+		</div>
+	</div>
+{% endif %}
+
+{% endblock %}

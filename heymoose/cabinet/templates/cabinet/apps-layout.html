@@ -1,0 +1,45 @@
+{% extends "cabinet/layout.html" %}
+
+{% block title %}Приложения{% endblock %}
+
+{% set activemenu = 'apps' %}
+
+{% block extrahead %}
+{% set activetab = activetab|default('list') %}
+<script type="text/javascript">
+	$(function() { 
+		$('li#tab-{{ activetab }}').addClass('active');
+	})
+</script>
+{% endblock %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb(self.title(), url_for('.apps')) }}
+{% endblock %}
+
+{% block pageheader %}<h1>{{ self.title() }}</h1>{% endblock %}
+
+{% block content %}
+
+{% if g.user.is_developer() %}
+	<ul class="tabs">
+		<li id="tab-list"><a href="{{ url_for('.apps') }}">Список</a></li>
+		<li id="tab-new"><a href="{{ url_for('.apps_new') }}">Добавить приложение</a></li>
+	</ul>
+	
+	{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+{% else %}
+	<div class="clearfix alert-message block-message error">
+		<p>
+			<strong>Вы не являетесь разработчиком.</strong> Однако, вы можете легко это исправить,
+			нажав кнопку ниже.
+		</p>
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.become_developer') }}" 
+			onclick="return confirm('Получить функционал разработчика?');">Запросить функционал разработчика</a>
+		</div>
+	</div>
+{% endif %}
+
+{% endblock %}

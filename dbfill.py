@@ -59,17 +59,29 @@ def fill_db():
 	genders = (None, True, False)
 	for i in range(orders_per_customer):
 		for customer in customers:
-			id = actions.orders.add_order(
-				userId=customer.id,
-				title='order {0}-{1}'.format(customer.id, i),
-				body='http://ya.ru',
-				balance=i*100 + customer.id*10 + 10,
-				cpa=i + customer.id + 1,
-				desc='The best order from {0} number {1}'.format(customer.nickname, i),
-				image_data='aaaa',
-				male=genders[i % 3],
-				minAge=i + customer.id + 1,
-				maxAge=i + customer.id + 15)
+			if i % 2 == 0:
+				id = actions.orders.add_regular_order(
+						user_id=customer.id,
+						title='regular order {0}-{1}'.format(customer.id, i),
+						url='http://ya.ru',
+						balance=i*100 + customer.id*10 + 10,
+						cpa=i + customer.id + 1,
+						description='The best order from {0} number {1}'.format(customer.nickname, i),
+						image='aaaa',
+						male=genders[i % 3],
+						min_age=i + customer.id + 1,
+						max_age=i + customer.id + 15)
+			else:
+				id = actions.orders.add_video_order(
+						user_id=customer.id,
+						title='video order {0}-{1}'.format(customer.id, i),
+						url='http://ya.ru',
+						balance=i*100 + customer.id*10 + 10,
+						cpa=i + customer.id + 1,
+						video_url='http://youtube.com',
+						male=genders[i % 3],
+						min_age=i + customer.id + 1,
+						max_age=i + customer.id + 15)
 			actions.orders.enable_order(id)
 			orders.append(actions.orders.get_order(id))
 	

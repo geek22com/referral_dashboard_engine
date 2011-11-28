@@ -1,0 +1,26 @@
+{% extends "cabinet/info-layout.html" %}
+
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			var handlers = { error: showError, clear: clearError };
+			$('#form-balance-pay').validateForm(handlers);
+		});
+	</script>
+{% endblock %}
+
+{% set activetab = 'pay' %}
+
+{% block tabcontent %}
+
+<div class="form-container">
+	<form id="form-balance-pay" action="" method="post" class="widelabels">
+		{{ macros.formfield(form.amount, class='span4') }}
+		<div class="actions">
+			<input class="btn primary" type="submit" value="Пополнить баланс"/>
+		</div>
+	</form>
+</div>
+
+{% endblock %}

@@ -5,6 +5,7 @@ from heymoose.cabinet import blueprint as bp
 from heymoose.forms import forms
 from heymoose.core.data import OrderTypes
 from heymoose.utils.shortcuts import do_or_abort
+from decorators import customer_only, developer_only
 import heymoose.core.actions as actions
 import base64
 
@@ -27,6 +28,7 @@ def orders():
 	return render_template('cabinet/orders.html', orders=g.user.orders)
 
 @bp.route('/orders/new', methods=['GET', 'POST'])
+@customer_only
 def orders_new():
 	if request.method == 'POST':
 		ordertype = request.form['ordertype']
@@ -112,6 +114,7 @@ def apps():
 	return render_template('cabinet/apps.html', apps=g.user.apps)
 
 @bp.route('/apps/new', methods=['GET', 'POST'])
+@developer_only
 def apps_new():
 	form = forms.AppForm(request.form)
 	if request.method == 'POST' and form.validate():
@@ -130,6 +133,7 @@ def info():
 	return render_template('cabinet/info.html')
 
 @bp.route('/info/balance/pay', methods=['GET', 'POST'])
+@customer_only
 def balance_pay():
 	form = forms.BalanceForm(request.form)
 	if request.method == 'POST' and form.validate():

@@ -24,7 +24,9 @@
 
 <ul class="tabs">
 	<li id="tab-info"><a href="{{ url_for('.info') }}">Общее</a></li>
+	{% if g.user.is_customer() %}
 	<li id="tab-pay"><a href="{{ url_for('.balance_pay') }}">Пополнение баланса</a></li>
+	{% endif %}
 </ul>
 
 {% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}

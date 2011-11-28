@@ -1,4 +1,5 @@
 {% extends "cabinet/orders-info-layout.html" %}
+{% import 'common/ctr.html' as ctr %}
 
 {% block breadcrumbs %}
 	{{ super() }}
@@ -6,3 +7,12 @@
 {% endblock %}
 
 {% set activetab = 'stats' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ ctr.javascript() }}
+{% endblock %}
+
+{% block tabcontent %}
+	{{ ctr.html(url_for('.ajax_orders_info_stats_ctr', id=order.id)) }}
+{% endblock %}

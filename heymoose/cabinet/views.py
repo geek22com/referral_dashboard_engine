@@ -5,6 +5,7 @@ from heymoose.cabinet import blueprint as bp
 from heymoose.forms import forms
 from heymoose.core.data import OrderTypes
 from heymoose.utils.shortcuts import do_or_abort
+from heymoose.views.common import json_get_ctr
 from decorators import customer_only, developer_only
 import heymoose.core.actions as actions
 import base64
@@ -190,6 +191,18 @@ def become_developer():
 		flash(u'Вы уже являетесь разработчиком', 'error')
 	return redirect(url_for('.apps'))
 
+
+@bp.route('/orders/<int:id>/stats/q/ctr/')
+def ajax_orders_info_stats_ctr(id):
+	order = do_or_abort(actions.orders.get_order, id, full=True)
+	if order.user.id != g.user.id: abort(404)
+	return json_get_ctr(offerId=order.offer_id)
+
+@bp.route('/apps/<int:id>/stats/q/ctr/')
+def ajax_apps_info_stats_ctr(id):
+	app = do_or_abort(actions.apps.get_app, id, full=True)
+	if app.user.id != g.user.id: abort(404)
+	return json_get_ctr(appId=app.id)
 
 
 

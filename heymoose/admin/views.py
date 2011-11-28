@@ -148,7 +148,7 @@ def ajax_orders_disable(id):
 @bp.route('/orders/<int:id>/stats/q/ctr/')
 def ajax_orders_info_stats_ctr(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)
-	return json_get_ctr(orderId=order.id)
+	return json_get_ctr(offerId=order.offer_id)
 
 @bp.route('/apps/<int:id>/stats/q/ctr/')
 def ajax_apps_info_stats_ctr(id):

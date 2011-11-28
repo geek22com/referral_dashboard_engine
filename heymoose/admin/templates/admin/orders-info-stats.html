@@ -1,4 +1,5 @@
 {% extends "admin/orders-info-layout.html" %}
+{% import 'common/ctr.html' as ctr %}
 
 {% block breadcrumbs %}
 	{{ super() }}
@@ -9,65 +10,9 @@
 
 {% block extrahead %}
 	{{ super() }}
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery.form.js') }}"></script>
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/chart.ctr.js') }}"></script>
-	<script type="text/javascript">
-		google.load("visualization", "1", {packages:["corechart"]});
-	
-		function updateCharts() {
-			$('#form-ctr').ajaxSubmit({
-				dataType: 'json',
-				success: function(data, textStatus) {
-					drawCtrCharts(data.values,
-						document.getElementById('chart-clicks'),
-						document.getElementById('chart-ctr'));
-				},
-				error: function(xhr, textStatus) {
-					if (xhr.status == 400)
-						alert('Параметры введены неверно');
-					else
-						alert('Ошибка ' + xhr.status + ': ' + textStatus);
-				}
-			});
-		}
-		
-		$(function() {
-			$('#form-ctr').ajaxForm();
-			$('.datetimepicker').datetimepicker({showButtonPanel: false});
-			
-			updateCharts();
-			
-			$('#btn-show').click(function() {
-				updateCharts();				
-				return false;
-			});
-		});
-	</script>
+	{{ ctr.javascript() }}
 {% endblock %}
 
 {% block tabcontent %}
-
-<h2>Отношение кликов к показам</h2>
-<div class="well">
-	<form id="form-ctr" method="get" action="{{ url_for('.ajax_orders_info_stats_ctr', id=order.id) }}">
-		Дата и время
-		с <input class="span3 datetimepicker" type="text" name="from" value="{{ now()|delta(days=-3)|datetime_nosec }}" />
-		по <input class="span3 datetimepicker" type="text" name="to" value="{{ now()|datetime_nosec }}" />
-		группировать по
-		<select class="span3" name="group">
-			<option value="minute">минутам</option>
-			<option value="hour" selected="selected">часам</option>
-			<option value="day">дням</option>
-			<option value="month">месяцам</option>
-		</select>
-		<button id="btn-show" class="btn primary float-right">Показать</button>
-	</form>
-</div>
-
-<div class="scroll-area-x">
-	<div id="chart-clicks"></div>
-	<div id="chart-ctr"></div>
-</div>
-
+	{{ ctr.html(url_for('.ajax_orders_info_stats_ctr', id=order.id)) }}
 {% endblock %}

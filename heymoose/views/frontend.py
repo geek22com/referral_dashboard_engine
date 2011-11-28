@@ -126,9 +126,9 @@ def login():
 		#user = User.get_user(form_login.username.data)
 		user = users.get_user_by_email(form_login.username.data)
 		if user is None:
-			flash_form_errors([['Такой пользователь не зарегистрирован']], 'loginerror')
+			flash_form_errors([[u'Такой пользователь не зарегистрирован']], 'loginerror')
 		elif not check_password_hash(user.password_hash, form_login.password.data):
-			flash_form_errors([['Неверный логин или пароль']], 'loginerror')
+			flash_form_errors([[u'Неверный логин или пароль']], 'loginerror')
 		else:
 			session['user_id'] = user.id
 			return redirect(url_for('cabinet.index'))
@@ -145,12 +145,12 @@ def register():
     register_form = forms.RegisterForm(request.form)
     if request.method == 'POST' and register_form.validate():
         if register_form.password.data != register_form.password2.data:
-            flash_form_errors([['Введенные пароли не совпадают']], 'registererror')
+            flash_form_errors([[u'Введенные пароли не совпадают']], 'registererror')
         elif users.get_user_by_email(register_form.email.data) is not None:
-            flash_form_errors([['Введенный email уже используется']], 'registererror')
+            flash_form_errors([[u'Введенный email уже используется']], 'registererror')
         # Уязвимость, данные из поля капча и hidden не проверяются.
         elif captcha.check_captcha(request.form['captcha_id'], register_form.captcha.data) is None:
-            flash_form_errors([['Капча не верна, попробуйте еще раз']], 'registererror')
+            flash_form_errors([[u'Капча не верна, попробуйте еще раз']], 'registererror')
         else:
             users.add_user(email=register_form.email.data,
                             passwordHash=generate_password_hash(register_form.password.data),

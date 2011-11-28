@@ -1,12 +1,12 @@
-from flask import render_template, g, request, abort, jsonify
+# -*- coding: utf-8 -*-
+from flask import render_template, g, request
 from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions as a
 from heymoose.core.actions import performers as perf
-from heymoose.core.actions import shows as sh
-from heymoose.utils import convert, times
+from heymoose.utils import convert
 from heymoose.utils.shortcuts import do_or_abort, paginate
-import random
+from heymoose.views.common import json_get_ctr
 
 
 @bp.route('/')
@@ -148,128 +148,11 @@ def ajax_orders_disable(id):
 @bp.route('/orders/<int:id>/stats/q/ctr/')
 def ajax_orders_info_stats_ctr(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)
-	
-	# Some parameters for aggregation
-	config = dict(
-		minute = dict(
-			format=lambda d: d.strftime('%d.%m.%y') if d.hour == 0 and d.minute == 0 else d.strftime('%H:%M'), 
-			freq=times.MINUTELY),
-		hour = dict(
-			format=lambda d: d.strftime('%d.%m.%y') if d.hour == 0 and d.minute == 0 else d.strftime('%H:00'),
-			freq=times.HOURLY),
-		day = dict(
-			format=lambda d: d.strftime('%d.%m.%y'),
-			freq=times.DAILY),
-		month = dict(
-			format=lambda d: d.strftime('%m.%y'),
-			freq=times.MONTHLY)
-	)
-	
-	# Check passed GET parameters
-	try:
-		fm = convert.to_datetime(request.args.get('from') + ':00')
-		to = convert.to_datetime(request.args.get('to') + ':00')
-		if fm > to: raise ValueError
-		
-		group = request.args.get('group')
-		if group not in config.keys(): raise ValueError
-	except:
-		abort(400)
-		
-	conf = config[group]
-	format = conf['format']		# Current datetime formatting function
-	freq = conf['freq']			# Current frequency
-	# Hack for obtaining functions for appropriate time period
-	fbegin = getattr(times, 'begin_of_{0}'.format(group))
-	fend = getattr(times, 'end_of_{0}'.format(group))
-	# Align entered datetimes by current group
-	dtbegin = fbegin(fm)
-	dtend = fend(to)
-	
-	# Generate some test random data
-	#checkpoints = times.datetime_range(times.MINUTELY, dtstart=dtbegin, until=dtend)
-	#clicks = [random.choice(checkpoints) for _x in range(10)]
-	#shows = [random.choice(checkpoints) for _x in range(10000)]
-	
-	# But this is real data from backend
-	acts = a.actions.get_actions_range(dtbegin, dtend, offerId=order.offer_id)
-	shows = sh.get_shows_range(dtbegin, dtend, offerId=order.offer_id)
-	
-	# List of all times in interval with period depending on group
-	keys = times.datetime_range(freq, dtstart=dtbegin, until=dtend)
-	
-	# Fill result dict with test data
-	result = dict([(key, [0, 0]) for key in keys])
-	for act in acts: result[fbegin(act.creation_time)][0] += 1
-	for show in shows: result[fbegin(show.show_time)][1] += 1
-	
-	# This magic expression transforms dict to list of dicts sorted by datetime	
-	json_result = [dict(time=format(key), clicks=value[0], shows=value[1]) \
-						for key, value in sorted(result.items(), key=lambda item: item[0])]
-	return jsonify(values=json_result)
-
+	return json_get_ctr(orderId=order.id)
 
 @bp.route('/apps/<int:id>/stats/q/ctr/')
 def ajax_apps_info_stats_ctr(id):
 	app = do_or_abort(a.apps.get_app, id, full=True)
-	
-	# Some parameters for aggregation
-	config = dict(
-		minute = dict(
-			format=lambda d: d.strftime('%d.%m.%y') if d.hour == 0 and d.minute == 0 else d.strftime('%H:%M'), 
-			freq=times.MINUTELY),
-		hour = dict(
-			format=lambda d: d.strftime('%d.%m.%y') if d.hour == 0 and d.minute == 0 else d.strftime('%H:00'),
-			freq=times.HOURLY),
-		day = dict(
-			format=lambda d: d.strftime('%d.%m.%y'),
-			freq=times.DAILY),
-		month = dict(
-			format=lambda d: d.strftime('%m.%y'),
-			freq=times.MONTHLY)
-	)
-	
-	# Check passed GET parameters
-	try:
-		fm = convert.to_datetime(request.args.get('from') + ':00')
-		to = convert.to_datetime(request.args.get('to') + ':00')
-		if fm > to: raise ValueError
-		
-		group = request.args.get('group')
-		if group not in config.keys(): raise ValueError
-	except:
-		abort(400)
-		
-	conf = config[group]
-	format = conf['format']		# Current datetime formatting function
-	freq = conf['freq']			# Current frequency
-	# Hack for obtaining functions for appropriate time period
-	fbegin = getattr(times, 'begin_of_{0}'.format(group))
-	fend = getattr(times, 'end_of_{0}'.format(group))
-	# Align entered datetimes by current group
-	dtbegin = fbegin(fm)
-	dtend = fend(to)
-	
-	# Generate some test random data
-	#checkpoints = times.datetime_range(times.MINUTELY, dtstart=dtbegin, until=dtend)
-	#clicks = [random.choice(checkpoints) for _x in range(10)]
-	#shows = [random.choice(checkpoints) for _x in range(10000)]
-	
-	# But this is real data from backend
-	acts = a.actions.get_actions_range(dtbegin, dtend, appId=app.id)
-	shows = sh.get_shows_range(dtbegin, dtend, appId=app.id)
-	
-	# List of all times in interval with period depending on group
-	keys = times.datetime_range(freq, dtstart=dtbegin, until=dtend)
-	
-	# Fill result dict with test data
-	result = dict([(key, [0, 0]) for key in keys])
-	for act in acts: result[fbegin(act.creation_time)][0] += 1
-	for show in shows: result[fbegin(show.show_time)][1] += 1
-	
-	# This magic expression transforms dict to list of dicts sorted by datetime	
-	json_result = [dict(time=format(key), clicks=value[0], shows=value[1]) \
-						for key, value in sorted(result.items(), key=lambda item: item[0])]
-	return jsonify(values=json_result)
+	return json_get_ctr(appId=app.id)
 
 

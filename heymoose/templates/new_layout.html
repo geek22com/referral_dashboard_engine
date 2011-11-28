@@ -52,10 +52,13 @@
 	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery-latest.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-dropdown.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-modal.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-alerts.js') }}"></script>
 	
 	{% set activemenu = activemenu|default('main_page') %}
 	<script type="text/javascript">
 		$(function() {
+			$('.alert-message').alert();
+			
 			$('#topbar').dropdown();
 			$('li#menu-item-{{ activemenu }}').addClass('active');
 		})
@@ -156,6 +159,17 @@
 			<div class="page-header">
 				{% block pageheader %}{% endblock %}
 			</div>
+			{% endblock %}
+			
+			{% block flash_messages %}
+				{% with messages = get_flashed_messages(with_categories=True) %}
+				{% for category, message in messages %}
+				<div class="alert-message {{ category }} fade in">
+					<a class="close" href="#">×</a>
+					<p>{{ message }}</p>
+				</div>
+				{% endfor %}
+				{% endwith %}
 			{% endblock %}
 			
 			{% block content %}

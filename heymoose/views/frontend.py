@@ -170,7 +170,7 @@ def register():
 @role_not_detected_only
 def logout():
 	"""Logs the user out."""
-	flash('You were logged out')
+	flash(u'Вы вышли из системы', 'info')
 	session.pop('user_id', None)
 	return redirect(url_for('main_page'))
 

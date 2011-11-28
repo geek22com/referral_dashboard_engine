@@ -1,0 +1,48 @@
+{% extends "cabinet/orders-info-layout.html" %}
+
+{% set activetab = 'info' %}
+
+{% block tabcontent %}
+
+<table class="bordered-table key-value">
+	<tbody>
+		<tr><th>Название</th><td>{{ order.title }}</td></tr>
+		<tr><th>Тип</th><td>{{ macros.order_type(order.type) }}</td></tr>
+		<tr><th>URL</th><td><p>{{ order.url }}</p></td></tr>
+		<tr><th>Создан</th><td>{{ order.creation_time|datetimeformat }}</td></tr>
+		<tr><th>Активен</th><td id="icon-enabled">{{ macros.to_icon(not order.disabled) }}</td></tr>
+		<tr><th>Авто-подтверждение</th><td>{{ macros.to_icon(order.auto_approve) }}</td></tr>
+		<tr><th>Повторное прохождение</th><td>{{ macros.to_icon(order.reentrant) }}</td></tr>
+	</tbody>
+</table>
+
+<h2>Дополнительно</h2>
+<table class="bordered-table key-value">
+	<tbody>
+		{% if order.is_regular() %}
+		<tr><th>Описание</th><td><p>{{ order.description }}</p></td></tr>
+		{% elif order.is_banner() %}
+		{% elif order.is_video() %}
+		<tr><th>URL видеозаписи</th><td><p>{{ order.video_url }}</p></td></tr>
+		{% endif %}
+	</tbody>
+</table>
+
+<h2>Счет и ставки</h2>
+<table class="bordered-table key-value">
+	<tbody>
+		<tr><th>Баланс</th><td>{{ order.balance }}</td></tr>
+		<tr><th>CPA</th><td>{{ order.cpa }}</td></tr>
+		<tr><th>Разрешен отриц. баланс</th><td>{{ macros.to_icon(order.allow_negative_balance) }}</td></tr>
+	</tbody>
+</table>
+
+<h2>Таргетинг</h2>
+<table class="bordered-table key-value">
+	<tbody>
+		<tr><th>Пол</th><td>{{ macros.order_gender(order.male) }}</td></tr>
+		<tr><th>Возраст</th><td>{{ macros.order_age(order.min_age, order.max_age) }}</td></tr>
+	</tbody>
+</table>
+
+{% endblock %}

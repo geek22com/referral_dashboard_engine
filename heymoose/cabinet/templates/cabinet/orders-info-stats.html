@@ -1,0 +1,8 @@
+{% extends "cabinet/orders-info-layout.html" %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Статистика', url_for('.orders_info_stats', id=order.id)) }}
+{% endblock %}
+
+{% set activetab = 'stats' %}

@@ -12,8 +12,8 @@
 				<th class="header">URL</th>
 				<th class="header right">Баланс</th>
 				<th class="header right">CPA</th>
-				<th class="header center">Автоподтв.</th>
-				<th class="header center">Кредит</th>
+				{# <th class="header center">Автоподтв.</th>
+				<th class="header center">Кредит</th> #}
 				<th class="header center">Пол</th>
 				<th class="header">Возраст</th>
 				<th class="header center">Создан</th>
@@ -24,12 +24,12 @@
 			{% for order in orders %}
 			<tr>
 				<td class="right">{{ order.id }}</td>
-				<td>{{ order.title }}</td>
+				<td>{{ macros.order_href(order) }}</td>
 				<td>{{ order.url }}</td>
 				<td class="right">{{ order.balance }}</td>
 				<td class="right">{{ order.cpa }}</td>
-				<td class="center">{{ macros.to_icon(order.auto_approve) }}</td>
-				<td class="center">{{ macros.to_icon(order.allow_negative_balance) }}</td>
+				{# <td class="center">{{ macros.to_icon(order.auto_approve) }}</td>
+				<td class="center">{{ macros.to_icon(order.allow_negative_balance) }}</td> #}
 				<td class="center">{{ macros.order_gender(order.male) }}</td>
 				<td>{{ macros.order_age(order.min_age, order.max_age) }}</td>
 				<td class="center">{{ order.creation_time|datetimeformat }}</td>

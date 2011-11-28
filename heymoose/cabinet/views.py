@@ -107,7 +107,21 @@ def orders_new():
 			
 	return render_template('cabinet/orders-new.html', 
 		rform=rform, bform=bform, vform=vform, ordertype=ordertype.lower())
+	
+@bp.route('/orders/<int:id>/')
+@customer_only
+def orders_info(id):
+	order = do_or_abort(actions.orders.get_order, id, full=True)
+	if order.user.id != g.user.id: abort(404)
+	return render_template('cabinet/orders-info.html', order=order)
 
+@bp.route('/orders/<int:id>/stats')
+@customer_only
+def orders_info_stats(id):
+	order = do_or_abort(actions.orders.get_order, id, full=True)
+	if order.user.id != g.user.id: abort(404)
+	return render_template('cabinet/orders-info-stats.html', order=order)
+	
 
 @bp.route('/apps/')
 def apps():

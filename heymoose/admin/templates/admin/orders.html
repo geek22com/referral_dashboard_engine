@@ -10,11 +10,10 @@
 			<tr>
 				<th class="header right">ИД</th>
 				<th class="header">Название</th>
+				<th class="header">Тип</th>
 				<th class="header">Заказчик</th>
 				<th class="header right">Баланс</th>
 				<th class="header right">CPA</th>
-				<th class="header center">Пол</th>
-				<th class="header">Возраст</th>
 				<th class="header center">Создан</th>
 				<th class="header center">Активен</th>
 			</tr>
@@ -24,11 +23,10 @@
 			<tr>
 				<td class="right">{{ order.id }}</td>
 				<td>{{ macros.order_href(order) }}</td>
+				<td>{{ macros.order_type(order.type) }}</td>
 				<td>{{ macros.user_href(order.user) }}</td>
 				<td class="right">{{ order.balance }}</td>
 				<td class="right">{{ order.cpa }}</td>
-				<td class="center">{{ macros.order_gender(order.male) }}</td>
-				<td>{{ macros.order_age(order.min_age, order.max_age) }}</td>
 				<td class="center">{{ order.creation_time|datetimeformat }}</td>
 				<td class="center">{{ macros.to_icon(not order.disabled) }}</td>
 			</tr>

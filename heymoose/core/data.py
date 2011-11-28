@@ -56,6 +56,15 @@ class OrderTypes:
 	ALL = ('REGULAR', 'BANNER', 'VIDEO')
 	REGULAR, BANNER, VIDEO = ALL
 	
+	_verbose = dict(
+		REGULAR=u'Обычный',
+		BANNER=u'Баннер',
+		VIDEO=u'Видео'
+	)
+	
+	def verbose(self, type):
+		return self._verbose.get(type, None)
+	
 
 class Order(BaseModel):
 	attributes = ['id',

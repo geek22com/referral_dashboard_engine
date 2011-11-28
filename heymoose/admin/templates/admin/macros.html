@@ -79,6 +79,11 @@
 {% endif %}
 {% endmacro %}
 
+{% macro order_type(type) %}
+	{% if type == 'REGULAR' %}Обычный{% elif type == 'BANNER' %}Баннер
+	{% elif type == 'VIDEO' %}Видео{% else %}Неизвестно{% endif %}
+{% endmacro %}
+
 {% macro performer_gender(gender) %}
 {% if gender == True %}муж{% elif gender == False %}жен{% else %}неизв.{% endif %}
 {% endmacro %}

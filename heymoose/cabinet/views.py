@@ -193,12 +193,14 @@ def become_developer():
 
 
 @bp.route('/orders/<int:id>/stats/q/ctr/')
+@customer_only
 def ajax_orders_info_stats_ctr(id):
 	order = do_or_abort(actions.orders.get_order, id, full=True)
 	if order.user.id != g.user.id: abort(404)
 	return json_get_ctr(offerId=order.offer_id)
 
 @bp.route('/apps/<int:id>/stats/q/ctr/')
+@developer_only
 def ajax_apps_info_stats_ctr(id):
 	app = do_or_abort(actions.apps.get_app, id, full=True)
 	if app.user.id != g.user.id: abort(404)

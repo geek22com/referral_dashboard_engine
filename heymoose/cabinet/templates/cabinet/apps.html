@@ -8,7 +8,6 @@
 	<table class="bordered-table zebra-striped">
 		<thead>
 			<tr>
-				<th class="header right">ИД</th>
 				<th class="header">Callback URL</th>
 				<th class="header">URL приложения</th>
 				<th class="header">Секретный ключ</th>
@@ -18,7 +17,6 @@
 		<tbody>
 			{% for app in apps %}
 			<tr>
-				<td class="right">{{ app.id }}</td>
 				<td>{{ macros.app_href(app) }}</td>
 				<td>{{ app.url }}</td>
 				<td>{{ app.secret }}</td>

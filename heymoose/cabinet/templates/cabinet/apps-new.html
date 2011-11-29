@@ -21,9 +21,11 @@
 
 <div class="form-container">
 	<form id="form-app" action="" method="post" class="widelabels">
-		{{ macros.formfield(form.appcallback, class='span10') }}
-		{{ macros.formfield(form.appurl, class='span10') }}
-		{{ macros.formfield(form.appplatform, class='span4') }}
+		<fieldset>
+			{{ macros.formfield(form.appcallback, class='span10') }}
+			{{ macros.formfield(form.appurl, class='span10') }}
+			{{ macros.formfield(form.appplatform, class='span4') }}
+		</fieldset>
 		<div class="actions">
 			<input class="btn large primary" type="submit" value="Добавить приложение"/>
 		</div>

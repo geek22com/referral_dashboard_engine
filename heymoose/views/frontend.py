@@ -161,7 +161,7 @@ def register():
             if user:
                 users.add_user_role(user.id, register_form.role.data)
                 session['user_id'] = user.id
-                return redirect(url_for('user_cabinet'))
+                return redirect(url_for('cabinet.index'))
     
     flash_form_errors(register_form.errors.values(), 'registererror')
     return register_form_template(request.form, error)

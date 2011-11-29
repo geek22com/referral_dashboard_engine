@@ -1,0 +1,39 @@
+{% extends "admin/users-info-layout.html" %}
+
+{% set activetab = 'apps' %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Приложения', url_for('.users_info_apps', id=user.id)) }}
+{% endblock %}
+
+{% block tabcontent %}
+
+{% if user.apps %}
+	<table class="bordered-table zebra-striped">
+		<thead>
+			<tr>
+				<th class="header">Callback URL</th>
+				<th class="header">URL приложения</th>
+				<th class="header">Секретный ключ</th>
+				<th class="header">Платформа</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for app in user.apps %}
+			<tr>
+				<td>{{ macros.app_href(app) }}</td>
+				<td>{{ app.url }}</td>
+				<td>{{ app.secret }}</td>
+				<td>{{ app.platform }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Пользователь еще не добавил ни одного приложения.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

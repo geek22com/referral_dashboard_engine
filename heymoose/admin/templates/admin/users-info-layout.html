@@ -26,6 +26,12 @@
 {% block content %}
 <ul class="tabs">
 	<li id="tab-info"><a href="{{ url_for('.users_info', id=user.id) }}">Общее</a></li>
+	{% if user.is_customer() %}
+	<li id="tab-orders"><a href="{{ url_for('.users_info_orders', id=user.id) }}">Заказы</a></li>
+	{% endif %}
+	{% if user.is_developer() %}
+	<li id="tab-apps"><a href="{{ url_for('.users_info_apps', id=user.id) }}">Приложения</a></li>
+	{% endif %}
 	<li id="tab-stats"><a href="{{ url_for('.users_info_stats', id=user.id) }}">Статистика</a></li>
 </ul>
 

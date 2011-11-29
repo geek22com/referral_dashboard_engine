@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, request
+from flask import render_template, g, request, abort
 from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions as a
@@ -109,6 +109,18 @@ def users_info(id):
 def users_info_stats(id):
 	user = do_or_abort(a.users.get_user_by_id, id, full=True)
 	return render_template('admin/users-info-stats.html', user=user)
+
+@bp.route('/users/<int:id>/orders')
+def users_info_orders(id):
+	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	if not user.is_customer(): abort(404)
+	return render_template('admin/users-info-orders.html', user=user)
+
+@bp.route('/users/<int:id>/apps')
+def users_info_apps(id):
+	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	if not user.is_developer(): abort(404)
+	return render_template('admin/users-info-apps.html', user=user)
 
 
 @bp.route('/performers/')

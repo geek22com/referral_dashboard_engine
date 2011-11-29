@@ -5,7 +5,7 @@ import validators as myvalidators
 import fields as myfields
 
 class LoginForm(Form):
-	username = TextField(u'E-mail', [validators.Required(message = u'Введите имя пользователя')])
+	username = TextField(u'E-mail', [validators.Required(message = u'Введите электронный адрес')])
 	password = PasswordField(u'Пароль', [validators.Required(message = u'Введите пароль')])
 
 class RoleForm(Form):

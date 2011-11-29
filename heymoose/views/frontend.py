@@ -123,17 +123,13 @@ def login():
 
 	form_login = forms.LoginForm(request.form)
 	if request.method == 'POST' and form_login.validate():
-		#user = User.get_user(form_login.username.data)
 		user = users.get_user_by_email(form_login.username.data)
-		if user is None:
-			flash_form_errors([[u'Такой пользователь не зарегистрирован']], 'loginerror')
-		elif not check_password_hash(user.password_hash, form_login.password.data):
-			flash_form_errors([[u'Неверный логин или пароль']], 'loginerror')
+		if user is None or not check_password_hash(user.password_hash, form_login.password.data):
+			flash(u'Неверный логин или пароль', 'error')
 		else:
 			session['user_id'] = user.id
 			return redirect(url_for('cabinet.index'))
 
-	flash_form_errors(form_login.errors.values(), 'loginerror')
 	return redirect(url_for('main_page'))
 
 @frontend.route('/register', methods=['GET', 'POST'])

@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
-from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField, TextAreaField, DecimalField, RadioField, SelectField, FileField
+from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField, TextAreaField, SelectField, FileField
 import heymoose.core.actions.roles as roles
 import validators as myvalidators
 import fields as myfields
 
 class LoginForm(Form):
-	username = TextField('username', [
-						 validators.Length(min=4, max=25, message = ('Некорректное имя пользователя')),
-						 validators.Required(message = ('Введите имя пользователя'))])
-	password = PasswordField('password', [
-							 validators.Length(min=4, max=16, message = ('Некорректный пароль')),
-							 validators.Required(message = ('Введите пароль'))])
+	username = TextField(u'E-mail', [validators.Required(message = u'Введите имя пользователя')])
+	password = PasswordField(u'Пароль', [validators.Required(message = u'Введите пароль')])
 
 class RoleForm(Form):
 	role = SelectField('role', choices=[(roles.DEVELOPER, roles.DEVELOPER),

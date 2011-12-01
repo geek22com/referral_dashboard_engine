@@ -162,9 +162,10 @@ def apps_info_stats(id):
 def info():
 	return render_template('cabinet/info.html')
 
-@bp.route('/info/balance/pay', methods=['GET', 'POST'])
+#@bp.route('/info/balance/pay', methods=['GET', 'POST'])
 @customer_only
 def balance_pay():
+	'''Deprecated: now in admin blueprint'''
 	form = forms.BalanceForm(request.form)
 	if request.method == 'POST' and form.validate():
 		do_or_abort(actions.users.increase_customer_balance,

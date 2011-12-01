@@ -62,7 +62,7 @@ class OrderForm(Form):
 	])
 	ordercpa = IntegerField(u'Стоимость действия (CPA)', [validators.Required(message = (u'Введите CPA'))])
 	orderautoapprove = BooleanField(u'Автоподтверждение', default=False)
-	orderallownegativebalance = BooleanField(u'Разрешить кредит', default=False)
+	orderallownegativebalance = BooleanField(u'Разрешить кредит', default=True)
 	ordermale = SelectField(u'Пол', choices=[(u'True', u'мужской'), (u'False', u'женский'), (u'', u'любой')], default='')
 	orderminage = myfields.NullableIntegerField(u'Минимальный возраст', [myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))])
 	ordermaxage = myfields.NullableIntegerField(u'Максимальный возраст', [myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))])

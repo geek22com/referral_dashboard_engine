@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, request, abort
+from flask import render_template, g, request, abort, redirect, flash, url_for
 from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions as a
@@ -7,6 +7,7 @@ from heymoose.core.actions import performers as perf
 from heymoose.utils import convert
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.views.common import json_get_ctr
+from heymoose.forms import forms
 
 
 @bp.route('/')
@@ -121,6 +122,19 @@ def users_info_apps(id):
 	user = do_or_abort(a.users.get_user_by_id, id, full=True)
 	if not user.is_developer(): abort(404)
 	return render_template('admin/users-info-apps.html', user=user)
+
+@bp.route('/users/<int:id>/balance/pay', methods=['GET', 'POST'])
+def balance_pay(id):
+	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	if not user.is_customer(): abort(404)
+	
+	form = forms.BalanceForm(request.form)
+	if request.method == 'POST' and form.validate():
+		do_or_abort(a.users.increase_customer_balance,
+				user.id, int(form.amount.data))
+		flash(u'Баланс успешно пополнен', 'success')
+		return redirect(url_for('.users_info', id=user.id))
+	return render_template('admin/users-info-balance-pay.html', user=user, form=form) 
 
 
 @bp.route('/performers/')

@@ -134,6 +134,7 @@ def apps_new():
 	form = forms.AppForm(request.form)
 	if request.method == 'POST' and form.validate():
 		do_or_abort(actions.apps.add_app,
+			title=form.apptitle.data,
 			user_id=g.user.id,
 			callback=form.appcallback.data,
 			url=form.appurl.data,

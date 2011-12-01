@@ -86,6 +86,10 @@ class VideoOrderForm(OrderForm):
 	])
 	
 class AppForm(Form):
+	apptitle = TextField(u'Название', [
+		validators.Length(min=1, max=100, message=(u'Название приложения должно иметь длину от 1 до 100 символов')),
+		validators.Required(message = (u'Введите название приложения'))
+	])
 	appcallback = TextField(u'Callback', [
 		validators.Required(message = u'Введите callback для вашего приложения'),
 		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')

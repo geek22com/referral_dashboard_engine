@@ -1,6 +1,6 @@
 {% extends "admin/layout.html" %}
 
-{% block title %}Приложение {{ app.secret }}{% endblock %}
+{% block title %}Приложение &laquo;{{ app.title }}&raquo;{% endblock %}
 
 {% set activemenu = "apps" %}
 
@@ -16,11 +16,11 @@
 {% block breadcrumbs %}
 	{{ super() }}
 	{{ macros.breadcrumb('Приложения', url_for('.apps')) }}
-	{{ macros.breadcrumb('Приложение {0}'.format(app.secret), url_for('.apps_info', id=app.id)) }}
+	{{ macros.breadcrumb(self.title(), url_for('.apps_info', id=app.id)) }}
 {% endblock %}
 
 {% block pageheader %}
-<h1>Приложение {{ app.secret }}</h1>
+<h1>{{ self.title() }}</h1>
 {% endblock %}
 
 {% block content %}

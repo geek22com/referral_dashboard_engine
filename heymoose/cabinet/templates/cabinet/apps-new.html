@@ -22,6 +22,7 @@
 <div class="form-container">
 	<form id="form-app" action="" method="post" class="widelabels">
 		<fieldset>
+			{{ macros.formfield(form.apptitle, class='span10') }}
 			{{ macros.formfield(form.appcallback, class='span10') }}
 			{{ macros.formfield(form.appurl, class='span10') }}
 			{{ macros.formfield(form.appplatform, class='span4') }}

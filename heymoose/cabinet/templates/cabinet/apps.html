@@ -8,19 +8,19 @@
 	<table class="bordered-table zebra-striped">
 		<thead>
 			<tr>
-				<th class="header">Callback URL</th>
-				<th class="header">URL приложения</th>
-				<th class="header">Секретный ключ</th>
+				<th class="header">Название</th>
 				<th class="header">Платформа</th>
+				<th class="header center">Создано</th>
+				<th class="header center">Удалено</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for app in apps %}
 			<tr>
 				<td>{{ macros.app_href(app) }}</td>
-				<td>{{ app.url }}</td>
-				<td>{{ app.secret }}</td>
 				<td>{{ app.platform }}</td>
+				<td class="center">{{ app.creation_time|datetimeformat }}</td>
+				<td class="center">{{ macros.deleted(app.deleted) }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

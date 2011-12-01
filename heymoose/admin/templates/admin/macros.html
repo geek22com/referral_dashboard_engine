@@ -59,7 +59,7 @@
 {% endmacro %}
 
 {% macro app_href(app) %}
-	<a href="{{ url_for('.apps_info', id=app.id) }}">{{ app.url }}</a>
+	<a href="{{ url_for('.apps_info', id=app.id) }}">{{ app.title }}</a>
 {% endmacro %}
 
 {% macro order_gender(gender) %}

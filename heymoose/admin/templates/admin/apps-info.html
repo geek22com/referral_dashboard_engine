@@ -6,6 +6,7 @@
 <table class="bordered-table key-value">
 	<thead></thead>
 	<tbody>
+		<tr><th>Название</th><td>{{ app.title }}</td></tr>
 		<tr><th>Секретный ключ</th><td>{{ app.secret }}</td></tr>
 		<tr><th>Разработчик</th><td>{{ macros.user_href(app.user) }}</td></tr>
 		<tr><th>Платформа</th><td>{{ app.platform }}</td></tr>

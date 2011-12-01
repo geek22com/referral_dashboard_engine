@@ -92,6 +92,7 @@ def fill_db():
 	for i in range(apps_per_developer):
 		for developer in developers:
 			id = actions.apps.add_app(
+				title='app {0}-{1}'.format(developer.id, i),
 				user_id=developer.id,
 				callback='http://google.com',
 				url='http://google.com',
@@ -133,7 +134,7 @@ def fill_db():
 	for app in apps:
 		for performer in performers:
 			if app.platform == performer.platform and random.choice([True, False]):
-				api.get_offers(app.id, performer.ext_id, app.secret)
+				api.get_offers(app.id, performer.ext_id, '0:3,1:3,2:3', app.secret)
 
 	
 if __name__ == '__main__':

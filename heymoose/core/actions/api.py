@@ -31,13 +31,14 @@ def do_offer(offer_id, app_id, uid, platform, secret=None):
 		platform=platform)
 	return api_get(params, secret)
 
-def get_offers(app_id, uid, secret=None):
+def get_offers(app_id, uid, filter, secret=None):
 	if secret is None: secret = get_app(app_id).secret
 	params = dict(
 		method='getOffers',
 		format='JSON',
 		app_id=app_id,
-		uid=uid)
+		uid=uid,
+		filter=filter)
 	return api_get(params, secret)
 
 def introduce_performer(app_id, uid, sex, year, secret=None):

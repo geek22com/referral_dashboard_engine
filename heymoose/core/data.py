@@ -95,6 +95,7 @@ class Order(BaseModel):
 
 class App(BaseModel):
 	attributes = ['id',
+				  'title',
 	              'secret',
 	              'user_id',
 	              'user',

@@ -9,6 +9,7 @@ def role_from_xml(role_element):
 def app_from_xml(app_element):
 	if app_element is None: return None
 	return App(id=get_attr(app_element, 'id', int),
+				title=get_value(app_element, 'title'),
 				secret=get_value(app_element, 'secret'),
 				user_id=get_value(app_element, 'user-id', int),
 				user=user_from_xml(get_child(app_element, 'user')),

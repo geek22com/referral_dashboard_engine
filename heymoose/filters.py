@@ -8,7 +8,7 @@ def error_type(value, type):
 
 
 def datetimeformat(value, format=convert.datetime_format):
-	return value.strftime(format)
+	return value.strftime(format) if value else None
 
 
 def datetime_nosec(value, format=convert.datetime_nosec_format):

@@ -12,24 +12,33 @@ class RoleForm(Form):
 	role = SelectField('role', choices=[(roles.DEVELOPER, roles.DEVELOPER),
 										(roles.CUSTOMER, roles.CUSTOMER)])
 
+
 class RegisterForm(Form):
-	username = TextField('username', [
-						 validators.Length(min=4, max=25, message = ('Некорректное имя пользователя')),
-						 validators.Required(message = ('Введите имя пользователя'))])
-	email = TextField('Email Address', [
-						validators.Email("Некорректный email адресс"),
-						validators.Required(message = ('Введите email адресс'))])
-
-	password = PasswordField('password', [
-							 validators.Length(min=4, max=16, message = ('Длинна пароля должна быть от 4 до 16 символов')),
-							 validators.Required(message = ('Введите пароль'))])
-
-	password2 = PasswordField('password2', [
-							 validators.Length(min=4, max=16, message = ('Длинна пароля должна быть от 4 до 16 символов')),
-							 validators.Required(message = ('Введенные пароли не совпадают'))])
-	role = SelectField('role', choices=[(roles.DEVELOPER, roles.DEVELOPER),
-										(roles.CUSTOMER, roles.CUSTOMER)])
-	captcha = TextField('captcha', [])
+	username = TextField(u'Имя пользователя (ник)', [
+		 validators.Length(min=4, max=25, message = u'Некорректное имя пользователя'),
+		 validators.Required(message = u'Введите имя пользователя')
+	])
+	email = TextField(u'E-mail', [
+		validators.Email(message = u'Некорректный email адрес'),
+		validators.Required(message = u'Введите email адрес'),
+		myvalidators.check_email_not_registered
+	])
+	password = PasswordField(u'Пароль', [
+		validators.Length(min=4, max=16, message = u'Длина пароля должна быть от 4 до 16 символов'),
+		validators.Required(message = u'Введите пароль')
+	])
+	password2 = PasswordField(u'Повторите пароль', [
+		validators.Length(min=4, max=16, message = u'Длина пароля должна быть от 4 до 16 символов'),
+		validators.EqualTo('password', message = u'Введенные пароли не совпадают'),
+		validators.Required(message = u'Введите пароль повторно')
+	])
+	
+class DeveloperRegisterForm(RegisterForm):
+	invite = TextAreaField(u'Код приглашения', [
+		validators.Required(message=u'Скопируйте сюда полученный код приглашения'),
+		myvalidators.check_invite
+	])
+	
 
 class FeedBackForm(Form):
 	feedback_email = TextField('Email Address', [

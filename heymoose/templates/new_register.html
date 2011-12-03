@@ -1,150 +1,43 @@
 {% extends "new_layout.html" %}
 
-{% block title %}Heymoose - партнерская сеть{% endblock %}
+{% block title %}Регистрация{% endblock %}
 
-{% set activemenu = "register" %}
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			var handlers = { error: showError, clear: clearError };
+			$('#form-register').validateForm(handlers);
+		});
+	</script>
+{% endblock %}
+
+{% set activemenu = 'register' %}
 
 {% block pageheader %}
-<h3>Зарегистрируйтесь чтобы получить доступ к функционалу в личном кабинете.</h3>
+<h1>{{ self.title() }}</h1>
 {% endblock %}
 
 {% block content %}
-
-<form id="register_form" action="{{ url_for('register') }}" method="POST">
-	
-<div class="clearfix">
-<label for="username">Имя пользователя</label>
-<div class="input">
-     {{ g.params.registerform.username(class='medium', type="text") }}
-</div>
-</div>
-
-<div class="clearfix">
-<label for="email">Электроная почта</label>
-<div class="input">
-     {{ g.params.registerform.email(class='medium', type="email") }}
-</div>
-</div>
-
-<div class="clearfix">
-<label for="password">Пароль</label>
-<div class="input">
-     {{ g.params.registerform.password(class='medium', type="password") }}
-</div>
-</div>
-
-<div class="clearfix">
-<label for="password2">Повторите пароль</label>
-<div class="input">
-     {{ g.params.registerform.password2(class='medium', type="password") }}
-</div>
-</div>
-
-<div class="clearfix">
-<label for="role">Необходимый функционал</label>
-<div class="input">
-     {{ g.params.registerform.role(class='medium') }}
-</div>
-</div>
-
-<div class="clearfix">
-<label for="captcha">{{ params.captcha.question }}</label>
-<div class="input">
-	 {{ g.params.registerform.captcha(class='medium', type="text") }}
-	<input type="hidden" name="captcha_id" value="{{params.captcha.c_id}}">
-</div>
-</div>
-
-<div class="clearfix">
-	<input class="btn primary" type="submit" value="Подтвердить"/> 
-</div>
-</form>
-
-
-{% with %}
-{% set mes = get_flashed_messages(with_categories=true) | error_type('registererror') %}
-{% if mes %}
-<div id="register_error" class="clearfix clearboth alert-message block-message error">
 <p>
-{{ mes[0][1].decode('utf8') }}
+	В данный момент регистрация доступна только для разработчиков по приглашениям.
+	Если вы являетесь разработчиком приложений или хотите разместить заказ в нашей
+	системе, пожалуйста, <a href="{{ url_for('contacts') }}">свяжитесь с нами</a>.
 </p>
+
+<div class="form-container clearfix">
+	<form id="form-register" method="post" action="" class="widelabels">
+		<fieldset>
+			{{ macros.formfield(form.invite, class='span10', rows=4) }}
+			{{ macros.formfield(form.username, class='span10') }}
+			{{ macros.formfield(form.email, class='span10', type='email') }}
+			{{ macros.formfield(form.password, class='span10') }}
+			{{ macros.formfield(form.password2, class='span10') }}
+		</fieldset>
+		<div class="actions">
+			<input class="btn primary" type="submit" value="Зарегистрироваться"/>
+		</div>
+	</form>
 </div>
-{% endif %}
-{% endwith %}
 
-<div id="error_message" class="clearfix clearboth alert-message block-message error hide">
-<p>
-
-</p>
-</div>
-
-
-<script>
-$(document).ready(function() {
-	// Отображает ошибку в дескрипшене регистрационной панели
-				function showError(error, element) {
-					//$('.b-reg_form_error').add("<div class="b-error_text">Ошибка нах!</div>")
-					$('#error_message').removeClass("hide");
-					$('#error_message').text(error);
-				}
-
-				function clearError(element) {
-					$('#register_error').addClass("hide");
-					$('#error_message').addClass("hide");
-				}
-
-				/*$('.b-rinput').bind('focusin',function() {
-					$(this).parent().addClass('i-input_focused');
-				});*/
-
-				// События формы
-				$(".input").keypress(function() {
-					clearError(this);
-					//clearError(".b-rinput");
-				});
-
-	
-					// Валидация формы регистрации
-				$("#register_form").submit(function() {
-					username = $('#username').val();
-					password = $('#password').val();
-					repassword = $('#password2').val();
-					email = $('#email').val();
-					captcha = $('#captcha').val();
-
-					if(username == "") {
-						showError("Введите, пожалуйста, имя пользователя", $('#username').parent());
-						return false;
-					}
-
-					if(email == "") {
-						showError("Введите, пожалуйста, свой электронный адресс", $('#email').parent());
-						return false;
-					}
-
-					if(password == "") {
-						showError("Введите, пожалуйста, пароль", $('#password').parent());
-						return false;
-					}
-
-					if(repassword == "") {
-						showError("Подтвердите пароль", $('#repassword').parent());
-						return false;
-					}
-
-					if(repassword != password) {
-						showError("Пароли не совпадают", $('#repassword').parent());
-						return false;
-					}
-
-					if(captcha == "") {
-						showError("Введите капчу", $('#captcha').parent());
-						return false;
-					}
-
-
-					return true;
-				});
-			});
-</script>
 {% endblock %}

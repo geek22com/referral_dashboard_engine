@@ -66,6 +66,8 @@
 		div.ui-datepicker {
 			font-size: 12px;
 		}
+		
+		textarea.copybox { cursor: auto; }
 	</style>
 	
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
@@ -92,6 +94,11 @@
 			
 			// Remove link and divider from last breadcrumb
 			$('ul.breadcrumb li:last').text($('ul.breadcrumb li:last a').html());
+			
+			// Select all text in copyboxes
+			$('.copybox').focus(function() {
+				this.select();
+			})
 		})
 	</script>
 	

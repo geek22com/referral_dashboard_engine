@@ -8,6 +8,7 @@ from heymoose.utils import convert
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.views.common import json_get_ctr
 from heymoose.forms import forms
+from heymoose.db.actions import invites
 
 
 @bp.route('/')
@@ -97,6 +98,10 @@ def users():
 	usrs = do_or_abort(a.users.get_users, offset=offset, limit=limit, full=True)
 	return render_template('admin/users.html', users=usrs, pages=pages)
 
+@bp.route('/users/invites')
+def users_invites():
+	return render_template('admin/users-invites.html')
+
 @bp.route('/users/stats')
 def users_stats():
 	return render_template('admin/users-stats.html')
@@ -180,5 +185,10 @@ def ajax_orders_info_stats_ctr(id):
 def ajax_apps_info_stats_ctr(id):
 	app = do_or_abort(a.apps.get_app, id, full=True)
 	return json_get_ctr(appId=app.id)
+
+@bp.route('/users/invites/q/get/')
+def ajax_get_invite():
+	return invites.create_invite()
+	
 
 

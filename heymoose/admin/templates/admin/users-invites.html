@@ -1,0 +1,37 @@
+{% extends "admin/users-layout.html" %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Приглашения', url_for('.users_invites')) }}
+{% endblock %}
+
+{% set activetab = 'invites' %}
+
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery.form.js') }}"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('#form-get-invite').ajaxForm({
+				success: function(data, textStatus) {
+					$('#invite-data').val(data);
+				},
+				error: function(xhr, textStatus) {
+					alert('Ошибка ' + xhr.status + ': ' + xhr.responseText);
+				}
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block tabcontent %}
+
+<div class="form-container clearfix">
+	<form id="form-get-invite" method="get" action ="{{ url_for('.ajax_get_invite') }}">
+		<input type="submit" class="btn primary" value="Получить приглашение для разработчика" />
+	</form>
+</div>
+
+<textarea id="invite-data" class="span15 copybox" rows="3" readonly="readonly"></textarea>
+
+{% endblock %}

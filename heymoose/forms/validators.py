@@ -1,4 +1,8 @@
+# -*- coding: utf-8 -*-
+from wtforms import ValidationError
 from wtforms.validators import NumberRange, Required, Regexp
+from heymoose.core import actions
+from heymoose.db.actions import invites
 import re
 
 class NumberRangeEx(NumberRange):
@@ -30,3 +34,13 @@ class URLWithParams(Regexp):
 			self.message = field.gettext(u'Invalid URL')
 
 		super(URLWithParams, self).__call__(form, field)
+		
+		
+def check_email_not_registered(form, field):
+	if actions.users.get_user_by_email(field.data) is not None:
+		raise ValidationError(u'Пользователь с таким e-mail уже существует')
+	
+	
+def check_invite(form, field):
+	if invites.get_invite(field.data) is None:
+		raise ValidationError(u'Неверный код приглашения')

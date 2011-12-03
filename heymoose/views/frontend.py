@@ -16,11 +16,11 @@ import base64
 from flask import Module
 from heymoose.utils.decorators import auth_only, role_not_detected_only, admin_only
 from heymoose.utils.workers import app_logger, heymoose_app
-from heymoose.core.actions import apps
+from heymoose.utils.shortcuts import do_or_abort
+from heymoose.core.actions import apps, roles
 from heymoose import config
 import heymoose.forms.forms as forms
 import heymoose.core.actions.users as users
-from heymoose.db.actions import captcha
 
 frontend = Module(__name__)
 from heymoose.views.facebook_app.facebook import *
@@ -40,6 +40,8 @@ from heymoose.views.gifts import *
 from heymoose.views.info import *
 from heymoose.views.survey import *
 from heymoose.tests.postgress_stres_test import *
+
+from heymoose.db.actions import captcha, invites
 
 def register_form_template(form_params=None, error=None):
 	register_form = forms.RegisterForm()
@@ -67,20 +69,19 @@ def register_success():
 @frontend.route('/role_detect', methods=['GET', 'POST'])
 @role_not_detected_only
 def role_detect():
-    form_role = forms.RoleForm(request.form)
-    if request.method == 'POST' and form_role.validate():
-        try:
-            users.add_user_role(user_id=g.user.id,
-                                role=form_role.role.data)
-            return redirect(url_for('cabinet.index'))
-        except Exception as inst:
-            app_logger.error(inst)
-            app_logger.error(sys.exc_info())
-            flash_form_errors([['Извините, попробуйте еще раз']], 'roleerror')
-    
-    g.params['roleform'] = form_role 
-    flash_form_errors([['Извините, попробуйте еще раз']], 'roleerror')
-    return render_template('new-role-selection.html', params=g.params)
+	form_role = forms.RoleForm(request.form)
+	if request.method == 'POST' and form_role.validate():
+		try:
+			users.add_user_role(user_id=g.user.id, role=form_role.role.data)
+			return redirect(url_for('cabinet.index'))
+		except Exception as inst:
+			app_logger.error(inst)
+			app_logger.error(sys.exc_info())
+			flash_form_errors([['Извините, попробуйте еще раз']], 'roleerror')
+			
+	g.params['roleform'] = form_role 
+	flash_form_errors([['Извините, попробуйте еще раз']], 'roleerror')
+	return render_template('new-role-selection.html', params=g.params)
 
 
 
@@ -113,7 +114,6 @@ def user_cabinet():
 def cabinet_info():
     return render_template('new-cabinet-info.html')
 '''
-    
 @frontend.route('/login', methods=['GET', 'POST'])
 def login():
 	"""Logs the user in."""
@@ -132,6 +132,33 @@ def login():
 
 	return redirect(url_for('main_page'))
 
+
+@frontend.route('/register', methods=['GET', 'POST'])
+def register():
+	if g.user:
+		flash(u'Вы уже зарегистрированы', 'warning')
+		return redirect(url_for('main_page'))
+	
+	form = forms.DeveloperRegisterForm(request.form)
+	if request.method == 'POST' and form.validate():
+		do_or_abort(users.add_user,
+			email=form.email.data,
+			passwordHash=generate_password_hash(form.password.data),
+			nickname=form.username.data)
+		user = do_or_abort(users.get_user_by_email, form.email.data, full=True)
+		if user:
+			users.add_user_role(user.id, roles.DEVELOPER)
+			invites.register_invite(form.invite.data)
+			session['user_id'] = user.id
+			flash(u'Вы успешно зарегистрированы', 'success')
+			return redirect(url_for('cabinet.index'))
+		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
+		
+	return render_template('new_register.html', form=form)
+		
+	
+
+'''
 @frontend.route('/register', methods=['GET', 'POST'])
 def register():
     """Registers the user."""
@@ -161,6 +188,7 @@ def register():
     
     flash_form_errors(register_form.errors.values(), 'registererror')
     return register_form_template(request.form, error)
+'''
 
 @frontend.route('/logout')
 @role_not_detected_only

@@ -107,6 +107,10 @@
 			{% elif validator|classname in ('URL', 'URLWithParams') %}
 				{{ kwargs|addclass('validate-url') }}
 				<span style="display: none;" id="{{ field.id }}-msg-url">{{ kwargs.pop('msg_url', '') or validator.message }}</span>
+			{% elif validator|classname == 'EqualTo' %}
+				{{ kwargs|addclass('validate-equal') }}
+				<span style="display: none;" id="{{ field.id }}-other">{{ kwargs.pop('other', '') or validator.fieldname }}</span>
+				<span style="display: none;" id="{{ field.id }}-msg-equal">{{ kwargs.pop('msg_equal', '') or validator.message }}</span>
 			{% endif %}
 		{% endfor %}
 		

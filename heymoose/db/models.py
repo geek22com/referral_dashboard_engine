@@ -44,3 +44,9 @@ class FeedBack(mongo.Document):
 	email = mongo.StringField()
 	body = mongo.StringField()
 	date = mongo.DateTimeField(default=datetime.now())
+	
+	
+class Invite(mongo.Document):
+	code = mongo.StringField()
+	registered = mongo.BoolField(default=False)
+	created = mongo.DateTimeField()

@@ -77,11 +77,11 @@
 		var valid = true;
 		this.each(function() {
 			var field1 = $(this);
-			var field2 = $('#' + field1.attr('rel'));
+			var other_id = $('#' + field1.attr('id') + '-other').html();
+			var field2 = $('#' + other_id);
 			if (field1.val() != field2.val()) {
-				var text = 'Значения полей не совпадают';
-				error(field1, text);
-				error(field2, text);
+				error(field1, 'equal');
+				error(field2, 'equal');
 				valid = false;
 			}
 		});

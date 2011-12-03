@@ -206,6 +206,16 @@ def ajax_apps_info_stats_ctr(id):
 @bp.route('/users/invites/q/get/')
 def ajax_get_invite():
 	return invites.create_invite()
+
+@bp.route('/actions/<int:id>/q/approve', methods=['POST'])
+def ajax_action_approve(id):
+	do_or_abort(a.actions.approve_action, id)
+	return 'OK'
+
+@bp.route('/actions/<int:id>/q/delete', methods=['POST'])
+def ajax_action_delete(id):
+	do_or_abort(a.actions.delete_action, id)
+	return 'OK'
 	
 
 

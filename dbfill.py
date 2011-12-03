@@ -9,10 +9,10 @@ if project_path not in sys.path:
 
 os.environ["FRONTEND_SETTINGS_PATH"] = config_path
 
-from werkzeug import generate_password_hash
 from heymoose.core import actions
 from heymoose.core.actions import api
 from heymoose.core.actions import performers as perf
+from heymoose.utils.gen import generate_password_hash
 import time, random
 
 pw = generate_password_hash('password')

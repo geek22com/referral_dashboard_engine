@@ -6,9 +6,14 @@ from restkit.errors import ResourceNotFound
 resource_path = "/users"
 
 def add_user_role(user_id, role):
-	path = "{0}/{1}".format(resource_path, user_id)
-	put(path=path,
+	path = "{0}/{1}/roles".format(resource_path, user_id)
+	post(path=path,
 	    params_dict=dict(role=role))
+
+def update_user(user_id, passwordHash):
+  path = "{0}/{1}".format(resource_path, user_id)
+  put(path=path,
+      params_dict=dict(passwordHash=passwordHash))
 
 def become_developer(user_id):
 	return add_user_role(user_id,

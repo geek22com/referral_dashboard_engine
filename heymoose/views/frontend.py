@@ -7,7 +7,6 @@ from __future__ import with_statement
 from contextlib import closing
 from flask import Flask, request, session, url_for, redirect, \
      render_template, abort, g, flash
-from werkzeug import check_password_hash, generate_password_hash
 import random
 import string
 import sys
@@ -17,6 +16,7 @@ from flask import Module
 from heymoose.utils.decorators import auth_only, role_not_detected_only, admin_only
 from heymoose.utils.workers import app_logger, heymoose_app
 from heymoose.utils.shortcuts import do_or_abort
+from heymoose.utils.gen import check_password_hash, generate_password_hash
 from heymoose.core.actions import apps, roles
 from heymoose import config
 import heymoose.forms.forms as forms

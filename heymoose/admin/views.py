@@ -3,8 +3,8 @@ from flask import render_template, g, request, abort, redirect, flash, url_for
 from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions as a
-from heymoose.core.actions import performers as perf
-from heymoose.utils import convert
+from heymoose.core.actions import performers as perf, roles
+from heymoose.utils import convert, gen
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.views.common import json_get_ctr
 from heymoose.forms import forms
@@ -101,6 +101,23 @@ def users():
 @bp.route('/users/invites')
 def users_invites():
 	return render_template('admin/users-invites.html')
+
+@bp.route('/users/register/customer', methods=['GET', 'POST'])
+def users_register_customer():
+	form = forms.CustomerRegisterForm(request.form)
+	if request.method == 'POST' and form.validate():
+		do_or_abort(a.users.add_user,
+			email=form.email.data,
+			passwordHash=gen.generate_password_hash(form.password.data),
+			nickname=form.username.data)
+		user = do_or_abort(a.users.get_user_by_email, form.email.data, full=True)
+		if user:
+			a.users.add_user_role(user.id, roles.CUSTOMER)
+			flash(u'Рекламодатель успешно зарегистрирован', 'success')
+			return redirect(url_for('.users_info', id=user.id))
+		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
+	
+	return render_template('admin/users-register-customer.html', form=form)
 
 @bp.route('/users/stats')
 def users_stats():

@@ -68,6 +68,12 @@
 		}
 		
 		textarea.copybox { cursor: auto; }
+		
+		.widelabels label {	width: 200px;}
+		.widelabels fieldset legend { padding-left: 220px; }
+		.widelabels .input { margin-left: 220px; }
+		.widelabels .well { padding-left: 0px; }
+		.widelabels .actions { padding-left: 220px; }
 	</style>
 	
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
@@ -78,8 +84,8 @@
 	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-alerts.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('.static', filename='./js/admin.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/wtvalidate.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/wtvalidate.twitter.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.twitter.js') }}"></script>
 	
 	{% set activemenu = activemenu|default('index') %}
 	<script type="text/javascript">

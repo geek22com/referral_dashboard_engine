@@ -39,6 +39,9 @@ class DeveloperRegisterForm(RegisterForm):
 		myvalidators.check_invite
 	])
 	
+class CustomerRegisterForm(RegisterForm):
+	pass
+	
 
 class FeedBackForm(Form):
 	feedback_email = TextField('Email Address', [

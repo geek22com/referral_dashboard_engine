@@ -1,0 +1,36 @@
+{% extends "admin/users-layout.html" %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Регистрация', url_for('.users_register_customer')) }}
+{% endblock %}
+
+{% set activetab = 'register' %}
+
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			var handlers = { error: showError, clear: clearError };
+			$('#form-register-customer').validateForm(handlers);
+		});
+	</script>
+{% endblock %}
+
+{% block tabcontent %}
+
+<div class="form-container clearfix">
+	<form id="form-register-customer" method="post" action ="" class="widelabels">
+		<fieldset>
+			{{ macros.formfield(form.username, class='span10') }}
+			{{ macros.formfield(form.email, class='span10', type='email') }}
+			{{ macros.formfield(form.password, class='span10') }}
+			{{ macros.formfield(form.password2, class='span10') }}
+		</fieldset>
+		<div class="actions">
+			<input class="btn primary" type="submit" value="Зарегистрировать"/>
+		</div>
+	</form>
+</div>
+
+{% endblock %}

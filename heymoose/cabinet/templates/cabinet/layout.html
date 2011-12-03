@@ -119,8 +119,12 @@
 				</span>
 
 				<ul class="nav">
+					{% if g.user.is_customer() %}
 					<li id="menu-item-orders"><a href="{{ url_for('.orders') }}">Заказы</a></li>
+					{% endif %}
+					{% if g.user.is_developer() %}
 					<li id="menu-item-apps"><a href="{{ url_for('.apps') }}">Приложения</a></li>
+					{% endif %}
 					<li id="menu-item-info"><a href="{{ url_for('.info') }}">Профиль</a></li>
 				</ul>
 				

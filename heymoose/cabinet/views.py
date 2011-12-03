@@ -25,6 +25,7 @@ def index():
 
 
 @bp.route('/orders/')
+@customer_only
 def orders():
 	return render_template('cabinet/orders.html', orders=g.user.orders)
 
@@ -125,6 +126,7 @@ def orders_info_stats(id):
 	
 
 @bp.route('/apps/')
+@developer_only
 def apps():
 	return render_template('cabinet/apps.html', apps=g.user.apps)
 
@@ -175,8 +177,9 @@ def balance_pay():
 	return render_template('cabinet/info-balance-pay.html', form=form) 
 	
 
-@bp.route('/roles/new/customer')
+# @bp.route('/roles/new/customer')
 def become_customer():
+	'''Deprecated: customers are registered in admin blueprint'''
 	if not g.user.is_customer():
 		do_or_abort(actions.users.become_customer, g.user.id)
 		flash(u'Поздравляем, теперь вы рекламодатель!', 'success')
@@ -184,8 +187,9 @@ def become_customer():
 		flash(u'Вы уже являетесь рекламодателем', 'error')
 	return redirect(url_for('.orders'))
 
-@bp.route('/roles/new/developer')
+# @bp.route('/roles/new/developer')
 def become_developer():
+	'''Deprecated: developers register with invites'''
 	if not g.user.is_developer():
 		do_or_abort(actions.users.become_developer, g.user.id)
 		flash(u'Поздравляем, теперь вы разработчик!', 'success')

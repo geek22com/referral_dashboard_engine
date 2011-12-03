@@ -15,7 +15,7 @@ def app_form_template(form_params=None):
 	g.params['appform'] = app_form
 	return render_template('new-app-create.html', params = g.params)
 
-
+'''
 @frontend.route('/cabinet/apps', methods=['GET', 'POST'])
 @auth_only
 def cabinet_apps():
@@ -25,6 +25,7 @@ def cabinet_apps():
     g.params['appform'] = forms.AppForm()
     
     return render_template('cabinet_apps.html', params=g.params)
+'''
 
 @frontend.route('/app_form', methods=['GET'])
 @developer_only

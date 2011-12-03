@@ -4,7 +4,7 @@ from datetime import datetime
 import base64
 
 def error_type(value, type):
-	return filter(lambda x: x[0] == type, value)
+	return filter(lambda x: x[0] == type, value) if value else None
 
 
 def datetimeformat(value, format=convert.datetime_format):
@@ -12,19 +12,19 @@ def datetimeformat(value, format=convert.datetime_format):
 
 
 def datetime_nosec(value, format=convert.datetime_nosec_format):
-	return value.strftime(format)
+	return value.strftime(format) if value else None
 
 
 def dateformat(value, format='%d.%m.%Y'):
-	return value.strftime(format)
+	return value.strftime(format) if value else None
 
 
 def timeformat(value, format='%H:%M:%S'):
-	return value.strftime(format)
+	return value.strftime(format) if value else None
 
 
 def base64filter(value):
-	return base64.encodestring(value).strip('\n')
+	return base64.encodestring(value).strip('\n') if value else None
 
 
 def addclass(value, cls):
@@ -36,7 +36,7 @@ def addclass(value, cls):
 
 
 def classname(value):
-	return value.__class__.__name__
+	return value.__class__.__name__ if value else None
 
 
 app.jinja_env.filters['error_type'] = error_type

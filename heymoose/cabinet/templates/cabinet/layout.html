@@ -88,8 +88,8 @@
 	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-modal.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-alerts.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/wtvalidate.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/wtvalidate.twitter.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.twitter.js') }}"></script>
 	
 	{% set activemenu = activemenu|default('orders') %}
 	<script type="text/javascript">

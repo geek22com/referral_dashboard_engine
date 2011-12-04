@@ -3,6 +3,7 @@ from wtforms import ValidationError
 from wtforms.validators import NumberRange, Required, Regexp
 from heymoose.core import actions
 from heymoose.db.actions import invites
+from heymoose.utils.gen import check_password_hash
 import re
 
 class NumberRangeEx(NumberRange):
@@ -44,3 +45,10 @@ def check_email_not_registered(form, field):
 def check_invite(form, field):
 	if invites.get_invite(field.data) is None:
 		raise ValidationError(u'Неверный код приглашения')
+
+
+def check_password(form, field):
+	if not hasattr(field, 'user') or not check_password_hash(field.user.password_hash, field.data):
+		raise ValidationError(u'Неверный пароль')
+		
+		

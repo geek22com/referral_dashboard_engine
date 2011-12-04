@@ -7,21 +7,17 @@ resource_path = "/users"
 
 def add_user_role(user_id, role):
 	path = "{0}/{1}/roles".format(resource_path, user_id)
-	post(path=path,
-	    params_dict=dict(role=role))
+	post(path=path, params_dict=dict(role=role))
 
 def update_user(user_id, passwordHash):
-  path = "{0}/{1}".format(resource_path, user_id)
-  put(path=path,
-      params_dict=dict(passwordHash=passwordHash))
+	path = "{0}/{1}".format(resource_path, user_id)
+	put(path=path, params_dict=dict(passwordHash=passwordHash))
 
 def become_developer(user_id):
-	return add_user_role(user_id,
-	                     roles.DEVELOPER)
+	return add_user_role(user_id, roles.DEVELOPER)
 
 def become_customer(user_id):
-	return add_user_role(user_id,
-	                     roles.CUSTOMER)
+	return add_user_role(user_id, roles.CUSTOMER)
 
 def add_user(email, passwordHash, nickname):
 	post(path=resource_path,

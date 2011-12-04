@@ -5,6 +5,7 @@ from heymoose.cabinet import blueprint as bp
 from heymoose.forms import forms
 from heymoose.core.data import OrderTypes
 from heymoose.utils.shortcuts import do_or_abort
+from heymoose.utils.gen import generate_password_hash
 from heymoose.views.common import json_get_ctr
 from decorators import customer_only, developer_only
 import heymoose.core.actions as actions
@@ -163,6 +164,17 @@ def apps_info_stats(id):
 @bp.route('/info')
 def info():
 	return render_template('cabinet/info.html')
+
+@bp.route('/info/password', methods=['GET', 'POST'])
+def info_password_change():
+	form = forms.PasswordChangeForm(request.form)
+	form.oldpassword.user = g.user
+	if request.method == 'POST' and form.validate():
+		do_or_abort(actions.users.update_user, g.user.id,
+			generate_password_hash(form.password.data))
+		flash(u'Пароль успешно изменен', 'success')
+		return redirect(url_for('.info'))
+	return render_template('cabinet/info-password-change.html', form=form)
 
 #@bp.route('/info/balance/pay', methods=['GET', 'POST'])
 @customer_only

@@ -75,6 +75,8 @@
 		.widelabels .well { padding-left: 0px; }
 		.widelabels .actions { padding-left: 220px; }
 		
+		label.required { font-weight: bold; }
+		
 		ul.breadcrumb span.status {
 			float: right;
 			padding-top: 3px;
@@ -104,7 +106,7 @@
 			
 			// Remove link and divider from last breadcrumb
 			$('ul.breadcrumb li:last').not('.status').text($('ul.breadcrumb li:last a').html());
-		})
+		});
 	</script>
 	
 	{% block extrahead %}{% endblock %}

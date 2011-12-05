@@ -3,7 +3,8 @@ frontend_nginx.conf etc/nginx/conf.d
 heymoose_production.py usr/share/nginx/www/frontend_production
 uwsgi etc/init.d
 config.py etc/frontend
-heymoose/static/* /usr/share/nginx/www/static
-heymoose/admin/static/* /usr/share/nginx/www/static
+heymoose/static/* /usr/share/nginx/www/frontend_static/static
+heymoose/admin/static/* /usr/share/nginx/www/frontend_static/admin/static
+heymoose/cabinet/static/* /usr/share/nginx/www/frontend_static/cabinet/static
 notifier/worker.py /usr/local/notifier
 notifier/notifier /etc/init.d

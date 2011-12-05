@@ -77,9 +77,18 @@
 		
 		label.required { font-weight: bold; }
 		
-		ul.breadcrumb span.status {
+		ul.breadcrumb .status {
 			float: right;
 			padding-top: 3px;
+		}
+		
+		#manager-modal {
+			width: 400px;
+		}
+		
+		address strong {
+			display: inline-block;
+			width: 80px;
 		}
 	</style>
 	
@@ -149,9 +158,14 @@
 				{% block breadcrumbs %}
 				{% endblock %}
 				
-				{% if g.user.is_customer() %}
-				<span class="status">Ваш баланс: {{ g.user.customer_balance }} руб</span>
-				{% endif %}
+				
+				<span class="status">
+					<a href="#" data-controls-modal="manager-modal" data-backdrop="true" data-keyboard="true">Ваш личный менеджер</a>
+					{% if g.user.is_customer() %}
+					<span class="divider">/</span>
+					Ваш баланс: {{ g.user.customer_balance }} руб.
+					{% endif %}
+				</span>
 			</ul>
 			{% endblock %}
 			
@@ -179,6 +193,32 @@
 		<footer>
 			<p>&copy; 2011 Bravik, LLC.</p>
 		</footer>
+	</div>
+	
+	<div id="manager-modal" class="modal fade" style="display: none;">
+		<div class="modal-header">
+			<a href="#" class="close">×</a>
+			<h3>Информация о вашем менеджере</h3>
+		</div>
+		<div class="modal-body span16">
+			{% if g.user.is_customer() %}
+				<p>Вашего личного менеджера зовут <strong>Тарас Тарасов</strong>.</p>
+				<address>
+					<strong>E-mail:</strong> <a href="mailto:t.tarasov@heymoose.com">t.tarasov@heymoose.com</a><br />
+					<strong>Телефон:</strong> +7 (962) 947-87-71<br />
+					<strong>Skype:</strong> ttarasov777<br />
+				</address>
+			{% endif %}
+			{% if g.user.is_developer() %}
+				<p>Вашего личного менеджера зовут <strong>Дмитрий Павлов</strong>.</p>
+				<address>
+					<strong>E-mail:</strong> <a href="mailto:dmitryi.pavlov@heymoose.com">dmitryi.pavlov@heymoose.com</a><br />
+					<strong>Телефон:</strong> +7 (916) 082-20-87<br />
+					<strong>Skype:</strong> ???<br />
+					<strong>ICQ:</strong> 850916
+				</address>
+			{% endif %}
+		</div>
 	</div>
 </body>
 </html>

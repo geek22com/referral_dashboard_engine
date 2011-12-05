@@ -43,11 +43,7 @@ class CustomerRegisterForm(RegisterForm):
 	pass
 
 
-class PasswordChangeForm(Form):
-	oldpassword = PasswordField(u'Текущий пароль', [
-		validators.Required(message=u'Введите текущий пароль'),
-		myvalidators.check_password
-	])
+class AdminPasswordChangeForm(Form):
 	password = PasswordField(u'Новый пароль', [
 		validators.Length(min=4, max=16, message=u'Длина пароля должна быть от 4 до 16 символов'),
 		validators.Required(message=u'Введите пароль')
@@ -56,6 +52,12 @@ class PasswordChangeForm(Form):
 		validators.Length(min=4, max=16, message=u'Длина пароля должна быть от 4 до 16 символов'),
 		validators.EqualTo('password', message=u'Введенные пароли не совпадают'),
 		validators.Required(message=u'Введите пароль повторно')
+	])
+
+class PasswordChangeForm(AdminPasswordChangeForm):
+	oldpassword = PasswordField(u'Текущий пароль', [
+		validators.Required(message=u'Введите текущий пароль'),
+		myvalidators.check_password
 	])
 	
 

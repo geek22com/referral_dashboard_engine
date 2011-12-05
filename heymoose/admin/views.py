@@ -145,6 +145,17 @@ def users_info_apps(id):
 	if not user.is_developer(): abort(404)
 	return render_template('admin/users-info-apps.html', user=user)
 
+@bp.route('/users/<int:id>/password', methods=['GET', 'POST'])
+def users_info_password_change(id):
+	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	form = forms.AdminPasswordChangeForm(request.form)
+	if request.method == 'POST' and form.validate():
+		do_or_abort(a.users.update_user, user.id,
+			gen.generate_password_hash(form.password.data))
+		flash(u'Пароль пользователя успешно изменен', 'success')
+		return redirect(url_for('.users_info', id=user.id))
+	return render_template('admin/users-info-password-change.html', user=user, form=form)
+
 @bp.route('/users/<int:id>/balance/pay', methods=['GET', 'POST'])
 def balance_pay(id):
 	user = do_or_abort(a.users.get_user_by_id, id, full=True)

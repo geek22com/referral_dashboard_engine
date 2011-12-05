@@ -12,6 +12,11 @@
 
 {% set activetab = 'pay' %}
 
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Пополнение баланса', url_for('.balance_pay', id=user.id)) }}
+{% endblock %}
+
 {% block tabcontent %}
 
 <div class="form-container clearfix">

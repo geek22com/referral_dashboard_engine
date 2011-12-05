@@ -48,12 +48,15 @@
 					<input type="hidden" name="ordertype" value="REGULAR" />
 					{{ macros.formfield(form.ordername, class='span10') }}
 					{{ macros.formfield(form.orderdesc, class='span10', rows=5) }}
+					{{ macros.formfield(form.orderurl, class='span10') }}
 					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance,
 						inline='Ваш баланс {0} руб'.format(g.user.customer_balance)) }}
 					{{ macros.formfield(form.ordercpa, class='span4') }}
-					{{ macros.formfield(form.orderurl, class='span10') }}
+					{{ macros.formfield(form.orderallownegativebalance,
+						inline='(разрешить отрицательный баланс)') }}
 					{{ macros.formfield(form.orderautoapprove) }}
-					{{ macros.formfield(form.orderallownegativebalance) }}
+					{{ macros.formfield(form.orderreentrant,
+						inline='(разрешить одному пользователю проходить оффер много раз)') }}
 					{{ macros.formfield(form.orderimage) }}
 				</fieldset>
 				<fieldset>
@@ -75,12 +78,15 @@
 				<fieldset>
 					<input type="hidden" name="ordertype" value="BANNER" />
 					{{ macros.formfield(form.ordername, class='span10') }}
+					{{ macros.formfield(form.orderurl, class='span10') }}
 					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance,
 						inline='Ваш баланс {0} руб'.format(g.user.customer_balance)) }}
 					{{ macros.formfield(form.ordercpa, class='span4') }}
-					{{ macros.formfield(form.orderurl, class='span10') }}
+					{{ macros.formfield(form.orderallownegativebalance,
+						inline='(разрешить отрицательный баланс)') }}
 					{{ macros.formfield(form.orderautoapprove) }}
-					{{ macros.formfield(form.orderallownegativebalance) }}
+					{{ macros.formfield(form.orderreentrant,
+						inline='(разрешить одному пользователю проходить оффер много раз)') }}
 					{{ macros.formfield(form.orderimage) }}
 				</fieldset>
 				<fieldset>
@@ -102,13 +108,16 @@
 				<fieldset>
 					<input type="hidden" name="ordertype" value="VIDEO" />
 					{{ macros.formfield(form.ordername, class='span10') }}
+					{{ macros.formfield(form.orderurl, class='span10') }}
+					{{ macros.formfield(form.ordervideourl, class='span10') }}
 					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance,
 						inline='Ваш баланс {0} руб'.format(g.user.customer_balance)) }}
 					{{ macros.formfield(form.ordercpa, class='span4') }}
-					{{ macros.formfield(form.orderurl, class='span10') }}
-					{{ macros.formfield(form.ordervideourl, class='span10') }}
+					{{ macros.formfield(form.orderallownegativebalance,
+						inline='(разрешить отрицательный баланс)') }}
 					{{ macros.formfield(form.orderautoapprove) }}
-					{{ macros.formfield(form.orderallownegativebalance) }}
+					{{ macros.formfield(form.orderreentrant,
+						inline='(разрешить одному пользователю проходить оффер несколько раз)') }}
 				</fieldset>
 				<fieldset>
 					<legend>Настройки таргетинга</legend>

@@ -52,6 +52,7 @@ def orders_new():
 					image=base64.encodestring(request.files['orderimage'].stream.read()),
 					auto_approve=form.orderautoapprove.data,
 					allow_negative_balance=form.orderallownegativebalance.data,
+					reentrant=form.orderreentrant.data,
 					male=form.ordermale.data,
 					min_age=form.orderminage.data,
 					max_age=form.ordermaxage.data)
@@ -75,6 +76,7 @@ def orders_new():
 					image=base64.encodestring(request.files['orderimage'].stream.read()),
 					auto_approve=form.orderautoapprove.data,
 					allow_negative_balance=form.orderallownegativebalance.data,
+					reentrant=form.orderreentrant.data,
 					male=form.ordermale.data,
 					min_age=form.orderminage.data,
 					max_age=form.ordermaxage.data)
@@ -97,6 +99,7 @@ def orders_new():
 					video_url=form.ordervideourl.data,
 					auto_approve=form.orderautoapprove.data,
 					allow_negative_balance=form.orderallownegativebalance.data,
+					reentrant=form.orderreentrant.data,
 					male=form.ordermale.data,
 					min_age=form.orderminage.data,
 					max_age=form.ordermaxage.data)

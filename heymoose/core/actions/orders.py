@@ -1,13 +1,12 @@
 from heymoose.core.actions.mappers import order_from_xml, count_from_xml
 from heymoose.core.rest import post, put, get, delete
 from heymoose.core.data import OrderTypes
-from restkit.errors import RequestFailed
 
 resource_path = "/orders"
 
 
 def add_order(user_id, title, url, balance, cpa, type, auto_approve=True,
-			allow_negative_balance=True, male=None, min_age=None, max_age=None, **kwargs):
+			allow_negative_balance=True, reentrant=False, male=None, min_age=None, max_age=None, **kwargs):
 	params_dict = dict(
 		userId=user_id,
 		title=title,
@@ -16,6 +15,7 @@ def add_order(user_id, title, url, balance, cpa, type, auto_approve=True,
 		cpa=cpa,
 		autoApprove=auto_approve,
 		allowNegativeBalance=allow_negative_balance,
+		reentrant=reentrant,
 		type=type,
 		**kwargs)
 	
@@ -28,7 +28,7 @@ def add_order(user_id, title, url, balance, cpa, type, auto_approve=True,
 
 
 def add_regular_order(user_id, title, url, balance, cpa, description, image, auto_approve=True,
-					allow_negative_balance=True, male=None, min_age=None, max_age=None):
+					allow_negative_balance=True, reentrant=False, male=None, min_age=None, max_age=None):
 	return add_order(user_id=user_id,
 				title=title,
 				url=url,
@@ -36,6 +36,7 @@ def add_regular_order(user_id, title, url, balance, cpa, description, image, aut
 				cpa=cpa,
 				auto_approve=auto_approve,
 				allow_negative_balance=allow_negative_balance,
+				reentrant=reentrant,
 				male=male,
 				min_age=min_age,
 				max_age=max_age,
@@ -45,7 +46,7 @@ def add_regular_order(user_id, title, url, balance, cpa, description, image, aut
 	
 	
 def add_banner_order(user_id, title, url, balance, cpa, image, auto_approve=True,
-					allow_negative_balance=True, male=None, min_age=None, max_age=None):
+					allow_negative_balance=True, reentrant=False, male=None, min_age=None, max_age=None):
 	return add_order(user_id=user_id,
 				title=title,
 				url=url,
@@ -53,6 +54,7 @@ def add_banner_order(user_id, title, url, balance, cpa, image, auto_approve=True
 				cpa=cpa,
 				auto_approve=auto_approve,
 				allow_negative_balance=allow_negative_balance,
+				reentrant=reentrant,
 				male=male,
 				min_age=min_age,
 				max_age=max_age,
@@ -61,7 +63,7 @@ def add_banner_order(user_id, title, url, balance, cpa, image, auto_approve=True
 
 
 def add_video_order(user_id, title, url, balance, cpa, video_url, auto_approve=True,
-					allow_negative_balance=True, male=None, min_age=None, max_age=None):
+					allow_negative_balance=True, reentrant=False, male=None, min_age=None, max_age=None):
 	return add_order(user_id=user_id,
 				title=title,
 				url=url,
@@ -69,6 +71,7 @@ def add_video_order(user_id, title, url, balance, cpa, video_url, auto_approve=T
 				cpa=cpa,
 				auto_approve=auto_approve,
 				allow_negative_balance=allow_negative_balance,
+				reentrant=reentrant,
 				male=male,
 				min_age=min_age,
 				max_age=max_age,

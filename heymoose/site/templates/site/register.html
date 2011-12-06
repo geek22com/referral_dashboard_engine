@@ -1,0 +1,43 @@
+{% extends "site/layout.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			var handlers = { error: showError, clear: clearError };
+			$('#form-register').validateForm(handlers);
+		});
+	</script>
+{% endblock %}
+
+{% set activemenu = 'register' %}
+
+{% block pageheader %}
+<h1>{{ self.title() }}</h1>
+{% endblock %}
+
+{% block content %}
+<p>
+	В данный момент регистрация доступна только для разработчиков по приглашениям.
+	Если вы являетесь разработчиком приложений или хотите разместить заказ в нашей
+	системе, пожалуйста, <a href="{{ url_for('.contacts') }}">свяжитесь с нами</a>.
+</p>
+
+<div class="form-container clearfix">
+	<form id="form-register" method="post" action="" class="widelabels">
+		<fieldset>
+			{{ macros.formfield(form.invite, class='span10', rows=4) }}
+			{{ macros.formfield(form.username, class='span10') }}
+			{{ macros.formfield(form.email, class='span10', type='email') }}
+			{{ macros.formfield(form.password, class='span10') }}
+			{{ macros.formfield(form.password2, class='span10') }}
+		</fieldset>
+		<div class="actions">
+			<input class="btn primary" type="submit" value="Зарегистрироваться"/>
+		</div>
+	</form>
+</div>
+
+{% endblock %}

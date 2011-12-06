@@ -54,7 +54,7 @@
 		<div class="fill">
 			<div class="container">
 				<span class="brand">
-					Личный кабинет <a href="{{ url_for('frontend.main_page') }}">HeyMoose</a>
+					Личный кабинет <a href="{{ url_for('site.index') }}">HeyMoose</a>
 				</span>
 
 				<ul class="nav">
@@ -71,7 +71,7 @@
 					<li class="dropdown">
 						<a class="dropdown-toggle" href="#">{{ g.user.nickname }}</a>
 						<ul class="dropdown-menu">
-							<li><a href="{{ url_for('frontend.logout') }}">Выйти</a></li>
+							<li><a href="{{ url_for('site.logout') }}">Выйти</a></li>
 						</ul>
 					</li>
 				</ul>

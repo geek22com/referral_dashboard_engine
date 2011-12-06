@@ -2,12 +2,11 @@
 from flask import session, g, flash
 from heymoose import app
 from heymoose.thirdparty.facebook.mongo import performers
-from heymoose.utils.workers import app_logger
-from heymoose.views.frontend import frontend
 import heymoose.core.actions.users as users
 import heymoose.forms.forms as forms
 from heymoose.db.actions import captcha
 
+'''
 @app.before_request
 def before_request():
     g.user = None
@@ -28,6 +27,7 @@ def before_request():
 @app.after_request
 def after_request(response):
 	return response
+'''
 
 
 def flash_form_errors(errors, type):

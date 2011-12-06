@@ -3,7 +3,7 @@ from flask import render_template, g, request, abort, redirect, flash, url_for
 from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions as a
-from heymoose.core.actions import performers as perf, roles
+from heymoose.core.actions import roles
 from heymoose.utils import convert, gen
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.views.common import json_get_ctr
@@ -173,10 +173,10 @@ def balance_pay(id):
 @bp.route('/performers/')
 def performers():
 	page = convert.to_int(request.args.get('page'), 1)
-	count = perf.get_performers_count()
+	count = a.performers.get_performers_count()
 	per_page = app.config.get('ADMIN_PERFORMERS_PER_PAGE', 20)
 	offset, limit, pages = paginate(page, count, per_page)
-	perfs = do_or_abort(perf.get_performers, offset=offset, limit=limit, full=True)
+	perfs = do_or_abort(a.performers.get_performers, offset=offset, limit=limit, full=True)
 	return render_template('admin/performers.html', performers=perfs, pages=pages)
 
 @bp.route('/performers/stats')
@@ -185,12 +185,12 @@ def performers_stats():
 
 @bp.route('/performers/<int:id>')
 def performers_info(id):
-	performer = do_or_abort(perf.get_performer, id, full=True)
+	performer = do_or_abort(a.performers.get_performer, id, full=True)
 	return render_template('admin/performers-info.html', performer=performer)
 
 @bp.route('/performers/<int:id>/stats')
 def performers_info_stats(id):
-	performer = do_or_abort(perf.get_performer, id, full=True)
+	performer = do_or_abort(a.performers.get_performer, id, full=True)
 	return render_template('admin/performers-info-stats.html', performer=performer)
 
 

@@ -1,4 +1,4 @@
-from heymoose.core.actions.mappers import order_from_xml, count_from_xml
+from mappers import order_from_xml, count_from_xml
 from heymoose.core.rest import post, put, get, delete
 from heymoose.core.data import OrderTypes
 

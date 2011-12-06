@@ -5,6 +5,7 @@ from heymoose.forms import forms
 from heymoose.utils.shortcuts import do_or_abort
 from heymoose.utils.gen import generate_password_hash, check_password_hash
 from heymoose.core.actions import users, roles
+from heymoose.db.models import Contact
 from heymoose.db.actions import invites
 
 
@@ -21,19 +22,15 @@ def about():
 @bp.route('/contacts', methods=['GET', 'POST'])
 def contacts():
 	form = forms.ContactForm(request.form)
-	'''if request.method == 'POST' and contact_form.validate():
-		if captcha.check_captcha(request.form['captcha_id'], contact_form.captcha_answer.data) is None:
-			flash_form_errors([['Каптча введена не верно']], 'contactinfoerror')
-		else:
-		    contact = Contact(
-				name = contact_form.name.data,
-				email = contact_form.email.data,
-				phone = contact_form.phone.data,
-				desc = contact_form.comment.data)
-			contact.save()
-			flash_form_errors([["Спасибо, мы обязательно с вами свяжемся"]], 'contactinfoerror')
-			return redirect(url_for('contacts'))
-	flash_form_errors(contact_form.errors.values(), 'contactinfoerror')'''
+	if request.method == 'POST' and form.validate():
+		contact = Contact(
+			name = form.name.data,
+			email = form.email.data,
+			phone = form.phone.data,
+			desc = form.comment.data)
+		contact.save()
+		flash(u'Спасибо, мы обязательно с вами свяжемся!', 'success')
+		return redirect(url_for('.contacts'))
 	return render_template('site/contacts.html', form=form)
 
 

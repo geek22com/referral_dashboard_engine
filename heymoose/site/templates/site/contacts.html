@@ -1,78 +1,46 @@
 {% extends "site/layout.html" %}
 
-{% block title %}Heymoose - партнерская сеть{% endblock %}
+{% block title %}Контакты{% endblock %}
+
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			var handlers = { error: showError, clear: clearError };
+			$('#form-contacts').validateForm(handlers);
+		});
+	</script>
+{% endblock %}
 
 {% set activemenu = "contacts" %}
 
 {% block pageheader %}
-<h3>Как с нами связаться?</h3>
+<h1>Как с нами связаться?</h1>
 {% endblock %}
 
 {% block content %}
 <div class="info clearfix">
-<ul>
-<li>
-<a href="mailto:info@heymoose.com">email: info@heymoose.com</a>
-</li>
-<li>
-phone: +7(905)7101992
-</li>
-</ul>
+	<ul>
+		<li><a href="mailto:info@heymoose.com">email: info@heymoose.com</a></li>
+		<li>phone: +7(905)7101992</li>
+	</ul>
 </div>
 
-<div class="info clearfix">
-<h4>Вы можете оставить контакты и мы с вами свяжемся:</h4>
-<form id="contact_form" action="{{ url_for('.contacts') }}" method="POST">
-
-<div class="clearfix">	
-<label for="name">Ваше имя</label>
-<div class="input">
-	{{ form.name(class="medium", type="text") }}
-</div>
-</div>
-
-<div class="clearfix">	
-<label for="email">Электронный адрес</label>
-<div class="input">
-	{{ form.email(class="medium", type="email") }}
-</div>
-</div>
-	
-<div class="clearfix">	
-<label for="phone">Телефон</label>
-<div class="input">
-	{{ form.phone(class="medium", type="text") }}
-</div>
+<h4>Вы можете оставить контакты и мы с вами свяжемся</h4>
+<div class="form-container clearfix">
+	<form id="form-contacts" method="post" action="" class="widelabels">
+		<fieldset>
+			{{ macros.formfield(form.name, class='span10') }}
+			{{ macros.formfield(form.email, class='span10', type='email') }}
+			{{ macros.formfield(form.phone, class='span4') }}
+			{{ macros.formfield(form.comment, class='span10', rows=4) }}
+			{{ macros.formfield(form.captcha, class='span4') }}
+			{{ form.ch() }}
+		</fieldset>
+		<div class="actions">
+			<input class="btn primary" type="submit" value="Отправить"/>
+		</div>
+	</form>
 </div>
 
-<div class="clearfix">	
-<label for="comment">Ваш вопрос</label>
-<div class="input">
-	{{ form.comment(class="medium", rows="8", cols="21") }}
-</div>
-</div>
-{#
-<div class="clearfix">
-<label for="captcha_answer">{{ params.contact_captcha.question }}</label>
-<div class="input">
-	 {{ g.params.contactform.captcha_answer(class='medium', type="text") }}
-	<input type="hidden" name="captcha_id" value="{{params.contact_captcha.c_id}}">
-</div>
-</div> #}
-
-<div class="clearfix">
-	<input class="btn primary" type="submit" value="Подтвердить"/> 
-</div>
-</form>
-
-{% with %}
-{% set mes = get_flashed_messages(with_categories=true) | error_type('contactinfoerror') %}
-{% if mes %}
-<div class="clearfix alert-message block-message error">
-<p>{{ mes[0][1].decode('utf8') }}</p>
-</div>
-{% endif %}
-{% endwith %}
-
-</div>
 {% endblock %}

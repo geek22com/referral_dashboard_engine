@@ -1,8 +1,47 @@
 # -*- coding: utf-8 -*-
-from wtforms import Form, BooleanField, TextField, validators, PasswordField, IntegerField, TextAreaField, SelectField, FileField
+from wtforms import Form, validators, BooleanField, TextField, PasswordField, \
+	IntegerField, TextAreaField, SelectField, FileField, HiddenField
+from wtforms.fields import Label
 import heymoose.core.actions.roles as roles
 import validators as myvalidators
 import fields as myfields
+import random, hashlib
+
+
+class CaptchaForm(Form):
+	captcha = TextField(u'', [validators.Required(message=u'Введите число')])
+	ch = HiddenField()
+	
+	
+	def __init__(self, formdata=None, obj=None, prefix='', **kwargs):
+		super(CaptchaForm, self).__init__(formdata, obj, prefix, **kwargs)
+		if (formdata is None or 'ch' not in formdata) and obj is None:
+			self.regenerate()
+			
+			
+	def validate_captcha(self, field):
+		answer = self.ch.data
+		guess = self.generate_hash(self.captcha.data)
+		self.regenerate()
+		
+		if guess != answer:
+			raise ValueError(u'Ответ неверный, попробуйте еще раз')
+			
+	
+	def regenerate(self):
+		first = random.randrange(1000, 9000)
+		second = random.randrange(1, 9)
+		self.captcha.label = Label(self.captcha.id, '{0} + {1} = '.format(first, second))
+		self.captcha.data = u''
+		self.ch.data = self.generate_hash(first + second)
+		
+		
+	def generate_hash(self, value):
+		m = hashlib.md5()
+		m.update('hey{0}moo{1}se'.format(str(value), self.name))
+		return m.hexdigest()
+			
+
 
 class LoginForm(Form):
 	username = TextField(u'E-mail', [validators.Required(message = u'Введите электронный адрес')])
@@ -67,14 +106,16 @@ class FeedBackForm(Form):
 	feedback_comment = TextAreaField('Comment', [validators.Required(message = ('Напишите ваше пожелание') )])
 	feedback_captcha_answer = TextField('captcha_answer', [validators.Required(message = ('Введите каптчу'))])
 
-class ContactForm(Form):
-	name = TextField('contactname')
-	email = TextField('contactemail', [
-					  validators.Email("Некорректный email адресс")])
-	phone = TextField('contactphone', [
-					  validators.Required("Введите ваш номер телефона, чтобы мы могли позвонить вам.")])
-	comment = TextAreaField('contactcomment')
-	captcha_answer = TextField('captcha_answer', [validators.Required(message = ('Введите каптчу'))])
+class ContactForm(CaptchaForm):
+	name = TextField(u'Ваше имя', [
+		validators.Required(message=u'Представьтесь, пожалуйста')			
+	])
+	email = TextField(u'Ваш e-mail', [
+		validators.Email(message=u'Некорректный email-адрес'),
+		validators.Required(message=u'Введите email адрес')
+	])
+	phone = TextField(u'Ваш телефон')
+	comment = TextAreaField(u'Вопрос или сообщение')
 
 
 class OrderForm(Form):

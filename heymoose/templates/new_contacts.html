@@ -68,7 +68,7 @@ phone: +7(905)7101992
 {% with %}
 {% set mes = get_flashed_messages(with_categories=true) | error_type('contactinfoerror') %}
 {% if mes %}
-<div class="clearfix clearboth alert-message block-message error">
+<div class="clearfix alert-message block-message error">
 <p>{{ mes[0][1].decode('utf8') }}</p>
 </div>
 {% endif %}

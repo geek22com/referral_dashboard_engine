@@ -5,6 +5,7 @@
 {% set activemenu = "users" %}
 
 {% block extrahead %}
+{{ super() }}
 {% set activetab = activetab|default('info') %}
 <script type="text/javascript">
 	$(function() { 

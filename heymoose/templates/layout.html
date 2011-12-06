@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	{% import 'common/macros.html' as macros %}
+	
+	{% block head %}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>
+		{% block fulltitle %}
+			{% block title %}Страница{% endblock %} :: {% block posttitle %}HeyMoose{% endblock %}
+		{% endblock %}
+	</title>
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.min.css') }}" media="screen">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.hm.css') }}" media="screen">
+	<style type="text/css">
+		body { background: url({{ url_for('static', filename='./img/background.png') }}) repeat scroll 0 0 transparent; }
+	</style>
+	
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-latest.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.form.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/bootstrap-dropdown.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/bootstrap-modal.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/bootstrap-alerts.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.twitter.js') }}"></script>
+	
+	{% set activemenu = activemenu|default('index') %}
+	<script type="text/javascript">
+		$(function() {
+			$('.alert-message').alert();
+			
+			$('#topbar').dropdown();
+			$('li#menu-item-{{ activemenu }}').addClass('active');
+			
+			$('form.validate').validateForm(twitterValidateHandlers);
+		})
+	</script>
+	
+	{% block extrahead %}{% endblock %}
+	{% endblock %}
+</head>
+<body>
+	{% block prebody %}{% endblock %}
+
+	<div class="topbar" id="topbar">
+		<div class="fill">
+			<div class="container">
+				<span class="brand">
+					{% block prebrand %}{% endblock %}
+					<a href="{{ url_for('site.index') }}"><span class="hey">Hey</span><span class="moose">Moose</span></a>
+					{% block postbrand %}{% endblock %}
+				</span>
+				{% block topbar %}{% endblock %}
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="content">
+			{% block breadcrumbs_container %}{% endblock %}
+			
+			{% block pageheader_container %}
+			<div class="page-header">
+				{% block pageheader %}{% endblock %}
+			</div>
+			{% endblock %}
+			
+			{% block flash_messages %}
+				{% with messages = get_flashed_messages(with_categories=True) %}
+				{% for category, message in messages %}
+				<div class="alert-message {{ category }} fade in">
+					<a class="close" href="#">×</a>
+					<p>{{ message }}</p>
+				</div>
+				{% endfor %}
+				{% endwith %}
+			{% endblock %}
+			
+			{% block content %}
+			{% endblock %}
+		</div>
+		
+		<footer>
+			<p>&copy; 2011 Bravik, LLC.</p>
+		</footer>
+	</div>
+	
+	{% block postbody %}{% endblock %}
+</body>
+</html>

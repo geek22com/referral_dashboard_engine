@@ -5,6 +5,7 @@
 {% set activemenu = 'orders' %}
 
 {% block extrahead %}
+{{ super() }}
 {% set activetab = activetab|default('list') %}
 <script type="text/javascript">
 	$(function() { 

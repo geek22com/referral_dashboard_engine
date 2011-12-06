@@ -1,152 +1,91 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	{% import 'admin/macros.html' as macros %}
-	
-	{% block head %}
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>
-		{% block fulltitle %}
-			{% block title %}Страница{% endblock %} :: Личный кабинет HeyMoose
-		{% endblock %}
-	</title>
-	
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.min.css') }}" media="screen">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.hm.css') }}" media="screen">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/jquery-ui.css') }}" media="all" />
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/timepicker-addon.css') }}" media="all" />
-	<style type="text/css">
-		body { background: url({{ url_for('.static', filename='./img/background.png') }}) repeat scroll 0 0 transparent; }
-		#manager-modal { width: 400px; }}
-	</style>
-	
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery-latest.js') }}"></script>
-	<script type="text/javascript" src="http://code.jquery.com/ui/1.8.16/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="http://jqueryui.com/ui/i18n/jquery.ui.datepicker-ru.js"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-dropdown.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-modal.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-alerts.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.twitter.js') }}"></script>
-	
-	{% set activemenu = activemenu|default('orders') %}
-	<script type="text/javascript">
-		$(function() {
-			// Make datepicker Russian by default
-			$.datepicker.setDefaults($.datepicker.regional['ru']);
-			
-			$('#topbar').dropdown();
-			$('li#menu-item-{{ activemenu }}').addClass('active');
-			
-			$('.alert-message').alert();
-			
-			// Remove link and divider from last breadcrumb
-			$('ul.breadcrumb li:last').not('.status').text($('ul.breadcrumb li:last a').html());
-		});
-	</script>
-	
-	{% block extrahead %}{% endblock %}
-	{% endblock %}
-</head>
-<body>
-	<div class="topbar" id="topbar">
-		<div class="fill">
-			<div class="container">
-				<span class="brand">
-					Личный кабинет <a href="{{ url_for('site.index') }}">HeyMoose</a>
-				</span>
+{% extends 'layout.html' %}
 
-				<ul class="nav">
-					{% if g.user.is_customer() %}
-					<li id="menu-item-orders"><a href="{{ url_for('.orders') }}">Заказы</a></li>
-					{% endif %}
-					{% if g.user.is_developer() %}
-					<li id="menu-item-apps"><a href="{{ url_for('.apps') }}">Приложения</a></li>
-					{% endif %}
-					<li id="menu-item-info"><a href="{{ url_for('.info') }}">Профиль</a></li>
-				</ul>
-				
-				<ul class="nav secondary-nav">
-					<li class="dropdown">
-						<a class="dropdown-toggle" href="#">{{ g.user.nickname }}</a>
-						<ul class="dropdown-menu">
-							<li><a href="{{ url_for('site.logout') }}">Выйти</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+{% block posttitle %}Личный кабинет HeyMoose{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/jquery-ui.css') }}" media="all" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/timepicker-addon.css') }}" media="all" />
+<style type="text/css">
+	#manager-modal { width: 400px; }}
+</style>
+
+<script type="text/javascript" src="http://code.jquery.com/ui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://jqueryui.com/ui/i18n/jquery.ui.datepicker-ru.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
+
+{% set activemenu = activemenu|default('orders') %}
+<script type="text/javascript">
+	$(function() {
+		// Make datepicker Russian by default
+		$.datepicker.setDefaults($.datepicker.regional['ru']);
+		// Remove link and divider from last breadcrumb
+		$('ul.breadcrumb li:last').not('.status').text($('ul.breadcrumb li:last a').html());
+	});
+</script>
+{% endblock %}
+
+{% block prebrand %}Личный кабинет{% endblock %}
+
+{% block topbar %}
+<ul class="nav">
+	{% if g.user.is_customer() %}
+	<li id="menu-item-orders"><a href="{{ url_for('.orders') }}">Заказы</a></li>
+	{% endif %}
+	{% if g.user.is_developer() %}
+	<li id="menu-item-apps"><a href="{{ url_for('.apps') }}">Приложения</a></li>
+	{% endif %}
+	<li id="menu-item-info"><a href="{{ url_for('.info') }}">Профиль</a></li>
+</ul>
+
+<ul class="nav secondary-nav">
+	<li class="dropdown">
+		<a class="dropdown-toggle" href="#">{{ g.user.nickname }}</a>
+		<ul class="dropdown-menu">
+			<li><a href="{{ url_for('site.logout') }}">Выйти</a></li>
+		</ul>
+	</li>
+</ul>
+{% endblock %}
 	
-	<div class="container">
-		<div class="content">
-			{% block breadcrumbs_container %}
-			<ul class="breadcrumb">
-				{% block breadcrumbs %}
-				{% endblock %}
-				
-				
-				<span class="status">
-					<a href="#" data-controls-modal="manager-modal" data-backdrop="true" data-keyboard="true">Ваш личный менеджер</a>
-					{% if g.user.is_customer() %}
-					<span class="divider">/</span>
-					Ваш баланс: {{ g.user.customer_balance }} руб.
-					{% endif %}
-				</span>
-			</ul>
-			{% endblock %}
-			
-			{% block pageheader_container %}
-			<div class="page-header">
-				{% block pageheader %}{% endblock %}
-			</div>
-			{% endblock %}
-			
-			{% block flash_messages %}
-				{% with messages = get_flashed_messages(with_categories=True) %}
-				{% for category, message in messages %}
-				<div class="alert-message {{ category }} fade in">
-					<a class="close" href="#">×</a>
-					<p>{{ message }}</p>
-				</div>
-				{% endfor %}
-				{% endwith %}
-			{% endblock %}
-			
-			{% block content %}
-			{% endblock %}
-		</div>
-		
-		<footer>
-			<p>&copy; 2011 Bravik, LLC.</p>
-		</footer>
-	</div>
+{% block breadcrumbs_container %}
+<ul class="breadcrumb">
+	{% block breadcrumbs %}
+	{% endblock %}
 	
-	<div id="manager-modal" class="modal fade" style="display: none;">
-		<div class="modal-header">
-			<a href="#" class="close">×</a>
-			<h3>Информация о вашем менеджере</h3>
-		</div>
-		<div class="modal-body">
-			{% if g.user.is_customer() %}
-				<p>Вашего личного менеджера зовут <strong>Тарас Тарасов</strong>.</p>
-				<address>
-					<strong>E-mail:</strong> <a href="mailto:t.tarasov@heymoose.com">t.tarasov@heymoose.com</a><br />
-					<strong>Телефон:</strong> +7 (962) 947-87-71<br />
-					<strong>Skype:</strong> ttarasov777<br />
-				</address>
-			{% endif %}
-			{% if g.user.is_developer() %}
-				<p>Вашего личного менеджера зовут <strong>Дмитрий Павлов</strong>.</p>
-				<address>
-					<strong>E-mail:</strong> <a href="mailto:dmitryi.pavlov@heymoose.com">dmitryi.pavlov@heymoose.com</a><br />
-					<strong>Телефон:</strong> +7 (916) 082-20-87<br />
-					<strong>Skype:</strong> ???<br />
-					<strong>ICQ:</strong> 850916
-				</address>
-			{% endif %}
-		</div>
+	<span class="status">
+		<a href="#" data-controls-modal="manager-modal" data-backdrop="true" data-keyboard="true">Ваш личный менеджер</a>
+		{% if g.user.is_customer() %}
+		<span class="divider">/</span>
+		Ваш баланс: {{ g.user.customer_balance }} руб.
+		{% endif %}
+	</span>
+</ul>
+{% endblock %}
+			
+{% block postbody %}
+<div id="manager-modal" class="modal fade" style="display: none;">
+	<div class="modal-header">
+		<a href="#" class="close">×</a>
+		<h3>Информация о вашем менеджере</h3>
 	</div>
-</body>
-</html>
+	<div class="modal-body">
+		{% if g.user.is_customer() %}
+			<p>Вашего личного менеджера зовут <strong>Тарас Тарасов</strong>.</p>
+			<address>
+				<strong>E-mail:</strong> <a href="mailto:t.tarasov@heymoose.com">t.tarasov@heymoose.com</a><br />
+				<strong>Телефон:</strong> +7 (962) 947-87-71<br />
+				<strong>Skype:</strong> ttarasov777<br />
+			</address>
+		{% endif %}
+		{% if g.user.is_developer() %}
+			<p>Вашего личного менеджера зовут <strong>Дмитрий Павлов</strong>.</p>
+			<address>
+				<strong>E-mail:</strong> <a href="mailto:dmitryi.pavlov@heymoose.com">dmitryi.pavlov@heymoose.com</a><br />
+				<strong>Телефон:</strong> +7 (916) 082-20-87<br />
+				<strong>Skype:</strong> ragdar777<br />
+				<strong>ICQ:</strong> 850916
+			</address>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

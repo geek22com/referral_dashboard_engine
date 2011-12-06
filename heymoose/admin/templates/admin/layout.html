@@ -1,122 +1,56 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	{% import 'admin/macros.html' as macros %}
-	
-	{% block head %}
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>
-		{% block fulltitle %}
-			{% block title %}Страница{% endblock %} :: Администрирование HeyMoose
-		{% endblock %}
-	</title>
-	
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.min.css') }}" media="screen">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.hm.css') }}" media="screen">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/jquery-ui.css') }}" media="all" />
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/timepicker-addon.css') }}" media="all" />
-	<style type="text/css">
-		body { background: url({{ url_for('static', filename='./img/background.png') }}) repeat scroll 0 0 transparent; }
-	</style>
-	
-	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-	<script type="text/javascript" src="http://code.jquery.com/ui/1.8.16/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="http://jqueryui.com/ui/i18n/jquery.ui.datepicker-ru.js"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-dropdown.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-modal.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/bootstrap-alerts.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/admin.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.twitter.js') }}"></script>
-	
-	{% set activemenu = activemenu|default('index') %}
-	<script type="text/javascript">
-		$(function() {
-			// Make datepicker Russian by default
-			$.datepicker.setDefaults($.datepicker.regional['ru']);
-			
-			$('#topbar').dropdown();
-			$('li#menu-item-{{ activemenu }}').addClass('active');
-			
-			$('.alert-message').alert();
-			
-			// Remove link and divider from last breadcrumb
-			$('ul.breadcrumb li:last').text($('ul.breadcrumb li:last a').html());
-			
-			// Select all text in copyboxes
-			$('.copybox').focus(function() {
-				this.select();
-			})
-		})
-	</script>
-	
-	{% block extrahead %}{% endblock %}
-	{% endblock %}
-</head>
-<body>
-	<div class="topbar" id="topbar">
-		<div class="fill">
-			<div class="container">
-				<span class="brand">
-					Администрирование <a href="{{ url_for('site.index') }}">HeyMoose</a>
-				</span>
+{% extends 'layout.html' %}
 
-				<ul class="nav">
-					<li id="menu-item-index"><a href="{{ url_for('.index') }}">Главная</a></li>
-					<li id="menu-item-users"><a href="{{ url_for('.users') }}">Пользователи</a></li>
-					<li id="menu-item-apps"><a href="{{ url_for('.apps') }}">Приложения</a></li>
-					<li id="menu-item-orders"><a href="{{ url_for('.orders') }}">Заказы</a></li>
-					<li id="menu-item-performers"><a href="{{ url_for('.performers') }}">Исполнители</a></li>
-					<li id="menu-item-actions"><a href="{{ url_for('.actions') }}">Действия</a></li>
-				</ul>
-				
-				<ul class="nav secondary-nav">
-					<li class="dropdown">
-						<a class="dropdown-toggle" href="#">{{ g.user.nickname }}</a>
-						<ul class="dropdown-menu">
-							<li><a href="{{ url_for('site.logout') }}">Выйти</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+{% block posttitle %}Администрирование HeyMoose{% endblock %}
+
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/jquery-ui.css') }}" media="all" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/timepicker-addon.css') }}" media="all" />
+
+<script type="text/javascript" src="http://code.jquery.com/ui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://jqueryui.com/ui/i18n/jquery.ui.datepicker-ru.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('.static', filename='./js/admin.js') }}"></script>
+
+{% set activemenu = activemenu|default('index') %}
+<script type="text/javascript">
+	$(function() {
+		// Make datepicker Russian by default
+		$.datepicker.setDefaults($.datepicker.regional['ru']);
+		// Remove link and divider from last breadcrumb
+		$('ul.breadcrumb li:last').text($('ul.breadcrumb li:last a').html());
+		// Select all text in copyboxes
+		$('.copybox').focus(function() { this.select();	})
+	});
+</script>
+{% endblock %}
+
+{% block prebrand %}Администрирование{% endblock %}
+
+{% block topbar %}
+<ul class="nav">
+	<li id="menu-item-index"><a href="{{ url_for('.index') }}">Главная</a></li>
+	<li id="menu-item-users"><a href="{{ url_for('.users') }}">Пользователи</a></li>
+	<li id="menu-item-apps"><a href="{{ url_for('.apps') }}">Приложения</a></li>
+	<li id="menu-item-orders"><a href="{{ url_for('.orders') }}">Заказы</a></li>
+	<li id="menu-item-performers"><a href="{{ url_for('.performers') }}">Исполнители</a></li>
+	<li id="menu-item-actions"><a href="{{ url_for('.actions') }}">Действия</a></li>
+</ul>
+
+<ul class="nav secondary-nav">
+	<li class="dropdown">
+		<a class="dropdown-toggle" href="#">{{ g.user.nickname }}</a>
+		<ul class="dropdown-menu">
+			<li><a href="{{ url_for('site.logout') }}">Выйти</a></li>
+		</ul>
+	</li>
+</ul>
+{% endblock %}
 	
-	<div class="container">
-		<div class="content">
-			{% block breadcrumbs_container %}
-			<ul class="breadcrumb">
-				{% block breadcrumbs %}
-					{{ macros.breadcrumb('Панель управления', url_for('.index')) }}
-				{% endblock %}
-			</ul>
-			{% endblock %}
-			
-			{% block pageheader_container %}
-			<div class="page-header">
-				{% block pageheader %}{% endblock %}
-			</div>
-			{% endblock %}
-			
-			{% block flash_messages %}
-				{% with messages = get_flashed_messages(with_categories=True) %}
-				{% for category, message in messages %}
-				<div class="alert-message {{ category }} fade in">
-					<a class="close" href="#">×</a>
-					<p>{{ message }}</p>
-				</div>
-				{% endfor %}
-				{% endwith %}
-			{% endblock %}
-			
-			{% block content %}
-			{% endblock %}
-		</div>
-		
-		<footer>
-			<p>&copy; 2011 Bravik, LLC.</p>
-		</footer>
-	</div>
-</body>
-</html>
+{% block breadcrumbs_container %}
+<ul class="breadcrumb">
+	{% block breadcrumbs %}
+		{{ macros.breadcrumb('Панель управления', url_for('.index')) }}
+	{% endblock %}
+</ul>
+{% endblock %}
+

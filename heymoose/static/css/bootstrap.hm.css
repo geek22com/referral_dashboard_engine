@@ -22,8 +22,17 @@ div.info-actions {
 	clear: both;
 }
 
+table.key-value {
+	border: 1px solid #DDD;
+}
+
 table.key-value tbody tr th {
 	width: 30%;
+	border: none;
+}
+
+table.key-value tbody tr td {
+	border: none;
 }
 
 /* Some shortcuts */

@@ -4,7 +4,7 @@
 
 {% block tabcontent %}
 {% with user = g.user %}
-<table class="bordered-table key-value">
+<table class="key-value">
 	<tbody>
 		<tr><th>Ник</th><td>{{ user.nickname }}</td></tr>
 		<tr><th>E-mail</th><td>{{ user.email }}</td></tr>
@@ -13,7 +13,7 @@
 
 {% if user.is_developer() %}
 <h2>Разработчик</h2>
-<table class="bordered-table key-value">
+<table class="key-value">
 	<tbody>
 		<tr><th>Баланс</th><td>{{ user.developer_balance }}</td></tr>
 	</tbody>
@@ -22,7 +22,7 @@
 
 {% if user.is_customer() %}
 <h2>Рекламодатель</h2>
-<table class="bordered-table key-value">
+<table class="key-value">
 	<tbody>
 		<tr><th>Баланс</th><td>{{ user.customer_balance }}</td></tr>
 		<tr><th>Секретный ключ</th><td>{{ user.customer_secret }}</td></tr>

@@ -3,7 +3,7 @@
 {% set activetab = 'info' %}
 
 {% block tabcontent %}
-<table class="bordered-table key-value">
+<table class="key-value">
 	<thead></thead>
 	<tbody>
 		<tr><th>UID</th><td>{{ performer.ext_id }}</td></tr>
@@ -23,7 +23,7 @@
 </table>
 
 <h2>Личная информация</h2>
-<table class="bordered-table key-value">
+<table class="key-value">
 	<thead></thead>
 	<tbody>
 		<tr><th>Год рождения</th><td>{{ performer.year|default('неизв.', true) }}</td></tr>

@@ -4,7 +4,7 @@
 
 {% block tabcontent %}
 
-<table class="bordered-table key-value">
+<table class="key-value">
 	<tbody>
 		<tr><th>Название</th><td>{{ order.title }}</td></tr>
 		<tr><th>Тип</th><td>{{ macros.order_type(order.type) }}</td></tr>
@@ -17,7 +17,7 @@
 </table>
 
 <h2>Дополнительно</h2>
-<table class="bordered-table key-value">
+<table class="key-value">
 	<tbody>
 		{% if order.is_regular() %}
 		<tr><th>Описание</th><td><p>{{ order.description }}</p></td></tr>
@@ -29,7 +29,7 @@
 </table>
 
 <h2>Счет и ставки</h2>
-<table class="bordered-table key-value">
+<table class="key-value">
 	<tbody>
 		<tr><th>Баланс</th><td>{{ order.balance }}</td></tr>
 		<tr><th>CPA</th><td>{{ order.cpa }}</td></tr>
@@ -38,7 +38,7 @@
 </table>
 
 <h2>Таргетинг</h2>
-<table class="bordered-table key-value">
+<table class="key-value">
 	<tbody>
 		<tr><th>Пол</th><td>{{ macros.order_gender(order.male) }}</td></tr>
 		<tr><th>Возраст</th><td>{{ macros.order_age(order.min_age, order.max_age) }}</td></tr>

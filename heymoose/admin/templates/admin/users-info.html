@@ -3,7 +3,7 @@
 {% set activetab = 'info' %}
 
 {% block tabcontent %}
-<table class="bordered-table key-value">
+<table class="key-value">
 	<thead></thead>
 	<tbody>
 		{% if user.is_admin() %}
@@ -16,7 +16,7 @@
 
 {% if user.is_developer() %}
 <h2>Разработчик</h2>
-<table class="bordered-table key-value">
+<table class="key-value">
 	<thead></thead>
 	<tbody>
 		<tr><th>Баланс</th><td>{{ user.developer_balance }}</td></tr>
@@ -26,7 +26,7 @@
 
 {% if user.is_customer() %}
 <h2>Рекламодатель</h2>
-<table class="bordered-table key-value">
+<table class="key-value">
 	<thead></thead>
 	<tbody>
 		<tr><th>Баланс</th><td>{{ user.customer_balance }}</td></tr>

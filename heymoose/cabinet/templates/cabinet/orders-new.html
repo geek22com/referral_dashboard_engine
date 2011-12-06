@@ -5,11 +5,7 @@
 	<script type="text/javascript">
 		$(function() {
 			var type = '{{ ordertype }}';
-			var handlers = { error: showError, clear: clearError };
-			$('#form-order-regular').validateForm(handlers);
-			$('#form-order-banner').validateForm(handlers);
-			$('#form-order-video').validateForm(handlers);
-			
+
 			$('#order-type').change(function() {
 				$('.form-container').fadeOut(300);
 				$('#container-' + $(this).val()).fadeIn(300);
@@ -43,7 +39,7 @@
 		</div>
 		{% with form = rform %}
 		<div id="container-regular" class="form-container" style="display: none;">
-			<form id="form-order-regular" action="" method="post" enctype="multipart/form-data" class="widelabels">
+			<form id="form-order-regular" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
 				<fieldset>
 					<input type="hidden" name="ordertype" value="REGULAR" />
 					{{ macros.formfield(form.ordername, class='span10') }}
@@ -74,7 +70,7 @@
 		
 		{% with form = bform %}
 		<div id="container-banner" class="form-container" style="display: none;">
-			<form id="form-order-banner" action="" method="post" enctype="multipart/form-data" class="widelabels">
+			<form id="form-order-banner" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
 				<fieldset>
 					<input type="hidden" name="ordertype" value="BANNER" />
 					{{ macros.formfield(form.ordername, class='span10') }}
@@ -104,7 +100,7 @@
 		
 		{% with form = vform %}
 		<div id="container-video" class="form-container" style="display: none;">
-			<form id="form-order-video" action="" method="post" enctype="multipart/form-data" class="widelabels">
+			<form id="form-order-video" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
 				<fieldset>
 					<input type="hidden" name="ordertype" value="VIDEO" />
 					{{ macros.formfield(form.ordername, class='span10') }}

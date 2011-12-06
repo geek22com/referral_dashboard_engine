@@ -9,7 +9,6 @@
 
 {% block extrahead %}
 	{{ super() }}
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery.form.js') }}"></script>
 	<script type="text/javascript">
 		$(function() {
 			$('#form-get-invite').ajaxForm({

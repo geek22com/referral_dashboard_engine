@@ -1,14 +1,14 @@
 {% macro to_icon(value) -%}
 	{% if not value %}
-		<img src="{{ url_for('.static', filename='./img/icon-no.gif') }}" alt="нет" />
+		<img src="{{ url_for('static', filename='./img/icon-no.gif') }}" alt="нет" />
 	{% else %}
-		<img src="{{ url_for('.static', filename='./img/icon-yes.gif') }}" alt="да" />
+		<img src="{{ url_for('static', filename='./img/icon-yes.gif') }}" alt="да" />
 	{% endif %}
 {% endmacro -%}
 
 {% macro deleted(value) -%}
 	{% if value %}
-		<img src="{{ url_for('.static', filename='./img/icon_deletelink.gif') }}" alt="удалено" />
+		<img src="{{ url_for('static', filename='./img/icon_deletelink.gif') }}" alt="удалено" />
 	{% endif %}
 {% endmacro -%}
 

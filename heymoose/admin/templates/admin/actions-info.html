@@ -2,7 +2,6 @@
 
 {% block extrahead %}
 	{{ super() }}
-	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery.form.js') }}"></script>
 	<script type="text/javascript">
 		$(function() {
 			$('#form-approve').ajaxForm({
@@ -56,7 +55,7 @@
 		<tr id="deleted" {% if not action.deleted %}style="display: none;"{% endif %}>
 			<th></th>
 			<td>
-				<img src="{{ url_for('.static', filename='./img/icon_deletelink.gif') }}" alt="удалено" />
+				<img src="{{ url_for('static', filename='./img/icon_deletelink.gif') }}" alt="удалено" />
 				Действие удалено
 			</td>
 		</tr>

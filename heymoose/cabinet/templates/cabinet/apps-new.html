@@ -1,15 +1,5 @@
 {% extends "cabinet/apps-layout.html" %}
 
-{% block extrahead %}
-	{{ super() }}
-	<script type="text/javascript">
-		$(function() {
-			var handlers = { error: showError, clear: clearError };
-			$('#form-app').validateForm(handlers);
-		});
-	</script>
-{% endblock %}
-
 {% set activetab = 'new' %}
 
 {% block breadcrumbs %}
@@ -20,7 +10,7 @@
 {% block tabcontent %}
 
 <div class="form-container">
-	<form id="form-app" action="" method="post" class="widelabels">
+	<form id="form-app" action="" method="post" class="widelabels validate">
 		<fieldset>
 			{{ macros.formfield(form.apptitle, class='span10') }}
 			{{ macros.formfield(form.appcallback, class='span10') }}

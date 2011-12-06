@@ -2,16 +2,6 @@
 
 {% block title %}Контакты{% endblock %}
 
-{% block extrahead %}
-	{{ super() }}
-	<script type="text/javascript">
-		$(function() {
-			var handlers = { error: showError, clear: clearError };
-			$('#form-contacts').validateForm(handlers);
-		});
-	</script>
-{% endblock %}
-
 {% set activemenu = "contacts" %}
 
 {% block pageheader %}
@@ -28,7 +18,7 @@
 
 <h2>Напишите нам, и мы свяжемся с вами!</h2>
 <div class="form-container clearfix">
-	<form id="form-contacts" method="post" action="" class="widelabels">
+	<form id="form-contacts" method="post" action="" class="widelabels validate">
 		<fieldset>
 			{{ macros.formfield(form.name, class='span10') }}
 			{{ macros.formfield(form.email, class='span10', type='email') }}

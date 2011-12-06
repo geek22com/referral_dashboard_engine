@@ -1,0 +1,106 @@
+body {
+	padding-top: 40px; /* Padding for topbar */
+}
+
+.content {
+	background-color: #FFF;
+	min-height: 600px;
+	padding: 20px;
+}
+
+.container > footer p {
+	text-align: center;
+	color: #BFBFBF;
+}
+
+/* Deprecated */
+div.clearboth {
+	clear: both;
+}
+
+div.well form {
+	margin: 0;
+}
+
+div.info-actions {
+	text-align: right;
+	clear: both;
+}
+
+table.key-value tbody tr th {
+	width: 30%;
+}
+
+/* Some shortcuts */
+.center { text-align: center; }
+.left { text-align: left; }
+.right { text-align: right; }
+.float-left { float: left; }
+.float-right { float: right; }
+
+.bold { font-weight: bold; }
+
+.hero-unit.white {
+	background-color: #FFF;
+	margin-bottom: 0px;
+}
+
+span.hey { color: #0093DD; }
+span.moose { color: #F8C300; }
+
+.features {
+	font-size: 15px;
+	line-height: 22px;
+}
+
+p.features {
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+dl.features dt {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+dl.features dd {
+	margin-left: 20px;
+}
+.btn.top-margin { margin-top: 10px; }
+
+.widelabels label {	width: 200px;}
+.widelabels fieldset legend { padding-left: 220px; }
+.widelabels .input { margin-left: 220px; }
+.widelabels .well { padding-left: 0px; }
+.widelabels .actions { padding-left: 220px; }
+
+.inline { display: inline-block; }
+
+label.required { font-weight: bold; }
+
+div.scroll-area-x {
+	overflow-x: scroll;
+}
+
+div.ui-datepicker {
+	font-size: 12px;
+}
+
+textarea.copybox { cursor: auto; }
+
+ul.breadcrumb .status {
+	float: right;
+	padding-top: 3px;
+}
+
+address strong {
+	display: inline-block;
+	width: 80px;
+}
+
+
+
+
+
+
+
+
+

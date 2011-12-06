@@ -12,84 +12,12 @@
 	</title>
 	
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.min.css') }}" media="screen">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.hm.css') }}" media="screen">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/jquery-ui.css') }}" media="all" />
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/timepicker-addon.css') }}" media="all" />
-	
 	<style type="text/css">
-		body {
-			background: url({{ url_for('.static', filename='./img/background.png') }}) repeat scroll 0 0 transparent;
-			padding-top: 40px;
-		}
-		
-		.content {
-			background-color: #FFF;
-			min-height: 800px;
-			padding: 20px;
-		}
-		
-		.container > footer p {
-			text-align: center;
-			color: #BFBFBF;
-		}
-		
-		div.clearboth {
-			clear: both;
-		}
-		
-		div.well {
-			padding: 14px 20px;
-			clear: both;
-		}
-		
-		div.well form {
-			margin: 0;
-		}
-		
-		div.info-actions {
-			text-align: right;
-			clear: both;
-		}
-		
-		table.key-value tbody tr th {
-			width: 30%;
-		}
-		
-		.center { text-align: center; }
-		.left { text-align: left; }
-		.right { text-align: right; }
-		.float-right { float: right; }
-		
-		.bold { font-weight: bold; }
-		
-		div.scroll-area-x {
-			overflow-x: scroll;
-		}
-		
-		div.ui-datepicker {
-			font-size: 12px;
-		}
-		
-		.widelabels label {	width: 200px;}
-		.widelabels fieldset legend { padding-left: 220px; }
-		.widelabels .input { margin-left: 220px; }
-		.widelabels .well { padding-left: 0px; }
-		.widelabels .actions { padding-left: 220px; }
-		
-		label.required { font-weight: bold; }
-		
-		ul.breadcrumb .status {
-			float: right;
-			padding-top: 3px;
-		}
-		
-		#manager-modal {
-			width: 400px;
-		}
-		
-		address strong {
-			display: inline-block;
-			width: 80px;
-		}
+		body { background: url({{ url_for('.static', filename='./img/background.png') }}) repeat scroll 0 0 transparent; }
+		#manager-modal { width: 400px; }}
 	</style>
 	
 	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery-latest.js') }}"></script>

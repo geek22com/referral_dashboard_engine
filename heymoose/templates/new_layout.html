@@ -12,79 +12,10 @@
 	</title>
 	
 	<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='./css/bootstrap.min.css') }}" media="screen">
-	<script type="text/javascript">
-			function validateURL(s){
-				var regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-				return regexp.test(s);
-			}
-	</script>
-
+	<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='./css/bootstrap.hm.css') }}" media="screen">
 	<style type="text/css">
-		body {
-			background: url({{ url_for('.static', filename='./img/background.png') }}) repeat scroll 0 0 transparent;
-			padding-top: 40px;
-		}
-		
-		.content {
-			background-color: #FFF;
-			min-height: 600px;
-			padding: 20px;
-		}
-		
-		.container > footer p {
-			text-align: center;
-			color: #BFBFBF;
-		}
-		
-		div.clearboth {
-			clear: both;
-		}
-		
-		th.key {
-			width: 30%;
-		}
-		
-		.center { text-align: center; }
-		.left { text-align: left; }
-		.right { text-align: right; }
-		
-		.hero-unit.white {
-			background-color: #FFF;
-			margin-bottom: 0px;
-		}
-		
-		span.hey { color: #0093DD; }
-		span.moose { color: #F8C300; }
-		
-		.features {
-			font-size: 15px;
-			line-height: 22px;
-		}
-		
-		p.features {
-			margin-top: 16px;
-			margin-bottom: 16px;
-		}
-		dl.features dt {
-			padding-top: 10px;
-			padding-bottom: 10px;
-		}
-		dl.features dd {
-			margin-left: 20px;
-		}
-		.btn.top-margin { margin-top: 10px; }
-		
-		#login-modal {
-			width: 440px;
-		}
-		
-		.widelabels label {	width: 200px;}
-		.widelabels fieldset legend { padding-left: 220px; }
-		.widelabels .input { margin-left: 220px; }
-		.widelabels .well { padding-left: 0px; }
-		.widelabels .actions { padding-left: 220px; }
-		
-		label.required { font-weight: bold; }
+		body { background: url({{ url_for('.static', filename='./img/background.png') }}) repeat scroll 0 0 transparent; }
+		#login-modal { width: 440px; }
 	</style>
 	
 	<script type="text/javascript" src="{{ url_for('.static', filename='./js/jquery-latest.js') }}"></script>

@@ -31,14 +31,16 @@ class CaptchaForm(Form):
 	def regenerate(self):
 		first = random.randrange(1000, 9000)
 		second = random.randrange(1, 9)
-		self.captcha.label = Label(self.captcha.id, '{0} + {1} = '.format(first, second))
+		self.captcha.label = Label(self.captcha.id, u'{0} + {1} ='.format(first, second))
 		self.captcha.data = u''
 		self.ch.data = self.generate_hash(first + second)
+		print self.ch.data
 		
 		
 	def generate_hash(self, value):
 		m = hashlib.md5()
-		m.update('hey{0}moo{1}se'.format(str(value), self.name))
+		print 'value =', value
+		m.update(u'hey{0}moo{1}se'.format(value, self.captcha.id))
 		return m.hexdigest()
 			
 

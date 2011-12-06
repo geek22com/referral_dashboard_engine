@@ -19,14 +19,14 @@
 {% endblock %}
 
 {% block content %}
-<div class="info clearfix">
-	<ul>
-		<li><a href="mailto:info@heymoose.com">email: info@heymoose.com</a></li>
-		<li>phone: +7(905)7101992</li>
-	</ul>
+<div class="clearfix">
+	<address>
+		<strong>E-mail:</strong> <a href="mailto:info@heymoose.com">info@heymoose.com</a><br />
+		<strong>Телефон:</strong> +7 (905) 710-19-92
+	</address>
 </div>
 
-<h4>Вы можете оставить контакты и мы с вами свяжемся</h4>
+<h2>Напишите нам, и мы свяжемся с вами!</h2>
 <div class="form-container clearfix">
 	<form id="form-contacts" method="post" action="" class="widelabels">
 		<fieldset>
@@ -34,7 +34,7 @@
 			{{ macros.formfield(form.email, class='span10', type='email') }}
 			{{ macros.formfield(form.phone, class='span4') }}
 			{{ macros.formfield(form.comment, class='span10', rows=4) }}
-			{{ macros.formfield(form.captcha, class='span4') }}
+			{{ macros.formfield(form.captcha, class='span4', inline='(докажите, что вы не робот)') }}
 			{{ form.ch() }}
 		</fieldset>
 		<div class="actions">

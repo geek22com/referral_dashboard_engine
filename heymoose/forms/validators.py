@@ -19,6 +19,7 @@ class FileRequired(Required):
 	
 	def __call__(self, form, field):
 		value = field.data
+		if field.process_errors: return
 		if value is not None and hasattr(value, 'filename') and value.filename: return
 		super(FileRequired, self).__call__(form, field)
 		
@@ -35,6 +36,20 @@ class URLWithParams(Regexp):
 			self.message = field.gettext(u'Invalid URL')
 
 		super(URLWithParams, self).__call__(form, field)
+		
+		
+class ImageFormat(object):
+	def __init__(self, formats=('jpg', 'jpeg', 'gif', 'png'), message=None):
+		self.message = message
+		self.formats = formats
+		
+	def __call__(self, form, field):
+		if field.data is None: return
+		if self.message is None:
+			self.message = field.gettext(u'Invalid image format')
+			
+		if field.data.format.lower() not in self.formats:
+			raise ValidationError(self.message)
 		
 		
 def check_email_not_registered(form, field):

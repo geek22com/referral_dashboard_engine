@@ -33,13 +33,19 @@ def orders():
 @bp.route('/orders/new', methods=['GET', 'POST'])
 @customer_only
 def orders_new():
+	sizes = actions.bannersizes.get_banner_sizes()
+	choices = ((s.id, '{0} x {1}'.format(s.width, s.height)) for s in sizes)
+	
+	ordertype = 'REGULAR'
+	rform = forms.RegularOrderForm()
+	bform = forms.BannerOrderForm()
+	vform = forms.VideoOrderForm()
+	bform.orderbannersize.choices = choices
+	
 	if request.method == 'POST':
 		ordertype = request.form['ordertype']
 		if ordertype == OrderTypes.REGULAR:
 			rform = forms.RegularOrderForm(request.form)
-			bform = forms.BannerOrderForm()
-			vform = forms.VideoOrderForm()
-			
 			if rform.validate():
 				form = rform
 				do_or_abort(actions.orders.add_regular_order,
@@ -61,10 +67,8 @@ def orders_new():
 				
 				
 		elif ordertype == OrderTypes.BANNER:
-			rform = forms.RegularOrderForm()
 			bform = forms.BannerOrderForm(request.form)
-			vform = forms.VideoOrderForm()
-			
+			bform.orderbannersize.choices = choices
 			if bform.validate():
 				form = bform
 				do_or_abort(actions.orders.add_banner_order,
@@ -73,7 +77,7 @@ def orders_new():
 					url=form.orderurl.data,
 					balance=form.orderbalance.data,
 					cpa=form.ordercpa.data,
-					banner_size=3,
+					banner_size=form.orderbannersize.data,
 					image=base64.encodestring(request.files['orderimage'].stream.read()),
 					auto_approve=form.orderautoapprove.data,
 					allow_negative_balance=form.orderallownegativebalance.data,
@@ -85,10 +89,7 @@ def orders_new():
 				return redirect(url_for('.orders'))
 			
 		elif ordertype == OrderTypes.VIDEO:
-			rform = forms.RegularOrderForm()
-			bform = forms.BannerOrderForm()
 			vform = forms.VideoOrderForm(request.form)
-			
 			if vform.validate():
 				form = vform
 				do_or_abort(actions.orders.add_video_order,
@@ -106,11 +107,6 @@ def orders_new():
 					max_age=form.ordermaxage.data)
 				flash(u'Заказ успешно создан.', 'success')
 				return redirect(url_for('.orders'))
-	else:
-		ordertype = 'REGULAR'
-		rform = forms.RegularOrderForm()
-		bform = forms.BannerOrderForm()
-		vform = forms.VideoOrderForm()
 			
 	return render_template('cabinet/orders-new.html', 
 		rform=rform, bform=bform, vform=vform, ordertype=ordertype.lower())

@@ -29,7 +29,8 @@ setup(
 	packages=find_packages(),
 	include_package_data = True,
 	package_data = find_package_data('./heymoose', ('.html', '.css', '.js', '.png', '.gif', '.jpg')),
-	install_requires = ['flask>=0.7', 'wtforms', 'flask-mongoalchemy', 'uwsgi', 'lxml', 'restkit', 'amqplib', 'python-dateutil==1.5'],
+	install_requires = ['flask>=0.7', 'wtforms', 'flask-mongoalchemy', 'uwsgi', 
+						'lxml', 'restkit', 'amqplib', 'python-dateutil==1.5', 'PIL'],
 	long_description=read('README'),
 )
 

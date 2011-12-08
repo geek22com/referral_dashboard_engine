@@ -12,3 +12,8 @@ def add_banner_size(width, height):
 
 def get_banner_sizes(**kwargs):
 	return map(banner_size_from_xml, get(path=resource_path, params_dict=kwargs))
+
+
+def get_banner_size(size_id, **kwargs):
+	path = "{0}/{1}".format(resource_path, size_id)
+	return banner_size_from_xml(get(path=path, params_dict=kwargs))

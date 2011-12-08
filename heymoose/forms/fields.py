@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from wtforms.fields import TextField, IntegerField
+from wtforms.fields import TextField, IntegerField, FileField
+from PIL import Image
 from widgets import UnfilledTextInput
 
 
@@ -12,3 +13,14 @@ class NullableIntegerField(IntegerField):
 		
 class UnfilledTextField(TextField):
 	widget = UnfilledTextInput()
+	
+	
+class ImageField(FileField):
+	def process_formdata(self, valuelist):
+		if valuelist:
+			try:
+				self.data = Image.open(valuelist[0])
+				valuelist[0].seek(0)
+			except:
+				raise ValueError(u'Файл не является изображением')
+			

@@ -83,6 +83,10 @@
 					{{ macros.formfield(form.orderautoapprove) }}
 					{{ macros.formfield(form.orderreentrant,
 						inline='(разрешить одному пользователю проходить оффер много раз)') }}
+				</fieldset>
+				<fieldset>
+					<legend>Баннер</legend>
+					{{ macros.formfield(form.orderbannersize, class='span4') }}
 					{{ macros.formfield(form.orderimage) }}
 				</fieldset>
 				<fieldset>

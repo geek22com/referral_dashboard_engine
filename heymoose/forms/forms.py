@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from wtforms import Form, validators, BooleanField, TextField, PasswordField, \
-	IntegerField, TextAreaField, SelectField, FileField, HiddenField
+	IntegerField, TextAreaField, SelectField, HiddenField
 from wtforms.fields import Label
+from heymoose.core import actions
 import heymoose.core.actions.roles as roles
 import validators as myvalidators
 import fields as myfields
@@ -146,12 +147,23 @@ class RegularOrderForm(OrderForm):
 		validators.Length(min=1, max=200, message=(u'Описание заказа должно быть от 1 до 200 символов')),
 		validators.Required(message = (u'Введите описание'))
 	])
-	orderimage = FileField(u'Выберите изображение', [myvalidators.FileRequired(message=u'Выберите изображение на диске')])
+	orderimage = myfields.ImageField(u'Выберите изображение', [
+		myvalidators.FileRequired(message=u'Выберите изображение на диске'),
+		myvalidators.ImageFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
+	])
 
 class BannerOrderForm(OrderForm):
-	orderimage = FileField(u'Выберите изображение', [
-		myvalidators.FileRequired(message=u'Выберите изображение на диске')
+	orderbannersize = SelectField(u'Размер баннера', coerce=int)
+	orderimage = myfields.ImageField(u'Выберите изображение', [
+		myvalidators.FileRequired(message=u'Выберите изображение на диске'),
+		myvalidators.ImageFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
 	])
+	
+	def validate_orderimage(self, field):
+		size = actions.bannersizes.get_banner_size(self.orderbannersize.data)
+		if field.data.size[0] != size.width or field.data.size[1] != size.height:
+			raise ValueError(u'Размер изображения должен совпадать с указанным')
+		
 	
 class VideoOrderForm(OrderForm):
 	ordervideourl = TextField(u'URL видеозаписи', [

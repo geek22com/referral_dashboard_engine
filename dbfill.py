@@ -10,8 +10,6 @@ if project_path not in sys.path:
 os.environ["FRONTEND_SETTINGS_PATH"] = config_path
 
 from heymoose.core import actions
-from heymoose.core.actions import api
-from heymoose.core.actions import performers as perf
 from heymoose.utils.gen import generate_password_hash
 import time, random
 
@@ -53,13 +51,18 @@ def fill_db():
 		developer = actions.users.get_user_by_email(email_developer)
 		actions.users.add_user_role(developer.id, actions.roles.DEVELOPER)
 		developers.append(developer)
+		
+	# Create list of banner sizes
+	for i in range(1, 10):
+		actions.bannersizes.add_banner_size(i * 100, i * 50)
+	banner_sizes = actions.bannersizes.get_banner_sizes()
 	
 	# Create and enable orders for customers
 	orders = []
 	genders = (None, True, False)
 	for i in range(orders_per_customer):
 		for customer in customers:
-			if i % 2 == 0:
+			if i % 3 == 0:
 				id = actions.orders.add_regular_order(
 						user_id=customer.id,
 						title='regular order {0}-{1}'.format(customer.id, i),
@@ -68,6 +71,18 @@ def fill_db():
 						cpa=i + customer.id + 1,
 						description='The best order from {0} number {1}'.format(customer.nickname, i),
 						image='aaaa',
+						male=genders[i % 3],
+						min_age=i + customer.id + 1,
+						max_age=i + customer.id + 15)
+			elif i % 3 == 1:
+				id = actions.orders.add_banner_order(
+						user_id=customer.id,
+						title='banner order {0}-{1}'.format(customer.id, i),
+						url='http://ya.ru',
+						balance=i*100 + customer.id*10 + 10,
+						cpa=i + customer.id + 1,
+						image='aaaa',
+						banner_size=random.choice(banner_sizes).id,
 						male=genders[i % 3],
 						min_age=i + customer.id + 1,
 						max_age=i + customer.id + 15)
@@ -103,7 +118,7 @@ def fill_db():
 	for app in apps:
 		for order in orders:
 			for i in range(actions_per_app_and_order):
-				api.do_offer(
+				actions.api.do_offer(
 					offer_id=order.id,
 					app_id=app.id,
 					uid=app.id + order.id + i,
@@ -115,7 +130,7 @@ def fill_db():
 	performers = []
 	for i in range(1, actions_count+1):
 		try:
-			performers.append(perf.get_performer(i))
+			performers.append(actions.performers.get_performer(i))
 		except:
 			print 'No performer with uid {0}'.format(i)
 	
@@ -123,7 +138,7 @@ def fill_db():
 	for app in apps:
 		for performer in performers:
 			if app.platform == performer.platform:
-				api.introduce_performer(
+				actions.api.introduce_performer(
 					app.id,
 					uid=performer.ext_id,
 					sex=random.choice(['MALE', 'FEMALE']),
@@ -134,7 +149,9 @@ def fill_db():
 	for app in apps:
 		for performer in performers:
 			if app.platform == performer.platform and random.choice([True, False]):
-				api.get_offers(app.id, performer.ext_id, '0:3,1:3,2:3', app.secret)
+				size = random.choice(banner_sizes)
+				filter = '0:3,1:3:{0}x{1},2:3'.format(size.width, size.height)
+				actions.api.get_offers(app.id, performer.ext_id, filter, app.secret)
 
 	
 if __name__ == '__main__':

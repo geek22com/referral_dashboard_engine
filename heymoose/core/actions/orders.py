@@ -45,7 +45,7 @@ def add_regular_order(user_id, title, url, balance, cpa, description, image, aut
 				image=image)
 	
 	
-def add_banner_order(user_id, title, url, balance, cpa, image, auto_approve=True,
+def add_banner_order(user_id, title, url, balance, cpa, image, banner_size, auto_approve=True,
 					allow_negative_balance=True, reentrant=False, male=None, min_age=None, max_age=None):
 	return add_order(user_id=user_id,
 				title=title,
@@ -59,7 +59,8 @@ def add_banner_order(user_id, title, url, balance, cpa, image, auto_approve=True
 				min_age=min_age,
 				max_age=max_age,
 				type=OrderTypes.BANNER,
-				image=image)
+				image=image,
+				bannerSize=banner_size)
 
 
 def add_video_order(user_id, title, url, balance, cpa, video_url, auto_approve=True,

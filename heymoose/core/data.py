@@ -93,6 +93,12 @@ class Order(BaseModel):
 	def is_video(self):	return self.type == OrderTypes.VIDEO
 
 
+class BannerSize(BaseModel):
+	attributes = ['id',
+				  'width',
+				  'height']
+
+
 class App(BaseModel):
 	attributes = ['id',
 				  'title',

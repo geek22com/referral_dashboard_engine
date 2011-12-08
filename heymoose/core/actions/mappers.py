@@ -1,5 +1,5 @@
 from heymoose.core.actions.base import get_value, get_attr, get_child
-from heymoose.core.data import User, App, Order, Action, Performer, OrderShow
+from heymoose.core.data import User, App, Order, BannerSize, Action, Performer, OrderShow
 from heymoose.utils.convert import datetime_from_api
 
 def role_from_xml(role_element):
@@ -45,6 +45,12 @@ def order_from_xml(order_element):
 				male=get_value(order_element, 'male', bool),
 				min_age=get_value(order_element, 'min-age'),
 				max_age=get_value(order_element, 'max-age'))
+	
+def banner_size_from_xml(size_element):
+	if size_element is None: return None
+	return BannerSize(id=get_attr(size_element, 'id', int),
+				width=get_value(size_element, 'width', int),
+				height=get_value(size_element, 'height', int))
 
 def user_from_xml(user_element):
 	if user_element is None: return None

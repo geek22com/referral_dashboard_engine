@@ -6,47 +6,27 @@
 	{{ super() }}
 	<script type="text/javascript">
 		$(function() {
-			function enableButton(btn) {
-				btn.removeAttr('disabled');
-			}
-			
-			function disableButton(btn) {
-				btn.attr('disabled', 'disabled');
-			}
-			
-			var btnEnable = $('#btn-enable');
-			var btnDisable = $('#btn-disable');
-			var btnToDisable = {% if order.disabled %}btnDisable{% else %}btnEnable{% endif %};
-			disableButton(btnToDisable);
-			
-			var urlDisable = '{{ url_for('.ajax_orders_disable', id=order.id) }}';
-			var urlEnable = '{{ url_for('.ajax_orders_enable', id=order.id) }}';
-			
-			btnEnable.click(function() {
-				if (confirm('Активировать заказ?')) {
-					$.post(urlEnable)
-						.success(function() {
-							disableButton(btnEnable);
-							enableButton(btnDisable);
-							toIcon($('#icon-enabled'), true);
-						})
-						.error(function(data) {
-							alert('Не удалось активировать заказ. Ошибка ' + data.status);
-						});
+			$('#form-enable').ajaxForm({
+				beforeSubmit: function() { return confirm('Активировать заказ?'); },
+				success: function(data, textStatus) {
+					$('#form-enable input[type=submit]').attr('disabled', 'disabled');
+					$('#form-disable input[type=submit]').removeAttr('disabled');
+					toIcon($('#icon-enabled'), true);
+				},
+				error: function(xhr, textStatus) {
+					alert('Не удалось активировать заказ. Ошибка ' + xhr.status + ': ' + xhr.responseText);
 				}
 			});
 			
-			btnDisable.click(function() {
-				if (confirm('Деактивировать заказ?')) {
-					$.post(urlDisable)
-						.success(function() {
-							disableButton(btnDisable);
-							enableButton(btnEnable);
-							toIcon($('#icon-enabled'), false);
-						})
-						.error(function(data) {
-							alert('Не удалось деактивировать заказ. Ошибка ' + data.status);
-						})
+			$('#form-disable').ajaxForm({
+				beforeSubmit: function() { return confirm('Деактивировать заказ?'); },
+				success: function(data, textStatus) {
+					$('#form-disable input[type=submit]').attr('disabled', 'disabled');
+					$('#form-enable input[type=submit]').removeAttr('disabled');
+					toIcon($('#icon-enabled'), false);
+				},
+				error: function(xhr, textStatus) {
+					alert('Не удалось деактивировать заказ. Ошибка ' + xhr.status + ': ' + xhr.responseText);
 				}
 			});
 		});
@@ -55,8 +35,12 @@
 
 {% block tabcontent %}
 <div class="info-actions well">
-	<button id="btn-enable" class="btn success">Активировать</button>
-	<button id="btn-disable" class="btn danger">Деактивировать</button>
+	<form id="form-enable" method="post" action="{{ url_for('.ajax_orders_enable', id=order.id) }}" class="inline">
+		<input type="submit" class="btn success" value="Активировать" {% if not order.disabled %}disabled="disabled"{% endif %} />
+	</form>
+	<form id="form-disable" method="post" action="{{ url_for('.ajax_orders_disable', id=order.id) }}" class="inline">
+		<input type="submit" class="btn danger" value="Деактивировать" {% if order.disabled %}disabled="disabled"{% endif %} />
+	</form>
 </div>
 
 <table class="key-value">

@@ -37,8 +37,11 @@ def order_from_xml(order_element):
 				auto_approve=get_value(order_element, 'auto-approve', bool),
 				reentrant=get_value(order_element, 'reentrant', bool),
 				type=get_value(order_element, 'type'),
+				image=get_value(order_element, 'image'), # For regular and banner offers
 				# Regular offer fields
 				description=get_value(order_element, 'description'),
+				# Banner offer fields
+				banner_size=banner_size_from_xml(get_child(order_element, 'banner-size')),
 				# Video offer fields
 				video_url=get_value(order_element, 'video-url'),
 				# Targeting fields

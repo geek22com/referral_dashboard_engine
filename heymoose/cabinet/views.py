@@ -73,6 +73,7 @@ def orders_new():
 					url=form.orderurl.data,
 					balance=form.orderbalance.data,
 					cpa=form.ordercpa.data,
+					banner_size=3,
 					image=base64.encodestring(request.files['orderimage'].stream.read()),
 					auto_approve=form.orderautoapprove.data,
 					allow_negative_balance=form.orderallownegativebalance.data,

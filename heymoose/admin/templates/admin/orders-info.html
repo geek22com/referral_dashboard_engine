@@ -56,17 +56,32 @@
 	</tbody>
 </table>
 
-<h2>Дополнительно</h2>
+{% if order.is_regular() %}
 <table class="key-value">
 	<tbody>
-		{% if order.is_regular() %}
 		<tr><th>Описание</th><td><p>{{ order.description }}</p></td></tr>
-		{% elif order.is_banner() %}
-		{% elif order.is_video() %}
-		<tr><th>URL видеозаписи</th><td><p>{{ order.video_url }}</p></td></tr>
-		{% endif %}
 	</tbody>
 </table>
+{% endif %}
+
+{% if order.is_banner() %}
+<h2>Баннер</h2>
+<table class="key-value">
+	<tbody>
+		<tr><th>Размер</th><td><p>{{ order.banner_size.width }} x {{ order.banner_size.height }}</p></td></tr>
+		<td colspan="2"><img src="data:image/png;base64,{{ order.image -}}" alt="изображение" class="fit-width" /></td>
+	</tbody>
+</table>
+{% endif %}
+
+{% if order.is_video() %}
+<h2>Видеозапись</h2>
+<table class="key-value">
+	<tbody>
+		<tr><th>URL</th><td><p>{{ order.video_url }}</p></td></tr>
+	</tbody>
+</table>
+{% endif %}
 
 <h2>Счет и ставки</h2>
 <table class="key-value">

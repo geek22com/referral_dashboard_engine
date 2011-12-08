@@ -100,6 +100,10 @@ address strong {
 	width: 80px;
 }
 
+.fit-width {
+	max-width: 840px;
+}
+
 
 
 

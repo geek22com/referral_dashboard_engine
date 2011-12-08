@@ -81,6 +81,7 @@ class Order(BaseModel):
 	              'video_url',
 	              'description',
 	              'image',
+	              'banner_size',
 	              'auto_approve',
 	              'reentrant',
 	              'allow_negative_balance',

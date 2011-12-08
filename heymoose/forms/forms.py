@@ -164,12 +164,23 @@ class BannerOrderForm(OrderForm):
 		if field.data.size[0] != size.width or field.data.size[1] != size.height:
 			raise ValueError(u'Размер изображения должен совпадать с указанным')
 		
-	
 class VideoOrderForm(OrderForm):
 	ordervideourl = TextField(u'URL видеозаписи', [
 		validators.Required(message = (u'Введите URL')),
 		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
 	])
+	
+	
+class BannerSizeForm(Form):
+	width = IntegerField(u'Ширина', [
+		validators.Required(message=u'Укажите ширину баннера'),
+		validators.NumberRange(min=1, max=3000, message=u'Баннер может иметь ширину от 1 до 3000 пикселей')
+	])
+	height = IntegerField(u'Высота', [
+		validators.Required(message=u'Укажите высоту баннера'),
+		validators.NumberRange(min=1, max=3000, message=u'Баннер может иметь высоту от 1 до 3000 пикселей')
+	])
+	
 	
 class AppForm(Form):
 	apptitle = TextField(u'Название', [

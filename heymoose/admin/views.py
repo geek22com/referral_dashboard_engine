@@ -30,6 +30,16 @@ def orders():
 def orders_stats():
 	return render_template('admin/orders-stats.html')
 
+@bp.route('/orders/settings', methods=['GET', 'POST'])
+def orders_settings():
+	sizes = a.bannersizes.get_banner_sizes()
+	form = forms.BannerSizeForm(request.form)
+	if request.method == 'POST' and form.validate():
+		a.bannersizes.add_banner_size(form.width.data, form.height.data)
+		flash(u'Размер баннера успешно добавлен', 'success')
+		return redirect(url_for('.orders_settings'))
+	return render_template('admin/orders-settings.html', sizes=sizes, form=form)
+
 @bp.route('/orders/<int:id>/')
 def orders_info(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)

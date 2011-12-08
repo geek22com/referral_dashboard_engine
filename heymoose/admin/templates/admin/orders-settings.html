@@ -1,0 +1,57 @@
+{% extends "admin/orders-layout.html" %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Настройки', url_for('.orders_settings')) }}
+{% endblock %}
+
+{% set activetab = 'settings' %}
+
+{#
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			$('#form-size-add').ajaxForm({
+				success: function(data, textStatus) {
+					alert('success');
+				},
+				error: function(xhr, textStatus) {
+					alert('Не удалось добавить размер. Ошибка ' + xhr.status + ': ' + xhr.responseText);
+				}
+			});
+		});
+	</script>	
+{% endblock %} #}
+
+{% block tabcontent %}
+
+<h2>Размеры баннеров</h2>
+<div class="row">
+	<div class="span7">
+		<form>
+			<fieldset>
+				<div class="input">
+					<select multiple="multiple" size="7">
+						{% for size in sizes %}
+						<option>{{ size.width }} x {{ size.height }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+	<div class="span7">
+		<form id="form-size-add" method="post" action="" class="validate">
+			<fieldset>
+				{{ macros.formfield(form.width, class='span4') }}
+				{{ macros.formfield(form.height, class='span4') }}
+				<div class="input">
+					<input class="btn primary" type="submit" value="Добавить размер"/>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+
+{% endblock %}

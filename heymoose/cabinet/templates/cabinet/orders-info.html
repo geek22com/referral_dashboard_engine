@@ -17,9 +17,11 @@
 </table>
 
 {% if order.is_regular() %}
+<h2>Отображение оффера</h2>
 <table class="key-value">
 	<tbody>
 		<tr><th>Описание</th><td><p>{{ order.description }}</p></td></tr>
+		<tr><td colspan="2"><img src="data:image/png;base64,{{ order.image -}}" alt="изображение" class="fit-width" /></td></tr>
 	</tbody>
 </table>
 {% endif %}
@@ -29,7 +31,7 @@
 <table class="key-value">
 	<tbody>
 		<tr><th>Размер</th><td><p>{{ order.banner_size.width }} x {{ order.banner_size.height }}</p></td></tr>
-		<td colspan="2"><img src="data:image/png;base64,{{ order.image -}}" alt="изображение" class="fit-width" /></td>
+		<tr><td colspan="2"><img src="data:image/png;base64,{{ order.image -}}" alt="изображение" class="fit-width" /></td></tr>
 	</tbody>
 </table>
 {% endif %}

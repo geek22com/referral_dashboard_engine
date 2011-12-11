@@ -8,6 +8,7 @@ from heymoose.utils import convert, gen
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.views.common import json_get_ctr
 from heymoose.forms import forms
+from heymoose.db.models import Contact
 from heymoose.db.actions import invites
 
 
@@ -202,6 +203,20 @@ def performers_info(id):
 def performers_info_stats(id):
 	performer = do_or_abort(a.performers.get_performer, id, full=True)
 	return render_template('admin/performers-info-stats.html', performer=performer)
+
+
+@bp.route('/feedback/')
+def feedback():
+	page = convert.to_int(request.args.get('page'), 1)
+	count = Contact.query.count()
+	per_page = app.config.get('ADMIN_CONTACTS_PER_PAGE', 2)
+	offset, limit, pages = paginate(page, count, per_page)
+	contacts = Contact.query.descending(Contact.date).skip(offset).limit(limit)
+	response = render_template('admin/feedback.html', contacts=contacts.all(), pages=pages)
+	for contact in contacts: # For some reason set/execute query not working
+		contact.read = True
+		contact.save()
+	return response
 
 
 @bp.route('/orders/<int:id>/q/enable', methods=['POST'])

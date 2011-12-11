@@ -12,6 +12,12 @@
 	{% endif %}
 {% endmacro -%}
 
+{% macro added(value) -%}
+	{% if value %}
+		<img src="{{ url_for('static', filename='./img/icon_addlink.gif') }}" alt="добавлено" />
+	{% endif %}
+{% endmacro -%}
+
 {% macro breadcrumb(title, href) %}
 	<li><a href="{{ href }}">{{ title }}</a> <span class="divider">/</span></li>
 {% endmacro %}

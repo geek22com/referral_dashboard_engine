@@ -1,0 +1,45 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Обратная связь{% endblock %}
+
+{% set activemenu = 'feedback' %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb(self.title(), url_for('.feedback')) }}
+{% endblock %}
+
+{% block pageheader %}
+<h1>{{ self.title() }}</h1>
+{% endblock %}
+
+{% block content %}
+	
+{% if contacts %}
+	{% for contact in contacts %}
+	<table class="bordered-table collapse">
+		<tbody>
+			<tr>
+				<td style="width: 20px;" class="center">{{ macros.added(not contact.read) }}</td>
+				<td style="width: 33%;"><strong>Имя:</strong> {{ contact.name }}</td>
+				<td style="width: 33%;"><strong>E-mail:</strong> <a href="mailto:{{ contact.email }}">{{ contact.email }}</a></td>
+				<td><strong>Телефон:</strong> {{ contact.phone|default('&mdash;') }}</td>
+			</tr>
+			{% if contact.desc %}
+			<tr>
+				<td colspan="4">
+					{{ contact.desc }}
+				</td>
+			</tr>
+			{% endif %}
+		</tbody>
+	</table>
+	{% endfor %}
+	{{ macros.paginate(pages, '.feedback') }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Еще не было оставлено ни одного сообщения.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

@@ -104,6 +104,19 @@ address strong {
 	max-width: 840px;
 }
 
+.topbar a.unread {
+	font-weight: bold;
+	color: #F8C300;
+}
+
+.minimal-width {
+	width: 1%;
+}
+
+.nopadding { padding: 0; }
+.nomargin { margin: 0; }
+.collapse {	border-collapse: collapse; }
+
 
 
 

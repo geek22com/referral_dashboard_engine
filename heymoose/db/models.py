@@ -38,6 +38,7 @@ class Contact(mongo.Document):
 	phone = mongo.StringField()
 	desc = mongo.StringField()
 	date = mongo.DateTimeField(default=datetime.now())
+	read = mongo.BoolField(default=False)
 
 
 class FeedBack(mongo.Document):

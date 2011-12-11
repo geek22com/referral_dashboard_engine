@@ -3,7 +3,7 @@ from wtforms import Form, validators, BooleanField, TextField, PasswordField, \
 	IntegerField, TextAreaField, SelectField, HiddenField
 from wtforms.fields import Label
 from heymoose.core import actions
-import heymoose.core.actions.roles as roles
+from heymoose.core.actions import roles
 import validators as myvalidators
 import fields as myfields
 import random, hashlib

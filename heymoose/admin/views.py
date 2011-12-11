@@ -209,7 +209,7 @@ def performers_info_stats(id):
 def feedback():
 	page = convert.to_int(request.args.get('page'), 1)
 	count = Contact.query.count()
-	per_page = app.config.get('ADMIN_CONTACTS_PER_PAGE', 2)
+	per_page = app.config.get('ADMIN_CONTACTS_PER_PAGE', 10)
 	offset, limit, pages = paginate(page, count, per_page)
 	contacts = Contact.query.descending(Contact.date).skip(offset).limit(limit)
 	response = render_template('admin/feedback.html', contacts=contacts.all(), pages=pages)

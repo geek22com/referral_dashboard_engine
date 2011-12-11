@@ -7,6 +7,7 @@ from heymoose.utils.gen import generate_password_hash, check_password_hash
 from heymoose.core.actions import users, roles
 from heymoose.db.models import Contact
 from heymoose.db.actions import invites
+from datetime import datetime
 
 
 @bp.route('/')
@@ -27,7 +28,8 @@ def contacts():
 			name = form.name.data,
 			email = form.email.data,
 			phone = form.phone.data,
-			desc = form.comment.data)
+			desc = form.comment.data,
+			date = datetime.now())
 		contact.save()
 		flash(u'Спасибо, мы обязательно с вами свяжемся!', 'success')
 		return redirect(url_for('.contacts'))

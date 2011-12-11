@@ -37,7 +37,7 @@ class Contact(mongo.Document):
 	email = mongo.StringField()
 	phone = mongo.StringField()
 	desc = mongo.StringField()
-	date = mongo.DateTimeField(default=datetime.now())
+	date = mongo.DateTimeField()
 	read = mongo.BoolField(default=False)
 
 

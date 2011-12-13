@@ -26,3 +26,11 @@ def to_int(value, default=0):
 		return int(value)
 	except:
 		return default
+	
+	
+def to_bool(value, empty_is_none=True):
+	if value == '' or value == u'':
+		return None if empty_is_none else False
+	if value.lower() == 'true': return True
+	if value.lower() == 'false': return False
+	return True

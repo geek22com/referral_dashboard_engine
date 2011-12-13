@@ -1,6 +1,7 @@
 from mappers import order_from_xml, count_from_xml
 from heymoose.core.rest import post, put, get, delete
 from heymoose.core.data import OrderTypes
+from heymoose.utils import convert
 
 resource_path = "/orders"
 
@@ -21,7 +22,8 @@ def add_order(user_id, title, url, balance, cpa, type, auto_approve=True,
 	
 	if min_age is not None and min_age > 0: params_dict.update(minAge=min_age)
 	if max_age is not None and max_age > 0: params_dict.update(maxAge=max_age)
-	if male is not None and male in (True, False): params_dict.update(male=male)
+	male = convert.to_bool(male)
+	if male is not None: params_dict.update(male=male)
 	
 	id = post(path=resource_path, params_dict=params_dict)
 	return int(id)

@@ -34,3 +34,13 @@ def to_bool(value, empty_is_none=True):
 	if value.lower() == 'true': return True
 	if value.lower() == 'false': return False
 	return True
+
+
+def to_camel_case(value):
+	chars = list(value)
+	n = len(chars)
+	for i, char in enumerate(chars):
+		if char == '_' and i != n-1:
+			chars[i+1] = chars[i+1].upper()
+	return ''.join(chars).replace('_', '')
+			

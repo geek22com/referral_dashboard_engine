@@ -5,6 +5,7 @@ from heymoose.cabinet import blueprint as bp
 from heymoose.forms import forms
 from heymoose.core import actions
 from heymoose.core.data import OrderTypes
+from heymoose.utils import convert
 from heymoose.utils.shortcuts import do_or_abort
 from heymoose.utils.gen import generate_password_hash
 from heymoose.views.common import json_get_ctr
@@ -117,6 +118,77 @@ def orders_info(id):
 	order = do_or_abort(actions.orders.get_order, id, full=True)
 	if order.user.id != g.user.id: abort(404)
 	return render_template('cabinet/orders-info.html', order=order)
+
+@bp.route('/orders/<int:id>/edit', methods=['GET', 'POST'])
+@customer_only
+def orders_info_edit(id):
+	order = do_or_abort(actions.orders.get_order, id, full=True)
+	if order.user.id != g.user.id: abort(404)
+	
+	form_args = dict(
+		ordername = order.title,
+		orderurl = order.url,
+		orderbalance = order.balance,
+		ordercpa = order.cpa,
+		orderautoapprove = order.auto_approve,
+		orderreentrant = order.reentrant,
+		orderallownegativebalance = order.allow_negative_balance,
+		ordermale = u'' if order.male is None else unicode(order.male),
+		orderminage = order.min_age,
+		ordermaxage = order.max_age
+	)
+	
+	if order.is_regular():
+		form_args.update(orderdesc = order.description)
+		form = forms.RegularOrderForm(request.form, **form_args)
+		form.orderimage.validators = form.orderimage.validators[:]
+		del form.orderimage.validators[0] # Remove Required validator
+	elif order.is_banner():
+		form_args.update(orderbannersize = order.banner_size.id)
+		form = forms.BannerOrderForm(request.form, **form_args)
+		form.orderimage.validators = form.orderimage.validators[:]
+		del form.orderimage.validators[0] # Remove Required validator
+		
+		sizes = actions.bannersizes.get_banner_sizes()
+		choices = ((s.id, '{0} x {1}'.format(s.width, s.height)) for s in sizes)
+		form.orderbannersize.choices = choices
+	elif order.is_video():
+		form_args.update(ordervideourl = order.video_url)
+		form = forms.VideoOrderForm(request.form, **form_args)
+		
+	form.orderbalance.validators = []
+		
+	if request.method == 'POST' and form.validate():
+		kwargs = dict()
+		male = convert.to_bool(form.ordermale.data)
+		if form.ordername.data != order.title: kwargs.update(title=form.ordername.data)
+		if form.orderurl.data != order.url: kwargs.update(url=form.orderurl.data)
+		if form.ordercpa.data != order.cpa: kwargs.update(cpa=form.ordercpa.data)
+		if form.orderautoapprove.data != order.auto_approve: kwargs.update(auto_approve=form.orderautoapprove.data)
+		if form.orderreentrant.data != order.reentrant: kwargs.update(reentrant=form.orderreentrant.data)
+		if form.orderallownegativebalance.data != order.allow_negative_balance: kwargs.update(allow_negative_balance=form.orderallownegativebalance.data)
+		if male != order.male: kwargs.update(male=male)
+		if form.orderminage.data != order.min_age: kwargs.update(min_age=form.orderminage.data)
+		if form.ordermaxage.data != order.max_age: kwargs.update(max_age=form.ordermaxage.data)
+		
+		if order.is_regular():
+			if form.orderdesc.data != order.description: kwargs.update(description=form.orderdesc.data)
+			if form.orderimage.data is not None: kwargs.update(image=base64.encodestring(request.files['orderimage'].stream.read()))
+		elif order.is_banner():
+			if form.orderimage.data is not None:
+				kwargs.update(image=base64.encodestring(request.files['orderimage'].stream.read()))
+				if form.orderbannersize.data != order.banner_size.id: kwargs.update(banner_size=form.orderbannersize.data)
+		elif order.is_video():
+			if form.ordervideourl.data != order.video_url: kwargs.update(video_url=form.ordervideourl.data)
+		
+		if kwargs.keys():
+			actions.orders.update_order(order.id, **kwargs)
+			flash(u'Заказ успешно обновлен', 'success')
+		else:
+			flash(u'Вы не изменили ни одного поля', 'warning')
+		return redirect(url_for('.orders_info', id=order.id))
+		
+	return render_template('cabinet/orders-info-edit.html', order=order, form=form)
 
 @bp.route('/orders/<int:id>/stats')
 @customer_only

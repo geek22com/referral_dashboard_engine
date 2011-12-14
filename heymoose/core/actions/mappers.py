@@ -46,8 +46,8 @@ def order_from_xml(order_element):
 				video_url=get_value(order_element, 'video-url'),
 				# Targeting fields
 				male=get_value(order_element, 'male', bool),
-				min_age=get_value(order_element, 'min-age'),
-				max_age=get_value(order_element, 'max-age'))
+				min_age=get_value(order_element, 'min-age', int),
+				max_age=get_value(order_element, 'max-age', int))
 	
 def banner_size_from_xml(size_element):
 	if size_element is None: return None

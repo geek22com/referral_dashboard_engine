@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from wtforms import Form, validators, BooleanField, TextField, PasswordField, \
-	IntegerField, TextAreaField, SelectField, HiddenField
+	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField
 from wtforms.fields import Label
 from heymoose.core import actions
 from heymoose.core.actions import roles
@@ -130,17 +130,21 @@ class OrderForm(Form):
 		validators.Required(message = (u'Введите URL')),
 		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
 	])
-	orderbalance = IntegerField(u'Баланс', [
+	orderbalance = DecimalField(u'Баланс', [
 		validators.Required(message = (u'Укажите баланс для заказа')),
 		validators.NumberRange(min=1, max=3000000, message=(u'Такой баланс недопустим'))
 	])
-	ordercpa = IntegerField(u'Стоимость действия (CPA)', [validators.Required(message = (u'Введите CPA'))])
+	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message = (u'Введите CPA'))])
 	orderautoapprove = BooleanField(u'Автоподтверждение', default=False)
 	orderreentrant = BooleanField(u'Многократное прохождение', default=False)
 	orderallownegativebalance = BooleanField(u'Разрешить кредит', default=True)
 	ordermale = SelectField(u'Пол', choices=[(u'True', u'мужской'), (u'False', u'женский'), (u'', u'любой')], default='')
-	orderminage = myfields.NullableIntegerField(u'Минимальный возраст', [myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))])
-	ordermaxage = myfields.NullableIntegerField(u'Максимальный возраст', [myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))])
+	orderminage = myfields.NullableIntegerField(u'Минимальный возраст', [
+		myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
+	])
+	ordermaxage = myfields.NullableIntegerField(u'Максимальный возраст', [
+		myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
+	])
 	
 class RegularOrderForm(OrderForm):
 	orderdesc = TextAreaField(u'Описание', [
@@ -160,6 +164,7 @@ class BannerOrderForm(OrderForm):
 	])
 	
 	def validate_orderimage(self, field):
+		if field.data is None: return
 		size = actions.bannersizes.get_banner_size(self.orderbannersize.data)
 		if field.data.size[0] != size.width or field.data.size[1] != size.height:
 			raise ValueError(u'Размер изображения должен совпадать с указанным')

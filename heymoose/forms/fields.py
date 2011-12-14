@@ -7,7 +7,9 @@ from widgets import UnfilledTextInput
 class NullableIntegerField(IntegerField):
 	def process_formdata(self, valuelist):
 		value = valuelist[0]
-		if value is None or value == '' or value == u'': return
+		if value is None or value == '' or value == u'':
+			self.data = None
+			return
 		super(NullableIntegerField, self).process_formdata(valuelist)
 		
 		
@@ -17,10 +19,12 @@ class UnfilledTextField(TextField):
 	
 class ImageField(FileField):
 	def process_formdata(self, valuelist):
-		if valuelist:
+		if valuelist and valuelist[0].filename != '':
 			try:
 				self.data = Image.open(valuelist[0])
 				valuelist[0].seek(0)
 			except:
 				raise ValueError(u'Файл не является изображением')
+		else:
+			self.data = None
 			

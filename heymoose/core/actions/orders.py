@@ -82,6 +82,12 @@ def add_video_order(user_id, title, url, balance, cpa, video_url, auto_approve=T
 				videoUrl=video_url)
 
 
+def update_order(order_id, **kwargs):
+	path = '{0}/{1}'.format(resource_path, order_id)
+	params = dict([(convert.to_camel_case(key), value) for key, value in kwargs.iteritems()])
+	put(path=path, params_dict=params)
+
+
 def get_order(order_id, **kwargs):
 	path = "{0}/{1}".format(resource_path, order_id)
 	return order_from_xml(get(path=path, params_dict=kwargs))
@@ -91,11 +97,11 @@ def approve_order(order_id):
 	enable_order(order_id)
 	
 def enable_order(order_id):
-	path = "{0}/{1}".format(resource_path, order_id)
+	path = "{0}/{1}/enabled".format(resource_path, order_id)
 	put(path=path)
 	
 def disable_order(order_id):
-	path = "{0}/{1}".format(resource_path, order_id)
+	path = "{0}/{1}/enabled".format(resource_path, order_id)
 	delete(path=path)
 
 def get_orders(**kwargs):

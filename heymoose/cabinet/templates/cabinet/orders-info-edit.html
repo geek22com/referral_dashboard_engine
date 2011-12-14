@@ -1,0 +1,51 @@
+{% extends "cabinet/orders-info-layout.html" %}
+
+{% set activetab = 'edit' %}
+
+{% block tabcontent %}
+
+<div class="form-container">
+	<form id="form-order-regular" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
+		<fieldset>
+			<input type="hidden" name="ordertype" value="REGULAR" />
+			{{ macros.formfield(form.ordername, class='span10') }}
+			{{ macros.formfield(form.orderurl, class='span10') }}
+			{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance, disabled='disabled') }}
+			{{ macros.formfield(form.ordercpa, class='span4') }}
+			{{ macros.formfield(form.orderallownegativebalance,
+				inline='(разрешить отрицательный баланс)') }}
+			{{ macros.formfield(form.orderautoapprove) }}
+			{{ macros.formfield(form.orderreentrant,
+				inline='(разрешить одному пользователю проходить оффер много раз)') }}
+		</fieldset>
+		{% if order.is_regular() %}
+		<fieldset>
+			<legend>Оффер</legend>
+			{{ macros.formfield(form.orderdesc, class='span10', rows=5) }}
+			{{ macros.formfield(form.orderimage) }}
+		</fieldset>
+		{% elif order.is_banner() %}
+		<fieldset>
+			<legend>Баннер</legend>
+			{{ macros.formfield(form.orderbannersize, class='span4') }}
+			{{ macros.formfield(form.orderimage) }}
+		</fieldset>
+		{% elif order.is_video() %}
+		<fieldset>
+			<legend>Видеозапись</legend>
+			{{ macros.formfield(form.ordervideourl, class='span10') }}
+		</fieldset>
+		{% endif %}
+		<fieldset>
+			<legend>Настройки таргетинга</legend>
+			{{ macros.formfield(form.ordermale, class='span4') }}
+			{{ macros.formfield(form.orderminage, class='span4', placeholder='любой') }}
+			{{ macros.formfield(form.ordermaxage, class='span4', placeholder='любой') }}
+		</fieldset>
+		<div class="actions">
+			<input class="btn large primary" type="submit" value="Подтвердить"/>
+		</div>
+	</form>
+</div>
+
+{% endblock %}

@@ -205,18 +205,21 @@ def performers_info_stats(id):
 	return render_template('admin/performers-info-stats.html', performer=performer)
 
 
-@bp.route('/feedback/')
+@bp.route('/feedback/', methods=['GET', 'POST'])
 def feedback():
+	if request.method == 'POST':
+		contacts = Contact.query.filter(Contact.read == False)
+		for contact in contacts: # For some reason set/execute query not working
+			contact.read = True
+			contact.save()
+		g.feedback_unread = 0
+	
 	page = convert.to_int(request.args.get('page'), 1)
 	count = Contact.query.count()
 	per_page = app.config.get('ADMIN_CONTACTS_PER_PAGE', 10)
 	offset, limit, pages = paginate(page, count, per_page)
 	contacts = Contact.query.descending(Contact.date).skip(offset).limit(limit)
-	response = render_template('admin/feedback.html', contacts=contacts.all(), pages=pages)
-	for contact in contacts: # For some reason set/execute query not working
-		contact.read = True
-		contact.save()
-	return response
+	return render_template('admin/feedback.html', contacts=contacts.all(), pages=pages)
 
 
 @bp.route('/orders/<int:id>/q/enable', methods=['POST'])

@@ -35,12 +35,10 @@ class CaptchaForm(Form):
 		self.captcha.label = Label(self.captcha.id, u'{0} + {1} ='.format(first, second))
 		self.captcha.data = u''
 		self.ch.data = self.generate_hash(first + second)
-		print self.ch.data
 		
 		
 	def generate_hash(self, value):
 		m = hashlib.md5()
-		print 'value =', value
 		m.update(u'hey{0}moo{1}se'.format(value, self.captcha.id))
 		return m.hexdigest()
 			

@@ -15,19 +15,12 @@
 			$('#order-type').val(type);
 			$('#container-' + type).show();
 
-			var cities = [
-				{ id: 1, name: 'Москва' },
-				{ id: 2, name: 'Санкт-Петербург' },
-				{ id: 3, name: 'Казань' },
-				{ id: 4, name: 'Пермь' },
-				{ id: 5, name: 'Нижний Новгород' },
-				{ id: 6, name: 'Ростов на Дону' }
-			];
-						
+			var cities = {{ cities|tojson|safe }};
 			$('input.cities').tokenInput(cities, {
 				theme: 'twitter',
 				preventDuplicates: true,
 				hintText: 'Введите название города',
+				noResultsText: 'Не найдено',
 				searchingText: 'Поиск...'
 			});
 		});

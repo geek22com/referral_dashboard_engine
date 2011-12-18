@@ -36,6 +36,7 @@ def orders():
 def orders_new():
 	sizes = actions.bannersizes.get_banner_sizes()
 	choices = ((s.id, '{0} x {1}'.format(s.width, s.height)) for s in sizes)
+	cities = [dict(id=city.id, name=city.name) for city in actions.cities.get_cities()]
 	
 	ordertype = 'REGULAR'
 	rform = forms.RegularOrderForm()
@@ -46,71 +47,57 @@ def orders_new():
 	if request.method == 'POST':
 		ordertype = request.form['ordertype']
 		if ordertype == OrderTypes.REGULAR:
-			rform = forms.RegularOrderForm(request.form)
-			if rform.validate():
-				form = rform
-				do_or_abort(actions.orders.add_regular_order,
-					user_id=g.user.id,
-					title=form.ordername.data,
-					url=form.orderurl.data,
-					balance=form.orderbalance.data,
-					cpa=form.ordercpa.data,
-					description=form.orderdesc.data,
-					image=base64.encodestring(request.files['orderimage'].stream.read()),
-					auto_approve=form.orderautoapprove.data,
-					allow_negative_balance=form.orderallownegativebalance.data,
-					reentrant=form.orderreentrant.data,
-					male=form.ordermale.data,
-					min_age=form.orderminage.data,
-					max_age=form.ordermaxage.data)
-				flash(u'Заказ успешно создан.', 'success')
-				return redirect(url_for('.orders'))
-				
-				
+			form = forms.RegularOrderForm(request.form)
+			rform = form
 		elif ordertype == OrderTypes.BANNER:
-			bform = forms.BannerOrderForm(request.form)
-			bform.orderbannersize.choices = choices
-			if bform.validate():
-				form = bform
-				do_or_abort(actions.orders.add_banner_order,
-					user_id=g.user.id,
-					title=form.ordername.data,
-					url=form.orderurl.data,
-					balance=form.orderbalance.data,
-					cpa=form.ordercpa.data,
-					banner_size=form.orderbannersize.data,
-					image=base64.encodestring(request.files['orderimage'].stream.read()),
-					auto_approve=form.orderautoapprove.data,
-					allow_negative_balance=form.orderallownegativebalance.data,
-					reentrant=form.orderreentrant.data,
-					male=form.ordermale.data,
-					min_age=form.orderminage.data,
-					max_age=form.ordermaxage.data)
-				flash(u'Заказ успешно создан.', 'success')
-				return redirect(url_for('.orders'))
-			
+			form = forms.BannerOrderForm(request.form)
+			form.orderbannersize.choices = choices
+			bform = form
 		elif ordertype == OrderTypes.VIDEO:
-			vform = forms.VideoOrderForm(request.form)
-			if vform.validate():
-				form = vform
-				do_or_abort(actions.orders.add_video_order,
-					user_id=g.user.id,
-					title=form.ordername.data,
-					url=form.orderurl.data,
-					balance=form.orderbalance.data,
-					cpa=form.ordercpa.data,
-					video_url=form.ordervideourl.data,
-					auto_approve=form.orderautoapprove.data,
-					allow_negative_balance=form.orderallownegativebalance.data,
-					reentrant=form.orderreentrant.data,
-					male=form.ordermale.data,
-					min_age=form.orderminage.data,
-					max_age=form.ordermaxage.data)
-				flash(u'Заказ успешно создан.', 'success')
-				return redirect(url_for('.orders'))
+			form = forms.VideoOrderForm(request.form)
+			vform = form
+		else:
+			abort(400)
 			
+		if form.validate():
+			kwargs = dict(
+				user_id=g.user.id,
+				title=form.ordername.data,
+				url=form.orderurl.data,
+				balance=form.orderbalance.data,
+				cpa=form.ordercpa.data,
+				auto_approve=form.orderautoapprove.data,
+				allow_negative_balance=form.orderallownegativebalance.data,
+				reentrant=form.orderreentrant.data,
+				male=form.ordermale.data,
+				min_age=form.orderminage.data,
+				max_age=form.ordermaxage.data,
+				city_filter_type=form.ordercitiesfilter.data,
+				city=[int(x) for x in form.ordercities.data.split(',')] if form.ordercities.data else []
+			)
+			
+			if ordertype == OrderTypes.REGULAR:
+				kwargs.update(
+					description=form.orderdesc.data,
+					image=base64.encodestring(request.files['orderimage'].stream.read())
+				)
+				do_or_abort(actions.orders.add_regular_order, **kwargs)
+			elif ordertype == OrderTypes.BANNER:
+				kwargs.update(
+					banner_size=form.orderbannersize.data,
+					image=base64.encodestring(request.files['orderimage'].stream.read())
+				)
+				do_or_abort(actions.orders.add_banner_order, **kwargs)
+			elif ordertype == OrderTypes.VIDEO:
+				kwargs.update(video_url=form.ordervideourl.data) 
+				do_or_abort(actions.orders.add_video_order, **kwargs)
+
+			flash(u'Заказ успешно создан.', 'success')
+			return redirect(url_for('.orders'))
+	
 	return render_template('cabinet/orders-new.html', 
-		rform=rform, bform=bform, vform=vform, ordertype=ordertype.lower())
+		rform=rform, bform=bform, vform=vform, cities=cities,
+		ordertype=ordertype.lower())
 	
 @bp.route('/orders/<int:id>/')
 @customer_only

@@ -2,6 +2,26 @@
 
 {% set activetab = 'edit' %}
 
+{% block extrahead %}
+	{{ super() }}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/token-input-twitter.css') }}" media="screen" />
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.tokeninput.js') }}"></script>
+	<script type="text/javascript">
+		$(function() {
+			var cities = {{ cities|tojson|safe }};
+			var orderCities = {{ order_cities|tojson|safe }};
+			$('input.cities').tokenInput(cities, {
+				theme: 'twitter',
+				preventDuplicates: true,
+				prePopulate: orderCities,
+				hintText: 'Введите название города',
+				noResultsText: 'Не найдено',
+				searchingText: 'Поиск...'
+			});
+		})
+	</script>
+{% endblock %}
+
 {% block tabcontent %}
 
 <div class="form-container">
@@ -11,7 +31,7 @@
 			{{ macros.formfield(form.ordername, class='span10') }}
 			{{ macros.formfield(form.orderurl, class='span10') }}
 			{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance, disabled='disabled') }}
-			{{ macros.formfield(form.ordercpa, class='span4') }}
+			{{ macros.formfield(form.ordercpa, class='span4', disabled='disabled') }}
 			{{ macros.formfield(form.orderallownegativebalance,
 				inline='(разрешить отрицательный баланс)') }}
 			{{ macros.formfield(form.orderautoapprove) }}
@@ -41,6 +61,8 @@
 			{{ macros.formfield(form.ordermale, class='span4') }}
 			{{ macros.formfield(form.orderminage, class='span4', placeholder='любой') }}
 			{{ macros.formfield(form.ordermaxage, class='span4', placeholder='любой') }}
+			{{ macros.formfield(form.ordercitiesfilter, class='span4') }}
+			{{ macros.formfield(form.ordercities, class='cities') }}
 		</fieldset>
 		<div class="actions">
 			<input class="btn large primary" type="submit" value="Подтвердить"/>

@@ -111,6 +111,8 @@ def orders_info(id):
 def orders_info_edit(id):
 	order = do_or_abort(actions.orders.get_order, id, full=True)
 	if order.user.id != g.user.id: abort(404)
+	cities = [dict(id=city.id, name=city.name) for city in actions.cities.get_cities()]
+	order_cities = [dict(id=city.id, name=city.name) for city in order.cities] if order.cities else []
 	
 	form_args = dict(
 		ordername = order.title,
@@ -122,7 +124,8 @@ def orders_info_edit(id):
 		orderallownegativebalance = order.allow_negative_balance,
 		ordermale = u'' if order.male is None else unicode(order.male),
 		orderminage = order.min_age,
-		ordermaxage = order.max_age
+		ordermaxage = order.max_age,
+		ordercitiesfilter = order.city_filter_type
 	)
 	
 	if order.is_regular():
@@ -148,16 +151,23 @@ def orders_info_edit(id):
 	if request.method == 'POST' and form.validate():
 		kwargs = dict()
 		male = convert.to_bool(form.ordermale.data)
+		city_filter_type = form.ordercitiesfilter.data if form.ordercitiesfilter.data else None
+		
 		if form.ordername.data != order.title: kwargs.update(title=form.ordername.data)
 		if form.orderurl.data != order.url: kwargs.update(url=form.orderurl.data)
-		if form.ordercpa.data != order.cpa: kwargs.update(cpa=form.ordercpa.data)
+		#if form.ordercpa.data != order.cpa: kwargs.update(cpa=form.ordercpa.data)
 		if form.orderautoapprove.data != order.auto_approve: kwargs.update(auto_approve=form.orderautoapprove.data)
 		if form.orderreentrant.data != order.reentrant: kwargs.update(reentrant=form.orderreentrant.data)
 		if form.orderallownegativebalance.data != order.allow_negative_balance: kwargs.update(allow_negative_balance=form.orderallownegativebalance.data)
 		if male != order.male: kwargs.update(male=male)
 		if form.orderminage.data != order.min_age: kwargs.update(min_age=form.orderminage.data)
 		if form.ordermaxage.data != order.max_age: kwargs.update(max_age=form.ordermaxage.data)
+		if city_filter_type != order.city_filter_type: kwargs.update(city_filter_type=city_filter_type)
 		
+		old_cities = frozenset([city.id for city in order.cities])
+		new_cities = frozenset([int(x) for x in form.ordercities.data.split(',')])
+		if new_cities != old_cities: kwargs.update(city=list(new_cities))
+				
 		if order.is_regular():
 			if form.orderdesc.data != order.description: kwargs.update(description=form.orderdesc.data)
 			if form.orderimage.data is not None: kwargs.update(image=base64.encodestring(request.files['orderimage'].stream.read()))
@@ -175,7 +185,8 @@ def orders_info_edit(id):
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.orders_info', id=order.id))
 		
-	return render_template('cabinet/orders-info-edit.html', order=order, form=form)
+	return render_template('cabinet/orders-info-edit.html', order=order, form=form,
+		cities=cities, order_cities=order_cities)
 
 @bp.route('/orders/<int:id>/stats')
 @customer_only

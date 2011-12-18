@@ -1,0 +1,125 @@
+/* Example tokeninput style #2: twitter style */
+ul.token-input-list-twitter {
+	overflow: hidden; 
+	height: auto !important; 
+	height: 1%;
+	cursor: text;
+	min-height: 1px;
+	z-index: 999;
+	margin: 0;
+	padding: 0;
+	background-color: #fff;
+	list-style-type: none;
+	
+	width: 580px;
+	border: 1px solid #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+	-webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+	-moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+	-ms-transition: border linear 0.2s, box-shadow linear 0.2s;
+	-o-transition: border linear 0.2s, box-shadow linear 0.2s;
+	-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+ul.token-input-list-twitter li input {
+	border: 0;
+	width: 100px;
+	padding: 3px 8px;
+	background-color: white;
+	border-color: white;
+	box-shadow: none;
+	margin: 2px 0;
+	-webkit-appearance: caret;
+}
+
+li.token-input-token-twitter {
+	overflow: hidden; 
+	height: auto !important; 
+	height: 15px;
+	margin: 3px;
+	/*padding: 1px 3px;*/
+	padding: 2px 5px;
+	background-color: #DDF4FB;
+	cursor: default;
+	border: 1px solid #C6EDF9;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	float: left;
+	white-space: nowrap;
+	/*color: #404040;*/
+}
+
+li.token-input-token-twitter p {
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+
+li.token-input-token-twitter span {
+    margin-left: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+li.token-input-selected-token-twitter {
+    background-color: #C6EDF9;
+}
+
+li.token-input-input-token-twitter {
+    float: left;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+div.token-input-dropdown-twitter {
+    position: absolute;
+    width: 580px;
+    background-color: #fff;
+    overflow: hidden;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    cursor: default;
+    z-index: 1;
+}
+
+div.token-input-dropdown-twitter p {
+    margin: 0;
+    padding: 5px;
+    font-weight: bold;
+    color: #777;
+}
+
+div.token-input-dropdown-twitter ul {
+    margin: 0;
+    padding: 0;
+}
+
+div.token-input-dropdown-twitter ul li {
+    background-color: #fff;
+    padding: 3px;
+    margin: 0;
+    list-style-type: none;
+}
+
+div.token-input-dropdown-twitter ul li.token-input-dropdown-item-twitter {
+    background-color: #fff;
+}
+
+div.token-input-dropdown-twitter ul li.token-input-dropdown-item2-twitter {
+    background-color: #fff;
+}
+
+div.token-input-dropdown-twitter ul li em {
+    font-weight: bold;
+    font-style: normal;
+}
+
+div.token-input-dropdown-twitter ul li.token-input-selected-dropdown-item-twitter {
+    background-color: #DDF4FB;
+}

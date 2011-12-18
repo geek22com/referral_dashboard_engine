@@ -29,7 +29,8 @@ def to_int(value, default=0):
 	
 	
 def to_bool(value, empty_is_none=True):
-	if value == '' or value == u'':
+	if isinstance(value, bool): return value
+	if not value:
 		return None if empty_is_none else False
 	if value.lower() == 'true': return True
 	if value.lower() == 'false': return False

@@ -100,6 +100,10 @@ class BannerSize(BaseModel):
 				  'height']
 
 
+class City(BaseModel):
+	attributes = ['id', 'name']
+
+
 class App(BaseModel):
 	attributes = ['id',
 				  'title',

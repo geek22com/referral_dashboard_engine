@@ -2,6 +2,8 @@
 
 {% block extrahead %}
 	{{ super() }}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/token-input-twitter.css') }}" media="screen" />
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.tokeninput.js') }}"></script>
 	<script type="text/javascript">
 		$(function() {
 			var type = '{{ ordertype }}';
@@ -12,6 +14,22 @@
 			});
 			$('#order-type').val(type);
 			$('#container-' + type).show();
+
+			var cities = [
+				{ id: 1, name: 'Москва' },
+				{ id: 2, name: 'Санкт-Петербург' },
+				{ id: 3, name: 'Казань' },
+				{ id: 4, name: 'Пермь' },
+				{ id: 5, name: 'Нижний Новгород' },
+				{ id: 6, name: 'Ростов на Дону' }
+			];
+						
+			$('input.cities').tokenInput(cities, {
+				theme: 'twitter',
+				preventDuplicates: true,
+				hintText: 'Введите название города',
+				searchingText: 'Поиск...'
+			});
 		});
 	</script>
 {% endblock %}
@@ -60,6 +78,8 @@
 					{{ macros.formfield(form.ordermale, class='span4') }}
 					{{ macros.formfield(form.orderminage, class='span4', placeholder='любой') }}
 					{{ macros.formfield(form.ordermaxage, class='span4', placeholder='любой') }}
+					{{ macros.formfield(form.ordercitiesfilter, class='span4') }}
+					{{ macros.formfield(form.ordercities, class='cities') }}
 				</fieldset>
 				<div class="actions">
 					<input class="btn large primary" type="submit" value="Создать заказ"/>
@@ -94,6 +114,8 @@
 					{{ macros.formfield(form.ordermale, class='span4') }}
 					{{ macros.formfield(form.orderminage, class='span4', placeholder='любой') }}
 					{{ macros.formfield(form.ordermaxage, class='span4', placeholder='любой') }}
+					{{ macros.formfield(form.ordercitiesfilter, class='span4') }}
+					{{ macros.formfield(form.ordercities, class='cities') }}
 				</fieldset>
 				<div class="actions">
 					<input class="btn large primary" type="submit" value="Создать заказ"/>
@@ -124,6 +146,8 @@
 					{{ macros.formfield(form.ordermale, class='span4') }}
 					{{ macros.formfield(form.orderminage, class='span4', placeholder='любой') }}
 					{{ macros.formfield(form.ordermaxage, class='span4', placeholder='любой') }}
+					{{ macros.formfield(form.ordercitiesfilter, class='span4') }}
+					{{ macros.formfield(form.ordercities, class='cities') }}
 				</fieldset>
 				<div class="actions">
 					<input class="btn large primary" type="submit" value="Создать заказ"/>

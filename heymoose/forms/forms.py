@@ -143,6 +143,12 @@ class OrderForm(Form):
 	ordermaxage = myfields.NullableIntegerField(u'Максимальный возраст', [
 		myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
 	])
+	ordercitiesfilter = SelectField(u'Фильтр по городам', default=u'', choices=[
+		(u'', u'не учитывать'),
+		(u'INCLUSIVE', u'только указанные'),
+		(u'EXCLUSIVE', u'все, кроме указанных')													
+	])
+	ordercities = TextField(u'Список городов')
 	
 class RegularOrderForm(OrderForm):
 	orderdesc = TextAreaField(u'Описание', [

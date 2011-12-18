@@ -1,5 +1,5 @@
 from heymoose.core.actions.base import get_value, get_attr, get_child
-from heymoose.core.data import User, App, Order, BannerSize, Action, Performer, OrderShow
+from heymoose.core.data import User, App, Order, BannerSize, City, Action, Performer, OrderShow
 from heymoose.utils.convert import datetime_from_api
 
 def role_from_xml(role_element):
@@ -54,6 +54,11 @@ def banner_size_from_xml(size_element):
 	return BannerSize(id=get_attr(size_element, 'id', int),
 				width=get_value(size_element, 'width', int),
 				height=get_value(size_element, 'height', int))
+	
+def city_from_xml(city_element):
+	if city_element is None: return None
+	return City(id=get_attr(city_element, 'id', int),
+				name=get_value(city_element, 'name'))
 
 def user_from_xml(user_element):
 	if user_element is None: return None

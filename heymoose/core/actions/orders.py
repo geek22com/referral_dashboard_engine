@@ -7,7 +7,9 @@ resource_path = "/orders"
 
 
 def add_order(user_id, title, url, balance, cpa, type, auto_approve=True,
-			allow_negative_balance=True, reentrant=False, male=None, min_age=None, max_age=None, **kwargs):
+			  allow_negative_balance=True, reentrant=False,
+			  male=None, min_age=None, max_age=None, city_filter_type=None, city=[],
+			  **kwargs):
 	params_dict = dict(
 		userId=user_id,
 		title=title,
@@ -24,13 +26,15 @@ def add_order(user_id, title, url, balance, cpa, type, auto_approve=True,
 	if max_age is not None and max_age > 0: params_dict.update(maxAge=max_age)
 	male = convert.to_bool(male)
 	if male is not None: params_dict.update(male=male)
+	if city_filter_type: params_dict.update(cityFilterType=city_filter_type, city=city)
 	
 	id = post(path=resource_path, params_dict=params_dict)
 	return int(id)
 
 
 def add_regular_order(user_id, title, url, balance, cpa, description, image, auto_approve=True,
-					allow_negative_balance=True, reentrant=False, male=None, min_age=None, max_age=None):
+					allow_negative_balance=True, reentrant=False,
+					male=None, min_age=None, max_age=None, city_filter_type=None, city=[]):
 	return add_order(user_id=user_id,
 				title=title,
 				url=url,
@@ -48,7 +52,8 @@ def add_regular_order(user_id, title, url, balance, cpa, description, image, aut
 	
 	
 def add_banner_order(user_id, title, url, balance, cpa, image, banner_size, auto_approve=True,
-					allow_negative_balance=True, reentrant=False, male=None, min_age=None, max_age=None):
+					allow_negative_balance=True, reentrant=False,
+					male=None, min_age=None, max_age=None, city_filter_type=None, city=[]):
 	return add_order(user_id=user_id,
 				title=title,
 				url=url,
@@ -66,7 +71,8 @@ def add_banner_order(user_id, title, url, balance, cpa, image, banner_size, auto
 
 
 def add_video_order(user_id, title, url, balance, cpa, video_url, auto_approve=True,
-					allow_negative_balance=True, reentrant=False, male=None, min_age=None, max_age=None):
+					allow_negative_balance=True, reentrant=False,
+					male=None, min_age=None, max_age=None, city_filter_type=None, city=[]):
 	return add_order(user_id=user_id,
 				title=title,
 				url=url,

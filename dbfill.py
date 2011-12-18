@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os, sys
 
 this_path = os.path.realpath(os.path.dirname(__file__))
@@ -57,46 +58,51 @@ def fill_db():
 		actions.bannersizes.add_banner_size(i * 100, i * 50)
 	banner_sizes = actions.bannersizes.get_banner_sizes()
 	
+	# Create list of cities
+	cities = [u'Москва', u'Санкт-Петербург', u'Харьков', u'Казань', u'Пермь',
+			  u'Саратов', u'Нижний Новгород', u'Ростов на Дону']
+	for city in cities:
+		actions.cities.add_city(city)
+	cities = actions.cities.get_cities()
+	cities_filter = ('', '0', '1')
+	
 	# Create and enable orders for customers
 	orders = []
-	genders = (None, True, False)
+	genders = ('', 'True', 'False')
 	for i in range(orders_per_customer):
 		for customer in customers:
+			kwargs = dict(
+				user_id=customer.id,
+				url='http://ya.ru',
+				balance=i*100 + customer.id*10 + 10,
+				cpa=i + customer.id + 1,
+				male=genders[i % 3],
+				min_age=i + customer.id + 1,
+				max_age=i + customer.id + 15,
+				city_filter_type=cities_filter[i % 3],
+				city=[random.choice(cities).id for _j in range(3)]
+			)
+			
 			if i % 3 == 0:
-				id = actions.orders.add_regular_order(
-						user_id=customer.id,
-						title='regular order {0}-{1}'.format(customer.id, i),
-						url='http://ya.ru',
-						balance=i*100 + customer.id*10 + 10,
-						cpa=i + customer.id + 1,
-						description='The best order from {0} number {1}'.format(customer.nickname, i),
-						image='aaaa',
-						male=genders[i % 3],
-						min_age=i + customer.id + 1,
-						max_age=i + customer.id + 15)
+				kwargs.update(
+					title='regular order {0}-{1}'.format(customer.id, i),
+					description='The best order from {0} number {1}'.format(customer.nickname, i),
+					image='aaaa'
+				)
+				id = actions.orders.add_regular_order(**kwargs)
 			elif i % 3 == 1:
-				id = actions.orders.add_banner_order(
-						user_id=customer.id,
-						title='banner order {0}-{1}'.format(customer.id, i),
-						url='http://ya.ru',
-						balance=i*100 + customer.id*10 + 10,
-						cpa=i + customer.id + 1,
-						image='aaaa',
-						banner_size=random.choice(banner_sizes).id,
-						male=genders[i % 3],
-						min_age=i + customer.id + 1,
-						max_age=i + customer.id + 15)
+				kwargs.update(
+					title='banner order {0}-{1}'.format(customer.id, i),
+					image='aaaa',
+					banner_size=random.choice(banner_sizes).id
+				)
+				id = actions.orders.add_banner_order(**kwargs)
 			else:
-				id = actions.orders.add_video_order(
-						user_id=customer.id,
-						title='video order {0}-{1}'.format(customer.id, i),
-						url='http://ya.ru',
-						balance=i*100 + customer.id*10 + 10,
-						cpa=i + customer.id + 1,
-						video_url='http://youtube.com',
-						male=genders[i % 3],
-						min_age=i + customer.id + 1,
-						max_age=i + customer.id + 15)
+				kwargs.update(
+					title='video order {0}-{1}'.format(customer.id, i),
+					video_url='http://youtube.com'
+				)
+				id = actions.orders.add_video_order(**kwargs)
 			actions.orders.enable_order(id)
 			orders.append(actions.orders.get_order(id))
 	

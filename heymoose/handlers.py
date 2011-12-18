@@ -1,7 +1,8 @@
 from flask import session, g
 from heymoose import app
 # Do not remove unused imports here!
-from heymoose.core.actions import users, orders, bannersizes, apps, actions, performers, shows, api
+from heymoose.core.actions import users, orders, bannersizes, apps, \
+actions, performers, shows, api, cities
 
 
 @app.before_request

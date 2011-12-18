@@ -87,7 +87,9 @@ class Order(BaseModel):
 	              'allow_negative_balance',
 	              'male',
 	              'min_age',
-	              'max_age']
+	              'max_age',
+	              'city_filter_type',
+	              'cities']
 	
 	def is_regular(self): return self.type == OrderTypes.REGULAR
 	def is_banner(self): return self.type == OrderTypes.BANNER

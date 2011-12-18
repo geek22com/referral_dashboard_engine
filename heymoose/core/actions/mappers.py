@@ -47,7 +47,9 @@ def order_from_xml(order_element):
 				# Targeting fields
 				male=get_value(order_element, 'male', bool),
 				min_age=get_value(order_element, 'min-age', int),
-				max_age=get_value(order_element, 'max-age', int))
+				max_age=get_value(order_element, 'max-age', int),
+				city_filter_type=get_value(order_element, 'city-filter-type'),
+				cities=map(city_from_xml, order_element.xpath('./cities/city')))
 	
 def banner_size_from_xml(size_element):
 	if size_element is None: return None

@@ -90,6 +90,12 @@
 	{% elif type == 'VIDEO' %}Видео{% else %}Неизвестно{% endif %}
 {% endmacro %}
 
+{% macro order_city_filter_type(type) %}
+	{% if type == 'INCLUSIVE' %}только указанные
+	{% elif type == 'EXCLUSIVE' %}все, кроме указанных
+	{% else %}не учитывать{% endif %}
+{% endmacro %}
+
 {% macro performer_gender(gender) %}
 {% if gender == True %}муж{% elif gender == False %}жен{% else %}неизв.{% endif %}
 {% endmacro %}

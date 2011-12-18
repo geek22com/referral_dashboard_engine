@@ -146,7 +146,7 @@ class OrderForm(Form):
 	ordercitiesfilter = SelectField(u'Фильтр по городам', default=u'', choices=[
 		(u'', u'не учитывать'),
 		(u'INCLUSIVE', u'только указанные'),
-		(u'EXCLUSIVE', u'все, кроме указанных')													
+		(u'EXCLUSIVE', u'все, кроме указанных')
 	])
 	ordercities = TextField(u'Список городов')
 	

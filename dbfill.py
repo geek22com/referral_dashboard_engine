@@ -64,7 +64,7 @@ def fill_db():
 	for city in cities:
 		actions.cities.add_city(city)
 	cities = actions.cities.get_cities()
-	cities_filter = ('', '0', '1')
+	cities_filter = ('', 'INCLUSIVE', 'EXCLUSIVE')
 	
 	# Create and enable orders for customers
 	orders = []

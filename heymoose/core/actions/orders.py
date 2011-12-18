@@ -46,6 +46,8 @@ def add_regular_order(user_id, title, url, balance, cpa, description, image, aut
 				male=male,
 				min_age=min_age,
 				max_age=max_age,
+				city_filter_type=city_filter_type,
+				city=city,
 				type=OrderTypes.REGULAR,
 				description=description,
 				image=image)
@@ -65,6 +67,8 @@ def add_banner_order(user_id, title, url, balance, cpa, image, banner_size, auto
 				male=male,
 				min_age=min_age,
 				max_age=max_age,
+				city_filter_type=city_filter_type,
+				city=city,
 				type=OrderTypes.BANNER,
 				image=image,
 				bannerSize=banner_size)
@@ -84,6 +88,8 @@ def add_video_order(user_id, title, url, balance, cpa, video_url, auto_approve=T
 				male=male,
 				min_age=min_age,
 				max_age=max_age,
+				city_filter_type=city_filter_type,
+				city=city,
 				type=OrderTypes.VIDEO,
 				videoUrl=video_url)
 

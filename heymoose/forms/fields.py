@@ -56,9 +56,6 @@ class BannerField(FileField):
 				self.height = self.data['height']
 				self.format = 'swf'
 				success = True
-				
-				print self.width
-				print self.height
 			except:
 				pass
 			finally:
@@ -68,16 +65,8 @@ class BannerField(FileField):
 			raise ValueError(u'Формат файла не подходит для отображения в виде баннера')
 		else:
 			self.data = None
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
+
+
+
+

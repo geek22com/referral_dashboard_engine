@@ -38,7 +38,7 @@ class URLWithParams(Regexp):
 		super(URLWithParams, self).__call__(form, field)
 		
 		
-class ImageFormat(object):
+class FileFormat(object):
 	def __init__(self, formats=('jpg', 'jpeg', 'gif', 'png'), message=None):
 		self.message = message
 		self.formats = formats
@@ -48,7 +48,7 @@ class ImageFormat(object):
 		if self.message is None:
 			self.message = field.gettext(u'Invalid image format')
 			
-		if field.data.format.lower() not in self.formats:
+		if field.format not in self.formats:
 			raise ValidationError(self.message)
 		
 		

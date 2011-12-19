@@ -157,21 +157,22 @@ class RegularOrderForm(OrderForm):
 	])
 	orderimage = myfields.ImageField(u'Выберите изображение', [
 		myvalidators.FileRequired(message=u'Выберите изображение на диске'),
-		myvalidators.ImageFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
+		myvalidators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
 	])
 
 class BannerOrderForm(OrderForm):
 	orderbannersize = SelectField(u'Размер баннера', coerce=int)
-	orderimage = myfields.ImageField(u'Выберите изображение', [
-		myvalidators.FileRequired(message=u'Выберите изображение на диске'),
-		myvalidators.ImageFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
+	orderimage = myfields.BannerField(u'Выберите файл', [
+		myvalidators.FileRequired(message=u'Выберите файл на диске'),
+		myvalidators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf'),
+			message=u'Выберите файл в формате JPG, GIF, PNG или SWF')
 	])
 	
 	def validate_orderimage(self, field):
 		if field.data is None: return
 		size = actions.bannersizes.get_banner_size(self.orderbannersize.data)
-		if field.data.size[0] != size.width or field.data.size[1] != size.height:
-			raise ValueError(u'Размер изображения должен совпадать с указанным')
+		if field.width != size.width or field.height != size.height:
+			raise ValueError(u'Размер баннера должен совпадать с указанным')
 		
 class VideoOrderForm(OrderForm):
 	ordervideourl = TextField(u'URL видеозаписи', [

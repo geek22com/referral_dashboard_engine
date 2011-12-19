@@ -190,6 +190,13 @@ class BannerSizeForm(Form):
 		validators.NumberRange(min=1, max=3000, message=u'Баннер может иметь высоту от 1 до 3000 пикселей')
 	])
 	
+
+class CityForm(Form):
+	id = HiddenField(default=u'0')
+	name = TextField(u'Название', [
+		validators.Required(message=u'Введите название города'),
+		validators.Length(min=2, max=100, message=(u'Название города должно содержать от 2 до 100 символов'))
+	])
 	
 class AppForm(Form):
 	apptitle = TextField(u'Название', [

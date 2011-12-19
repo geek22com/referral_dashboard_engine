@@ -34,12 +34,11 @@ def orders_stats():
 @bp.route('/orders/settings', methods=['GET', 'POST'])
 def orders_settings():
 	sizes = a.bannersizes.get_banner_sizes()
-	form = forms.BannerSizeForm(request.form)
-	if request.method == 'POST' and form.validate():
-		a.bannersizes.add_banner_size(form.width.data, form.height.data)
-		flash(u'Размер баннера успешно добавлен', 'success')
-		return redirect(url_for('.orders_settings'))
-	return render_template('admin/orders-settings.html', sizes=sizes, form=form)
+	cities = sorted(a.cities.get_cities(), key=lambda x: x.name)
+	banner_form = forms.BannerSizeForm()
+	city_form = forms.CityForm()
+	return render_template('admin/orders-settings.html', sizes=sizes, cities=cities,
+		banner_form=banner_form, city_form=city_form)
 
 @bp.route('/orders/<int:id>/')
 def orders_info(id):
@@ -231,6 +230,41 @@ def ajax_orders_enable(id):
 def ajax_orders_disable(id):
 	do_or_abort(a.orders.disable_order, id)
 	return 'OK'
+
+@bp.route('/orders/q/add-banner-size', methods=['POST'])
+def ajax_orders_add_banner_size():
+	form = forms.BannerSizeForm(request.form)
+	if form.validate():
+		id = a.bannersizes.add_banner_size(form.width.data, form.height.data)
+		return unicode(id)
+	return u'Размер введен неверно', 400
+
+@bp.route('/orders/q/city/add', methods=['POST'])
+def ajax_orders_city_add():
+	form = forms.CityForm(request.form)
+	if form.validate():
+		id = a.cities.add_city(form.name.data)
+		return unicode(id)
+	return u'Название введено неверно', 400
+
+@bp.route('/orders/q/city/update', methods=['POST'])
+def ajax_orders_city_update():
+	form = forms.CityForm(request.form)
+	if form.validate():
+		id = int(form.id.data) if form.id.data else 0
+		a.cities.update_city(id, form.name.data)
+		return 'OK'
+	return u'Название введено неверно', 400
+
+@bp.route('/orders/q/city/delete', methods=['POST'])
+def ajax_orders_city_delete():
+	form = forms.CityForm(request.form)
+	if form.validate():
+		id = int(form.id.data) if form.id.data else 0
+		do_or_abort(a.cities.delete_city(id))
+		return 'OK'
+	return u'Название введено неверно', 400
+		
 
 @bp.route('/orders/<int:id>/stats/q/ctr/')
 def ajax_orders_info_stats_ctr(id):

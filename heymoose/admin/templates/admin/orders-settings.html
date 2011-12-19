@@ -7,47 +7,120 @@
 
 {% set activetab = 'settings' %}
 
-{#
 {% block extrahead %}
 	{{ super() }}
 	<script type="text/javascript">
 		$(function() {
 			$('#form-size-add').ajaxForm({
 				success: function(data, textStatus) {
-					alert('success');
+					$('#list-banner-sizes').append(
+						$('<option>').text($('#width').val() + ' x ' + $('#height').val())
+					);
+					$('#width').val('');
+					$('#height').val('');
+					alert('Размер успешно добавлен');
 				},
 				error: function(xhr, textStatus) {
-					alert('Не удалось добавить размер. Ошибка ' + xhr.status + ': ' + xhr.responseText);
+					alert('Ошибка ' + xhr.status + ': ' + xhr.responseText);
+				}
+			});
+			
+			$('#list-cities').change(function() {
+				var $selected = $('#list-cities option:selected');
+				$('#id').val($selected.val());
+				$('#name').val($selected.text());
+			});
+			
+			$('#form-city input[type=submit]').click(function() {
+				var $form = $('#form-city');
+				var name = $(this).attr('name');
+				var action = '';
+				
+				if (name === 'update') action = "{{ url_for('.ajax_orders_city_update') }}";
+				else if (name === 'add') action = "{{ url_for('.ajax_orders_city_add') }}";
+				else if (name === 'delete') action = "{{ url_for('.ajax_orders_city_delete') }}";
+
+				$form.attr('action', action).attr('rel', name);
+				return true;
+			});
+			
+			$('#form-city').ajaxForm({
+				success: function(data, textStatus) {
+					var action = $('#form-city').attr('rel');
+					var id = $('#id').val();
+					var name = $('#name').val();
+					
+					if (action === 'add') {
+						$('#list-cities').append($('<option>').val(id).text(name));
+						$('#list-cities').val(id);
+						alert('Город успешно добавлен');
+					}
+					else if (action === 'update') {
+						$('#list-cities option[value=' + id + ']').text(name);
+						$('#list-cities').val(id);
+						alert('Название города успешно изменено');
+					}
+					else if (action === 'delete') {
+						$('#list-cities option[value=' + id + ']').remove();
+						$('#id').val(''); $('#name').val('');
+						alert('Город удален');
+					}
+				},
+				error: function(xhr, textStatus) {
+					alert('Ошибка ' + xhr.status + ': ' + xhr.responseText);
 				}
 			});
 		});
-	</script>	
-{% endblock %} #}
+	</script>
+{% endblock %}
 
 {% block tabcontent %}
 
 <h2>Размеры баннеров</h2>
 <div class="row">
-	<div class="span7">
-		<form>
+	<div class="span4">
+		<fieldset>
+			<select id="list-banner-sizes" multiple="multiple" size="7">
+				{% for size in sizes %}
+				<option>{{ size.width }} x {{ size.height }}</option>
+				{% endfor %}
+			</select>
+		</fieldset>
+	</div>
+	<div class="span10">
+		<form id="form-size-add" method="post" action="{{ url_for('.ajax_orders_add_banner_size') }}" class="validate">
 			<fieldset>
+				{{ macros.formfield(banner_form.width, class='span4') }}
+				{{ macros.formfield(banner_form.height, class='span4') }}
 				<div class="input">
-					<select multiple="multiple" size="7">
-						{% for size in sizes %}
-						<option>{{ size.width }} x {{ size.height }}</option>
-						{% endfor %}
-					</select>
+					<input class="btn primary" type="submit" value="Добавить размер"/>
 				</div>
 			</fieldset>
 		</form>
 	</div>
-	<div class="span7">
-		<form id="form-size-add" method="post" action="" class="validate">
+</div>
+<hr />
+
+<h2>Города</h2>
+<div class="row">
+	<div class="span4">
+		<fieldset>
+			<select id="list-cities" size="15" style="height: 240px;">
+				{% for city in cities %}
+				<option value="{{ city.id }}">{{ city.name }}</option>
+				{% endfor %}
+			</select>
+		</fieldset>
+	</div>
+	<div class="span10">
+		<form id="form-city" method="post" class="validate" />
 			<fieldset>
-				{{ macros.formfield(form.width, class='span4') }}
-				{{ macros.formfield(form.height, class='span4') }}
+				{{ city_form.id() }}
+				{{ macros.formfield(city_form.name, class='span5') }}
 				<div class="input">
-					<input class="btn primary" type="submit" value="Добавить размер"/>
+					<input class="btn primary" type="submit" name="update" value="Сохранить"/>
+					<input class="btn success" type="submit" name="add" value="Добавить"/>
+					<input class="btn danger" type="submit" name="delete" value="Удалить"/>
 				</div>
 			</fieldset>
 		</form>

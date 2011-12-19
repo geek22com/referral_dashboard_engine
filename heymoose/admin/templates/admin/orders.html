@@ -2,6 +2,31 @@
 
 {% set activetab = 'list' %}
 
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			var urlEnable = "{{ url_for('.ajax_orders_enable', id=0) }}";
+			var urlDisable = "{{ url_for('.ajax_orders_disable', id=0) }}";
+			
+			$('input.cbx-enabled').change(function(e) {
+				var $cbx = $(this);
+				var checked = $cbx.is(':checked');
+				var id = $cbx.attr('rel');
+				var url = (checked ? urlEnable : urlDisable).replace('0', id);
+				
+				$cbx.attr('disabled', 'disabled');
+				$.post(url).error(function(xhr) {
+					if (checked) $cbx.removeAttr('checked');
+					else $cbx.attr('checked', 'checked');
+					alert('Ошибка ' + xhr.status + ': ' + xhr.responseText);
+				});
+				$cbx.removeAttr('disabled');
+			});
+		})
+	</script>
+{% endblock %}
+
 {% block tabcontent %}
 
 {% if orders %}
@@ -32,7 +57,13 @@
 				<td>{{ macros.order_gender(order.male)}}</td>
 				<td>{{ macros.order_age(order.min_age, order.max_age) }}</td>
 				<td class="center">{{ order.creation_time|datetimeformat }}</td>
-				<td class="center">{{ macros.to_icon(not order.disabled) }}</td>
+				{#<td class="center">{{ macros.to_icon(not order.disabled) }}</td>#}
+				<td class="center">
+					<input type="checkbox" class="cbx-enabled"
+						{% if not order.disabled %}checked="checked"{% endif %}
+						rel="{{ order.id }}"
+					/>
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>

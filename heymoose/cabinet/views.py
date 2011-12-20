@@ -165,7 +165,7 @@ def orders_info_edit(id):
 		if city_filter_type != order.city_filter_type: kwargs.update(city_filter_type=city_filter_type)
 		
 		old_cities = frozenset([city.id for city in order.cities])
-		new_cities = frozenset([int(x) for x in form.ordercities.data.split(',')])
+		new_cities = frozenset([int(x) for x in form.ordercities.data.split(',')] if form.ordercities.data else [])
 		if new_cities != old_cities: kwargs.update(city=list(new_cities))
 				
 		if order.is_regular():

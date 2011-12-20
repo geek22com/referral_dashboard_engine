@@ -27,6 +27,7 @@
 {% block content %}
 <ul class="tabs">
 	<li id="tab-info"><a href="{{ url_for('.performers_info', id=performer.id) }}">Общее</a></li>
+	<li id="tab-actions"><a href="{{ url_for('.performers_info_actions', id=performer.id) }}">Действия</a></li>
 	<li id="tab-stats"><a href="{{ url_for('.performers_info_stats', id=performer.id) }}">Статистика</a></li>
 </ul>
 

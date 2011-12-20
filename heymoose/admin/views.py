@@ -219,6 +219,17 @@ def performers_info(id):
 	performer = do_or_abort(a.performers.get_performer, id, full=True)
 	return render_template('admin/performers-info.html', performer=performer)
 
+@bp.route('/performers/<int:id>/actions')
+def performers_info_actions(id):
+	performer = do_or_abort(a.performers.get_performer, id, full=True)
+	page = convert.to_int(request.args.get('page'), 1)
+	count = a.actions.get_actions_count(performerId=performer.id)
+	per_page = app.config.get('ADMIN_ACTIONS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	acts = do_or_abort(a.actions.get_actions, 
+		offset=offset, limit=limit, full=True, performerId=performer.id)
+	return render_template('admin/performers-info-actions.html', performer=performer, actions=acts, pages=pages)
+
 @bp.route('/performers/<int:id>/stats')
 def performers_info_stats(id):
 	performer = do_or_abort(a.performers.get_performer, id, full=True)

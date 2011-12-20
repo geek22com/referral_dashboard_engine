@@ -80,6 +80,16 @@ def apps_info(id):
 	app = do_or_abort(a.apps.get_app, id, full=True)
 	return render_template('admin/apps-info.html', app=app)
 
+@bp.route('/apps/<int:id>/actions')
+def apps_info_actions(id):
+	ap = do_or_abort(a.apps.get_app, id, full=True)
+	page = convert.to_int(request.args.get('page'), 1)
+	count = a.actions.get_actions_count(appId=ap.id)
+	per_page = app.config.get('ADMIN_ACTIONS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	acts = do_or_abort(a.actions.get_actions, offset=offset, limit=limit, full=True, appId=ap.id)
+	return render_template('admin/apps-info-actions.html', app=ap, actions=acts, pages=pages)
+
 @bp.route('/apps/<int:id>/stats')
 def apps_info_stats(id):
 	app = do_or_abort(a.apps.get_app, id, full=True)

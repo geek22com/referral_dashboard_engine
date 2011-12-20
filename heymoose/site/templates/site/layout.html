@@ -4,6 +4,13 @@
 <style type="text/css">
 	#login-modal { width: 440px; }
 </style>
+<script type="text/javascript">
+	$(function() {
+		$('#login-modal').bind('shown', function() {
+			$('#username').focus();
+		});
+	})
+</script>
 {% endblock %}
 	
 {% block prebody %}

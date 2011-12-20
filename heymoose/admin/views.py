@@ -45,6 +45,17 @@ def orders_info(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)
 	return render_template('admin/orders-info.html', order=order)
 
+@bp.route('/orders/<int:id>/actions')
+def orders_info_actions(id):
+	order = do_or_abort(a.orders.get_order, id, full=True)
+	page = convert.to_int(request.args.get('page'), 1)
+	count = a.actions.get_actions_count(offerId=order.offer_id)
+	per_page = app.config.get('ADMIN_ACTIONS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	acts = do_or_abort(a.actions.get_actions, 
+		offset=offset, limit=limit, full=True, offerId=order.offer_id)
+	return render_template('admin/orders-info-actions.html', order=order, actions=acts, pages=pages)
+
 @bp.route('/orders/<int:id>/stats')
 def orders_info_stats(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)

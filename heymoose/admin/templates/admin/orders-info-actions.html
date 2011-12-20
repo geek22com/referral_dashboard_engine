@@ -1,0 +1,52 @@
+{% extends "admin/orders-info-layout.html" %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Действия', url_for('.orders_info_actions', id=order.id)) }}
+{% endblock %}
+
+{% set activetab = 'actions' %}
+
+{% block extrahead %}
+	{{ super() }}
+{% endblock %}
+
+{% block tabcontent %}
+
+{% if actions %}
+	<table class="bordered-table zebra-striped">
+		<thead>
+			<tr>
+				<th class="header right">ИД</th>
+				<th class="header">Исполнитель</th>
+				<th class="header">Приложение</th>
+				<th class="header center">Окончено</th>
+				<th class="header center">Создано</th>
+				<th class="header center">Подтверждено</th>
+				<th class="header right">Попытки</th>
+				<th class="header center">Уд.</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for action in actions %}
+			<tr>
+				<td class="right"><a href="{{ url_for('.actions_info', id=action.id) }}">{{ action.id }}</a></td>
+				<td>{{ macros.performer_href(action.performer) }}</td>
+				<td>{{ macros.app_href(action.app) }}</td>
+				<td class="center">{{ macros.to_icon(action.done) }}</td>
+				<td class="center">{{ action.creation_time|datetimeformat }}</td>
+				<td class="center">{{ action.approve_time|datetimeformat }}</td>
+				<td class="right">{{ action.attempts }}</td>
+				<td class="center">{{ macros.deleted(action.deleted) }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{{ macros.paginate(pages, '.orders_info_actions', id=order.id) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> По заказу еще не было ни одного действия.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

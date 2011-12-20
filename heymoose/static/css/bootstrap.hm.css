@@ -80,9 +80,8 @@ dl.features dd {
 
 label.required { font-weight: bold; }
 
-div.scroll-area-x {
-	overflow-x: scroll;
-}
+div.scroll-area-x {	overflow-x: scroll; }
+div.autoscroll-area-x { overflow-x: auto; }
 
 div.ui-datepicker {
 	font-size: 12px;

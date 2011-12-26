@@ -165,14 +165,12 @@ def orders_info_edit(id):
 	
 	if order.is_regular():
 		form_args.update(orderdesc = order.description)
-		form = forms.RegularOrderForm(request.form, **form_args)
-		form.orderimage.validators = form.orderimage.validators[:]
-		del form.orderimage.validators[0] # Remove Required validator
+		form = forms.RegularOrderEditForm(request.form, **form_args)
 	elif order.is_banner():
 		form = forms.BannerOrderEditForm(request.form, **form_args)
 	elif order.is_video():
 		form_args.update(ordervideourl = order.video_url)
-		form = forms.VideoOrderForm(request.form, **form_args)
+		form = forms.VideoOrderEditForm(request.form, **form_args)
 		
 	form.orderbalance.validators = []
 		

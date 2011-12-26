@@ -181,11 +181,23 @@ class VideoOrderForm(OrderForm):
 	])
 	
 	
+class RegularOrderEditForm(RegularOrderForm):
+	def __init__(self, *args, **kwargs):
+		super(RegularOrderEditForm, self).__init__(*args, **kwargs)
+		self.orderimage.validators = self.orderimage.validators[:]
+		for validator in self.orderimage.validators:
+			if isinstance(validator, myvalidators.FileRequired):
+				self.orderimage.validators.remove(validator)
+		self.orderimage.flags.required = False
+
 class BannerOrderEditForm(BannerOrderForm):
 	def __init__(self, *args, **kwargs):
 		super(BannerOrderEditForm, self).__init__(*args, **kwargs)
 		del self.orderbannersize
 		del self.orderimage
+		
+class VideoOrderEditForm(VideoOrderForm):
+	pass
 	
 	
 class BannerForm(Form):

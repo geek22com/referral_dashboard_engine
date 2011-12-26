@@ -169,14 +169,7 @@ def orders_info_edit(id):
 		form.orderimage.validators = form.orderimage.validators[:]
 		del form.orderimage.validators[0] # Remove Required validator
 	elif order.is_banner():
-		form_args.update(orderbannersize = order.banner_size.id)
-		form = forms.BannerOrderForm(request.form, **form_args)
-		form.orderimage.validators = form.orderimage.validators[:]
-		del form.orderimage.validators[0] # Remove Required validator
-		
-		sizes = actions.bannersizes.get_banner_sizes()
-		choices = [(s.id, '{0} x {1}'.format(s.width, s.height)) for s in sizes]
-		form.orderbannersize.choices = choices
+		form = forms.BannerOrderEditForm(request.form, **form_args)
 	elif order.is_video():
 		form_args.update(ordervideourl = order.video_url)
 		form = forms.VideoOrderForm(request.form, **form_args)
@@ -207,9 +200,7 @@ def orders_info_edit(id):
 			if form.orderdesc.data != order.description: kwargs.update(description=form.orderdesc.data)
 			if form.orderimage.data is not None: kwargs.update(image=base64.encodestring(request.files['orderimage'].stream.read()))
 		elif order.is_banner():
-			if form.orderimage.data is not None:
-				kwargs.update(image=base64.encodestring(request.files['orderimage'].stream.read()))
-				if form.orderbannersize.data != order.banner_size.id: kwargs.update(banner_size=form.orderbannersize.data)
+			pass
 		elif order.is_video():
 			if form.ordervideourl.data != order.video_url: kwargs.update(video_url=form.ordervideourl.data)
 		

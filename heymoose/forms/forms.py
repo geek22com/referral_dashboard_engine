@@ -181,6 +181,13 @@ class VideoOrderForm(OrderForm):
 	])
 	
 	
+class BannerOrderEditForm(BannerOrderForm):
+	def __init__(self, *args, **kwargs):
+		super(BannerOrderEditForm, self).__init__(*args, **kwargs)
+		del self.orderbannersize
+		del self.orderimage
+	
+	
 class BannerForm(Form):
 	size = SelectField(u'Размер баннера', coerce=int)
 	image = myfields.BannerField(u'Выберите файл', [

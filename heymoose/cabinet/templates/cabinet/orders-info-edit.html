@@ -47,11 +47,6 @@
 			{{ macros.formfield(form.orderimage) }}
 		</fieldset>
 		{% elif order.is_banner() %}
-		<fieldset>
-			<legend>Баннер</legend>
-			{{ macros.formfield(form.orderbannersize, class='span4') }}
-			{{ macros.formfield(form.orderimage) }}
-		</fieldset>
 		{% elif order.is_video() %}
 		<fieldset>
 			<legend>Видеозапись</legend>

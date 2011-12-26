@@ -81,19 +81,19 @@ def orders_new():
 					description=form.orderdesc.data,
 					image=base64.encodestring(request.files['orderimage'].stream.read())
 				)
-				do_or_abort(actions.orders.add_regular_order, **kwargs)
+				id = do_or_abort(actions.orders.add_regular_order, **kwargs)
 			elif ordertype == OrderTypes.BANNER:
 				kwargs.update(
 					banner_size=form.orderbannersize.data,
 					image=base64.encodestring(request.files['orderimage'].stream.read())
 				)
-				do_or_abort(actions.orders.add_banner_order, **kwargs)
+				id = do_or_abort(actions.orders.add_banner_order, **kwargs)
 			elif ordertype == OrderTypes.VIDEO:
 				kwargs.update(video_url=form.ordervideourl.data) 
-				do_or_abort(actions.orders.add_video_order, **kwargs)
+				id = do_or_abort(actions.orders.add_video_order, **kwargs)
 
 			flash(u'Заказ успешно создан.', 'success')
-			return redirect(url_for('.orders'))
+			return redirect(url_for('.orders_info', id=id))
 	
 	return render_template('cabinet/orders-new.html', 
 		rform=rform, bform=bform, vform=vform, cities=cities,

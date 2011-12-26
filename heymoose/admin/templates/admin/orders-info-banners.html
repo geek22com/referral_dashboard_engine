@@ -1,0 +1,27 @@
+{% extends "admin/orders-info-layout.html" %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Баннеры', url_for('.orders_info_banners', id=order.id)) }}
+{% endblock %}
+
+{% set activetab = 'banners' %}
+
+{% block tabcontent %}
+
+{% if order.banners %}
+	{% for banner in order.banners %}
+	<table id="table-banner-{{ banner.id }}" class="key-value">
+		<tbody>
+			<tr>
+				<th>Размер</th>
+				<td><p>{{ banner.size.width }} x {{ banner.size.height }}</p></td>
+			</tr>
+			<tr><td colspan="2"><img src="data:image/png;base64,{{ banner.image -}}" alt="изображение" class="fit-width" /></td></tr>
+		</tbody>
+	</table>
+	{% endfor %}
+{% else %}
+{% endif %}
+
+{% endblock %}

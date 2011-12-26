@@ -45,6 +45,12 @@ def orders_info(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)
 	return render_template('admin/orders-info.html', order=order)
 
+@bp.route('/orders/<int:id>/banners')
+def orders_info_banners(id):
+	order = do_or_abort(a.orders.get_order, id, full=True)
+	if not order.is_banner(): abort(404)
+	return render_template('admin/orders-info-banners.html', order=order)
+
 @bp.route('/orders/<int:id>/actions')
 def orders_info_actions(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)

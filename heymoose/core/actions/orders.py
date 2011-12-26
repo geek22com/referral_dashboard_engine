@@ -122,3 +122,16 @@ def get_orders(**kwargs):
 def get_orders_count():
 	path = "{0}/{1}".format(resource_path, "count")
 	return count_from_xml(get(path=path))
+
+
+def add_order_banner(order_id, banner_size, image):
+	path = "{0}/{1}/banners".format(resource_path, order_id)
+	params = dict(bannerSize=banner_size, image=image)
+	post(path=path, params_dict=params)
+
+def delete_order_banner(order_id, banner_id):
+	path = "{0}/{1}/banners/{2}".format(resource_path, order_id, banner_id)
+	delete(path=path)
+
+
+

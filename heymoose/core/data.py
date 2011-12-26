@@ -81,7 +81,7 @@ class Order(BaseModel):
 	              'video_url',
 	              'description',
 	              'image',
-	              'banner_size',
+	              'banners',
 	              'auto_approve',
 	              'reentrant',
 	              'allow_negative_balance',
@@ -97,9 +97,11 @@ class Order(BaseModel):
 
 
 class BannerSize(BaseModel):
-	attributes = ['id',
-				  'width',
-				  'height']
+	attributes = ['id', 'width', 'height']
+	
+	
+class Banner(BaseModel):
+	attributes = ['id', 'size', 'image']
 
 
 class City(BaseModel):

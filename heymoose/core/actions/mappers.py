@@ -1,5 +1,5 @@
 from heymoose.core.actions.base import get_value, get_attr, get_child
-from heymoose.core.data import User, App, Order, BannerSize, City, Action, Performer, OrderShow
+from heymoose.core.data import User, App, Order, BannerSize, Banner, City, Action, Performer, OrderShow
 from heymoose.utils.convert import datetime_from_api
 
 def role_from_xml(role_element):
@@ -37,11 +37,11 @@ def order_from_xml(order_element):
 				auto_approve=get_value(order_element, 'auto-approve', bool),
 				reentrant=get_value(order_element, 'reentrant', bool),
 				type=get_value(order_element, 'type'),
-				image=get_value(order_element, 'image'), # For regular and banner offers
 				# Regular offer fields
 				description=get_value(order_element, 'description'),
+				image=get_value(order_element, 'image'),
 				# Banner offer fields
-				banner_size=banner_size_from_xml(get_child(order_element, 'banner-size')),
+				banners=map(banner_from_xml, order_element.xpath('./banners/banner')),
 				# Video offer fields
 				video_url=get_value(order_element, 'video-url'),
 				# Targeting fields
@@ -56,6 +56,12 @@ def banner_size_from_xml(size_element):
 	return BannerSize(id=get_attr(size_element, 'id', int),
 				width=get_value(size_element, 'width', int),
 				height=get_value(size_element, 'height', int))
+	
+def banner_from_xml(banner_element):
+	if banner_element is None: return None
+	return Banner(id=get_attr(banner_element, 'id', int),
+				size=banner_size_from_xml(get_child(banner_element, 'banner-size')),
+				image=get_value(banner_element, 'image'))
 	
 def city_from_xml(city_element):
 	if city_element is None: return None

@@ -94,7 +94,7 @@ def fill_db():
 				kwargs.update(
 					title='banner order {0}-{1}'.format(customer.id, i),
 					image='aaaa',
-					banner_size=random.choice(banner_sizes).id
+					banner_size=banner_sizes[0].id
 				)
 				id = actions.orders.add_banner_order(**kwargs)
 			else:
@@ -105,6 +105,13 @@ def fill_db():
 				id = actions.orders.add_video_order(**kwargs)
 			actions.orders.enable_order(id)
 			orders.append(actions.orders.get_order(id))
+			
+	# Create additional banners for banner orders
+	for order in orders:
+		if order.is_banner():
+			sizes = random.sample(banner_sizes[1:], 3)
+			for i in range(3):
+				actions.orders.add_order_banner(order.id, sizes[i].id, 'aaaa{0}'.format(i))
 	
 	platforms = ('VKONTAKTE', 'FACEBOOK', 'ODNOKLASSNIKI')
 			

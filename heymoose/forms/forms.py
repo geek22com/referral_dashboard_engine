@@ -181,6 +181,21 @@ class VideoOrderForm(OrderForm):
 	])
 	
 	
+class BannerForm(Form):
+	size = SelectField(u'Размер баннера', coerce=int)
+	image = myfields.BannerField(u'Выберите файл', [
+		myvalidators.FileRequired(message=u'Выберите файл на диске'),
+		myvalidators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf'),
+			message=u'Выберите файл в формате JPG, GIF, PNG или SWF')
+	])
+	
+	def validate_image(self, field):
+		if field.data is None: return
+		size = actions.bannersizes.get_banner_size(self.size.data)
+		if field.width != size.width or field.height != size.height:
+			raise ValueError(u'Размер баннера должен совпадать с указанным')
+	
+	
 class BannerSizeForm(Form):
 	width = IntegerField(u'Ширина', [
 		validators.Required(message=u'Укажите ширину баннера'),

@@ -35,7 +35,7 @@ def orders():
 @customer_only
 def orders_new():
 	sizes = actions.bannersizes.get_banner_sizes()
-	choices = ((s.id, '{0} x {1}'.format(s.width, s.height)) for s in sizes)
+	choices = [(s.id, '{0} x {1}'.format(s.width, s.height)) for s in sizes]
 	cities = [dict(id=city.id, name=city.name) for city in actions.cities.get_cities()]
 	
 	ordertype = 'REGULAR'
@@ -106,6 +106,41 @@ def orders_info(id):
 	if order.user.id != g.user.id: abort(404)
 	return render_template('cabinet/orders-info.html', order=order)
 
+@bp.route('/orders/<int:id>/banners', methods=['GET', 'POST'])
+@customer_only
+def orders_info_banners(id):
+	order = do_or_abort(actions.orders.get_order, id, full=True)
+	if order.user.id != g.user.id or not order.is_banner(): abort(404)
+	
+	order_sizes = [banner.size.id for banner in order.banners]
+	all_sizes = actions.bannersizes.get_banner_sizes()
+	size_choices = [(s.id, '{0} x {1}'.format(s.width, s.height)) for s in all_sizes if s.id not in order_sizes]
+	
+	if size_choices:
+		form = forms.BannerForm(request.form)
+		form.size.choices = size_choices
+		if request.method == 'POST' and form.validate():
+			actions.orders.add_order_banner(order.id, form.size.data,
+				base64.encodestring(request.files['image'].stream.read()))
+			flash(u'Баннер успешно загружен', 'success')
+			return redirect(url_for('.orders_info_banners', id=order.id))
+	else:
+		form = None
+	
+	return render_template('cabinet/orders-info-banners.html', order=order, form=form)
+
+@bp.route('/orders/<int:id>/banners/<int:bid>/delete', methods = ['POST'])
+@customer_only
+def orders_info_banners_delete(id, bid):
+	order = do_or_abort(actions.orders.get_order, id, full=True)
+	if order.user.id != g.user.id or not order.is_banner(): abort(404)
+	if bid not in [banner.id for banner in order.banners]: abort(404)
+	if len(order.banners) <= 1: abort(403)
+	
+	actions.orders.delete_order_banner(id, bid)
+	flash(u'Баннер удален', 'success')
+	return redirect(url_for('.orders_info_banners', id=order.id))
+
 @bp.route('/orders/<int:id>/edit', methods=['GET', 'POST'])
 @customer_only
 def orders_info_edit(id):
@@ -140,7 +175,7 @@ def orders_info_edit(id):
 		del form.orderimage.validators[0] # Remove Required validator
 		
 		sizes = actions.bannersizes.get_banner_sizes()
-		choices = ((s.id, '{0} x {1}'.format(s.width, s.height)) for s in sizes)
+		choices = [(s.id, '{0} x {1}'.format(s.width, s.height)) for s in sizes]
 		form.orderbannersize.choices = choices
 	elif order.is_video():
 		form_args.update(ordervideourl = order.video_url)

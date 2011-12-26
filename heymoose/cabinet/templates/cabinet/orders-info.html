@@ -26,16 +26,6 @@
 </table>
 {% endif %}
 
-{% if order.is_banner() %}
-<h2>Баннер</h2>
-<table class="key-value">
-	<tbody>
-		<tr><th>Размер</th><td><p>{{ order.banner_size.width }} x {{ order.banner_size.height }}</p></td></tr>
-		<tr><td colspan="2"><img src="data:image/png;base64,{{ order.image -}}" alt="изображение" class="fit-width" /></td></tr>
-	</tbody>
-</table>
-{% endif %}
-
 {% if order.is_video() %}
 <h2>Видеозапись</h2>
 <table class="key-value">

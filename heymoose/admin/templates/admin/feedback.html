@@ -14,14 +14,14 @@
 {% endblock %}
 
 {% block content %}
-
-<div class="form-container clearfix">
-	<form id="form-mark-read" method="post" action ="">
-		<input type="submit" class="btn primary" value="Отметить все как прочитанные" />
-	</form>
-</div>
 	
 {% if contacts %}
+	<div class="form-container clearfix">
+		<form id="form-mark-read" method="post" action ="">
+			<input type="submit" class="btn primary" value="Отметить все как прочитанные" />
+		</form>
+	</div>
+
 	{% for contact in contacts %}
 	<table class="bordered-table collapse">
 		<tbody>

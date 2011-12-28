@@ -21,8 +21,7 @@ setup(
 	version = "1.0",
 	author = "HeyMoose",
 	author_email = "heymoose@heymoose.com",
-	description = ("Heymoose frontened "
-	                               "Using heymoose backend flask mongodb uwsgi"),
+	description = ("Heymoose frontened. Using heymoose backend flask mongodb uwsgi"),
 	license = "Commercial",
 	keywords = "commercial",
 	url = "https://github.com/kshilov/frontend",
@@ -30,7 +29,7 @@ setup(
 	include_package_data = True,
 	package_data = find_package_data('./heymoose', ('.html', '.css', '.js', '.png', '.gif', '.jpg')),
 	install_requires = ['flask>=0.7', 'wtforms', 'flask-mongoalchemy', 'uwsgi', 
-						'lxml', 'restkit', 'amqplib', 'python-dateutil==1.5', 'PIL'],
+						'lxml', 'restkit', 'amqplib', 'python-dateutil==1.5', 'PIL', 'PyCrypto'],
 	long_description=read('README'),
 )
 

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from heymoose import app
+from heymoose.utils import gen
 import heymoose.core.actions.roles as roles
 
 class MetaModel(type):
@@ -50,6 +52,13 @@ class User(BaseModel):
 
 	def is_somebody(self):
 		return len(self.roles) > 0
+	
+	def get_refcode(self):
+		key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
+		salt = 'hmrefsalt'
+		data = '{0}${1}'.format(self.id, salt)
+		data = '{0:X<16}'.format(data)
+		return gen.aes_base64_encrypt(key, data)
 	
 	
 class OrderTypes:

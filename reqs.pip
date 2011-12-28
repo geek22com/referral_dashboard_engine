@@ -7,3 +7,4 @@ restkit
 amqplib
 python-dateutil==1.5
 PIL
+PyCrypto

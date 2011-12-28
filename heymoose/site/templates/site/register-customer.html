@@ -1,0 +1,42 @@
+{% extends "site/layout.html" %}
+
+{% block title %}Регистрация рекламодателя{% endblock %}
+
+{% set activemenu = 'register' %}
+
+{% block pageheader %}
+<h1>{{ self.title() }}</h1>
+{% endblock %}
+
+{% block content %}
+
+{% if form %}
+	<p>
+		В данный момент регистрация для рекламодателей доступна только по партнерской
+		программе. Только что или ранее вы прошли по реферальной ссылке, что дает вам
+		возможность зарегистрироваться как рекламодатель. Пройдя процедуру регистрации,
+		вы становитесь участником нашей партнерской программы.
+	</p>
+	
+	<div class="form-container clearfix">
+		<form id="form-register" method="post" action="" class="widelabels validate">
+			<fieldset>
+				{{ macros.formfield(form.username, class='span10') }}
+				{{ macros.formfield(form.email, class='span10', type='email') }}
+				{{ macros.formfield(form.password, class='span10') }}
+				{{ macros.formfield(form.password2, class='span10') }}
+			</fieldset>
+			<div class="actions">
+				<input class="btn primary" type="submit" value="Зарегистрироваться"/>
+			</div>
+		</form>
+	</div>
+{% else %}
+	<p>
+		В данный момент регистрация для рекламодателей доступна только по партнерской
+		программе. Если вы хотите разместить заказ в нашей системе, пожалуйста,
+		<a href="{{ url_for('.contacts') }}">свяжитесь с нами</a>.
+	</p>
+{% endif %}
+
+{% endblock %}

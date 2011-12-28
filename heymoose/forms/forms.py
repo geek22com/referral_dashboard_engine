@@ -82,9 +82,6 @@ class DeveloperRegisterForm(RegisterForm):
 class CustomerRegisterForm(RegisterForm):
 	pass
 
-class RefCustomerRegisterForm(CustomerRegisterForm):
-	ref = HiddenField()
-
 
 class AdminPasswordChangeForm(Form):
 	password = PasswordField(u'Новый пароль', [

@@ -39,22 +39,22 @@ def orders_new():
 	cities = [dict(id=city.id, name=city.name) for city in actions.cities.get_cities()]
 	
 	ordertype = 'REGULAR'
-	rform = forms.RegularOrderForm()
-	bform = forms.BannerOrderForm()
-	vform = forms.VideoOrderForm()
+	rform = forms.RegularOrderForm(referral=g.user.referrer)
+	bform = forms.BannerOrderForm(referral=g.user.referrer)
+	vform = forms.VideoOrderForm(referral=g.user.referrer)
 	bform.orderbannersize.choices = choices
 	
 	if request.method == 'POST':
 		ordertype = request.form['ordertype']
 		if ordertype == OrderTypes.REGULAR:
-			form = forms.RegularOrderForm(request.form)
+			form = forms.RegularOrderForm(request.form, referral=g.user.referrer)
 			rform = form
 		elif ordertype == OrderTypes.BANNER:
-			form = forms.BannerOrderForm(request.form)
+			form = forms.BannerOrderForm(request.form, referral=g.user.referrer)
 			form.orderbannersize.choices = choices
 			bform = form
 		elif ordertype == OrderTypes.VIDEO:
-			form = forms.VideoOrderForm(request.form)
+			form = forms.VideoOrderForm(request.form, referral=g.user.referrer)
 			vform = form
 		else:
 			abort(400)
@@ -66,8 +66,8 @@ def orders_new():
 				url=form.orderurl.data,
 				balance=form.orderbalance.data,
 				cpa=form.ordercpa.data,
-				auto_approve=form.orderautoapprove.data,
 				allow_negative_balance=form.orderallownegativebalance.data,
+				auto_approve=form.orderautoapprove.data,
 				reentrant=form.orderreentrant.data,
 				male=form.ordermale.data,
 				min_age=form.orderminage.data,
@@ -150,6 +150,7 @@ def orders_info_edit(id):
 	order_cities = [dict(id=city.id, name=city.name) for city in order.cities] if order.cities else []
 	
 	form_args = dict(
+		referral = g.user.referrer,
 		ordername = order.title,
 		orderurl = order.url,
 		orderbalance = order.balance,
@@ -172,8 +173,6 @@ def orders_info_edit(id):
 		form_args.update(ordervideourl = order.video_url)
 		form = forms.VideoOrderEditForm(request.form, **form_args)
 		
-	form.orderbalance.validators = []
-		
 	if request.method == 'POST' and form.validate():
 		kwargs = dict()
 		male = convert.to_bool(form.ordermale.data)
@@ -182,9 +181,9 @@ def orders_info_edit(id):
 		if form.ordername.data != order.title: kwargs.update(title=form.ordername.data)
 		if form.orderurl.data != order.url: kwargs.update(url=form.orderurl.data)
 		#if form.ordercpa.data != order.cpa: kwargs.update(cpa=form.ordercpa.data)
+		if form.orderallownegativebalance.data != order.allow_negative_balance: kwargs.update(allow_negative_balance=form.orderallownegativebalance.data)
 		if form.orderautoapprove.data != order.auto_approve: kwargs.update(auto_approve=form.orderautoapprove.data)
 		if form.orderreentrant.data != order.reentrant: kwargs.update(reentrant=form.orderreentrant.data)
-		if form.orderallownegativebalance.data != order.allow_negative_balance: kwargs.update(allow_negative_balance=form.orderallownegativebalance.data)
 		if male != order.male: kwargs.update(male=male)
 		if form.orderminage.data != order.min_age: kwargs.update(min_age=form.orderminage.data)
 		if form.ordermaxage.data != order.max_age: kwargs.update(max_age=form.ordermaxage.data)

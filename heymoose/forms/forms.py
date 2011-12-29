@@ -120,6 +120,13 @@ class ContactForm(CaptchaForm):
 
 
 class OrderForm(Form):
+	def __init__(self, *args, **kwargs):
+		referral = kwargs.pop('referral', False)
+		super(OrderForm, self).__init__(*args, **kwargs)
+		if referral:
+			self.ordercpa.data = 5
+			self.orderallownegativebalance.data = False
+	
 	ordername = TextField(u'Название', [
 		validators.Length(min=1, max=50, message=(u'Название заказа должно быть от 1 до 50 символов')),
 		validators.Required(message = (u'Введите название заказа'))
@@ -133,7 +140,7 @@ class OrderForm(Form):
 		validators.NumberRange(min=1, max=3000000, message=(u'Такой баланс недопустим'))
 	])
 	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message = (u'Введите CPA'))])
-	orderautoapprove = BooleanField(u'Автоподтверждение', default=False)
+	orderautoapprove = BooleanField(u'Автоподтверждение', default=True)
 	orderreentrant = BooleanField(u'Многократное прохождение', default=False)
 	orderallownegativebalance = BooleanField(u'Разрешить кредит', default=True)
 	ordermale = SelectField(u'Пол', choices=[(u'True', u'мужской'), (u'False', u'женский'), (u'', u'любой')], default='')
@@ -184,6 +191,7 @@ class VideoOrderForm(OrderForm):
 class RegularOrderEditForm(RegularOrderForm):
 	def __init__(self, *args, **kwargs):
 		super(RegularOrderEditForm, self).__init__(*args, **kwargs)
+		del self.orderbalance
 		self.orderimage.validators = self.orderimage.validators[:]
 		for validator in self.orderimage.validators:
 			if isinstance(validator, myvalidators.FileRequired):
@@ -193,11 +201,14 @@ class RegularOrderEditForm(RegularOrderForm):
 class BannerOrderEditForm(BannerOrderForm):
 	def __init__(self, *args, **kwargs):
 		super(BannerOrderEditForm, self).__init__(*args, **kwargs)
+		del self.orderbalance
 		del self.orderbannersize
 		del self.orderimage
 		
 class VideoOrderEditForm(VideoOrderForm):
-	pass
+	def __init__(self, *args, **kwargs):
+		super(VideoOrderEditForm, self).__init__(*args, **kwargs)
+		del self.orderbalance
 	
 	
 class BannerForm(Form):

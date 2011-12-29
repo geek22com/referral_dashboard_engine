@@ -6,6 +6,11 @@ def role_from_xml(role_element):
 	if role_element is None: return None
 	return role_element.text
 
+def referral_from_xml(referral_element):
+	if referral_element is None: return None
+	return referral_element.text
+
+
 def app_from_xml(app_element):
 	if app_element is None: return None
 	return App(id=get_attr(app_element, 'id', int),
@@ -77,6 +82,7 @@ def user_from_xml(user_element):
 				apps=map(app_from_xml, user_element.xpath('./apps/app')),
 				orders=map(order_from_xml, user_element.xpath('./orders/order')),
 				roles=map(role_from_xml, user_element.xpath('./roles/role')),
+				referrals=map(referral_from_xml, user_element.xpath('./referrals/referral')),
 				customer_balance=get_value(user_element, 'customer-account', float),
                 customer_secret=get_value(user_element, 'customer-secret'),
 				developer_balance=get_value(user_element, 'developer-account', float))

@@ -29,6 +29,16 @@
 		{% with ref = url_for('site.register', ref=user.get_refcode()) %}
 		<tr><th>Реферальная ссылка</th><td><a href="{{ ref }}">http://heymoose.com{{ ref }}</a></td></tr>
 		{% endwith %}
+		<tr>
+			<th>Рефералы</th>
+			<td>
+				{% for referral in user.referrals %}
+				<p><a href="mailto:{{ referral }}">{{ referral }}</a></p>
+				{% else %}
+				(нет)
+				{% endfor %}
+			</td>
+		</tr>
 	</tbody>
 </table>
 {% endif %}

@@ -39,7 +39,8 @@ class User(BaseModel):
                   'customer_secret',
 	              'developer_balance',
 	              'apps',
-	              'roles']
+	              'roles',
+	              'referrals']
 
 	def is_developer(self):
 		return roles.DEVELOPER in self.roles

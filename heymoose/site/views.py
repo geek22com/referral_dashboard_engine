@@ -78,22 +78,21 @@ def register_customer():
 	ref = session.get('ref', '')
 	key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
 	
-	ref_is_correct = True
 	try:
 		id, _salt = aes_base64_decrypt(key, ref).split('$')
 		referrer = users.get_user_by_id(int(id))
 		if not referrer or not referrer.is_customer():
 			raise ValueError()
 	except:
-		ref_is_correct = False
-	
-	if ref_is_correct:
+		form = None
+	else:
 		form = forms.CustomerRegisterForm(request.form)
 		if request.method == 'POST' and form.validate():
 			do_or_abort(users.add_user,
 				email=form.email.data,
 				passwordHash=generate_password_hash(form.password.data),
-				nickname=form.username.data)
+				nickname=form.username.data,
+				referrer_id=referrer.id)
 			user = do_or_abort(users.get_user_by_email, form.email.data, full=True)
 			if user:
 				users.add_user_role(user.id, roles.CUSTOMER)
@@ -102,8 +101,6 @@ def register_customer():
 				flash(u'Вы успешно зарегистрированы', 'success')
 				return redirect(url_for('cabinet.index'))
 			flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
-	else:
-		form = None
 	
 	return render_template('site/register-customer.html', form=form)
 

@@ -19,11 +19,10 @@ def become_developer(user_id):
 def become_customer(user_id):
 	return add_user_role(user_id, roles.CUSTOMER)
 
-def add_user(email, passwordHash, nickname):
-	post(path=resource_path,
-	     params_dict=dict(email=email,
-	                      passwordHash=passwordHash,
-	                      nickname=nickname))
+def add_user(email, passwordHash, nickname, referrer_id=None):
+	params = dict(email=email, passwordHash=passwordHash, nickname=nickname)
+	if referrer_id: params.update(referrer=referrer_id)
+	post(path=resource_path, params_dict=params)
 
 def get_user_by_id(id, **kwargs):
 	path = "{0}/{1}".format(resource_path, id)

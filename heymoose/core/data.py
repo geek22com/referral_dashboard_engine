@@ -40,6 +40,7 @@ class User(BaseModel):
 	              'developer_balance',
 	              'apps',
 	              'roles',
+	              'referrer',
 	              'referrals']
 
 	def is_developer(self):

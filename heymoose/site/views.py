@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, redirect, url_for, request, flash, session, abort
+from flask import render_template, g, redirect, url_for, request, flash, session
 from heymoose import app
 from heymoose.site import blueprint as bp
 from heymoose.forms import forms
 from heymoose.utils.shortcuts import do_or_abort
-from heymoose.utils.gen import generate_password_hash, check_password_hash, aes_base64_decrypt
+from heymoose.utils.gen import generate_password_hash, check_password_hash, aes_base16_decrypt
 from heymoose.core.actions import users, roles
 from heymoose.db.models import Contact
 from heymoose.db.actions import invites
@@ -79,7 +79,7 @@ def register_customer():
 	key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
 	
 	try:
-		id, _salt = aes_base64_decrypt(key, ref).split('$')
+		id, _salt = aes_base16_decrypt(key, ref).split('$')
 		referrer = users.get_user_by_id(int(id))
 		if not referrer or not referrer.is_customer():
 			raise ValueError()

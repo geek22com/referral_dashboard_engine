@@ -6,14 +6,28 @@ def generate_uid(size, chars=string.ascii_letters+string.digits):
 	return ''.join(random.choice(chars) for _x in range(size))
 
 
-def aes_base64_encrypt(key, data):
+def aes_encrypt(key, data):
 	obj = AES.new(key, AES.MODE_ECB)
-	bytes = obj.encrypt(str(data))
-	#return base64.urlsafe_b64encode(bytes)
-	return base64.b16encode(bytes).lower()
+	return obj.encrypt(str(data))
 
-def aes_base64_decrypt(key, data):
+def aes_decrypt(key, data):
 	obj = AES.new(key, AES.MODE_ECB)
-	#bytes = base64.urlsafe_b64decode(str(data))
-	bytes = base64.b16decode(str(data), True)
-	return obj.decrypt(bytes)
+	return obj.decrypt(data)
+
+
+def aes_base64_encrypt(key, data, urlsafe=False):
+	bytes = aes_encrypt(key, data)
+	return base64.urlsafe_b64encode(bytes) if urlsafe else base64.b64encode(bytes)
+
+def aes_base64_decrypt(key, data, urlsafe=False):
+	bytes = base64.urlsafe_b64decode(str(data)) if urlsafe else base64.b64decode(str(data))
+	return aes_decrypt(key, bytes)
+	
+	
+def aes_base16_encrypt(key, data):
+	bytes = aes_encrypt(key, data)
+	return base64.b16encode(bytes)
+
+def aes_base16_decrypt(key, data, casefold=True):
+	bytes = base64.b16decode(str(data), casefold)
+	return aes_decrypt(key, bytes)

@@ -60,7 +60,7 @@ class User(BaseModel):
 		salt = 'hmrefsalt'
 		data = '{0}${1}'.format(self.id, salt)
 		data = '{0:X<16}'.format(data)
-		return gen.aes_base64_encrypt(key, data)
+		return gen.aes_base16_encrypt(key, data).lower()
 	
 	
 class OrderTypes:

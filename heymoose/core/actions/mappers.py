@@ -88,6 +88,7 @@ def user_from_xml(user_element):
 				roles=map(role_from_xml, user_element.xpath('./roles/role')),
 				referrer=get_value(user_element, 'referrer', int),
 				referrals=map(referral_from_xml, user_element.xpath('./referrals/referral')),
+				revenue=get_value(user_element, 'revenue'),
 				customer_balance=get_value(user_element, 'customer-account', float),
                 customer_secret=get_value(user_element, 'customer-secret'),
 				developer_balance=get_value(user_element, 'developer-account', float))

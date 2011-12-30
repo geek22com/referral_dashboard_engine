@@ -31,6 +31,30 @@
 	<tbody>
 		<tr><th>Баланс</th><td>{{ user.customer_balance }}</td></tr>
 		<tr><th>Секретный ключ</th><td>{{ user.customer_secret }}</td></tr>
+		{% with ref = url_for('site.register', ref=user.get_refcode()) %}
+		<tr><th>Реферальная ссылка</th><td><a href="{{ ref }}">http://heymoose.com{{ ref }}</a></td></tr>
+		{% endwith %}
+		<tr>
+			<th>Реферер</th>
+			<td>
+				{% if user.referrer %}
+				<a href="{{ url_for('.users_info', id=user.referrer) }}">{{ user.referrer }}</a>
+				{% else %}
+				(нет)
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<th>Рефералы</th>
+			<td>
+				{% for referral in user.referrals %}
+				<p><a href="mailto:{{ referral }}">{{ referral }}</a></p>
+				{% else %}
+				(нет)
+				{% endfor %}
+			</td>
+		</tr>
+		<tr><th>Доход от рефералов</th><td>{{ user.revenue }}</td></tr>
 	</tbody>
 </table>
 {% endif %}

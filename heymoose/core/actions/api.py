@@ -31,7 +31,7 @@ def do_offer(offer_id, app_id, uid, platform, secret=None):
 		platform=platform)
 	return api_get(params, secret)
 
-def get_offers(app_id, uid, filter, secret=None):
+def get_offers(app_id, uid, filter, hour=None, secret=None):
 	if secret is None: secret = get_app(app_id).secret
 	params = dict(
 		method='getOffers',
@@ -39,6 +39,7 @@ def get_offers(app_id, uid, filter, secret=None):
 		app_id=app_id,
 		uid=uid,
 		filter=filter)
+	if hour is not None: params.update(hour=hour)
 	return api_get(params, secret)
 
 def introduce_performer(app_id, uid, sex, year, secret=None):

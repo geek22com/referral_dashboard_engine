@@ -169,7 +169,12 @@ def fill_db():
 			if app.platform == performer.platform and random.choice([True, False]):
 				size = random.choice(banner_sizes)
 				filter = '0:3,1:3:{0}x{1},2:3'.format(size.width, size.height)
-				actions.api.get_offers(app.id, performer.ext_id, filter, app.secret)
+				actions.api.get_offers(
+					app_id=app.id,
+					uid=performer.ext_id,
+					filter=filter,
+					hour=random.randrange(23),
+					secret=app.secret)
 
 	
 if __name__ == '__main__':

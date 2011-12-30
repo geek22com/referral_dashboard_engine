@@ -85,6 +85,19 @@
 {% endif %}
 {% endmacro %}
 
+{% macro order_hour(min, max) %}
+{% if min == None and max == None %}
+	любое
+{% else %}
+	{% if min == max %}
+		в {{ min }}
+	{% else %}
+		{% if min != None %}с {{ min }}{% endif %}
+		{% if max != None %}до {{ max }}{% endif %}
+	{% endif %}
+{% endif %}
+{% endmacro %}
+
 {% macro order_type(type) %}
 	{% if type == 'REGULAR' %}Обычный{% elif type == 'BANNER' %}Баннер
 	{% elif type == 'VIDEO' %}Видео{% else %}Неизвестно{% endif %}
@@ -94,6 +107,12 @@
 	{% if type == 'INCLUSIVE' %}только указанные
 	{% elif type == 'EXCLUSIVE' %}все, кроме указанных
 	{% else %}не учитывать{% endif %}
+{% endmacro %}
+
+{% macro order_app_filter_type(type) %}
+	{% if type == 'INCLUSIVE' %}только указанные
+	{% elif type == 'EXCLUSIVE' %}все, кроме указанных
+	{% else %}любые{% endif %}
 {% endmacro %}
 
 {% macro performer_gender(gender) %}

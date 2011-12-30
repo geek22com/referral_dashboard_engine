@@ -89,9 +89,14 @@
 	<tbody>
 		<tr><th>Пол</th><td>{{ macros.order_gender(order.male) }}</td></tr>
 		<tr><th>Возраст</th><td>{{ macros.order_age(order.min_age, order.max_age) }}</td></tr>
+		<tr><th>Время показа</th><td>{{ macros.order_hour(order.min_hour, order.max_hour) }}</td></tr>
 		<tr><th>Города</th><td>{{ macros.order_city_filter_type(order.city_filter_type) }}</td></tr>
 		{% if order.city_filter_type %}
 		<tr><th></th><td>{{ order.cities|attrlist('name')|join(', ') }}</td></tr>
+		{% endif %}
+		<tr><th>Приложения</th><td>{{ macros.order_app_filter_type(order.app_filter_type) }}</td></tr>
+		{% if order.app_filter_type %}
+		<tr><th></th><td>{{ order.apps|attrlist('title')|join(', ') }}</td></tr>
 		{% endif %}
 	</tbody>
 </table>

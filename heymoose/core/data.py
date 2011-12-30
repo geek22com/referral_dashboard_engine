@@ -99,8 +99,12 @@ class Order(BaseModel):
 	              'male',
 	              'min_age',
 	              'max_age',
+	              'min_hour',
+	              'max_hour',
 	              'city_filter_type',
-	              'cities']
+	              'cities',
+	              'app_filter_type',
+	              'apps']
 	
 	def is_regular(self): return self.type == OrderTypes.REGULAR
 	def is_banner(self): return self.type == OrderTypes.BANNER

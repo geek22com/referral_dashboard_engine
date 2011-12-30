@@ -53,6 +53,20 @@ def fill_db():
 		actions.users.add_user_role(developer.id, actions.roles.DEVELOPER)
 		developers.append(developer)
 		
+	platforms = ('VKONTAKTE', 'FACEBOOK', 'ODNOKLASSNIKI')
+			
+	# Create apps for developers
+	apps = []
+	for i in range(apps_per_developer):
+		for developer in developers:
+			id = actions.apps.add_app(
+				title='app {0}-{1}'.format(developer.id, i),
+				user_id=developer.id,
+				callback='http://google.com',
+				url='http://google.com',
+				platform=platforms[i % 3])
+			apps.append(actions.apps.get_app(id))
+		
 	# Create list of banner sizes
 	for i in range(1, 10):
 		actions.bannersizes.add_banner_size(i * 100, i * 50)
@@ -64,11 +78,12 @@ def fill_db():
 	for city in cities:
 		actions.cities.add_city(city)
 	cities = actions.cities.get_cities()
-	cities_filter = ('', 'INCLUSIVE', 'EXCLUSIVE')
 	
 	# Create and enable orders for customers
 	orders = []
 	genders = ('', 'True', 'False')
+	cities_filter = ('', 'INCLUSIVE', 'EXCLUSIVE')
+	apps_filter = cities_filter
 	for i in range(orders_per_customer):
 		for customer in customers:
 			kwargs = dict(
@@ -79,8 +94,12 @@ def fill_db():
 				male=genders[i % 3],
 				min_age=i + customer.id + 1,
 				max_age=i + customer.id + 15,
+				min_hour=random.randrange(23),
+				max_hour=random.randrange(23),
 				city_filter_type=cities_filter[i % 3],
-				city=[random.choice(cities).id for _j in range(3)]
+				city=[random.choice(cities).id for _j in range(3)],
+				app_filter_type=apps_filter[i % 3],
+				app=[random.choice(apps).id for _j in range(3)]
 			)
 			
 			if i % 3 == 0:
@@ -112,20 +131,6 @@ def fill_db():
 			sizes = random.sample(banner_sizes[1:], 3)
 			for i in range(3):
 				actions.orders.add_order_banner(order.id, sizes[i].id, 'aaaa{0}'.format(i))
-	
-	platforms = ('VKONTAKTE', 'FACEBOOK', 'ODNOKLASSNIKI')
-			
-	# Create apps for developers
-	apps = []
-	for i in range(apps_per_developer):
-		for developer in developers:
-			id = actions.apps.add_app(
-				title='app {0}-{1}'.format(developer.id, i),
-				user_id=developer.id,
-				callback='http://google.com',
-				url='http://google.com',
-				platform=platforms[i % 3])
-			apps.append(actions.apps.get_app(id))
 			
 	# Create actions for apps and offers
 	for app in apps:

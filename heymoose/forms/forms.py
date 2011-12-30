@@ -150,6 +150,12 @@ class OrderForm(Form):
 	ordermaxage = myfields.NullableIntegerField(u'Максимальный возраст', [
 		myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
 	])
+	orderminhour = myfields.NullableIntegerField(u'Время с', [
+		myvalidators.NumberRangeEx(min=0, max=23, message=(u'Введите час от 0 до 23'))
+	])
+	ordermaxhour = myfields.NullableIntegerField(u'Время до', [
+		myvalidators.NumberRangeEx(min=0, max=23, message=(u'Введите час от 0 до 23'))
+	])
 	ordercitiesfilter = SelectField(u'Фильтр по городам', default=u'', choices=[
 		(u'', u'не учитывать'),
 		(u'INCLUSIVE', u'только указанные'),

@@ -72,6 +72,8 @@ def orders_new():
 				male=form.ordermale.data,
 				min_age=form.orderminage.data,
 				max_age=form.ordermaxage.data,
+				min_hour=form.orderminhour.data,
+				max_hour=form.ordermaxhour.data,
 				city_filter_type=form.ordercitiesfilter.data,
 				city=[int(x) for x in form.ordercities.data.split(',')] if form.ordercities.data else []
 			)
@@ -161,6 +163,8 @@ def orders_info_edit(id):
 		ordermale = u'' if order.male is None else unicode(order.male),
 		orderminage = order.min_age,
 		ordermaxage = order.max_age,
+		orderminhour = order.min_hour,
+		ordermaxhour = order.max_hour,
 		ordercitiesfilter = order.city_filter_type
 	)
 	
@@ -187,6 +191,8 @@ def orders_info_edit(id):
 		if male != order.male: kwargs.update(male=male)
 		if form.orderminage.data != order.min_age: kwargs.update(min_age=form.orderminage.data)
 		if form.ordermaxage.data != order.max_age: kwargs.update(max_age=form.ordermaxage.data)
+		if form.orderminhour.data != order.min_hour: kwargs.update(min_hour=form.orderminhour.data)
+		if form.ordermaxhour.data != order.max_hour: kwargs.update(max_hour=form.ordermaxhour.data)
 		if city_filter_type != order.city_filter_type: kwargs.update(city_filter_type=city_filter_type)
 		
 		old_cities = frozenset([city.id for city in order.cities])

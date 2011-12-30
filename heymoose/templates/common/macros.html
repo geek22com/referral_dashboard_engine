@@ -90,10 +90,10 @@
 	любое
 {% else %}
 	{% if min == max %}
-		в {{ min }}
+		в {{ min }} часов
 	{% else %}
-		{% if min != None %}с {{ min }}{% endif %}
-		{% if max != None %}до {{ max }}{% endif %}
+		{% if min != None %}с {{ min }} часов{% endif %}
+		{% if max != None %}до {{ max }} часов{% endif %}
 	{% endif %}
 {% endif %}
 {% endmacro %}

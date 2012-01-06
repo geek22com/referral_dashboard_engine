@@ -1,0 +1,76 @@
+{% extends "cabinet/orders-layout.html" %}
+
+{% block extrahead %}
+	{{ super() }}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/token-input-twitter.css') }}" media="screen" />
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.tokeninput.js') }}"></script>
+	<script type="text/javascript">
+		$(function() {
+			var cities = {{ cities|tojson|safe }};
+			$('input.cities').tokenInput(cities, {
+				theme: 'twitter',
+				preventDuplicates: true,
+				hintText: 'Введите название города',
+				noResultsText: 'Не найдено',
+				searchingText: 'Поиск...'
+			});
+			
+			$('form').bind('keypress', function(e) { if (e.keyCode == 13) return false; });
+		});
+	</script>
+{% endblock %}
+
+{% set activetab = 'new' %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Создание заказа', url_for('.orders_new')) }}
+{% endblock %}
+
+{% block tabcontent %}
+
+{% if g.user.customer_balance > 0 %}
+	<div class="widelabels">
+		{% set yourbalance = 'Ваш баланс {0} руб'.format(g.user.customer_balance) %}
+		<div id="container-banner" class="form-container">
+			<form id="form-order-banner" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
+				<fieldset>
+					<input type="hidden" name="ordertype" value="BANNER" />
+					{{ macros.formfield(form.ordername, class='span10') }}
+					{{ macros.formfield(form.orderurl, class='span10') }}
+					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance, description=yourbalance) }}
+					{{ macros.formfield(form.ordercpa, class='span4') }}
+				</fieldset>
+				<fieldset>
+					<legend>Баннер</legend>
+					{{ macros.formfield(form.orderbannersize, class='span4') }}
+					{{ macros.formfield(form.orderimage, pad_description=True) }}
+				</fieldset>
+				<fieldset>
+					<legend>Настройки таргетинга</legend>
+					{{ macros.formfield(form.ordermale, class='span4') }}
+					{{ macros.formfield(form.orderminage, class='span4', placeholder='любой') }}
+					{{ macros.formfield(form.ordermaxage, class='span4', placeholder='любой') }}
+					{{ macros.formfield(form.orderminhour, class='span4', placeholder='начала суток') }}
+					{{ macros.formfield(form.ordermaxhour, class='span4', placeholder='конца суток') }}
+					{{ macros.formfield(form.ordercitiesfilter, class='span4') }}
+					{{ macros.formfield(form.ordercities, class='cities') }}
+				</fieldset>
+				<div class="actions">
+					<input class="btn large primary" type="submit" value="Создать заказ"/>
+				</div>
+			</form>
+		</div>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message error">
+		<p>
+			<strong>Недостаточно средств.</strong> На вашем счету не хватает средств для создания заказа.
+		</p>
+		{# <div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.balance_pay') }}">Пополнить баланс</a>
+		</div> #}
+	</div>
+{% endif %}
+
+{% endblock %}

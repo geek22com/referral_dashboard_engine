@@ -2,6 +2,7 @@
 from wtforms import Form, validators, BooleanField, TextField, PasswordField, \
 	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField
 from wtforms.fields import Label
+from heymoose import app
 from heymoose.core import actions
 from heymoose.core.actions import roles
 import validators as myvalidators
@@ -122,13 +123,6 @@ class ContactForm(CaptchaForm):
 
 
 class OrderForm(Form):
-	def __init__(self, *args, **kwargs):
-		referral = kwargs.pop('referral', False)
-		super(OrderForm, self).__init__(*args, **kwargs)
-		if referral:
-			self.ordercpa.data = 5
-			self.orderallownegativebalance.data = False
-	
 	ordername = TextField(u'Название', [
 		validators.Length(min=1, max=50, message=(u'Название заказа должно быть от 1 до 50 символов')),
 		validators.Required(message = (u'Введите название заказа'))
@@ -141,9 +135,9 @@ class OrderForm(Form):
 		validators.Required(message = (u'Укажите баланс для заказа')),
 		validators.NumberRange(min=1, max=3000000, message=(u'Такой баланс недопустим'))
 	])
-	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message = (u'Введите CPA'))])
+	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message=u'Введите CPA')])
 	orderautoapprove = BooleanField(u'Автоподтверждение', default=True)
-	orderreentrant = BooleanField(u'Многократное прохождение', default=False,
+	orderreentrant = BooleanField(u'Многократное прохождение', default=True,
 		description=u'(разрешить одному пользователю проходить оффер много раз)'
 	)
 	orderallownegativebalance = BooleanField(u'Разрешить кредит', default=True, 
@@ -221,6 +215,26 @@ class VideoOrderEditForm(VideoOrderForm):
 	def __init__(self, *args, **kwargs):
 		super(VideoOrderEditForm, self).__init__(*args, **kwargs)
 		del self.orderbalance
+		
+
+def form_for_referral(cls):
+	min_cpc = app.config.get('REFERRAL_MIN_CPC', 5.0)
+	cpc_quot = app.config.get('REFERRAL_RECOMMENDED_CPC_QUOT', 1.3)
+	rec_cpc = min_cpc * cpc_quot
+	
+	class OrderFormRef(cls):
+		def __init__(self, *args, **kwargs):
+			super(OrderFormRef, self).__init__(*args, **kwargs)
+			self.orderallownegativebalance.data = False
+			self.orderautoapprove.data = True
+			self.orderreentrant.data = True
+		
+		ordercpa = DecimalField(u'Стоимость клика', [
+			validators.NumberRange(min=min_cpc, message=u'Стоимость клика не может быть меньше {0}'.format(min_cpc)),
+			validators.Required(message=u'Введите стоимость клика')
+		], description=u'Минимальная {0}, рекомендуемая {1}'.format(min_cpc, rec_cpc))
+		
+	return OrderFormRef
 	
 	
 class BannerForm(Form):

@@ -32,12 +32,12 @@
 			<input type="hidden" name="ordertype" value="REGULAR" />
 			{{ macros.formfield(form.ordername, class='span10') }}
 			{{ macros.formfield(form.orderurl, class='span10') }}
+			{{ macros.formfield(form.ordercpa, class='span4') }}
 			{% if not g.user.referrer %}
-			{{ macros.formfield(form.ordercpa, class='span4', disabled='disabled') }}
 			{{ macros.formfield(form.orderallownegativebalance) }}
-			{% endif %}
 			{{ macros.formfield(form.orderautoapprove) }}
 			{{ macros.formfield(form.orderreentrant) }}
+			{% endif %}
 		</fieldset>
 		{% if order.is_regular() %}
 		<fieldset>

@@ -60,10 +60,8 @@
 					{{ macros.formfield(form.orderdesc, class='span10', rows=5) }}
 					{{ macros.formfield(form.orderurl, class='span10') }}
 					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance, description=yourbalance) }}
-					{% if not g.user.referrer %}
 					{{ macros.formfield(form.ordercpa, class='span4') }}
 					{{ macros.formfield(form.orderallownegativebalance) }}
-					{% endif %}
 					{{ macros.formfield(form.orderautoapprove) }}
 					{{ macros.formfield(form.orderreentrant) }}
 					{{ macros.formfield(form.orderimage, pad_description=True) }}
@@ -93,10 +91,8 @@
 					{{ macros.formfield(form.ordername, class='span10') }}
 					{{ macros.formfield(form.orderurl, class='span10') }}
 					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance, description=yourbalance) }}
-					{% if not g.user.referrer %}
 					{{ macros.formfield(form.ordercpa, class='span4') }}
 					{{ macros.formfield(form.orderallownegativebalance) }}
-					{% endif %}
 					{{ macros.formfield(form.orderautoapprove) }}
 					{{ macros.formfield(form.orderreentrant) }}
 				</fieldset>
@@ -131,10 +127,8 @@
 					{{ macros.formfield(form.orderurl, class='span10') }}
 					{{ macros.formfield(form.ordervideourl, class='span10') }}
 					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance, description=yourbalance) }}
-					{% if not g.user.referrer %}
 					{{ macros.formfield(form.ordercpa, class='span4') }}
 					{{ macros.formfield(form.orderallownegativebalance) }}
-					{% endif %}
 					{{ macros.formfield(form.orderautoapprove) }}
 					{{ macros.formfield(form.orderreentrant) }}
 				</fieldset>

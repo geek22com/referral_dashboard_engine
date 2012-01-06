@@ -10,7 +10,7 @@
 		<tr><th>Секретный ключ</th><td>{{ app.secret }}</td></tr>
 		<tr><th>Разработчик</th><td>{{ macros.user_href(app.user) }}</td></tr>
 		<tr><th>Платформа</th><td>{{ app.platform }}</td></tr>
-		<tr><th>Callback</th><td>{{ app.callback }}</td></tr>
+		{#<tr><th>Callback</th><td>{{ app.callback }}</td></tr>#}
 		<tr><th>URL</th><td><a href="{{ app.url }}">{{ app.url }}</a></td></tr>
 		<tr><th>Создано</th><td>{{ app.creation_time|datetimeformat }}</td></tr>
 	</tbody>

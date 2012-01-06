@@ -255,10 +255,10 @@ class AppForm(Form):
 		validators.Length(min=1, max=100, message=(u'Название приложения должно иметь длину от 1 до 100 символов')),
 		validators.Required(message = (u'Введите название приложения'))
 	])
-	appcallback = TextField(u'Callback', [
+	'''appcallback = TextField(u'Callback', [
 		validators.Required(message = u'Введите callback для вашего приложения'),
 		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
-	])
+	])'''
 	appurl = TextField(u'URL', [
 		validators.Required(message = u'Введите URL для возврата в ваше приложение'),
 		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')

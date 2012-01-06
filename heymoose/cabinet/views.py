@@ -238,7 +238,7 @@ def apps_new():
 		do_or_abort(actions.apps.add_app,
 			title=form.apptitle.data,
 			user_id=g.user.id,
-			callback=form.appcallback.data,
+			callback=form.appurl.data,
 			url=form.appurl.data,
 			platform=form.appplatform.data)
 		flash(u'Приложение успешно добавлено', 'success')

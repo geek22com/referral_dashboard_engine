@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from flask import request, jsonify
+from flask import request, jsonify, send_from_directory, abort
+from heymoose import app
 from heymoose.utils import convert
 from heymoose.core.aggregators import ShowsAndClicksAggregator
 
@@ -21,3 +22,11 @@ def json_get_ctr(**kwargs):
 	aggregator = ShowsAndClicksAggregator(fm, to, group, **kwargs)
 	values = aggregator.aggregate()
 	return jsonify(values=values)
+
+
+@app.route('/upload/<path:filename>')
+def upload(filename):
+	if app.config.get('DEBUG', False):
+		return send_from_directory(app.config.get('UPLOAD_PATH', ''), filename)
+	else:
+		abort(403)

@@ -18,5 +18,6 @@ app.register_blueprint(admin.blueprint, url_prefix='/admin')
 app.register_blueprint(cabinet.blueprint, url_prefix='/cabinet')
 
 import handlers
+import views.common
 
 #print app.url_map

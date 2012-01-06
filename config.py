@@ -1,11 +1,15 @@
+import os
+
 # configuration
 HOST = '127.0.0.1'
-DEBUG = True
+DEBUG = False
 SECRET_KEY = 'lola pola_mola_cola'
 RESTAPI_SERVER = 'http://localhost:5468'
 USE_DATABASE = True
 
-STATIC_PATH = "/usr/share/nginx/www/static"
+THIS_PATH = os.path.realpath(os.path.dirname(__file__))
+UPLOAD_PATH = '/usr/share/nginx/uwsgi_upload'
+STATIC_PATH = '/usr/share/nginx/www/static'
 
 APP_ID = "196817947051588"
 APP_SECRET = "3ca1d75b952eeef29625ffc42df61ddf"
@@ -50,6 +54,4 @@ MONGOALCHEMY_DATABASE = 'facebook'
 # Business logic parameters
 REFERRAL_MIN_CPC = 5.0
 REFERRAL_RECOMMENDED_CPC_QUOT = 1.3
-
-print "ATTENTION!! DEBUG CONFIG IS USED"
 

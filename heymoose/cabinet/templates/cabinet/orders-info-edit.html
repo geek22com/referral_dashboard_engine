@@ -34,11 +34,10 @@
 			{{ macros.formfield(form.orderurl, class='span10') }}
 			{% if not g.user.referrer %}
 			{{ macros.formfield(form.ordercpa, class='span4', disabled='disabled') }}
-			{{ macros.formfield(form.orderallownegativebalance, inline='(разрешить отрицательный баланс)') }}
+			{{ macros.formfield(form.orderallownegativebalance) }}
 			{% endif %}
 			{{ macros.formfield(form.orderautoapprove) }}
-			{{ macros.formfield(form.orderreentrant,
-				inline='(разрешить одному пользователю проходить оффер много раз)') }}
+			{{ macros.formfield(form.orderreentrant) }}
 		</fieldset>
 		{% if order.is_regular() %}
 		<fieldset>

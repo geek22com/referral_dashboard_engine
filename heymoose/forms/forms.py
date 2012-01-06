@@ -10,7 +10,9 @@ import random, hashlib
 
 
 class CaptchaForm(Form):
-	captcha = TextField(u'', [validators.Required(message=u'Введите число')])
+	captcha = TextField(u'', [
+		validators.Required(message=u'Введите число')
+	], description=u'(докажите, что вы не робот)')
 	ch = HiddenField()
 	
 	
@@ -141,8 +143,12 @@ class OrderForm(Form):
 	])
 	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message = (u'Введите CPA'))])
 	orderautoapprove = BooleanField(u'Автоподтверждение', default=True)
-	orderreentrant = BooleanField(u'Многократное прохождение', default=False)
-	orderallownegativebalance = BooleanField(u'Разрешить кредит', default=True)
+	orderreentrant = BooleanField(u'Многократное прохождение', default=False,
+		description=u'(разрешить одному пользователю проходить оффер много раз)'
+	)
+	orderallownegativebalance = BooleanField(u'Разрешить кредит', default=True, 
+		description=u'(разрешить отрицательный баланс)'
+	)
 	ordermale = SelectField(u'Пол', choices=[(u'True', u'мужской'), (u'False', u'женский'), (u'', u'любой')], default='')
 	orderminage = myfields.NullableIntegerField(u'Минимальный возраст', [
 		myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
@@ -171,7 +177,7 @@ class RegularOrderForm(OrderForm):
 	orderimage = myfields.ImageField(u'Выберите изображение', [
 		myvalidators.FileRequired(message=u'Выберите изображение на диске'),
 		myvalidators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
-	])
+	], description=u'Форматы: JPG (JPEG), GIF, PNG')
 
 class BannerOrderForm(OrderForm):
 	orderbannersize = SelectField(u'Размер баннера', coerce=int)
@@ -179,7 +185,7 @@ class BannerOrderForm(OrderForm):
 		myvalidators.FileRequired(message=u'Выберите файл на диске'),
 		myvalidators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf'),
 			message=u'Выберите файл в формате JPG, GIF, PNG или SWF')
-	])
+	], description=u'Форматы: JPG (JPEG), GIF, PNG, SWF')
 	
 	def validate_orderimage(self, field):
 		if field.data is None: return
@@ -223,7 +229,7 @@ class BannerForm(Form):
 		myvalidators.FileRequired(message=u'Выберите файл на диске'),
 		myvalidators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf'),
 			message=u'Выберите файл в формате JPG, GIF, PNG или SWF')
-	])
+	], description=u'Форматы: JPG (JPEG), GIF, PNG, SWF')
 	
 	def validate_image(self, field):
 		if field.data is None: return

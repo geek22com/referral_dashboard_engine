@@ -119,7 +119,7 @@
 {% if gender == True %}муж{% elif gender == False %}жен{% else %}неизв.{% endif %}
 {% endmacro %}
 
-{% macro formfield(field, inline=None) %}
+{% macro formfield(field, description='', pad_description=False) %}
 	<div class="clearfix {% if field.errors %}error{% endif %}">
 		{% for validator in field.validators %}
 			{% if validator|classname in ('Required', 'FileRequired') %}
@@ -152,8 +152,12 @@
 		{% endif %}
 		<div class="input">
 			{{ field(**kwargs) }}
-			{% if inline %}<span class="help-inline">{{ inline }}</span>{% endif %}
-			
+			{% if description or field.description %}
+			<span class="help-inline" {% if pad_description %}style="padding-left: 50px;"{% endif %}>
+				{{ description or field.description }}
+			</span>
+			{% endif %}
+						
 			{% if field.errors %}
 			{% for error in field.errors %}
 			<span class="help-block">{{ error }}</span>

@@ -35,7 +35,7 @@
 		<form id="form-banner" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
 			<fieldset>
 				{{ macros.formfield(form.size, class='span4') }}
-				{{ macros.formfield(form.image) }}
+				{{ macros.formfield(form.image, pad_description=True) }}
 			</fieldset>
 			<div class="actions">
 				<input class="btn primary" type="submit" value="Загрузить"/>

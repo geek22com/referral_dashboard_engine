@@ -66,7 +66,8 @@ def add_regular_order(user_id, title, url, balance, cpa, description, image, aut
 				image=image)
 	
 	
-def add_banner_order(user_id, title, url, balance, cpa, image, banner_size, auto_approve=True,
+def add_banner_order(user_id, title, url, balance, cpa, image, banner_size, banner_mime_type,
+					auto_approve=True,
 					allow_negative_balance=True, reentrant=False,
 					male=None, min_age=None, max_age=None,
 					city_filter_type=None, city=[],
@@ -91,6 +92,7 @@ def add_banner_order(user_id, title, url, balance, cpa, image, banner_size, auto
 				max_hour=max_hour,
 				type=OrderTypes.BANNER,
 				image=image,
+				bannerMimeType=banner_mime_type,
 				bannerSize=banner_size)
 
 
@@ -151,9 +153,9 @@ def get_orders_count():
 	return count_from_xml(get(path=path))
 
 
-def add_order_banner(order_id, banner_size, image):
+def add_order_banner(order_id, banner_size, mime_type, image):
 	path = "{0}/{1}/banners".format(resource_path, order_id)
-	params = dict(bannerSize=banner_size, image=image)
+	params = dict(bannerSize=banner_size, mimeType=mime_type, image=image)
 	post(path=path, params_dict=params)
 
 def delete_order_banner(order_id, banner_id):

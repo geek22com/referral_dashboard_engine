@@ -106,13 +106,14 @@ def fill_db():
 				kwargs.update(
 					title='regular order {0}-{1}'.format(customer.id, i),
 					description='The best order from {0} number {1}'.format(customer.nickname, i),
-					image='aaaa'
+					image='aGVsbG8h'
 				)
 				id = actions.orders.add_regular_order(**kwargs)
 			elif i % 3 == 1:
 				kwargs.update(
 					title='banner order {0}-{1}'.format(customer.id, i),
-					image='aaaa',
+					image='aGVsbG8h',
+					banner_mime_type='image/png',
 					banner_size=banner_sizes[0].id
 				)
 				id = actions.orders.add_banner_order(**kwargs)
@@ -130,7 +131,7 @@ def fill_db():
 		if order.is_banner():
 			sizes = random.sample(banner_sizes[1:], 3)
 			for i in range(3):
-				actions.orders.add_order_banner(order.id, sizes[i].id, 'aaaa{0}'.format(i))
+				actions.orders.add_order_banner(order.id, sizes[i].id, 'image/png', 'aGVsbG8h')
 			
 	# Create actions for apps and offers
 	for app in apps:

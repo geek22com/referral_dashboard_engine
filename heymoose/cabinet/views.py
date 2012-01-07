@@ -10,7 +10,7 @@ from heymoose.utils.shortcuts import do_or_abort
 from heymoose.utils.gen import generate_password_hash
 from heymoose.views.common import json_get_ctr
 from decorators import customer_only, developer_only
-import base64
+import base64, os
 
 
 @bp.route('/')
@@ -88,6 +88,7 @@ def orders_new():
 				elif ordertype == OrderTypes.BANNER:
 					kwargs.update(
 						banner_size=form.orderbannersize.data,
+						banner_mime_type=form.orderimage.mime_type,
 						image=base64.encodestring(request.files['orderimage'].stream.read())
 					)
 					id = do_or_abort(actions.orders.add_banner_order, **kwargs)
@@ -128,6 +129,7 @@ def orders_new():
 				city_filter_type=form.ordercitiesfilter.data,
 				city=[int(x) for x in form.ordercities.data.split(',')] if form.ordercities.data else [],
 				banner_size=form.orderbannersize.data,
+				banner_mime_type=form.orderimage.mime_type,
 				image=base64.encodestring(request.files['orderimage'].stream.read()))
 			flash(u'Заказ успешно создан.', 'success')
 			return redirect(url_for('.orders_info', id=id))
@@ -159,7 +161,7 @@ def orders_info_banners(id):
 		form = forms.BannerForm(request.form)
 		form.size.choices = size_choices
 		if request.method == 'POST' and form.validate():
-			actions.orders.add_order_banner(order.id, form.size.data,
+			actions.orders.add_order_banner(order.id, form.size.data, form.image.mime_type,
 				base64.encodestring(request.files['image'].stream.read()))
 			flash(u'Баннер успешно загружен', 'success')
 			return redirect(url_for('.orders_info_banners', id=order.id))
@@ -207,14 +209,11 @@ def orders_info_edit(id):
 	if order.is_regular():
 		form_args.update(orderdesc = order.description)
 		cls = forms.RegularOrderEditForm
-		#form = forms.RegularOrderEditForm(request.form, **form_args)
 	elif order.is_banner():
 		cls = forms.BannerOrderEditForm
-		#form = forms.BannerOrderEditForm(request.form, **form_args)
 	elif order.is_video():
 		form_args.update(ordervideourl = order.video_url)
 		cls = forms.VideoOrderEditForm
-		#form = forms.VideoOrderEditForm(request.form, **form_args)
 		
 	if g.user.referrer:
 		form = forms.form_for_referral(cls)(request.form, **form_args)

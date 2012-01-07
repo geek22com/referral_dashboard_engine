@@ -7,7 +7,7 @@ RESTAPI_SERVER = 'http://localhost:5468'
 USE_DATABASE = True
 
 THIS_PATH = os.path.realpath(os.path.dirname(__file__))
-UPLOAD_PATH = os.path.join(THIS_PATH, os.pardir, 'upload')
+UPLOAD_PATH = os.path.join(os.path.dirname(THIS_PATH), 'upload')
 
 APP_ID = "243934035656884"
 APP_SECRET = "054cec4abf69a4dd6fcaa4b75cd04f01"

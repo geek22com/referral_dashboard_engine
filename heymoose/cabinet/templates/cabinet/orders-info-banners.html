@@ -70,7 +70,12 @@
 					{% endif %}
 				</td>
 			</tr>
-			<tr><td colspan="3"><img src="data:image/png;base64,{{ banner.image -}}" alt="изображение" class="fit-width" /></td></tr>
+			<tr>
+				<td colspan="3">
+					<object type="{{ banner.mime_type }}" width="{{ banner.size.width }}" height="{{ banner.size.height }}"
+					data="{{ url_for('upload', filename=banner.image_file()) }}" class="fit-width"></object>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	{% endfor %}

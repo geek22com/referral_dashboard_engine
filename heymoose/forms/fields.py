@@ -43,6 +43,10 @@ class BannerField(FileField):
 				self.width = self.data.size[0]
 				self.height = self.data.size[1]
 				self.format = self.data.format.lower()
+				if self.format not in ('jpg', 'jpeg'):
+					self.mime_type = 'image/{0}'.format(self.format)
+				else:
+					self.mime_type = 'image/jpeg'
 				success = True
 			except:
 				pass
@@ -55,6 +59,7 @@ class BannerField(FileField):
 				self.width = self.data['width']
 				self.height = self.data['height']
 				self.format = 'swf'
+				self.mime_type = 'application/x-shockwave-flash'
 				success = True
 			except:
 				pass

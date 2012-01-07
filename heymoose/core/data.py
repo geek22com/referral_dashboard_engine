@@ -2,10 +2,10 @@
 from heymoose import app
 from heymoose.utils import gen
 import heymoose.core.actions.roles as roles
+import os, mimetypes, base64
 
 class MetaModel(type):
 	def __new__(cls, name, bases, dct):
-		attributes = dct['attributes']
 		return type.__new__(cls, name, bases, dct)
 
 	def __init__(cls, name, bases, dct):
@@ -117,7 +117,16 @@ class BannerSize(BaseModel):
 	
 	
 class Banner(BaseModel):
-	attributes = ['id', 'size', 'image']
+	attributes = ['id', 'size', 'mime_type', 'image']
+	
+	def image_file(self):
+		format = mimetypes.guess_extension(self.mime_type)
+		uploaded_filename = os.path.join('banners', '{0}{1}'.format(self.id, format))
+		filepath = os.path.join(app.config.get('UPLOAD_PATH'), uploaded_filename)
+		if not os.path.exists(filepath):
+			print 'Saving file...', uploaded_filename
+			with open(filepath, 'w') as file: file.write(base64.decodestring(self.image))
+		return uploaded_filename
 
 
 class City(BaseModel):

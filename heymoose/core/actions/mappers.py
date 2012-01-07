@@ -70,6 +70,7 @@ def banner_from_xml(banner_element):
 	if banner_element is None: return None
 	return Banner(id=get_attr(banner_element, 'id', int),
 				size=banner_size_from_xml(get_child(banner_element, 'banner-size')),
+				mime_type=get_value(banner_element, 'mime-type'),
 				image=get_value(banner_element, 'image'))
 	
 def city_from_xml(city_element):

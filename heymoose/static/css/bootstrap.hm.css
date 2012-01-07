@@ -82,7 +82,9 @@ form.inline { margin: 0; }
 label.required { font-weight: bold; }
 
 div.scroll-area-x {	overflow-x: scroll; }
+div.scroll-area-y {	overflow-y: scroll; }
 div.autoscroll-area-x { overflow-x: auto; }
+div.autoscroll-area-y { overflow-y: auto; }
 
 div.ui-datepicker {
 	font-size: 12px;

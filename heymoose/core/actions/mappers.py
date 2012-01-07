@@ -64,7 +64,8 @@ def banner_size_from_xml(size_element):
 	if size_element is None: return None
 	return BannerSize(id=get_attr(size_element, 'id', int),
 				width=get_value(size_element, 'width', int),
-				height=get_value(size_element, 'height', int))
+				height=get_value(size_element, 'height', int),
+				disabled=get_value(size_element, 'disabled', bool))
 	
 def banner_from_xml(banner_element):
 	if banner_element is None: return None
@@ -76,7 +77,8 @@ def banner_from_xml(banner_element):
 def city_from_xml(city_element):
 	if city_element is None: return None
 	return City(id=get_attr(city_element, 'id', int),
-				name=get_value(city_element, 'name'))
+				name=get_value(city_element, 'name'),
+				disabled=get_value(city_element, 'disabled', bool))
 
 def user_from_xml(user_element):
 	if user_element is None: return None

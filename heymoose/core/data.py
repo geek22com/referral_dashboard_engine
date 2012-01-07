@@ -113,7 +113,7 @@ class Order(BaseModel):
 
 
 class BannerSize(BaseModel):
-	attributes = ['id', 'width', 'height']
+	attributes = ['id', 'width', 'height', 'disabled']
 	
 	
 class Banner(BaseModel):
@@ -130,7 +130,7 @@ class Banner(BaseModel):
 
 
 class City(BaseModel):
-	attributes = ['id', 'name']
+	attributes = ['id', 'name', 'disabled']
 
 
 class App(BaseModel):

@@ -10,9 +10,11 @@ def add_city(name):
 	return int(id)
 
 
-def update_city(city_id, name):
+def update_city(city_id, name=None, disabled=None):
 	path = '{0}/{1}'.format(resource_path, city_id)
-	params_dict = dict(name=name)
+	params_dict = dict()
+	if name: params_dict.update(name=name)
+	if disabled is not None: params_dict.update(disabled=disabled)
 	put(path=path, params_dict=params_dict)
 	
 	
@@ -21,8 +23,9 @@ def delete_city(city_id):
 	delete(path=path)
 
 
-def get_cities(**kwargs):
-	return map(city_from_xml, get(path=resource_path, params_dict=kwargs))
+def get_cities(active_only=True):
+	params_dict=dict(activeOnly=active_only)
+	return map(city_from_xml, get(path=resource_path, params_dict=params_dict))
 
 
 def get_city(city_id, **kwargs):

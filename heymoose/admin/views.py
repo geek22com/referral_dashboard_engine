@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, request, abort, redirect, flash, url_for
+from flask import render_template, g, request, abort, redirect, flash, url_for, jsonify
 from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions as a
@@ -33,11 +33,9 @@ def orders_stats():
 
 @bp.route('/orders/settings', methods=['GET', 'POST'])
 def orders_settings():
-	sizes = a.bannersizes.get_banner_sizes()
-	cities = sorted(a.cities.get_cities(), key=lambda x: x.name)
 	banner_form = forms.BannerSizeForm()
 	city_form = forms.CityForm()
-	return render_template('admin/orders-settings.html', sizes=sizes, cities=cities,
+	return render_template('admin/orders-settings.html',
 		banner_form=banner_form, city_form=city_form)
 
 @bp.route('/orders/<int:id>/')
@@ -269,7 +267,13 @@ def ajax_orders_disable(id):
 	do_or_abort(a.orders.disable_order, id)
 	return 'OK'
 
-@bp.route('/orders/q/add-banner-size', methods=['POST'])
+@bp.route('/orders/q/banner-sizes')
+def ajax_orders_get_banner_sizes():
+	sizes = sorted(a.bannersizes.get_banner_sizes(False), key=lambda s: s.width)
+	data = [dict(id=s.id, width=s.width, height=s.height, disabled=s.disabled) for s in sizes]
+	return jsonify(values=data)
+
+@bp.route('/orders/q/banner-sizes/new', methods=['POST'])
 def ajax_orders_add_banner_size():
 	form = forms.BannerSizeForm(request.form)
 	if form.validate():
@@ -277,16 +281,30 @@ def ajax_orders_add_banner_size():
 		return unicode(id)
 	return u'Размер введен неверно', 400
 
-@bp.route('/orders/q/city/add', methods=['POST'])
-def ajax_orders_city_add():
+@bp.route('/order/q/banner-sizes/enable', methods=['POST'])
+def ajax_orders_enable_banner_size():
+	id = int(request.form.get('id', '0'))
+	value = int(request.form.get('value', '0'))
+	print id, value
+	a.bannersizes.set_banner_size_enabled(id, bool(value))
+	return 'OK'
+
+@bp.route('/orders/q/cities')
+def ajax_orders_get_cities():
+	cities = sorted(a.cities.get_cities(False), key=lambda x: x.name)
+	data = [dict(id=c.id, name=c.name, disabled=c.disabled) for c in cities]
+	return jsonify(values=data)
+
+@bp.route('/orders/q/cities/add', methods=['POST'])
+def ajax_orders_add_city():
 	form = forms.CityForm(request.form)
 	if form.validate():
 		id = a.cities.add_city(form.name.data)
 		return unicode(id)
 	return u'Название введено неверно', 400
 
-@bp.route('/orders/q/city/update', methods=['POST'])
-def ajax_orders_city_update():
+@bp.route('/orders/q/cities/update', methods=['POST'])
+def ajax_orders_update_city():
 	form = forms.CityForm(request.form)
 	if form.validate():
 		id = int(form.id.data) if form.id.data else 0
@@ -294,15 +312,13 @@ def ajax_orders_city_update():
 		return 'OK'
 	return u'Название введено неверно', 400
 
-@bp.route('/orders/q/city/delete', methods=['POST'])
-def ajax_orders_city_delete():
-	form = forms.CityForm(request.form)
-	if form.validate():
-		id = int(form.id.data) if form.id.data else 0
-		do_or_abort(a.cities.delete_city(id))
-		return 'OK'
-	return u'Название введено неверно', 400
-		
+@bp.route('/order/q/cities/enable', methods=['POST'])
+def ajax_orders_enable_city():
+	id = int(request.form.get('id', '0'))
+	value = int(request.form.get('value', '0'))
+	a.cities.update_city(id, disabled=not bool(value))
+	return 'OK'
+
 
 @bp.route('/orders/<int:id>/stats/q/ctr/')
 def ajax_orders_info_stats_ctr(id):

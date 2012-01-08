@@ -125,9 +125,18 @@
 				}
 			});
 			
+			$('.modal').bind('shown', function() {
+				$(this).find('input:first').focus();
+			});
+			
 			$('#btn-add-city').click(function() {
 				$('#cities-filter').val('').change();
 				$('#add-name').val('');
+			});
+			
+			$('#btn-add-size').click(function() {
+				$('#width').val('');
+				$('#height').val('');
 			});
 			
 			$('#cities-filter').change(function() {
@@ -164,7 +173,7 @@
 		</div>
 		<div class="well right">
 			<a class="btn success right" href="#" data-controls-modal="size-modal"
-			data-backdrop="true" data-keyboard="true">Добавить размер</a>
+			data-backdrop="true" data-keyboard="true" id="btn-add-size">Добавить размер</a>
 		</div>
 		<div id="size-modal" class="modal" style="display: none;">
 			<form id="form-size-add" method="post" action="{{ url_for('.ajax_orders_add_banner_size') }}" class="validate">
@@ -211,8 +220,8 @@
 				</div>
 				<div class="modal-body span16">
 					<fieldset>
-						{{ city_form.id(value='0', id='add-id') }}
 						{{ macros.formfield(city_form.name, class='span5', id='add-name') }}
+						{{ city_form.id(value='0', id='add-id') }}
 					</fieldset>
 				</div>
 				<div class="modal-footer">
@@ -228,8 +237,8 @@
 				</div>
 				<div class="modal-body span16">
 					<fieldset>
-						{{ city_form.id(id='update-id') }}
 						{{ macros.formfield(city_form.name, class='span5', id='update-name') }}
+						{{ city_form.id(id='update-id') }}
 					</fieldset>
 				</div>
 				<div class="modal-footer">

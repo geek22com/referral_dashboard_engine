@@ -19,7 +19,7 @@
 			var urlEditCityIcon = '{{ url_for("static", filename="img/icon_changelink.gif") }}';
 			
 			function addSize(id, width, height, disabled) {
-				var input = $('<input>').attr({	'type' : 'checkbox', 'rel' : id	});
+				var input = $('<input>').attr('type', 'checkbox');
 				if (!disabled) input.attr('checked', 'checked');
 				input.change(function() {
 					var checked = $(this).is(':checked');
@@ -36,16 +36,8 @@
 				$('#sizes-table tbody').append(tr);
 			}
 			
-			function getCityName(id) {
-				return $('td.city-name[rel=' + id + ']').text();
-			}
-			
-			function setCityName(id, name) {
-				$('td.city-name[rel=' + id + ']').text(name);
-			}
-			
 			function addCity(id, name, disabled) {
-				var input = $('<input>').attr({	'type' : 'checkbox', 'rel' : id	});
+				var input = $('<input>').attr('type', 'checkbox');
 				if (!disabled) input.attr('checked', 'checked');
 				input.change(function() {
 					var checked = $(this).is(':checked');
@@ -55,31 +47,24 @@
 						});
 				});
 				
+				var a = $('<a>').attr({ 'href' : '#',
+						'data-controls-modal' : 'city-update-modal',
+						'data-backdrop' : 'true', 'data-keyboard' : 'true',
+					})
+					.append($('<img>').attr({ 'src' : urlEditCityIcon, 'alt' : 'изменить' }))
+					.click(function() {
+						var tr = $(this).closest('tr');
+						$('#update-id').val(tr.data('id'));
+						$('#update-name').val(tr.data('name'));
+					})
+				
 				var tr = $('<tr>')
-					.append($('<td>').addClass('city-name').text(name).attr('rel', id))
+					.append($('<td>').addClass('city-name').text(name))
 					.append($('<td>').addClass('center').append(input))
-					.append($('<td>').addClass('center')
-						.append($('<a>')
-							.attr({
-								'href' : '#',
-								'data-controls-modal' : 'city-update-modal',
-								'data-backdrop' : 'true',
-								'data-keyboard' : 'true',
-								'data-id' : id,
-							})
-							.append($('<img>')
-								.attr({
-									'src' : urlEditCityIcon,
-									'alt' : 'изменить'
-								})
-							)
-							.click(function() {
-								var id = $(this).attr('data-id');
-								$('#update-id').val(id);
-								$('#update-name').val(getCityName(id));
-							})
-						)
-					)
+					.append($('<td>').addClass('center').append(a))
+					.data({ 'id' : id, 'name' : name });
+				tr.attr('id', 'city-' + id);
+					
 				$('#cities-table tbody').append(tr);
 			}
 			
@@ -128,13 +113,40 @@
 			
 			$('#form-city-update').ajaxForm({
 				success: function(data, textStatus) {
-					setCityName($('#update-id').val(), $('#update-name').val());
+					var id = $('#update-id').val();
+					var name = $('#update-name').val();
+					var tr = $('#city-' + id);
+					tr.find('td.city-name').text(name);
+					tr.data('name', name);
 					$('#city-update-modal').modal('hide');
 				},
 				error: function(xhr, textStatus) {
 					alert('Не удалось изменить город. Ошибка ' + xhr.status);
 				}
 			});
+			
+			$('#btn-add-city').click(function() {
+				$('#cities-filter').val('').change();
+				$('#add-name').val('');
+			});
+			
+			$('#cities-filter').change(function() {
+				var filter = $(this).val().trim().toLowerCase();
+				if (filter) {
+					$('#cities-table tbody tr').each(function() {
+						var tr = $(this);
+						if (tr.data('name').toLowerCase().indexOf(filter) != -1)
+							tr.show();
+						else
+							tr.hide();
+					});
+				}
+				else {
+					$('#cities-table tbody tr').show();
+				}
+				return false;
+			})
+			.keyup(function() { $(this).change(); });
 		});
 	</script>
 {% endblock %}
@@ -186,9 +198,10 @@
 				<tbody></tbody>
 			</table>
 		</div>
-		<div class="well right">
-			<a class="btn success right" href="#" data-controls-modal="city-modal"
-			data-backdrop="true" data-keyboard="true">Добавить город</a>
+		<div class="well">
+			<strong>Фильтр:</strong>&nbsp;&nbsp;<input type="text" class="span4" id="cities-filter" />
+			<a class="btn success float-right" href="#" data-controls-modal="city-modal"
+			data-backdrop="true" data-keyboard="true" id="btn-add-city">Добавить город</a>
 		</div>
 		<div id="city-modal" class="modal" style="display: none;">
 			<form id="form-city-add" method="post" action="{{ url_for('.ajax_orders_add_city') }}" class="validate">

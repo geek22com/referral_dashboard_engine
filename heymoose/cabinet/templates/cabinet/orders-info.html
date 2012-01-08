@@ -41,8 +41,12 @@
 <table class="key-value">
 	<tbody>
 		<tr><th>Баланс</th><td>{{ order.balance }}</td></tr>
+		{% if not g.user.referrer %}
 		<tr><th>CPA</th><td>{{ order.cpa }}</td></tr>
 		<tr><th>Разрешен отриц. баланс</th><td>{{ macros.to_icon(order.allow_negative_balance) }}</td></tr>
+		{% else %}
+		<tr><th>Стоимость клика</th><td>{{ order.cpa }}</td></tr>
+		{% endif %}
 	</tbody>
 </table>
 

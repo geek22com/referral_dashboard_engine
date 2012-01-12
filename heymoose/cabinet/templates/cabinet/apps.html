@@ -8,6 +8,7 @@
 	<table class="bordered-table zebra-striped">
 		<thead>
 			<tr>
+				<th class="header right">ИД</th>
 				<th class="header">Название</th>
 				<th class="header">Платформа</th>
 				<th class="header center">Создано</th>
@@ -17,6 +18,7 @@
 		<tbody>
 			{% for app in apps %}
 			<tr>
+				<td class="right">{{ app.id }}</td>
 				<td>{{ macros.app_href(app) }}</td>
 				<td>{{ app.platform }}</td>
 				<td class="center">{{ app.creation_time|datetimeformat }}</td>

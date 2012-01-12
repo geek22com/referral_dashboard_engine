@@ -28,10 +28,10 @@ def paginate(page, count, per_page):
 		plast = pcount
 	elif pfirst < 1:
 		pfirst = 1
-		plast = pfirst + 2 * zone
+		plast = min(pfirst + 2 * zone, pcount)
 	elif plast > pcount:
 		plast = pcount
-		pfirst = plast - 2 * zone
+		pfirst = max(1, plast - 2 * zone)
 	
 	return offset, limit, dict(current=page, count=pcount, 
 							range=range(pfirst, plast+1))

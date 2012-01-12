@@ -57,8 +57,8 @@
 			{{ macros.formfield(form.ordermale, class='span4') }}
 			{{ macros.formfield(form.orderminage, class='span4', placeholder='любой') }}
 			{{ macros.formfield(form.ordermaxage, class='span4', placeholder='любой') }}
-			{{ macros.formfield(form.orderminhour, class='span4', placeholder='0') }}
-			{{ macros.formfield(form.ordermaxhour, class='span4', placeholder='23') }}
+			{{ macros.formfield(form.orderminhour, class='span4', placeholder='начала суток') }}
+			{{ macros.formfield(form.ordermaxhour, class='span4', placeholder='конца суток') }}
 			{{ macros.formfield(form.ordercitiesfilter, class='span4') }}
 			{{ macros.formfield(form.ordercities, class='cities') }}
 		</fieldset>

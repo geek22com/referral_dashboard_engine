@@ -119,6 +119,11 @@ address strong {
 .nomargin { margin: 0; }
 .collapse {	border-collapse: collapse; }
 
+.underlined-header {
+	width: 100%;
+	border-bottom: 1px solid #EEE;
+}
+
 
 
 

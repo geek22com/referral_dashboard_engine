@@ -167,7 +167,13 @@ class Performer(BaseModel):
 				  'creation_time',
 				  'inviter',
 				  'male',
-				  'year']
+				  'year',
+				  'city']
+	
+	def link(self):
+		if self.platform == 'VKONTAKTE':
+			return 'http://vkontakte.ru/id{0}'.format(self.ext_id)
+		return ''
 	
 	
 class OrderShow(BaseModel):

@@ -35,4 +35,9 @@ def paginate(page, count, per_page):
 	
 	return offset, limit, dict(current=page, count=pcount, 
 							range=range(pfirst, plast+1))
+	
+	
+def dict_update_filled_params(d, **kwargs):
+	d.update(dict([(key, value) for key, value in kwargs.iteritems() if value is not None]))
+			
 		

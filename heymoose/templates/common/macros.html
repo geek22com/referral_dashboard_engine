@@ -115,8 +115,8 @@
 	{% else %}любые{% endif %}
 {% endmacro %}
 
-{% macro performer_gender(gender) %}
-{% if gender == True %}муж{% elif gender == False %}жен{% else %}неизв.{% endif %}
+{% macro performer_gender(gender, unknown='неизв.') %}
+{% if gender == True %}муж{% elif gender == False %}жен{% else %}{{ unknown|safe }}{% endif %}
 {% endmacro %}
 
 {% macro formfield(field, description='', pad_description=False) %}

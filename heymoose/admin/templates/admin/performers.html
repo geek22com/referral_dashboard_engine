@@ -5,15 +5,16 @@
 {% block tabcontent %}
 
 {% if performers %}
-	<table class="bordered-table zebra-striped">
+	<table class="bordered-table zebra-striped condensed-table">
 		<thead>
 			<tr>
 				<th class="header right">ИД</th>
 				<th class="header">UID</th>
 				<th class="header">Платформа</th>
-				<th class="header">Приглашение от</th>
+				{# <th class="header">Приглашение от</th> #}
 				<th class="header center">Год рожд.</th>
 				<th class="header center">Пол</th>
+				<th class="header">Город</th>
 				<th class="header center">Создан</th>
 			</tr>
 		</thead>
@@ -23,15 +24,16 @@
 				<td class="right"><a href="{{ url_for('.performers_info', id=performer.id) }}">{{ performer.id }}</a></td>
 				<td>{{ performer.ext_id }}</td>
 				<td>{{ performer.platform }}</td>
-				<td>
+				{# <td>
 					{% if performer.inviter %}
 						{{ macros.performer_href(performer.inviter) }}
 					{% else %}
 						&mdash;
 					{% endif %}
-				</td>
-				<td class="center">{{ performer.year|default('неизв.', true) }}</td>
-				<td class="center">{{ macros.performer_gender(performer.male) }}</td>
+				</td> #}
+				<td class="center">{{ performer.year|default('&mdash;', true)|safe }}</td>
+				<td class="center">{{ macros.performer_gender(performer.male, unknown='&mdash;') }}</td>
+				<td>{{ performer.city|default('&mdash;', true)|safe }}</td>
 				<td class="center">{{ performer.creation_time|datetimeformat }}</td>
 			</tr>
 			{% endfor %}

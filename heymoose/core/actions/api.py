@@ -1,5 +1,6 @@
 from heymoose.core.rest import get
 from heymoose.core.actions.apps import get_app
+from heymoose.utils.shortcuts import dict_update_filled_params
 import hashlib
 
 resource_path = "/api"
@@ -8,12 +9,12 @@ def signed_params(params, secret):
 	keys = params.keys()[:]
 	keys.sort()
 	
-	result = ''
+	result = u''
 	for key in keys:
-		result += '{0}={1}'.format(key, str(params[key]))
+		result += u'{0}={1}'.format(key, unicode(params[key]))
 		
 	m = hashlib.md5()
-	m.update(result + secret)
+	m.update((result + secret).encode('utf-8'))
 	return m.hexdigest()
 
 def api_get(params, secret):
@@ -42,14 +43,10 @@ def get_offers(app_id, uid, filter, hour=None, secret=None):
 	if hour is not None: params.update(hour=hour)
 	return api_get(params, secret)
 
-def introduce_performer(app_id, uid, sex, year, secret=None):
+def introduce_performer(app_id, uid, sex=None, year=None, city=None, secret=None):
 	if secret is None: secret = get_app(app_id).secret
-	params = dict(
-		method='introducePerformer',
-		app_id=app_id,
-		uid=uid,
-		sex=sex,
-		year=year)
+	params = dict(method='introducePerformer', app_id=app_id, uid=uid)
+	dict_update_filled_params(params, sex=sex, year=year, city=city)
 	return api_get(params, secret)
 	
 	

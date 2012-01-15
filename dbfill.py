@@ -162,6 +162,7 @@ def fill_db():
 					uid=performer.ext_id,
 					sex=random.choice(['MALE', 'FEMALE']),
 					year=random.randint(1970, 2006),
+					city=random.choice(cities).name,
 					secret=app.secret)
 				
 	# Generate some random shows for offers

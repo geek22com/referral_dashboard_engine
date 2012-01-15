@@ -7,7 +7,17 @@
 	<thead></thead>
 	<tbody>
 		<tr><th>UID</th><td>{{ performer.ext_id }}</td></tr>
-		<tr><th>Платформа</th><td>{{ performer.platform }}</td></tr>
+		<tr>
+			<th>Платформа</th>
+			<td>
+				{{ performer.platform }}
+				{% with link = performer.link() %}
+				{% if link %}
+				(<a href="{{ link }}">{{ link }}</a>)
+				{% endif %}
+				{% endwith %}
+			</td>
+		</tr>
 		<tr>
 			<th>Приглашение от</th>
 			<td>
@@ -28,6 +38,7 @@
 	<tbody>
 		<tr><th>Год рождения</th><td>{{ performer.year|default('неизв.', true) }}</td></tr>
 		<tr><th>Пол</th><td>{{ macros.performer_gender(performer.male) }}</td></tr>
+		<tr><th>Город</th><td>{{ performer.city|default('неизв.', true) }}</td></tr>
 	</tbody>
 </table>
 

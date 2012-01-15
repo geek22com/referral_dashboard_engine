@@ -118,7 +118,8 @@ def performer_from_xml(performer_element):
 				creation_time=datetime_from_api(get_value(performer_element, 'creation-time')),
 				inviter=performer_from_xml(get_child(performer_element, 'inviter')),
 				male=get_value(performer_element, 'male', bool),
-				year=get_value(performer_element, 'year', int))
+				year=get_value(performer_element, 'year', int),
+				city=get_value(performer_element, 'city'))
 	
 	
 def order_show_from_xml(show_element):

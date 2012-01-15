@@ -56,8 +56,9 @@
 	<a href="{{ url_for('.users_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
 {% endmacro %}
 
-{% macro performer_href(performer) %}
-	<a href="{{ url_for('.performers_info', id=performer.id) }}">{{ performer.ext_id }} ({{ performer.platform }})</a>
+{% macro performer_href(performer, show_platform=True) %}
+	<a href="{{ url_for('.performers_info', id=performer.id) }}">{{ performer.ext_id }}
+		{% if show_platform -%}({{ performer.platform }}){% endif -%}</a>
 {% endmacro %}
 
 {% macro order_href(order) %}

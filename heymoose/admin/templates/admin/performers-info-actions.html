@@ -1,4 +1,5 @@
 {% extends "admin/performers-info-layout.html" %}
+{% import "common/actions.html" as action_macros %}
 
 {% block breadcrumbs %}
 	{{ super() }}
@@ -14,34 +15,7 @@
 {% block tabcontent %}
 
 {% if actions %}
-	<table class="bordered-table zebra-striped">
-		<thead>
-			<tr>
-				<th class="header right">ИД</th>
-				<th class="header">Заказ</th>
-				<th class="header">Приложение</th>
-				<th class="header center">Окончено</th>
-				<th class="header center">Создано</th>
-				<th class="header center">Подтверждено</th>
-				<th class="header right">Попытки</th>
-				<th class="header center">Уд.</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for action in actions %}
-			<tr>
-				<td class="right"><a href="{{ url_for('.actions_info', id=action.id) }}">{{ action.id }}</a></td>
-				<td>{{ macros.order_href(action.order) }}</td>
-				<td>{{ macros.app_href(action.app) }}</td>
-				<td class="center">{{ macros.to_icon(action.done) }}</td>
-				<td class="center">{{ action.creation_time|datetimeformat }}</td>
-				<td class="center">{{ action.approve_time|datetimeformat }}</td>
-				<td class="right">{{ action.attempts }}</td>
-				<td class="center">{{ macros.deleted(action.deleted) }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	{{ action_macros.table(actions, show_performer=False) }}
 	{{ macros.paginate(pages, '.performers_info_actions', id=performer.id) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">

@@ -1,0 +1,39 @@
+{% import 'common/macros.html' as macros %}
+
+{% macro table(actions, show_performer=True, show_order=True, show_app=True) %}
+<div class="autoscroll-area-x">
+	<table class="bordered-table zebra-striped condensed-table">
+		<thead>
+			<tr>
+				<th class="header right">ИД</th>
+				{% if show_performer %}<th class="header">Исполнитель</th>{% endif %}
+				{% if show_order %}<th class="header">Заказ</th>{% endif %}
+				{% if show_app %}<th class="header">Приложение</th>{% endif %}
+				<th class="header center">Создано</th>
+				<th class="header center">Подтв.</th>
+				<th class="header center">Оконч.</th>
+				{# <th class="header right">Попытки</th> #}
+				{# <th class="header center">Уд.</th> #}
+			</tr>
+		</thead>
+		<tbody>
+			{% for action in actions %}
+			<tr>
+				<td class="right">
+					{% if action.deleted %}(-){% endif %}
+					<a href="{{ url_for('.actions_info', id=action.id) }}">{{ action.id }}</a>
+				</td>
+				{% if show_performer %}<td>{{ macros.performer_href(action.performer, False) }}</td>{% endif %}
+				{% if show_order %}<td>{{ macros.order_href(action.order) }}</td>{% endif %}
+				{% if show_app %}<td>{{ macros.app_href(action.app) }}</td>{% endif %}
+				<td class="center">{{ action.creation_time|datetimeformat }}</td>
+				<td class="center">{{ macros.to_icon(action.approve_time) }}</td>
+				<td class="center">{{ macros.to_icon(action.done) }}</td>
+				{# <td class="right">{{ action.attempts }}</td> #}
+				{# <td class="center">{{ macros.deleted(action.deleted) }}</td> #}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endmacro %}

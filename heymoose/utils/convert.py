@@ -11,11 +11,16 @@ def datetime_from_api(dt):
 	without_tz = dt[:-1] if dt.endswith('Z') else dt[:-6]
 	return datetime.strptime(without_tz, '%Y-%m-%dT%H:%M:%S.%f')
 
+def datetime_from_unixtime(dt, msec=False):
+	if dt is None: return None
+	return datetime.fromtimestamp(dt / 1000 if msec else dt)
+
 def to_datetime(value):
 	return datetime.strptime(str(value), datetime_format)
 
-def to_unixtime(value):
-	return int(time.mktime(value.timetuple()))
+def to_unixtime(value, msec=False):
+	result = int(time.mktime(value.timetuple()))
+	return result * 1000 if msec else result
 
 def to_unixtime_utc(value):
 	return calendar.timegm(value.timetuple())

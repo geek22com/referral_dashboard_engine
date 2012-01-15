@@ -179,3 +179,12 @@ class Performer(BaseModel):
 class OrderShow(BaseModel):
 	attributes = ['id',
 				  'show_time']
+	
+	
+class StatCtr(BaseModel):
+	attributes = ['time', 'shows', 'actions', 'ctr']
+
+
+
+
+

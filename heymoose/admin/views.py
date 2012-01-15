@@ -323,12 +323,12 @@ def ajax_orders_enable_city():
 @bp.route('/orders/<int:id>/stats/q/ctr/')
 def ajax_orders_info_stats_ctr(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)
-	return json_get_ctr(offerId=order.offer_id)
+	return json_get_ctr(offer_id=order.offer_id)
 
 @bp.route('/apps/<int:id>/stats/q/ctr/')
 def ajax_apps_info_stats_ctr(id):
 	app = do_or_abort(a.apps.get_app, id, full=True)
-	return json_get_ctr(appId=app.id)
+	return json_get_ctr(app_id=app.id)
 
 @bp.route('/users/invites/q/get/')
 def ajax_get_invite():

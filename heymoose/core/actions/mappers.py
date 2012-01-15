@@ -1,6 +1,7 @@
 from heymoose.core.actions.base import get_value, get_attr, get_child
-from heymoose.core.data import User, App, Order, BannerSize, Banner, City, Action, Performer, OrderShow
-from heymoose.utils.convert import datetime_from_api
+from heymoose.core.data import User, App, Order, BannerSize, Banner, City, Action, Performer, \
+	OrderShow, StatCtr
+from heymoose.utils.convert import datetime_from_api, datetime_from_unixtime
 
 def role_from_xml(role_element):
 	if role_element is None: return None
@@ -126,6 +127,16 @@ def order_show_from_xml(show_element):
 	if show_element is None: return None
 	return OrderShow(id=get_attr(show_element, 'id', int),
 				show_time=datetime_from_api(show_element.text))
+	
+	
+def stat_ctr_from_xml(stat_element):
+	if stat_element is None: return None
+	return StatCtr(
+		shows=get_attr(stat_element, 'shows', int),
+		actions=get_attr(stat_element, 'actions', int),
+		ctr=get_attr(stat_element, 'ctr', float),
+		time=datetime_from_unixtime(get_attr(stat_element, 'time', float), True)
+	)
 	
 	
 def count_from_xml(count_element):

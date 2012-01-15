@@ -13,7 +13,10 @@
 						document.getElementById('chart-ctr'));
 				},
 				error: function(xhr, textStatus) {
-					alert('Ошибка ' + xhr.status + ': ' + xhr.responseText);
+					if (xhr.status == 500)
+						alert('Не удалось загрузить статистику. Ошибка ' + xhr.status);
+					else
+						alert('Ошибка ' + xhr.status + ': ' + xhr.responseText);
 				}
 			});
 		}
@@ -41,10 +44,10 @@
 			по <input class="span3 datetimepicker" type="text" name="to" value="{{ now()|datetime_nosec }}" />
 			группировать по
 			<select class="span3" name="group">
-				<option value="minute">минутам</option>
 				<option value="hour" selected="selected">часам</option>
 				<option value="day">дням</option>
 				<option value="month">месяцам</option>
+				<option value="year">годам</option>
 			</select>
 			<button id="btn-show" class="btn primary float-right">Показать</button>
 		</form>

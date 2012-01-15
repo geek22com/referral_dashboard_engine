@@ -121,7 +121,7 @@
 {% endmacro %}
 
 {% macro formfield(field, description='', pad_description=False) %}
-	<div class="clearfix {% if field.errors %}error{% endif %}">
+	<div class="{{ field.id }}-field clearfix {% if field.errors %}error{% endif %}">
 		{% for validator in field.validators %}
 			{% if validator|classname in ('Required', 'FileRequired') %}
 				{{ kwargs|addclass('validate-required') }}

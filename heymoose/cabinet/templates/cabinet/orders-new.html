@@ -24,6 +24,12 @@
 				searchingText: 'Поиск...'
 			});
 			
+			$('.ordercities-field').hide();
+			$('.ordercitiesfilter-field').find('select').change(function() {
+				var $field = $(this).closest('form').find('.ordercities-field');
+				if (!$(this).val()) $field.hide('fast'); else $field.show('fast');
+			});
+			
 			$('form').bind('keypress', function(e) { if (e.keyCode == 13) return false; });
 		});
 	</script>

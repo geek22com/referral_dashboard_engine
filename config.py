@@ -2,10 +2,15 @@ import os
 
 # configuration
 HOST = '127.0.0.1'
-DEBUG = False
+DEBUG = True
 SECRET_KEY = 'lola pola_mola_cola'
 RESTAPI_SERVER = 'http://localhost:5468'
 USE_DATABASE = True
+
+# Restkit configuration
+RESTKIT_TIMEOUT = 10
+RESTKIT_MAX_TRIES = 5
+RESTKIT_LOG_LEVEL = 'info'
 
 THIS_PATH = os.path.realpath(os.path.dirname(__file__))
 UPLOAD_PATH = '/usr/share/nginx/uwsgi_upload'

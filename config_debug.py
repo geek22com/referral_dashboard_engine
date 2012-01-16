@@ -6,6 +6,11 @@ SECRET_KEY = 'lola pola_mola_cola'
 RESTAPI_SERVER = 'http://localhost:5468'
 USE_DATABASE = True
 
+# Restkit configuration
+RESTKIT_TIMEOUT = 5
+RESTKIT_MAX_TRIES = 1
+RESTKIT_LOG_LEVEL = 'info'
+
 THIS_PATH = os.path.realpath(os.path.dirname(__file__))
 UPLOAD_PATH = os.path.join(os.path.dirname(THIS_PATH), 'upload')
 

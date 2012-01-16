@@ -13,7 +13,7 @@
 						document.getElementById('chart-ctr'));
 				},
 				error: function(xhr, textStatus) {
-					if (xhr.status == 500)
+					if (xhr.status != 400)
 						alert('Не удалось загрузить статистику. Ошибка ' + xhr.status);
 					else
 						alert('Ошибка ' + xhr.status + ': ' + xhr.responseText);

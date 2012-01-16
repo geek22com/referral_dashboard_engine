@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from heymoose.utils.workers import app_logger, app_error
-from restkit import request
+from restkit import request, set_logging
 from restkit import Resource
 from restkit import forms
 from functools import  partial
@@ -10,14 +10,15 @@ from heymoose import config
 import sys
 from lxml import etree
 
-TIMEOUT = 1
-
 URL_BASE = config.get('RESTAPI_SERVER')
+TIMEOUT = config.get('RESTKIT_TIMEOUT', 5)
+MAX_TRIES = config.get('RESTKIT_MAX_TRIES', 5)
+LOG_LEVEL = config.get('RESTKIT_LOG_LEVEL', 'info')
 TEST_PORT = 9345
+set_logging(LOG_LEVEL)
 
 def create_resource(base=URL_BASE):
-	return Resource(base,
-	                timeout=TIMEOUT)
+	return Resource(base, timeout=TIMEOUT, max_tries=MAX_TRIES)
 
 def exec_request(http_call):
 	try:

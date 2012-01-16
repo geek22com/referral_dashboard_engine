@@ -2,7 +2,7 @@ function drawCtrCharts(values, elemClicks, elemCtr) {
 	var dt = new google.visualization.DataTable();
 	dt.addColumn('string', 'Время');
 	dt.addColumn('number', 'Сотен показов');
-	dt.addColumn('number', 'Клики');
+	dt.addColumn('number', 'Кликов');
 	dt.addRows(values.length);
 	
 	var dtc = new google.visualization.DataTable();

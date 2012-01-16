@@ -26,6 +26,12 @@ def begin_of_month(d):
 def end_of_month(d):
 	return begin_of_month(d) + relativedelta(months=+1, microseconds=-1)
 
+def begin_of_year(d):
+	return d.replace(microsecond=0, second=0, minute=0, hour=0, day=1, month=1)
+
+def end_of_year(d):
+	return begin_of_year(d) + relativedelta(years=+1, microseconds=-1)
+
 
 def delta(value, **kwargs):
 	return value + relativedelta(**kwargs)

@@ -19,27 +19,29 @@ def json_get_ctr(**kwargs):
 		return u'Неверно указана группировка', 400
 	
 	if group == 'hour':
-		replacer = lambda d: d.replace(minute=0)
+		replacer = times.begin_of_hour
 		formatter = lambda d: d.strftime('%d.%m.%y') if d.hour == 0 else d.strftime('%H:00')
 		freq = times.HOURLY
 	elif group == 'day':
-		replacer = lambda d: d.replace(minute=0, hour=0)
+		replacer = times.begin_of_day
 		formatter = lambda d: d.strftime('%d.%m.%y')
 		freq = times.DAILY
 	elif group == 'month':
-		replacer = lambda d: d.replace(minute=0, hour=0, day=1)
-		formatter = lambda d: d.strftime('%m.%y')
+		replacer = times.begin_of_month
+		formatter = lambda d: d.strftime('%m.%Y')
 		freq = times.MONTHLY
 	elif group == 'year':
-		replacer = lambda d: d.replace(minute=0, hour=0, day=1, month=1)
-		formatter = lambda d: d.strftime('%y')
+		replacer = times.begin_of_year
+		formatter = lambda d: d.strftime('%Y')
 		freq = times.YEARLY
 		
-	fm = replacer(fm); to = replacer(to)
-	keys = times.datetime_range(freq, dtstart=fm, until=to)
-	values = dict([(key, (0, 0, 0.0)) for key in keys])
+	#fm = replacer(fm)
+	#to = replacer(to)
 	stats = actions.stats.get_stats_ctr(fm, to, group, **kwargs)
+	keys = times.datetime_range(freq, dtstart=replacer(fm), until=replacer(to))
+	values = dict([(key, (0, 0, 0.0)) for key in keys]) # if len(stats) != len (keys) else dict()
 	for stat in stats:
+		print stat.time
 		values[stat.time] = (stat.shows, stat.actions, stat.ctr)
 	
 	result = [dict(time=formatter(key), shows=value[0], clicks=value[1], ctr=value[2]) \

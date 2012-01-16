@@ -45,6 +45,9 @@ dev-undeploy:
 # Runs development server using Python interpreter in virtual environment
 dev-run:
 	$(ENV_PY) runserver.py
+	
+dev-debug:
+	$(ENV_PY) -m pdb runserver.py
 
 dev-reset:
 	sudo -u postgres psql -c "drop database heymoose;"

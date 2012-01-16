@@ -68,6 +68,12 @@ dl.features dt {
 dl.features dd {
 	margin-left: 20px;
 }
+.features li {
+	padding-top: 10px;
+	color: #404040;
+}
+
+
 .btn.top-margin { margin-top: 10px; }
 
 .widelabels label {	width: 200px;}

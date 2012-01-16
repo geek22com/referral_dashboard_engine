@@ -16,9 +16,18 @@ def index():
 	return render_template('site/index.html')
 
 
-@bp.route('/about')
+#@bp.route('/about')
 def about():
+	'''Deprecated'''
 	return render_template('site/about.html')
+
+@bp.route('/customers')
+def customers():
+	return render_template('site/to-customer.html')
+
+@bp.route('/developers')
+def developers():
+	return render_template('site/to-developer.html')
 
 
 @bp.route('/contacts', methods=['GET', 'POST'])

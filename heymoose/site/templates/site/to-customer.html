@@ -1,0 +1,81 @@
+{% extends "site/layout.html" %}
+
+{% block title %}Рекламодателям{% endblock %}
+
+{% set activemenu = "customers" %}
+
+{% block pageheader %}
+<h1>Рекламодателям</h1>
+{% endblock %}
+
+{% block content %}
+
+<h2>Платформы для размещения рекламы</h2>
+
+<object width="900" height="200" type="application/x-shockwave-flash" 
+	data="{{ url_for('.static', filename='./flash/platforms.swf') }}"></object>
+
+<h2>Расположение и виды баннеров</h2>
+
+<div class="row">
+	<div class="span10">
+		<img src="{{ url_for('static', filename='./img/banners.jpg') }}" alt="баннеры" />
+	</div>
+	<div class="span4">
+		<h3>Размеры баннеров:</h3>
+		<ul class="features">
+			<li>120 x 600</li>
+			<li>300 x 250</li>
+			<li>468 x 60</li>
+			<li>728 x 90</li>
+			<li>и др.</li>
+		</ul>
+	</div>
+</div>
+
+<h2>Приложения, использующие HeyMoose</h2>
+
+<div class="row" style="padding: 20px 0px;">
+	<div class="span4 center" style="width: 220px;">
+		<a href="http://vkontakte.ru/kroko">
+			<div style="height: 180px; vertical-align: middle;">
+				<img height="100%" src="{{ url_for('static', filename='./img/apps/krokodil.png') }}" alt="Крокодил" />
+			</div>
+			Крокодил (ВКонтакте)
+		</a>
+	</div>
+	<div class="span4 center" style="width: 200px;">
+		<a href="http://vkontakte.ru/app1947272">
+			<div style="height: 180px; vertical-align: middle;">
+				<img height="100%" src="{{ url_for('static', filename='./img/apps/durak.png') }}" alt="В Дурака" />
+			</div>
+			В Дурака (ВКонтакте)
+		</a>
+	</div>
+	<div class="span4 center" style="width: 220px;">
+		<a href="http://vkontakte.ru/app1950406">
+			<div style="height: 180px; vertical-align: middle;">
+				<img height="100%" src="{{ url_for('static', filename='./img/apps/melody.png') }}" alt="Угадай мелодию" />
+			</div>
+			Угадай мелодию (ВКонтакте)
+		</a>
+	</div>
+	<div class="span3 center" style="width: 200px;">
+		<a href="http://my.mail.ru/apps/654386">
+			<div style="height: 180px; vertical-align: middle;">
+				<img height="100%" src="{{ url_for('static', filename='./img/apps/kornemania.png') }}" alt="Корнемания" />
+			</div>
+			Корнемания (Мой Мир)
+		</a>
+	</div>
+</div>
+
+<h2>и многое другое...</h2>
+
+
+<div class="alert-message block-message info">
+      <h4>Свяжитесь с нами</h4>
+      <p>Станьте участником системы HeyMoose. Мы поможем вам найти качественный и недорогой трафик.</p>
+      <p><strong><a href="{{ url_for('.contacts') }}" class="btn top-margin">Контакты</a></strong></p>
+</div>
+{% endblock %}

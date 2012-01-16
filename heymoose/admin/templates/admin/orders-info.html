@@ -48,7 +48,7 @@
 		<tr><th>Название</th><td>{{ order.title }}</td></tr>
 		<tr><th>Тип</th><td>{{ macros.order_type(order.type) }}</td></tr>
 		<tr><th>Заказчик</th><td>{{ macros.user_href(order.user) }}</td></tr>
-		<tr><th>URL</th><td><a href="{{ order.url }}">{{ order.url }}</a></td></tr>
+		<tr><th>URL</th><td><a href="{{ order.url }}" target="_blank">{{ order.url }}</a></td></tr>
 		<tr><th>Создан</th><td>{{ order.creation_time|datetimeformat }}</td></tr>
 		<tr><th>Активен</th><td id="icon-enabled">{{ macros.to_icon(not order.disabled) }}</td></tr>
 		<tr><th>Авто-подтверждение</th><td>{{ macros.to_icon(order.auto_approve) }}</td></tr>

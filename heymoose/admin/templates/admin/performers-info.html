@@ -13,7 +13,7 @@
 				{{ performer.platform }}
 				{% with link = performer.link() %}
 				{% if link %}
-				(<a href="{{ link }}">{{ link }}</a>)
+				(<a href="{{ link }}" target="_blank">{{ link }}</a>)
 				{% endif %}
 				{% endwith %}
 			</td>

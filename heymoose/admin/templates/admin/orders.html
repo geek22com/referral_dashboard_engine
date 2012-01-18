@@ -53,8 +53,8 @@
 					<td>{{ macros.order_href(order) }}</td>
 					<td>{{ macros.order_type(order.type) }}</td>
 					<td>{{ macros.user_href(order.user) }}</td>
-					<td class="right">{{ order.balance }}</td>
-					<td class="right">{{ order.cpa }}</td>
+					<td class="right">{{ order.balance|currency(False) }}</td>
+					<td class="right">{{ order.cpa|currency(False) }}</td>
 					<td>{{ macros.order_gender(order.male)}}</td>
 					<td>{{ macros.order_age(order.min_age, order.max_age) }}</td>
 					<td class="center">{{ order.creation_time|datetimeformat }}</td>

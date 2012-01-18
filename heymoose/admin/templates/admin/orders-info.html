@@ -78,8 +78,8 @@
 <h2>Счет и ставки</h2>
 <table class="key-value">
 	<tbody>
-		<tr><th>Баланс</th><td>{{ order.balance }}</td></tr>
-		<tr><th>CPA</th><td>{{ order.cpa }}</td></tr>
+		<tr><th>Баланс</th><td>{{ order.balance|currency }}</td></tr>
+		<tr><th>CPA</th><td>{{ order.cpa|currency }}</td></tr>
 		<tr><th>Разрешен отриц. баланс</th><td>{{ macros.to_icon(order.allow_negative_balance) }}</td></tr>
 	</tbody>
 </table>

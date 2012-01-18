@@ -51,7 +51,7 @@
 					</span>
 				</td>
 				<td class="right">{{ transaction.balance }}</td>
-				<td>{{ transaction.description }}</td>
+				<td>{{ transaction.description|default('&mdash;', True)|safe }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

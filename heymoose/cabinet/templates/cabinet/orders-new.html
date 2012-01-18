@@ -56,7 +56,7 @@
 				</select>
 			</div>
 		</div>
-		{% set yourbalance = 'Ваш баланс {0} руб'.format(g.user.customer_account.balance) %}
+		{% set yourbalance = 'Ваш баланс {0} у.е.'.format(g.user.customer_account.balance) %}
 		{% with form = rform %}
 		<div id="container-regular" class="form-container" style="display: none;">
 			<form id="form-order-regular" action="" method="post" enctype="multipart/form-data" class="widelabels validate">

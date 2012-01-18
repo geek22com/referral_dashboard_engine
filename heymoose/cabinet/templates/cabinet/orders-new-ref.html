@@ -37,7 +37,7 @@
 
 {% if g.user.customer_account.balance > 0 %}
 	<div class="widelabels">
-		{% set yourbalance = 'Ваш баланс {0} руб'.format(g.user.customer_account.balance) %}
+		{% set yourbalance = 'Ваш баланс {0} у.е.'.format(g.user.customer_account.balance) %}
 		<div id="container-banner" class="form-container">
 			<form id="form-order-banner" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
 				<fieldset>

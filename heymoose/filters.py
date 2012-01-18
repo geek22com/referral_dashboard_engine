@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
 from heymoose import app
 from heymoose.utils import times, convert
 from datetime import datetime
 import base64
+
+currency_sign = app.config.get('CURRENCY_SIGN')
 
 def error_type(value, type):
 	return filter(lambda x: x[0] == type, value) if value else None
@@ -43,6 +46,9 @@ def attrlist(values, attr):
 	return [getattr(value, attr) for value in values]
 
 
+def currency(value, sign=True):
+	return (u'%.2f' % value) + (u' ' + currency_sign if sign else u'')
+
 app.jinja_env.filters['error_type'] = error_type
 app.jinja_env.filters['datetimeformat'] = datetimeformat
 app.jinja_env.filters['datetime_nosec'] = datetime_nosec
@@ -53,5 +59,7 @@ app.jinja_env.filters['addclass'] = addclass
 app.jinja_env.filters['classname'] = classname
 app.jinja_env.filters['attrlist'] = attrlist
 app.jinja_env.filters['delta'] = times.delta
+app.jinja_env.filters['currency'] = currency
 
 app.jinja_env.globals['now'] = datetime.now
+app.jinja_env.globals['currency_sign'] = currency_sign

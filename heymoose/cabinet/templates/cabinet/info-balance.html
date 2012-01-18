@@ -11,27 +11,32 @@
 
 <h2>Пополнение счета</h2>
 
-<p>
-	Платеж производится в условных единицах (1 у.е. ~ 1 руб.). Введенная сумма будет округлена
-	до двух десятичных знаков. Минимальный размер платежа &mdash; 1 у.е., максимальный &mdash;
-	60 000 000 у.е.
-</p>
-<p>
-	После того, как вы укажете сумму платежа и нажмете кнопку &laquo;Пополнить счет&raquo;,
-	вы будете перенаправлены на сайт платежной системы
-	<a href="http://robokassa.ru/" target="_blank">RoboKassa</a>, где сможете выбрать удобный
-	для вас способ оплаты.
-</p>
-
-<div class="form-container">
-	<form id="form-balance-pay" action="" method="post" class="widelabels validate">
-		<fieldset>
-			{{ macros.formfield(form.amount, class='span4') }}
-		</fieldset>
-		<div class="actions">
-			<input class="btn primary" type="submit" value="Пополнить баланс"/>
+<div class="row">
+	<div class="span8">
+		<div class="form-container">
+			<form id="form-balance-pay" action="" method="post" class="validate">
+				<fieldset>
+					{{ macros.formfield(form.amount, class='span4') }}
+				</fieldset>
+				<div class="input">
+					<input class="btn primary" type="submit" value="Пополнить баланс"/>
+				</div>
+			</form>
 		</div>
-	</form>
+	</div>
+	<div class="span7">
+		<p>
+			Платеж производится в условных единицах (1 у.е. ~ 1 руб.). Введенная сумма будет округлена
+			до двух десятичных знаков. Минимальный размер платежа &mdash; 1 у.е., максимальный &mdash;
+			<nobr>60 000 000 у.е.</nobr>
+		</p>
+		<p>
+			После того, как вы укажете сумму платежа и нажмете кнопку &laquo;Пополнить счет&raquo;,
+			вы будете перенаправлены на сайт платежной системы
+			<a href="http://robokassa.ru/" target="_blank">RoboKassa</a>, где сможете выбрать удобный
+			для вас способ оплаты.
+		</p>
+	</div>
 </div>
 
 <h2>История платежей</h2>
@@ -42,7 +47,7 @@
 			<tr>
 				<th class="header right minimal-width">#</th>
 				<th class="header right" style="width: 20%;">Изменение</th>
-				<th class="header right" style="width: 20%;">Баланс</th>
+				<th class="header right" style="width: 20%;">Баланс, {{ currency_sign }}</th>
 				<th class="header">Комментарий</th>
 			</tr>
 		</thead>
@@ -52,10 +57,10 @@
 				<td class="right">{{ transaction.id }}</td>
 				<td class="right">
 					<span class="transaction-{% if transaction.diff < 0 -%}minus{% else -%}plus{% endif -%}">
-						{{ transaction.diff }}
+						{{ transaction.diff|currency(False) }}
 					</span>
 				</td>
-				<td class="right">{{ transaction.balance }}</td>
+				<td class="right">{{ transaction.balance|currency(False) }}</td>
 				<td>{{ transaction.description|default('&mdash;', True)|safe }}</td>
 			</tr>
 			{% endfor %}

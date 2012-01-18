@@ -44,7 +44,7 @@
 
 {% block tabcontent %}
 
-{% if g.user.customer_balance > 0 %}
+{% if g.user.customer_account.balance > 0 %}
 	<div class="widelabels">
 		<div class="well clearfix">
 			<label for="ordertype" class="bold">Выберите тип заказа</label>
@@ -56,7 +56,7 @@
 				</select>
 			</div>
 		</div>
-		{% set yourbalance = 'Ваш баланс {0} руб'.format(g.user.customer_balance) %}
+		{% set yourbalance = 'Ваш баланс {0} руб'.format(g.user.customer_account.balance) %}
 		{% with form = rform %}
 		<div id="container-regular" class="form-container" style="display: none;">
 			<form id="form-order-regular" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
@@ -65,7 +65,7 @@
 					{{ macros.formfield(form.ordername, class='span10') }}
 					{{ macros.formfield(form.orderdesc, class='span10', rows=5) }}
 					{{ macros.formfield(form.orderurl, class='span10') }}
-					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance, description=yourbalance) }}
+					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_account.balance, description=yourbalance) }}
 					{{ macros.formfield(form.ordercpa, class='span4') }}
 					{{ macros.formfield(form.orderallownegativebalance) }}
 					{{ macros.formfield(form.orderautoapprove) }}
@@ -96,7 +96,7 @@
 					<input type="hidden" name="ordertype" value="BANNER" />
 					{{ macros.formfield(form.ordername, class='span10') }}
 					{{ macros.formfield(form.orderurl, class='span10') }}
-					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance, description=yourbalance) }}
+					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_account.balance, description=yourbalance) }}
 					{{ macros.formfield(form.ordercpa, class='span4') }}
 					{{ macros.formfield(form.orderallownegativebalance) }}
 					{{ macros.formfield(form.orderautoapprove) }}
@@ -132,7 +132,7 @@
 					{{ macros.formfield(form.ordername, class='span10') }}
 					{{ macros.formfield(form.orderurl, class='span10') }}
 					{{ macros.formfield(form.ordervideourl, class='span10') }}
-					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance, description=yourbalance) }}
+					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_account.balance, description=yourbalance) }}
 					{{ macros.formfield(form.ordercpa, class='span4') }}
 					{{ macros.formfield(form.orderallownegativebalance) }}
 					{{ macros.formfield(form.orderautoapprove) }}

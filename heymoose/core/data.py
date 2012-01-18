@@ -35,9 +35,9 @@ class User(BaseModel):
 	              'password_hash',
 	              'nickname',
 	              'orders',
-	              'customer_balance',
                   'customer_secret',
-	              'developer_balance',
+	              'customer_account',
+	              'developer_account',
 	              'apps',
 	              'roles',
 	              'referrer',
@@ -62,6 +62,10 @@ class User(BaseModel):
 		data = '{0}${1}'.format(self.id, salt)
 		data = '{0:X<16}'.format(data)
 		return gen.aes_base16_encrypt(key, data).lower()
+	
+	
+class Account(BaseModel):
+	attributes = ['id', 'balance']
 	
 	
 class OrderTypes:

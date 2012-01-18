@@ -35,16 +35,17 @@
 
 {% block tabcontent %}
 
-{% if g.user.customer_balance > 0 %}
+{% if g.user.customer_account.balance > 0 %}
 	<div class="widelabels">
-		{% set yourbalance = 'Ваш баланс {0} руб'.format(g.user.customer_balance) %}
+		{% set yourbalance = 'Ваш баланс {0} руб'.format(g.user.customer_account.balance) %}
 		<div id="container-banner" class="form-container">
 			<form id="form-order-banner" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
 				<fieldset>
 					<input type="hidden" name="ordertype" value="BANNER" />
 					{{ macros.formfield(form.ordername, class='span10') }}
 					{{ macros.formfield(form.orderurl, class='span10') }}
-					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_balance, description=yourbalance) }}
+					{{ macros.formfield(form.orderbalance, class='span4', 
+						max_range=g.user.customer_account.balance, description=yourbalance) }}
 					{{ macros.formfield(form.ordercpa, class='span4') }}
 				</fieldset>
 				<fieldset>

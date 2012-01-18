@@ -25,9 +25,9 @@
 				<td>{{ user.email }}</td>
 				<td class="right">
 					{% if user.is_customer() %}
-						{{ user.customer_balance }}
+						{{ user.customer_account.balance }}
 					{% elif user.is_developer() %}
-						{{ user.developer_balance }}
+						{{ user.developer_account.balance }}
 					{% else %}
 						&mdash;
 					{% endif %}

@@ -1,6 +1,6 @@
 from heymoose.core.actions.base import get_value, get_attr, get_child
 from heymoose.core.data import User, App, Order, BannerSize, Banner, City, Action, Performer, \
-	OrderShow, StatCtr, Account
+	OrderShow, StatCtr, Account, Transaction
 from heymoose.utils.convert import datetime_from_api, datetime_from_unixtime
 
 def role_from_xml(role_element):
@@ -101,6 +101,13 @@ def account_from_xml(account_element):
 	if account_element is None: return None
 	return Account(id=get_attr(account_element, 'id', int),
 				balance=get_value(account_element, 'balance', float))
+	
+def transaction_from_xml(transaction_element):
+	if transaction_element is None: return None
+	return Transaction(id=get_attr(transaction_element, 'id', int),
+				diff=get_value(transaction_element, 'diff', float),
+				balance=get_value(transaction_element, 'balance', float),
+				description=get_value(transaction_element, 'description'))
 
 def action_from_xml(action_element):
 	if action_element is None: return None

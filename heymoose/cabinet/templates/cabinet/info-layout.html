@@ -25,6 +25,9 @@
 
 <ul class="tabs">
 	<li id="tab-info"><a href="{{ url_for('.info') }}">Общее</a></li>
+	{% if g.user.is_customer() %}
+	<li id="tab-balance"><a href="{{ url_for('.info_balance') }}">Платежи</a></li>
+	{% endif %}
 	<li id="tab-password"><a href="{{ url_for('.info_password_change') }}">Изменить пароль</a></li>
 </ul>
 

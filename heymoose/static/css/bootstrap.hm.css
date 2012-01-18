@@ -130,6 +130,16 @@ address strong {
 	border-bottom: 1px solid #EEE;
 }
 
+span.transaction-plus {
+	font-weight: bold;
+	color: green;
+}
+
+span.transaction-minus {
+	font-weight: bold;
+	color: red;
+}
+
 
 
 

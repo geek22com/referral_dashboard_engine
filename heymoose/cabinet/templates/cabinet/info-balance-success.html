@@ -1,0 +1,25 @@
+{% extends "cabinet/info-layout.html" %}
+
+{% set activetab = 'balance' %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Платежи', url_for('.info_balance')) }}
+{% endblock %}
+
+{% block tabcontent %}
+
+<h2>Платеж принят!</h2>
+
+<div class="clearfix alert-message block-message success">
+	<p>
+		<strong>Платеж на сумму {{ sum }} у.е. принят.</strong>
+		Максимальное время проведения платежа 1 час. В течение этого времени информация о
+		пополнении счета появится в истории ваших платежей.
+	</p>
+	<div class="alert-actions">
+		<a class="btn small" href="{{ url_for('.info_balance') }}">Вернуться к списку платежей</a>
+	</div>
+</div>
+
+{% endblock %}

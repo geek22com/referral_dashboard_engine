@@ -35,6 +35,7 @@ ADMIN_ORDERS_PER_PAGE = 20
 ADMIN_APPS_PER_PAGE = 20
 ADMIN_ACTIONS_PER_PAGE = 40
 ADMIN_PERFORMERS_PER_PAGE = 40
+ADMIN_TRANSACTIONS_PER_PAGE = 20
 
 # Encryption parameters
 REFERRAL_CRYPT_KEY = 'aGy3iRn7fRbIw4yM' # Must be 16 bytes long
@@ -59,4 +60,10 @@ MONGOALCHEMY_DATABASE = 'facebook'
 # Business logic parameters
 REFERRAL_MIN_CPC = 5.0
 REFERRAL_RECOMMENDED_CPC_QUOT = 1.3
+
+# Robokassa parameters
+ROBOKASSA_REQUEST_URL = 'http://test.robokassa.ru/Index.aspx'
+ROBOKASSA_LOGIN = 'ks.shilov'
+ROBOKASSA_PASS1 = 'appatit23843'
+ROBOKASSA_USER_PREFIX = 'shp_'
 

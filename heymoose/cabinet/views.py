@@ -5,8 +5,8 @@ from heymoose.cabinet import blueprint as bp
 from heymoose.forms import forms
 from heymoose.core import actions
 from heymoose.core.data import OrderTypes
-from heymoose.utils import convert
-from heymoose.utils.shortcuts import do_or_abort
+from heymoose.utils import convert, robokassa
+from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.utils.gen import generate_password_hash
 from heymoose.views.common import json_get_ctr
 from decorators import customer_only, developer_only
@@ -318,17 +318,42 @@ def info_password_change():
 		return redirect(url_for('.info'))
 	return render_template('cabinet/info-password-change.html', form=form)
 
-#@bp.route('/info/balance/pay', methods=['GET', 'POST'])
+@bp.route('/info/balance', methods=['GET', 'POST'])
 @customer_only
-def balance_pay():
-	'''Deprecated: now in admin blueprint'''
+def info_balance():
 	form = forms.BalanceForm(request.form)
 	if request.method == 'POST' and form.validate():
-		do_or_abort(actions.users.increase_customer_balance,
-				g.user.id, int(form.amount.data))
-		flash(u'Баланс успешно пополнен', 'success')
-		return redirect(url_for('.info'))
-	return render_template('cabinet/info-balance-pay.html', form=form) 
+		sum = form.amount.data
+		url = robokassa.pay_url(
+			account_id=g.user.customer_account.id,
+			sum=sum,
+			email=g.user.email,
+			desc=u'Пополнение счета рекламодателя в системе HeyMoose')
+		return redirect(url)
+	
+	page = convert.to_int(request.args.get('page'), 1)
+	_unused, count = actions.accounts.get_account_transactions(g.user.customer_account.id, 0, 1)
+	per_page = app.config.get('ADMIN_TRANSACTIONS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	transactions, count = do_or_abort(actions.accounts.get_account_transactions,
+							account_id=g.user.customer_account.id,
+							offset=offset, limit=limit)
+	return render_template('cabinet/info-balance.html', transactions=transactions,
+						pages=pages, form=form)
+	
+@bp.route('/info/balance/success', methods=['POST'])
+@customer_only
+def info_balance_success():
+	sum = request.form.get('OutSum', None)
+	if sum is None: abort(400)
+	return render_template('cabinet/info-balance-success.html', sum=sum)
+
+@bp.route('/info/balance/fail', methods=['POST'])
+@customer_only
+def info_balance_fail():
+	sum = request.form.get('OutSum', None)
+	if sum is None: abort(400)
+	return render_template('cabinet/info-balance-fail.html', sum=sum)
 	
 
 # @bp.route('/roles/new/customer')

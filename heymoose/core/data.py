@@ -68,6 +68,10 @@ class Account(BaseModel):
 	attributes = ['id', 'balance']
 	
 	
+class Transaction(BaseModel):
+	attributes = ['id', 'diff', 'balance', 'description']
+	
+	
 class OrderTypes:
 	ALL = ('REGULAR', 'BANNER', 'VIDEO')
 	REGULAR, BANNER, VIDEO = ALL

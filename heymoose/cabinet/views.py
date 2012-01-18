@@ -326,7 +326,7 @@ def info_balance():
 		sum = form.amount.data
 		url = robokassa.pay_url(
 			account_id=g.user.customer_account.id,
-			sum=sum,
+			sum=round(sum, 2),
 			email=g.user.email,
 			desc=u'Пополнение счета рекламодателя в системе HeyMoose')
 		return redirect(url)

@@ -15,7 +15,7 @@
 <h2>Разработчик</h2>
 <table class="key-value">
 	<tbody>
-		<tr><th>Баланс</th><td>{{ user.developer_account.balance }}</td></tr>
+		<tr><th>Баланс</th><td>{{ user.developer_account.balance }} у.е.</td></tr>
 	</tbody>
 </table>
 {% endif %}
@@ -24,7 +24,7 @@
 <h2>Рекламодатель</h2>
 <table class="key-value">
 	<tbody>
-		<tr><th>Баланс</th><td>{{ user.customer_account.balance }}</td></tr>
+		<tr><th>Баланс</th><td>{{ user.customer_account.balance }} у.е.</td></tr>
 		<tr><th>Секретный ключ</th><td>{{ user.customer_secret }}</td></tr>
 		{% with ref = url_for('site.register', ref=user.get_refcode()) %}
 		<tr><th>Реферальная ссылка</th><td><a href="{{ ref }}">http://heymoose.com{{ ref }}</a></td></tr>

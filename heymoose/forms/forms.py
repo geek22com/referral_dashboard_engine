@@ -290,10 +290,10 @@ class AppForm(Form):
 	])
 	
 class BalanceForm(Form):
-	amount = IntegerField(u'Сумма', [
+	amount = DecimalField(u'Сумма', [
 		validators.Required(message = u'Укажите сумму в у.е.'),
-		validators.NumberRange(min=1, max=10000, message=u'Пополнить счет можно на сумму от 1 до 10000 у.е.')
-	], description=u'у.е.')
+		validators.NumberRange(min=1, max=60000000, message=u'Пополнить счет можно на сумму от 1 до 60 000 000 у.е.')
+	], description=u'у.е.', places=2)
 
 
 class GiftForm(Form):

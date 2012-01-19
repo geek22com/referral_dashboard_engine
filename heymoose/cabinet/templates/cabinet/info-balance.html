@@ -61,7 +61,8 @@
 					</span>
 				</td>
 				<td class="right">{{ transaction.balance|currency(False) }}</td>
-				<td>{{ transaction.description|default('&mdash;', True)|safe }}</td>
+				<td>{{ transaction.description|replace_if_contains('Transfering', '&mdash;')
+						|default('&mdash;', True)|safe }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

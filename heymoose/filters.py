@@ -49,6 +49,13 @@ def attrlist(values, attr):
 def currency(value, sign=True):
 	return (u'%.2f' % value) + (u' ' + currency_sign if sign else u'')
 
+
+def replace_if_contains(value, contains, newvalue):
+	if value and contains in value:
+		return newvalue
+	return value
+
+
 app.jinja_env.filters['error_type'] = error_type
 app.jinja_env.filters['datetimeformat'] = datetimeformat
 app.jinja_env.filters['datetime_nosec'] = datetime_nosec
@@ -60,6 +67,7 @@ app.jinja_env.filters['classname'] = classname
 app.jinja_env.filters['attrlist'] = attrlist
 app.jinja_env.filters['delta'] = times.delta
 app.jinja_env.filters['currency'] = currency
+app.jinja_env.filters['replace_if_contains'] = replace_if_contains
 
 app.jinja_env.globals['now'] = datetime.now
 app.jinja_env.globals['currency_sign'] = currency_sign

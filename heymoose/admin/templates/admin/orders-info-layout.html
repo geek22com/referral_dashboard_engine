@@ -30,6 +30,7 @@
 	{% if order.is_banner() %}
 	<li id="tab-banners"><a href="{{ url_for('.orders_info_banners', id=order.id) }}">Баннеры</a></li>
 	{% endif %}
+	<li id="tab-apps"><a href="{{ url_for('.orders_info_apps', id=order.id) }}">Приложения</a></li>
 	<li id="tab-actions"><a href="{{ url_for('.orders_info_actions', id=order.id) }}">Действия</a></li>
 	<li id="tab-stats"><a href="{{ url_for('.orders_info_stats', id=order.id) }}">Статистика</a></li>
 </ul>

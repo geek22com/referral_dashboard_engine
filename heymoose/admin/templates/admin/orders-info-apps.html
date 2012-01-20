@@ -1,0 +1,114 @@
+{% extends "admin/orders-info-layout.html" %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Приложения', url_for('.orders_info_apps', id=order.id)) }}
+{% endblock %}
+
+{% set activetab = 'apps' %}
+
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			$('#form-order-apps').submit(function() {
+				var value = $('#filter').val();
+				var ids = [];
+				$('.app-checkbox:checked').each(function() { ids.push($(this).data('id')); });
+				
+				if (value && ids.length == 0) {
+					alert('Выберите хотя бы одно приложение');
+					return false;
+				}
+				
+				if (!value && ids.length > 0) {
+					return confirm('Вы указали не учитывать таргетинг. ' + 
+						'Все выбранные приложения будут отключены. Продолжить?');
+				}
+				
+				$('#apps').val(ids.join(','));
+				return true;
+			});
+			
+			$('#app-checkbox-master').change(function() {
+				var checked = $(this).is(':checked');
+				$('.app-checkbox').each(function() { $(this).attr('checked', checked); });
+			});
+			
+			$('#apps-filter').change(function() {
+				var filter = $(this).val().trim().toLowerCase();
+				if (filter) {
+					$('#apps-table tbody tr').each(function() {
+						var tr = $(this);
+						if (tr.data('title').toLowerCase().indexOf(filter) != -1)
+							tr.show();
+						else
+							tr.hide();
+					});
+				}
+				else {
+					$('#apps-table tbody tr').show();
+				}
+				return false;
+			})
+			.keyup(function() { $(this).change(); });
+		})
+	</script>
+{% endblock %}
+
+{% block tabcontent %}
+<div class="row">
+	<div class="span6 well">
+		<form>
+			Фильтр по названию: <input id="apps-filter" type="text" style="width: 190px;" />
+		</form>
+	</div>
+	<div class="span8 well">
+		<form id="form-order-apps" method="post" action="">
+			{{ form.filter.label() }}:&nbsp;{{ form.filter() }}
+			{{ form.apps() }}
+			<input type="submit" class="btn primary float-right" value="Сохранить" />
+		</form>
+	</div>
+</div>
+
+{% if apps %}
+	{% set ids = order.apps|attrlist('id') %}
+	<div>
+		<table id="apps-table" class="bordered-table zebra-striped condensed-table nosort">
+			<thead>
+				<tr>
+					<th class="header right">ИД</th>
+					<th class="header">Название</th>
+					<th class="header">Разработчик</th>
+					<th class="header">Платформа</th>
+					<th class="header center">Удалено</th>
+					<th class="header center">
+						<input type="checkbox" id="app-checkbox-master" />
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for app in apps %}
+				<tr data-title="{{ app.title }}">
+					<td class="right">{{ app.id }}</td>
+					<td>{{ macros.app_href(app) }}</td>
+					<td>{{ macros.user_href(app.user) }}</td>
+					<td>{{ app.platform }}</td>
+					<td class="center">{{ macros.deleted(app.deleted) }}</td>
+					<td class="center">
+						<input type="checkbox" class="app-checkbox" data-id="{{ app.id }}"
+						{% if app.id in ids %}checked="checked"{% endif %} />
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Еще не было добавлено ни одного приложения.</p>
+	</div>
+{% endif %}
+	
+{% endblock %}

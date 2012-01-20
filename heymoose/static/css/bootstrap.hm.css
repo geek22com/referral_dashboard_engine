@@ -140,9 +140,10 @@ span.transaction-minus {
 	color: red;
 }
 
-
-
-
+table.nosort .header:hover:after, table.nosort .header:after {
+    visibility: hidden;
+    display: none;
+}
 
 
 

@@ -235,6 +235,15 @@ def form_for_referral(cls):
 		], description=u'Минимальная {0}, рекомендуемая {1}'.format(min_cpc, rec_cpc))
 		
 	return OrderFormRef
+
+
+class OrderAppsForm(Form):
+	filter = SelectField(u'Тип таргетинга', default=u'', choices=[
+		(u'', u'не учитывать'),
+		(u'INCLUSIVE', u'только указанные'),
+		(u'EXCLUSIVE', u'все, кроме указанных')
+	])
+	apps = HiddenField()
 	
 	
 class BannerForm(Form):
@@ -321,3 +330,4 @@ class OfferForm(Form):
 										validators.NumberRange(min=1, max=4000000000)])
 	user_id = IntegerField('user_id', [validators.Optional(),
 										validators.NumberRange(min=0)])
+

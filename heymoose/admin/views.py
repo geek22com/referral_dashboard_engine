@@ -49,6 +49,20 @@ def orders_info_banners(id):
 	if not order.is_banner(): abort(404)
 	return render_template('admin/orders-info-banners.html', order=order)
 
+@bp.route('/orders/<int:id>/apps', methods=['GET', 'POST'])
+def orders_info_apps(id):
+	order = do_or_abort(a.orders.get_order, id, full=True)
+	aps = do_or_abort(a.apps.get_apps, offset=0, limit=10000, full=True)
+	form = forms.OrderAppsForm(request.form, filter=order.app_filter_type)
+	if request.method == 'POST' and form.validate():
+		a.orders.update_order(order.id,
+			app_filter_type=form.filter.data,
+			app=[int(x) for x in form.apps.data.split(',')] if form.apps.data else []
+		)
+		flash(u'Таргетинг успешно обновлен', 'success')
+		return redirect(url_for('.orders_info_apps', id=order.id))
+	return render_template('admin/orders-info-apps.html', order=order, apps=aps, form=form)
+
 @bp.route('/orders/<int:id>/actions')
 def orders_info_actions(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)

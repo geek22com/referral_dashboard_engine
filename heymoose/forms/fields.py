@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from wtforms.fields import TextField, IntegerField, FileField
 from PIL import Image
-from heymoose.utils import swfheader
+from heymoose.utils import swfheader, svgheader
 from widgets import UnfilledTextInput
 
 
@@ -60,6 +60,19 @@ class BannerField(FileField):
 				self.height = self.data['height']
 				self.format = 'swf'
 				self.mime_type = 'application/x-shockwave-flash'
+				success = True
+			except:
+				pass
+			finally:
+				valuelist[0].seek(0)
+			if success: return
+			
+			try:
+				self.data = svgheader.parse(valuelist[0])
+				self.width = self.data['width']
+				self.height = self.data['height']
+				self.format = 'svg'
+				self.mime_type = 'image/svg+xml'
 				success = True
 			except:
 				pass

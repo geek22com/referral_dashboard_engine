@@ -177,9 +177,9 @@ class BannerOrderForm(OrderForm):
 	orderbannersize = SelectField(u'Размер баннера', coerce=int)
 	orderimage = myfields.BannerField(u'Выберите файл', [
 		myvalidators.FileRequired(message=u'Выберите файл на диске'),
-		myvalidators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf'),
-			message=u'Выберите файл в формате JPG, GIF, PNG или SWF')
-	], description=u'Форматы: JPG (JPEG), GIF, PNG, SWF')
+		myvalidators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf', 'svg'),
+			message=u'Выберите файл в формате JPG, GIF, PNG, SVG или SWF')
+	], description=u'Форматы: JPG (JPEG), GIF, PNG, SVG, SWF')
 	
 	def validate_orderimage(self, field):
 		if field.data is None: return
@@ -250,9 +250,9 @@ class BannerForm(Form):
 	size = SelectField(u'Размер баннера', coerce=int)
 	image = myfields.BannerField(u'Выберите файл', [
 		myvalidators.FileRequired(message=u'Выберите файл на диске'),
-		myvalidators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf'),
-			message=u'Выберите файл в формате JPG, GIF, PNG или SWF')
-	], description=u'Форматы: JPG (JPEG), GIF, PNG, SWF')
+		myvalidators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf', 'svg'),
+			message=u'Выберите файл в формате JPG, GIF, PNG, SVG или SWF')
+	], description=u'Форматы: JPG (JPEG), GIF, PNG, SVG, SWF')
 	
 	def validate_image(self, field):
 		if field.data is None: return

@@ -3,10 +3,20 @@
 	<script type="text/javascript" src="{{ url_for('static', filename='./js/chart.ctr.js') }}"></script>
 	<script type="text/javascript">
 		google.load("visualization", "1", {packages:["corechart"]});
-	
-		function updateCharts() {
-			$('#form-ctr').ajaxSubmit({
+		
+		$(function() {
+			$('.datetimepicker').datetimepicker({showButtonPanel: false});
+			
+			$('#form-ctr').ajaxForm({
 				dataType: 'json',
+				beforeSubmit: function() {
+					$('#btn-show').attr('disabled', 'disabled');
+					$('#wait-bar').show();
+				},
+				complete: function() {
+					$('#wait-bar').hide();
+					$('#btn-show').removeAttr('disabled');
+				},
 				success: function(data, textStatus) {
 					drawCtrCharts(data.values,
 						document.getElementById('chart-clicks'),
@@ -18,19 +28,7 @@
 					else
 						alert('Ошибка ' + xhr.status + ': ' + xhr.responseText);
 				}
-			});
-		}
-		
-		$(function() {
-			$('#form-ctr').ajaxForm();
-			$('.datetimepicker').datetimepicker({showButtonPanel: false});
-			
-			updateCharts();
-			
-			$('#btn-show').click(function() {
-				updateCharts();				
-				return false;
-			});
+			}).submit();
 		});
 	</script>
 {% endmacro %}
@@ -50,6 +48,8 @@
 				<option value="year">годам</option>
 			</select>
 			<button id="btn-show" class="btn primary float-right">Показать</button>
+			<img src="{{ url_for('static', filename='img/wait-indicator-24.gif') }}" id="wait-bar"
+			alt="загрузка..." class="float-right" style="padding-right: 10px; display: none;" />
 		</form>
 	</div>
 	

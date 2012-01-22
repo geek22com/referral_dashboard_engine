@@ -2,6 +2,7 @@
 
 from heymoose.core.actions.mappers import app_from_xml, count_from_xml
 from heymoose.core.rest import post, put, delete, get
+from heymoose.utils import convert
 
 resource_path = "/apps"
 
@@ -14,6 +15,11 @@ def add_app(title, user_id, callback, url, platform):
                         platform=platform))
 	return int(id)
 
+def update_app(app_id, **kwargs):
+	path = "{0}/{1}".format(resource_path, app_id)
+	params = dict([(convert.to_camel_case(key), value) for key, value in kwargs.iteritems()])
+	put(path=path, params_dict=params)
+
 def delete_app(app_id):
 	path = "{0}/{1}".format(resource_path, app_id)
 	delete(path=path)
@@ -23,7 +29,7 @@ def get_app(app_id, **kwargs):
 	return app_from_xml(get(path=path, params_dict=kwargs))
 
 def regenerate_secret(app_id):
-	path = "{0}/{1}".format(resource_path, app_id)
+	path = "{0}/{1}/secret".format(resource_path, app_id)
 	put(path=path)
 
 def active_apps(apps):

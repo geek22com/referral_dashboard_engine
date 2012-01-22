@@ -279,6 +279,7 @@ class CityForm(Form):
 		validators.Length(min=2, max=100, message=(u'Название города должно содержать от 2 до 100 символов'))
 	])
 	
+	
 class AppForm(Form):
 	apptitle = TextField(u'Название', [
 		validators.Length(min=1, max=100, message=(u'Название приложения должно иметь длину от 1 до 100 символов')),
@@ -297,6 +298,12 @@ class AppForm(Form):
 		('FACEBOOK', u'Facebook'),
 		('ODNOKLASSNIKI', u'Одноклассники')
 	])
+	
+class AppEditForm(AppForm):
+	pass
+
+class AdminAppEditForm(AppEditForm):
+	appdeleted = BooleanField(u'Удалено', default=False)
 	
 class BalanceForm(Form):
 	amount = DecimalField(u'Сумма', [

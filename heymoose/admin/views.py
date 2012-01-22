@@ -98,6 +98,27 @@ def apps_info(id):
 	app = do_or_abort(a.apps.get_app, id, full=True)
 	return render_template('admin/apps-info.html', app=app)
 
+@bp.route('/apps/<int:id>/edit', methods=['GET', 'POST'])
+def apps_info_edit(id):
+	app = do_or_abort(a.apps.get_app, id, full=True)
+	form = forms.AdminAppEditForm(request.form, apptitle=app.title, appurl=app.url, 
+		appplatform=app.platform, appdeleted=app.deleted)
+	if request.method == 'POST' and form.validate():
+		kwargs = dict()
+		if form.apptitle.data != app.title: kwargs.update(title=form.apptitle.data)
+		if form.appurl.data != app.url: kwargs.update(url=form.appurl.data, callback=form.appurl.data)
+		if form.appplatform.data != app.platform: kwargs.update(platform=form.appplatform.data)
+		if form.appdeleted.data != app.deleted: kwargs.update(deleted=form.appdeleted.data)
+		
+		if kwargs.keys():
+			a.apps.update_app(app.id, **kwargs)
+			flash(u'Приложение успешно обновлено', u'success')
+		else:
+			flash(u'Вы не изменили ни одного поля', u'warning')
+		return redirect(url_for('.apps_info', id=app.id))
+	
+	return render_template('admin/apps-info-edit.html', app=app, form=form)
+
 @bp.route('/apps/<int:id>/actions')
 def apps_info_actions(id):
 	ap = do_or_abort(a.apps.get_app, id, full=True)

@@ -1,0 +1,27 @@
+{% extends "admin/apps-info-layout.html" %}
+{% import 'common/ctr.html' as ctr %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Редактирование', url_for('.apps_info_edit', id=app.id)) }}
+{% endblock %}
+
+{% set activetab = 'edit' %}
+
+{% block tabcontent %}
+
+<div class="form-container">
+	<form id="form-app-edit" action="" method="post" class="widelabels validate">
+		<fieldset>
+			{{ macros.formfield(form.apptitle, class='span10') }}
+			{{ macros.formfield(form.appurl, class='span10') }}
+			{{ macros.formfield(form.appplatform, class='span4') }}
+			{{ macros.formfield(form.appdeleted) }}
+		</fieldset>
+		<div class="actions">
+			<input class="btn large primary" type="submit" value="Подтвердить"/>
+		</div>
+	</form>
+</div>
+
+{% endblock %}

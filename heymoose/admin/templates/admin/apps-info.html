@@ -3,6 +3,13 @@
 {% set activetab = 'info' %}
 
 {% block tabcontent %}
+
+{% if app.deleted %}
+	<div class="clearfix alert-message block-message danger">
+		<p>Приложение удалено.</p>
+	</div>
+{% endif %}
+
 <table class="key-value">
 	<thead></thead>
 	<tbody>

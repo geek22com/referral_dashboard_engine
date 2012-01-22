@@ -10,6 +10,7 @@ from heymoose.views.common import json_get_ctr
 from heymoose.forms import forms
 from heymoose.db.models import Contact
 from heymoose.db.actions import invites
+import base64
 
 
 @bp.route('/')
@@ -42,6 +43,79 @@ def orders_settings():
 def orders_info(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)
 	return render_template('admin/orders-info.html', order=order)
+
+@bp.route('/orders/<int:id>/edit', methods=['GET', 'POST'])
+def orders_info_edit(id):
+	order = do_or_abort(a.orders.get_order, id, full=True)
+	cities = [dict(id=city.id, name=city.name) for city in a.cities.get_cities()]
+	order_cities = [dict(id=city.id, name=city.name) for city in order.cities] if order.cities else []
+	
+	form_args = dict(
+		ordername = order.title,
+		orderurl = order.url,
+		orderbalance = order.balance,
+		ordercpa = order.cpa,
+		orderautoapprove = order.auto_approve,
+		orderreentrant = order.reentrant,
+		orderallownegativebalance = order.allow_negative_balance,
+		ordermale = u'' if order.male is None else unicode(order.male),
+		orderminage = order.min_age,
+		ordermaxage = order.max_age,
+		orderminhour = order.min_hour,
+		ordermaxhour = order.max_hour,
+		ordercitiesfilter = order.city_filter_type
+	)
+	
+	if order.is_regular():
+		form_args.update(orderdesc = order.description)
+		cls = forms.AdminRegularOrderEditForm
+	elif order.is_banner():
+		cls = forms.AdminBannerOrderEditForm
+	elif order.is_video():
+		form_args.update(ordervideourl = order.video_url)
+		cls = forms.AdminVideoOrderEditForm
+		
+	form = cls(request.form, **form_args)
+		
+	if request.method == 'POST' and form.validate():
+		kwargs = dict()
+		male = convert.to_bool(form.ordermale.data)
+		city_filter_type = form.ordercitiesfilter.data if form.ordercitiesfilter.data else None
+		
+		if form.ordername.data != order.title: kwargs.update(title=form.ordername.data)
+		if form.orderurl.data != order.url: kwargs.update(url=form.orderurl.data)
+		if form.ordercpa.data != order.cpa: kwargs.update(cpa=form.ordercpa.data)
+		if form.orderallownegativebalance.data != order.allow_negative_balance: kwargs.update(allow_negative_balance=form.orderallownegativebalance.data)
+		if form.orderautoapprove.data != order.auto_approve: kwargs.update(auto_approve=form.orderautoapprove.data)
+		if form.orderreentrant.data != order.reentrant: kwargs.update(reentrant=form.orderreentrant.data)
+		if male != order.male: kwargs.update(male=male)
+		if form.orderminage.data != order.min_age: kwargs.update(min_age=form.orderminage.data)
+		if form.ordermaxage.data != order.max_age: kwargs.update(max_age=form.ordermaxage.data)
+		if form.orderminhour.data != order.min_hour: kwargs.update(min_hour=form.orderminhour.data)
+		if form.ordermaxhour.data != order.max_hour: kwargs.update(max_hour=form.ordermaxhour.data)
+		if city_filter_type != order.city_filter_type: kwargs.update(city_filter_type=city_filter_type)
+		
+		old_cities = frozenset([city.id for city in order.cities])
+		new_cities = frozenset([int(x) for x in form.ordercities.data.split(',')] if form.ordercities.data else [])
+		if new_cities != old_cities: kwargs.update(city=list(new_cities))
+				
+		if order.is_regular():
+			if form.orderdesc.data != order.description: kwargs.update(description=form.orderdesc.data)
+			if form.orderimage.data is not None: kwargs.update(image=base64.encodestring(request.files['orderimage'].stream.read()))
+		elif order.is_banner():
+			pass
+		elif order.is_video():
+			if form.ordervideourl.data != order.video_url: kwargs.update(video_url=form.ordervideourl.data)
+		
+		if kwargs.keys():
+			a.orders.update_order(order.id, **kwargs)
+			flash(u'Заказ успешно обновлен', 'success')
+		else:
+			flash(u'Вы не изменили ни одного поля', 'warning')
+		return redirect(url_for('.orders_info', id=order.id))
+		
+	return render_template('admin/orders-info-edit.html', order=order, form=form,
+		cities=cities, order_cities=order_cities)
 
 @bp.route('/orders/<int:id>/banners')
 def orders_info_banners(id):

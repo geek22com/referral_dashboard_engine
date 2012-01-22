@@ -24,11 +24,10 @@
 				searchingText: 'Поиск...'
 			});
 			
-			$('.ordercities-field').hide();
 			$('.ordercitiesfilter-field').find('select').change(function() {
 				var $field = $(this).closest('form').find('.ordercities-field');
 				if (!$(this).val()) $field.hide('fast'); else $field.show('fast');
-			});
+			}).change();
 			
 			$('form').bind('keypress', function(e) { if (e.keyCode == 13) return false; });
 		});
@@ -46,61 +45,16 @@
 
 {% if g.user.customer_account.balance > 0 %}
 	<div class="widelabels">
-		<div class="well clearfix">
-			<label for="ordertype" class="bold">Выберите тип заказа</label>
-			<div class="input">
-				<select id="order-type" class="span10">
-					<option value="regular">Обычный</option>
-					<option value="banner">Баннер</option>
-					<option value="video">Видео</option>
-				</select>
-			</div>
-		</div>
 		{% set yourbalance = 'Ваш баланс {0}'.format(g.user.customer_account.balance|currency) %}
-		{% with form = rform %}
-		<div id="container-regular" class="form-container" style="display: none;">
-			<form id="form-order-regular" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
-				<fieldset>
-					<input type="hidden" name="ordertype" value="REGULAR" />
-					{{ macros.formfield(form.ordername, class='span10') }}
-					{{ macros.formfield(form.orderdesc, class='span10', rows=5) }}
-					{{ macros.formfield(form.orderurl, class='span10') }}
-					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_account.balance, description=yourbalance) }}
-					{{ macros.formfield(form.ordercpa, class='span4') }}
-					{{ macros.formfield(form.orderallownegativebalance) }}
-					{{ macros.formfield(form.orderautoapprove) }}
-					{{ macros.formfield(form.orderreentrant) }}
-					{{ macros.formfield(form.orderimage, pad_description=True) }}
-				</fieldset>
-				<fieldset>
-					<legend>Настройки таргетинга</legend>
-					{{ macros.formfield(form.ordermale, class='span4') }}
-					{{ macros.formfield(form.orderminage, class='span4', placeholder='любой') }}
-					{{ macros.formfield(form.ordermaxage, class='span4', placeholder='любой') }}
-					{{ macros.formfield(form.orderminhour, class='span4', placeholder='начала суток') }}
-					{{ macros.formfield(form.ordermaxhour, class='span4', placeholder='конца суток') }}
-					{{ macros.formfield(form.ordercitiesfilter, class='span4') }}
-					{{ macros.formfield(form.ordercities, class='cities') }}
-				</fieldset>
-				<div class="actions">
-					<input class="btn large primary" type="submit" value="Создать заказ"/>
-				</div>
-			</form>
-		</div>
-		{% endwith %}
-		
-		{% with form = bform %}
-		<div id="container-banner" class="form-container" style="display: none;">
+		<div id="container-banner" class="form-container">
 			<form id="form-order-banner" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
 				<fieldset>
 					<input type="hidden" name="ordertype" value="BANNER" />
 					{{ macros.formfield(form.ordername, class='span10') }}
 					{{ macros.formfield(form.orderurl, class='span10') }}
-					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_account.balance, description=yourbalance) }}
+					{{ macros.formfield(form.orderbalance, class='span4', 
+						max_range=g.user.customer_account.balance, description=yourbalance) }}
 					{{ macros.formfield(form.ordercpa, class='span4') }}
-					{{ macros.formfield(form.orderallownegativebalance) }}
-					{{ macros.formfield(form.orderautoapprove) }}
-					{{ macros.formfield(form.orderreentrant) }}
 				</fieldset>
 				<fieldset>
 					<legend>Баннер</legend>
@@ -122,47 +76,15 @@
 				</div>
 			</form>
 		</div>
-		{% endwith %}
-		
-		{% with form = vform %}
-		<div id="container-video" class="form-container" style="display: none;">
-			<form id="form-order-video" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
-				<fieldset>
-					<input type="hidden" name="ordertype" value="VIDEO" />
-					{{ macros.formfield(form.ordername, class='span10') }}
-					{{ macros.formfield(form.orderurl, class='span10') }}
-					{{ macros.formfield(form.ordervideourl, class='span10') }}
-					{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_account.balance, description=yourbalance) }}
-					{{ macros.formfield(form.ordercpa, class='span4') }}
-					{{ macros.formfield(form.orderallownegativebalance) }}
-					{{ macros.formfield(form.orderautoapprove) }}
-					{{ macros.formfield(form.orderreentrant) }}
-				</fieldset>
-				<fieldset>
-					<legend>Настройки таргетинга</legend>
-					{{ macros.formfield(form.ordermale, class='span4') }}
-					{{ macros.formfield(form.orderminage, class='span4', placeholder='любой') }}
-					{{ macros.formfield(form.ordermaxage, class='span4', placeholder='любой') }}
-					{{ macros.formfield(form.orderminhour, class='span4', placeholder='начала суток') }}
-					{{ macros.formfield(form.ordermaxhour, class='span4', placeholder='конца суток') }}
-					{{ macros.formfield(form.ordercitiesfilter, class='span4') }}
-					{{ macros.formfield(form.ordercities, class='cities') }}
-				</fieldset>
-				<div class="actions">
-					<input class="btn large primary" type="submit" value="Создать заказ"/>
-				</div>
-			</form>
-		</div>
-		{% endwith %}
 	</div>
 {% else %}
 	<div class="clearfix alert-message block-message error">
 		<p>
 			<strong>Недостаточно средств.</strong> На вашем счету не хватает средств для создания заказа.
 		</p>
-		{# <div class="alert-actions">
-			<a class="btn small" href="{{ url_for('.balance_pay') }}">Пополнить баланс</a>
-		</div> #}
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.info_balance') }}">Пополнить счет</a>
+		</div>
 	</div>
 {% endif %}
 

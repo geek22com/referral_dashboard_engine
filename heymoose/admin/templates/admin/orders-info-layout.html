@@ -27,6 +27,7 @@
 {% block content %}
 <ul class="tabs">
 	<li id="tab-info"><a href="{{ url_for('.orders_info', id=order.id) }}">Общее</a></li>
+	<li id="tab-edit"><a href="{{ url_for('.orders_info_edit', id=order.id) }}">Редактировать</a></li>
 	{% if order.is_banner() %}
 	<li id="tab-banners"><a href="{{ url_for('.orders_info_banners', id=order.id) }}">Баннеры</a></li>
 	{% endif %}

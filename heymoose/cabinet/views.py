@@ -34,111 +34,35 @@ def orders():
 @bp.route('/orders/new', methods=['GET', 'POST'])
 @customer_only
 def orders_new():
-	def orders_new_ordinary():
-		sizes = actions.bannersizes.get_banner_sizes()
-		choices = [(s.id, '{0} x {1}'.format(s.width, s.height)) for s in sizes]
-		cities = [dict(id=city.id, name=city.name) for city in actions.cities.get_cities()]
-		
-		ordertype = 'REGULAR'
-		rform = forms.RegularOrderForm(referral=g.user.referrer)
-		bform = forms.BannerOrderForm(referral=g.user.referrer)
-		vform = forms.VideoOrderForm(referral=g.user.referrer)
-		bform.orderbannersize.choices = choices
-		
-		if request.method == 'POST':
-			ordertype = request.form['ordertype']
-			if ordertype == OrderTypes.REGULAR:
-				form = forms.RegularOrderForm(request.form, referral=g.user.referrer)
-				rform = form
-			elif ordertype == OrderTypes.BANNER:
-				form = forms.BannerOrderForm(request.form, referral=g.user.referrer)
-				form.orderbannersize.choices = choices
-				bform = form
-			elif ordertype == OrderTypes.VIDEO:
-				form = forms.VideoOrderForm(request.form, referral=g.user.referrer)
-				vform = form
-			else:
-				abort(400)
-				
-			if form.validate():
-				kwargs = dict(
-					user_id=g.user.id,
-					title=form.ordername.data,
-					url=form.orderurl.data,
-					balance=form.orderbalance.data,
-					cpa=form.ordercpa.data,
-					allow_negative_balance=form.orderallownegativebalance.data,
-					auto_approve=form.orderautoapprove.data,
-					reentrant=form.orderreentrant.data,
-					male=form.ordermale.data,
-					min_age=form.orderminage.data,
-					max_age=form.ordermaxage.data,
-					min_hour=form.orderminhour.data,
-					max_hour=form.ordermaxhour.data,
-					city_filter_type=form.ordercitiesfilter.data,
-					city=[int(x) for x in form.ordercities.data.split(',')] if form.ordercities.data else []
-				)
-				
-				if ordertype == OrderTypes.REGULAR:
-					kwargs.update(
-						description=form.orderdesc.data,
-						image=base64.encodestring(request.files['orderimage'].stream.read())
-					)
-					id = do_or_abort(actions.orders.add_regular_order, **kwargs)
-				elif ordertype == OrderTypes.BANNER:
-					kwargs.update(
-						banner_size=form.orderbannersize.data,
-						banner_mime_type=form.orderimage.mime_type,
-						image=base64.encodestring(request.files['orderimage'].stream.read())
-					)
-					id = do_or_abort(actions.orders.add_banner_order, **kwargs)
-				elif ordertype == OrderTypes.VIDEO:
-					kwargs.update(video_url=form.ordervideourl.data) 
-					id = do_or_abort(actions.orders.add_video_order, **kwargs)
+	sizes = actions.bannersizes.get_banner_sizes()
+	choices = [(s.id, '{0} x {1}'.format(s.width, s.height)) for s in sizes]
+	cities = [dict(id=city.id, name=city.name) for city in actions.cities.get_cities()]
 	
-				flash(u'Заказ успешно создан.', 'success')
-				return redirect(url_for('.orders_info', id=id))
-		
-		return render_template('cabinet/orders-new.html', 
-			rform=rform, bform=bform, vform=vform, cities=cities,
-			ordertype=ordertype.lower())
-		
-	def orders_new_referral():
-		sizes = actions.bannersizes.get_banner_sizes()
-		choices = [(s.id, '{0} x {1}'.format(s.width, s.height)) for s in sizes]
-		cities = [dict(id=city.id, name=city.name) for city in actions.cities.get_cities()]
-		
-		FormClass = forms.form_for_referral(forms.BannerOrderForm)
-		form = FormClass(request.form)
-		form.orderbannersize.choices = choices
-		if request.method == 'POST' and form.validate():
-			id = do_or_abort(actions.orders.add_banner_order,
-				user_id=g.user.id,
-				title=form.ordername.data,
-				url=form.orderurl.data,
-				balance=form.orderbalance.data,
-				cpa=form.ordercpa.data,
-				allow_negative_balance=form.orderallownegativebalance.data,
-				auto_approve=form.orderautoapprove.data,
-				reentrant=form.orderreentrant.data,
-				male=form.ordermale.data,
-				min_age=form.orderminage.data,
-				max_age=form.ordermaxage.data,
-				min_hour=form.orderminhour.data,
-				max_hour=form.ordermaxhour.data,
-				city_filter_type=form.ordercitiesfilter.data,
-				city=[int(x) for x in form.ordercities.data.split(',')] if form.ordercities.data else [],
-				banner_size=form.orderbannersize.data,
-				banner_mime_type=form.orderimage.mime_type,
-				image=base64.encodestring(request.files['orderimage'].stream.read()))
-			flash(u'Заказ успешно создан.', 'success')
-			return redirect(url_for('.orders_info', id=id))
-		return render_template('cabinet/orders-new-ref.html', form=form, cities=cities)
-	
-	if g.user.referrer:
-		return orders_new_referral()
-	else:
-		return orders_new_ordinary()
+	form = forms.BannerOrderForm(request.form)
+	form.orderbannersize.choices = choices
+	if request.method == 'POST' and form.validate():
+		id = do_or_abort(actions.orders.add_banner_order,
+			user_id=g.user.id,
+			title=form.ordername.data,
+			url=form.orderurl.data,
+			balance=form.orderbalance.data,
+			cpa=form.ordercpa.data,
+			allow_negative_balance=False,
+			auto_approve=True,
+			reentrant=True,
+			male=form.ordermale.data,
+			min_age=form.orderminage.data,
+			max_age=form.ordermaxage.data,
+			min_hour=form.orderminhour.data,
+			max_hour=form.ordermaxhour.data,
+			city_filter_type=form.ordercitiesfilter.data,
+			city=[int(x) for x in form.ordercities.data.split(',')] if form.ordercities.data else [],
+			banner_size=form.orderbannersize.data,
+			banner_mime_type=form.orderimage.mime_type,
+			image=base64.encodestring(request.files['orderimage'].stream.read()))
+		flash(u'Заказ успешно создан.', 'success')
+		return redirect(url_for('.orders_info', id=id))
+	return render_template('cabinet/orders-new.html', form=form, cities=cities)
 	
 @bp.route('/orders/<int:id>/')
 @customer_only
@@ -195,9 +119,6 @@ def orders_info_edit(id):
 		orderurl = order.url,
 		orderbalance = order.balance,
 		ordercpa = order.cpa,
-		orderautoapprove = order.auto_approve,
-		orderreentrant = order.reentrant,
-		orderallownegativebalance = order.allow_negative_balance,
 		ordermale = u'' if order.male is None else unicode(order.male),
 		orderminage = order.min_age,
 		ordermaxage = order.max_age,
@@ -215,10 +136,7 @@ def orders_info_edit(id):
 		form_args.update(ordervideourl = order.video_url)
 		cls = forms.VideoOrderEditForm
 		
-	if g.user.referrer:
-		form = forms.form_for_referral(cls)(request.form, **form_args)
-	else:
-		form = cls(request.form, **form_args)
+	form = cls(request.form, **form_args)
 		
 	if request.method == 'POST' and form.validate():
 		kwargs = dict()
@@ -228,9 +146,6 @@ def orders_info_edit(id):
 		if form.ordername.data != order.title: kwargs.update(title=form.ordername.data)
 		if form.orderurl.data != order.url: kwargs.update(url=form.orderurl.data)
 		if form.ordercpa.data != order.cpa: kwargs.update(cpa=form.ordercpa.data)
-		if form.orderallownegativebalance.data != order.allow_negative_balance: kwargs.update(allow_negative_balance=form.orderallownegativebalance.data)
-		if form.orderautoapprove.data != order.auto_approve: kwargs.update(auto_approve=form.orderautoapprove.data)
-		if form.orderreentrant.data != order.reentrant: kwargs.update(reentrant=form.orderreentrant.data)
 		if male != order.male: kwargs.update(male=male)
 		if form.orderminage.data != order.min_age: kwargs.update(min_age=form.orderminage.data)
 		if form.ordermaxage.data != order.max_age: kwargs.update(max_age=form.ordermaxage.data)

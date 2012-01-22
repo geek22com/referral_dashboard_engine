@@ -9,6 +9,11 @@ import validators as myvalidators
 import fields as myfields
 import random, hashlib
 
+# Quots for order forms
+min_cpc = app.config.get('REFERRAL_MIN_CPC', 5.0)
+cpc_quot = app.config.get('REFERRAL_RECOMMENDED_CPC_QUOT', 1.3)
+rec_cpc = min_cpc * cpc_quot
+
 
 class CaptchaForm(Form):
 	captcha = TextField(u'', [
@@ -135,14 +140,6 @@ class OrderForm(Form):
 		validators.Required(message = (u'Укажите баланс для заказа')),
 		validators.NumberRange(min=1, max=3000000, message=(u'Такой баланс недопустим'))
 	])
-	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message=u'Введите CPA')])
-	orderautoapprove = BooleanField(u'Автоподтверждение', default=True)
-	orderreentrant = BooleanField(u'Многократное прохождение', default=True,
-		description=u'(разрешить одному пользователю проходить оффер много раз)'
-	)
-	orderallownegativebalance = BooleanField(u'Разрешить кредит', default=True, 
-		description=u'(разрешить отрицательный баланс)'
-	)
 	ordermale = SelectField(u'Пол', choices=[(u'True', u'мужской'), (u'False', u'женский'), (u'', u'любой')], default='')
 	orderminage = myfields.NullableIntegerField(u'Минимальный возраст', [
 		myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
@@ -163,7 +160,18 @@ class OrderForm(Form):
 	])
 	ordercities = TextField(u'Список городов')
 	
+class AdminOrderFormMixin:
+	orderautoapprove = BooleanField(u'Автоподтверждение', default=True)
+	orderreentrant = BooleanField(u'Многократное прохождение', default=True,
+		description=u'(разрешить одному пользователю проходить оффер много раз)'
+	)
+	orderallownegativebalance = BooleanField(u'Разрешить кредит', default=False, 
+		description=u'(разрешить отрицательный баланс)'
+	)
+	
+	
 class RegularOrderForm(OrderForm):
+	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message=u'Введите CPA')])
 	orderdesc = TextAreaField(u'Описание', [
 		validators.Length(min=1, max=200, message=(u'Описание заказа должно быть от 1 до 200 символов')),
 		validators.Required(message = (u'Введите описание'))
@@ -174,6 +182,10 @@ class RegularOrderForm(OrderForm):
 	], description=u'Форматы: JPG (JPEG), GIF, PNG')
 
 class BannerOrderForm(OrderForm):
+	ordercpa = DecimalField(u'Стоимость клика', [
+		validators.NumberRange(min=min_cpc, message=u'Стоимость клика не может быть меньше {0}'.format(min_cpc)),
+		validators.Required(message=u'Введите стоимость клика')
+	], description=u'Минимальная {0}, рекомендуемая {1}'.format(min_cpc, rec_cpc))
 	orderbannersize = SelectField(u'Размер баннера', coerce=int)
 	orderimage = myfields.BannerField(u'Выберите файл', [
 		myvalidators.FileRequired(message=u'Выберите файл на диске'),
@@ -188,6 +200,7 @@ class BannerOrderForm(OrderForm):
 			raise ValueError(u'Размер баннера должен совпадать с указанным')
 		
 class VideoOrderForm(OrderForm):
+	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message=u'Введите CPA')])
 	ordervideourl = TextField(u'URL видеозаписи', [
 		validators.Required(message = (u'Введите URL')),
 		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
@@ -215,26 +228,19 @@ class VideoOrderEditForm(VideoOrderForm):
 	def __init__(self, *args, **kwargs):
 		super(VideoOrderEditForm, self).__init__(*args, **kwargs)
 		del self.orderbalance
-		
-
-def form_for_referral(cls):
-	min_cpc = app.config.get('REFERRAL_MIN_CPC', 5.0)
-	cpc_quot = app.config.get('REFERRAL_RECOMMENDED_CPC_QUOT', 1.3)
-	rec_cpc = min_cpc * cpc_quot
 	
-	class OrderFormRef(cls):
-		def __init__(self, *args, **kwargs):
-			super(OrderFormRef, self).__init__(*args, **kwargs)
-			self.orderallownegativebalance.data = False
-			self.orderautoapprove.data = True
-			self.orderreentrant.data = True
 		
-		ordercpa = DecimalField(u'Стоимость клика', [
-			validators.NumberRange(min=min_cpc, message=u'Стоимость клика не может быть меньше {0}'.format(min_cpc)),
-			validators.Required(message=u'Введите стоимость клика')
-		], description=u'Минимальная {0}, рекомендуемая {1}'.format(min_cpc, rec_cpc))
-		
-	return OrderFormRef
+class AdminRegularOrderEditForm(RegularOrderEditForm, AdminOrderFormMixin):
+	pass
+
+class AdminBannerOrderEditForm(BannerOrderEditForm, AdminOrderFormMixin):
+	ordercpa = DecimalField(u'Стоимость клика', [
+		validators.NumberRange(min=0.1, message=u'Стоимость клика не может быть меньше 0.1'),
+		validators.Required(message=u'Введите стоимость клика')
+	])
+
+class AdminVideoOrderEditForm(VideoOrderEditForm, AdminOrderFormMixin):
+	pass
 
 
 class OrderAppsForm(Form):

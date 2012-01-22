@@ -1,4 +1,9 @@
-{% extends "cabinet/orders-info-layout.html" %}
+{% extends "admin/orders-info-layout.html" %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Редактирование', url_for('.orders_info_edit', id=order.id)) }}
+{% endblock %}
 
 {% set activetab = 'edit' %}
 
@@ -38,6 +43,9 @@
 			{{ macros.formfield(form.ordername, class='span10') }}
 			{{ macros.formfield(form.orderurl, class='span10') }}
 			{{ macros.formfield(form.ordercpa, class='span4') }}
+			{{ macros.formfield(form.orderallownegativebalance) }}
+			{{ macros.formfield(form.orderautoapprove) }}
+			{{ macros.formfield(form.orderreentrant) }}
 		</fieldset>
 		{% if order.is_regular() %}
 		<fieldset>
@@ -67,5 +75,5 @@
 		</div>
 	</form>
 </div>
-
+	
 {% endblock %}

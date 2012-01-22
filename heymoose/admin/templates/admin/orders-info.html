@@ -79,7 +79,7 @@
 <table class="key-value">
 	<tbody>
 		<tr><th>Баланс</th><td>{{ order.balance|currency }}</td></tr>
-		<tr><th>CPA</th><td>{{ order.cpa|currency }}</td></tr>
+		<tr><th>{% if order.is_banner() %}CPC{% else %}CPA{% endif %}</th><td>{{ order.cpa|currency }}</td></tr>
 		<tr><th>Разрешен отриц. баланс</th><td>{{ macros.to_icon(order.allow_negative_balance) }}</td></tr>
 	</tbody>
 </table>
@@ -93,10 +93,6 @@
 		<tr><th>Города</th><td>{{ macros.order_city_filter_type(order.city_filter_type) }}</td></tr>
 		{% if order.city_filter_type %}
 		<tr><th></th><td>{{ order.cities|attrlist('name')|join(', ') }}</td></tr>
-		{% endif %}
-		<tr><th>Приложения</th><td>{{ macros.order_app_filter_type(order.app_filter_type) }}</td></tr>
-		{% if order.app_filter_type %}
-		<tr><th></th><td>{{ order.apps|attrlist('title')|join(', ') }}</td></tr>
 		{% endif %}
 	</tbody>
 </table>

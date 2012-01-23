@@ -7,13 +7,10 @@ actions, performers, shows, api, cities, stats, accounts
 
 @app.before_request
 def before_request():
-    g.user = None
-    g.performer = None
-    g.params = {}
-    
-    if 'user_id' in session:
-        g.user = users.get_user_by_id(session['user_id'], full=True)
-
-    #if 'performer_id' in session:
-    #    g.performer = performers.get_performer(session['performer_id'])
+	g.user = None
+	g.config = app.config
+	g.params = {}
+	
+	if 'user_id' in session:
+		g.user = users.get_user_by_id(session['user_id'], full=True)
 

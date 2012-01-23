@@ -88,6 +88,23 @@
 </ul>
 {% endblock %}
 
+{% block footer_signs %}
+{% set wmid = g.config.get('ROBOKASSA_WMID', '000000000000') %}
+
+<a href="http://www.webmoney.ru">
+	<img src="http://www.webmoney.ru/img/icons/88x31_wm_blue_on_white_ru.png"
+	alt="Мы принимаем WebMoney" />
+</a>
+
+<!-- begin WebMoney Transfer : attestation label --> 
+<a href="https://passport.webmoney.ru/asp/certview.asp?wmid={{ wmid }}" target=_blank>
+	<IMG SRC="http://www.webmoney.ru/img/icons/88x31_wm_v_blue_on_white_ru.png" 
+	title="Здесь находится аттестат нашего WM идентификатора {{ wmid }}" border="0"><br>
+	<font size=1>Проверить аттестат</font>
+</a>
+<!-- end WebMoney Transfer : attestation label -->
+{% endblock %}
+
 {% block postbody %}	
 {% if not g.user %}
 <div id="login-modal" class="modal" style="display: none;">
@@ -109,3 +126,5 @@
 </div>
 {% endif %}
 {% endblock %}
+
+

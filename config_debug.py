@@ -59,7 +59,7 @@ REFERRAL_RECOMMENDED_CPC_QUOT = 1.3
 CURRENCY_SIGN = u'у.е.'
 
 # Robokassa parameters
-ROBOKASSA_REQUEST_URL = 'http://test.robokassa.ru/Index.aspx'
+ROBOKASSA_REQUEST_URL = 'https://merchant.roboxchange.com/Index.aspx' # 'http://test.robokassa.ru/Index.aspx'
 ROBOKASSA_LOGIN = 'ks.shilov'
 ROBOKASSA_PASS1 = 'appatit23843'
 ROBOKASSA_USER_PREFIX = 'shp_'

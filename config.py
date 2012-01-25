@@ -67,7 +67,7 @@ CURRENCY_SIGN = u'у.е.'
 ROBOKASSA_REQUEST_URL = 'https://merchant.roboxchange.com/Index.aspx' #'http://test.robokassa.ru/Index.aspx'
 ROBOKASSA_LOGIN = 'ks.shilov'
 ROBOKASSA_PASS1 = 'appatit23843'
-ROBOKASSA_USER_PREFIX = 'shp_'
+ROBOKASSA_USER_PREFIX = 'shp'
 ROBOKASSA_DEFAULT_CURRENCY = 'WMRM'
 ROBOKASSA_WMID = '276669831570'
 

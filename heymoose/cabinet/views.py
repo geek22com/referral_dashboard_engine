@@ -239,11 +239,10 @@ def info_balance():
 	form = forms.BalanceForm(request.form)
 	if request.method == 'POST' and form.validate():
 		sum = form.amount.data
-		url = robokassa.pay_url(
+		url = robokassa.account_pay_url(
 			account_id=g.user.customer_account.id,
 			sum=round(sum, 2),
-			email=g.user.email,
-			desc=u'Пополнение счета рекламодателя в системе HeyMoose')
+			email=g.user.email)
 		return redirect(url)
 	
 	page = convert.to_int(request.args.get('page'), 1)
@@ -261,14 +260,14 @@ def info_balance():
 def info_balance_success():
 	sum = request.form.get('OutSum', None)
 	if sum is None: abort(400)
-	return render_template('cabinet/info-balance-success.html', sum=sum)
+	return render_template('cabinet/info-balance-success.html', sum=float(sum))
 
 @bp.route('/info/balance/fail', methods=['POST'])
 @customer_only
 def info_balance_fail():
 	sum = request.form.get('OutSum', None)
 	if sum is None: abort(400)
-	return render_template('cabinet/info-balance-fail.html', sum=sum)
+	return render_template('cabinet/info-balance-fail.html', sum=float(sum))
 	
 
 # @bp.route('/roles/new/customer')

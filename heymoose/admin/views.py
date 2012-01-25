@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, request, abort, redirect, flash, url_for, jsonify
+from flask import render_template, g, request, abort, redirect, flash, url_for, jsonify, session
 from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions as a
@@ -12,6 +12,7 @@ from heymoose.db.models import Contact
 from heymoose.db.actions import invites
 import base64
 
+SESSION_APPS_SHOW_DELETED = 'admin_apps_show_deleted'
 
 @bp.route('/')
 def index():
@@ -154,14 +155,19 @@ def orders_info_stats(id):
 	return render_template('admin/orders-info-stats.html', order=order)
 
 
-@bp.route('/apps/')
+@bp.route('/apps/', methods=['GET', 'POST'])
 def apps():
+	form = forms.AppsShowDeletedForm(request.form, show=session.get(SESSION_APPS_SHOW_DELETED, False))
+	if request.method == 'POST' and form.validate():
+		session[SESSION_APPS_SHOW_DELETED] = form.show.data
+	
 	page = convert.to_int(request.args.get('page'), 1)
-	count = a.apps.get_apps_count()
+	count = a.apps.get_apps_count(form.show.data)
 	per_page = app.config.get('ADMIN_APPS_PER_PAGE', 20)
 	offset, limit, pages = paginate(page, count, per_page)
-	aps = do_or_abort(a.apps.get_apps, offset=offset, limit=limit, full=True)
-	return render_template('admin/apps.html', apps=aps, pages=pages)
+	aps = do_or_abort(a.apps.get_apps, with_deleted=form.show.data,
+					offset=offset, limit=limit, full=True)
+	return render_template('admin/apps.html', apps=aps, pages=pages, form=form)
 
 @bp.route('/apps/stats')
 def apps_stats():

@@ -41,9 +41,12 @@ def active_apps(apps):
 			active.append(app)
 	return active
 
-def get_apps(**kwargs):
+def get_apps(with_deleted=False, **kwargs):
+	kwargs.update(withDeleted=with_deleted)
 	return map(app_from_xml, get(path=resource_path, params_dict=kwargs))
 
-def get_apps_count():
+def get_apps_count(with_deleted=False):
 	path = "{0}/{1}".format(resource_path, "count")
-	return count_from_xml(get(path=path))
+	params = dict(withDeleted=with_deleted)
+	return count_from_xml(get(path=path, params_dict=params))
+

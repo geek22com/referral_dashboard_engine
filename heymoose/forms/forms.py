@@ -311,6 +311,11 @@ class AppEditForm(AppForm):
 class AdminAppEditForm(AppEditForm):
 	appdeleted = BooleanField(u'Удалено', default=False)
 	
+	
+class AppsShowDeletedForm(Form):
+	show = BooleanField(u'Показывать удаленные приложения', default=False)
+	dummy = HiddenField(default='1')
+	
 class BalanceForm(Form):
 	amount = DecimalField(u'Сумма', [
 		validators.Required(message = u'Укажите сумму в у.е.'),

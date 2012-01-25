@@ -2,7 +2,21 @@
 
 {% set activetab = 'list' %}
 
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			$('#show').change(function() { $(this).closest('form').submit(); })
+		});
+	</script>
+{% endblock %}
+
 {% block tabcontent %}
+
+<form method="post" action="">
+	{{ form.show() }} {{ form.show.label.text|lower }}
+	{{ form.dummy() }}
+</form>
 
 {% if apps %}
 	<table class="bordered-table zebra-striped">
@@ -13,18 +27,16 @@
 				<th class="header">Разработчик</th>
 				<th class="header">Платформа</th>
 				<th class="header center">Создано</th>
-				<th class="header center">Удалено</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for app in apps %}
 			<tr>
-				<td class="right">{{ app.id }}</td>
+				<td class="right {% if app.deleted %}deleted{% endif %}">{{ app.id }}</td>
 				<td>{{ macros.app_href(app) }}</td>
 				<td>{{ macros.user_href(app.user) }}</td>
 				<td>{{ app.platform }}</td>
 				<td class="center">{{ app.creation_time|datetimeformat }}</td>
-				<td class="center">{{ macros.deleted(app.deleted) }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

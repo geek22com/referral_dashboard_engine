@@ -157,11 +157,12 @@ def orders_info_stats(id):
 
 @bp.route('/apps/', methods=['GET', 'POST'])
 def apps():
+	page = convert.to_int(request.args.get('page'), 1)
 	form = forms.AppsShowDeletedForm(request.form, show=session.get(SESSION_APPS_SHOW_DELETED, False))
 	if request.method == 'POST' and form.validate():
 		session[SESSION_APPS_SHOW_DELETED] = form.show.data
+		page = 1
 	
-	page = convert.to_int(request.args.get('page'), 1)
 	count = a.apps.get_apps_count(form.show.data)
 	per_page = app.config.get('ADMIN_APPS_PER_PAGE', 20)
 	offset, limit, pages = paginate(page, count, per_page)

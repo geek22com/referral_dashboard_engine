@@ -276,17 +276,17 @@ def users_stats():
 
 @bp.route('/users/<int:id>')
 def users_info(id):
-	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	user = do_or_abort(a.users.get_user_by_id, id)
 	return render_template('admin/users-info.html', user=user)
 
 @bp.route('/users/<int:id>/stats')
 def users_info_stats(id):
-	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	user = do_or_abort(a.users.get_user_by_id, id)
 	return render_template('admin/users-info-stats.html', user=user)
 
 @bp.route('/users/<int:id>/orders')
 def users_info_orders(id):
-	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	user = do_or_abort(a.users.get_user_by_id, id)
 	if not user.is_customer(): abort(404)
 	
 	page = convert.to_int(request.args.get('page'), 1)
@@ -298,7 +298,7 @@ def users_info_orders(id):
 
 @bp.route('/users/<int:id>/apps')
 def users_info_apps(id):
-	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	user = do_or_abort(a.users.get_user_by_id, id)
 	if not user.is_developer(): abort(404)
 	
 	page = convert.to_int(request.args.get('page'), 1)
@@ -312,7 +312,7 @@ def users_info_apps(id):
 
 @bp.route('/users/<int:id>/password', methods=['GET', 'POST'])
 def users_info_password_change(id):
-	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	user = do_or_abort(a.users.get_user_by_id, id)
 	form = forms.AdminPasswordChangeForm(request.form)
 	if request.method == 'POST' and form.validate():
 		do_or_abort(a.users.update_user, user.id,
@@ -323,7 +323,7 @@ def users_info_password_change(id):
 
 @bp.route('/users/<int:id>/balance/pay', methods=['GET', 'POST'])
 def balance_pay(id):
-	user = do_or_abort(a.users.get_user_by_id, id, full=True)
+	user = do_or_abort(a.users.get_user_by_id, id)
 	if not user.is_customer(): abort(404)
 	
 	form = forms.BalanceForm(request.form)

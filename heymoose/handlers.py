@@ -12,5 +12,5 @@ def before_request():
 	g.params = {}
 	
 	if 'user_id' in session:
-		g.user = users.get_user_by_id(session['user_id'], full=True)
+		g.user = users.get_user_by_id(session['user_id'])
 

@@ -137,6 +137,7 @@ def approve_order(order_id):
 	'''Deprecated, use enable_order instead.'''
 	enable_order(order_id)
 	
+	
 def enable_order(order_id):
 	path = "{0}/{1}/enabled".format(resource_path, order_id)
 	put(path=path)
@@ -144,6 +145,22 @@ def enable_order(order_id):
 def disable_order(order_id):
 	path = "{0}/{1}/enabled".format(resource_path, order_id)
 	delete(path=path)
+	
+	
+def pause_order(order_id):
+	path = "{0}/{1}/paused".format(resource_path, order_id)
+	put(path=path)
+	
+def play_order(order_id):
+	path = "{0}/{1}/paused".format(resource_path, order_id)
+	delete(path=path)
+	
+def set_order_playing(order_id, play=True):
+	if play:
+		play_order(order_id)
+	else:
+		pause_order(order_id)
+
 
 def get_orders(**kwargs):
 	return map(order_from_xml, get(path=resource_path, params_dict=kwargs))

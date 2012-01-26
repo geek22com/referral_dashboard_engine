@@ -32,6 +32,7 @@ def order_from_xml(order_element):
 				user_id=get_value(order_element, 'user-id', int),
 				cpa=get_value(order_element, 'cpa', float),
 				disabled=get_value(order_element, 'disabled', bool),
+				paused=get_value(order_element, 'paused', bool),
 				creation_time=datetime_from_api(get_value(order_element, 'creation-time')),
 				# Account fields
 				balance=get_value(order_element, 'balance', float),

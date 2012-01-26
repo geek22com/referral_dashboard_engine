@@ -2,7 +2,61 @@
 
 {% set activetab = 'info' %}
 
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			var urlPlay = "{{ url_for('.ajax_orders_info_play', id=order.id) }}";
+			var urlPause = "{{ url_for('.ajax_orders_info_pause', id=order.id) }}";
+			
+			$('.order-playing').find('.btn').click(function() {
+				$.post(urlPause)
+					.success(function() {
+						$('.order-playing').hide();
+						$('.order-paused').show();
+					})
+					.error(function(xhr, textStatus) {
+						alert('Не удалось изменить состояние заказа. Ошибка ' + xhr.status);
+					});
+				return false;
+			});
+			
+			$('.order-paused').find('.btn').click(function() {
+				$.post(urlPlay)
+					.success(function() {
+						$('.order-paused').hide();
+						$('.order-playing').show();
+					})
+					.error(function(xhr, textStatus) {
+						alert('Не удалось изменить состояние заказа. Ошибка ' + xhr.status);
+					});
+				return false;
+			});
+		})
+	</script>
+{% endblock %}
+
 {% block tabcontent %}
+
+{% if not order.disabled %}
+	<div class="clearfix alert-message block-message success order-playing"
+		style="height: 30px; {% if order.paused %}display: none;{% endif %}">
+		<strong>Заказ активен.</strong> Производятся показы баннеров.
+		<button class="btn small float-right" href="#"><b>Приостановить показы</b></button>
+	</div>
+	<div class="clearfix alert-message block-message error order-paused"
+		style="height: 30px; {% if not order.paused %}display: none;{% endif %}">
+		<strong>Заказ неактивен.</strong> Показы баннеров не производятся.
+		<button class="btn small float-right" href="#"><b>Возобновить показы</b></button>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message error">
+		<p>
+			<strong>Заказ заблокирован.</strong> Если вам неизвестны причины блокировки заказа,
+			обратитесь к администрации.
+		</p>
+	</div>
+{% endif %}
 
 <table class="key-value">
 	<tbody>
@@ -10,7 +64,6 @@
 		<tr><th>Тип</th><td>{{ macros.order_type(order.type) }}</td></tr>
 		<tr><th>URL</th><td><a href="{{ order.url }}" target="_blank">{{ order.url }}</a></td></tr>
 		<tr><th>Создан</th><td>{{ order.creation_time|datetimeformat }}</td></tr>
-		<tr><th>Активен</th><td id="icon-enabled">{{ macros.to_icon(not order.disabled) }}</td></tr>
 	</tbody>
 </table>
 

@@ -77,7 +77,7 @@
 				<td class="right order-actions">...</td>
 				<td class="right order-ctr">...</td>
 				{% endif %}
-				{% if config.get('active', false) %}<td class="center">{{ macros.to_icon(not order.disabled) }}</td>{% endif %}
+				{% if config.get('active', false) %}<td class="center">{{ macros.to_icon(not order.disabled and not order.paused) }}</td>{% endif %}
 				{{ caller(false, order) }}
 			</tr>
 			{% endfor %}

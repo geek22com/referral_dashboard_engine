@@ -323,6 +323,21 @@ def ajax_apps_info_stats_ctr(id):
 	if app.user.id != g.user.id: abort(404)
 	return json_get_ctr(app_id=app.id)
 
+@bp.route('/orders/<int:id>/q/play', methods=['POST'])
+@customer_only
+def ajax_orders_info_play(id):
+	order = do_or_abort(actions.orders.get_order, id, full=True)
+	if order.user.id != g.user.id: abort(404)
+	do_or_abort(actions.orders.play_order, order.id)
+	return 'OK'
+
+@bp.route('/orders/<int:id>/q/pause', methods=['POST'])
+@customer_only
+def ajax_orders_info_pause(id):
+	order = do_or_abort(actions.orders.get_order, id, full=True)
+	if order.user.id != g.user.id: abort(404)
+	do_or_abort(actions.orders.pause_order, order.id)
+	return 'OK'
 
 
 

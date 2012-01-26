@@ -93,6 +93,7 @@ class Order(BaseModel):
 				  'user_id',
 				  'cpa',
 	              'disabled',
+	              'paused',
 	              'creation_time',
 	              'offer_id',
 	              'title',

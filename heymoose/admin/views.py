@@ -288,13 +288,27 @@ def users_info_stats(id):
 def users_info_orders(id):
 	user = do_or_abort(a.users.get_user_by_id, id, full=True)
 	if not user.is_customer(): abort(404)
-	return render_template('admin/users-info-orders.html', user=user)
+	
+	page = convert.to_int(request.args.get('page'), 1)
+	count = a.orders.get_orders_count(user_id=user.id)
+	per_page = app.config.get('ADMIN_ORDERS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	ods = a.orders.get_orders(user_id=user.id, offset=offset, limit=limit, full=True)
+	return render_template('admin/users-info-orders.html', user=user, orders=ods, pages=pages)
 
 @bp.route('/users/<int:id>/apps')
 def users_info_apps(id):
 	user = do_or_abort(a.users.get_user_by_id, id, full=True)
 	if not user.is_developer(): abort(404)
-	return render_template('admin/users-info-apps.html', user=user)
+	
+	page = convert.to_int(request.args.get('page'), 1)
+	count = a.apps.get_apps_count(user_id=user.id)
+	per_page = app.config.get('ADMIN_APPS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	with_deleted = session.get(SESSION_APPS_SHOW_DELETED, False)
+	aps = do_or_abort(a.apps.get_apps, with_deleted=with_deleted,
+					user_id=user.id, offset=offset, limit=limit, full=True)
+	return render_template('admin/users-info-apps.html', user=user, apps=aps, pages=pages)
 
 @bp.route('/users/<int:id>/password', methods=['GET', 'POST'])
 def users_info_password_change(id):

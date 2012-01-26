@@ -1,6 +1,17 @@
 {% extends "admin/users-info-layout.html" %}
+{% import 'common/apps.html' as app_macros %}
 
 {% set activetab = 'apps' %}
+
+{% set apps_config = {
+	'stats' : { 'url' : url_for('.ajax_apps_ctr', id=apps|attrlist('id')) },
+	'scroll-x' : true
+} %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ app_macros.js(apps, apps_config) }}
+{% endblock %}
 
 {% block breadcrumbs %}
 	{{ super() }}
@@ -10,26 +21,8 @@
 {% block tabcontent %}
 
 {% if user.apps %}
-	<table class="bordered-table zebra-striped">
-		<thead>
-			<tr>
-				<th class="header">Callback URL</th>
-				<th class="header">URL приложения</th>
-				<th class="header">Секретный ключ</th>
-				<th class="header">Платформа</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for app in user.apps %}
-			<tr>
-				<td>{{ macros.app_href(app) }}</td>
-				<td>{{ app.url }}</td>
-				<td>{{ app.secret }}</td>
-				<td>{{ app.platform }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	{% call(head, app) app_macros.table(apps, apps_config) %}{% endcall %}
+	{{ macros.paginate(pages, '.users_info_apps', id=user.id) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Пользователь еще не добавил ни одного приложения.</p>

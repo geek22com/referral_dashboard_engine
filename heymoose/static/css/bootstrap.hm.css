@@ -150,6 +150,19 @@ table.nosort .header:hover:after, table.nosort .header:after {
 	color: red;
 }
 
+/* rowspan bugfix for bordered tables */
+.bordered-table th, .bordered-table td {
+	border-bottom: 0px;
+	border-top: 1px solid #ddd;
+}
+
+.bordered-table thead:first-child tr:first-child th, .bordered-table tbody:first-child tr:first-child td {
+	border-top: 0px;
+}
+
+.bordered-table thead tr.subrow th {
+	border-left: 1px solid #ddd;
+}
 
 
 

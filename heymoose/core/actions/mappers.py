@@ -143,7 +143,7 @@ def order_show_from_xml(show_element):
 	
 def stat_ctr_from_xml(stat_element):
 	if stat_element is None: return None
-	return StatCtr(
+	return StatCtr(id=get_attr(stat_element, 'id', int),
 		shows=get_attr(stat_element, 'shows', int),
 		actions=get_attr(stat_element, 'actions', int),
 		ctr=get_attr(stat_element, 'ctr', float),

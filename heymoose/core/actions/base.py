@@ -20,8 +20,9 @@ def get_text_attr(etree_element, name):
 	return el
 
 def get_attr(etree_element, name, constr=unicode):
-	text_attr = get_text_attr(etree_element, name)
-	if not text_attr:
+	try:
+		text_attr = get_text_attr(etree_element, name)
+	except KeyError:
 		return None
 	return constr(text_attr)
 

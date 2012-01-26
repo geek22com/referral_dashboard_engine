@@ -190,7 +190,7 @@ class OrderShow(BaseModel):
 	
 	
 class StatCtr(BaseModel):
-	attributes = ['time', 'shows', 'actions', 'ctr']
+	attributes = ['id', 'time', 'shows', 'actions', 'ctr']
 
 
 

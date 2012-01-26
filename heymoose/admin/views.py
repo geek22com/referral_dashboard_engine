@@ -4,12 +4,13 @@ from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions as a
 from heymoose.core.actions import roles
-from heymoose.utils import convert, gen
+from heymoose.utils import convert, gen, times
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.views.common import json_get_ctr
 from heymoose.forms import forms
 from heymoose.db.models import Contact
 from heymoose.db.actions import invites
+from datetime import datetime
 import base64
 
 SESSION_APPS_SHOW_DELETED = 'admin_apps_show_deleted'
@@ -435,6 +436,20 @@ def ajax_orders_enable_city():
 	a.cities.update_city(id, disabled=not bool(value))
 	return 'OK'
 
+
+@bp.route('/apps/q/ctr')
+def ajax_apps_ctr():
+	ids = request.args.getlist('id', int)
+	stats = a.stats.get_stats_ctr_by_ids(app_ids=ids, fm=times.delta(datetime.now(), weeks=-2))
+	result = dict([(s.id, dict(actions=s.actions, shows=s.shows, ctr='%.4f' % s.ctr)) for s in stats])
+	return jsonify(result)
+
+@bp.route('/orders/q/ctr')
+def ajax_orders_ctr():
+	ids = request.args.getlist('id', int)
+	stats = a.stats.get_stats_ctr_by_ids(offer_ids=ids, fm=times.delta(datetime.now(), weeks=-2))
+	result = dict([(s.id, dict(actions=s.actions, shows=s.shows, ctr='%.4f' % s.ctr)) for s in stats])
+	return jsonify(result)
 
 @bp.route('/orders/<int:id>/stats/q/ctr/')
 def ajax_orders_info_stats_ctr(id):

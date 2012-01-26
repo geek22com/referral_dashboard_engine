@@ -307,7 +307,7 @@ def become_developer():
 @developer_only
 def ajax_apps_ctr():
 	ids = request.args.getlist('id', int)
-	stats = actions.stats.get_stats_ctr_by_ids(app_ids=ids, fm=times.delta(datetime.now(), weeks=-2))
+	stats = actions.stats.get_stats_ctr_by_ids(app_ids=ids, fm=times.delta(datetime.now(), days=-3))
 	result = dict([(s.id, dict(actions=s.actions, shows=s.shows, ctr='%.4f' % s.ctr)) for s in stats])
 	return jsonify(result)
 
@@ -315,7 +315,7 @@ def ajax_apps_ctr():
 @customer_only
 def ajax_orders_ctr():
 	ids = request.args.getlist('id', int)
-	stats = actions.stats.get_stats_ctr_by_ids(offer_ids=ids, fm=times.delta(datetime.now(), weeks=-2))
+	stats = actions.stats.get_stats_ctr_by_ids(offer_ids=ids, fm=times.delta(datetime.now(), days=-3))
 	result = dict([(s.id, dict(actions=s.actions, shows=s.shows, ctr='%.4f' % s.ctr)) for s in stats])
 	return jsonify(result)
 

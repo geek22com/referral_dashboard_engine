@@ -20,7 +20,7 @@
 
 {% block tabcontent %}
 
-{% if user.apps %}
+{% if apps %}
 	{% call(head, app) app_macros.table(apps, apps_config) %}{% endcall %}
 	{{ macros.paginate(pages, '.users_info_apps', id=user.id) }}
 {% else %}

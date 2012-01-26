@@ -21,7 +21,7 @@
 
 {% block tabcontent %}
 
-{% if user.orders %}
+{% if orders %}
 	{% call(head, order) order_macros.table(orders, orders_config) %}{% endcall %}
 	{{ macros.paginate(pages, '.users_info_orders', id=user.id) }}
 {% else %}

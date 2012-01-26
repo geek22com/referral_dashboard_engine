@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, redirect, url_for, abort, request, flash
+from flask import render_template, g, redirect, url_for, abort, request, flash, jsonify
 from heymoose import app
 from heymoose.cabinet import blueprint as bp
 from heymoose.forms import forms
 from heymoose.core import actions
 from heymoose.core.data import OrderTypes
-from heymoose.utils import convert, robokassa
+from heymoose.utils import convert, robokassa, times
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.utils.gen import generate_password_hash
 from heymoose.views.common import json_get_ctr
 from decorators import customer_only, developer_only
+from datetime import datetime
 import base64, os
 
 
@@ -289,6 +290,23 @@ def become_developer():
 	else:
 		flash(u'Вы уже являетесь разработчиком', 'error')
 	return redirect(url_for('.apps'))
+
+
+@bp.route('/apps/q/ctr')
+@developer_only
+def ajax_apps_ctr():
+	ids = request.args.getlist('id', int)
+	stats = actions.stats.get_stats_ctr_by_ids(app_ids=ids, fm=times.delta(datetime.now(), weeks=-2))
+	result = dict([(s.id, dict(actions=s.actions, shows=s.shows, ctr='%.4f' % s.ctr)) for s in stats])
+	return jsonify(result)
+
+@bp.route('/orders/q/ctr')
+@customer_only
+def ajax_orders_ctr():
+	ids = request.args.getlist('id', int)
+	stats = actions.stats.get_stats_ctr_by_ids(offer_ids=ids, fm=times.delta(datetime.now(), weeks=-2))
+	result = dict([(s.id, dict(actions=s.actions, shows=s.shows, ctr='%.4f' % s.ctr)) for s in stats])
+	return jsonify(result)
 
 
 @bp.route('/orders/<int:id>/stats/q/ctr/')

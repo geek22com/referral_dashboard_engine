@@ -1,14 +1,21 @@
 {% extends "admin/orders-layout.html" %}
+{% import 'common/orders.html' as order_macros %}
 
 {% set activetab = 'list' %}
 
+{% set orders_config = {
+	'stats' : { 'url' : url_for('.ajax_orders_ctr', id=orders|attrlist('offer_id')) },
+	'customer' : true,
+	'scroll-x' : true
+} %}
+
 {% block extrahead %}
 	{{ super() }}
+	{{ order_macros.js(orders, orders_config) }}
 	<script type="text/javascript">
 		$(function() {
 			var urlEnable = "{{ url_for('.ajax_orders_enable', id=0) }}";
 			var urlDisable = "{{ url_for('.ajax_orders_disable', id=0) }}";
-			var urlCtr = "{{ url_for('.ajax_orders_ctr', id=orders|attrlist('offer_id'))|safe }}";
 			
 			$('input.cbx-enabled').change(function(e) {
 				var $cbx = $(this);
@@ -24,22 +31,6 @@
 				});
 				$cbx.removeAttr('disabled');
 			});
-			
-			$('#wait-bar').show();
-			$.getJSON(urlCtr)
-				.complete(function() { $('#wait-bar').hide(); })
-				.success(function(data, textStatus) {
-					$('tr.order-row').each(function() {
-						var stat = data[$(this).data('id')];
-						$(this).find('td.order-shows').text(stat.shows);
-						$(this).find('td.order-actions').text(stat.actions);
-						$(this).find('td.order-ctr').text(stat.ctr);
-					});
-				})
-				.error(function(xhr, textStatus) {
-					if (xhr.status)
-						alert('Не удалось загрузить статистику. Ошибка ' + xhr.status);
-				});
 		})
 	</script>
 {% endblock %}
@@ -47,58 +38,19 @@
 {% block tabcontent %}
 
 {% if orders %}
-	<div class="autoscroll-area-x">
-		<table class="bordered-table zebra-striped nosort orders-table">
-			<thead>
-				<tr>
-					<th class="header right" rowspan="2">ИД</th>
-					<th class="header" rowspan="2">Название</th>
-					<th class="header" rowspan="2">Заказчик</th>
-					<th class="header right" rowspan="2">Баланс</th>
-					<th class="header right" rowspan="2">CPA</th>
-					{#<th class="header center" rowspan="2">Пол</th>
-					<th class="header" rowspan="2">Возраст</th>#}
-					<th class="header center" rowspan="2">Создан</th>
-					<th class="center" colspan="3">
-						Статистика за две недели
-						<img src="{{ url_for('static', filename='img/wait-indicator-24.gif') }}" 
-							id="wait-bar" alt="загрузка..." class="float-right" 
-							style="position: relative; right: 0; margin: -5px; display: none;"
-						/>
-					</th>
-					<th class="header center" rowspan="2">Активен</th>
-				</tr>
-				<tr class="subrow">
-					<th class="right" style="width: 80px;">Показов</th>
-					<th class="right" style="width: 80px;">Кликов</th>
-					<th class="right" style="width: 80px;">CTR</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for order in orders %}
-				<tr class="order-row" data-id="{{ order.id }}">
-					<td class="right">{{ order.id }}</td>
-					<td>{{ macros.order_href(order) }} {{ macros.order_type(order.type) -}}</td>
-					<td>{{ macros.user_href(order.user) }}</td>
-					<td class="right">{{ order.balance|currency(False) }}</td>
-					<td class="right">{{ order.cpa|currency(False) }}</td>
-					{#<td>{{ macros.order_gender(order.male)}}</td>
-					<td>{{ macros.order_age(order.min_age, order.max_age) }}</td>#}
-					<td class="center">{{ order.creation_time|datetimeformat }}</td>
-					<td class="right order-shows">...</td>
-					<td class="right order-actions">...</td>
-					<td class="right order-ctr">...</td>
-					<td class="center">
-						<input type="checkbox" class="cbx-enabled"
-							{% if not order.disabled %}checked="checked"{% endif %}
-							rel="{{ order.id }}"
-						/>
-					</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
+	{% call(head, order) order_macros.table(orders, orders_config) %}
+		{% if head %}
+			<th class="header center" rowspan="2">Активен</th>
+		{% else %}
+			<td class="center">
+				<input type="checkbox" class="cbx-enabled"
+					{% if not order.disabled %}checked="checked"{% endif %}
+					rel="{{ order.id }}"
+				/>
+			</td>
+		{% endif %}
+	{% endcall %}
+	
 	{{ macros.paginate(pages, '.orders') }}
 {% else %}
 	<div class="clearfix alert-message block-message info">

@@ -1,41 +1,22 @@
 {% extends "cabinet/orders-layout.html" %}
+{% import 'common/orders.html' as order_macros %}
 
 {% set activetab = 'list' %}
 
+{% set orders_config = {
+	'stats' : { 'url' : url_for('.ajax_orders_ctr', id=orders|attrlist('offer_id')) },
+	'scroll-x' : true,
+	'active' : true
+} %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ order_macros.js(orders, orders_config) }}
+{% endblock %}
+
 {% block tabcontent %}
 {% if orders %}
-	<div class="autoscroll-area-x">
-		<table class="bordered-table zebra-striped">
-			<thead>
-				<tr>
-					<th class="header right">ИД</th>
-					<th class="header">Название</th>
-					<th class="header">Тип</th>
-					<th class="header right">Баланс</th>
-					<th class="header right">CPA</th>
-					<th class="header center">Пол</th>
-					<th class="header">Возраст</th>
-					<th class="header center">Создан</th>
-					<th class="header center">Активен</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for order in orders %}
-				<tr>
-					<td class="right">{{ order.id }}</td>
-					<td>{{ macros.order_href(order) }}</td>
-					<td>{{ macros.order_type(order.type) }}</td>
-					<td class="right">{{ order.balance|currency(False) }}</td>
-					<td class="right">{{ order.cpa|currency(False) }}</td>
-					<td class="center">{{ macros.order_gender(order.male) }}</td>
-					<td>{{ macros.order_age(order.min_age, order.max_age) }}</td>
-					<td class="center">{{ order.creation_time|datetimeformat }}</td>
-					<td class="center">{{ macros.to_icon(not order.disabled) }}</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
+	{% call(head, order) order_macros.table(orders, orders_config) %}{% endcall %}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Вы еще не создали ни одного заказа.</p>

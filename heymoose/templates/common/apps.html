@@ -1,0 +1,79 @@
+{% import 'common/macros.html' as macros %}
+
+{% macro js(apps, config) %}
+{% if config.get('stats', false) %}
+<script type="text/javascript">
+	$(function() {
+		var urlCtr = "{{ config.get('stats').get('url')|safe }}";
+		
+		$('#wait-bar').show();
+		$.getJSON(urlCtr)
+			.complete(function() { $('#wait-bar').hide(); })
+			.success(function(data, textStatus) {
+				$('tr.app-row').each(function() {
+					var stat = data[$(this).data('id')];
+					$(this).find('td.app-shows').text(stat.shows);
+					$(this).find('td.app-actions').text(stat.actions);
+					$(this).find('td.app-ctr').text(stat.ctr);
+				});
+			})
+			.error(function(xhr, textStatus) {
+				if (xhr.status)
+					alert('Не удалось загрузить статистику. Ошибка ' + xhr.status);
+			});
+	});
+</script>
+{% endif %}
+{% endmacro %}
+
+{% macro table(apps, config) %}
+{% if config.get('scroll-x', false) %}<div class="autoscroll-area-x">{% endif %}
+
+<table class="bordered-table zebra-striped nosort apps-table">
+	<thead>
+		<tr>
+			<th class="header right" rowspan="2">ИД</th>
+			<th class="header" rowspan="2">Название</th>
+			{% if config.get('developer', false) %}<th class="header" rowspan="2">Разработчик</th>{% endif %}
+			<th class="header" rowspan="2">Платформа</th>
+			<th class="header center" rowspan="2">Создано</th>
+			{% if config.get('stats', false) %}
+			<th class="center" colspan="3">
+				Статистика за две недели
+				<img src="{{ url_for('static', filename='img/wait-indicator-24.gif') }}" 
+					id="wait-bar" alt="загрузка..." class="float-right" 
+					style="position: relative; right: 0; margin: -5px; display: none;"
+				/>
+			</th>
+			{% endif %}
+			{{ caller(true, none) }}
+		</tr>
+		{% if config.get('stats', false) %}
+		<tr class="subrow">
+			<th class="right" style="width: 80px;">Показов</th>
+			<th class="right" style="width: 80px;">Кликов</th>
+			<th class="right" style="width: 80px;">CTR</th>
+		</tr>
+		{% endif %}
+	</thead>
+	<tbody>
+		{% for app in apps %}
+		<tr class="app-row" data-id="{{ app.id }}" data-title="{{ app.title }}">
+			<td class="right {% if app.deleted %}deleted{% endif %}">{{ app.id }}</td>
+			<td>{{ macros.app_href(app) }}</td>
+			{% if config.get('developer', false) %}<td>{{ macros.user_href(app.user) }}</td>{% endif %}
+			<td>{{ app.platform }}</td>
+			<td class="center">{{ app.creation_time|datetimeformat }}</td>
+			{% if config.get('stats', false) %}
+			<td class="right app-shows">...</td>
+			<td class="right app-actions">...</td>
+			<td class="right app-ctr">...</td>
+			{% endif %}
+			{{ caller(false, app) }}
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% if config.get('scroll-x', false) %}</div>{% endif %}
+{% endmacro %}

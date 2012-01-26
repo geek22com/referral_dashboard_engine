@@ -1,32 +1,21 @@
 {% extends "cabinet/apps-layout.html" %}
+{% import 'common/apps.html' as app_macros %}
 
 {% set activetab = 'list' %}
+
+{% set apps_config = {
+	'stats' : { 'url' : url_for('.ajax_apps_ctr', id=apps|attrlist('id')) }
+} %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ app_macros.js(apps, apps_config) }}
+{% endblock %}
 
 {% block tabcontent %}
 
 {% if apps %}
-	<table class="bordered-table zebra-striped">
-		<thead>
-			<tr>
-				<th class="header right">ИД</th>
-				<th class="header">Название</th>
-				<th class="header">Платформа</th>
-				<th class="header center">Создано</th>
-				<th class="header center">Удалено</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for app in apps %}
-			<tr>
-				<td class="right">{{ app.id }}</td>
-				<td>{{ macros.app_href(app) }}</td>
-				<td>{{ app.platform }}</td>
-				<td class="center">{{ app.creation_time|datetimeformat }}</td>
-				<td class="center">{{ macros.deleted(app.deleted) }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	{% call(head, app) app_macros.table(apps, apps_config) %}{% endcall %}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Вы еще не добавили ни одного приложения.</p>

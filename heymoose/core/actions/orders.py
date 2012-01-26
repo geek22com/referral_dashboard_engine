@@ -162,12 +162,15 @@ def set_order_playing(order_id, play=True):
 		pause_order(order_id)
 
 
-def get_orders(**kwargs):
+def get_orders(user_id=None, **kwargs):
+	if user_id: kwargs.update(userId=user_id)
 	return map(order_from_xml, get(path=resource_path, params_dict=kwargs))
 
-def get_orders_count():
+def get_orders_count(user_id=None):
 	path = "{0}/{1}".format(resource_path, "count")
-	return count_from_xml(get(path=path))
+	params = dict()
+	if user_id: params.update(userId=user_id)
+	return count_from_xml(get(path=path, params_dict=params))
 
 
 def add_order_banner(order_id, banner_size, mime_type, image):

@@ -26,7 +26,6 @@ def orders():
 	count = a.orders.get_orders_count()
 	per_page = app.config.get('ADMIN_ORDERS_PER_PAGE', 20)
 	offset, limit, pages = paginate(page, count, per_page)
-	print offset, limit, pages
 	ods = a.orders.get_orders(offset=offset, limit=limit, full=True)
 	return render_template('admin/orders.html', orders=ods, pages=pages)
 

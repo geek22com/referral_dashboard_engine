@@ -30,7 +30,12 @@ def index():
 @bp.route('/orders/')
 @customer_only
 def orders():
-	return render_template('cabinet/orders.html', orders=g.user.orders)
+	page = convert.to_int(request.args.get('page'), 1)
+	count = actions.orders.get_orders_count(user_id=g.user.id)
+	per_page = app.config.get('ADMIN_ORDERS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	ods = actions.orders.get_orders(user_id=g.user.id, offset=offset, limit=limit, full=True)
+	return render_template('cabinet/orders.html', orders=ods, pages=pages)
 
 @bp.route('/orders/new', methods=['GET', 'POST'])
 @customer_only
@@ -187,7 +192,13 @@ def orders_info_stats(id):
 @bp.route('/apps/')
 @developer_only
 def apps():
-	return render_template('cabinet/apps.html', apps=g.user.apps)
+	page = convert.to_int(request.args.get('page'), 1)
+	count = actions.apps.get_apps_count(user_id=g.user.id)
+	per_page = app.config.get('ADMIN_APPS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	aps = do_or_abort(actions.apps.get_apps, user_id=g.user.id,
+					offset=offset, limit=limit, full=True)
+	return render_template('cabinet/apps.html', apps=aps, pages=pages)
 
 @bp.route('/apps/new', methods=['GET', 'POST'])
 @developer_only

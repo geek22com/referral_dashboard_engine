@@ -17,6 +17,7 @@
 {% block tabcontent %}
 {% if orders %}
 	{% call(head, order) order_macros.table(orders, orders_config) %}{% endcall %}
+	{{ macros.paginate(pages, '.orders') }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Вы еще не создали ни одного заказа.</p>

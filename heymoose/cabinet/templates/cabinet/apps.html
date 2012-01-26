@@ -4,7 +4,8 @@
 {% set activetab = 'list' %}
 
 {% set apps_config = {
-	'stats' : { 'url' : url_for('.ajax_apps_ctr', id=apps|attrlist('id')) }
+	'stats' : { 'url' : url_for('.ajax_apps_ctr', id=apps|attrlist('id')) },
+	'scroll-x' : true
 } %}
 
 {% block extrahead %}
@@ -16,6 +17,7 @@
 
 {% if apps %}
 	{% call(head, app) app_macros.table(apps, apps_config) %}{% endcall %}
+	{{ macros.paginate(pages, '.apps') }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Вы еще не добавили ни одного приложения.</p>

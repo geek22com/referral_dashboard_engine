@@ -3,6 +3,7 @@ from flask import request, jsonify, send_from_directory, abort
 from heymoose import app
 from heymoose.utils import convert, times
 from heymoose.core import actions
+from datetime import datetime
 
 def json_get_ctr(**kwargs):
 	try:
@@ -76,7 +77,8 @@ def json_get_audience(**kwargs):
 	if others['actions'] > 0:
 		result_city.append(others)
 		
-	result_year = [dict(year=s.year, actions=s.actions) for s in stats_year if s.year is not None]
+	this_year = datetime.now().year
+	result_year = [dict(year=this_year-s.year, actions=s.actions) for s in stats_year if s.year is not None]
 	
 	result = dict(genders=result_gender, cities=result_city, years=result_year)
 	return jsonify(result)

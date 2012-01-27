@@ -1,0 +1,142 @@
+{% macro javascript() %}
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+		google.load("visualization", "1", {packages:["corechart"]});
+		
+		function drawGendersChart(data, elem) {
+			$(elem).empty();
+			if (data.length == 0) {
+				$('#message-no-data').clone().appendTo(elem).show();
+				return;
+			}
+			
+			var dt = new google.visualization.DataTable();
+			dt.addColumn('string', 'Пол');
+			dt.addColumn('number', 'Кликов');
+			dt.addRows(data.length);
+			
+			$.each(data, function(i, val) {
+				dt.setValue(i, 0, val.gender);
+				dt.setValue(i, 1, val.actions);
+			});
+			
+			var options = { width: 400, height: 350, chartArea: { left: 5, top: 5, width: 390 } };
+			var chart = new google.visualization.PieChart(elem);
+			chart.draw(dt, options);
+		}
+		
+		function drawCitiesChart(data, elem) {
+			$(elem).empty();
+			if (data.length == 0) {
+				$('#message-no-data').clone().appendTo(elem).show();
+				return;
+			}
+			
+			var dt = new google.visualization.DataTable();
+			dt.addColumn('string', 'Город');
+			dt.addColumn('number', 'Кликов');
+			dt.addRows(data.length);
+			
+			$.each(data, function(i, val) {
+				dt.setValue(i, 0, val.city);
+				dt.setValue(i, 1, val.actions);
+			});
+			
+			var options = { width: 400, height: 350, chartArea: { left: 5, top: 5, width: 390 } };
+			var chart = new google.visualization.PieChart(elem);
+			chart.draw(dt, options);
+		}
+		
+		function drawYearsChart(data, elem) {
+			$(elem).empty();
+			if (data.length == 0) {
+				$('#message-no-data').clone().appendTo(elem).show();
+				return;
+			}
+			
+			var dt = new google.visualization.DataTable();
+			dt.addColumn('string', 'Год рождения');
+			dt.addColumn('number', 'Кликов');
+			dt.addRows(data.length);
+			
+			$.each(data, function(i, val) {
+				dt.setValue(i, 0, val.year.toString());
+				dt.setValue(i, 1, val.actions);
+			});
+			
+			var w = Math.max(data.length * 50, 900);
+			var h = 300;
+			var options = { 
+				width: w, height: h, fontSize: 14, legend: 'none',
+				hAxis: { slantedText: true, slantedTextAngle: 90 },
+				chartArea: { left: 80, top: 30, width: w-40 }
+			};
+			
+			var chart = new google.visualization.ColumnChart(elem);
+			chart.draw(dt, options);
+		}
+	
+		$(function() {
+			$('.datetimepicker').datetimepicker({showButtonPanel: false});
+			
+			$('#audience-form').ajaxForm({
+				dataType: 'json',
+				beforeSubmit: function() {
+					$('#btn-show').attr('disabled', 'disabled');
+					$('#wait-bar').show();
+				},
+				complete: function() {
+					$('#wait-bar').hide();
+					$('#btn-show').removeAttr('disabled');
+				},
+				success: function(data, textStatus) {
+					drawGendersChart(data.genders, document.getElementById('chart-genders'));
+					drawCitiesChart(data.cities, document.getElementById('chart-cities'));
+					drawYearsChart(data.years, document.getElementById('chart-years'));
+				},
+				error: function(xhr, textStatus) {
+					if (!xhr.status)
+						return;
+					else if (xhr.status != 400)
+						alert('Не удалось загрузить статистику. Ошибка ' + xhr.status);
+					else
+						alert('Ошибка ' + xhr.status + ': ' + xhr.responseText);
+				}
+			}).submit();
+		})
+	</script>
+{% endmacro %}
+
+
+{% macro html(url) %}
+	<div class="well">
+		<form id="audience-form" method="get" action="{{ url }}">
+			Дата и время
+			с <input class="span3 datetimepicker" type="text" name="from" value="{{ now()|delta(months=-1)|datetime_nosec }}" />
+			по <input class="span3 datetimepicker" type="text" name="to" value="{{ now()|datetime_nosec }}" />
+			<button id="btn-show" class="btn primary float-right">Показать</button>
+			<img src="{{ url_for('static', filename='img/wait-indicator-24.gif') }}" id="wait-bar"
+			alt="загрузка..." class="float-right" style="padding-right: 10px; display: none;" />
+		</form>
+	</div>
+
+	<div class="row">
+		<div class="span7" style="min-height: 350px;">
+			<h2>По полу</h2>
+			<div id="chart-genders"></div>
+		</div>
+		<div class="span8" style="min-height: 350px;">
+			<h2>По городам</h2>
+			<div id="chart-cities"></div>
+		</div>
+	</div>
+	
+	<h2>По годам рождения</h2>
+	<div class="autoscroll-area-x">
+		<div id="chart-years"></div>
+	</div>
+	
+	<div id="message-no-data" class="clearfix alert-message block-message info" style="display: none;">
+		<p>Нет данных для отображения статистики.</p>
+	</div>
+{% endmacro %}

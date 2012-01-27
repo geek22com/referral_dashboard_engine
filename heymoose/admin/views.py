@@ -6,7 +6,7 @@ from heymoose.core import actions as a
 from heymoose.core.actions import roles
 from heymoose.utils import convert, gen, times
 from heymoose.utils.shortcuts import do_or_abort, paginate
-from heymoose.views.common import json_get_ctr
+from heymoose.views import common as cmnviews
 from heymoose.forms import forms
 from heymoose.db.models import Contact
 from heymoose.db.actions import invites
@@ -149,6 +149,11 @@ def orders_info_actions(id):
 		offset=offset, limit=limit, full=True, offerId=order.offer_id)
 	return render_template('admin/orders-info-actions.html', order=order, actions=acts, pages=pages)
 
+@bp.route('/orders/<int:id>/audience')
+def orders_info_audience(id):
+	order = do_or_abort(a.orders.get_order, id, full=True)
+	return render_template('admin/orders-info-audience.html', order=order)
+
 @bp.route('/orders/<int:id>/stats')
 def orders_info_stats(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)
@@ -209,6 +214,11 @@ def apps_info_actions(id):
 	offset, limit, pages = paginate(page, count, per_page)
 	acts = do_or_abort(a.actions.get_actions, offset=offset, limit=limit, full=True, appId=ap.id)
 	return render_template('admin/apps-info-actions.html', app=ap, actions=acts, pages=pages)
+
+@bp.route('/apps/<int:id>/audience')
+def apps_info_audience(id):
+	app = do_or_abort(a.apps.get_app, id, full=True)
+	return render_template('admin/apps-info-audience.html', app=app)
 
 @bp.route('/apps/<int:id>/stats')
 def apps_info_stats(id):
@@ -464,15 +474,26 @@ def ajax_orders_ctr():
 	result = dict([(s.id, dict(actions=s.actions, shows=s.shows, ctr='%.4f' % s.ctr)) for s in stats])
 	return jsonify(result)
 
+@bp.route('/orders/<int:id>/q/audience/')
+def ajax_orders_info_audience(id):
+	order = do_or_abort(a.orders.get_order, id, full=True)
+	return cmnviews.json_get_audience(offer_id=order.offer_id)
+
+@bp.route('/apps/<int:id>/q/audience/')
+def ajax_apps_info_audience(id):
+	app = do_or_abort(a.apps.get_app, id, full=True)
+	return cmnviews.json_get_audience(app_id=app.id)
+
+
 @bp.route('/orders/<int:id>/stats/q/ctr/')
 def ajax_orders_info_stats_ctr(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)
-	return json_get_ctr(offer_id=order.offer_id)
+	return cmnviews.json_get_ctr(offer_id=order.offer_id)
 
 @bp.route('/apps/<int:id>/stats/q/ctr/')
 def ajax_apps_info_stats_ctr(id):
 	app = do_or_abort(a.apps.get_app, id, full=True)
-	return json_get_ctr(app_id=app.id)
+	return cmnviews.json_get_ctr(app_id=app.id)
 
 @bp.route('/users/invites/q/get/')
 def ajax_get_invite():

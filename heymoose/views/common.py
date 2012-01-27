@@ -48,6 +48,40 @@ def json_get_ctr(**kwargs):
 	return jsonify(values=result)
 
 
+def json_get_audience(**kwargs):
+	try:
+		fm = convert.to_datetime(request.args.get('from') + ':00')
+		to = convert.to_datetime(request.args.get('to') + ':00')
+		if fm > to: raise ValueError
+	except:
+		return u'Неверно указан интервал', 400
+	
+	
+	
+	stats_gender = actions.stats.get_stats_actions_by_gender(fm=fm, to=to, **kwargs)
+	stats_city = actions.stats.get_stats_actions_by_city(fm=fm, to=to, **kwargs)
+	stats_year = actions.stats.get_stats_actions_by_year(fm=fm, to=to, **kwargs)
+	
+	genders = { True : u'мужчины', False : u'женщины' }
+	result_gender = [dict(gender=genders[s.gender], actions=s.actions) for s in stats_gender if s.gender is not None]
+	
+	top = 8
+	others = dict(city=u'другие', actions=0)
+	result_city = []
+	for s in stats_city:
+		if len(result_city) < top and s.city is not None:
+			result_city.append(dict(city=s.city, actions=s.actions))
+		else:
+			others['actions'] += s.actions
+	if others['actions'] > 0:
+		result_city.append(others)
+		
+	result_year = [dict(year=s.year, actions=s.actions) for s in stats_year if s.year is not None]
+	
+	result = dict(genders=result_gender, cities=result_city, years=result_year)
+	return jsonify(result)
+
+
 @app.route('/upload/<path:filename>')
 def upload(filename):
 	if app.config.get('DEBUG', False):

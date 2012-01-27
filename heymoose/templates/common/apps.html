@@ -1,7 +1,7 @@
 {% import 'common/macros.html' as macros %}
 
 {% macro js(apps, config) %}
-{% if config.get('stats', false) %}
+{% if config.get('stats', false) and apps %}
 <script type="text/javascript">
 	$(function() {
 		var urlCtr = "{{ config.get('stats').get('url')|safe }}";
@@ -28,7 +28,7 @@
 
 {% macro table(apps, config) %}
 {% if config.get('scroll-x', false) %}<div class="autoscroll-area-x">{% endif %}
-
+{% if apps %}
 <table class="bordered-table zebra-striped nosort apps-table">
 	<thead>
 		<tr>
@@ -74,6 +74,6 @@
 		{% endfor %}
 	</tbody>
 </table>
-
+{% endif %}
 {% if config.get('scroll-x', false) %}</div>{% endif %}
 {% endmacro %}

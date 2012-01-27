@@ -6,8 +6,10 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/jquery-ui.css') }}" media="all" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/timepicker-addon.css') }}" media="all" />
 
-<script type="text/javascript" src="http://code.jquery.com/ui/1.8.16/jquery-ui.min.js"></script>
-<script type="text/javascript" src="http://jqueryui.com/ui/i18n/jquery.ui.datepicker-ru.js"></script>
+{# <script type="text/javascript" src="http://code.jquery.com/ui/1.8.16/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://jqueryui.com/ui/i18n/jquery.ui.datepicker-ru.js"></script> #}
+<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-ui.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.ui.datepicker-ru.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('.static', filename='./js/admin.js') }}"></script>
 

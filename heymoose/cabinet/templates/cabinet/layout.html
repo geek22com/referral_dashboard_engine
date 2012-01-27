@@ -9,8 +9,8 @@
 	#manager-modal { width: 400px; }}
 </style>
 
-<script type="text/javascript" src="http://code.jquery.com/ui/1.8.16/jquery-ui.min.js"></script>
-<script type="text/javascript" src="http://jqueryui.com/ui/i18n/jquery.ui.datepicker-ru.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-ui.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.ui.datepicker-ru.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
 
 {% set activemenu = activemenu|default('orders') %}

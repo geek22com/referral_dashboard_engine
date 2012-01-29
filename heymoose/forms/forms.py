@@ -180,6 +180,25 @@ class RegularOrderForm(OrderForm):
 		myvalidators.FileRequired(message=u'Выберите изображение на диске'),
 		myvalidators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
 	], description=u'Форматы: JPG (JPEG), GIF, PNG')
+	
+class RegularOrderEditFormBase(RegularOrderForm):
+	def __init__(self, *args, **kwargs):
+		super(RegularOrderEditFormBase, self).__init__(*args, **kwargs)
+		del self.orderbalance
+		self.orderimage.validators = self.orderimage.validators[:]
+		for validator in self.orderimage.validators:
+			if isinstance(validator, myvalidators.FileRequired):
+				self.orderimage.validators.remove(validator)
+		self.orderimage.flags.required = False
+		
+class RegularOrderEditForm(RegularOrderEditFormBase):
+	def __init__(self, *args, **kwargs):
+		super(RegularOrderEditForm, self).__init__(*args, **kwargs)
+		del self.orderurl
+		
+class AdminRegularOrderEditForm(RegularOrderEditFormBase, AdminOrderFormMixin):
+	pass
+
 
 class BannerOrderForm(OrderForm):
 	ordercpa = DecimalField(u'Стоимость клика', [
@@ -199,47 +218,43 @@ class BannerOrderForm(OrderForm):
 		if field.width != size.width or field.height != size.height:
 			raise ValueError(u'Размер баннера должен совпадать с указанным')
 		
+class BannerOrderEditFormBase(BannerOrderForm):
+	def __init__(self, *args, **kwargs):
+		super(BannerOrderEditFormBase, self).__init__(*args, **kwargs)
+		del self.orderbalance
+		del self.orderbannersize
+		del self.orderimage
+		
+class BannerOrderEditForm(BannerOrderEditFormBase):
+	def __init__(self, *args, **kwargs):
+		super(BannerOrderEditForm, self).__init__(*args, **kwargs)
+		del self.orderurl
+		
+class AdminBannerOrderEditForm(BannerOrderEditFormBase, AdminOrderFormMixin):
+	ordercpa = DecimalField(u'Стоимость клика', [
+		validators.NumberRange(min=0.1, message=u'Стоимость клика не может быть меньше 0.1'),
+		validators.Required(message=u'Введите стоимость клика')
+	])
+	
+		
 class VideoOrderForm(OrderForm):
 	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message=u'Введите CPA')])
 	ordervideourl = TextField(u'URL видеозаписи', [
 		validators.Required(message = (u'Введите URL')),
 		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
 	])
-	
-	
-class RegularOrderEditForm(RegularOrderForm):
-	def __init__(self, *args, **kwargs):
-		super(RegularOrderEditForm, self).__init__(*args, **kwargs)
-		del self.orderbalance
-		self.orderimage.validators = self.orderimage.validators[:]
-		for validator in self.orderimage.validators:
-			if isinstance(validator, myvalidators.FileRequired):
-				self.orderimage.validators.remove(validator)
-		self.orderimage.flags.required = False
-
-class BannerOrderEditForm(BannerOrderForm):
-	def __init__(self, *args, **kwargs):
-		super(BannerOrderEditForm, self).__init__(*args, **kwargs)
-		del self.orderbalance
-		del self.orderbannersize
-		del self.orderimage
 		
-class VideoOrderEditForm(VideoOrderForm):
+class VideoOrderEditFormBase(VideoOrderForm):
+	def __init__(self, *args, **kwargs):
+		super(VideoOrderEditFormBase, self).__init__(*args, **kwargs)
+		del self.orderbalance
+
+class VideoOrderEditForm(VideoOrderEditFormBase):
 	def __init__(self, *args, **kwargs):
 		super(VideoOrderEditForm, self).__init__(*args, **kwargs)
-		del self.orderbalance
-	
-		
-class AdminRegularOrderEditForm(RegularOrderEditForm, AdminOrderFormMixin):
-	pass
+		del self.orderurl
 
-class AdminBannerOrderEditForm(BannerOrderEditForm, AdminOrderFormMixin):
-	ordercpa = DecimalField(u'Стоимость клика', [
-		validators.NumberRange(min=0.1, message=u'Стоимость клика не может быть меньше 0.1'),
-		validators.Required(message=u'Введите стоимость клика')
-	])
-
-class AdminVideoOrderEditForm(VideoOrderEditForm, AdminOrderFormMixin):
+class AdminVideoOrderEditForm(VideoOrderEditFormBase, AdminOrderFormMixin):
 	pass
 
 

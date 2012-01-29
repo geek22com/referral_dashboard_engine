@@ -36,7 +36,7 @@
 		<fieldset>
 			<input type="hidden" name="ordertype" value="REGULAR" />
 			{{ macros.formfield(form.ordername, class='span10') }}
-			{{ macros.formfield(form.orderurl, class='span10') }}
+			{# {{ macros.formfield(form.orderurl, class='span10') }} #}
 			{{ macros.formfield(form.ordercpa, class='span4') }}
 		</fieldset>
 		{% if order.is_regular() %}

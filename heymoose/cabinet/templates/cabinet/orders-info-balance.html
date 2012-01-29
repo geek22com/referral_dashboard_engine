@@ -1,0 +1,47 @@
+{% extends "cabinet/orders-info-layout.html" %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Пополнение счета', url_for('.orders_info_balance', id=order.id)) }}
+{% endblock %}
+
+{% set activetab = 'balance' %}
+
+{% block tabcontent %}
+
+{% if g.user.customer_account.balance > 0 %}
+	<div class="row">
+		<div class="span8">
+			<div class="form-container">
+				<form id="form-balance-pay" action="" method="post" class="validate">
+					<fieldset>
+						{{ macros.formfield(form.amount, class='span4', max_range=g.user.customer_account.balance) }}
+					</fieldset>
+					<div class="input">
+						<input class="btn primary" type="submit" value="Пополнить баланс"/>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="span7">
+			<p>
+				Здесь вы можете перевести средства с вашего основного баланса рекламодателя на баланс
+				заказа, тем самым пополнив счет заказа.
+			</p>
+			<p>
+				Максимальная доступная сумма пополнения &mdash; {{ g.user.customer_account.balance|currency }}
+			</p>
+		</div>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message error">
+		<p>
+			<strong>Недостаточно средств.</strong> На вашем счету не хватает средств пополнения счета заказа.
+		</p>
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.info_balance') }}">Пополнить счет</a>
+		</div>
+	</div>
+{% endif %}
+
+{% endblock %}

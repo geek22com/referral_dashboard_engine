@@ -14,6 +14,8 @@
 					.success(function() {
 						$('.order-playing').hide();
 						$('.order-paused').show();
+						$('.order-active').hide();
+						$('.order-inactive').show();
 					})
 					.error(function(xhr, textStatus) {
 						alert('Не удалось изменить состояние заказа. Ошибка ' + xhr.status);
@@ -26,6 +28,10 @@
 					.success(function() {
 						$('.order-paused').hide();
 						$('.order-playing').show();
+						if (!$('#order-zero').length) {
+							$('.order-inactive').hide();
+							$('.order-active').show();
+						}
 					})
 					.error(function(xhr, textStatus) {
 						alert('Не удалось изменить состояние заказа. Ошибка ' + xhr.status);
@@ -38,16 +44,27 @@
 
 {% block tabcontent %}
 
+{% set order_active = not order.disabled and not order.paused and order.account.balance >= order.cpa %}
+
+<div class="clearfix alert-message block-message success order-active"
+	style="{% if not order_active %}display: none;{% endif %}">
+	<p><strong>Статус заказа:</strong> заказ АКТИВЕН.</p>
+</div>
+<div class="clearfix alert-message block-message error order-inactive"
+	style="{% if order_active %}display: none;{% endif %}">
+	<p><strong>Статус заказа:</strong> заказ НЕ АКТИВЕН.</p>
+</div>
+
 {% if not order.disabled %}
 	<div class="clearfix alert-message block-message success order-playing"
 		style="height: 30px; {% if order.paused %}display: none;{% endif %}">
-		<strong>Заказ активен.</strong> Производятся показы баннеров.
-		<button class="btn small float-right" href="#"><b>Приостановить показы</b></button>
+		<strong>Заказ включен.</strong>
+		<button class="btn small float-right" href="#"><b>Отключить</b></button>
 	</div>
 	<div class="clearfix alert-message block-message error order-paused"
 		style="height: 30px; {% if not order.paused %}display: none;{% endif %}">
-		<strong>Заказ неактивен.</strong> Показы баннеров не производятся.
-		<button class="btn small float-right" href="#"><b>Возобновить показы</b></button>
+		<strong>Заказ отключен.</strong>
+		<button class="btn small float-right" href="#"><b>Включить</b></button>
 	</div>
 {% else %}
 	<div class="clearfix alert-message block-message error">
@@ -55,6 +72,15 @@
 			<strong>Заказ находится на модерации.</strong> Созданный заказ станет активным после
 			проверки администрацией.
 		</p>
+	</div>
+{% endif %}
+
+{% if order.account.balance < order.cpa %}
+	<div id="order-zero" class="clearfix alert-message block-message error" style="height: 30px;">
+		<strong>Недостаток средств.</strong> На счету заказа недостаточно средств для показа баннеров. 
+		<a class="btn small float-right" href="{{ url_for('.orders_info_balance', id=order.id) }}">
+			<b>Пополнить счет</b>
+		</a>
 	</div>
 {% endif %}
 
@@ -89,7 +115,7 @@
 <h2>Счет и ставки</h2>
 <table class="key-value">
 	<tbody>
-		<tr><th>Баланс</th><td>{{ order.balance|currency }}</td></tr>
+		<tr><th>Баланс</th><td>{{ order.account.balance|currency }}</td></tr>
 		<tr><th>Стоимость клика</th><td>{{ order.cpa|currency }}</td></tr>
 	</tbody>
 </table>

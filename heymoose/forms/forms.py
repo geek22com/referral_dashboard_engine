@@ -334,7 +334,7 @@ class AppsShowDeletedForm(Form):
 class BalanceForm(Form):
 	amount = DecimalField(u'Сумма', [
 		validators.Required(message = u'Укажите сумму в у.е.'),
-		validators.NumberRange(min=1, max=60000000, message=u'Введите сумму от 1 до 60 000 000 у.е.')
+		validators.NumberRange(min=1, max=60000000, message=u'Такая сумма недопустима')
 	], description=u'у.е.', places=2)
 
 

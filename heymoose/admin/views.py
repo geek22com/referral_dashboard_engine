@@ -54,11 +54,11 @@ def orders_info_edit(id):
 	form_args = dict(
 		ordername = order.title,
 		orderurl = order.url,
-		orderbalance = order.balance,
+		orderbalance = order.account.balance,
 		ordercpa = order.cpa,
 		orderautoapprove = order.auto_approve,
 		orderreentrant = order.reentrant,
-		orderallownegativebalance = order.allow_negative_balance,
+		orderallownegativebalance = order.account.allow_negative_balance,
 		ordermale = u'' if order.male is None else unicode(order.male),
 		orderminage = order.min_age,
 		ordermaxage = order.max_age,
@@ -86,7 +86,7 @@ def orders_info_edit(id):
 		if form.ordername.data != order.title: kwargs.update(title=form.ordername.data)
 		if form.orderurl.data != order.url: kwargs.update(url=form.orderurl.data)
 		if form.ordercpa.data != order.cpa: kwargs.update(cpa=form.ordercpa.data)
-		if form.orderallownegativebalance.data != order.allow_negative_balance: kwargs.update(allow_negative_balance=form.orderallownegativebalance.data)
+		if form.orderallownegativebalance.data != order.account.allow_negative_balance: kwargs.update(allow_negative_balance=form.orderallownegativebalance.data)
 		if form.orderautoapprove.data != order.auto_approve: kwargs.update(auto_approve=form.orderautoapprove.data)
 		if form.orderreentrant.data != order.reentrant: kwargs.update(reentrant=form.orderreentrant.data)
 		if male != order.male: kwargs.update(male=male)

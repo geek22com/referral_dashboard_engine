@@ -123,7 +123,7 @@ def orders_info_edit(id):
 	form_args = dict(
 		ordername = order.title,
 		orderurl = order.url,
-		orderbalance = order.balance,
+		orderbalance = order.account.balance,
 		ordercpa = order.cpa,
 		ordermale = u'' if order.male is None else unicode(order.male),
 		orderminage = order.min_age,
@@ -180,6 +180,20 @@ def orders_info_edit(id):
 		
 	return render_template('cabinet/orders-info-edit.html', order=order, form=form,
 		cities=cities, order_cities=order_cities)
+	
+@bp.route('/orders/<int:id>/balance', methods=['GET', 'POST'])
+@customer_only
+def orders_info_balance(id):
+	order = do_or_abort(actions.orders.get_order, id, full=True)
+	if order.user.id != g.user.id: abort(404)
+	
+	form = forms.BalanceForm(request.form)
+	if request.method == 'POST' and form.validate():
+		actions.accounts.transfer(g.user.customer_account.id, order.account.id, form.amount.data)
+		flash(u'Счет заказа успешно пополнен', 'success')
+		return redirect(url_for('.orders_info', id=order.id))
+	
+	return render_template('cabinet/orders-info-balance.html', order=order, form=form)
 
 @bp.route('/orders/<int:id>/stats')
 @customer_only

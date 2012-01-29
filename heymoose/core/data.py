@@ -65,7 +65,7 @@ class User(BaseModel):
 	
 	
 class Account(BaseModel):
-	attributes = ['id', 'balance']
+	attributes = ['id', 'balance', 'allow_negative_balance']
 	
 	
 class Transaction(BaseModel):
@@ -88,7 +88,7 @@ class OrderTypes:
 
 class Order(BaseModel):
 	attributes = ['id',
-				  'balance',
+				  'account',
 				  'user',
 				  'user_id',
 				  'cpa',
@@ -105,7 +105,6 @@ class Order(BaseModel):
 	              'banners',
 	              'auto_approve',
 	              'reentrant',
-	              'allow_negative_balance',
 	              'male',
 	              'min_age',
 	              'max_age',

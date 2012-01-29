@@ -34,9 +34,7 @@ def order_from_xml(order_element):
 				disabled=get_value(order_element, 'disabled', bool),
 				paused=get_value(order_element, 'paused', bool),
 				creation_time=datetime_from_api(get_value(order_element, 'creation-time')),
-				# Account fields
-				balance=get_value(order_element, 'balance', float),
-				allow_negative_balance=get_value(order_element, 'allow-negative-balance', bool),
+				account=account_from_xml(get_child(order_element, 'account')),
 				# Common offer fields
 				offer_id=get_value(order_element, 'offer-id', int),
 				title=get_value(order_element, 'title'),
@@ -101,7 +99,8 @@ def user_from_xml(user_element):
 def account_from_xml(account_element):
 	if account_element is None: return None
 	return Account(id=get_attr(account_element, 'id', int),
-				balance=get_value(account_element, 'balance', float))
+				balance=get_value(account_element, 'balance', float),
+				allow_negative_balance=get_value(account_element, 'allow-negative-balance', bool))
 	
 def transaction_from_xml(transaction_element):
 	if transaction_element is None: return None

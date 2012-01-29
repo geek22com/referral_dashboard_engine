@@ -68,7 +68,7 @@
 				<td class="right">{{ order.id }}</td>
 				<td>{{ macros.order_href(order) }} {{ macros.order_type(order.type) -}}</td>
 				{% if config.get('customer', false) %}<td>{{ macros.user_href(order.user) }}</td>{% endif %}
-				<td class="right">{{ order.balance|currency(False) }}</td>
+				<td class="right">{{ order.account.balance|currency(False) }}</td>
 				<td class="right">{{ order.cpa|currency(False) }}</td>
 				{% if config.get('gender', false) %}<td>{{ macros.order_gender(order.male)}}</td>{% endif %}
 				{% if config.get('age', false) %}<td>{{ macros.order_age(order.min_age, order.max_age) }}</td>{% endif %}

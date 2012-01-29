@@ -17,8 +17,8 @@
 			var field = $(this);
 			if (field.val() == '') return;
 			
-			var min = parseFloat($('#' + field.attr('id') + '-min').html());
-			var max = parseFloat($('#' + field.attr('id') + '-max').html());
+			var min = parseFloat(field.closest('.formfield').find('#' + field.attr('id') + '-min').html());
+			var max = parseFloat(field.closest('.formfield').find('#' + field.attr('id') + '-max').html());
 			var val = parseFloat(field.val())
 			
 			var ok = !isNaN(val) && ((isNaN(min) && isNaN(max)) ||

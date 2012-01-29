@@ -336,6 +336,9 @@ class BalanceForm(Form):
 		validators.Required(message = u'Укажите сумму в у.е.'),
 		validators.NumberRange(min=1, max=60000000, message=u'Такая сумма недопустима')
 	], description=u'у.е.', places=2)
+	
+class OrderBalanceTransferForm(BalanceForm):
+	order = SelectField(u'На счет заказа', coerce=int)
 
 
 class GiftForm(Form):

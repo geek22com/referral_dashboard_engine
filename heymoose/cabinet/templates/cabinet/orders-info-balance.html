@@ -2,28 +2,39 @@
 
 {% block breadcrumbs %}
 	{{ super() }}
-	{{ macros.breadcrumb('Пополнение счета', url_for('.orders_info_balance', id=order.id)) }}
+	{{ macros.breadcrumb('Операции со счетом', url_for('.orders_info_balance', id=order.id)) }}
 {% endblock %}
 
 {% set activetab = 'balance' %}
 
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		div.pad18 {
+			padding-top: 18px;
+		}
+	</style>
+{% endblock %}
+
 {% block tabcontent %}
 
+<h2>Пополнение счета</h2>
 {% if g.user.customer_account.balance > 0 %}
 	<div class="row">
 		<div class="span8">
 			<div class="form-container">
 				<form id="form-balance-pay" action="" method="post" class="validate">
 					<fieldset>
-						{{ macros.formfield(form.amount, class='span4', max_range=g.user.customer_account.balance) }}
+						{{ macros.formfield(form_in.amount, class='span4', max_range=g.user.customer_account.balance) }}
+						<input type="hidden" name="type" value="in" />
 					</fieldset>
 					<div class="input">
-						<input class="btn primary" type="submit" value="Пополнить баланс"/>
+						<input class="btn primary" type="submit" value="Пополнить счет"/>
 					</div>
 				</form>
 			</div>
 		</div>
-		<div class="span7">
+		<div class="span7 pad18">
 			<p>
 				Здесь вы можете перевести средства с вашего основного баланса рекламодателя на баланс
 				заказа, тем самым пополнив счет заказа.
@@ -35,12 +46,67 @@
 	</div>
 {% else %}
 	<div class="clearfix alert-message block-message error">
-		<p>
-			<strong>Недостаточно средств.</strong> На вашем счету не хватает средств пополнения счета заказа.
-		</p>
+		<p><strong>Недостаточно средств.</strong> На вашем счету не хватает средств пополнения счета заказа.</p>
 		<div class="alert-actions">
 			<a class="btn small" href="{{ url_for('.info_balance') }}">Пополнить счет</a>
 		</div>
+	</div>
+{% endif %}
+
+<hr />
+<h2>Вывод средств со счета</h2>
+{% if order.account.balance > 0 %}
+	<div class="row">
+		<div class="span8">
+			<div class="form-container">
+				<form id="form-balance-pay" action="" method="post" class="validate">
+					<fieldset>
+						{{ macros.formfield(form_out.amount, class='span4', max_range=order.account.balance) }}
+						<input type="hidden" name="type" value="out" />
+					</fieldset>
+					<div class="input">
+						<input class="btn primary" type="submit" value="Вывести средства"/>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="span7 pad18">
+			<p>Здесь вы можете вывести средства со счета заказа на ваш основной счет рекламодателя.</p>
+			<p>Максимальная доступная сумма для вывода &mdash; {{ order.account.balance|currency }}</p>
+		</div>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message error">
+		<p><strong>Недостаточно средств.</strong> На счету заказа отсутствуют средства для вывода.</p>
+	</div>
+{% endif %}
+
+<hr />
+<h2>Перевод средств на счет другого заказа</h2>
+{% if order.account.balance > 0 %}
+	<div class="row">
+		<div class="span8">
+			<div class="form-container">
+				<form id="form-balance-pay" action="" method="post" class="validate">
+					<fieldset>
+						{{ macros.formfield(form_transfer.amount, class='span4', max_range=order.account.balance) }}
+						{{ macros.formfield(form_transfer.order, class='span4') }}
+						<input type="hidden" name="type" value="transfer" />
+					</fieldset>
+					<div class="input">
+						<input class="btn primary" type="submit" value="Перевести средства"/>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="span7 pad18">
+			<p>Здесь вы можете перевести средства со счета этого заказа на счет любого другого вашего заказа.</p>
+			<p>Максимальная доступная сумма для перевода &mdash; {{ order.account.balance|currency }}</p>
+		</div>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message error">
+		<p><strong>Недостаточно средств.</strong> На счету заказа отсутствуют средства для перевода.</p>
 	</div>
 {% endif %}
 

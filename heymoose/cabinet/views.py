@@ -186,14 +186,41 @@ def orders_info_edit(id):
 def orders_info_balance(id):
 	order = do_or_abort(actions.orders.get_order, id, full=True)
 	if order.user.id != g.user.id: abort(404)
+	other_orders = [ord for ord in actions.orders.get_orders(user_id=g.user.id) if ord.id != order.id]
+	order_choices = [(ord.account.id, ord.title) for ord in other_orders]
 	
-	form = forms.BalanceForm(request.form)
-	if request.method == 'POST' and form.validate():
-		actions.accounts.transfer(g.user.customer_account.id, order.account.id, form.amount.data)
-		flash(u'Счет заказа успешно пополнен', 'success')
-		return redirect(url_for('.orders_info', id=order.id))
+	form_in = forms.BalanceForm()
+	form_out = forms.BalanceForm()
+	form_transfer = forms.OrderBalanceTransferForm()
+	form_transfer.order.choices = order_choices
 	
-	return render_template('cabinet/orders-info-balance.html', order=order, form=form)
+	if request.method == 'POST':
+		type = request.form.get('type', 'in')
+		if type == 'in':
+			form_in = forms.BalanceForm(request.form)
+			if form_in.validate():
+				actions.accounts.transfer(g.user.customer_account.id, order.account.id, form_in.amount.data)
+				flash(u'Счет заказа успешно пополнен', 'success')
+				return redirect(url_for('.orders_info', id=order.id))
+		elif type == 'out':
+			form_out = forms.BalanceForm(request.form)
+			if form_out.validate():
+				actions.accounts.transfer(order.account.id, g.user.customer_account.id, form_out.amount.data)
+				flash(u'Средства успешно выведены со счета заказа', 'success')
+				return redirect(url_for('.orders_info', id=order.id))
+		elif type == 'transfer':
+			form_transfer = forms.OrderBalanceTransferForm(request.form)
+			form_transfer.order.choices = order_choices
+			if form_transfer.validate():
+				actions.accounts.transfer(order.account.id, form_transfer.order.data, form_transfer.amount.data)
+				flash(u'Средства успешно переведены', 'success')
+				return redirect(url_for('.orders_info', id=order.id))
+		else:
+			flash(u'Ошибка операции со счетом', 'error')
+			return redirect(url_for('.orders_info', id=order.id))
+	
+	return render_template('cabinet/orders-info-balance.html', order=order,
+			form_in=form_in, form_out=form_out, form_transfer=form_transfer)
 
 @bp.route('/orders/<int:id>/stats')
 @customer_only

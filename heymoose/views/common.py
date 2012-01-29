@@ -57,30 +57,39 @@ def json_get_audience(**kwargs):
 	except:
 		return u'Неверно указан интервал', 400
 	
+	stats_gender = actions.stats.get_stats_audience_by_genders(fm=fm, to=to, **kwargs)
+	stats_city = actions.stats.get_stats_audience_by_cities(fm=fm, to=to, **kwargs)
+	stats_year = actions.stats.get_stats_audience_by_years(fm=fm, to=to, **kwargs)
 	
-	
-	stats_gender = actions.stats.get_stats_actions_by_gender(fm=fm, to=to, **kwargs)
-	stats_city = actions.stats.get_stats_actions_by_city(fm=fm, to=to, **kwargs)
-	stats_year = actions.stats.get_stats_actions_by_year(fm=fm, to=to, **kwargs)
-	
-	genders = { True : u'мужчины', False : u'женщины' }
-	result_gender = [dict(gender=genders[s.gender], actions=s.actions) for s in stats_gender if s.gender is not None]
+	genders = { True : u'мужчины', False : u'женщины', None : u'не указан' }
+	result_gender = [dict(gender=genders[s.gender], count=s.performers) for s in stats_gender]
 	
 	top = 8
-	others = dict(city=u'другие', actions=0)
+	others = dict(city=u'другие', count=0)
 	result_city = []
 	for s in stats_city:
-		if len(result_city) < top and s.city is not None:
-			result_city.append(dict(city=s.city, actions=s.actions))
+		if s.city is None:
+			result_city.append(dict(city=u'не указан', count=s.performers))
+		elif len(result_city) < top:
+			result_city.append(dict(city=s.city, count=s.performers))
 		else:
-			others['actions'] += s.actions
-	if others['actions'] > 0:
+			others['count'] += s.performers
+	if others['count'] > 0:
 		result_city.append(others)
 		
 	this_year = datetime.now().year
-	result_year = [dict(year=this_year-s.year, actions=s.actions) for s in stats_year if s.year is not None]
+	all_count = 0
+	none_count = 0
+	result_year = []
+	for s in stats_year:
+		all_count += s.performers
+		if s.year is not None: 
+			result_year.append(dict(year=this_year-s.year, count=s.performers))
+		else:
+			none_count = s.performers
+	year_percent = round(float(all_count - none_count) / all_count * 100, 2) if all_count > 0 else 0
 	
-	result = dict(genders=result_gender, cities=result_city, years=result_year)
+	result = dict(genders=result_gender, cities=result_city, years=result_year, year_percent=year_percent)
 	return jsonify(result)
 
 

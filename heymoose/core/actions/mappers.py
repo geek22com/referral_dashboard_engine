@@ -149,6 +149,7 @@ def stat_from_xml(stat_element):
 		city=get_attr(stat_element, 'city'),
 		shows=get_attr(stat_element, 'shows', int),
 		actions=get_attr(stat_element, 'actions', int),
+		performers=get_attr(stat_element, 'performers', int),
 		ctr=get_attr(stat_element, 'ctr', float),
 		time=datetime_from_unixtime(get_attr(stat_element, 'time', float), True)
 	)

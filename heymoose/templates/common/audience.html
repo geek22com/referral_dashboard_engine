@@ -17,10 +17,10 @@
 			
 			$.each(data, function(i, val) {
 				dt.setValue(i, 0, val.gender);
-				dt.setValue(i, 1, val.actions);
+				dt.setValue(i, 1, val.count);
 			});
 			
-			var options = { width: 400, height: 350, chartArea: { left: 5, top: 5, width: 390 } };
+			var options = { width: 400, height: 350, chartArea: { left: 5, top: 20, width: 390 } };
 			var chart = new google.visualization.PieChart(elem);
 			chart.draw(dt, options);
 		}
@@ -39,10 +39,10 @@
 			
 			$.each(data, function(i, val) {
 				dt.setValue(i, 0, val.city);
-				dt.setValue(i, 1, val.actions);
+				dt.setValue(i, 1, val.count);
 			});
 			
-			var options = { width: 400, height: 350, chartArea: { left: 5, top: 5, width: 390 } };
+			var options = { width: 400, height: 350, chartArea: { left: 5, top: 20, width: 390 } };
 			var chart = new google.visualization.PieChart(elem);
 			chart.draw(dt, options);
 		}
@@ -61,7 +61,7 @@
 			
 			$.each(data, function(i, val) {
 				dt.setValue(i, 0, val.year.toString());
-				dt.setValue(i, 1, val.actions);
+				dt.setValue(i, 1, val.count);
 			});
 			
 			var w = Math.max(data.length * 50, 900);
@@ -93,6 +93,7 @@
 					drawGendersChart(data.genders, document.getElementById('chart-genders'));
 					drawCitiesChart(data.cities, document.getElementById('chart-cities'));
 					drawYearsChart(data.years, document.getElementById('chart-years'));
+					$('#year-percent').text(data.year_percent + '% пользователей указали свой возраст.');
 				},
 				error: function(xhr, textStatus) {
 					if (!xhr.status)
@@ -134,15 +135,15 @@
 	</div>
 	
 	<h2>По возрасту</h2>
+	<p id="year-percent"></p>
 	<div class="autoscroll-area-x">
 		<div id="chart-years"></div>
 	</div>
 	
-	<p class="help-inline" style="margin-top: 30px;">
-		* В данном разделе приведена статистика, показывающая распределение кликов по тем или иным личным данным
-		пользователей (полу, возрасту и т.п.). Под эту статистику попадают лишь те пользователи, которые указали
-		в своих профилях соответствующие данные.
-	</p>
+	{# <p class="help-inline" style="margin-top: 30px;">
+		* В данном разделе приведена статистика, показывающая распределение аудитории (пользователей) иным личным 
+		данным (полу, возрасту и т.п.).
+	</p> #}
 	
 	<div id="message-no-data" class="clearfix alert-message block-message info" style="display: none;">
 		<p>Нет данных для отображения статистики.</p>

@@ -4,8 +4,15 @@ body {
 
 .content {
 	background-color: #FFF;
-	min-height: 600px;
+	/*min-height: 600px;*/
 	padding: 20px;
+	margin-top: 20px;
+	border-radius: 20px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.container > footer {
+	border: none;
 }
 
 .container > footer p {

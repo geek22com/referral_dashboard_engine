@@ -4,7 +4,32 @@
 
 {% set activemenu = "index" %}
 
-{% block pageheader_container %}
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		div.row .feature {
+			margin-top: 10px;
+		}
+		
+		div.feature div.icon {
+			text-align: center;
+			width: 50px;
+			height: 50px;
+		}
+		
+		div.feature div.description {
+			width: 280px;
+		}
+	</style>
+{% endblock %}
+
+{% block container %}
+
+{% block flash_messages %}
+	{{ super() }}
+{% endblock %}
+
+<div class="content">
 	<div class="hero-unit white">
 		<div class="row">
 			<div class="span4 right">
@@ -13,76 +38,124 @@
 			<div class="span9">
 				<h2>Доставка аудитории вашей рекламе!</h2>
 				<p>
-					Система HeyMoose позволяет размещать рекламу в приложениях на любых платформах
-					и предоставляет централизованный доступ к управлению рекламной кампанией.
-					<a href="{{ url_for('.customers') }}">Узнать больше »</a>
+					Система &laquo;HeyMoose!&raquo; позволяет размещать рекламу в приложениях 
+					на любых платформах	и предоставляет централизованный доступ к управлению 
+					рекламной кампанией. <a href="{{ url_for('.customers') }}">Узнать больше »</a>
 				</p>
 			</div>
 		</div>
 	</div>
-{% endblock %}
+</div>
 
-{% block content %}
-	{# <object width="900" height="460" type="application/x-shockwave-flash" 
-	data="{{ url_for('.static', filename='./flash/hero-anim.swf') }}"></object> #}
-
-	<h3 class="underlined-header">Широкий охват аудитории</h3>
-	<div class="row">
-		<div class="span5" style="padding: 30px 0px;">
-			<img src="{{ url_for('static', filename='./img/feature-audience.png') }}" alt="Аудитория" />
+<div class="row">
+	<div class="span9" style="height: 720px;">
+		<div class="content" style="padding: 30px;">
+			<h5>О чем речь?</h5>
+			<p>
+				<strong>&laquo;HeyMoose!&raquo;</strong> &mdash; это система, которая поможет вашей компании
+				стать богаче. Интересно? Тогда поехали дальше.
+			</p>
+			<h5>Вы &mdash; рекламодатель...</h5>
+			<p>
+				Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных
+				сетях и рекламу в мобильных играх, а так же предлагаем средства как  для раскрутки
+				бренда, так и для точечных продаж. Как это работает, и чем мы отличаемся от других,
+				<a href="{{ url_for('.customers') }}">читаем тут</a>.
+			</p>
+			<h5>...или разработчик приложений?</h5>
+			<p>
+				Если же вы являетесь разработчиком игр &mdash; мы рады видеть вас в числе партнеров.
+				Ознакомьтесь с нашей документацией, подключите нашу систему в свои приложения
+				и начинайте зарабатывать вместе с нами! Подробнее
+				<a href="{{ url_for('.developers') }}">читайте здесь</a>.
+			</p>
+			<hr />
+			<p>
+				Мы не говорим, что мы первые, мы говорим, что мы &mdash; лучшие. Используя уже
+				проверенные технологии, мы взяли из них самые  передовые и создали уникальную
+				платформу для рекламы в социальных сетях. Действуя, как команда вовлеченных
+				профессионалов, мы постоянно совершенствуем свой продукт, чтобы вы получили
+				качественную рекламу в интернете по доступным ценам.
+			</p>
 		</div>
-		<div class="span9" style="width: 560px; padding: 20px;">
-			<dl class="features" style="margin-bottom: 0px;">
-				<dt>Более двух миллионов пользователей!</dt>
-				<dd>
-					В нашей рекламной сети большое количество активных пользователей, заинтересованных
-					вашим товаром или услугой.
-				</dd>
-				<dt>Охват всех основных платформ</dt>
-				<dd>
-					Мы размещаем вашу рекламу в приложениях на платформах ВКонтакте, Facebook,
-					Одноклассники, Мой Мир, iOS, Android.
-				</dd>
-				<dt>Выход за рамки стандартных площадок размещения рекламы</dt>
-				<dd>
-					Через приложения вы получаете доступ к пользователям мобильных устройств
-					и планшетных компьютеров.
-				</dd>
-			</dl>
+		<div class="content" style="height: 110px;">
+			<embed src="{{ url_for('.static', filename='./flash/platforms.swf') }}" width="480" height="100" wmode="opaque" />
 		</div>
 	</div>
-
-	<h3 class="underlined-header">Качественный трафик</h3>
-	<div class="row">
-		<div class="span5" style="padding: 20px 0px;">
-			<img src="{{ url_for('static', filename='./img/feature-traffic.png') }}" alt="Трафик" />
-		</div>
-		<div class="span9" style="width: 560px; padding: 20px;">
-			<dl class="features" style="margin-bottom: 0px;">
-				<dt>Точная система таргетинга</dt>
-				<dd>Настройка параметров целевой аудитории для вашей рекламы.</dd>
-				<dt>Ручная модерация приложений</dt>
-				<dd>Показ вашей рекламы только в проверенных приложениях.</dd>
-				<dt>Защита от повторных кликов</dt>
-				<dd>Баннер не показывается пользователю, если он уже кликнул по нему.</dd>
-			</dl>
+	<div class="span7" style="height: 720px;">
+		<div class="content">
+			<div class="row feature">
+				<div class="span1 icon">
+					<img src="{{ url_for('static', filename='./img/icons/users.png') }}" alt="пользователи" />
+				</div>
+				<div class="span3 description">
+					<h5>Более двух миллионов пользователей!</h5>
+					<p>
+						В нашей рекламной сети большое количество пользователей, заинтересованных
+						вашим товаром или услугой.
+					</p>
+				</div>
+			</div>
+			<div class="row feature">
+				<div class="span1 icon">
+					<img src="{{ url_for('static', filename='./img/icons/facebook.png') }}" alt="платформы" />
+				</div>
+				<div class="span3 description">
+					<h5>Охват всех основных платформ</h5>
+					<p>
+						Мы размещаем вашу рекламу в приложениях на платформах ВКонтакте, Facebook,
+						Одноклассники, Мой Мир, iOS, Android. 
+					</p>
+				</div>
+			</div>
+			<div class="row feature">
+				<div class="span1 icon">
+					<img src="{{ url_for('static', filename='./img/icons/ipod.png') }}" alt="площадки" />
+				</div>
+				<div class="span3 description">
+					<h5>Нестандартные рекламные площадки</h5>
+					<p>
+						Через приложения вы получаете доступ к пользователям мобильных устройств
+						и планшетных компьютеров. 
+					</p>
+				</div>
+			</div>
+			<div class="row feature">
+				<div class="span1 icon">
+					<img src="{{ url_for('static', filename='./img/icons/target.png') }}" alt="таргетинг" />
+				</div>
+				<div class="span3 description">
+					<h5>Точная система таргетинга</h5>
+					<p>
+						Вы сами можете настроить параметры целевой аудитории для вашей рекламы
+						(пол, возраст, город и т.п.)
+					</p>
+				</div>
+			</div>
+			<div class="row feature">
+				<div class="span1 icon">
+					<img src="{{ url_for('static', filename='./img/icons/graph.png') }}" alt="статистика" />
+				</div>
+				<div class="span3 description">
+					<h5>Гибкая система статистики</h5>
+					<p>
+						Вы получаете возможность оценить эффективность рекламной кампании, а также
+						отследить динамику активности ваших клиентов.
+					</p>
+				</div>
+			</div>
+			<div class="row feature">
+				<div class="span1 icon">
+					<img src="{{ url_for('static', filename='./img/icons/check.png') }}" alt="модерация" />
+				</div>
+				<div class="span3 description">
+					<h5>Ручная модерация приложений</h5>
+					<p>
+						Мы показываем вашу рекламу только в проверенных приложениях.
+					</p>
+				</div>
+			</div>
 		</div>
 	</div>
-
-	<h3 class="underlined-header">Гибкая система настройки рекламной компании</h3>
-	<div class="row">
-		<div class="span5" style="padding: 20px 0px;">
-			<img src="{{ url_for('static', filename='./img/feature-settings.png') }}" alt="Настройка" />
-		</div>
-		<div class="span9" style="width: 560px; padding: 20px;">
-			<dl class="features" style="margin-bottom: 0px;">
-				<dt>Информация о показах и кликах</dt>
-				<dd>Вы получаете возможность оценить эффективность рекламной кампании.</dd>
-				<dt>Система статистики</dt>
-				<dd>Позволяет отследить динамику активности ваших клиентов.</dd>
-				<dt>Служба поддержки клиентов</dt>
-				<dd>Мы работаем в режиме 24/7!</dd>
-			</dl>
-		</div>
-	</div>
+</div>
 {% endblock %}

@@ -57,6 +57,7 @@
 	</div>
 	
 	<div class="container">
+		{% block container %}
 		<div class="content">
 			{% block breadcrumbs_container %}{% endblock %}
 			
@@ -80,9 +81,10 @@
 			{% block content %}
 			{% endblock %}
 		</div>
+		{% endblock %}
 		
 		<footer>
-			<p>&copy; 2011 Bravik, LLC.</p>
+			<p>&copy; 2011&minus;2012 Bravik, LLC.</p>
 			<div class="footer-signs center">
 				{% block footer_signs %}{% endblock %}
 			</div>

@@ -3,6 +3,16 @@
 {% block extrahead %}
 <style type="text/css">
 	#login-modal { width: 440px; }
+	
+	body {
+		background-color: #EEEEEE;
+		background-image: -moz-linear-gradient(left , #a8e2ff 0%, #ffffff 50%, #f7e5a3 100%);
+		background-image: -webkit-linear-gradient(left , #a8e2ff 0%, #ffffff 50%, #f7e5a3 100%);
+	}
+	
+	.container > footer p {
+		color: #404040;
+	}
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -91,13 +101,13 @@
 {% block footer_signs %}
 {% set wmid = g.config.get('ROBOKASSA_WMID', '000000000000') %}
 
-<a href="http://www.webmoney.ru">
+<a href="http://www.webmoney.ru" target="_blank">
 	<img src="http://www.webmoney.ru/img/icons/88x31_wm_blue_on_white_ru.png"
 	alt="Мы принимаем WebMoney" />
 </a>
 
 <!-- begin WebMoney Transfer : attestation label --> 
-<a href="https://passport.webmoney.ru/asp/certview.asp?wmid={{ wmid }}" target=_blank>
+<a href="https://passport.webmoney.ru/asp/certview.asp?wmid={{ wmid }}" target="_blank">
 	<IMG SRC="http://www.webmoney.ru/img/icons/88x31_wm_v_blue_on_white_ru.png" 
 	title="Здесь находится аттестат нашего WM идентификатора {{ wmid }}" border="0"><br>
 	<font size=1>Проверить аттестат</font>

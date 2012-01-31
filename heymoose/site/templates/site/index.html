@@ -13,12 +13,12 @@
 		
 		div.feature div.icon {
 			text-align: center;
-			width: 50px;
-			height: 50px;
+			width: 40px;
+			height: 40px;
 		}
 		
 		div.feature div.description {
-			width: 280px;
+			width: 295px;
 		}
 	</style>
 {% endblock %}
@@ -48,8 +48,8 @@
 </div>
 
 <div class="row">
-	<div class="span9" style="height: 720px;">
-		<div class="content" style="padding: 30px;">
+	<div class="span9">
+		<div class="content" style="padding: 30px; height: 480px;">
 			<h5>О чем речь?</h5>
 			<p>
 				<strong>&laquo;HeyMoose!&raquo;</strong> &mdash; это система, которая поможет вашей компании
@@ -78,12 +78,12 @@
 				качественную рекламу в интернете по доступным ценам.
 			</p>
 		</div>
-		<div class="content" style="height: 110px;">
+		<div class="content" style="height: 100px;">
 			<embed src="{{ url_for('.static', filename='./flash/platforms.swf') }}" width="480" height="100" wmode="opaque" />
 		</div>
 	</div>
-	<div class="span7" style="height: 720px;">
-		<div class="content">
+	<div class="span7">
+		<div class="content" style="height: 660px;">
 			<div class="row feature">
 				<div class="span1 icon">
 					<img src="{{ url_for('static', filename='./img/icons/users.png') }}" alt="пользователи" />

@@ -29,6 +29,10 @@ def customers():
 def developers():
 	return render_template('site/to-developer.html')
 
+@bp.route('/platforms')
+def platforms():
+	return render_template('site/platforms.html')
+
 
 @bp.route('/contacts', methods=['GET', 'POST'])
 def contacts():

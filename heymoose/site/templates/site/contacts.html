@@ -4,33 +4,60 @@
 
 {% set activemenu = "contacts" %}
 
-{% block pageheader %}
-<h1>Как с нами связаться?</h1>
+{% block container %}
+
+{% block flash_messages %}
+	{{ super() }}
 {% endblock %}
 
-{% block content %}
-<div class="clearfix">
-	<address>
-		<strong>E-mail:</strong> <a href="mailto:info@heymoose.com">info@heymoose.com</a><br />
-		<strong>Телефон:</strong> +7 (905) 710-19-92
-	</address>
+<div class="content">
+	<div class="page-header"><h1>Как с нами связаться?</h1></div>
+	<div class="row">
+		<div class="span5">
+			<h3>По общим вопросам</h3>
+			<address>
+				<br />
+				<strong>E-mail:</strong> <a href="mailto:info@heymoose.com">info@heymoose.com</a><br />
+				<strong>Телефон:</strong> +7 (905) 710-19-92
+			</address>
+		</div>
+		<div class="span5">
+			<h3>Рекламодателям</h3>
+			<address>
+				<strong>Менеджер:</strong> Роман Носов<br />
+				<strong>E-mail:</strong> <a href="mailto:roman.nosov@heymoose.com">roman.nosov@heymoose.com</a><br />
+				<strong>Телефон:</strong> +7 (965) 256-83-20
+			</address>
+		</div>
+		<div class="span5">
+			<h3>Разработчикам</h3>
+			<address>
+				<strong>Менеджер:</strong> Дмитрий Павлов<br />
+				<strong>E-mail:</strong> <a href="mailto:dmitriy.pavlov@heymoose.com">dmitriy.pavlov@heymoose.com</a><br />
+				<strong>Телефон:</strong> +7 (916) 082-20-87<br />
+				<strong>Skype:</strong> ragdar777
+			</address>
+		</div>
+	</div>
 </div>
 
-<h2>Напишите нам, и мы свяжемся с вами!</h2>
-<div class="form-container clearfix">
-	<form id="form-contacts" method="post" action="" class="widelabels validate">
-		<fieldset>
-			{{ macros.formfield(form.name, class='span10') }}
-			{{ macros.formfield(form.email, class='span10', type='email') }}
-			{{ macros.formfield(form.phone, class='span4') }}
-			{{ macros.formfield(form.comment, class='span10', rows=4) }}
-			{{ macros.formfield(form.captcha, class='span4') }}
-			{{ form.ch() }}
-		</fieldset>
-		<div class="actions">
-			<input class="btn primary" type="submit" value="Отправить"/>
-		</div>
-	</form>
+<div class="content">
+	<div class="page-header"><h1>Напишите нам, и мы свяжемся с вами!</h1></div>
+	<div class="form-container clearfix">
+		<form id="form-contacts" method="post" action="" class="widelabels validate">
+			<fieldset>
+				{{ macros.formfield(form.name, class='span10') }}
+				{{ macros.formfield(form.email, class='span10', type='email') }}
+				{{ macros.formfield(form.phone, class='span4') }}
+				{{ macros.formfield(form.comment, class='span10', rows=4) }}
+				{{ macros.formfield(form.captcha, class='span4') }}
+				{{ form.ch() }}
+			</fieldset>
+			<div class="actions">
+				<input class="btn primary" type="submit" value="Отправить"/>
+			</div>
+		</form>
+	</div>
 </div>
 
 {% endblock %}

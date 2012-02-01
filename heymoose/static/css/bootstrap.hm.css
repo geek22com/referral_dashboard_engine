@@ -80,6 +80,11 @@ dl.features dd {
 	color: #404040;
 }
 
+.bullet-list li {
+	padding-top: 10px;
+	color: #404040;
+}
+
 
 .btn.top-margin { margin-top: 10px; }
 
@@ -171,6 +176,11 @@ table.nosort .header:hover:after, table.nosort .header:after {
 	border-left: 1px solid #ddd;
 }
 
+.roundbox {
+	border: 1px solid #DDDDDD;
+	border-radius: 20px;
+	padding: 5px;
+}
 
 
 

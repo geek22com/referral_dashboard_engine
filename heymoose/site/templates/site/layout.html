@@ -78,7 +78,13 @@
 <ul class="nav">
 	<li id="menu-item-index"><a href="{{ url_for('.index') }}">Главная</a></li>
 	{# <li id="menu-item-about"><a href="{{ url_for('.about') }}">О проекте</a></li> #}
-	<li id="menu-item-customers"><a href="{{ url_for('.customers') }}">Рекламодателям</a></li>
+	<li class="dropdown">
+		<a class="dropdown-toggle" href="#">Рекламодателям</a>
+		<ul class="dropdown-menu">
+			<li id="menu-item-customers"><a href="{{ url_for('.customers') }}">Наши преимущества</a></li>
+			<li id="menu-item-platforms"><a href="{{ url_for('.platforms') }}">Площадки и баннеры</a></li>
+		</ul>
+	</li>
 	<li id="menu-item-developers"><a href="{{ url_for('.developers') }}">Разработчикам</a></li>
 	<li id="menu-item-contacts"><a href="{{ url_for('.contacts') }}">Контакты</a></li>
 </ul>

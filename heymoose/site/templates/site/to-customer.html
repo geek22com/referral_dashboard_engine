@@ -4,82 +4,154 @@
 
 {% set activemenu = "customers" %}
 
-{% block pageheader %}
-<h1>Рекламодателям</h1>
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		.feature .header {
+			text-align: center;
+		}
+		
+		.feature .description {
+			height: 340px;
+		}
+		
+		.feature .bordered {
+			padding-right: 20px;
+			border-right: 1px solid #DDDDDD;
+		}
+	</style>
 {% endblock %}
 
-{% block content %}
+{% block container %}
 
-<h2>Платформы для размещения рекламы</h2>
+{% block flash_messages %}
+	{{ super() }}
+{% endblock %}
+
+<div class="content">
+	<div class="page-header"><h1>Рекламодателям</h1></div>
+	<div class="row">
+		<div class="span4 right">
+			<img src="{{ url_for('static', filename='./img/logo_200x150.png') }}" alt="HeyMoose" />
+		</div>
+		<div class="span11">
+			<p>
+				Многие компании размещают рекламу в Интернете. Согласно исследованию агентства 
+				&laquo;J'son &amp; Partners&raquo;, опубликованному еще в марте 2011 года, российский
+				рынок онлайн-рекламы был признан самым быстро развивающимся в мире. Всего за год 
+				достаточно молодой еще российский рынок вырос на 42 процента. При этом большой
+				популярностью в последнее время стали пользоваться медийные баннеры в игровых 
+				приложениях социальных сетей. В чем секрет?
+			</p>
+			<p>
+				Все люди любят развлекаться, поэтому игровые приложения становятся все более
+				популярны и, соответственно, дают очень большую аудиторию. Например, приложения сети
+				&laquo;Вконтакте&raquo; посещает более половины всех пользователей, пользующихся
+				сайтом ежедневно.
+			</p>
+		</div>
+	</div>
 	
-<embed src="{{ url_for('.static', filename='./flash/platforms.swf') }}" width="900" height="200" wmode="opaque" />
+	<h3>Основные преимущества баннерной рекламы</h3>
+	<ul class="bullet-list">
+		<li>Баннер привлекателен, «цепляет» взгляд и стимулирует кликнуть по нему.</li>
+		<li>
+			У потребителя вырабатывается «узнавание» бренда, что в дальнейшем может привести его
+			к вашему продукту. По исследованиям Atlas Digital marketing пользователи охотнее на 
+			22% охотнее откликаются на текстовую ( контекстную) рекламу компании, баннер 
+			которой они видели ранее.
+		</li>
+		<li>Вы можете показать товар «лицом» перед миллионной аудиторией.</li>
+		<li>
+			После клика на баннер пользователь автоматически попадает на ваш сайт, 
+			что стимулирует его продвижение.
+		</li>
+		<li>Доступная цена. Стоимость клика в системе &laquo;HeyMoose!&raquo; &mdash; от 3 рублей!</li> 
+	</ul>
+	<p><a href="{{ url_for('.platforms') }}">Узнать больше о наших площадках и баннерах &raquo;</a></p>
+	
+	<h3>Оплата</h3>
+	<p>
+		Оплата заказов и рекламных кампаний производится через платежную систему
+		<a href="http://robokassa.ru/" target="_blank">RoboKassa</a>. Мы принимаем
+		WebMoney и другие виды электронной валюты.
+	</p>
+</div>
 
-<h2>Расположение и виды баннеров</h2>
-
-<div class="row">
-	<div class="span10">
-		<img src="{{ url_for('static', filename='./img/banners.jpg') }}" alt="баннеры" />
-	</div>
-	<div class="span4">
-		<h3>Размеры баннеров:</h3>
-		<ul class="features">
-			<li>120 x 600</li>
-			<li>300 x 250</li>
-			<li>468 x 60</li>
-			<li>728 x 90</li>
-			<li>и др.</li>
-		</ul>
+<div class="content">
+	<div class="page-header"><h1>Что дает вам &laquo;HeyMoose&raquo;?</h1></div>
+	<div class="row" style="margin-top: 20px;">
+		<div class="span5 feature">
+			<div class="header">
+				<img src="{{ url_for('static', filename='./img/feature-audience.png') }}" alt="Аудитория" />
+				<h3>Широкая аудитория</h3>
+			</div>
+			<div class="description bordered">
+				<p>
+					Более двух миллионов активных пользователей ежедневно пользуются играми в которых мы
+					размещаем рекламу. При этом количество приложений постоянно увеличивается.
+				</p>
+				<p>
+		    		Мы размещаем  вашу информацию в приложениях на платформах ВКонтакте, Facebook, Одноклассники,
+		    		Мой Мир, iOS, Android. Ваша рекламная кампания может охватить все популярные рекламные
+		    		платформы и даже больше: мы выходим за стандартные рамки размещения и предоставляем вам
+		    		доступ к пользователям мобильных устройств и планшетных компьютеров.
+				</p>
+			</div>
+		</div>
+		<div class="span5 feature">
+			<div class="header">
+				<img src="{{ url_for('static', filename='./img/feature-traffic.png') }}" alt="Трафик" />
+				<h3>Качественный трафик</h3>
+			</div>
+			<div class="description bordered">
+				<p>
+					Точная система таргетинга, разработанная нашей компанией, позволяет выделять целевую
+					аудиторию вашей компании, доставляя рекламу только потенциально заинтересованным пользователям.
+					При этом учитывается и специфика игр, которые часто уже сориентированы на определенные группы
+					потребителей.
+				</p>
+				<p>	
+					Каждое приложение проверяется нами лично. Кроме того, мы используем систему
+					шифрования, которая на корню пресечет коварные попытки скликивания ваших денег или накручивания
+					трафика. Баннер в приложении защищен от повторных кликов и не показывается пользователю, если
+					он уже перешел по нему.
+				</p>
+			</div>
+		</div>
+		<div class="span5">
+			<div class="header">
+				<img src="{{ url_for('static', filename='./img/feature-settings.png') }}" alt="Настройка" />
+				<h3>Гибкая система настройки</h3>
+			</div>
+			<div class="description">
+				<p>
+					Проверка эффективности рекламной кампании происходит в онлайн-режиме. Система статистики
+					позволяет отследить динамику активности ваших клиентов.
+				</p>
+				<p>
+					Вы можете самостоятельно изменять
+					необходимые параметры для таргетинга &mdash; пол, возраст и георгафию показов, а так же
+					изменять форматы баннеров. Вы можете попробовать различные форматы оплаты &mdash; CPA,
+					CPC или CPM, чтобы контролировать расход средств на своем счете и выбрать наиболее
+					выгодный вариант.
+				</p>
+				<p>
+					После проведения рекламной кампании проводится Post-click анализ,
+					который позволит вам сформировать представление о том, какие именно пользователи наиболее
+					заинтересованы в вашем предложении.
+				</p>
+			</div>
+		</div>
 	</div>
 </div>
 
-<h2>Приложения, использующие HeyMoose</h2>
-
-<div class="row" style="padding: 20px 0px;">
-	<div class="span4 center" style="width: 220px;">
-		<a href="http://vkontakte.ru/kroko" target="_blank">
-			<div style="height: 180px; vertical-align: middle;">
-				<img height="100%" src="{{ url_for('static', filename='./img/apps/krokodil.png') }}" alt="Крокодил" />
-			</div>
-			Крокодил (ВКонтакте)
-		</a>
-	</div>
-	<div class="span4 center" style="width: 200px;">
-		<a href="http://vkontakte.ru/app1947272" target="_blank">
-			<div style="height: 180px; vertical-align: middle;">
-				<img height="100%" src="{{ url_for('static', filename='./img/apps/durak.png') }}" alt="В Дурака" />
-			</div>
-			В Дурака (ВКонтакте)
-		</a>
-	</div>
-	<div class="span4 center" style="width: 220px;">
-		<a href="http://vkontakte.ru/app1950406" target="_blank">
-			<div style="height: 180px; vertical-align: middle;">
-				<img height="100%" src="{{ url_for('static', filename='./img/apps/melody.png') }}" alt="Угадай мелодию" />
-			</div>
-			Угадай мелодию (ВКонтакте)
-		</a>
-	</div>
-	<div class="span3 center" style="width: 200px;">
-		<a href="http://my.mail.ru/apps/654386" target="_blank">
-			<div style="height: 180px; vertical-align: middle;">
-				<img height="100%" src="{{ url_for('static', filename='./img/apps/kornemania.png') }}" alt="Корнемания" />
-			</div>
-			Корнемания (Мой Мир)
-		</a>
-	</div>
+<div class="content">
+	<h3><a href="{{ url_for('.contacts') }}">Свяжитесь с нами! &raquo;</a></h3>
+	<p>
+		Станьте участником системы &laquo;HeyMoose!&raquo;. Мы поможем вам найти качественный
+		и недорогой трафик.
+	</p>
 </div>
 
-<h2>Оплата</h2>
-
-<p style="margin-bottom: 30px;">
-	Оплата заказов и рекламных кампаний производится через платежную систему
-	<a href="http://robokassa.ru/" target="_blank">RoboKassa</a>. Мы принимаем
-	WebMoney и другие виды электронной валюты.
-</p>
-
-<div class="alert-message block-message info">
-      <h4>Свяжитесь с нами</h4>
-      <p>Станьте участником системы HeyMoose. Мы поможем вам найти качественный и недорогой трафик.</p>
-      <p><strong><a href="{{ url_for('.contacts') }}" class="btn top-margin">Контакты</a></strong></p>
-</div>
 {% endblock %}

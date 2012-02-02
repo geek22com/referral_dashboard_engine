@@ -1,0 +1,14 @@
+{% extends "mail/layout-admin.html" %}
+
+{% block subject %}
+Создан новый заказ "{{ order.title }}"
+{% endblock %}
+
+{% block html %}
+Рекламодатель <a href="{{ root + url_for('admin.users_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
+создал новый заказ <a href="{{ root + url_for('admin.orders_info', id=order.id) }}">{{ order.title }}</a>.
+{% endblock %}
+
+{% block plain %}
+Рекламодатель {{ user.nickname }} ({{ user.email }}) создал новый заказ "{{ order.title }}".
+{% endblock %}

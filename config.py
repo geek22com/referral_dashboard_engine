@@ -8,6 +8,8 @@ SECRET_KEY = 'lola pola_mola_cola'
 RESTAPI_SERVER = 'http://localhost:5468'
 USE_DATABASE = True
 
+SITE_ROOT = 'http://www.heymoose.com'
+
 # Restkit configuration
 RESTKIT_TIMEOUT = 10
 RESTKIT_MAX_TRIES = 5
@@ -28,6 +30,17 @@ TIME_FORMAT = DATETIME_FORMAT.split(' ')[1]
 
 # Backend parameters
 APP_EMAIL = "ks.shilov@gmail.com"
+
+# Mail parameters
+MAILJET_API_KEY = '807acc36b2f4763cc4e16e8a7b3fa945'
+MAILJET_API_SECRET_KEY = 'c8f23ac9200c098f86a4cc5cae42ce19'
+MAIL_SMTP_HOST = 'in.mailjet.com'
+MAIL_SMTP_PORT = 25
+MAIL_SMTP_TIMEOUT = 5
+MAIL_SMTP_USERNAME = MAILJET_API_KEY
+MAIL_SMTP_PASSWORD = MAILJET_API_SECRET_KEY
+MAIL_FROM_ADDRESS = 'HeyMoose! <noreply@heymoose.com>'
+MAIL_ADMINS = ['slezko@heymoose.com']
 
 # Admin parameters
 ADMIN_PAGES_RANGE = 7

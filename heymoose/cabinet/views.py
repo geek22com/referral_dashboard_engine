@@ -9,6 +9,7 @@ from heymoose.utils import convert, robokassa, times
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.utils.gen import generate_password_hash
 from heymoose.views.common import json_get_ctr
+from heymoose.mail import transactional as mail
 from decorators import customer_only, developer_only
 from datetime import datetime
 import base64, os
@@ -66,6 +67,8 @@ def orders_new():
 			banner_size=form.orderbannersize.data,
 			banner_mime_type=form.orderimage.mime_type,
 			image=base64.encodestring(request.files['orderimage'].stream.read()))
+		order = actions.orders.get_order(id)
+		mail.admin_order_created(g.user, order)
 		flash(u'Заказ успешно создан.', 'success')
 		return redirect(url_for('.orders_info', id=id))
 	return render_template('cabinet/orders-new.html', form=form, cities=cities)

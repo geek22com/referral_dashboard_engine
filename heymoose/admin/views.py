@@ -19,6 +19,12 @@ SESSION_APPS_SHOW_DELETED = 'admin_apps_show_deleted'
 def index():
 	return render_template('admin/index.html', params=g.params)
 
+@bp.route('/viewmail')
+def viewmail():
+	filename = request.args.get('file', '')
+	if filename:
+		return render_template('mail/{0}.html'.format(filename))
+
 
 @bp.route('/orders/')
 def orders():

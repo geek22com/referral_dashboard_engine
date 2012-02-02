@@ -1,0 +1,16 @@
+{% extends "mail/layout.html" %}
+
+{% block content %}
+<div class="row">
+	<div class="span4">
+		<img src="http://heymoose.com{{ url_for('static', filename='./img/logo_200x150.png') }}" alt="HeyMoose" />
+	</div>
+	<div class="span6">
+		<h1 style="font-size: 54px; margin-top: 50px;">Вам письмо!</h1>
+	</div>
+</div>
+<div class="page-header">
+	<h2 class="center">{{ self.subject() }}</h2>
+</div>
+{% block html %}{% endblock %}
+{% endblock %}

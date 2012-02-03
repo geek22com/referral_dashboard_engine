@@ -8,6 +8,7 @@ from heymoose.utils.gen import generate_password_hash, check_password_hash, aes_
 from heymoose.core.actions import users, roles
 from heymoose.db.models import Contact
 from heymoose.db.actions import invites
+from heymoose.mail import marketing as mmail
 from datetime import datetime
 
 
@@ -74,9 +75,11 @@ def register_developer():
 		user = do_or_abort(users.get_user_by_email, form.email.data, full=True)
 		if user:
 			users.add_user_role(user.id, roles.DEVELOPER)
+			user.roles.append(roles.DEVELOPER)
 			invites.register_invite(form.invite.data)
 			session['user_id'] = user.id
 			flash(u'Вы успешно зарегистрированы', 'success')
+			mmail.lists_add_user(user)
 			return redirect(url_for('cabinet.index'))
 		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
 		
@@ -109,9 +112,11 @@ def register_customer():
 			user = do_or_abort(users.get_user_by_email, form.email.data, full=True)
 			if user:
 				users.add_user_role(user.id, roles.CUSTOMER)
+				user.roles.append(roles.CUSTOMER)
 				session['user_id'] = user.id
 				session['ref'] = ''
 				flash(u'Вы успешно зарегистрированы', 'success')
+				mmail.lists_add_user(user)
 				return redirect(url_for('cabinet.index'))
 			flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
 	

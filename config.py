@@ -31,9 +31,17 @@ TIME_FORMAT = DATETIME_FORMAT.split(' ')[1]
 # Backend parameters
 APP_EMAIL = "ks.shilov@gmail.com"
 
-# Mail parameters
+# MailJet API parameters
 MAILJET_API_KEY = '807acc36b2f4763cc4e16e8a7b3fa945'
 MAILJET_API_SECRET_KEY = 'c8f23ac9200c098f86a4cc5cae42ce19'
+MAILJET_API_URL = 'http://api.mailjet.com/0.1'
+MAILJET_MAX_TRIES = 5
+MAILJET_USERS_LIST_ID = 15815
+MAILJET_CUSTOMERS_LIST_ID = 15816
+MAILJET_DEVELOPERS_LIST_ID = 15817
+
+# Mail sending parameters
+MAIL_ENABLED = False
 MAIL_SMTP_HOST = 'in.mailjet.com'
 MAIL_SMTP_PORT = 25
 MAIL_SMTP_TIMEOUT = 5

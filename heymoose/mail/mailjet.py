@@ -50,5 +50,6 @@ api = MailJet(
 	uri = app.config.get('MAILJET_API_URL'),
 	key = app.config.get('MAILJET_API_KEY'),
 	secret_key = app.config.get('MAILJET_API_SECRET_KEY'),
+	timeout = app.config.get('MAILJET_TIMEOUT'),
 	max_tries = app.config.get('MAILJET_MAX_TRIES')
 )

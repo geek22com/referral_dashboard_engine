@@ -9,7 +9,7 @@
 		<thead>
 			<tr>
 				<th class="header right">ИД</th>
-				<th class="header">Ник</th>
+				<th class="header">Имя</th>
 				<th class="header">E-mail</th>
 				<th class="header right">Баланс, {{ currency_sign }}</th>
 				<th class="header center">Разработчик</th>
@@ -21,7 +21,7 @@
 			{% for user in users %}
 			<tr>
 				<td class="right">{{ user.id }}</td>
-				<td><a href="{{ url_for('.users_info', id=user.id) }}">{{ user.nickname }}</a></td>
+				<td><a href="{{ url_for('.users_info', id=user.id) }}">{{ user.full_name() }}</a></td>
 				<td>{{ user.email }}</td>
 				<td class="right">
 					{% if user.is_customer() %}

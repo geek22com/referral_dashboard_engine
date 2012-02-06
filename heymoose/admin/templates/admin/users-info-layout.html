@@ -1,6 +1,6 @@
 {% extends "admin/layout.html" %}
 
-{% block title %}Пользователь {{ user.nickname }}{% endblock %}
+{% block title %}Пользователь {{ user.full_name() }}{% endblock %}
 
 {% set activemenu = "users" %}
 
@@ -34,6 +34,7 @@
 	<li id="tab-orders"><a href="{{ url_for('.users_info_orders', id=user.id) }}">Заказы</a></li>
 	<li id="tab-pay"><a href="{{ url_for('.balance_pay', id=user.id) }}">Пополнение баланса</a></li>
 	{% endif %}
+	<li id="tab-edit"><a href="{{ url_for('.users_info_edit', id=user.id) }}">Редактировать</a></li>
 	<li id="tab-password"><a href="{{ url_for('.users_info_password_change', id=user.id) }}">Изменить пароль</a></li>
 	<li id="tab-stats"><a href="{{ url_for('.users_info_stats', id=user.id) }}">Статистика</a></li>
 </ul>

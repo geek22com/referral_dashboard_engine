@@ -93,7 +93,7 @@
 	{% if g.user %}
 	<li id="menu-item-cabinet"><a href="{{ url_for('cabinet.index') }}">Личный кабинет</a></li>
 	<li class="dropdown">
-		<a class="dropdown-toggle" href="#">{{ g.user.nickname }}</a>
+		<a class="dropdown-toggle" href="#">{{ g.user.full_name() }}</a>
 		<ul class="dropdown-menu">
 			<li><a href="{{ url_for('.logout') }}">Выйти</a></li>
 		</ul>

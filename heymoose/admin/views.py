@@ -10,6 +10,7 @@ from heymoose.views import common as cmnviews
 from heymoose.forms import forms
 from heymoose.db.models import Contact
 from heymoose.db.actions import invites
+from heymoose.mail import marketing as mmail
 from datetime import datetime
 import base64
 
@@ -275,12 +276,20 @@ def users_register_customer():
 	if request.method == 'POST' and form.validate():
 		do_or_abort(a.users.add_user,
 			email=form.email.data,
-			passwordHash=gen.generate_password_hash(form.password.data),
-			nickname=form.username.data)
+			password_hash=gen.generate_password_hash(form.password.data),
+			first_name=form.first_name.data,
+			last_name=form.last_name.data,
+			organization=form.organization.data,
+			phone=form.phone.data,
+			messenger_type=form.messenger_type.data,
+			messenger_uid=form.messenger_uid.data)
 		user = do_or_abort(a.users.get_user_by_email, form.email.data, full=True)
 		if user:
+			a.users.confirm_user(user.id)
 			a.users.add_user_role(user.id, roles.CUSTOMER)
+			user.roles.append(roles.CUSTOMER)
 			flash(u'Рекламодатель успешно зарегистрирован', 'success')
+			mmail.lists_add_user(user)
 			return redirect(url_for('.users_info', id=user.id))
 		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
 	
@@ -326,13 +335,49 @@ def users_info_apps(id):
 					user_id=user.id, offset=offset, limit=limit, full=True)
 	return render_template('admin/users-info-apps.html', user=user, apps=aps, pages=pages)
 
+@bp.route('/users/<int:id>/edit', methods=['GET', 'POST'])
+def users_info_edit(id):
+	user = do_or_abort(a.users.get_user_by_id, id)
+	form_args = dict(
+		first_name = user.first_name,
+		last_name = user.last_name,
+		phone = user.phone,
+		organization = user.organization,
+		messenger_type = user.messenger_type,
+		messenger_uid = user.messenger_uid,
+		email = user.email,
+		confirmed = user.confirmed
+	)
+	if user.is_customer():
+		form = forms.AdminCustomerEditForm(request.form, **form_args)
+	else:
+		form = forms.AdminDeveloperEditForm(request.form, **form_args)
+		
+	if request.method == 'POST' and form.validate():
+		upd_args = dict()
+		if form.first_name.data != user.first_name: upd_args.update(first_name=form.first_name.data)
+		if form.last_name.data != user.last_name: upd_args.update(last_name=form.last_name.data)
+		if form.organization.data != user.organization: upd_args.update(organization=form.organization.data)
+		if form.phone.data != user.phone: upd_args.update(phone=form.phone.data)
+		if form.messenger_type.data != user.messenger_type or form.messenger_uid.data != user.messenger_uid:
+			upd_args.update(messenger_type=form.messenger_type.data, messenger_uid=form.messenger_uid.data)
+		if form.email.data != user.email: upd_args.update(email=form.email.data)
+		if form.confirmed.data != user.confirmed: upd_args.update(confirmed=form.confirmed.data)
+		if upd_args.keys():
+			a.users.update_user(user.id, **upd_args)
+			flash(u'Профиль успешно изменен', 'success')
+		else:
+			flash(u'Вы не изменили ни одного поля', 'warning')
+		return redirect(url_for('.users_info', id=user.id))
+	
+	return render_template('admin/users-info-edit.html', user=user, form=form)
+
 @bp.route('/users/<int:id>/password', methods=['GET', 'POST'])
 def users_info_password_change(id):
 	user = do_or_abort(a.users.get_user_by_id, id)
 	form = forms.AdminPasswordChangeForm(request.form)
 	if request.method == 'POST' and form.validate():
-		do_or_abort(a.users.update_user, user.id,
-			gen.generate_password_hash(form.password.data))
+		a.users.update_user(user.id, password_hash=gen.generate_password_hash(form.password.data))
 		flash(u'Пароль пользователя успешно изменен', 'success')
 		return redirect(url_for('.users_info', id=user.id))
 	return render_template('admin/users-info-password-change.html', user=user, form=form)

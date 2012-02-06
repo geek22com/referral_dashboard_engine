@@ -61,16 +61,52 @@ class RoleForm(Form):
 										(roles.CUSTOMER, roles.CUSTOMER)])
 
 
-class RegisterForm(Form):
-	username = TextField(u'Имя пользователя (ник)', [
-		 validators.Length(min=4, max=25, message = u'Некорректное имя пользователя'),
-		 validators.Required(message = u'Введите имя пользователя')
+class UserFormBase(Form):
+	first_name = TextField(u'Ваше имя', [
+		validators.Length(min=2, max=200, message = u'Имя может иметь длину от 2 до 200 символов'),
+		validators.Required(message = u'Введите ваше имя')
 	])
-	email = TextField(u'E-mail', [
-		validators.Email(message = u'Некорректный email адрес'),
-		validators.Required(message = u'Введите email адрес'),
-		myvalidators.check_email_not_registered
+	last_name = TextField(u'Ваша фамилия', [
+		validators.Length(min=2, max=200, message = u'Фамилия может иметь длину от 2 до 200 символов'),
+		validators.Required(message = u'Введите вашу фамилию')
 	])
+	organization = myfields.NullableTextField(u'Организация', [
+		validators.Length(max=200, message = u'Название организации не может быть длиннее 200 символов'),
+	])
+	
+class CustomerFormMixin:
+	phone = TextField(u'Телефон', [
+		validators.Length(min=5, max=30, message = u'Телефон может иметь длину от 5 до 30 исмволов'),
+		validators.Required(message = u'Введите ваш телефон')
+	])
+	messenger_type = myfields.NullableSelectField(u'Мессенджер', choices=[
+		('', u'(не указывать)'),
+		('SKYPE', u'Skype'),
+		('JABBER', u'Jabber'),
+		('ICQ', u'ICQ')
+	])
+	messenger_uid = myfields.NullableTextField(u'UID в мессенджере')
+	
+	def validate_messenger_uid(self, field):
+		if not self.messenger_type.data: return
+		if not field.data:
+			raise ValueError(u'Введите UID в выбранном вами мессенджере')
+		elif not (2 <= len(field.data) <= 30):
+			raise ValueError(u'UID может иметь длину от 2 до 30 символов')
+		
+class DeveloperFormMixin:
+	phone = myfields.NullableTextField(u'Телефон')
+	messenger_type = SelectField(u'Мессенджер', choices=[
+		('SKYPE', u'Skype'),
+		('JABBER', u'Jabber'),
+		('ICQ', u'ICQ')
+	], validators = [validators.Required(message = u'Запоните тип мессенджера')])
+	messenger_uid = TextField(u'UID в мессенджере', [
+		validators.Length(min=2, max=30, message = u'UID может иметь длину от 2 до 30 символов'),
+		validators.Required(message = u'Введите UID в выбранном мессенджере')
+	])
+
+class RegisterForm(UserFormBase):
 	password = PasswordField(u'Пароль', [
 		validators.Length(min=4, max=16, message = u'Длина пароля должна быть от 4 до 16 символов'),
 		validators.Required(message = u'Введите пароль')
@@ -80,14 +116,38 @@ class RegisterForm(Form):
 		validators.EqualTo('password', message = u'Введенные пароли не совпадают'),
 		validators.Required(message = u'Введите пароль повторно')
 	])
+	email = TextField(u'E-mail', [
+		validators.Email(message = u'Некорректный адрес электронной почты'),
+		validators.Required(message = u'Введите адрес электронной почты'),
+		myvalidators.check_email_not_registered
+	])
 	
-class DeveloperRegisterForm(RegisterForm):
+class DeveloperRegisterForm(RegisterForm, DeveloperFormMixin):
 	invite = TextAreaField(u'Код приглашения', [
 		validators.Required(message=u'Скопируйте сюда полученный код приглашения'),
 		myvalidators.check_invite
 	])
 	
-class CustomerRegisterForm(RegisterForm):
+class CustomerRegisterForm(RegisterForm, CustomerFormMixin):
+	pass
+
+class DeveloperEditForm(UserFormBase, DeveloperFormMixin):
+	pass
+
+class CustomerEditForm(UserFormBase, CustomerFormMixin):
+	pass
+
+class AdminUserEditFormMixin:
+	email = TextField(u'E-mail', [
+		validators.Email(message = u'Некорректный адрес электронной почты'),
+		validators.Required(message = u'Введите адрес электронной почты')
+	])
+	confirmed = BooleanField(u'Подтвержден', default=False)
+	
+class AdminDeveloperEditForm(DeveloperEditForm, AdminUserEditFormMixin):
+	pass
+
+class AdminCustomerEditForm(CustomerEditForm, AdminUserEditFormMixin):
 	pass
 
 

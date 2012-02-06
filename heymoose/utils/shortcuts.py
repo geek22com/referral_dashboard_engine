@@ -10,7 +10,11 @@ def do_or_abort(func, *args, **kwargs):
 		abort(e.status_int)
 	except:
 		abort(500)
-		
+
+
+def none_if_empty(value): return value if value else None
+none_if_false = none_if_empty
+
 		
 def paginate(page, count, per_page):
 	offset = (page - 1) * per_page

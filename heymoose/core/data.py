@@ -33,7 +33,16 @@ class User(BaseModel):
 	attributes = ['id',
 	              'email',
 	              'password_hash',
-	              'nickname',
+	              'first_name',
+	              'last_name',
+	              'organization',
+	              'phone',
+	              'source_url',
+	              'messenger_type',
+	              'messenger_uid',
+	              'confirmed',
+	              'blocked',
+	              'register_time',
 	              'orders',
                   'customer_secret',
 	              'customer_account',
@@ -55,6 +64,9 @@ class User(BaseModel):
 
 	def is_somebody(self):
 		return len(self.roles) > 0
+	
+	def full_name(self):
+		return u'{0} {1}'.format(self.first_name, self.last_name)
 	
 	def get_refcode(self):
 		key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')

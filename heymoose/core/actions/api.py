@@ -1,7 +1,7 @@
 from heymoose.core.rest import get
 from heymoose.core.actions.apps import get_app
 from heymoose.utils.shortcuts import dict_update_filled_params
-import hashlib
+import hashlib, json
 
 resource_path = "/api"
 
@@ -17,9 +17,9 @@ def signed_params(params, secret):
 	m.update((result + secret).encode('utf-8'))
 	return m.hexdigest()
 
-def api_get(params, secret):
+def api_get(params, secret, renderer=lambda x: x):
 	params.update(sig=signed_params(params, secret))
-	return get(path=resource_path, params_dict=params, renderer=unicode)
+	return get(path=resource_path, params_dict=params, renderer=renderer)
 
 # For debug perposes
 def do_offer(offer_id, app_id, uid, platform, secret=None):

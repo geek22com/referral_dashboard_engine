@@ -6,13 +6,31 @@
 {% with user = g.user %}
 <table class="key-value">
 	<tbody>
-		<tr><th>Ник</th><td>{{ user.nickname }}</td></tr>
+		<tr><th>Имя</th><td>{{ user.full_name() }}</td></tr>
+		<tr><th>Организация</th><td>{{ user.organization|default('(не указана)', true) }}</td></tr>
+	</tbody>
+</table>
+
+<h3>Контакты</h3>
+<table class="key-value">
+	<tbody>
 		<tr><th>E-mail</th><td>{{ user.email }}</td></tr>
+		<tr><th>Телефон</th><td>{{ user.phone|default('(не указан)', true) }}</td></tr>
+		<tr>
+			<th>Мессенджер</th>
+			<td>
+				{% if user.messenger_type %}
+				{{ user.messenger_uid }} ({{ user.messenger_type }})
+				{% else %}
+				(не указан)
+				{% endif %}
+			</td>
+		</tr>
 	</tbody>
 </table>
 
 {% if user.is_developer() %}
-<h2>Разработчик</h2>
+<h3>Разработчик</h3>
 <table class="key-value">
 	<tbody>
 		<tr><th>Баланс</th><td>{{ user.developer_account.balance|currency }}</td></tr>
@@ -21,7 +39,7 @@
 {% endif %}
 
 {% if user.is_customer() %}
-<h2>Рекламодатель</h2>
+<h3>Рекламодатель</h3>
 <table class="key-value">
 	<tbody>
 		<tr><th>Баланс</th><td>{{ user.customer_account.balance|currency }}</td></tr>

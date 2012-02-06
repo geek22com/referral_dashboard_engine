@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from wtforms.fields import TextField, IntegerField, FileField
+from wtforms.fields import TextField, IntegerField, FileField, SelectField
 from PIL import Image
 from heymoose.utils import swfheader, svgheader
 from widgets import UnfilledTextInput
@@ -12,6 +12,16 @@ class NullableIntegerField(IntegerField):
 			self.data = None
 			return
 		super(NullableIntegerField, self).process_formdata(valuelist)
+		
+class NullableTextField(TextField):
+	def process_formdata(self, valuelist):
+		super(NullableTextField, self).process_formdata(valuelist)
+		self.data = self.data or None
+		
+class NullableSelectField(SelectField):
+	def post_validate(self, form, validation_stopped):
+		super(NullableSelectField, self).post_validate(form, validation_stopped)
+		self.data = self.data or None
 		
 		
 class UnfilledTextField(TextField):

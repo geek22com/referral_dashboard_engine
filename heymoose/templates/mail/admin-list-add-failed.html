@@ -6,11 +6,11 @@
 
 {% block html %}
 Произошла ошибка при добавлении пользователя
-<a href="{{ root + url_for('admin.users_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
+<a href="{{ root + url_for('admin.users_info', id=user.id) }}">{{ user.full_name() }} ({{ user.email }})</a>
 в один или несколько списков рассылки. Для получения подробной информации см. лог.
 {% endblock %}
 
 {% block plain %}
-Произошла ошибка при добавлении пользователя {{ user.nickname }} ({{ user.email }}) в один или несколько
+Произошла ошибка при добавлении пользователя {{ user.full_name() }} ({{ user.email }}) в один или несколько
 списков рассылки. Для получения подробной информации см. лог.
 {% endblock %}

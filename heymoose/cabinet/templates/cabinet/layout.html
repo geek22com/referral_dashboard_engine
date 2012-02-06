@@ -39,7 +39,7 @@
 
 <ul class="nav secondary-nav">
 	<li class="dropdown">
-		<a class="dropdown-toggle" href="#">{{ g.user.nickname }}</a>
+		<a class="dropdown-toggle" href="#">{{ g.user.full_name() }}</a>
 		<ul class="dropdown-menu">
 			<li><a href="{{ url_for('site.logout') }}">Выйти</a></li>
 		</ul>

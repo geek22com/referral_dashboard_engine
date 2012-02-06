@@ -14,6 +14,6 @@ def lists_add_user(user):
 		if user.is_developer():
 			api.lists_add_contact(user.email, developers_list_id, True)
 	except:
-		app.logger.error('Failed to add user {0} ({1}) to one or multiple mailing lists'
-			.format(user.nickname, user.email), exc_info=True)
+		app.logger.error(u'Failed to add user {0} ({1}) to one or multiple mailing lists'
+			.format(user.full_name(), user.email), exc_info=True)
 		transactional.admin_list_add_failed(user)

@@ -1,14 +1,15 @@
-{% extends "admin/users-layout.html" %}
+{% extends "cabinet/info-layout.html" %}
+
+{% set activetab = 'edit' %}
 
 {% block breadcrumbs %}
 	{{ super() }}
-	{{ macros.breadcrumb('Регистрация', url_for('.users_register_customer')) }}
+	{{ macros.breadcrumb('Редактирование', url_for('.info_edit')) }}
 {% endblock %}
-
-{% set activetab = 'register' %}
 
 {% block extrahead %}
 	{{ super() }}
+	{% if g.user.is_customer() %}
 	<script type="text/javascript">
 		$(function() {
 			$('#messenger_type').change(function() {
@@ -19,14 +20,13 @@
 			}).change();
 		})
 	</script>
+	{% endif %}
 {% endblock %}
 
 {% block tabcontent %}
 
-<h2 style="margin-bottom: 40px;">Регистрация рекламодателя</h2>
-
-<div class="form-container clearfix">
-	<form id="form-register" method="post" action="" class="widelabels validate">
+<div class="form-container">
+	<form id="form-password-change" action="" method="post" class="widelabels validate">
 		<fieldset>
 			<legend>Данные</legend>
 			{{ macros.formfield(form.first_name, class='span10') }}
@@ -34,19 +34,13 @@
 			{{ macros.formfield(form.organization, class='span10') }}
 		</fieldset>
 		<fieldset>
-			<legend>Пароль</legend>
-			{{ macros.formfield(form.password, class='span10') }}
-			{{ macros.formfield(form.password2, class='span10') }}
-		</fieldset>
-		<fieldset>
 			<legend>Контакты</legend>
-			{{ macros.formfield(form.email, class='span10', type='email') }}
 			{{ macros.formfield(form.phone, class='span10') }}
 			{{ macros.formfield(form.messenger_type, class='span4') }}
 			{{ macros.formfield(form.messenger_uid, class='span4') }}
 		</fieldset>
 		<div class="actions">
-			<input class="btn primary" type="submit" value="Зарегистрироваться"/>
+			<input class="btn primary" type="submit" value="Подтвердить"/>
 		</div>
 	</form>
 </div>

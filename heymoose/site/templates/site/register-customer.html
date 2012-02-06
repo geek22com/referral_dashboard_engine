@@ -4,6 +4,20 @@
 
 {% set activemenu = 'register' %}
 
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			$('#messenger_type').change(function() {
+				if ($(this).val())
+					$('.messenger_uid-field').show('fast');
+				else
+					$('.messenger_uid-field').hide('fast');
+			}).change();
+		})
+	</script>
+{% endblock %}
+
 {% block pageheader %}
 <h1>{{ self.title() }}</h1>
 {% endblock %}
@@ -11,7 +25,7 @@
 {% block content %}
 
 {% if form %}
-	<p>
+	<p style="margin-bottom: 40px;">
 		В данный момент регистрация для рекламодателей доступна только по партнерской
 		программе. Только что или ранее вы прошли по реферальной ссылке, что дает вам
 		возможность зарегистрироваться как рекламодатель. Пройдя процедуру регистрации,
@@ -21,10 +35,43 @@
 	<div class="form-container clearfix">
 		<form id="form-register" method="post" action="" class="widelabels validate">
 			<fieldset>
-				{{ macros.formfield(form.username, class='span10') }}
-				{{ macros.formfield(form.email, class='span10', type='email') }}
+				<legend>Данные</legend>
+				<div class="input">
+					<p class="span10">
+						Пожалуйста, введите ваши имя и фамилию, чтобы наши менеджеры
+						смогли обращаться к вам в случае возникновения вопросов или
+						проблем. Если вы являетесь представителем организации,
+						заполните также ее название.
+					</p>
+				</div>
+				{{ macros.formfield(form.first_name, class='span10') }}
+				{{ macros.formfield(form.last_name, class='span10') }}
+				{{ macros.formfield(form.organization, class='span10') }}
+			</fieldset>
+			<fieldset>
+				<legend>Пароль</legend>
+				<div class="input">
+					<p class="span10">
+						Введите два раза пароль длиной от 4 до 16 символов.
+					</p>
+				</div>
 				{{ macros.formfield(form.password, class='span10') }}
 				{{ macros.formfield(form.password2, class='span10') }}
+			</fieldset>
+			<fieldset>
+				<legend>Контакты</legend>
+				<div class="input">
+					<p class="span10">
+						Здесь вам необходимо ввести адрес своей электронной почты и телефон.
+						{# На ваш e-mail будет послано письмо с подтверждением электронного
+						адреса. #} Вы также можете указать один из своих мессенджеров, для
+						связи с вами.
+					</p>
+				</div>
+				{{ macros.formfield(form.email, class='span10', type='email') }}
+				{{ macros.formfield(form.phone, class='span10') }}
+				{{ macros.formfield(form.messenger_type, class='span4') }}
+				{{ macros.formfield(form.messenger_uid, class='span4') }}
 			</fieldset>
 			<div class="actions">
 				<input class="btn primary" type="submit" value="Зарегистрироваться"/>

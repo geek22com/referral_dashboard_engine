@@ -84,8 +84,17 @@ def user_from_xml(user_element):
 	if user_element is None: return None
 	return User(id=get_attr(user_element, 'id', int),
 				email=get_value(user_element, 'email'),
-				nickname=get_value(user_element, 'nickname'),
 				password_hash=get_value(user_element, 'password-hash'),
+				first_name=get_value(user_element, 'first-name'),
+				last_name=get_value(user_element, 'last-name'),
+				organization=get_value(user_element, 'organization'),
+				phone=get_value(user_element, 'phone'),
+				source_url=get_value(user_element, 'source-url'),
+				messenger_type=get_value(user_element, 'messenger-type'),
+				messenger_uid=get_value(user_element, 'messenger-uid'),
+				confirmed=get_value(user_element, 'confirmed', bool),
+				blocked=get_value(user_element, 'blocked', bool),
+				register_time=datetime_from_api(get_value(user_element, 'register-time')),
 				apps=map(app_from_xml, user_element.xpath('./apps/app')),
 				orders=map(order_from_xml, user_element.xpath('./orders/order')),
 				roles=map(role_from_xml, user_element.xpath('./roles/role')),
@@ -168,7 +177,7 @@ class MapperTest(unittest.TestCase):
 		xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 			<user id="1">
 				<email>email</email>
-				<nickname>nick</nickname>
+				<first-name>nick</first-name>
 				<password-hash>202cb962ac59075b964b07152d234b70</password-hash>
 				<customer-account>30.0</customer-account>
 				<developer-account>0.0</developer-account>

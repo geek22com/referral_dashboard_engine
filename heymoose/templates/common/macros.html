@@ -53,7 +53,7 @@
 {% endmacro %}
 
 {% macro user_href(user, bp='') %}
-	<a href="{{ url_for(bp + '.users_info', id=user.id) }}">{{ user.nickname }} ({{ user.email }})</a>
+	<a href="{{ url_for(bp + '.users_info', id=user.id) }}">{{ user.full_name() }} ({{ user.email }})</a>
 {% endmacro %}
 
 {% macro performer_href(performer, show_platform=True) %}

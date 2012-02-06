@@ -68,12 +68,18 @@ def register_developer():
 	
 	form = forms.DeveloperRegisterForm(request.form)
 	if request.method == 'POST' and form.validate():
-		do_or_abort(users.add_user,
+		users.add_user(
 			email=form.email.data,
-			passwordHash=generate_password_hash(form.password.data),
-			nickname=form.username.data)
-		user = do_or_abort(users.get_user_by_email, form.email.data, full=True)
+			password_hash=generate_password_hash(form.password.data),
+			first_name=form.first_name.data,
+			last_name=form.last_name.data,
+			organization=form.organization.data,
+			phone=form.phone.data,
+			messenger_type=form.messenger_type.data,
+			messenger_uid=form.messenger_uid.data)
+		user = users.get_user_by_email(form.email.data, full=True)
 		if user:
+			users.confirm_user(user.id)
 			users.add_user_role(user.id, roles.DEVELOPER)
 			user.roles.append(roles.DEVELOPER)
 			invites.register_invite(form.invite.data)
@@ -104,13 +110,18 @@ def register_customer():
 	else:
 		form = forms.CustomerRegisterForm(request.form)
 		if request.method == 'POST' and form.validate():
-			do_or_abort(users.add_user,
-				email=form.email.data,
-				passwordHash=generate_password_hash(form.password.data),
-				nickname=form.username.data,
+			users.add_user(email=form.email.data,
+				password_hash=generate_password_hash(form.password.data),
+				first_name=form.first_name.data,
+				last_name=form.last_name.data,
+				organization=form.organization.data,
+				phone=form.phone.data,
+				messenger_type=form.messenger_type.data,
+				messenger_uid=form.messenger_uid.data,
 				referrer_id=referrer.id)
-			user = do_or_abort(users.get_user_by_email, form.email.data, full=True)
+			user = users.get_user_by_email(form.email.data, full=True)
 			if user:
+				users.confirm_user(user.id)
 				users.add_user_role(user.id, roles.CUSTOMER)
 				user.roles.append(roles.CUSTOMER)
 				session['user_id'] = user.id

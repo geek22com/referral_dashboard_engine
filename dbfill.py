@@ -18,6 +18,9 @@ pw = generate_password_hash('password')
 email_admin = 'a@a.ru'
 email_customer_template = 'c{0}@c.ru'
 email_developer_template = 'd{0}@d.ru'
+first_names = (u'Иван', u'Петр', u'Сидор', u'Евгений')
+last_names = (u'Иванов', u'Петров', u'Сидоров', u'Ковалев')
+
 customers_count = 10
 developers_count = 10
 orders_per_customer = 10
@@ -30,16 +33,18 @@ def fill_db():
 	time.sleep(1)
 	
 	# Create admin
-	actions.users.add_user(email_admin, pw, 'admin')
+	actions.users.add_user(email_admin, pw, u'Евгений', u'Слезко')
 	admin = actions.users.get_user_by_email(email_admin)
+	actions.users.confirm_user(admin.id)
 	actions.users.add_user_role(admin.id, actions.roles.ADMIN)
 	
 	# Create customers
 	customers = []
 	for i in range(customers_count):
 		email_customer = email_customer_template.format(i)
-		actions.users.add_user(email_customer, pw, 'customer{0}'.format(i))
+		actions.users.add_user(email_customer, pw, random.choice(first_names), random.choice(last_names))
 		customer = actions.users.get_user_by_email(email_customer)
+		actions.users.confirm_user(customer.id)
 		actions.users.add_user_role(customer.id, actions.roles.CUSTOMER)
 		actions.users.increase_customer_balance(customer.id, 100000 * (i+1))
 		customers.append(customer)
@@ -48,8 +53,9 @@ def fill_db():
 	developers = []
 	for i in range(developers_count):
 		email_developer = email_developer_template.format(i)
-		actions.users.add_user(email_developer, pw, 'developer{0}'.format(i))
+		actions.users.add_user(email_developer, pw, random.choice(first_names), random.choice(last_names))
 		developer = actions.users.get_user_by_email(email_developer)
+		actions.users.confirm_user(developer.id)
 		actions.users.add_user_role(developer.id, actions.roles.DEVELOPER)
 		developers.append(developer)
 		
@@ -104,8 +110,9 @@ def fill_db():
 			
 			if i % 3 == 0:
 				kwargs.update(
-					title='regular order {0}-{1}'.format(customer.id, i),
-					description='The best order from {0} number {1}'.format(customer.nickname, i),
+					title=u'regular order {0}-{1}'.format(customer.id, i),
+					description=u'Заказ от пользователя {0} {1} номер {2}'
+						.format(customer.first_name, customer.last_name, i),
 					image='aGVsbG8h'
 				)
 				id = actions.orders.add_regular_order(**kwargs)

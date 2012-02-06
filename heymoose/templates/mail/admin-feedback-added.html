@@ -1,0 +1,29 @@
+{% extends "mail/layout-admin.html" %}
+
+{% block subject %}
+Новый feedback от пользователя {{ contact.name }} ({{ contact.email }})
+{% endblock %}
+
+{% block html %}
+Пользователь {{ contact.name }}
+(<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>)
+{% if contact.phone %}(тел. {{ contact.phone }}){% endif %}
+{% if contact.desc %}
+оставил новое сообщение:
+<pre>{{ contact.desc }}</pre>
+{% else %}
+оставил свои контакты.
+{% endif %}
+{% endblock %}
+
+{% block plain %}
+Пользователь {{ contact.name }} ({{ contact.email }}) {% if contact.phone %}({{ contact.phone }}){% endif %}
+{% if contact.desc %}
+оставил новое сообщение:
+/////
+{{ contact.desc }}
+/////
+{% else %}
+оставил свои контакты.
+{% endif %}
+{% endblock %}

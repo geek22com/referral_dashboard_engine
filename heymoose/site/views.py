@@ -3,12 +3,12 @@ from flask import render_template, g, redirect, url_for, request, flash, session
 from heymoose import app
 from heymoose.site import blueprint as bp
 from heymoose.forms import forms
-from heymoose.utils.shortcuts import do_or_abort
 from heymoose.utils.gen import generate_password_hash, check_password_hash, aes_base16_decrypt
 from heymoose.core.actions import users, roles
 from heymoose.db.models import Contact
 from heymoose.db.actions import invites
 from heymoose.mail import marketing as mmail
+from heymoose.mail import transactional as tmail
 from datetime import datetime
 
 
@@ -46,6 +46,7 @@ def contacts():
 			desc = form.comment.data,
 			date = datetime.now())
 		contact.save()
+		tmail.admin_feedback_added(contact)
 		flash(u'Спасибо, мы обязательно с вами свяжемся!', 'success')
 		return redirect(url_for('.contacts'))
 	return render_template('site/contacts.html', form=form)

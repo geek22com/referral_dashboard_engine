@@ -11,3 +11,7 @@ def admin_order_created(user, order):
 def admin_list_add_failed(user):
 	subject, text, html = render.mail_from_template('mail/admin-list-add-failed.html', user=user)
 	smtp.send_multipart(from_address, admins, subject, text, html)
+	
+def admin_feedback_added(contact):
+	subject, text, html = render.mail_from_template('mail/admin-feedback-added.html', contact=contact)
+	smtp.send_multipart(from_address, admins, subject, text, html)

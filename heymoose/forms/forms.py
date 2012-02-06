@@ -144,6 +144,10 @@ class AdminUserEditFormMixin:
 	])
 	confirmed = BooleanField(u'Подтвержден', default=False)
 	
+	def validate_email(self, field):
+		if hasattr(self, 'user') and self.user.email != self.email.data:
+			myvalidators.check_email_not_registered(self, self.email)
+	
 class AdminDeveloperEditForm(DeveloperEditForm, AdminUserEditFormMixin):
 	pass
 

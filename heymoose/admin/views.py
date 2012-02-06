@@ -352,7 +352,8 @@ def users_info_edit(id):
 		form = forms.AdminCustomerEditForm(request.form, **form_args)
 	else:
 		form = forms.AdminDeveloperEditForm(request.form, **form_args)
-		
+	form.user = user
+	
 	if request.method == 'POST' and form.validate():
 		upd_args = dict()
 		if form.first_name.data != user.first_name: upd_args.update(first_name=form.first_name.data)

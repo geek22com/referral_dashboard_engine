@@ -22,12 +22,12 @@
 			{{ macros.formfield(form.url, class='span10') }}
 			{{ macros.formfield(form.developer, class='span10') }}
 			{{ macros.formfield(form.desc, class='span10', rows=5) }}
-			{% if app %}
 			<div class="input">
+				{% if app %}
 				<img src="{{ url_for('upload', filename=app.image_file(), q=time()) }}" alt="изображение" class="span4" />
-				<span class="help-block">Предпочитаемый размер 280 х 280 или более, но в отношении 1 к 1</span>
+				{% endif %}
+				<span class="help-block">Предпочитаемый размер 280 х 280 или более, и лучше в пропорциях 1 к 1</span>
 			</div>
-			{% endif %}
 			{{ macros.formfield(form.image, pad_description=true) }}
 			{{ macros.formfield(form.active) }}
 		</fieldset>

@@ -107,11 +107,17 @@
 </div>
 
 <div class="content">
-	<h3><a href="{{ url_for('.contacts') }}">Свяжитесь с нами! &raquo;</a></h3>
-	<p>
-		Станьте участником системы &laquo;HeyMoose!&raquo;. Мы поможем вам найти качественный
-		и недорогой трафик.
-	</p>
+	<div class="row">
+		<div class="span4">
+			<a href="{{ url_for('.contacts') }}" class="btn primary large huge">Свяжитесь с нами! &raquo;</a>
+		</div>
+		<div class="span11">
+			<p style="margin-top: 12px;">
+				Станьте участником системы &laquo;HeyMoose!&raquo;. Мы поможем вам найти качественный
+				и недорогой трафик.
+			</p>
+		</div>
+	</div>
 </div>
 
 {% endblock %}

@@ -36,6 +36,10 @@ class ImageField(FileField):
 				self.width = self.data.size[0]
 				self.height = self.data.size[1]
 				self.format = self.data.format.lower()
+				if self.format not in ('jpg', 'jpeg'):
+					self.mime_type = 'image/{0}'.format(self.format)
+				else:
+					self.mime_type = 'image/jpeg'
 			except:
 				raise ValueError(u'Файл не является изображением')
 			finally:

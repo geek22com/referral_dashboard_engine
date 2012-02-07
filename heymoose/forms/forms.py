@@ -403,6 +403,33 @@ class BalanceForm(Form):
 	
 class OrderBalanceTransferForm(BalanceForm):
 	order = SelectField(u'На счет заказа', coerce=int)
+	
+	
+class GamakAppForm(Form):
+	name = TextField(u'Название приложения', [
+		validators.Required(message = (u'Введите название приложения'))
+	])
+	url = TextField(u'URL', [
+		validators.Required(message = u'Введите URL приложения'),
+		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
+	])
+	developer = TextField(u'Разработчик', [
+		validators.Required(message = (u'Введите разработчика приложения'))
+	])
+	desc = TextAreaField(u'Описание приложения', [
+		validators.Required(message = (u'Введите описание приложения')),
+		validators.Length(min=1, max=500, message=(u'Описание должно быть длиной не более 500 символов'))
+	])
+	image = myfields.ImageField(u'Выберите изображение', [
+		myvalidators.FileRequired(message=u'Выберите изображение на диске'),
+		myvalidators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
+	], description=u'Форматы: JPG (JPEG), GIF, PNG')
+	active = BooleanField(u'Активно', default=True)
+
+class GamakAppEditForm(GamakAppForm):
+	image = myfields.ImageField(u'Выберите изображение', [
+		myvalidators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
+	], description=u'Форматы: JPG (JPEG), GIF, PNG')
 
 
 class GiftForm(Form):

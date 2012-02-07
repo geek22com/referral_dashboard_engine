@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, redirect, url_for, request, flash, session
+from flask import render_template, g, redirect, url_for, request, flash, session, abort
 from heymoose import app
 from heymoose.site import blueprint as bp
 from heymoose.forms import forms
 from heymoose.utils.gen import generate_password_hash, check_password_hash, aes_base16_decrypt
 from heymoose.core.actions import users, roles
-from heymoose.db.models import Contact
+from heymoose.db.models import Contact, GamakApp
 from heymoose.db.actions import invites
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
 from datetime import datetime
+import random
 
 
 @bp.route('/')
@@ -157,4 +158,17 @@ def logout():
 		flash(u'Вы вышли из системы', 'info')
 		session.pop('user_id', None)
 	return redirect(url_for('.index'))
+
+
+@bp.route('/gamak/')
+def gamak():
+	if not g.user or not g.user.is_admin(): abort(403)
+	return render_template('site/gamak.html')
+
+@bp.route('/gamak/apps/')
+def gamak_apps():
+	if not g.user or not g.user.is_admin(): abort(403)
+	aps = GamakApp.query.filter(GamakApp.active == True).all()
+	random.shuffle(aps)
+	return render_template('site/gamak-apps.html', apps=aps)
 

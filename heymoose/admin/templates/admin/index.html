@@ -16,37 +16,11 @@
 	еще не придумано, как именно это будет выглядеть.
 </p>
 
-{#
-<h2>Действия</h2>
-{% if params.actions %}
-	<table class="zebra-stripped">
-		<thead>
-			<tr>
-				<th class="header">ИД</th>
-				<th class="header">ИД исполнителя</th>
-				<th class="header">ИД оффера</th>
-				<th class="header">Выполнено</th>
-				<th class="header">Дата создания</th>
-				<th class="header">Удалено</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for action in params.actions %}
-			<tr>
-				<td>{{ action.id }}</td>
-				<td>{{ action.performer_id }}</td>
-				<td>{{ action.offer_id }}</td>
-				<td>{{ action.done }}</td>
-				<td>{{ action.creation_time }}</td>
-				<td>{{ action.deleted }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-{% else %}
-	<p>Еще не было выполнено ни одного действия.</p>
-{% endif %}
-#}
-
+<p>
+	<a href="{{ url_for('site.gamak') }}">Конкурс Gamak на сайте (пока только для админов) &raquo;</a>
+</p>
+<p>
+	<a href="{{ url_for('.gamak_apps') }}">Приложения конкурса Gamak &raquo;</a>
+</p>
 
 {% endblock %}

@@ -8,7 +8,7 @@ from heymoose.utils import convert, gen, times
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.views import common as cmnviews
 from heymoose.forms import forms
-from heymoose.db.models import Contact
+from heymoose.db.models import Contact, GamakApp
 from heymoose.db.actions import invites
 from heymoose.mail import marketing as mmail
 from datetime import datetime
@@ -562,4 +562,35 @@ def ajax_action_delete(id):
 	return 'OK'
 	
 
+@bp.route('/gamak/apps/')
+def gamak_apps():
+	aps = GamakApp.query.descending(GamakApp.date).all()
+	return render_template('admin/gamak-apps.html', apps=aps)
+
+@bp.route('/gamak/apps/new', methods=['GET', 'POST'])
+def gamak_apps_new():
+	form = forms.GamakAppForm(request.form)
+	if request.method == 'POST' and form.validate():
+		app = GamakApp(date=datetime.now(), mime_type=form.image.mime_type)
+		form.populate_obj(app)
+		app.save()
+		request.files['image'].save(app.image_path())
+		flash(u'Приложение успешно добавлено', 'success')
+		return redirect(url_for('.gamak_apps'))
+	return render_template('admin/gamak-apps-edit.html', form=form)
+
+@bp.route('/gamak/apps/<id>', methods=['GET', 'POST'])
+def gamak_apps_edit(id):
+	app = GamakApp.query.get_or_404(id)
+	form = forms.GamakAppEditForm(request.form, obj=app)
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(app)
+		print form.image.data
+		if form.image.data:
+			app.mime_type = form.image.mime_type
+			request.files['image'].save(app.image_path())
+		app.save()
+		flash(u'Приложение успешно изменено', 'success')
+		return redirect(url_for('.gamak_apps'))
+	return render_template('admin/gamak-apps-edit.html', form=form, app=app)
 

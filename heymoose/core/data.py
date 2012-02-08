@@ -2,7 +2,7 @@
 from heymoose import app
 from heymoose.utils import gen
 import heymoose.core.actions.roles as roles
-import os, mimetypes, base64
+import os, mimetypes, base64, hashlib
 
 class MetaModel(type):
 	def __new__(cls, name, bases, dct):
@@ -74,6 +74,14 @@ class User(BaseModel):
 		data = '{0}${1}'.format(self.id, salt)
 		data = '{0:X<16}'.format(data)
 		return gen.aes_base16_encrypt(key, data).lower()
+	
+	def get_confirm_code(self):
+		m = hashlib.md5()
+		m.update('hey{0}moose{1}confirm'.format(self.id, self.email))
+		return m.hexdigest()
+	
+	def check_confirm_code(self, code):
+		return code == self.get_confirm_code()
 	
 	
 class Account(BaseModel):

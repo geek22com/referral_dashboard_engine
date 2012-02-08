@@ -8,9 +8,10 @@ from heymoose.utils import convert, gen, times
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.views import common as cmnviews
 from heymoose.forms import forms
-from heymoose.db.models import Contact, GamakApp
+from heymoose.db.models import Contact, GamakApp, UserInfo
 from heymoose.db.actions import invites
 from heymoose.mail import marketing as mmail
+from heymoose.mail import transactional as tmail
 from datetime import datetime
 import base64
 
@@ -299,10 +300,28 @@ def users_register_customer():
 def users_stats():
 	return render_template('admin/users-stats.html')
 
-@bp.route('/users/<int:id>')
+@bp.route('/users/<int:id>', methods=['GET', 'POST'])
 def users_info(id):
 	user = do_or_abort(a.users.get_user_by_id, id)
-	return render_template('admin/users-info.html', user=user)
+	form = forms.UserBlockForm(request.form)
+	if request.method == 'POST':
+		if not user.blocked and form.validate():
+			a.users.block_user(user.id)
+			user_info = UserInfo.query.get_or_create(user_id=user.id)
+			user_info.block_reason = form.reason.data
+			user_info.block_date = datetime.now()
+			user_info.save()
+			if form.mail.data:
+				tmail.user_blocked(user, form.reason.data)
+			tmail.admin_user_blocked(user, g.user, form.reason.data)
+			flash(u'Учетная запись заблокирована', 'success')
+			return redirect(url_for('.users_info', id=user.id))
+		elif user.blocked:
+			a.users.unblock_user(user.id)
+			flash(u'Учетная запись разблокирована', 'success')
+			return redirect(url_for('.users_info', id=user.id))
+	
+	return render_template('admin/users-info.html', user=user, form=form)
 
 @bp.route('/users/<int:id>/stats')
 def users_info_stats(id):

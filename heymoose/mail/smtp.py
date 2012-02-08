@@ -4,6 +4,7 @@ from heymoose import app
 import smtplib
 
 enabled = app.config.get('MAIL_ENABLED')
+smtp_debug = app.config.get('MAIL_SMTP_DEBUG', False)
 smtp_host = app.config.get('MAIL_SMTP_HOST')
 smtp_port = app.config.get('MAIL_SMTP_PORT')
 smtp_timeout = app.config.get('MAIL_SMTP_TIMEOUT')
@@ -27,6 +28,7 @@ def create_multipart(fm, to, subject, text, html):
 def safe_connect():
 	try:
 		s = smtplib.SMTP(smtp_host, smtp_port, timeout=smtp_timeout)
+		s.set_debuglevel(smtp_debug)
 		s.login(smtp_username, smtp_password)
 		return s
 	except:

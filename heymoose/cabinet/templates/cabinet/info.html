@@ -4,6 +4,33 @@
 
 {% block tabcontent %}
 {% with user = g.user %}
+
+{% if user.blocked %}
+	<div class="clearfix alert-message block-message danger">
+		<p>
+			<strong>Учетная запись заблокирована.</strong>
+			Ваш аккаунт был заблокирован администрацией &laquo;HeyMoose!&raquo;, поэтому
+			вам недоступна большая часть интерфейса системы. Письмо	с объяснением причины
+			блокировки было отправлено на ваш электронный адрес. Если вы не получили письмо
+			и/или вам неясна причина блокировки, пожалуйста, свяжитесь с нами.
+		</p>
+	</div>
+{% elif not user.confirmed %}
+	<div class="clearfix alert-message block-message info">
+		<p>
+			<strong>Ваш электронный адрес не подтвержден.</strong>
+			Без подтверждения электронного адреса недоступна большая часть интерфейса системы
+			&laquo;HeyMoose!&raquo; Если вы не получили письмо со ссылкой на подтверждение
+			регистрации, вы можете запросить повторную отправку письма, нажав кнопку ниже.
+		</p>
+		<div class="alert-actions">
+			<form method="post" action="" class="inline">
+				<input type="submit" class="btn small span4" style="font-weight: bold;" value="Выслать письмо повторно" />
+			</form>
+		</div>
+	</div>
+{% endif %}
+
 <table class="key-value">
 	<tbody>
 		<tr><th>Имя</th><td>{{ user.full_name() }}</td></tr>

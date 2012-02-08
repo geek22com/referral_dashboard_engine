@@ -30,6 +30,10 @@ def timeformat(value, format='%H:%M:%S'):
 def base64filter(value):
 	return base64.encodestring(value).strip('\n') if value else None
 
+def noproto(value):
+	if value.startswith('http://'): return value[7:]
+	return value
+
 
 def addclass(value, cls):
 	if 'class' not in value:
@@ -63,6 +67,7 @@ app.jinja_env.filters['datetime_nosec'] = datetime_nosec
 app.jinja_env.filters['dateformat'] = dateformat
 app.jinja_env.filters['timeformat'] = timeformat
 app.jinja_env.filters['base64filter'] = base64filter
+app.jinja_env.filters['noproto'] = noproto
 app.jinja_env.filters['addclass'] = addclass
 app.jinja_env.filters['classname'] = classname
 app.jinja_env.filters['attrlist'] = attrlist

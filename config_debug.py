@@ -41,6 +41,7 @@ MAILJET_DEVELOPERS_LIST_ID = 15808
 
 # Mail sending parameters
 MAIL_ENABLED = True
+MAIL_SMTP_DEBUG = False
 MAIL_SMTP_HOST = 'in.mailjet.com'
 MAIL_SMTP_PORT = 587 #25
 MAIL_SMTP_TIMEOUT = 5
@@ -60,6 +61,7 @@ ADMIN_TRANSACTIONS_PER_PAGE = 20
 
 # Encryption parameters
 REFERRAL_CRYPT_KEY = 'aGy3iRn7fRbIw4yM' # Must be 16 bytes long
+CONFIRM_CRYPT_KEY =  'gR7Bsvu46jE623Gg'
 
 # Facebook parameters
 FACEBOOK_SERVICE_URL = "http://www.facebook.com"

@@ -11,18 +11,19 @@
 				<th class="header right">ИД</th>
 				<th class="header">Имя</th>
 				<th class="header">E-mail</th>
+				<th class="header">Организация</th>
 				<th class="header right">Баланс, {{ currency_sign }}</th>
-				<th class="header center">Разработчик</th>
-				<th class="header center">Рекламодатель</th>
-				<th class="header center">Администратор</th>
+				<th class="header center">Зарегистрирован</th>
+				<th class="header center">Подтв.</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for user in users %}
 			<tr>
-				<td class="right">{{ user.id }}</td>
+				<td class="right {% if user.blocked %}deleted{% endif %}">{{ user.id }}</td>
 				<td><a href="{{ url_for('.users_info', id=user.id) }}">{{ user.full_name() }}</a></td>
 				<td>{{ user.email }}</td>
+				<td>{{ user.organization|default('--', true) }}</td>
 				<td class="right">
 					{% if user.is_customer() %}
 						{{ user.customer_account.balance|currency(False) }}
@@ -32,9 +33,8 @@
 						&mdash;
 					{% endif %}
 				</td>
-				<td class="center">{{ macros.to_icon(user.is_developer()) }}</td>
-				<td class="center">{{ macros.to_icon(user.is_customer()) }}</td>
-				<td class="center">{{ macros.to_icon(user.is_admin()) }}</td>
+				<td class="center">{{ user.register_time|datetimeformat }}</td>
+				<td class="center">{{ macros.to_icon(user.confirmed) }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

@@ -274,8 +274,11 @@ def apps_info_stats(id):
 	return render_template('cabinet/apps-info-stats.html', app=app)
 
 
-@bp.route('/info')
+@bp.route('/info', methods=['GET', 'POST'])
 def info():
+	if request.method == 'POST':
+		mail.user_confirm_email(g.user)
+		flash(u'Письмо выслано повторно', 'success')
 	return render_template('cabinet/info.html')
 
 @bp.route('/info/edit', methods=['GET', 'POST'])

@@ -1,5 +1,5 @@
 from heymoose.core.actions.mappers import user_from_xml, count_from_xml
-from heymoose.core.rest import get, put, post
+from heymoose.core.rest import get, put, post, delete
 from heymoose.core.actions import roles
 from heymoose.utils import shortcuts, convert
 from restkit.errors import ResourceNotFound
@@ -32,6 +32,14 @@ def update_user(user_id, **kwargs):
 def confirm_user(user_id):
 	path = "{0}/{1}/confirmed".format(resource_path, user_id)
 	put(path=path)
+	
+def block_user(user_id):
+	path = "{0}/{1}/blocked".format(resource_path, user_id)
+	put(path=path)
+	
+def unblock_user(user_id):
+	path = "{0}/{1}/blocked".format(resource_path, user_id)
+	delete(path=path)
 	
 def change_user_email(user_id, email):
 	path = "{0}/{1}/email".format(resource_path, user_id)

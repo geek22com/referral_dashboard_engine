@@ -171,7 +171,12 @@ class PasswordChangeForm(AdminPasswordChangeForm):
 		validators.Required(message=u'Введите текущий пароль'),
 		myvalidators.check_password
 	])
-	
+
+class UserBlockForm(Form):
+	reason = TextAreaField(u'Причина', [
+		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
+	])
+	mail = BooleanField(u'Письмо пользователю', default=True)
 
 class FeedBackForm(Form):
 	feedback_email = TextField('Email Address', [

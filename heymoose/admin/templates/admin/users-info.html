@@ -3,6 +3,23 @@
 {% set activetab = 'info' %}
 
 {% block tabcontent %}
+
+{% if user.blocked %}
+	<div class="clearfix alert-message block-message error">
+		<p>Учетная запись заблокирована.</p>
+	</div>
+{% endif %}
+
+<div class="well right">
+	{% if user.blocked %}
+		<a href="#" class="btn success" data-controls-modal="login-block"
+		data-backdrop="true" data-keyboard="true">Разблокировать учетную запись</a>
+	{% else %}
+		<a href="#" class="btn danger" data-controls-modal="login-block"
+		data-backdrop="true" data-keyboard="true">Заблокировать учетную запись</a>
+	{% endif %}
+</div>
+
 <table class="key-value">
 	<thead></thead>
 	<tbody>
@@ -18,7 +35,13 @@
 <h3>Контакты</h3>
 <table class="key-value">
 	<tbody>
-		<tr><th>E-mail</th><td>{{ user.email }}</td></tr>
+		<tr>
+			<th>E-mail</th>
+			<td>
+				{{ user.email }}
+				{% if not user.confirmed %}<span class="label important">Не подтвержден</span>{% endif %}
+			</td>
+		</tr>
 		<tr><th>Телефон</th><td>{{ user.phone|default('(не указан)', true) }}</td></tr>
 		<tr>
 			<th>Мессенджер</th>
@@ -78,4 +101,42 @@
 </table>
 {% endif %}
 
+{% endblock %}
+
+{% block postbody %}
+	{{ super() }}
+	<div id="login-block" class="modal" style="display: none;">
+		{% if not user.blocked %}
+		<form method="post" action="" class="validate">
+			<div class="modal-header">
+				<a href="#" class="close">×</a>
+				<h3>Блокировка учетной записи пользователя</h3>
+			</div>
+			<div class="modal-body">
+				<fieldset>
+					{{ macros.formfield(form.reason, class='span6', rows=6) }}
+					<div class="input">
+						{{ form.mail() }} уведомить пользователя по почте
+					</div>
+				</fieldset>
+			</div>
+			<div class="modal-footer">
+				<input type="submit" class="btn primary" value="Заблокировать" />
+			</div>
+		</form>
+		{% else %}
+		<form method="post" action="" class="validate">
+			<div class="modal-header">
+				<a href="#" class="close">×</a>
+				<h3>Разблокировка учетной записи пользователя</h3>
+			</div>
+			<div class="modal-body">
+				<p>Разблокировать учетную запись пользователя?</p>
+			</div>
+			<div class="modal-footer">
+				<input type="submit" class="btn primary" value="Разблокировать" />
+			</div>
+		</form>
+		{% endif %}
+	</div>
 {% endblock %}

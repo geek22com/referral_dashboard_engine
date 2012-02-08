@@ -4,6 +4,7 @@ from heymoose import app
 from heymoose.site import blueprint as bp
 from heymoose.forms import forms
 from heymoose.utils.gen import generate_password_hash, check_password_hash, aes_base16_decrypt
+from heymoose.utils.shortcuts import do_or_abort
 from heymoose.core.actions import users, roles
 from heymoose.db.models import Contact, GamakApp
 from heymoose.db.actions import invites
@@ -82,12 +83,12 @@ def register_developer():
 		user = users.get_user_by_email(form.email.data, full=True)
 		if user:
 			users.confirm_user(user.id)
+			mmail.lists_add_user(user)
 			users.add_user_role(user.id, roles.DEVELOPER)
 			user.roles.append(roles.DEVELOPER)
 			invites.register_invite(form.invite.data)
 			session['user_id'] = user.id
 			flash(u'Вы успешно зарегистрированы', 'success')
-			mmail.lists_add_user(user)
 			return redirect(url_for('cabinet.index'))
 		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
 		
@@ -123,13 +124,13 @@ def register_customer():
 				referrer_id=referrer.id)
 			user = users.get_user_by_email(form.email.data, full=True)
 			if user:
-				users.confirm_user(user.id)
 				users.add_user_role(user.id, roles.CUSTOMER)
 				user.roles.append(roles.CUSTOMER)
 				session['user_id'] = user.id
 				session['ref'] = ''
-				flash(u'Вы успешно зарегистрированы', 'success')
-				mmail.lists_add_user(user)
+				tmail.user_confirm_email(user)
+				flash(u'Вы успешно зарегистрированы. На указанный электронный адрес'
+					u' было выслано письмо с подтверждением.', 'success')
 				return redirect(url_for('cabinet.index'))
 			flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
 	
@@ -158,6 +159,17 @@ def logout():
 		flash(u'Вы вышли из системы', 'info')
 		session.pop('user_id', None)
 	return redirect(url_for('.index'))
+
+
+@bp.route('/confirm/<int:id>/<code>')
+def confirm(id, code):
+	user = do_or_abort(users.get_user_by_id, id)
+	success = False
+	if user.check_confirm_code(code):
+		users.confirm_user(user.id)
+		mmail.lists_add_user(user)
+		success = True
+	return render_template('site/confirm.html', success=success)
 
 
 @bp.route('/gamak/')

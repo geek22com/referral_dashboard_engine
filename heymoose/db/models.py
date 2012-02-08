@@ -14,8 +14,17 @@
 from heymoose import app
 from heymoose import mg as mongo
 from mongoalchemy.document import Index
+from flaskext.mongoalchemy import BaseQuery
 from datetime import datetime
 import os, mimetypes
+
+class HeyMooseQuery(BaseQuery):
+	def get_or_create(self, **kwargs):
+		obj = self.filter_by(**kwargs).first()
+		if not obj:
+			obj = self.type(**kwargs)
+		return obj
+
 
 class Captcha(mongo.Document):
 	c_id_index = Index().ascending('c_id').unique()
@@ -53,7 +62,13 @@ class Invite(mongo.Document):
 	code = mongo.StringField()
 	registered = mongo.BoolField(default=False)
 	created = mongo.DateTimeField()
+
+class UserInfo(mongo.Document):
+	query_class = HeyMooseQuery
 	
+	user_id = mongo.IntField()
+	block_date = mongo.DateTimeField()
+	block_reason = mongo.StringField()
 	
 class GamakApp(mongo.Document):
 	name = mongo.StringField()

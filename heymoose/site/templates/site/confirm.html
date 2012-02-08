@@ -1,0 +1,30 @@
+{% extends "site/layout.html" %}
+
+{% block title %}Подтверждение регистрации{% endblock %}
+
+{% set activemenu = '' %}
+
+{% block pageheader %}
+<h1>{{ self.title() }}</h1>
+{% endblock %}
+
+{% block content %}
+
+{% if success %}
+	<div class="clearfix alert-message block-message success">
+		<p>
+			<strong>Почтовый адрес подтвержден.</strong>
+			Спасибо! Теперь вы можете пользоваться системой &laquo;HeyMoose!&raquo;
+		</p>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message error">
+		<p>
+			<strong>Неверный код подтверждения.</strong>
+			Попробуйте выслать письмо с подтверждением повторно из вашего личного кабинета.
+			Если проблема будет повторяться, обратитесь к администрации.
+		</p>
+	</div>
+{% endif %}
+
+{% endblock %}

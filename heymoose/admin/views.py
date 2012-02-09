@@ -71,6 +71,10 @@ def orders_info(id):
 				tmail.admin_order_unblocked(order, g.user)
 				flash(u'Заказ разблокиорван', 'success')
 			elif actn == 'notify':
+				order_info = OrderInfo.query.get_or_create(order_id=order.id)
+				order_info.block_reason = form.reason.data
+				order_info.block_date = datetime.now()
+				order_info.save()
 				if form.mail.data: tmail.user_order_moderation_failed(order, form.reason.data)
 				tmail.admin_order_moderation_failed(order, g.user, form.reason.data)
 				flash(u'Пользователь уведомлен', 'success')

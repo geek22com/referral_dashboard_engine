@@ -64,10 +64,16 @@ def orders_info(id):
 			flash(u'Заказ заблокиорван', 'success')
 			return redirect(url_for('.orders_info', id=order.id))
 		else:
-			a.orders.enable_order(order.id)
-			if form.mail.data: tmail.user_order_unblocked(order)
-			tmail.admin_order_unblocked(order, g.user)
-			flash(u'Заказ разблокиорван', 'success')
+			actn = request.form.get('action', 'unblock')
+			if actn == 'unblock':
+				a.orders.enable_order(order.id)
+				if form.mail.data: tmail.user_order_unblocked(order)
+				tmail.admin_order_unblocked(order, g.user)
+				flash(u'Заказ разблокиорван', 'success')
+			elif actn == 'notify':
+				if form.mail.data: tmail.user_order_moderation_failed(order, form.reason.data)
+				tmail.admin_order_moderation_failed(order, g.user, form.reason.data)
+				flash(u'Пользователь уведомлен', 'success')
 			return redirect(url_for('.orders_info', id=order.id))
 	return render_template('admin/orders-info.html', order=order, form=form)
 

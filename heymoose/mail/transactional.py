@@ -3,10 +3,6 @@ from heymoose.mail import smtp, render
 
 from_address = app.config.get('MAIL_FROM_ADDRESS')
 admins = app.config.get('MAIL_ADMINS')
-
-def admin_order_created(user, order):
-	subject, text, html = render.mail_from_template('mail/admin-order-created.html', user=user, order=order)
-	smtp.send_multipart(from_address, admins, subject, text, html)
 	
 def admin_list_add_failed(user):
 	subject, text, html = render.mail_from_template('mail/admin-list-add-failed.html', user=user)
@@ -19,6 +15,14 @@ def admin_feedback_added(contact):
 def admin_user_blocked(user, admin, reason):
 	subject, text, html = render.mail_from_template('mail/admin-user-blocked.html', user=user, admin=admin, reason=reason)
 	smtp.send_multipart(from_address, admins, subject, text, html)
+
+def admin_order_created(user, order):
+	subject, text, html = render.mail_from_template('mail/admin-order-created.html', user=user, order=order)
+	smtp.send_multipart(from_address, admins, subject, text, html)
+	
+def admin_order_changed(user, order):
+	subject, text, html = render.mail_from_template('mail/admin-order-changed.html', user=user, order=order)
+	smtp.send_multipart(from_address, admins, subject, text, html)
 	
 def admin_order_blocked(order, admin, reason):
 	subject, text, html = render.mail_from_template('mail/admin-order-blocked.html', order=order, admin=admin, reason=reason)
@@ -26,6 +30,10 @@ def admin_order_blocked(order, admin, reason):
 
 def admin_order_unblocked(order, admin):
 	subject, text, html = render.mail_from_template('mail/admin-order-unblocked.html', order=order, admin=admin)
+	smtp.send_multipart(from_address, admins, subject, text, html)
+	
+def admin_order_moderation_failed(order, admin, reason):
+	subject, text, html = render.mail_from_template('mail/admin-order-moderation-failed.html', order=order, admin=admin, reason=reason)
 	smtp.send_multipart(from_address, admins, subject, text, html)
 	
 	
@@ -43,5 +51,9 @@ def user_order_blocked(order, reason):
 	
 def user_order_unblocked(order):
 	subject, text, html = render.mail_from_template('mail/user-order-unblocked.html', order=order)
+	smtp.send_multipart(from_address, [order.user.email], subject, text, html)
+	
+def user_order_moderation_failed(order, reason):
+	subject, text, html = render.mail_from_template('mail/user-order-moderation-failed.html', order=order, reason=reason)
 	smtp.send_multipart(from_address, [order.user.email], subject, text, html)
 	

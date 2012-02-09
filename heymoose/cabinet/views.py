@@ -176,6 +176,7 @@ def orders_info_edit(id):
 		
 		if kwargs.keys():
 			actions.orders.update_order(order.id, **kwargs)
+			mail.admin_order_changed(g.user, order)
 			flash(u'Заказ успешно обновлен', 'success')
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')

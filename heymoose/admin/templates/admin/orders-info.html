@@ -51,7 +51,9 @@
 
 <div class="well right">
 	{% if order.disabled %}
-		<a href="#" class="btn success" data-controls-modal="login-block"
+		<a href="#" class="btn danger" data-controls-modal="login-notify"
+		data-backdrop="true" data-keyboard="true">Уведомление о нарушении</a>
+		<a href="#" class="btn success" data-controls-modal="login-unblock"
 		data-backdrop="true" data-keyboard="true">Разблокировать заказ</a>
 	{% else %}
 		<a href="#" class="btn danger" data-controls-modal="login-block"
@@ -117,8 +119,8 @@
 
 {% block postbody %}
 	{{ super() }}
+	{% if not order.disabled %}
 	<div id="login-block" class="modal" style="display: none;">
-		{% if not order.disabled %}
 		<form method="post" action="" class="validate">
 			<div class="modal-header">
 				<a href="#" class="close">×</a>
@@ -136,7 +138,29 @@
 				<input type="submit" class="btn primary" value="Заблокировать" />
 			</div>
 		</form>
-		{% else %}
+	</div>
+	{% else %}
+	<div id="login-notify" class="modal" style="display: none;">
+		<form method="post" action="" class="validate">
+			<div class="modal-header">
+				<a href="#" class="close">×</a>
+				<h3>Уведомление о нарушении</h3>
+			</div>
+			<div class="modal-body">
+				<fieldset>
+					<input type="hidden" name="action" value="notify" />
+					{{ macros.formfield(form.reason, class='span6', rows=6) }}
+					<div class="input">
+						{{ form.mail() }} уведомить пользователя по почте
+					</div>
+				</fieldset>
+			</div>
+			<div class="modal-footer">
+				<input type="submit" class="btn primary" value="Уведомить" />
+			</div>
+		</form>
+	</div>
+	<div id="login-unblock" class="modal" style="display: none;">
 		<form method="post" action="" class="validate">
 			<div class="modal-header">
 				<a href="#" class="close">×</a>
@@ -144,12 +168,13 @@
 			</div>
 			<div class="modal-body">
 				<p>Разблокировать заказ?</p>
+				<input type="hidden" name="action" value="unblock" />
 				{{ form.mail() }} уведомить пользователя по почте
 			</div>
 			<div class="modal-footer">
 				<input type="submit" class="btn primary" value="Разблокировать" />
 			</div>
 		</form>
-		{% endif %}
 	</div>
+	{% endif %}
 {% endblock %}

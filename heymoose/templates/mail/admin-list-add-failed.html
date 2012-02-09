@@ -1,7 +1,7 @@
 {% extends "mail/layout-admin.html" %}
 
 {% block subject %}
-Не удалось добавить пользователя в списки
+Не удалось добавить пользователя {{ user.full_name() }} в списки
 {% endblock %}
 
 {% block html %}

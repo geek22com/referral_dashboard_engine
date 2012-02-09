@@ -430,6 +430,15 @@ def users_info_password_change(id):
 		return redirect(url_for('.users_info', id=user.id))
 	return render_template('admin/users-info-password-change.html', user=user, form=form)
 
+@bp.route('/users/<int:id>/a/lists/add')
+def users_info_lists_add(id):
+	user = do_or_abort(a.users.get_user_by_id, id)
+	if mmail.lists_add_user(user, mail_if_failed=False):
+		flash(u'Пользователь добавлен в списки рассылки', 'success')
+	else:
+		flash(u'Ошибка при добавлении пользователя в списки рассылки', 'error')
+	return redirect(url_for('.users_info', id=user.id))
+
 @bp.route('/users/<int:id>/balance/pay', methods=['GET', 'POST'])
 def balance_pay(id):
 	user = do_or_abort(a.users.get_user_by_id, id)

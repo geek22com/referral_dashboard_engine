@@ -1,0 +1,52 @@
+{% import 'common/macros.html' as macros %}
+
+{% macro table(transactions, config) %}
+{% if config.get('scroll-x', false) %}<div class="autoscroll-area-x">{% endif %}
+{% if transactions %}
+	<table class="bordered-table zebra-striped nosort transactions-table">
+		<thead>
+			<tr>
+				<th class="header right minimal-width">#</th>
+				<th class="header right" style="width: 100px;">Изменение</th>
+				<th class="header right" style="width: 100px;">Баланс, {{ currency_sign }}</th>
+				<th class="header center">Тип</th>
+				<th class="header center">Время</th>
+				{% if config.get('description', false) %}<th class="header">Комментарий</th>{% endif %}
+				{{ caller(true, none) }}
+			</tr>
+		</thead>
+		<tbody>
+			{% for transaction in transactions %}
+			<tr>
+				<td class="right">{{ transaction.id }}</td>
+				<td class="right">
+					<span class="transaction-{% if transaction.diff < 0 -%}minus{% else -%}plus{% endif -%}">
+						{{ transaction.diff|currency(False) }}
+					</span>
+				</td>
+				<td class="right">{{ transaction.balance|currency(False) }}</td>
+				<td class="center">{{ transaction.type_verbose() }}</td>
+				<td class="center">
+					{% if transaction.creation_time and transaction.end_time %}
+						с {{ transaction.creation_time|datetimeformat }}
+						по {{ transaction.end_time|datetimeformat }}
+					{% elif transaction.creation_time %}
+						{{ transaction.creation_time|datetimeformat }}
+					{% else %}
+						&mdash;
+					{% endif %}
+				</td>
+				{% if config.get('description', false) %}
+				<td>
+					{{ transaction.description|replace_if_contains('Transferring', '&mdash;')
+						|default('&mdash;', True)|safe }}
+				</td>
+				{% endif %}
+				{{ caller(false, transaction) }}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endif %}
+{% if config.get('scroll-x', false) %}</div>{% endif %}
+{% endmacro %}

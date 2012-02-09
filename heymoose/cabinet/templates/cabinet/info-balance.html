@@ -1,4 +1,5 @@
 {% extends "cabinet/info-layout.html" %}
+{% import 'common/transactions.html' as transaction_macros %}
 
 {% set activetab = 'balance' %}
 
@@ -42,31 +43,7 @@
 <h2>История платежей</h2>
 
 {% if transactions %}
-	<table class="bordered-table zebra-striped">
-		<thead>
-			<tr>
-				<th class="header right minimal-width">#</th>
-				<th class="header right" style="width: 20%;">Изменение</th>
-				<th class="header right" style="width: 20%;">Баланс, {{ currency_sign }}</th>
-				<th class="header">Комментарий</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for transaction in transactions %}
-			<tr>
-				<td class="right">{{ transaction.id }}</td>
-				<td class="right">
-					<span class="transaction-{% if transaction.diff < 0 -%}minus{% else -%}plus{% endif -%}">
-						{{ transaction.diff|currency(False) }}
-					</span>
-				</td>
-				<td class="right">{{ transaction.balance|currency(False) }}</td>
-				<td>{{ transaction.description|replace_if_contains('Transfering', '&mdash;')
-						|default('&mdash;', True)|safe }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	{% call(head, transaction) transaction_macros.table(transactions, {}) %}{% endcall %}
 	{{ macros.paginate(pages, '.info_balance') }}
 {% else %}
 	<div class="clearfix alert-message block-message info">

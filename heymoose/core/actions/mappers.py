@@ -116,7 +116,10 @@ def transaction_from_xml(transaction_element):
 	return Transaction(id=get_attr(transaction_element, 'id', int),
 				diff=get_value(transaction_element, 'diff', float),
 				balance=get_value(transaction_element, 'balance', float),
-				description=get_value(transaction_element, 'description'))
+				description=get_value(transaction_element, 'description'),
+				type=get_value(transaction_element, 'type'),
+				creation_time=datetime_from_api(get_value(transaction_element, 'creation-time')),
+				end_time=datetime_from_api(get_value(transaction_element, 'end-time')))
 
 def action_from_xml(action_element):
 	if action_element is None: return None

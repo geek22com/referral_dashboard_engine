@@ -89,8 +89,27 @@ class Account(BaseModel):
 	
 	
 class Transaction(BaseModel):
-	attributes = ['id', 'diff', 'balance', 'description']
+	attributes = ['id',
+				  'diff',
+				  'balance',
+				  'description',
+				  'type',
+				  'creation_time',
+				  'end_time']
 	
+	types = {
+		'UNKNOWN' 				: u'Неизвестно',
+		'TRANSFER' 				: u'Перевод',
+		'RESERVATION' 			: u'Резервирование',
+		'ACTION_APPROVED' 		: u'Подтвержденное действие',
+		'MLM' 					: u'MLM',
+		'RESERVATION_CANCELLED'	: u'Отмена резервирования',
+		'REPLENISHMENT' 		: u'Пополнение',
+		'WITHDRAW' 				: u'Выплата'
+	}
+	
+	def type_verbose(self):
+		return self.types.get(self.type, self.types['UNKNOWN'])
 	
 class OrderTypes:
 	ALL = ('REGULAR', 'BANNER', 'VIDEO')

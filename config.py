@@ -42,14 +42,15 @@ MAILJET_CUSTOMERS_LIST_ID = 15816
 MAILJET_DEVELOPERS_LIST_ID = 15817
 
 # Mail sending parameters
-MAIL_ENABLED = False
+MAIL_ENABLED = True
+MAIL_SMTP_DEBUG = False
 MAIL_SMTP_HOST = 'in.mailjet.com'
 MAIL_SMTP_PORT = 25
 MAIL_SMTP_TIMEOUT = 5
 MAIL_SMTP_USERNAME = MAILJET_API_KEY
 MAIL_SMTP_PASSWORD = MAILJET_API_SECRET_KEY
 MAIL_FROM_ADDRESS = 'HeyMoose! <noreply@heymoose.com>'
-MAIL_ADMINS = ['slezko@heymoose.com']
+MAIL_ADMINS = ['admin@heymoose.com']
 
 # Admin parameters
 ADMIN_PAGES_RANGE = 7

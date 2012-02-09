@@ -8,7 +8,7 @@ from heymoose.utils import convert, gen, times
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.views import common as cmnviews
 from heymoose.forms import forms
-from heymoose.db.models import Contact, GamakApp, UserInfo
+from heymoose.db.models import Contact, GamakApp, UserInfo, OrderInfo
 from heymoose.db.actions import invites
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
@@ -48,10 +48,28 @@ def orders_settings():
 	return render_template('admin/orders-settings.html',
 		banner_form=banner_form, city_form=city_form)
 
-@bp.route('/orders/<int:id>/')
+@bp.route('/orders/<int:id>/', methods=['GET', 'POST'])
 def orders_info(id):
 	order = do_or_abort(a.orders.get_order, id, full=True)
-	return render_template('admin/orders-info.html', order=order)
+	form = forms.OrderBlockForm(request.form)
+	if request.method == 'POST' and form.validate():
+		if not order.disabled:
+			a.orders.disable_order(order.id)
+			order_info = OrderInfo.query.get_or_create(order_id=order.id)
+			order_info.block_reason = form.reason.data
+			order_info.block_date = datetime.now()
+			order_info.save()
+			if form.mail.data: tmail.user_order_blocked(order, form.reason.data)
+			tmail.admin_order_blocked(order, g.user, form.reason.data)
+			flash(u'Заказ заблокиорван', 'success')
+			return redirect(url_for('.orders_info', id=order.id))
+		else:
+			a.orders.enable_order(order.id)
+			if form.mail.data: tmail.user_order_unblocked(order)
+			tmail.admin_order_unblocked(order, g.user)
+			flash(u'Заказ разблокиорван', 'success')
+			return redirect(url_for('.orders_info', id=order.id))
+	return render_template('admin/orders-info.html', order=order, form=form)
 
 @bp.route('/orders/<int:id>/edit', methods=['GET', 'POST'])
 def orders_info_edit(id):

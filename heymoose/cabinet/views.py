@@ -69,7 +69,7 @@ def orders_new():
 			image=base64.encodestring(request.files['orderimage'].stream.read()))
 		order = actions.orders.get_order(id)
 		mail.admin_order_created(g.user, order)
-		flash(u'Заказ успешно создан.', 'success')
+		flash(u'Заказ успешно создан. Он станет активным после проверки администрацией.', 'success')
 		return redirect(url_for('.orders_info', id=id))
 	return render_template('cabinet/orders-new.html', form=form, cities=cities)
 	

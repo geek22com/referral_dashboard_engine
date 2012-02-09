@@ -20,6 +20,14 @@ def admin_user_blocked(user, admin, reason):
 	subject, text, html = render.mail_from_template('mail/admin-user-blocked.html', user=user, admin=admin, reason=reason)
 	smtp.send_multipart(from_address, admins, subject, text, html)
 	
+def admin_order_blocked(order, admin, reason):
+	subject, text, html = render.mail_from_template('mail/admin-order-blocked.html', order=order, admin=admin, reason=reason)
+	smtp.send_multipart(from_address, admins, subject, text, html)
+
+def admin_order_unblocked(order, admin):
+	subject, text, html = render.mail_from_template('mail/admin-order-unblocked.html', order=order, admin=admin)
+	smtp.send_multipart(from_address, admins, subject, text, html)
+	
 	
 def user_confirm_email(user):
 	subject, text, html = render.mail_from_template('mail/user-confirm-email.html', user=user)
@@ -27,8 +35,13 @@ def user_confirm_email(user):
 	
 def user_blocked(user, reason):
 	subject, text, html = render.mail_from_template('mail/user-blocked.html', user=user, reason=reason)
-	print subject
-	print text
-	print html
 	smtp.send_multipart(from_address, [user.email], subject, text, html)
+	
+def user_order_blocked(order, reason):
+	subject, text, html = render.mail_from_template('mail/user-order-blocked.html', order=order, reason=reason)
+	smtp.send_multipart(from_address, [order.user.email], subject, text, html)
+	
+def user_order_unblocked(order):
+	subject, text, html = render.mail_from_template('mail/user-order-unblocked.html', order=order)
+	smtp.send_multipart(from_address, [order.user.email], subject, text, html)
 	

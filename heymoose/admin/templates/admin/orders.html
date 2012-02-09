@@ -38,6 +38,10 @@
 {% block tabcontent %}
 
 {% if orders %}
+	<p>
+		<strong>Внимание!</strong> Блокировка заказов напрямую из этого списка не подразумевает
+		отправку почтового уведомления владельцу заказа.
+	</p>
 	{% call(head, order) order_macros.table(orders, orders_config) %}
 		{% if head %}
 			<th class="header center" rowspan="2">Активен</th>

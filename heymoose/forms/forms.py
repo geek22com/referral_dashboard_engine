@@ -172,11 +172,18 @@ class PasswordChangeForm(AdminPasswordChangeForm):
 		myvalidators.check_password
 	])
 
-class UserBlockForm(Form):
+class EmailNotifyForm(Form):
+	mail = BooleanField(u'Письмо пользователю', default=True)
+
+class UserBlockForm(EmailNotifyForm):
 	reason = TextAreaField(u'Причина', [
 		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
 	])
-	mail = BooleanField(u'Письмо пользователю', default=True)
+	
+class OrderBlockForm(EmailNotifyForm):
+	reason = TextAreaField(u'Причина', [
+		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
+	], default=u'Заказ не соответствует правилам размещения рекламы в сети ВКонтакте.')
 
 class FeedBackForm(Form):
 	feedback_email = TextField('Email Address', [

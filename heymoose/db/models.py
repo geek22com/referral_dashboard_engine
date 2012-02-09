@@ -69,6 +69,13 @@ class UserInfo(mongo.Document):
 	user_id = mongo.IntField()
 	block_date = mongo.DateTimeField()
 	block_reason = mongo.StringField()
+
+class OrderInfo(mongo.Document):
+	query_class = HeyMooseQuery
+	
+	order_id = mongo.IntField()
+	block_date = mongo.DateTimeField()
+	block_reason = mongo.StringField()
 	
 class GamakApp(mongo.Document):
 	name = mongo.StringField()

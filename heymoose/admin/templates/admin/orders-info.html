@@ -4,7 +4,7 @@
 
 {% block extrahead %}
 	{{ super() }}
-	<script type="text/javascript">
+	{# <script type="text/javascript">
 		$(function() {
 			$('#form-enable').ajaxForm({
 				beforeSubmit: function() { return confirm('Активировать заказ?'); },
@@ -30,17 +30,27 @@
 				}
 			});
 		});
-	</script>
+	</script> #}
 {% endblock %}
 
 {% block tabcontent %}
-<div class="info-actions well">
+{# <div class="info-actions well">
 	<form id="form-enable" method="post" action="{{ url_for('.ajax_orders_enable', id=order.id) }}" class="inline">
 		<input type="submit" class="btn success" value="Активировать" {% if not order.disabled %}disabled="disabled"{% endif %} />
 	</form>
 	<form id="form-disable" method="post" action="{{ url_for('.ajax_orders_disable', id=order.id) }}" class="inline">
 		<input type="submit" class="btn danger" value="Деактивировать" {% if order.disabled %}disabled="disabled"{% endif %} />
 	</form>
+</div> #}
+
+<div class="well right">
+	{% if order.disabled %}
+		<a href="#" class="btn success" data-controls-modal="login-block"
+		data-backdrop="true" data-keyboard="true">Разблокировать заказ</a>
+	{% else %}
+		<a href="#" class="btn danger" data-controls-modal="login-block"
+		data-backdrop="true" data-keyboard="true">Заблокировать заказ</a>
+	{% endif %}
 </div>
 
 <table class="key-value">
@@ -97,4 +107,43 @@
 	</tbody>
 </table>
 
+{% endblock %}
+
+{% block postbody %}
+	{{ super() }}
+	<div id="login-block" class="modal" style="display: none;">
+		{% if not order.disabled %}
+		<form method="post" action="" class="validate">
+			<div class="modal-header">
+				<a href="#" class="close">×</a>
+				<h3>Блокировка заказа</h3>
+			</div>
+			<div class="modal-body">
+				<fieldset>
+					{{ macros.formfield(form.reason, class='span6', rows=6) }}
+					<div class="input">
+						{{ form.mail() }} уведомить пользователя по почте
+					</div>
+				</fieldset>
+			</div>
+			<div class="modal-footer">
+				<input type="submit" class="btn primary" value="Заблокировать" />
+			</div>
+		</form>
+		{% else %}
+		<form method="post" action="" class="validate">
+			<div class="modal-header">
+				<a href="#" class="close">×</a>
+				<h3>Разблокировка заказа</h3>
+			</div>
+			<div class="modal-body">
+				<p>Разблокировать заказ?</p>
+				{{ form.mail() }} уведомить пользователя по почте
+			</div>
+			<div class="modal-footer">
+				<input type="submit" class="btn primary" value="Разблокировать" />
+			</div>
+		</form>
+		{% endif %}
+	</div>
 {% endblock %}

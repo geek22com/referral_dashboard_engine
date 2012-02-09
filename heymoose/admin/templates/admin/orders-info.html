@@ -43,6 +43,12 @@
 	</form>
 </div> #}
 
+{% if order.disabled %}
+	<div class="clearfix alert-message block-message error">
+		<p>Заказ заблокирован.</p>
+	</div>
+{% endif %}
+
 <div class="well right">
 	{% if order.disabled %}
 		<a href="#" class="btn success" data-controls-modal="login-block"
@@ -60,7 +66,7 @@
 		<tr><th>Заказчик</th><td>{{ macros.user_href(order.user) }}</td></tr>
 		<tr><th>URL</th><td><a href="{{ order.url }}" target="_blank">{{ order.url }}</a></td></tr>
 		<tr><th>Создан</th><td>{{ order.creation_time|datetimeformat }}</td></tr>
-		<tr><th>Активен</th><td id="icon-enabled">{{ macros.to_icon(not order.disabled) }}</td></tr>
+		{#<tr><th>Активен</th><td id="icon-enabled">{{ macros.to_icon(not order.disabled) }}</td></tr>#}
 		<tr><th>Авто-подтверждение</th><td>{{ macros.to_icon(order.auto_approve) }}</td></tr>
 		<tr><th>Повторное прохождение</th><td>{{ macros.to_icon(order.reentrant) }}</td></tr>
 	</tbody>

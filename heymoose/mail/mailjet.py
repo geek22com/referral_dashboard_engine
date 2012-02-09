@@ -36,7 +36,7 @@ class MailJet(Resource):
 		if response.charset != 'utf8':
 			resp = resp.decode('utf8')
 			
-		return etree.fromstring(resp)
+		return etree.fromstring(resp) if resp else u''
 
 
 	def lists_add_contact(self, contact, list_id, force=False):

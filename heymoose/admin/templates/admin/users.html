@@ -5,7 +5,7 @@
 {% block tabcontent %}
 
 {% if users %}
-	<table class="bordered-table zebra-striped">
+	<table class="bordered-table zebra-striped nosort">
 		<thead>
 			<tr>
 				<th class="header right">ИД</th>
@@ -36,13 +36,13 @@
 				</td>
 				<td class="center">
 					{% if user.is_admin() %}
-						<span class="label info">Администратор</span>
+						<span class="label info">Админ.</span>
 					{% elif user.is_customer() %}
-						<span class="label important">Рекламодатель</span>
+						<span class="label important">Реклам.</span>
 					{% elif user.is_developer() %}
-						<span class="label notice">Разработчик</span>
+						<span class="label notice">Разраб.</span>
 					{% else %}
-						<span class="label warning">Неизвестно</span>
+						<span class="label warning">Неизв.</span>
 					{% endif %}
 				</td>
 				<td class="center">{{ user.register_time|datetimeformat }}</td>

@@ -13,6 +13,7 @@
 				<th class="header">E-mail</th>
 				<th class="header">Организация</th>
 				<th class="header right">Баланс, {{ currency_sign }}</th>
+				<th class="header center">Роль</th>
 				<th class="header center">Зарегистрирован</th>
 				<th class="header center">Подтв.</th>
 			</tr>
@@ -31,6 +32,17 @@
 						{{ user.developer_account.balance|currency(False) }}
 					{% else %}
 						&mdash;
+					{% endif %}
+				</td>
+				<td class="center">
+					{% if user.is_admin() %}
+						<span class="label info">Администратор</span>
+					{% elif user.is_customer() %}
+						<span class="label important">Рекламодатель</span>
+					{% elif user.is_developer() %}
+						<span class="label notice">Разработчик</span>
+					{% else %}
+						<span class="label warning">Неизвестно</span>
 					{% endif %}
 				</td>
 				<td class="center">{{ user.register_time|datetimeformat }}</td>

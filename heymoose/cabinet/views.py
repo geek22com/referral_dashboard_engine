@@ -328,24 +328,25 @@ def info_password_change():
 	return render_template('cabinet/info-password-change.html', form=form)
 
 @bp.route('/info/balance', methods=['GET', 'POST'])
-@customer_only
 def info_balance():
-	form = forms.BalanceForm(request.form)
-	if request.method == 'POST' and form.validate():
-		sum = form.amount.data
-		url = robokassa.account_pay_url(
-			account_id=g.user.customer_account.id,
-			sum=round(sum, 2),
-			email=g.user.email)
-		return redirect(url)
+	form = None
+	if g.user.is_customer():
+		form = forms.BalanceForm(request.form)
+		if request.method == 'POST' and form.validate():
+			sum = form.amount.data
+			url = robokassa.account_pay_url(
+				account_id=g.user.customer_account.id,
+				sum=round(sum, 2),
+				email=g.user.email)
+			return redirect(url)
 	
+	account = g.user.customer_account if g.user.is_customer() else g.user.developer_account
 	page = convert.to_int(request.args.get('page'), 1)
-	_unused, count = actions.accounts.get_account_transactions(g.user.customer_account.id, 0, 1)
+	_unused, count = actions.accounts.get_account_transactions(account.id, 0, 1)
 	per_page = app.config.get('ADMIN_TRANSACTIONS_PER_PAGE', 20)
 	offset, limit, pages = paginate(page, count, per_page)
 	transactions, count = do_or_abort(actions.accounts.get_account_transactions,
-							account_id=g.user.customer_account.id,
-							offset=offset, limit=limit)
+							account_id=account.id, offset=offset, limit=limit)
 	return render_template('cabinet/info-balance.html', transactions=transactions,
 						pages=pages, form=form)
 	

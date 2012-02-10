@@ -101,7 +101,7 @@ class Transaction(BaseModel):
 		'UNKNOWN' 				: u'Неизвестно',
 		'TRANSFER' 				: u'Перевод',
 		'RESERVATION' 			: u'Резервирование',
-		'ACTION_APPROVED' 		: u'Подтвержденное действие',
+		'ACTION_APPROVED' 		: u'Подтвержденные действия',
 		'MLM' 					: u'MLM',
 		'RESERVATION_CANCELLED'	: u'Отмена резервирования',
 		'REPLENISHMENT' 		: u'Пополнение',

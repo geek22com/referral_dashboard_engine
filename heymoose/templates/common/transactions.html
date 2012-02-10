@@ -6,12 +6,11 @@
 	<table class="bordered-table zebra-striped nosort transactions-table">
 		<thead>
 			<tr>
-				<th class="header right minimal-width">#</th>
+				<th class="header right" style="width: 50px;">#</th>
 				<th class="header right" style="width: 100px;">Изменение</th>
 				<th class="header right" style="width: 100px;">Баланс, {{ currency_sign }}</th>
-				<th class="header center">Тип</th>
 				<th class="header center">Время</th>
-				{% if config.get('description', false) %}<th class="header">Комментарий</th>{% endif %}
+				<th class="header">Описание</th>
 				{{ caller(true, none) }}
 			</tr>
 		</thead>
@@ -25,23 +24,17 @@
 					</span>
 				</td>
 				<td class="right">{{ transaction.balance|currency(False) }}</td>
-				<td class="center">{{ transaction.type_verbose() }}</td>
 				<td class="center">
 					{% if transaction.creation_time and transaction.end_time %}
-						с {{ transaction.creation_time|datetimeformat }}
-						по {{ transaction.end_time|datetimeformat }}
+						<nobr>с {{ transaction.creation_time|datetimeformat }}</nobr>
+						<nobr>по {{ transaction.end_time|datetimeformat }}</nobr>
 					{% elif transaction.creation_time %}
 						{{ transaction.creation_time|datetimeformat }}
 					{% else %}
 						&mdash;
 					{% endif %}
 				</td>
-				{% if config.get('description', false) %}
-				<td>
-					{{ transaction.description|replace_if_contains('Transferring', '&mdash;')
-						|default('&mdash;', True)|safe }}
-				</td>
-				{% endif %}
+				<td>{{ transaction.type_verbose()|default('--', true) }}</td>
 				{{ caller(false, transaction) }}
 			</tr>
 			{% endfor %}

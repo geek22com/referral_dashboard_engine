@@ -158,8 +158,11 @@ table.nosort .header:hover:after, table.nosort .header:after {
 }
 
 .deleted {
-	/* background-color: #FDDFDE; */
-	color: red;
+	color: #B94A48;
+}
+
+a.danger, a.danger:hover {
+	color: #B94A48;
 }
 
 /* rowspan bugfix for bordered tables */

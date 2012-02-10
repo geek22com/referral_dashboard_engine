@@ -98,18 +98,28 @@ class Transaction(BaseModel):
 				  'end_time']
 	
 	types = {
-		'UNKNOWN' 				: u'Неизвестно',
-		'TRANSFER' 				: u'Перевод',
-		'RESERVATION' 			: u'Резервирование',
-		'ACTION_APPROVED' 		: u'Подтвержденные действия',
-		'MLM' 					: u'MLM',
-		'RESERVATION_CANCELLED'	: u'Отмена резервирования',
-		'REPLENISHMENT' 		: u'Пополнение',
-		'WITHDRAW' 				: u'Выплата'
+		'UNKNOWN' 					: u'--',
+		'TRANSFER' 					: u'Перевод',
+		'RESERVATION' 				: u'Резервирование',
+		'ACTION_APPROVED' 			: u'Подтвержденные действия',
+		'MLM' 						: u'MLM',
+		'RESERVATION_CANCELLED'		: u'Отмена резервирования',
+		'REPLENISHMENT_ROBOKASSA'	: u'Пополнение счета с помощью системы "RoboKassa"',
+		'WITHDRAW' 					: u'Выплата разработчику',
+		'REPLENISHMENT_ADMIN'		: u'Пополнение счета администрацией',
+		'WITHDRAW_DELETED'			: u'Отмена выплаты разработчику'
 	}
 	
 	def type_verbose(self):
-		return self.types.get(self.type, self.types['UNKNOWN'])
+		t = self.types.get(self.type, u'')
+		if self.type == 'WITHDRAW_DELETED':
+			t += u' ({0})'.format(self.description)
+		return t
+	
+
+class Withdrawal(BaseModel):
+	attributes = ['id', 'amount', 'timestamp', 'done']
+
 	
 class OrderTypes:
 	ALL = ('REGULAR', 'BANNER', 'VIDEO')

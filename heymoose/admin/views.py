@@ -439,18 +439,56 @@ def users_info_lists_add(id):
 		flash(u'Ошибка при добавлении пользователя в списки рассылки', 'error')
 	return redirect(url_for('.users_info', id=user.id))
 
-@bp.route('/users/<int:id>/balance/pay', methods=['GET', 'POST'])
-def balance_pay(id):
+@bp.route('/users/<int:id>/balance', methods=['GET', 'POST'])
+def users_info_balance(id):
 	user = do_or_abort(a.users.get_user_by_id, id)
-	if not user.is_customer(): abort(404)
-	
-	form = forms.BalanceForm(request.form)
-	if request.method == 'POST' and form.validate():
-		do_or_abort(a.users.increase_customer_balance,
-				user.id, int(form.amount.data))
-		flash(u'Баланс успешно пополнен', 'success')
+	delete_form = forms.WithdrawalDeleteForm()
+	withdrawals = None
+	if user.is_customer():
+		account = user.customer_account
+		form = forms.BalanceForm(request.form)
+		if request.method == 'POST' and form.validate():
+			a.users.increase_customer_balance(user.id, round(form.amount.data, 2))
+			flash(u'Баланс успешно пополнен', 'success')
+			return redirect(url_for('.users_info_balance', id=user.id))
+	elif user.is_developer():
+		account = user.developer_account
+		form = forms.BalanceForm(request.form, amount=account.balance)
+		if request.method == 'POST' and form.validate():
+			a.users.make_user_withdrawal(user.id, round(form.amount.data, 2))
+			flash(u'Выплата разработчику успешно создана', 'success')
+			return redirect(url_for('.users_info_balance', id=user.id))
+		
+		withdrawals = a.users.get_user_withdrawals(user.id)
+	else:
+		flash(u'Пользователь не имеет счета', 'error')
 		return redirect(url_for('.users_info', id=user.id))
-	return render_template('admin/users-info-balance-pay.html', user=user, form=form) 
+	
+	page = convert.to_int(request.args.get('page'), 1)
+	count = a.accounts.get_account_transactions_count(account.id)
+	per_page = app.config.get('ADMIN_TRANSACTIONS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	transactions = a.accounts.get_account_transactions(account_id=account.id, offset=offset, limit=limit)
+	return render_template('admin/users-info-balance.html', transactions=transactions,
+		withdrawals=withdrawals, pages=pages, user=user, form=form, delete_form=delete_form)
+	
+@bp.route('/users/<int:id>/balance/withdrawals/<int:wid>/approve', methods=['POST'])
+def users_info_approve_withdrawal(id, wid):
+	user = do_or_abort(a.users.get_user_by_id, id)
+	a.users.approve_user_withdrawal(user.id, wid)
+	flash(u'Выплата разработчику подтверждена', 'success')
+	return redirect(url_for('.users_info_balance', id=user.id))
+
+@bp.route('/users/<int:id>/balance/withdrawals/<int:wid>/delete', methods=['POST'])
+def users_info_delete_withdrawal(id, wid):
+	user = do_or_abort(a.users.get_user_by_id, id)
+	form = forms.WithdrawalDeleteForm(request.form)
+	if form.validate():
+		a.users.delete_user_withdrawal(user.id, wid, form.reason.data)
+		flash(u'Выплата разработчику отменена', 'success')
+	else:
+		flash(u'При выплате разработчику произошла ошибка', 'error')
+	return redirect(url_for('.users_info_balance', id=user.id))
 
 
 @bp.route('/performers/')

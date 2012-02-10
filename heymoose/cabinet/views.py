@@ -342,13 +342,11 @@ def info_balance():
 	
 	account = g.user.customer_account if g.user.is_customer() else g.user.developer_account
 	page = convert.to_int(request.args.get('page'), 1)
-	_unused, count = actions.accounts.get_account_transactions(account.id, 0, 1)
+	count = actions.accounts.get_account_transactions_count(account.id)
 	per_page = app.config.get('ADMIN_TRANSACTIONS_PER_PAGE', 20)
 	offset, limit, pages = paginate(page, count, per_page)
-	transactions, count = do_or_abort(actions.accounts.get_account_transactions,
-							account_id=account.id, offset=offset, limit=limit)
-	return render_template('cabinet/info-balance.html', transactions=transactions,
-						pages=pages, form=form)
+	transactions = actions.accounts.get_account_transactions(account_id=account.id, offset=offset, limit=limit)
+	return render_template('cabinet/info-balance.html', transactions=transactions, pages=pages, form=form)
 	
 @bp.route('/info/balance/success', methods=['POST'])
 @customer_only

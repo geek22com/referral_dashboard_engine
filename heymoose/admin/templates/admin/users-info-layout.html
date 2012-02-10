@@ -32,8 +32,8 @@
 	{% endif %}
 	{% if user.is_customer() %}
 	<li id="tab-orders"><a href="{{ url_for('.users_info_orders', id=user.id) }}">Заказы</a></li>
-	<li id="tab-pay"><a href="{{ url_for('.balance_pay', id=user.id) }}">Пополнение баланса</a></li>
 	{% endif %}
+	<li id="tab-balance"><a href="{{ url_for('.users_info_balance', id=user.id) }}">Операции со счетом</a></li>
 	<li id="tab-edit"><a href="{{ url_for('.users_info_edit', id=user.id) }}">Редактировать</a></li>
 	<li id="tab-password"><a href="{{ url_for('.users_info_password_change', id=user.id) }}">Изменить пароль</a></li>
 	<li id="tab-stats"><a href="{{ url_for('.users_info_stats', id=user.id) }}">Статистика</a></li>

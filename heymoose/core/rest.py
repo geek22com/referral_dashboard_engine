@@ -58,11 +58,11 @@ def put(path, base=URL_BASE, params_dict={}):
 	                              path=path,
 	                              payload=forms.form_encode(params_dict)))
 
-def delete(path, base=URL_BASE):
-	app_logger.debug("delete: base={0} path={1}".format(base, path))
+def delete(path, base=URL_BASE, params_dict={}):
+	payload = forms.form_encode(params_dict)
+	app_logger.debug("delete: base={0} path={1} payload={2}".format(base, path, payload))
 	resource = create_resource()
-	exec_request(partial(resource.delete,
-	                              path=path))
+	exec_request(partial(resource.delete, path=path, payload=payload))
 
 	### TESTS START HERE ###
 import unittest

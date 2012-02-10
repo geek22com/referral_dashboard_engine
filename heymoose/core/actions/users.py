@@ -1,4 +1,4 @@
-from heymoose.core.actions.mappers import user_from_xml, count_from_xml
+from heymoose.core.actions.mappers import user_from_xml, withdrawal_from_xml, count_from_xml
 from heymoose.core.rest import get, put, post, delete
 from heymoose.core.actions import roles
 from heymoose.utils import shortcuts, convert
@@ -67,3 +67,20 @@ def get_users_count(**kwargs):
 def increase_customer_balance(user_id, amount):
 	path =  "{0}/{1}/customer-account".format(resource_path, user_id)
 	put(path=path, params_dict=dict(amount=amount))
+
+
+def get_user_withdrawals(user_id):
+	path = "{0}/{1}/developer-account/withdraws".format(resource_path, user_id)
+	return map(withdrawal_from_xml, get(path=path))
+
+def make_user_withdrawal(user_id, amount):
+	path = "{0}/{1}/developer-account/withdraws".format(resource_path, user_id)
+	return post(path=path, params_dict=dict(amount=amount))
+
+def approve_user_withdrawal(user_id, withdrawal_id):
+	path = "{0}/{1}/developer-account/withdraws/{2}".format(resource_path, user_id, withdrawal_id)
+	return put(path=path)
+
+def delete_user_withdrawal(user_id, withdrawal_id, comment):
+	path = "{0}/{1}/developer-account/withdraws/{2}".format(resource_path, user_id, withdrawal_id)
+	return delete(path=path, params_dict=dict(comment=comment))

@@ -42,7 +42,7 @@ def json_get_ctr(**kwargs):
 	keys = times.datetime_range(freq, dtstart=replacer(fm), until=replacer(to))
 	values = dict([(key, (0, 0, 0.0)) for key in keys]) # if len(stats) != len (keys) else dict()
 	for stat in stats:
-		values[replacer(stat.time)] = (stat.shows, stat.actions, stat.ctr)
+		values[replacer(stat.time)] = (stat.shows, stat.actions, round(stat.ctr, 4))
 	
 	result = [dict(time=formatter(key), shows=value[0], clicks=value[1], ctr=value[2]) \
 				for key, value in sorted(values.items(), key=lambda item: item[0])]

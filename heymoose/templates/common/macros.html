@@ -122,6 +122,11 @@
 
 {% macro formfield(field, description='', pad_description=False) %}
 	<div class="{{ field.id }}-field formfield clearfix {% if field.errors %}error{% endif %}">
+		{% if field|classname == 'DecimalField' %}
+			{{ kwargs|addclass('validate-decimal') }}
+			<span style="display: none;" id="{{ field.id }}-msg-decimal">{{ kwargs.pop('msg_decimal', '') or 'Введите число' }}</span>
+		{% endif %}
+		
 		{% for validator in field.validators %}
 			{% if validator|classname in ('Required', 'FileRequired') %}
 				{{ kwargs|addclass('validate-required') }}
@@ -146,7 +151,7 @@
 			{% endif %}
 		{% endfor %}
 		
-		{% if field.flags.required %}
+		{% if field.flags.required or field|classname == 'DecimalField' %}
 			{{ field.label(class='required') }}
 		{% else %}
 			{{ field.label }}

@@ -219,9 +219,8 @@ class OrderForm(Form):
 		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
 	])
 	orderbalance = DecimalField(u'Баланс', [
-		validators.Required(message = (u'Укажите баланс для заказа')),
-		validators.NumberRange(min=1, max=3000000, message=(u'Такой баланс недопустим'))
-	])
+		validators.NumberRange(min=0.0, message=(u'Такой баланс недопустим')),
+	], default=0.0, description=u'Вы можете пополнить баланс заказа в любой момент')
 	ordermale = SelectField(u'Пол', choices=[(u'True', u'мужской'), (u'False', u'женский'), (u'', u'любой')], default='')
 	orderminage = myfields.NullableIntegerField(u'Минимальный возраст', [
 		myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
@@ -241,6 +240,10 @@ class OrderForm(Form):
 		(u'EXCLUSIVE', u'все, кроме указанных')
 	])
 	ordercities = TextField(u'Список городов')
+	
+	def validate_orderbalance(self, field):
+		if round(self.orderbalance.data, 2) == 0.0:
+			raise ValueError(u'Такой баланс недопустим')
 	
 class AdminOrderFormMixin:
 	orderautoapprove = BooleanField(u'Автоподтверждение', default=True)

@@ -43,49 +43,36 @@
 
 {% block tabcontent %}
 
-{% if g.user.customer_account.balance > 0 %}
-	<div class="widelabels">
-		{% set yourbalance = 'Ваш баланс {0}'.format(g.user.customer_account.balance|currency) %}
-		<div id="container-banner" class="form-container">
-			<form id="form-order-banner" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
-				<fieldset>
-					<input type="hidden" name="ordertype" value="BANNER" />
-					{{ macros.formfield(form.ordername, class='span10') }}
-					{{ macros.formfield(form.orderurl, class='span10') }}
-					{{ macros.formfield(form.orderbalance, class='span4', 
-						max_range=g.user.customer_account.balance, description=yourbalance) }}
-					{{ macros.formfield(form.ordercpa, class='span4') }}
-				</fieldset>
-				<fieldset>
-					<legend>Баннер</legend>
-					{{ macros.formfield(form.orderbannersize, class='span4') }}
-					{{ macros.formfield(form.orderimage, pad_description=True) }}
-				</fieldset>
-				<fieldset>
-					<legend>Настройки таргетинга</legend>
-					{{ macros.formfield(form.ordermale, class='span4') }}
-					{{ macros.formfield(form.orderminage, class='span4', placeholder='любой') }}
-					{{ macros.formfield(form.ordermaxage, class='span4', placeholder='любой') }}
-					{{ macros.formfield(form.orderminhour, class='span4', placeholder='начала суток') }}
-					{{ macros.formfield(form.ordermaxhour, class='span4', placeholder='конца суток') }}
-					{{ macros.formfield(form.ordercitiesfilter, class='span4') }}
-					{{ macros.formfield(form.ordercities, class='cities') }}
-				</fieldset>
-				<div class="actions">
-					<input class="btn large primary" type="submit" value="Создать заказ"/>
-				</div>
-			</form>
-		</div>
+<div class="widelabels">
+	<div id="container-banner" class="form-container">
+		<form id="form-order-banner" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
+			<fieldset>
+				<input type="hidden" name="ordertype" value="BANNER" />
+				{{ macros.formfield(form.ordername, class='span10') }}
+				{{ macros.formfield(form.orderurl, class='span10') }}
+				{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_account.balance) }}
+				{{ macros.formfield(form.ordercpa, class='span4') }}
+			</fieldset>
+			<fieldset>
+				<legend>Баннер</legend>
+				{{ macros.formfield(form.orderbannersize, class='span4') }}
+				{{ macros.formfield(form.orderimage, pad_description=True) }}
+			</fieldset>
+			<fieldset>
+				<legend>Настройки таргетинга</legend>
+				{{ macros.formfield(form.ordermale, class='span4') }}
+				{{ macros.formfield(form.orderminage, class='span4', placeholder='любой') }}
+				{{ macros.formfield(form.ordermaxage, class='span4', placeholder='любой') }}
+				{{ macros.formfield(form.orderminhour, class='span4', placeholder='начала суток') }}
+				{{ macros.formfield(form.ordermaxhour, class='span4', placeholder='конца суток') }}
+				{{ macros.formfield(form.ordercitiesfilter, class='span4') }}
+				{{ macros.formfield(form.ordercities, class='cities') }}
+			</fieldset>
+			<div class="actions">
+				<input class="btn large primary" type="submit" value="Создать заказ"/>
+			</div>
+		</form>
 	</div>
-{% else %}
-	<div class="clearfix alert-message block-message error">
-		<p>
-			<strong>Недостаточно средств.</strong> На вашем счету не хватает средств для создания заказа.
-		</p>
-		<div class="alert-actions">
-			<a class="btn small" href="{{ url_for('.info_balance') }}">Пополнить счет</a>
-		</div>
-	</div>
-{% endif %}
+</div>
 
 {% endblock %}

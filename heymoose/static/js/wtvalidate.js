@@ -88,6 +88,18 @@
 		return valid;
 	}
 	
+	$.fn.validateDecimal = function(error) {
+		var valid = true;
+		this.each(function() {
+			var field = $(this);
+			if (isNaN(parseFloat(field.val().trim()))) {
+				error(field, 'decimal');
+				valid = false;
+			}
+		});
+		return valid;
+	}
+	
 	$.fn.validateForm = function(options) {
 		var defaults = {
 			error: function(field, type) { },
@@ -111,6 +123,7 @@
 				valid = $(this).find('.validate-length').validateLength(settings.error) && valid;
 				valid = $(this).find('.validate-url').validateUrl(settings.error) && valid;
 				valid = $(this).find('.validate-equal').validateEqual(settings.error) && valid;
+				valid = $(this).find('.validate-decimal').validateDecimal(settings.error) && valid;
 				return valid;
 			});
 		});

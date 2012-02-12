@@ -101,7 +101,7 @@ class Transaction(BaseModel):
 		'UNKNOWN' 					: u'--',
 		'TRANSFER' 					: u'Перевод',
 		'RESERVATION' 				: u'Резервирование',
-		'ACTION_APPROVED' 			: u'Подтвержденные действия',
+		'ACTION_APPROVED' 			: u'Оплата за клики',
 		'MLM' 						: u'MLM',
 		'RESERVATION_CANCELLED'		: u'Отмена резервирования',
 		'REPLENISHMENT_ROBOKASSA'	: u'Пополнение счета с помощью системы "RoboKassa"',

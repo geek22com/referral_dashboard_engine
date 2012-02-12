@@ -26,8 +26,12 @@
 				<td class="right">{{ transaction.balance|currency(False) }}</td>
 				<td class="center">
 					{% if transaction.creation_time and transaction.end_time %}
-						<nobr>с {{ transaction.creation_time|datetimeformat }}</nobr>
-						<nobr>по {{ transaction.end_time|datetimeformat }}</nobr>
+						{% if transaction.creation_time.date() == transaction.end_time.date() %}
+							<nobr>за сутки {{ transaction.creation_time|dateformat }}</nobr>
+						{% else %}
+							<nobr>с {{ transaction.creation_time|datetimeformat }}</nobr>
+							<nobr>по {{ transaction.end_time|datetimeformat }}</nobr>
+						{% endif %}
 					{% elif transaction.creation_time %}
 						{{ transaction.creation_time|datetimeformat }}
 					{% else %}

@@ -56,11 +56,11 @@
 			<div class="span8">
 				<div class="form-container">
 					<form id="form-balance-pay" action="" method="post" class="validate">
-						<fieldset>
+						<fieldset style="margin-bottom: 0px;">
 							{{ macros.formfield(form.amount, class='span4', max_range=user.developer_account.balance) }}
 						</fieldset>
 						<div class="input">
-							<input class="btn primary" type="submit" value="Создать выплату"/>
+							<input class="btn primary" type="submit" value="Выплатить"/>
 						</div>
 					</form>
 				</div>

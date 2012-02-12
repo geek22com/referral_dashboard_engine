@@ -242,7 +242,8 @@ class OrderForm(Form):
 	ordercities = TextField(u'Список городов')
 	
 	def validate_orderbalance(self, field):
-		if round(self.orderbalance.data, 2) == 0.0:
+		balance = self.orderbalance.data
+		if balance > 0.0 and round(balance, 2) == 0.0:
 			raise ValueError(u'Такой баланс недопустим')
 	
 class AdminOrderFormMixin:

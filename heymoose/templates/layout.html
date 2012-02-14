@@ -15,6 +15,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.hm.css') }}" media="screen">
 	<style type="text/css">
 		body { background: url({{ url_for('static', filename='./img/background.png') }}) repeat scroll 0 0 transparent; }
+		.container.fluid { min-width: 940px; }
 	</style>
 	
 	<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-latest.js') }}"></script>
@@ -34,6 +35,11 @@
 			$('li#menu-item-{{ activemenu }}').addClass('active');
 			
 			$('form.validate').validateForm(twitterValidateHandlers);
+			
+			$(window).resize(function() {
+				var width = $(window).width();
+				if (width > 940) $('.container.fluid').css('width', width - 60);
+			}).resize();
 		})
 	</script>
 	
@@ -43,9 +49,10 @@
 <body>
 	{% block prebody %}{% endblock %}
 
+	{% set topbar_fluid = topbar_fluid|default(false) %}
 	<div class="topbar" id="topbar">
 		<div class="fill">
-			<div class="container">
+			<div class="{% if topbar_fluid %}container-fluid{% else %}container{% endif %}">
 				<span class="brand">
 					{% block prebrand %}{% endblock %}
 					<a href="{{ url_for('site.index') }}"><span class="hey">Hey</span><span class="moose">Moose</span></a>
@@ -56,7 +63,8 @@
 		</div>
 	</div>
 	
-	<div class="container">
+	{% set content_fluid = content_fluid|default(false) %}
+	<div class="container {% if content_fluid %}fluid{% endif %}">
 		{% block container %}
 		<div class="content">
 			{% block breadcrumbs_container %}{% endblock %}

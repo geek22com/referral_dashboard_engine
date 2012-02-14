@@ -85,6 +85,11 @@ dl.features dd {
 	color: #404040;
 }
 
+.enumeration li {
+	padding-top: 10px;
+	color: #404040;
+}
+
 
 .btn.top-margin { margin-top: 10px; }
 

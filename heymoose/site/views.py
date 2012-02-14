@@ -174,7 +174,6 @@ def confirm(id, code):
 
 @bp.route('/gamak/')
 def gamak():
-	if not g.user or not g.user.is_admin(): abort(403)
 	return render_template('site/gamak.html')
 
 @bp.route('/gamak/apps/')

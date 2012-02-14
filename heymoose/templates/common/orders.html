@@ -34,7 +34,7 @@
 	<table class="bordered-table zebra-striped nosort orders-table">
 		<thead>
 			<tr>
-				<th class="header right" rowspan="2">ИД</th>
+				<th class="header right minimal-width" rowspan="2">ИД</th>
 				<th class="header" rowspan="2">Название</th>
 				{% if config.get('customer', false) %}<th class="header" rowspan="2">Заказчик</th>{% endif %}
 				<th class="header right" rowspan="2">Баланс</th>
@@ -51,7 +51,7 @@
 					/>
 				</th>
 				{% endif %}
-				{% if config.get('active', false) %}<th class="header center" rowspan="2">Активен</th>{% endif %}
+				{% if config.get('active', false) %}<th class="header center minimal-width" rowspan="2">Активен</th>{% endif %}
 				{{ caller(true, none) }}
 			</tr>
 			{% if config.get('stats', false) %}

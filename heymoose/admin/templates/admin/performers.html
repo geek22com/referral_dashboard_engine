@@ -1,14 +1,15 @@
 {% extends "admin/performers-layout.html" %}
 
+{% set content_fluid = true %}
 {% set activetab = 'list' %}
 
 {% block tabcontent %}
 
 {% if performers %}
-	<table class="bordered-table zebra-striped condensed-table">
+	<table class="bordered-table zebra-striped condensed-table nosort">
 		<thead>
 			<tr>
-				<th class="header right">ИД</th>
+				<th class="header right minimal-width">ИД</th>
 				<th class="header">UID</th>
 				<th class="header">Платформа</th>
 				{# <th class="header">Приглашение от</th> #}

@@ -200,7 +200,8 @@ class App(BaseModel):
 	              'callback',
 	              'deleted',
                   'url',
-                  'creation_time']
+                  'creation_time',
+                  'd', 't']
 
 
 class Action(BaseModel):

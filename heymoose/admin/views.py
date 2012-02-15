@@ -224,12 +224,14 @@ def apps_info(id):
 def apps_info_edit(id):
 	app = do_or_abort(a.apps.get_app, id, full=True)
 	form = forms.AdminAppEditForm(request.form, apptitle=app.title, appurl=app.url, 
-		appplatform=app.platform, appdeleted=app.deleted)
+		appplatform=app.platform, appdeleted=app.deleted, appd=app.d, appt=app.t)
 	if request.method == 'POST' and form.validate():
 		kwargs = dict()
 		if form.apptitle.data != app.title: kwargs.update(title=form.apptitle.data)
 		if form.appurl.data != app.url: kwargs.update(url=form.appurl.data, callback=form.appurl.data)
 		if form.appplatform.data != app.platform: kwargs.update(platform=form.appplatform.data)
+		if float(form.appd.data) != app.d: kwargs.update(d=form.appd.data)
+		if float(form.appt.data) != app.t: kwargs.update(t=form.appt.data)
 		if form.appdeleted.data != app.deleted: kwargs.update(deleted=form.appdeleted.data)
 		
 		if kwargs.keys():

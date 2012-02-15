@@ -6,7 +6,9 @@
 
 {% set apps_config = {
 	'stats' : { 'url' : url_for('.ajax_apps_ctr', id=apps|attrlist('id')) },
-	'developer' : true
+	'developer' : true,
+	'd' : true,
+	't' : true
 } %}
 
 {% block extrahead %}

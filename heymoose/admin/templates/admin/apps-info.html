@@ -21,6 +21,8 @@
 		{#<tr><th>Callback</th><td>{{ app.callback }}</td></tr>#}
 		<tr><th>URL</th><td><a href="{{ app.url }}" target="_blank">{{ app.url }}</a></td></tr>
 		<tr><th>Создано</th><td>{{ app.creation_time|datetimeformat }}</td></tr>
+		<tr><th>Оплата за клик (D)</th><td>{{ app.d }}</td></tr>
+		<tr><th>Коэффициент надбавки (T)</th><td>{{ app.t }}</td></tr>
 	</tbody>
 </table>
 

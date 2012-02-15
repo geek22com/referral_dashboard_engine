@@ -37,6 +37,8 @@
 			{% if config.get('developer', false) %}<th class="header" rowspan="2">Разработчик</th>{% endif %}
 			<th class="header" rowspan="2">Платформа</th>
 			<th class="header center" rowspan="2">Создано</th>
+			{% if config.get('d', false) %}<th class="header right" rowspan="2">Оплата за клик&nbsp;(D)</th>{% endif %}
+			{% if config.get('t', false) %}<th class="header right" rowspan="2">Коэф. надбавки&nbsp;(T)</th>{% endif %}
 			{% if config.get('stats', false) %}
 			<th class="center" colspan="3">
 				Статистика за три дня
@@ -64,6 +66,8 @@
 			{% if config.get('developer', false) %}<td>{{ macros.user_href(app.user) }}</td>{% endif %}
 			<td>{{ app.platform }}</td>
 			<td class="center">{{ app.creation_time|datetimeformat }}</td>
+			{% if config.get('d', false) %}<td class="right">{{ app.d }}</td>{% endif %}
+			{% if config.get('t', false) %}<td class="right">{{ app.t }}</td>{% endif %}
 			{% if config.get('stats', false) %}
 			<td class="right app-shows">...</td>
 			<td class="right app-actions">...</td>

@@ -8,7 +8,7 @@ def get_settings():
 	return settings_from_xml(get(path=resource_path))
 
 
-def update_settings(m=None, q=None, d_avg=None):
+def update_settings(m=None, q=None):
 	params = dict()
-	dict_update_filled_params(params, M=m, Q=q, Davg=d_avg)
+	dict_update_filled_params(params, m=m, q=q)
 	return put(path=resource_path, params_dict=params)

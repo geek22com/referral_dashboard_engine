@@ -44,8 +44,9 @@ def orders_new():
 	sizes = actions.bannersizes.get_banner_sizes()
 	choices = [(s.id, '{0} x {1}'.format(s.width, s.height)) for s in sizes]
 	cities = [dict(id=city.id, name=city.name) for city in actions.cities.get_cities()]
+	settings = actions.settings.get_settings()
 	
-	form = forms.BannerOrderForm(request.form)
+	form = forms.BannerOrderForm(request.form, c_min=settings.c_min(), c_rec=settings.c_rec())
 	form.orderbannersize.choices = choices
 	if request.method == 'POST' and form.validate():
 		id = do_or_abort(actions.orders.add_banner_order,
@@ -140,6 +141,8 @@ def orders_info_edit(id):
 		form_args.update(orderdesc = order.description)
 		cls = forms.RegularOrderEditForm
 	elif order.is_banner():
+		settings = actions.settings.get_settings()
+		form_args.update(c_min=settings.c_min(), c_rec=settings.c_rec())
 		cls = forms.BannerOrderEditForm
 	elif order.is_video():
 		form_args.update(ordervideourl = order.video_url)

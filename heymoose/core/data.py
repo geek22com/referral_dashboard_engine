@@ -246,8 +246,8 @@ class StatCtr(BaseModel):
 class Settings(BaseModel):
 	attributes = ['q', 'm', 'd_avg']
 	
-	def c_min(self): return self.d_avg + self.m
-	def c_rec(self): return self.c_min() * self.q
+	def c_min(self): return round(self.d_avg + self.m, 2)
+	def c_rec(self): return round(self.c_min() * self.q, 2)
 
 
 

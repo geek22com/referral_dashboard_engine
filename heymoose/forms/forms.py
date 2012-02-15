@@ -9,11 +9,6 @@ import validators as myvalidators
 import fields as myfields
 import random, hashlib
 
-# Quots for order forms
-min_cpc = app.config.get('REFERRAL_MIN_CPC', 5.0)
-cpc_quot = app.config.get('REFERRAL_RECOMMENDED_CPC_QUOT', 1.3)
-rec_cpc = min_cpc * cpc_quot
-
 
 class CaptchaForm(Form):
 	captcha = TextField(u'', [
@@ -288,15 +283,29 @@ class AdminRegularOrderEditForm(RegularOrderEditFormBase, AdminOrderFormMixin):
 
 class BannerOrderForm(OrderForm):
 	ordercpa = DecimalField(u'Стоимость клика', [
-		validators.NumberRange(min=min_cpc, message=u'Стоимость клика не может быть меньше {0}'.format(min_cpc)),
 		validators.Required(message=u'Введите стоимость клика')
-	], description=u'Минимальная {0}, рекомендуемая {1}'.format(min_cpc, rec_cpc))
+	])
 	orderbannersize = SelectField(u'Размер баннера', coerce=int)
 	orderimage = myfields.BannerField(u'Выберите файл', [
 		myvalidators.FileRequired(message=u'Выберите файл на диске'),
 		myvalidators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf', 'svg'),
 			message=u'Выберите файл в формате JPG, GIF, PNG, SVG или SWF')
 	], description=u'Форматы: JPG (JPEG), GIF, PNG, SVG, SWF')
+	
+	def __init__(self, *args, **kwargs):
+		c_min = kwargs.pop('c_min', 0.01)
+		c_rec = kwargs.pop('c_rec', None)
+		super(BannerOrderForm, self).__init__(*args, **kwargs)
+		
+		min_validator = validators.NumberRange(min=c_min, message=u'Стоимость клика не может быть меньше {0}'.format(c_min))
+		if c_rec is not None:
+			description = u'Минимальная {0} у.е., рекомендуемая {1} у.е.'.format(c_min, c_rec)
+		else:
+			description = u'Минимальная {0} у.е.'.format(c_min)
+			
+		self.ordercpa.validators = self.ordercpa.validators + [min_validator]
+		self.ordercpa.description = description
+			
 	
 	def validate_orderimage(self, field):
 		if field.data is None: return

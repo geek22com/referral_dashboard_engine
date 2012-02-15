@@ -1,0 +1,59 @@
+{% extends "admin/settings-layout.html" %}
+
+{% set activetab = 'global' %}
+
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			var d_avg = parseFloat($('#d-avg').text());
+			var $m = $('#m');
+			var $q = $('#q');
+			
+			$('.recalc').change(function() {
+				var m = parseFloat($m.val());
+				var q = parseFloat($q.val());
+				//if (isNaN(m) || isNaN(q)) return;
+				
+				var c_min = d_avg + m;
+				var c_rec = c_min * q;
+				
+				$('#c-min').html(!isNaN(c_min) ? c_min.toFixed(2) : '&mdash;');
+				$('#c-rec').html(!isNaN(c_rec) ? c_rec.toFixed(2) : '&mdash;');
+			});
+		})
+	</script>
+{% endblock %}
+
+{% block tabcontent %}
+
+<table class="key-value wide-keys">
+	<tbody>
+		<tr>
+			<th>Средняя плата за клик по всем приложениям (D<sub>avg</sub>)</th>
+			<td id="d-avg">{{ '%.2f' % settings.d_avg }}</td>
+		</tr>
+		<tr>
+			<th>Минимальная стоимость клика (C<sub>min</sub> = D<sub>avg</sub> + M)</th>
+			<td id="c-min">{{ '%.2f' % settings.c_min() }}</td>
+		</tr>
+		<tr>
+			<th>Рекомендуемая стоимость клика (C<sub>rec</sub> = C<sub>min</sub> * Q)</th>
+			<td id="c-rec">{{ '%.2f' % settings.c_rec() }}</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="form-container">
+	<form action="" method="post" class="widelabels two-line-labels validate">
+		<fieldset>
+			{{ macros.formfield(form.m, class='span4 recalc') }}
+			{{ macros.formfield(form.q, class='span4 recalc') }}
+		</fieldset>
+		<div class="input">
+			<input class="btn primary" type="submit" value="Сохранить настройки"/>
+		</div>
+	</form>
+</div>
+
+{% endblock %}

@@ -35,6 +35,7 @@
 	<li id="menu-item-orders"><a href="{{ url_for('.orders') }}">Заказы</a></li>
 	<li id="menu-item-performers"><a href="{{ url_for('.performers') }}">Исполнители</a></li>
 	<li id="menu-item-actions"><a href="{{ url_for('.actions') }}">Действия</a></li>
+	<li id="menu-item-settings"><a href="{{ url_for('.settings') }}">Параметры</a></li>
 	<li id="menu-item-feedback">
 		<a href="{{ url_for('.feedback') }}" {% if g.feedback_unread > 0 %}class="unread"{% endif %}>
 			Feedback{% if g.feedback_unread > 0 %} ({{ g.feedback_unread }}){% endif %}

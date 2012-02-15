@@ -425,6 +425,17 @@ class BalanceForm(Form):
 	
 class OrderBalanceTransferForm(BalanceForm):
 	order = SelectField(u'На счет заказа', coerce=int)
+
+
+class SettingsForm(Form):
+	m = DecimalField(u'Минимальная комиссия с одного клика (M)', [
+		validators.Required(message=u'Введите M'),
+		validators.NumberRange(min=0.0, message=u'Такая комиссия недопустима')
+	])
+	q = DecimalField(u'Коэффициент рекомендуемой стоимости клика (Q)', [
+		validators.Required(message=u'Введите Q'),
+		validators.NumberRange(min=1.0, message=u'Такой коэффициент недопустим')
+	])
 	
 	
 class GamakAppForm(Form):
@@ -453,30 +464,4 @@ class GamakAppEditForm(GamakAppForm):
 		myvalidators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
 	], description=u'Форматы: JPG (JPEG), GIF, PNG')
 
-
-class GiftForm(Form):
-	to_id = TextField('to_id', [validators.Required()])
-	gift_id = TextField('gift_id', [validators.Required()])
-	message = TextField('message')
-
-class GiftAddForm(Form):
-	gifttitle = TextField('gifttitle', [validators.Required()])
-	giftprice = TextField('giftprice', [validators.Required()])
-	giftdesc = TextField('giftdesc', [validators.Required()])
-
-class FacebookHelpForm(Form):
-	email = TextField('Email Address', [
-						validators.Email(u"Некорректный email"),
-						validators.Required(message = (u'Введите email'))])
-	comment = TextAreaField('Comment', [validators.Required(message = (u'Напишите сообщение') )])
-
-class OfferForm(Form):
-	app_id = IntegerField('app_id', [validators.Required(),
-						validators.NumberRange(min=1, max=4000000000)])
-	sig = TextField('sig', [validators.Required()])
-	error_url = TextField('error_url', [validators.Optional()])
-	offer_id = IntegerField('offer_id', [validators.Optional(),
-										validators.NumberRange(min=1, max=4000000000)])
-	user_id = IntegerField('user_id', [validators.Optional(),
-										validators.NumberRange(min=0)])
 

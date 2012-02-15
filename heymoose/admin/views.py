@@ -526,6 +526,20 @@ def performers_info_stats(id):
 	return render_template('admin/performers-info-stats.html', performer=performer)
 
 
+@bp.route('/settings/', methods=['GET', 'POST'])
+def settings():
+	sets = a.settings.get_settings()
+	form = forms.SettingsForm(request.form, obj=sets)
+	if request.method == 'POST' and form.validate():
+		args = dict()
+		if form.m.data != sets.m: args.update(m=form.m.data)
+		if form.q.data != sets.q: args.update(q=form.q.data)
+		a.settings.update_settings(**args)
+		flash(u'Параметры успешно изменены', 'success')
+		return redirect(url_for('.settings'))
+	return render_template('admin/settings.html', settings=sets, form=form)
+
+
 @bp.route('/feedback/', methods=['GET', 'POST'])
 def feedback():
 	if request.method == 'POST':

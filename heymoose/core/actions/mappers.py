@@ -1,6 +1,6 @@
 from heymoose.core.actions.base import get_value, get_attr, get_child
 from heymoose.core.data import User, App, Order, BannerSize, Banner, City, Action, Performer, \
-	OrderShow, StatCtr, Account, Transaction, Withdrawal
+	OrderShow, StatCtr, Account, Transaction, Withdrawal, Settings
 from heymoose.utils.convert import datetime_from_api, datetime_from_unixtime, to_bool
 
 def role_from_xml(role_element):
@@ -172,8 +172,16 @@ def stat_from_xml(stat_element):
 		ctr=get_attr(stat_element, 'ctr', float),
 		time=datetime_from_unixtime(get_attr(stat_element, 'time', float), True)
 	)
-	
-	
+
+
+def settings_from_xml(settings_element):
+	if settings_element is None: return None
+	return Settings(
+		m=get_value(settings_element, 'm', float),
+		q=get_value(settings_element, 'q', float),
+		d_avg=get_value(settings_element, 'd-avg', float))
+
+
 def count_from_xml(count_element):
 	return int(count_element.text)
 

@@ -242,6 +242,12 @@ class StatCtr(BaseModel):
 	attributes = ['id', 'gender', 'year', 'city', 'time', 'shows', 'actions', 'performers', 'ctr']
 
 
+class Settings(BaseModel):
+	attributes = ['q', 'm', 'd_avg']
+	
+	def c_min(self): return self.d_avg + self.m
+	def c_rec(self): return self.c_min() * self.q
+
 
 
 

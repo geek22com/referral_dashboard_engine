@@ -25,7 +25,9 @@
 
 {% block content %}
 <ul class="tabs">
-	<li id="tab-list"><a href="{{ url_for('.users') }}">Список</a></li>
+	<li id="tab-list"><a href="{{ url_for('.users') }}">Все</a></li>
+	<li id="tab-customers"><a href="{{ url_for('.users_customers') }}">Рекламодатели</a></li>
+	<li id="tab-developers"><a href="{{ url_for('.users_developers') }}">Разработчики</a></li>
 	<li id="tab-invites"><a href="{{ url_for('.users_invites') }}">Приглашения</a></li>
 	<li id="tab-register"><a href="{{ url_for('.users_register_customer') }}">Регистрация</a></li>
 	<li id="tab-stats"><a href="{{ url_for('.users_stats') }}">Статистика</a></li>

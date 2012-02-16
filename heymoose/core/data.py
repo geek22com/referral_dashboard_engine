@@ -51,7 +51,8 @@ class User(BaseModel):
 	              'roles',
 	              'referrer',
 	              'referrals',
-	              'revenue']
+	              'revenue',
+	              'stats']
 
 	def is_developer(self):
 		return roles.DEVELOPER in self.roles
@@ -82,7 +83,11 @@ class User(BaseModel):
 	
 	def check_confirm_code(self, code):
 		return code == self.get_confirm_code()
-	
+
+
+class UserStat(BaseModel):
+	attributes = ['id', 'payments']
+
 	
 class Account(BaseModel):
 	attributes = ['id', 'balance', 'allow_negative_balance']

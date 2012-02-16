@@ -1,0 +1,70 @@
+{% import 'common/macros.html' as macros %}
+
+{% macro table(users, config) %}
+{% if config.get('scroll-x', false) %}<div class="autoscroll-area-x">{% endif %}
+{% if users %}
+	<table class="bordered-table zebra-striped nosort">
+		<thead>
+			<tr>
+				<th class="header right">ИД</th>
+				<th class="header">Имя</th>
+				<th class="header">E-mail</th>
+				<th class="header">Организация</th>
+				{% if config.get('balance', false) %}<th class="header right">Баланс, {{ currency_sign }}</th>{% endif %}
+				{% if config.get('stat-payments', false) %}<th class="header right">Вклад, {{ currency_sign }}</th>{% endif %}
+				{% if config.get('role', false) %}<th class="header center">Роль</th>{% endif %}
+				<th class="header center">Зарегистрирован</th>
+				<th class="header center">Подтв.</th>
+				{{ caller(true, none) }}
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+			<tr>
+				<td class="right {% if user.blocked %}deleted{% endif %}">{{ user.id }}</td>
+				<td><a href="{{ url_for('.users_info', id=user.id) }}">{{ user.full_name() }}</a></td>
+				<td>{{ user.email }}</td>
+				<td>{{ user.organization|default('--', true) }}</td>
+				
+				{% if config.get('balance', false) %}
+				<td class="right">
+					{% if user.is_customer() %}
+						{{ user.customer_account.balance|currency(False) }}
+					{% elif user.is_developer() %}
+						{{ user.developer_account.balance|currency(False) }}
+					{% else %}
+						&mdash;
+					{% endif %}
+				</td>
+				{% endif %}
+				
+				{% if config.get('stat-payments', false) %}
+				<td class="right">
+					{% if user.stats %}{{ user.stats.payments }}{% else %}&mdash;{% endif %}
+				</td>
+				{% endif %}
+				
+				{% if config.get('role', false) %}
+				<td class="center">
+					{% if user.is_admin() %}
+						<span class="label info">Админ.</span>
+					{% elif user.is_customer() %}
+						<span class="label important">Реклам.</span>
+					{% elif user.is_developer() %}
+						<span class="label notice">Разраб.</span>
+					{% else %}
+						<span class="label warning">Неизв.</span>
+					{% endif %}
+				</td>
+				{% endif %}
+				
+				<td class="center">{{ user.register_time|datetimeformat }}</td>
+				<td class="center">{{ macros.to_icon(user.confirmed) }}</td>
+				{{ caller(false, user) }}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endif %}
+{% if config.get('scroll-x', false) %}</div>{% endif %}
+{% endmacro %}

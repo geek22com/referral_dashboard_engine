@@ -1,57 +1,18 @@
 {% extends "admin/users-layout.html" %}
+{% import "common/users.html" as user_macros %}
 
 {% set activetab = 'list' %}
 {% set content_fluid = true %}
 
+{% set users_config = {
+	'balance' : true,
+	'role' : true
+} %}
+
 {% block tabcontent %}
 
 {% if users %}
-	<table class="bordered-table zebra-striped nosort">
-		<thead>
-			<tr>
-				<th class="header right">ИД</th>
-				<th class="header">Имя</th>
-				<th class="header">E-mail</th>
-				<th class="header">Организация</th>
-				<th class="header right">Баланс, {{ currency_sign }}</th>
-				<th class="header center">Роль</th>
-				<th class="header center">Зарегистрирован</th>
-				<th class="header center">Подтв.</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for user in users %}
-			<tr>
-				<td class="right {% if user.blocked %}deleted{% endif %}">{{ user.id }}</td>
-				<td><a href="{{ url_for('.users_info', id=user.id) }}">{{ user.full_name() }}</a></td>
-				<td>{{ user.email }}</td>
-				<td>{{ user.organization|default('--', true) }}</td>
-				<td class="right">
-					{% if user.is_customer() %}
-						{{ user.customer_account.balance|currency(False) }}
-					{% elif user.is_developer() %}
-						{{ user.developer_account.balance|currency(False) }}
-					{% else %}
-						&mdash;
-					{% endif %}
-				</td>
-				<td class="center">
-					{% if user.is_admin() %}
-						<span class="label info">Админ.</span>
-					{% elif user.is_customer() %}
-						<span class="label important">Реклам.</span>
-					{% elif user.is_developer() %}
-						<span class="label notice">Разраб.</span>
-					{% else %}
-						<span class="label warning">Неизв.</span>
-					{% endif %}
-				</td>
-				<td class="center">{{ user.register_time|datetimeformat }}</td>
-				<td class="center">{{ macros.to_icon(user.confirmed) }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	{% call(head, user) user_macros.table(users, users_config) %}{% endcall %}
 	{{ macros.paginate(pages, '.users') }}
 {% else %}
 	<div class="clearfix alert-message block-message info">

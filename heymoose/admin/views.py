@@ -297,6 +297,26 @@ def users():
 	usrs = do_or_abort(a.users.get_users, offset=offset, limit=limit, full=True)
 	return render_template('admin/users.html', users=usrs, pages=pages)
 
+@bp.route('/users/customers/')
+def users_customers():
+	role = 'CUSTOMER'
+	page = convert.to_int(request.args.get('page'), 1)
+	count = a.users.get_users_count(role=role)
+	per_page = app.config.get('ADMIN_USERS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	usrs = do_or_abort(a.users.get_users, role=role, offset=offset, limit=limit, full=True)
+	return render_template('admin/users-customers.html', customers=usrs, pages=pages)
+
+@bp.route('/users/developers/')
+def users_developers():
+	role = 'DEVELOPER'
+	page = convert.to_int(request.args.get('page'), 1)
+	count = a.users.get_users_count(role=role)
+	per_page = app.config.get('ADMIN_USERS_PER_PAGE', 20)
+	offset, limit, pages = paginate(page, count, per_page)
+	usrs = do_or_abort(a.users.get_users, role=role, offset=offset, limit=limit, full=True)
+	return render_template('admin/users-developers.html', developers=usrs, pages=pages)
+
 @bp.route('/users/invites')
 def users_invites():
 	return render_template('admin/users-invites.html')

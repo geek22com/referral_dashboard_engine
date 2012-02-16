@@ -40,7 +40,7 @@
 				
 				{% if config.get('stat-payments', false) %}
 				<td class="right">
-					{% if user.stats %}{{ user.stats.payments }}{% else %}&mdash;{% endif %}
+					{% if user.stats %}{{ user.stats.payments|currency(False) }}{% else %}&mdash;{% endif %}
 				</td>
 				{% endif %}
 				

@@ -204,7 +204,7 @@ class ContactForm(CaptchaForm):
 
 
 class OrderForm(Form):
-	ordername = TextField(u'Название', [
+	ordername = TextField(u'Название заказа', [
 		validators.Length(min=1, max=50, message=(u'Название заказа должно быть от 1 до 50 символов')),
 		validators.Required(message = (u'Введите название заказа'))
 	])

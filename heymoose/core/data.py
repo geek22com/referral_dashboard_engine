@@ -86,7 +86,7 @@ class User(BaseModel):
 
 
 class UserStat(BaseModel):
-	attributes = ['id', 'payments']
+	attributes = ['id', 'payments', 'unpaid_actions']
 
 	
 class Account(BaseModel):
@@ -206,7 +206,13 @@ class App(BaseModel):
 	              'deleted',
                   'url',
                   'creation_time',
-                  'd', 't']
+                  'd', 't',
+                  'stats']
+
+
+class AppStat(BaseModel):
+	attributes = ['id', 'shows_overall', 'actions_overall', 'dau_average',
+				  'dau_day0', 'dau_day1', 'dau_day2', 'dau_day3', 'dau_day4', 'dau_day5', 'dau_day6']
 
 
 class Action(BaseModel):

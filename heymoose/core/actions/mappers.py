@@ -1,6 +1,6 @@
 from heymoose.core.actions.base import get_value, get_attr, get_child
 from heymoose.core.data import User, App, Order, BannerSize, Banner, City, Action, Performer, \
-	OrderShow, StatCtr, Account, Transaction, Withdrawal, Settings, UserStat
+	OrderShow, StatCtr, Account, Transaction, Withdrawal, Settings, UserStat, AppStat
 from heymoose.utils.convert import datetime_from_api, datetime_from_unixtime, to_bool
 
 def role_from_xml(role_element):
@@ -25,7 +25,22 @@ def app_from_xml(app_element):
 				deleted=get_value(app_element, 'deleted', bool),
 				creation_time=datetime_from_api(get_value(app_element, 'creation-time')),
 				d=get_value(app_element, 'd', float),
-				t=get_value(app_element, 't', float))
+				t=get_value(app_element, 't', float),
+				stats=app_stat_from_xml(get_child(app_element, 'stats')))
+
+def app_stat_from_xml(stat_element):
+	if stat_element is None: return None
+	return AppStat(id=get_attr(stat_element, 'id', int),
+				shows_overall=get_value(stat_element, 'shows-overall', int),
+				actions_overall=get_value(stat_element, 'actions-overall', int),
+				dau_average=get_value(stat_element, 'dau-average', float),
+				dau_day0=get_value(stat_element, 'dau-day0', int),
+				dau_day1=get_value(stat_element, 'dau-day1', int),
+				dau_day2=get_value(stat_element, 'dau-day2', int),
+				dau_day3=get_value(stat_element, 'dau-day3', int),
+				dau_day4=get_value(stat_element, 'dau-day4', int),
+				dau_day5=get_value(stat_element, 'dau-day5', int),
+				dau_day6=get_value(stat_element, 'dau-day6', int))
 
 def order_from_xml(order_element):
 	if order_element is None: return None
@@ -111,7 +126,8 @@ def user_from_xml(user_element):
 def user_stat_from_xml(stat_element):
 	if stat_element is None: return None
 	return UserStat(id=get_attr(stat_element, 'id', int),
-				payments=get_value(stat_element, 'payments', float)) 
+				payments=get_value(stat_element, 'payments', float),
+				unpaid_actions=get_value(stat_element, 'unpaid-actions', int)) 
 	
 def account_from_xml(account_element):
 	if account_element is None: return None

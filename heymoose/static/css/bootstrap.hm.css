@@ -46,6 +46,10 @@ table.key-value.wide-keys th {
 	width: 50%;
 }
 
+table.key-value tbody tr.summary {
+	border-top: 1px solid #DDD;
+}
+
 /* Some shortcuts */
 .center { text-align: center; }
 .left { text-align: left; }

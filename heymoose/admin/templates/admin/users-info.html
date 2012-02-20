@@ -59,9 +59,16 @@
 {% if user.is_developer() %}
 <h3>Разработчик</h3>
 <table class="key-value">
-	<thead></thead>
 	<tbody>
 		<tr><th>Баланс</th><td>{{ user.developer_account.balance|currency }}</td></tr>
+		<tr>
+			<th>Кликов с момента посл. выплаты (обновляется раз в сутки)</th>
+			<td>
+				{% if user.stats %}
+					{{ user.stats.unpaid_actions|default('&mdash;')|safe }}
+				{% endif %}
+			</td>
+		</tr>
 	</tbody>
 </table>
 {% endif %}
@@ -69,7 +76,6 @@
 {% if user.is_customer() %}
 <h3>Рекламодатель</h3>
 <table class="key-value">
-	<thead></thead>
 	<tbody>
 		<tr><th>Баланс</th><td>{{ user.customer_account.balance|currency }}</td></tr>
 		<tr><th>Секретный ключ</th><td>{{ user.customer_secret }}</td></tr>

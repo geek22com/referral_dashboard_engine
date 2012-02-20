@@ -2,13 +2,12 @@
 from wtforms import Form, validators, BooleanField, TextField, PasswordField, \
 	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField
 from wtforms.fields import Label
-from heymoose import app
 from heymoose.core import actions
 from heymoose.core.actions import roles
+from heymoose.filters import currency, currency_sign
 import validators as myvalidators
 import fields as myfields
 import random, hashlib
-
 
 class CaptchaForm(Form):
 	captcha = TextField(u'', [
@@ -297,11 +296,12 @@ class BannerOrderForm(OrderForm):
 		c_rec = kwargs.pop('c_rec', None)
 		super(BannerOrderForm, self).__init__(*args, **kwargs)
 		
-		min_validator = validators.NumberRange(min=c_min, message=u'Стоимость клика не может быть меньше {0}'.format(c_min))
+		min_validator = validators.NumberRange(min=c_min,
+			message=u'Стоимость клика не может быть меньше {0}'.format(currency(c_min)))
 		if c_rec is not None:
-			description = u'Минимальная {0} у.е., рекомендуемая {1} у.е.'.format(c_min, c_rec)
+			description = u'Минимальная {0}, рекомендуемая {1}'.format(currency(c_min), currency(c_rec))
 		else:
-			description = u'Минимальная {0} у.е.'.format(c_min)
+			description = u'Минимальная {0}'.format(currency(c_min))
 			
 		self.ordercpa.validators = self.ordercpa.validators + [min_validator]
 		self.ordercpa.description = description
@@ -436,9 +436,9 @@ class AppsShowDeletedForm(Form):
 	
 class BalanceForm(Form):
 	amount = DecimalField(u'Сумма', [
-		validators.Required(message = u'Укажите сумму в у.е.'),
+		validators.Required(message = u'Укажите сумму в {0}'.format(currency_sign)),
 		validators.NumberRange(min=1, max=60000000, message=u'Такая сумма недопустима')
-	], description=u'у.е.', places=2)
+	], description=currency_sign, places=2)
 	
 class OrderBalanceTransferForm(BalanceForm):
 	order = SelectField(u'На счет заказа', coerce=int)

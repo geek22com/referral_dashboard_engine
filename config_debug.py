@@ -80,7 +80,7 @@ MONGOALCHEMY_DATABASE = 'facebook_debug'
 # Business logic parameters
 REFERRAL_MIN_CPC = 5.0
 REFERRAL_RECOMMENDED_CPC_QUOT = 1.3
-CURRENCY_SIGN = u'у.е.'
+CURRENCY_SIGN = u'руб.'
 
 # Robokassa parameters
 ROBOKASSA_REQUEST_URL = 'https://merchant.roboxchange.com/Index.aspx' # 'http://test.robokassa.ru/Index.aspx'

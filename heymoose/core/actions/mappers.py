@@ -1,6 +1,6 @@
 from heymoose.core.actions.base import get_value, get_attr, get_child
 from heymoose.core.data import User, App, Order, BannerSize, Banner, City, Action, Performer, \
-	OrderShow, StatCtr, Account, Transaction, Withdrawal, Settings, UserStat, AppStat
+	OrderShow, StatCtr, Account, Transaction, Withdrawal, Settings, UserStat, AppStat, OrderStat
 from heymoose.utils.convert import datetime_from_api, datetime_from_unixtime, to_bool
 
 def role_from_xml(role_element):
@@ -59,6 +59,7 @@ def order_from_xml(order_element):
 				auto_approve=get_value(order_element, 'auto-approve', bool),
 				reentrant=get_value(order_element, 'reentrant', bool),
 				type=get_value(order_element, 'type'),
+				stats=order_stat_from_xml(get_child(order_element, 'stats')),
 				# Regular offer fields
 				description=get_value(order_element, 'description'),
 				image=get_value(order_element, 'image'),
@@ -76,6 +77,14 @@ def order_from_xml(order_element):
 				cities=map(city_from_xml, order_element.xpath('./cities/city')),
 				app_filter_type=get_value(order_element, 'app-filter-type'),
 				apps=map(app_from_xml, order_element.xpath('./apps/app')))
+
+def order_stat_from_xml(stat_element):
+	print 'ENTER'
+	if stat_element is None: return None
+	print 'NOT EXIT'
+	return OrderStat(id=get_attr(stat_element, 'id', int),
+				shows_overall=get_value(stat_element, 'shows-overall', int),
+				actions_overall=get_value(stat_element, 'actions-overall', int))
 	
 def banner_size_from_xml(size_element):
 	if size_element is None: return None

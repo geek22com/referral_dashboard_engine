@@ -153,6 +153,7 @@ class Order(BaseModel):
 	              'title',
 	              'url',
 	              'type',
+	              'stats',
 	              'video_url',
 	              'description',
 	              'image',
@@ -172,6 +173,10 @@ class Order(BaseModel):
 	def is_regular(self): return self.type == OrderTypes.REGULAR
 	def is_banner(self): return self.type == OrderTypes.BANNER
 	def is_video(self):	return self.type == OrderTypes.VIDEO
+
+
+class OrderStat(BaseModel):
+	attributes = ['id', 'shows_overall', 'actions_overall']
 
 
 class BannerSize(BaseModel):

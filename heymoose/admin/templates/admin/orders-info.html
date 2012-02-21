@@ -115,6 +115,20 @@
 	</tbody>
 </table>
 
+<h2>Показы и клики <small>(обновляется раз в сутки)</small></h2>
+{% if order.stats %}
+	<table class="key-value">
+		<tbody>
+			<tr><th>Всего показов</th><td>{{ order.stats.shows_overall|default('&mdash;')|safe }}</td></tr>
+			<tr><th>Всего кликов</th><td>{{ order.stats.actions_overall|default('&mdash;')|safe }}</td></tr>
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Статистика недоступна.</strong> Возможно, подсчет статистики еще не был совершен.</p>
+	</div>
+{% endif %}
+
 {% endblock %}
 
 {% block postbody %}

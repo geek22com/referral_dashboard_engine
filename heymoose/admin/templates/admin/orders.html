@@ -45,8 +45,10 @@
 	</p>
 	{% call(head, order) order_macros.table(orders, orders_config) %}
 		{% if head %}
+			<th class="header center" rowspan="2">Вкл.</th>
 			<th class="header center" rowspan="2">Активен</th>
 		{% else %}
+			<td class="center">{{ macros.to_icon(not order.paused) }}</td>
 			<td class="center">
 				<input type="checkbox" class="cbx-enabled"
 					{% if not order.disabled %}checked="checked"{% endif %}

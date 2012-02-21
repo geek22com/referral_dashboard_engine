@@ -47,6 +47,10 @@
 	<div class="clearfix alert-message block-message error">
 		<p>Заказ заблокирован.</p>
 	</div>
+{% elif order.paused %}
+	<div class="clearfix alert-message block-message warning">
+		<p>Заказ отключен рекламодателем.</p>
+	</div>
 {% endif %}
 
 <div class="well right">

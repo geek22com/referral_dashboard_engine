@@ -46,7 +46,7 @@ def orders_new():
 	cities = [dict(id=city.id, name=city.name) for city in actions.cities.get_cities()]
 	settings = actions.settings.get_settings()
 	
-	form = forms.BannerOrderForm(request.form, c_min=settings.c_min(), c_rec=settings.c_rec())
+	form = forms.BannerOrderForm(request.form, c_min=settings.c_min_safe(), c_rec=settings.c_rec())
 	form.orderbannersize.choices = choices
 	if request.method == 'POST' and form.validate():
 		id = do_or_abort(actions.orders.add_banner_order,
@@ -142,14 +142,14 @@ def orders_info_edit(id):
 		cls = forms.RegularOrderEditForm
 	elif order.is_banner():
 		settings = actions.settings.get_settings()
-		form_args.update(c_min=settings.c_min(), c_rec=settings.c_rec())
+		form_args.update(c_min=settings.c_min_safe(), c_rec=settings.c_rec())
 		cls = forms.BannerOrderEditForm
 	elif order.is_video():
 		form_args.update(ordervideourl = order.video_url)
 		cls = forms.VideoOrderEditForm
-		
+	
 	form = cls(request.form, **form_args)
-		
+	
 	if request.method == 'POST' and form.validate():
 		kwargs = dict()
 		male = convert.to_bool(form.ordermale.data)

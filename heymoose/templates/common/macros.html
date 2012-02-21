@@ -160,7 +160,7 @@
 			{{ field(**kwargs) }}
 			{% if description or field.description %}
 			<span class="help-inline" {% if pad_description %}style="padding-left: 50px;"{% endif %}>
-				{{ description or field.description }}
+				{{ description|safe or field.description|safe }}
 			</span>
 			{% endif %}
 						

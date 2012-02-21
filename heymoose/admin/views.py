@@ -554,6 +554,7 @@ def settings():
 	form = forms.SettingsForm(request.form, obj=sets)
 	if request.method == 'POST' and form.validate():
 		args = dict()
+		if form.c_min.data != sets.c_min: args.update(c_min=form.c_min.data)
 		if form.m.data != sets.m: args.update(m=form.m.data)
 		if form.q.data != sets.q: args.update(q=form.q.data)
 		a.settings.update_settings(**args)

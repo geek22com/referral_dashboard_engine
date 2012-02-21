@@ -82,8 +82,7 @@ MONGOALCHEMY_SERVER_AUTH = False
 MONGOALCHEMY_DATABASE = 'facebook'
 
 # Business logic parameters
-REFERRAL_MIN_CPC = 5.0
-REFERRAL_RECOMMENDED_CPC_QUOT = 1.3
+MIN_CPC = 2.0
 CURRENCY_SIGN = u'руб.'
 
 # Robokassa parameters

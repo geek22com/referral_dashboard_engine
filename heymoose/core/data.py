@@ -255,10 +255,11 @@ class StatCtr(BaseModel):
 
 
 class Settings(BaseModel):
-	attributes = ['q', 'm', 'd_avg']
+	attributes = ['q', 'm', 'c_min']
+	c_floor = app.config.get('MIN_CPC')
 	
-	def c_min(self): return round(self.d_avg + self.m, 2)
-	def c_rec(self): return round(self.c_min() * self.q, 2)
+	def c_min_safe(self): return max(self.c_floor, self.c_min)
+	def c_rec(self): return round(self.c_min_safe() * self.q, 2)
 
 
 

@@ -2,12 +2,14 @@
 from wtforms import Form, validators, BooleanField, TextField, PasswordField, \
 	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField
 from wtforms.fields import Label
+from heymoose import app
 from heymoose.core import actions
 from heymoose.core.actions import roles
 from heymoose.filters import currency, currency_sign
 import validators as myvalidators
 import fields as myfields
 import random, hashlib
+
 
 class CaptchaForm(Form):
 	captcha = TextField(u'', [
@@ -445,14 +447,20 @@ class OrderBalanceTransferForm(BalanceForm):
 
 
 class SettingsForm(Form):
-	m = DecimalField(u'Минимальная комиссия с одного клика (M)', [
-		validators.Required(message=u'Введите M'),
-		validators.NumberRange(min=0.0, message=u'Такая комиссия недопустима')
-	])
+	min_cpc = app.config.get('MIN_CPC')
+	
+	c_min = DecimalField(u'Минимальная стоимость клика (Cmin)', [
+		validators.Required(message=u'Введите Cmin'),
+		validators.NumberRange(min=min_cpc, message=u'Такая стоимость недопустима')
+	], description=u'Минимально допустимая стоимость {0}'.format(currency(min_cpc)))
 	q = DecimalField(u'Коэффициент рекомендуемой стоимости клика (Q)', [
 		validators.Required(message=u'Введите Q'),
 		validators.NumberRange(min=1.0, message=u'Такой коэффициент недопустим')
 	])
+	m = DecimalField(u'Минимальная комиссия с одного клика (M)', [
+		validators.Required(message=u'Введите M'),
+		validators.NumberRange(min=0.0, message=u'Такая комиссия недопустима')
+	], description=u'C &ge; D + M')
 	
 	
 class GamakAppForm(Form):

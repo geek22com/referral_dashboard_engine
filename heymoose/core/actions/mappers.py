@@ -203,7 +203,7 @@ def settings_from_xml(settings_element):
 	return Settings(
 		m=get_value(settings_element, 'm', float),
 		q=get_value(settings_element, 'q', float),
-		d_avg=get_value(settings_element, 'd-avg', float))
+		c_min=get_value(settings_element, 'c-min', float))
 
 
 def count_from_xml(count_element):

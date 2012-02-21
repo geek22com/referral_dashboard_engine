@@ -79,9 +79,7 @@ def order_from_xml(order_element):
 				apps=map(app_from_xml, order_element.xpath('./apps/app')))
 
 def order_stat_from_xml(stat_element):
-	print 'ENTER'
 	if stat_element is None: return None
-	print 'NOT EXIT'
 	return OrderStat(id=get_attr(stat_element, 'id', int),
 				shows_overall=get_value(stat_element, 'shows-overall', int),
 				actions_overall=get_value(stat_element, 'actions-overall', int))

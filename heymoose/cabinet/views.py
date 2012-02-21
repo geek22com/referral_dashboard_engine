@@ -63,7 +63,7 @@ def orders_new():
 			max_age=form.ordermaxage.data,
 			min_hour=form.orderminhour.data,
 			max_hour=form.ordermaxhour.data,
-			city_filter_type=form.ordercitiesfilter.data,
+			city_filter_type=form.ordercitiesfilter.data if form.ordercities.data else u'',
 			city=[int(x) for x in form.ordercities.data.split(',')] if form.ordercities.data else [],
 			banner_size=form.orderbannersize.data,
 			banner_mime_type=form.orderimage.mime_type,
@@ -153,7 +153,6 @@ def orders_info_edit(id):
 	if request.method == 'POST' and form.validate():
 		kwargs = dict()
 		male = convert.to_bool(form.ordermale.data)
-		city_filter_type = form.ordercitiesfilter.data if form.ordercitiesfilter.data else None
 		
 		if form.ordername.data != order.title: kwargs.update(title=form.ordername.data)
 		# if form.orderurl.data != order.url: kwargs.update(url=form.orderurl.data)
@@ -163,11 +162,13 @@ def orders_info_edit(id):
 		if form.ordermaxage.data != order.max_age: kwargs.update(max_age=form.ordermaxage.data)
 		if form.orderminhour.data != order.min_hour: kwargs.update(min_hour=form.orderminhour.data)
 		if form.ordermaxhour.data != order.max_hour: kwargs.update(max_hour=form.ordermaxhour.data)
-		if city_filter_type != order.city_filter_type: kwargs.update(city_filter_type=city_filter_type)
 		
 		old_cities = frozenset([city.id for city in order.cities])
 		new_cities = frozenset([int(x) for x in form.ordercities.data.split(',')] if form.ordercities.data else [])
 		if new_cities != old_cities: kwargs.update(city=list(new_cities))
+		
+		city_filter_type = (form.ordercitiesfilter.data or None) if new_cities else None
+		if city_filter_type != order.city_filter_type: kwargs.update(city_filter_type=city_filter_type)
 				
 		if order.is_regular():
 			if form.orderdesc.data != order.description: kwargs.update(description=form.orderdesc.data)

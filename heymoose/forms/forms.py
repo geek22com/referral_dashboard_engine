@@ -446,6 +446,13 @@ class OrderBalanceTransferForm(BalanceForm):
 	order = SelectField(u'На счет заказа', coerce=int)
 
 
+class TrafficAnalyzeForm(Form):
+	cpc = DecimalField(u'Стоимость клика', [
+		validators.Required(message=u'Введите стоимость клика'),
+		validators.NumberRange(min=0.1, message=u'Такая стоимость недопустима')
+	])
+
+
 class SettingsForm(Form):
 	min_cpc = app.config.get('MIN_CPC')
 	

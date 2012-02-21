@@ -2,7 +2,7 @@
 
 from heymoose.core.actions.mappers import app_from_xml, count_from_xml
 from heymoose.core.rest import post, put, delete, get
-from heymoose.utils import convert
+from heymoose.utils import convert, shortcuts
 
 resource_path = "/apps"
 
@@ -41,9 +41,9 @@ def active_apps(apps):
 			active.append(app)
 	return active
 
-def get_apps(with_deleted=False, user_id=None, **kwargs):
+def get_apps(with_deleted=False, user_id=None, max_d=None, **kwargs):
 	kwargs.update(withDeleted=with_deleted)
-	if user_id: kwargs.update(userId=user_id)
+	shortcuts.dict_update_filled_params(kwargs, userId=user_id, maxD=max_d)
 	return map(app_from_xml, get(path=resource_path, params_dict=kwargs))
 
 def get_apps_count(with_deleted=False, user_id=None):

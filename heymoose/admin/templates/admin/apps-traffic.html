@@ -1,0 +1,78 @@
+{% extends "admin/apps-layout.html" %}
+
+{% set content_fluid = true %}
+{% set activetab = 'traffic' %}
+
+{% block tabcontent %}
+
+<div class="form-container">
+	<form action="" method="get" class="validate">
+		<fieldset style="margin-bottom: 0px;">
+			{{ macros.formfield(form.cpc, class='span4') }}
+		</fieldset>
+		<div class="input">
+			<input class="btn primary" type="submit" value="Показать"/>
+		</div>
+	</form>
+</div>
+
+{% if apps %}
+	<table class="bordered-table zebra-striped nosort apps-table">
+		<thead>
+			<tr>
+				<th class="header right minimal-width" rowspan="2">ИД</th>
+				<th class="header" rowspan="2">Название</th>
+				{# <th class="header" rowspan="2">Разработчик</th> #}
+				<th class="header right" rowspan="2">Оплата за клик&nbsp;(D)</th>
+				<th class="header right" rowspan="2">Коэф. надбавки&nbsp;(T)</th>
+				<th class="center" colspan="7">DAU по дням недели</th>
+				<th class="header right" rowspan="2">DAU в среднем за день</th>
+			</tr>
+			<tr class="subrow">
+				<th class="right">Понедельник</th>
+				<th class="right">Вторник</th>
+				<th class="right">Среда</th>
+				<th class="right">Четверг</th>
+				<th class="right">Пятница</th>
+				<th class="right">Суббота</th>
+				<th class="right">Воскресенье</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for app in apps %}
+			<tr>
+				<td class="right">{{ app.id }}</td>
+				<td>{{ macros.app_href(app) }}</td>
+				{# <td>{{ macros.user_href(app.user) }}</td> #}
+				<td class="right">{{ app.d }}</td>
+				<td class="right">{{ app.t }}</td>
+				<td class="right" style="width: 80px;">{{ app.stats.dau_day1 }}</td>
+				<td class="right" style="width: 80px;">{{ app.stats.dau_day2 }}</td>
+				<td class="right" style="width: 80px;">{{ app.stats.dau_day3 }}</td>
+				<td class="right" style="width: 80px;">{{ app.stats.dau_day4 }}</td>
+				<td class="right" style="width: 80px;">{{ app.stats.dau_day5 }}</td>
+				<td class="right" style="width: 80px;">{{ app.stats.dau_day6 }}</td>
+				<td class="right" style="width: 80px;">{{ app.stats.dau_day0 }}</td>
+				<td class="right" style="width: 80px;">{{ app.stats.dau_average }}</td>
+			</tr>
+			{% endfor %}
+			<tr>
+				<th class="right" colspan="4">Всего</td>
+				<td class="right" style="width: 80px;">{{ summary.dau_day1 }}</td>
+				<td class="right" style="width: 80px;">{{ summary.dau_day2 }}</td>
+				<td class="right" style="width: 80px;">{{ summary.dau_day3 }}</td>
+				<td class="right" style="width: 80px;">{{ summary.dau_day4 }}</td>
+				<td class="right" style="width: 80px;">{{ summary.dau_day5 }}</td>
+				<td class="right" style="width: 80px;">{{ summary.dau_day6 }}</td>
+				<td class="right" style="width: 80px;">{{ summary.dau_day0 }}</td>
+				<td class="right" style="width: 80px;">{{ summary.dau_average }}</td>
+			</tr>
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Запросу не соответствует ни одного приложения.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

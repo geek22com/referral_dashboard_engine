@@ -211,6 +211,24 @@ def apps():
 					offset=offset, limit=limit, full=True)
 	return render_template('admin/apps.html', apps=aps, pages=pages, form=form)
 
+@bp.route('/apps/traffic')
+def apps_traffic():
+	sets = a.settings.get_settings()
+	form = forms.TrafficAnalyzeForm(request.args, cpc=sets.c_min_safe())
+	aps = list()
+	summary = dict(dau_day0=0, dau_day1=0, dau_day2=0, dau_day3=0, dau_day4=0,
+		dau_day5=0, dau_day6=0, dau_average=0.0)
+	if form.validate():
+		max_d = float(form.cpc.data) - sets.m
+		aps = a.apps.get_apps(max_d=max_d, limit=9999, full=True)
+		for app in aps:
+			if not app.stats: continue
+			summary['dau_average'] += app.stats.dau_average or 0.0
+			for i in range(7):
+				attr = 'dau_day{0}'.format(i)
+				summary[attr] += getattr(app.stats, attr) or 0
+	return render_template('admin/apps-traffic.html', form=form, apps=aps, summary=summary)
+
 @bp.route('/apps/stats')
 def apps_stats():
 	return render_template('admin/apps-stats.html')

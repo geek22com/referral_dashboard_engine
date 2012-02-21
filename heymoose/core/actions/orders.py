@@ -173,6 +173,11 @@ def get_orders_count(user_id=None):
 	return count_from_xml(get(path=path, params_dict=params))
 
 
+def get_price_off_orders():
+	path = "{0}/price-off".format(resource_path)
+	return map(order_from_xml, get(path=path))
+
+
 def add_order_banner(order_id, banner_size, mime_type, image):
 	path = "{0}/{1}/banners".format(resource_path, order_id)
 	params = dict(bannerSize=banner_size, mimeType=mime_type, image=image)

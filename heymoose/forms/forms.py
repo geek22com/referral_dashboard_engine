@@ -461,6 +461,7 @@ class SettingsForm(Form):
 		validators.Required(message=u'Введите M'),
 		validators.NumberRange(min=0.0, message=u'Такая комиссия недопустима')
 	], description=u'C &ge; D + M')
+	mail = BooleanField(u'Письмо пользователю', default=False)
 	
 	
 class GamakAppForm(Form):

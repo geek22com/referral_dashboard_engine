@@ -554,11 +554,16 @@ def settings():
 	form = forms.SettingsForm(request.form, obj=sets)
 	if request.method == 'POST' and form.validate():
 		args = dict()
-		if form.c_min.data != sets.c_min: args.update(c_min=form.c_min.data)
-		if form.m.data != sets.m: args.update(m=form.m.data)
-		if form.q.data != sets.q: args.update(q=form.q.data)
-		a.settings.update_settings(**args)
-		flash(u'Параметры успешно изменены', 'success')
+		if float(form.c_min.data) != sets.c_min: args.update(c_min=form.c_min.data)
+		if float(form.m.data) != sets.m: args.update(m=form.m.data)
+		if float(form.q.data) != sets.q: args.update(q=form.q.data)
+		if args.keys():
+			a.settings.update_settings(**args)
+			if form.mail.data and 'c_min' in args.keys():
+				tmail.user_order_priced_off(a.orders.get_price_off_orders(), form.c_min.data)
+			flash(u'Параметры успешно изменены', 'success')
+		else:
+			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.settings'))
 	return render_template('admin/settings.html', settings=sets, form=form)
 

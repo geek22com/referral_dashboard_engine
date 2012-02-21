@@ -56,4 +56,8 @@ def user_order_unblocked(order):
 def user_order_moderation_failed(order, reason):
 	subject, text, html = render.mail_from_template('mail/user-order-moderation-failed.html', order=order, reason=reason)
 	smtp.send_multipart(from_address, [order.user.email], subject, text, html)
-	
+
+def user_order_priced_off(orders, c):
+	emails = list(set([order.user.email for order in orders]))
+	subject, text, html = render.mail_from_template('mail/user-order-priced-off.html', c=c)
+	smtp.send_multipart_bulk(from_address, emails, subject, text, html)

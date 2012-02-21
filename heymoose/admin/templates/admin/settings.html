@@ -37,6 +37,10 @@
 			{{ macros.formfield(form.c_min, class='span4 recalc') }}
 			{{ macros.formfield(form.q, class='span4 recalc') }}
 			{{ macros.formfield(form.m, class='span4') }}
+			<div class="input">
+				{{ form.mail() }} уведомить по почте рекламодателей, у которых есть заказы с C &lt; C<sub>min</sub>
+				(если был изменен C<sub>min</sub>)
+			</div>
 		</fieldset>
 		<div class="input">
 			<input class="btn primary" type="submit" value="Сохранить настройки"/>

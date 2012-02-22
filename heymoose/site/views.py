@@ -145,12 +145,12 @@ def login():
 	if request.method == 'POST' and form.validate():
 		user = users.get_user_by_email(form.username.data)
 		if user is None or not check_password_hash(user.password_hash, form.password.data):
-			flash(u'Неверный логин или пароль', 'error')
+			flash(u'Неверный e-mail или пароль', 'error')
 		else:
 			session['user_id'] = user.id
+			session.permanent = form.remember.data
 			return redirect(url_for('cabinet.index'))
-
-	return redirect(url_for('.index'))
+	return render_template('site/login.html', form=form)
 
 
 @bp.route('/logout')
@@ -158,6 +158,7 @@ def logout():
 	if g.user:
 		flash(u'Вы вышли из системы', 'info')
 		session.pop('user_id', None)
+		session.permanent = False
 	return redirect(url_for('.index'))
 
 

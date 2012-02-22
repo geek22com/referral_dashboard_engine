@@ -51,6 +51,7 @@ class CaptchaForm(Form):
 class LoginForm(Form):
 	username = TextField(u'E-mail', [validators.Required(message = u'Введите электронный адрес')])
 	password = PasswordField(u'Пароль', [validators.Required(message = u'Введите пароль')])
+	remember = BooleanField(u'Запомнить меня', default=False)
 
 class RoleForm(Form):
 	role = SelectField('role', choices=[(roles.DEVELOPER, roles.DEVELOPER),

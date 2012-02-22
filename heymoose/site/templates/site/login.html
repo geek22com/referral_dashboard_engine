@@ -1,0 +1,32 @@
+{% extends "site/layout.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% set activemenu = "login" %}
+
+{% block container %}
+
+<div class="content">
+	<div class="page-header"><h1>Вход в систему</h1></div>
+	
+	{% block flash_messages %}
+		{{ super() }}
+	{% endblock %}
+	
+	<div class="form-container span8" style="margin-left: 200px;">
+		<form id="login-form" action="" method="post" class="validate">
+			<fieldset>
+				{{ macros.formfield(form.username, class='span4', type='email') }}
+				{{ macros.formfield(form.password, class='span4', type='password') }}
+				<div class="input">
+					{{ form.remember() }} запомнить меня
+				</div>
+			</fieldset>
+			<div class="input">
+				<input type="submit" class="btn primary" value="Войти" />
+			</div>
+		</form>
+	</div>
+</div>
+
+{% endblock %}

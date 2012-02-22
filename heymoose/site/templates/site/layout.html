@@ -100,7 +100,10 @@
 	</li>
 	{% else %}
 	<li id="menu-item-register"><a href="{{ url_for('.register') }}">Регистрация</a></li>
-	<li id="menu-item-login"><a href="#" data-controls-modal="login-modal" data-backdrop="true" data-keyboard="true">Войти</a></li>
+	<li id="menu-item-login">
+		<a href="{{ url_for('.login') }}" data-controls-modal="login-modal" 
+		data-backdrop="true" data-keyboard="true">Войти</a>
+	</li>
 	{% endif %}
 </ul>
 {% endblock %}
@@ -134,6 +137,9 @@
 			<fieldset>
 				{{ macros.formfield(g.params.loginform.username, class='span3', type='email') }}
 				{{ macros.formfield(g.params.loginform.password, class='span3', type='password') }}
+				<div class="input">
+					{{ g.params.loginform.remember() }} запомнить меня
+				</div>
 			</fieldset>
 		</div>
 		<div class="modal-footer">

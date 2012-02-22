@@ -4,7 +4,6 @@ from heymoose import app
 from heymoose.cabinet import blueprint as bp
 from heymoose.forms import forms
 from heymoose.core import actions
-from heymoose.core.data import OrderTypes
 from heymoose.utils import convert, robokassa, times
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.utils.gen import generate_password_hash
@@ -12,7 +11,7 @@ from heymoose.views.common import json_get_ctr
 from heymoose.mail import transactional as mail
 from decorators import customer_only, developer_only
 from datetime import datetime
-import base64, os
+import base64
 
 
 @bp.route('/')

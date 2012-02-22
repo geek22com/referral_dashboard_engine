@@ -149,7 +149,7 @@ def login():
 		else:
 			session['user_id'] = user.id
 			session.permanent = form.remember.data
-			return redirect(url_for('cabinet.index'))
+			return redirect(request.args.get('back', None) or url_for('cabinet.index'))
 	return render_template('site/login.html', form=form)
 
 

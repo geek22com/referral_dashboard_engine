@@ -1,4 +1,4 @@
-from flask import Blueprint, g, abort, request
+from flask import Blueprint, g, abort, request, redirect, url_for
 from heymoose.db.models import Contact
 
 blueprint = Blueprint('admin', __name__, url_prefix='/admin', 
@@ -6,8 +6,10 @@ blueprint = Blueprint('admin', __name__, url_prefix='/admin',
 
 @blueprint.before_request
 def before_request():
-	if g.user is None or not g.user.is_admin():
-		abort(403)
+	if not g.user:
+		return redirect(url_for('site.login', back=request.url))
+	elif not g.user.is_admin():
+		return redirect(url_for('cabinet.index'))
 		
 	# For form validation
 	if request.method == 'POST' and request.files:

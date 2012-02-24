@@ -213,7 +213,7 @@ class OrderForm(Form):
 	])
 	orderurl = TextField(u'URL', [
 		validators.Required(message = (u'Введите URL')),
-		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
+		myvalidators.URI(message = u'Введите URL в формате http://*.*', verify_exists=False)
 	])
 	orderbalance = DecimalField(u'Баланс', [
 		validators.NumberRange(min=0.0, message=(u'Такой баланс недопустим')),

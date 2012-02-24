@@ -51,6 +51,14 @@
 	<div class="clearfix alert-message block-message warning">
 		<p>Заказ отключен рекламодателем.</p>
 	</div>
+{% elif order.cpa > order.account.balance %}
+	<div class="clearfix alert-message block-message info">
+		<p>Заказ активен, но показы не производятся из-за нехватки средств на счету.</p>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message success">
+		<p>Заказ активен.</p>
+	</div>
 {% endif %}
 
 <div class="well right">

@@ -74,6 +74,7 @@ app.jinja_env.filters['attrlist'] = attrlist
 app.jinja_env.filters['delta'] = times.delta
 app.jinja_env.filters['currency'] = currency
 app.jinja_env.filters['replace_if_contains'] = replace_if_contains
+app.jinja_env.filters['unicode'] = unicode
 
 app.jinja_env.globals['now'] = datetime.now
 app.jinja_env.globals['time'] = time.time

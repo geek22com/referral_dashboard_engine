@@ -50,7 +50,7 @@
 				<input type="hidden" name="ordertype" value="BANNER" />
 				{{ macros.formfield(form.ordername, class='span10') }}
 				{{ macros.formfield(form.orderurl, class='span10') }}
-				{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_account.balance) }}
+				{{ macros.formfield(form.orderbalance, class='span4', max_range=g.user.customer_account.balance|unicode) }}
 				{{ macros.formfield(form.ordercpa, class='span4') }}
 			</fieldset>
 			<fieldset>

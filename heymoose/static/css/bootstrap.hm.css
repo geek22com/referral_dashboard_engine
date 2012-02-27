@@ -38,6 +38,10 @@ table.key-value tbody tr th {
 	border: none;
 }
 
+table.key-value span.help-inline {
+	font-weight: normal;
+}
+
 table.key-value tbody tr td {
 	border: none;
 }

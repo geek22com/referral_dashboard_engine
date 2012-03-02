@@ -11,16 +11,6 @@
 	{{ super() }}
 	<script type="text/javascript">
 		$(function() {
-			/*$('form.ajax').ajaxForm({
-				beforeSubmit: function() { return confirm('Удалить баннер?'); },
-				success: function(data, textStatus) {
-					$('#table-banner-' + data).hide();
-				},
-				error: function(xhr, textStatus) {
-					alert('Не удалось удалить баннер. Ошибка ' + xhr.status);
-				}
-			});*/
-			
 			$('form.ajax').submit(function() { return confirm('Удалить баннер?'); });
 		})
 	</script>
@@ -32,10 +22,16 @@
 	{% if form %}
 	<h2>Загрузка нового баннера</h2>
 	<div class="form-container">
-		<form id="form-banner" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
+		<form id="form-banner" action="" method="post" enctype="multipart/form-data" class="widelabels validate2">
 			<fieldset>
-				{{ macros.formfield(form.size, class='span4') }}
-				{{ macros.formfield(form.image, pad_description=True) }}
+				{{ forms.singlefield(form.size, class='span4') }}
+				{% call forms.singlefield_desc(form.image) %}
+				<span class="help-block">
+					Принимаются баннеры в формате JPG (JPEG), GIF, PNG, SVG, SWF.
+					Размеры баннера должны в точности совпадать с размерами, указанными
+					в выпадающем списке.
+				</span>
+				{% endcall %}
 			</fieldset>
 			<div class="actions">
 				<input class="btn primary" type="submit" value="Загрузить"/>

@@ -155,7 +155,7 @@ def orders_info_edit(id):
 		
 		if form.ordername.data != order.title: kwargs.update(title=form.ordername.data)
 		# if form.orderurl.data != order.url: kwargs.update(url=form.orderurl.data)
-		if form.ordercpa.data != order.cpa: kwargs.update(cpa=form.ordercpa.data)
+		if float(form.ordercpa.data) != order.cpa: kwargs.update(cpa=form.ordercpa.data)
 		if male != order.male: kwargs.update(male=male)
 		if form.orderminage.data != order.min_age: kwargs.update(min_age=form.orderminage.data)
 		if form.ordermaxage.data != order.max_age: kwargs.update(max_age=form.ordermaxage.data)

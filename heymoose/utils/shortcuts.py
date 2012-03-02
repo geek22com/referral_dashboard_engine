@@ -43,5 +43,6 @@ def paginate(page, count, per_page):
 	
 def dict_update_filled_params(d, **kwargs):
 	d.update(dict([(key, value) for key, value in kwargs.iteritems() if value is not None]))
+	return d
 			
 		

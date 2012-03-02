@@ -1,0 +1,71 @@
+{% macro field(fld) %}
+	{{ fld|formfield(**kwargs) }}
+{% endmacro %}
+
+{% macro label(fld) %}
+	{% if fld.flags.required %}
+		{{ fld.label(class='required') }}
+	{% else %}
+		{{ fld.label() }}
+	{% endif %}
+{% endmacro %}
+
+{% macro errors() %}
+	<div class="errors">
+		{% for fld in varargs %}
+			{% if fld.errors %}
+				{% for error in fld.errors %}
+					<span class="help-block">{{ error }}</span>
+				{% endfor %}
+			{% endif %}
+		{% endfor %}
+	</div>
+{% endmacro %}
+
+{% macro css_errors() %}
+	{% for fld in varargs %}
+		{% if fld.errors %}error{% endif %}
+	{% endfor %}
+{% endmacro %}
+
+{% macro singlefield_desc(fld, inline=none) %}
+	<div class="{{ fld.id -}}-field formfield clearfix {{ css_errors(fld) }}">
+		{{ label(fld) }}
+		<div class="input">
+			{{ field(fld, **kwargs) }}
+			{% if inline or fld.description %}
+				<span class="help-inline">{{ inline or fld.description }}</span>
+			{% endif %}
+			{{ errors(fld) }}
+			{{ caller() }}
+		</div>
+	</div>
+{% endmacro %}
+
+{% macro singlefield(fld, inline=none) %}
+	{% call singlefield_desc(fld, inline, **kwargs) %}{% endcall %}
+{% endmacro %}
+
+{% macro multifield_desc(seq, lbl, required=false) %}
+	{% set flds = seq|fieldlist %}
+	<div class="{% for fld in flds %}{{ fld.id -}}-field{% endfor %} formfield clearfix {{ css_errors(*flds) }}">
+		{% if required %}<label class="required">{{ lbl }}</label>{% else %}<label>{{ lbl }}</label>{% endif %}
+		<div class="input">
+			<div class="inline-inputs">
+				{% for item in seq %}
+					{% if item is string %}
+						{{ item|safe }}
+					{% else %}
+						{{ field(item[0], **item[1]) }}
+					{% endif %}
+				{% endfor %}
+			</div>
+			{{ errors(*flds) }}
+			{{ caller() }}
+		</div>
+	</div>
+{% endmacro %}
+
+{% macro multifield(seq, lbl, required=false) %}
+	{% call multifield_desc(seq, lbl, required) %}{% endcall %}
+{% endmacro %}

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from wtforms import Form, validators, BooleanField, TextField, PasswordField, \
+from wtforms import Form, BooleanField, TextField, PasswordField, \
 	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField
 from wtforms.fields import Label
 from heymoose import app
 from heymoose.core import actions
 from heymoose.core.actions import roles
 from heymoose.filters import currency, currency_sign
-import validators as myvalidators
+import validators
 import fields as myfields
 import random, hashlib
 
@@ -116,13 +116,13 @@ class RegisterForm(UserFormBase):
 	email = TextField(u'E-mail', [
 		validators.Email(message = u'Некорректный адрес электронной почты'),
 		validators.Required(message = u'Введите адрес электронной почты'),
-		myvalidators.check_email_not_registered
+		validators.check_email_not_registered
 	])
 	
 class DeveloperRegisterForm(RegisterForm, DeveloperFormMixin):
 	invite = TextAreaField(u'Код приглашения', [
 		validators.Required(message=u'Скопируйте сюда полученный код приглашения'),
-		myvalidators.check_invite
+		validators.check_invite
 	])
 	
 class CustomerRegisterForm(RegisterForm, CustomerFormMixin):
@@ -143,7 +143,7 @@ class AdminUserEditFormMixin:
 	
 	def validate_email(self, field):
 		if hasattr(self, 'user') and self.user.email != self.email.data:
-			myvalidators.check_email_not_registered(self, self.email)
+			validators.check_email_not_registered(self, self.email)
 	
 class AdminDeveloperEditForm(DeveloperEditForm, AdminUserEditFormMixin):
 	pass
@@ -166,7 +166,7 @@ class AdminPasswordChangeForm(Form):
 class PasswordChangeForm(AdminPasswordChangeForm):
 	oldpassword = PasswordField(u'Текущий пароль', [
 		validators.Required(message=u'Введите текущий пароль'),
-		myvalidators.check_password
+		validators.check_password
 	])
 
 class EmailNotifyForm(Form):
@@ -213,23 +213,24 @@ class OrderForm(Form):
 	])
 	orderurl = TextField(u'URL', [
 		validators.Required(message = (u'Введите URL')),
-		myvalidators.URI(message = u'Введите URL в формате http://*.*', verify_exists=False)
-	])
+		validators.URI(message = u'Введите URL в формате http://*.*', verify_exists=False)
+	], default=u'http://')
 	orderbalance = DecimalField(u'Баланс', [
-		validators.NumberRange(min=0.0, message=(u'Такой баланс недопустим')),
-	], default=0.0, description=u'Вы можете пополнить баланс заказа в любой момент')
+		validators.Decimal(message=u'Введите число'),
+		validators.NumberRange(min=0.0, message=u'Такой баланс недопустим'),
+	], default=0.0)
 	ordermale = SelectField(u'Пол', choices=[(u'True', u'мужской'), (u'False', u'женский'), (u'', u'любой')], default='')
 	orderminage = myfields.NullableIntegerField(u'Минимальный возраст', [
-		myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
+		validators.NumberRangeOptional(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
 	])
 	ordermaxage = myfields.NullableIntegerField(u'Максимальный возраст', [
-		myvalidators.NumberRangeEx(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
+		validators.NumberRangeOptional(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
 	])
 	orderminhour = myfields.NullableIntegerField(u'Время с', [
-		myvalidators.NumberRangeEx(min=0, max=23, message=(u'Введите час от 0 до 23'))
+		validators.NumberRangeOptional(min=0, max=23, message=(u'Введите час от 0 до 23'))
 	])
 	ordermaxhour = myfields.NullableIntegerField(u'Время до', [
-		myvalidators.NumberRangeEx(min=0, max=23, message=(u'Введите час от 0 до 23'))
+		validators.NumberRangeOptional(min=0, max=23, message=(u'Введите час от 0 до 23'))
 	])
 	ordercitiesfilter = SelectField(u'Фильтр по городам', default=u'', choices=[
 		(u'', u'не учитывать'),
@@ -260,8 +261,8 @@ class RegularOrderForm(OrderForm):
 		validators.Required(message = (u'Введите описание'))
 	])
 	orderimage = myfields.ImageField(u'Выберите изображение', [
-		myvalidators.FileRequired(message=u'Выберите изображение на диске'),
-		myvalidators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
+		validators.FileRequired(message=u'Выберите изображение на диске'),
+		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
 	], description=u'Форматы: JPG (JPEG), GIF, PNG')
 	
 class RegularOrderEditFormBase(RegularOrderForm):
@@ -270,7 +271,7 @@ class RegularOrderEditFormBase(RegularOrderForm):
 		del self.orderbalance
 		self.orderimage.validators = self.orderimage.validators[:]
 		for validator in self.orderimage.validators:
-			if isinstance(validator, myvalidators.FileRequired):
+			if isinstance(validator, validators.FileRequired):
 				self.orderimage.validators.remove(validator)
 		self.orderimage.flags.required = False
 		
@@ -289,14 +290,16 @@ class BannerOrderForm(OrderForm):
 	])
 	orderbannersize = SelectField(u'Размер баннера', coerce=int)
 	orderimage = myfields.BannerField(u'Выберите файл', [
-		myvalidators.FileRequired(message=u'Выберите файл на диске'),
-		myvalidators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf', 'svg'),
+		validators.FileRequired(message=u'Выберите файл на диске'),
+		validators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf', 'svg'),
 			message=u'Выберите файл в формате JPG, GIF, PNG, SVG или SWF')
-	], description=u'Форматы: JPG (JPEG), GIF, PNG, SVG, SWF')
+	])
 	
 	def __init__(self, *args, **kwargs):
 		c_min = kwargs.pop('c_min', 0.01)
 		c_rec = kwargs.pop('c_rec', None)
+		if c_rec:
+			kwargs.setdefault('ordercpa', c_rec)
 		super(BannerOrderForm, self).__init__(*args, **kwargs)
 		
 		min_validator = validators.NumberRange(min=c_min,
@@ -309,7 +312,6 @@ class BannerOrderForm(OrderForm):
 		self.ordercpa.validators = self.ordercpa.validators + [min_validator]
 		self.ordercpa.description = description
 			
-	
 	def validate_orderimage(self, field):
 		if field.data is None: return
 		size = actions.bannersizes.get_banner_size(self.orderbannersize.data)
@@ -339,7 +341,7 @@ class VideoOrderForm(OrderForm):
 	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message=u'Введите CPA')])
 	ordervideourl = TextField(u'URL видеозаписи', [
 		validators.Required(message = (u'Введите URL')),
-		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
+		validators.URLWithParams(message = u'Введите URL в формате http://*.*')
 	])
 		
 class VideoOrderEditFormBase(VideoOrderForm):
@@ -368,10 +370,10 @@ class OrderAppsForm(Form):
 class BannerForm(Form):
 	size = SelectField(u'Размер баннера', coerce=int)
 	image = myfields.BannerField(u'Выберите файл', [
-		myvalidators.FileRequired(message=u'Выберите файл на диске'),
-		myvalidators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf', 'svg'),
+		validators.FileRequired(message=u'Выберите файл на диске'),
+		validators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf', 'svg'),
 			message=u'Выберите файл в формате JPG, GIF, PNG, SVG или SWF')
-	], description=u'Форматы: JPG (JPEG), GIF, PNG, SVG, SWF')
+	])
 	
 	def validate_image(self, field):
 		if field.data is None: return
@@ -410,7 +412,7 @@ class AppForm(Form):
 	])'''
 	appurl = TextField(u'URL', [
 		validators.Required(message = u'Введите URL для возврата в ваше приложение'),
-		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
+		validators.URLWithParams(message = u'Введите URL в формате http://*.*')
 	])
 	appplatform = SelectField(u'Платформа', choices=[
 		('VKONTAKTE', u'ВКонтакте'),
@@ -476,7 +478,7 @@ class GamakAppForm(Form):
 	])
 	url = TextField(u'URL', [
 		validators.Required(message = u'Введите URL приложения'),
-		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
+		validators.URLWithParams(message = u'Введите URL в формате http://*.*')
 	])
 	developer = TextField(u'Разработчик', [
 		validators.Required(message = (u'Введите разработчика приложения'))
@@ -486,14 +488,14 @@ class GamakAppForm(Form):
 		validators.Length(min=1, max=500, message=(u'Описание должно быть длиной не более 500 символов'))
 	])
 	image = myfields.ImageField(u'Выберите изображение', [
-		myvalidators.FileRequired(message=u'Выберите изображение на диске'),
-		myvalidators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
+		validators.FileRequired(message=u'Выберите изображение на диске'),
+		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
 	], description=u'Форматы: JPG (JPEG), GIF, PNG')
 	active = BooleanField(u'Активно', default=True)
 
 class GamakAppEditForm(GamakAppForm):
 	image = myfields.ImageField(u'Выберите изображение', [
-		myvalidators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
+		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
 	], description=u'Форматы: JPG (JPEG), GIF, PNG')
 
 

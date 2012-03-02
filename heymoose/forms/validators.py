@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*-
 from wtforms import ValidationError
-from wtforms.validators import NumberRange, Required, Regexp
+from wtforms import validators as wtvalidators
 from heymoose.core import actions
 from heymoose.db.actions import invites
 from heymoose.utils.gen import check_password_hash
+from heymoose.utils.shortcuts import dict_update_filled_params
 import re, urllib, urllib2
 
-class NumberRangeEx(NumberRange):
-	'''NumberRange validator which allows empty value'''
+
+class Required(wtvalidators.Required):
+	css_class = 'validate-required'
 	
-	def __call__(self, form, field):
-		if field.data is None: return
-		super(NumberRangeEx, self).__call__(form, field)
-		
-		
+	def data_attrs(self):
+		return dict_update_filled_params(dict(), **{
+			'data-required-message': self.message,
+		})
+
+
 class FileRequired(Required):
 	'''Required validator for FileField'''
 	
@@ -22,23 +25,84 @@ class FileRequired(Required):
 		if field.process_errors: return
 		if value is not None and hasattr(value, 'filename') and value.filename: return
 		super(FileRequired, self).__call__(form, field)
+
+
+class NumberRange(wtvalidators.NumberRange):
+	css_class = 'validate-range'
+	
+	def data_attrs(self):
+		return dict_update_filled_params(dict(), **{
+			'data-range-message': self.message,
+			'data-range-min': self.min,
+			'data-range-max': self.max
+		})
+
+
+class NumberRangeOptional(NumberRange):
+	'''NumberRange validator which allows empty value'''
+	
+	def __call__(self, form, field):
+		if field.data is None: return
+		super(NumberRangeOptional, self).__call__(form, field)
+
+
+class Length(wtvalidators.Length):
+	css_class = 'validate-length'
+	
+	def data_attrs(self):
+		return dict_update_filled_params(dict(), **{
+			'data-length-message': self.message,
+			'data-length-min': self.min,
+			'data-length-max': self.max
+		})
+
+
+class EqualTo(wtvalidators.EqualTo):
+	css_class = 'validate-equal'
+	
+	def data_attrs(self):
+		return dict_update_filled_params(dict(), **{
+			'data-equal-message': self.message,
+			'data-equal-other': self.fieldname
+		})
+
+
+class Email(wtvalidators.Email):
+	pass
 		
+
+class Decimal(object):
+	css_class = 'validate-decimal'
+	field_flags = ('required', )
+	
+	def __init__(self, message=None):
+		self.message = message
 		
-class URLWithParams(Regexp):
+	def __call__(self, form, field):
+		pass
+	
+	def data_attrs(self):
+		return dict_update_filled_params(dict(), **{
+			'data-decimal-message': self.message
+		})
+
+		
+class URLWithParams(wtvalidators.Regexp):
 	'''Validator for string representing URL with GET-parameters'''
+	
+	css_class = 'validate-url'
 	
 	def __init__(self, message=None):
 		regex = ur'^(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$'
 		super(URLWithParams, self).__init__(regex, re.IGNORECASE, message)
+		
+	def data_attrs(self):
+		return dict_update_filled_params(dict(), **{
+			'data-url-message': self.message,
+		})
 
-	def __call__(self, form, field):
-		if self.message is None:
-			self.message = field.gettext(u'Invalid URL')
 
-		super(URLWithParams, self).__call__(form, field)
-
-
-class URI(Regexp):
+class URI(wtvalidators.Regexp):
 	'''Validator for string representing URI'''
 	
 	def __init__(self, verify_exists=True, message=None):

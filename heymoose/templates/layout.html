@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" {% block htmlattr %}{% endblock %}>
 <head>
 	{% import 'common/macros.html' as macros %}
+	{% import 'common/forms.html' as forms %}
 	
 	{% block head %}
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -25,6 +26,8 @@
 	<script type="text/javascript" src="{{ url_for('static', filename='./js/bootstrap-alerts.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.twitter.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate2.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate2.twitter.js') }}"></script>
 	
 	{% set activemenu = activemenu|default('index') %}
 	<script type="text/javascript">
@@ -35,6 +38,7 @@
 			$('li#menu-item-{{ activemenu }}').addClass('active');
 			
 			$('form.validate').validateForm(twitterValidateHandlers);
+			$('form.validate2').validateForm2(twitterValidateHandlers2);
 			
 			$(window).resize(function() {
 				var width = $(window).width();

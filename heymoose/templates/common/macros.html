@@ -136,7 +136,7 @@
 				<span style="display: none;" id="{{ field.id }}-min">{{ kwargs.pop('min_length', '') or validator.min }}</span>
 				<span style="display: none;" id="{{ field.id }}-max">{{ kwargs.pop('max_length', '') or validator.max }}</span>
 				<span style="display: none;" id="{{ field.id }}-msg-length">{{ kwargs.pop('msg_length', '') or validator.message }}</span>
-			{% elif validator|classname in ('NumberRange', 'NumberRangeEx') %}
+			{% elif validator|classname in ('NumberRange', 'NumberRangeOptional') %}
 				{{ kwargs|addclass('validate-range') }}
 				<span style="display: none;" id="{{ field.id }}-min">{{ kwargs.pop('min_range', '') or validator.min }}</span>
 				<span style="display: none;" id="{{ field.id }}-max">{{ kwargs.pop('max_range', '') or validator.max }}</span>

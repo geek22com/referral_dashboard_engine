@@ -210,5 +210,13 @@ a.danger, a.danger:hover {
 	font-weight: bold;
 }
 
+form.validate2 .clearfix.error .help-block, form .clearfix.error .help-inline {
+	color: #BFBFBF;
+}
+
+form.validate2 .clearfix.error .errors .help-block {
+	color: #B94A48;
+}
+
 
 

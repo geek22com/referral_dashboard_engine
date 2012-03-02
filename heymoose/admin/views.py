@@ -120,7 +120,7 @@ def orders_info_edit(id):
 		
 		if form.ordername.data != order.title: kwargs.update(title=form.ordername.data)
 		if form.orderurl.data != order.url: kwargs.update(url=form.orderurl.data)
-		if form.ordercpa.data != order.cpa: kwargs.update(cpa=form.ordercpa.data)
+		if float(form.ordercpa.data) != order.cpa: kwargs.update(cpa=form.ordercpa.data)
 		if form.orderallownegativebalance.data != order.account.allow_negative_balance: kwargs.update(allow_negative_balance=form.orderallownegativebalance.data)
 		if form.orderautoapprove.data != order.auto_approve: kwargs.update(auto_approve=form.orderautoapprove.data)
 		if form.orderreentrant.data != order.reentrant: kwargs.update(reentrant=form.orderreentrant.data)

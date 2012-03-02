@@ -1,4 +1,5 @@
 {% extends "admin/orders-info-layout.html" %}
+{% import 'common/forms/order.html' as order_form %}
 
 {% block breadcrumbs %}
 	{{ super() }}
@@ -9,71 +10,13 @@
 
 {% block extrahead %}
 	{{ super() }}
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/token-input-twitter.css') }}" media="screen" />
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.tokeninput.js') }}"></script>
-	<script type="text/javascript">
-		$(function() {
-			var cities = {{ cities|tojson|safe }};
-			var orderCities = {{ order_cities|tojson|safe }};
-			$('input.cities').tokenInput(cities, {
-				theme: 'twitter',
-				preventDuplicates: true,
-				prePopulate: orderCities,
-				hintText: 'Введите название города',
-				noResultsText: 'Не найдено',
-				searchingText: 'Поиск...'
-			});
-			
-			$('.ordercitiesfilter-field').find('select').change(function() {
-				var $field = $(this).closest('form').find('.ordercities-field');
-				if (!$(this).val()) $field.hide('fast'); else $field.show('fast');
-			}).change();
-			
-			$('form').bind('keypress', function(e) { if (e.keyCode == 13) return false; });
-		})
-	</script>
+	{{ order_form.head(cities, order_cities) }}
 {% endblock %}
 
 {% block tabcontent %}
 
 <div class="form-container">
-	<form id="form-order-regular" action="" method="post" enctype="multipart/form-data" class="widelabels validate">
-		<fieldset>
-			<input type="hidden" name="ordertype" value="REGULAR" />
-			{{ macros.formfield(form.ordername, class='span10') }}
-			{{ macros.formfield(form.orderurl, class='span10') }}
-			{{ macros.formfield(form.ordercpa, class='span4') }}
-			{{ macros.formfield(form.orderallownegativebalance) }}
-			{{ macros.formfield(form.orderautoapprove) }}
-			{{ macros.formfield(form.orderreentrant) }}
-		</fieldset>
-		{% if order.is_regular() %}
-		<fieldset>
-			<legend>Оффер</legend>
-			{{ macros.formfield(form.orderdesc, class='span10', rows=5) }}
-			{{ macros.formfield(form.orderimage, pad_description=True) }}
-		</fieldset>
-		{% elif order.is_banner() %}
-		{% elif order.is_video() %}
-		<fieldset>
-			<legend>Видеозапись</legend>
-			{{ macros.formfield(form.ordervideourl, class='span10') }}
-		</fieldset>
-		{% endif %}
-		<fieldset>
-			<legend>Настройки таргетинга</legend>
-			{{ macros.formfield(form.ordermale, class='span4') }}
-			{{ macros.formfield(form.orderminage, class='span4', placeholder='любой') }}
-			{{ macros.formfield(form.ordermaxage, class='span4', placeholder='любой') }}
-			{{ macros.formfield(form.orderminhour, class='span4', placeholder='начала суток') }}
-			{{ macros.formfield(form.ordermaxhour, class='span4', placeholder='конца суток') }}
-			{{ macros.formfield(form.ordercitiesfilter, class='span4') }}
-			{{ macros.formfield(form.ordercities, class='cities') }}
-		</fieldset>
-		<div class="actions">
-			<input class="btn large primary" type="submit" value="Подтвердить"/>
-		</div>
-	</form>
+	{{ order_form.html(form, edit=true, admin=true) }}
 </div>
-	
+
 {% endblock %}

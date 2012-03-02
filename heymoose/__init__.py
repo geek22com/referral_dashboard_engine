@@ -9,6 +9,7 @@ app.config.from_pyfile(config_path)
 mg = MongoAlchemy(app)
 
 import filters
+import forms.filters
 
 config=app.config
 

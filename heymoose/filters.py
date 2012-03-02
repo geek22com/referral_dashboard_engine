@@ -51,6 +51,10 @@ def attrlist(values, attr):
 	return [getattr(value, attr) for value in values]
 
 
+def itemlist(values, index):
+	return [value[index] for value in values]
+
+
 def currency(value, sign=True):
 	return (u'%.2f' % value) + (u' ' + currency_sign if sign else u'')
 

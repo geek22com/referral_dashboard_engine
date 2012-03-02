@@ -425,9 +425,11 @@ class AppEditForm(AppForm):
 
 class AdminAppEditForm(AppEditForm):
 	appd = DecimalField(u'Оплата за клик (D)', [
+		validators.Decimal(message=u'Введите число'),
 		validators.NumberRange(min=0.0, message=u'Такая сумма недопустима')
 	], places=2)
 	appt = DecimalField(u'Коэффициент надбавки (T)', [
+		validators.Decimal(message=u'Введите число'),
 		validators.NumberRange(min=0.0, message=u'Такой коэффициент недопустим')
 	], description=u'K = D + (C - D)*T', places=2)
 	appdeleted = BooleanField(u'Удалено', default=False)

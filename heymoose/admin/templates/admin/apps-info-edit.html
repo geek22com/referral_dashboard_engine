@@ -1,4 +1,5 @@
 {% extends "admin/apps-info-layout.html" %}
+{% import 'common/forms/app.html' as app_form %}
 
 {% block breadcrumbs %}
 	{{ super() }}
@@ -10,19 +11,7 @@
 {% block tabcontent %}
 
 <div class="form-container">
-	<form id="form-app-edit" action="" method="post" class="widelabels validate">
-		<fieldset>
-			{{ macros.formfield(form.apptitle, class='span10') }}
-			{{ macros.formfield(form.appurl, class='span10') }}
-			{{ macros.formfield(form.appplatform, class='span4') }}
-			{{ macros.formfield(form.appd, class='span4') }}
-			{{ macros.formfield(form.appt, class='span4') }}
-			{{ macros.formfield(form.appdeleted) }}
-		</fieldset>
-		<div class="actions">
-			<input class="btn large primary" type="submit" value="Подтвердить"/>
-		</div>
-	</form>
+	{{ app_form.html(form, admin=true) }}
 </div>
 
 {% endblock %}

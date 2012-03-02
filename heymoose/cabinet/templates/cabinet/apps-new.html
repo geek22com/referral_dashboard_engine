@@ -1,4 +1,5 @@
 {% extends "cabinet/apps-layout.html" %}
+{% import 'common/forms/app.html' as app_form %}
 
 {% set activetab = 'new' %}
 
@@ -10,16 +11,7 @@
 {% block tabcontent %}
 
 <div class="form-container">
-	<form id="form-app" action="" method="post" class="widelabels validate">
-		<fieldset>
-			{{ macros.formfield(form.apptitle, class='span10') }}
-			{{ macros.formfield(form.appurl, class='span10') }}
-			{{ macros.formfield(form.appplatform, class='span4') }}
-		</fieldset>
-		<div class="actions">
-			<input class="btn large primary" type="submit" value="Добавить приложение"/>
-		</div>
-	</form>
+	{{ app_form.html(form) }}
 </div>
 
 {% endblock %}

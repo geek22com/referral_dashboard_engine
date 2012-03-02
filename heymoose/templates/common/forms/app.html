@@ -1,0 +1,22 @@
+{% import 'common/forms.html' as forms %}
+
+{% macro html(form, admin=false) %}
+	<form id="form-app" action="" method="post" class="widelabels validate2">
+		<fieldset>
+			{{ forms.singlefield(form.apptitle, class='span10') }}
+			{% call forms.singlefield_desc(form.appurl, class='span10') %}
+			<span class="help-block">Адрес, по которому расположено приложение.</span>
+			{% endcall %}
+			{{ forms.singlefield(form.appplatform, class='span4') }}
+			{% if admin %}
+			{{ forms.singlefield(form.appd, class='span4') }}
+			{{ forms.singlefield(form.appt, class='span4') }}
+			{{ forms.singlefield(form.appdeleted) }}
+			{% endif %}
+		</fieldset>
+		<div class="actions">
+			<input class="btn large primary" type="submit"
+			{% if not admin %}value="Добавить приложение"{% else %}value="Подтвердить"{% endif %} />
+		</div>
+	</form>
+{% endmacro %}

@@ -6,13 +6,17 @@
 {% block tabcontent %}
 
 <div class="form-container">
-	<form action="" method="get" class="validate">
-		<fieldset style="margin-bottom: 0px;">
-			{{ macros.formfield(form.cpc, class='span4') }}
+	<form action="" method="get" class="validate2">
+		<fieldset>
+			<div class="formfield clearfix {{ forms.css_errors(form.cpc) }}">
+				{{ forms.label(form.cpc) }}
+				<div class="input">
+					{{ forms.field(form.cpc) }}
+					<input class="btn primary" type="submit" value="Показать" style="margin-left: 10px;" />
+					{{ forms.errors(form.cpc )}}
+				</div>
+			</div>
 		</fieldset>
-		<div class="input">
-			<input class="btn primary" type="submit" value="Показать"/>
-		</div>
 	</form>
 </div>
 

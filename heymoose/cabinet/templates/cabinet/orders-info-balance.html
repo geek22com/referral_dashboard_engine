@@ -23,9 +23,10 @@
 	<div class="row">
 		<div class="span8">
 			<div class="form-container">
-				<form id="form-balance-pay" action="" method="post" class="validate">
+				<form id="form-balance-pay" action="" method="post" class="validate2">
 					<fieldset>
-						{{ macros.formfield(form_in.amount, class='span4', max_range=g.user.customer_account.balance) }}
+						{{ forms.singlefield(form_in.amount, class='span4',
+							**{'data-range-max': g.user.customer_account.balance}) }}
 						<input type="hidden" name="type" value="in" />
 					</fieldset>
 					<div class="input">
@@ -59,9 +60,10 @@
 	<div class="row">
 		<div class="span8">
 			<div class="form-container">
-				<form id="form-balance-pay" action="" method="post" class="validate">
+				<form id="form-balance-pay" action="" method="post" class="validate2">
 					<fieldset>
-						{{ macros.formfield(form_out.amount, class='span4', max_range=order.account.balance) }}
+						{{ forms.singlefield(form_out.amount, class='span4',
+							**{'data-range-max': order.account.balance}) }}
 						<input type="hidden" name="type" value="out" />
 					</fieldset>
 					<div class="input">
@@ -87,10 +89,11 @@
 	<div class="row">
 		<div class="span8">
 			<div class="form-container">
-				<form id="form-balance-pay" action="" method="post" class="validate">
+				<form id="form-balance-pay" action="" method="post" class="validate2">
 					<fieldset>
-						{{ macros.formfield(form_transfer.amount, class='span4', max_range=order.account.balance) }}
-						{{ macros.formfield(form_transfer.order, class='span4') }}
+						{{ forms.singlefield(form_transfer.amount, class='span4',
+							**{'data-range-max': order.account.balance}) }}
+						{{ forms.singlefield(form_transfer.order, class='span4') }}
 						<input type="hidden" name="type" value="transfer" />
 					</fieldset>
 					<div class="input">

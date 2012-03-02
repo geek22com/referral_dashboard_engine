@@ -1,4 +1,5 @@
 {% extends "admin/users-info-layout.html" %}
+{% import 'common/forms/user.html' as user_form %}
 
 {% set activetab = 'edit' %}
 
@@ -9,42 +10,13 @@
 
 {% block extrahead %}
 	{{ super() }}
-	{% if user.is_customer() %}
-	<script type="text/javascript">
-		$(function() {
-			$('#messenger_type').change(function() {
-				if ($(this).val())
-					$('.messenger_uid-field').show('fast');
-				else
-					$('.messenger_uid-field').hide('fast');
-			}).change();
-		})
-	</script>
-	{% endif %}
+	{{ user_form.head(user) }}
 {% endblock %}
 
 {% block tabcontent %}
 
 <div class="form-container">
-	<form id="form-password-change" action="" method="post" class="widelabels validate">
-		<fieldset>
-			<legend>Данные</legend>
-			{{ macros.formfield(form.first_name, class='span10') }}
-			{{ macros.formfield(form.last_name, class='span10') }}
-			{{ macros.formfield(form.organization, class='span10') }}
-		</fieldset>
-		<fieldset>
-			<legend>Контакты</legend>
-			{{ macros.formfield(form.phone, class='span10') }}
-			{{ macros.formfield(form.messenger_type, class='span4') }}
-			{{ macros.formfield(form.messenger_uid, class='span4') }}
-			{{ macros.formfield(form.email, class='span10') }}
-			{{ macros.formfield(form.confirmed) }}
-		</fieldset>
-		<div class="actions">
-			<input class="btn primary" type="submit" value="Подтвердить"/>
-		</div>
-	</form>
+	{{ user_form.html(form, admin=true) }}
 </div>
 
 {% endblock %}

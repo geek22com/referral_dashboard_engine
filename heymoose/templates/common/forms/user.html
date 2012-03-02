@@ -1,0 +1,47 @@
+{% import 'common/forms.html' as forms %}
+
+{% macro head(user) %}
+	{% if user.is_customer() %}
+	<script type="text/javascript">
+		$(function() {
+			var form = $('#form-user');
+			form.find('.messenger-type').change(function() {
+				var messengerUidField = form.find('.messenger-uid').closest('.formfield');
+				if ($(this).val())
+					messengerUidField.show('fast');
+				else
+					messengerUidField.hide('fast');
+			}).change();
+		})
+	</script>
+	{% endif %}
+{% endmacro %}
+
+{% macro html(form, admin=false) %}
+	<form id="form-user" action="" method="post" class="widelabels validate2">
+		<fieldset>
+			<legend>Данные</legend>
+			{{ forms.singlefield(form.first_name, class='span10') }}
+			{{ forms.singlefield(form.last_name, class='span10') }}
+			{% call forms.singlefield_desc(form.organization, class='span10') %}
+			<span class="help-block">
+				Если вы являетесь представителем организации, пожалуйста,
+				заполните это поле.
+			</span>
+			{% endcall %}
+		</fieldset>
+		<fieldset>
+			<legend>Контакты</legend>
+			{{ forms.singlefield(form.phone, class='span10') }}
+			{{ forms.singlefield(form.messenger_type, class='span4 messenger-type') }}
+			{{ forms.singlefield(form.messenger_uid, class='span4 messenger-uid') }}
+			{% if admin %}
+			{{ forms.singlefield(form.email, class='span10') }}
+			{{ forms.singlefield(form.confirmed) }}
+			{% endif %}
+		</fieldset>
+		<div class="actions">
+			<input class="btn primary" type="submit" value="Подтвердить"/>
+		</div>
+	</form>
+{% endmacro %}

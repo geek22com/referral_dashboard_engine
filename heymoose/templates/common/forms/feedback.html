@@ -1,0 +1,24 @@
+{% import 'common/forms.html' as forms %}
+
+{% macro html(form, partner=false) %}
+	<form id="form-contacts" method="post" action="" class="widelabels validate2">
+		<fieldset>
+			{{ forms.singlefield(form.name, class='span10') }}
+			{{ forms.singlefield(form.email, class='span10', type='email') }}
+			{{ forms.singlefield(form.phone, class='span4') }}
+			{% call forms.singlefield_desc(form.desc, class='span10', rows=4) %}
+			{% if partner %}
+			<span class="help-block">
+				В этом поле перечислите, пожалуйста, площадки, которые вы можете
+				подключить к партнерской сети, их суточную аудиторию и особенности.
+			</span>
+			{% endif %}
+			{% endcall %}
+			{{ forms.singlefield(form.captcha, class='span4') }}
+			{{ form.ch() }}
+		</fieldset>
+		<div class="actions">
+			<input class="btn primary" type="submit" value="Отправить"/>
+		</div>
+	</form>
+{% endmacro %}

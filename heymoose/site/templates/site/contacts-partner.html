@@ -1,0 +1,21 @@
+{% extends "site/layout.html" %}
+{% import 'common/forms/feedback.html' as feedback_form %}
+
+{% block title %}Партнерская система{% endblock %}
+
+{% set activemenu = "" %}
+
+{% block container %}
+
+{% block flash_messages %}
+	{{ super() }}
+{% endblock %}
+
+<div class="content">
+	<div class="page-header"><h1>Напишите нам, и мы свяжемся с вами!</h1></div>
+	<div class="form-container">
+		{{ feedback_form.html(form, partner=true) }}
+	</div>
+</div>
+
+{% endblock %}

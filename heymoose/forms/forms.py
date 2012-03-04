@@ -203,7 +203,10 @@ class ContactForm(CaptchaForm):
 		validators.Required(message=u'Введите email адрес')
 	])
 	phone = TextField(u'Ваш телефон')
-	comment = TextAreaField(u'Вопрос или сообщение')
+	desc = TextAreaField(u'Вопрос или сообщение')
+	
+class PartnerContactForm(ContactForm):
+	desc = TextAreaField(u'Описание вашей площадки')
 
 
 class OrderForm(Form):

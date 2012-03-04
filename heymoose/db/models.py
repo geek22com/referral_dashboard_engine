@@ -43,6 +43,7 @@ class Blog(mongo.Document):
 	annotation = mongo.StringField()
 	date = mongo.DateTimeField(default=datetime.now())
 
+
 class Contact(mongo.Document):
 	name = mongo.StringField()
 	email = mongo.StringField()
@@ -50,6 +51,7 @@ class Contact(mongo.Document):
 	desc = mongo.StringField()
 	date = mongo.DateTimeField()
 	read = mongo.BoolField(default=False)
+	partner = mongo.BoolField(default=False, allow_none=True)
 
 
 class FeedBack(mongo.Document):

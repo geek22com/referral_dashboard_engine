@@ -14,26 +14,48 @@
 {% endblock %}
 
 {% block content %}
+
+<div class="clearfix" style="min-height: 40px; margin-bottom: 10px;">
+	<div style="width: 70px; float: left; padding: 5px 0px;">
+		<b style="line-height: 30px;">Фильтр:</b>
+	</div>
+	<div style="width: 400px; float: left;">
+		<ul class="pills" style="display: inline-block;">
+			<li {% if not request.args.get('filter', none) %}class="active"{% endif %}>
+				<a href="{{ url_for('.feedback') }}">все</a>
+			</li>
+			<li {% if request.args.get('filter', none) == 'contacts' %}class="active"{% endif %}>
+				<a href="{{ url_for('.feedback', filter='contacts') }}">контакты</a>
+			</li>
+			<li {% if request.args.get('filter', none) == 'partners' %}class="active"{% endif %}>
+				<a href="{{ url_for('.feedback', filter='partners') }}">партнеры</a>
+			</li>
+		</ul>
+	</div>
 	
-{% if contacts %}
-	<div class="form-container clearfix">
+	{% if contacts %}
+	<div class="form-container right" style="width: 300px; float: right;">
 		<form id="form-mark-read" method="post" action ="">
 			<input type="submit" class="btn primary" value="Отметить все как прочитанные" />
 		</form>
 	</div>
-
+	{% endif %}
+</div>
+	
+{% if contacts %}
 	{% for contact in contacts %}
 	<table class="bordered-table collapse">
 		<tbody>
 			<tr>
 				<td style="width: 20px;" class="center">{{ macros.added(not contact.read) }}</td>
-				<td style="width: 33%;"><strong>Имя:</strong> {{ contact.name }}</td>
-				<td style="width: 33%;"><strong>E-mail:</strong> <a href="mailto:{{ contact.email }}">{{ contact.email }}</a></td>
-				<td><strong>Телефон:</strong> {{ contact.phone|default('&mdash;') }}</td>
+				<td><strong>Имя:</strong> {{ contact.name }}</td>
+				<td style="width: 220px;"><strong>E-mail:</strong> <a href="mailto:{{ contact.email }}">{{ contact.email }}</a></td>
+				<td style="width: 180px;"><strong>Телефон:</strong> {{ contact.phone|default('&mdash;') }}</td>
+				<td style="width: 200px;"><strong>Отправлен:</strong> {{ contact.date|datetimeformat }}</td>
 			</tr>
 			{% if contact.desc %}
 			<tr>
-				<td colspan="4">
+				<td colspan="5">
 					<pre>{{ contact.desc }}</pre>
 				</td>
 			</tr>
@@ -41,7 +63,7 @@
 		</tbody>
 	</table>
 	{% endfor %}
-	{{ macros.paginate(pages, '.feedback') }}
+	{{ macros.paginate(pages, '.feedback', filter=request.args.get('filter', '')) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Еще не было оставлено ни одного сообщения.</p>

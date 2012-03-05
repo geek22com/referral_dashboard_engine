@@ -96,4 +96,10 @@ class GamakApp(mongo.Document):
 	
 	def image_path(self):
 		return os.path.join(app.config.get('UPLOAD_PATH'), self.image_file())
-		
+
+
+class DummyAction(mongo.Document):
+	query_class = HeyMooseQuery
+	
+	offer_id = mongo.IntField()
+	date = mongo.DateTimeField()

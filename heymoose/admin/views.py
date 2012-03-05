@@ -8,7 +8,7 @@ from heymoose.utils import convert, gen, times
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.views import common as cmnviews
 from heymoose.forms import forms
-from heymoose.db.models import Contact, GamakApp, UserInfo, OrderInfo
+from heymoose.db.models import Contact, GamakApp, UserInfo, OrderInfo, DummyAction
 from heymoose.db.actions import invites
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
@@ -291,6 +291,15 @@ def actions():
 	offset, limit, pages = paginate(page, count, per_page)
 	acts = do_or_abort(a.actions.get_actions, offset=offset, limit=limit, full=True)
 	return render_template('admin/actions.html', actions=acts, pages=pages)
+
+@bp.route('/actions/test')
+def actions_test_px():
+	page = convert.to_int(request.args.get('page'), 1)
+	count = DummyAction.query.count()
+	per_page = app.config.get('ADMIN_ACTIONS_PER_PAGE', 10)
+	offset, limit, pages = paginate(page, count, per_page)
+	acts = DummyAction.query.descending(DummyAction.date).skip(offset).limit(limit)
+	return render_template('admin/actions-test-px.html', actions=acts, pages=pages)
 
 @bp.route('/actions/stats')
 def actions_stats():

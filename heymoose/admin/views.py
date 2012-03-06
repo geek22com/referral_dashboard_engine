@@ -299,7 +299,7 @@ def actions_test_px():
 	per_page = app.config.get('ADMIN_ACTIONS_PER_PAGE', 10)
 	offset, limit, pages = paginate(page, count, per_page)
 	acts = DummyAction.query.descending(DummyAction.date).skip(offset).limit(limit)
-	return render_template('admin/actions-test-px.html', actions=acts, pages=pages)
+	return render_template('admin/actions-test-px.html', actions=acts.all(), pages=pages)
 
 @bp.route('/actions/stats')
 def actions_stats():

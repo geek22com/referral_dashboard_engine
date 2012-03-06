@@ -56,6 +56,9 @@ class User(BaseModel):
 
 	def is_developer(self):
 		return roles.DEVELOPER in self.roles
+	
+	def is_partner(self):
+		return roles.PARTNER in self.roles
 
 	def is_customer(self):
 		return roles.CUSTOMER in self.roles

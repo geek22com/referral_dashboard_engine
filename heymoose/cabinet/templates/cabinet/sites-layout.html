@@ -1,0 +1,35 @@
+{% extends "cabinet/layout.html" %}
+
+{% block title %}Площадки{% endblock %}
+
+{% set activemenu = 'apps' %}
+
+{% block extrahead %}
+{{ super() }}
+{% set activetab = activetab|default('list') %}
+<script type="text/javascript">
+	$(function() { 
+		$('li#tab-{{ activetab }}').addClass('active');
+	})
+</script>
+{% endblock %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb(self.title(), url_for('.sites_new')) }}
+{% endblock %}
+
+{% block pageheader %}<h1>{{ self.title() }}</h1>{% endblock %}
+
+{% block content %}
+
+{# {% if g.user.is_developer() %} #}
+	<ul class="tabs">
+		<li id="tab-list"><a href="{{ url_for('.sites_new') }}">Мои площадки</a></li>
+		<li id="tab-new"><a href="{{ url_for('.sites_new') }}">Добавить площадку</a></li>
+	</ul>
+	
+	{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+{# {% endif %} #}
+
+{% endblock %}

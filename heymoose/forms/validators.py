@@ -86,6 +86,21 @@ class Decimal(object):
 			'data-decimal-message': self.message
 		})
 
+class Integer(object):
+	css_class = 'validate-integer'
+	field_flags = ('required', )
+	
+	def __init__(self, message=None):
+		self.message = message
+		
+	def __call__(self, form, field):
+		pass
+	
+	def data_attrs(self):
+		return dict_update_filled_params(dict(), **{
+			'data-integer-message': self.message
+		})
+
 		
 class URLWithParams(wtvalidators.Regexp):
 	'''Validator for string representing URL with GET-parameters'''

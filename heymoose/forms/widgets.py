@@ -1,4 +1,4 @@
-from wtforms.widgets import TextInput
+from wtforms.widgets import TextInput, CheckboxInput, ListWidget #@UnusedImport
 
 class UnfilledTextInput(TextInput):
 	'''

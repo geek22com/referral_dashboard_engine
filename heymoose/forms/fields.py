@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from wtforms.fields import TextField, IntegerField, FileField, SelectField
+from wtforms.fields import TextField, IntegerField, FileField, SelectField, SelectMultipleField
 from PIL import Image
 from heymoose.utils import swfheader, svgheader
-from widgets import UnfilledTextInput
+import widgets
 
 
 class NullableIntegerField(IntegerField):
@@ -25,7 +25,7 @@ class NullableSelectField(SelectField):
 		
 		
 class UnfilledTextField(TextField):
-	widget = UnfilledTextInput()
+	widget = widgets.UnfilledTextInput()
 	
 	
 class ImageField(FileField):
@@ -99,6 +99,36 @@ class BannerField(FileField):
 			self.data = None
 
 
+class CheckboxListField(SelectMultipleField):
+	widget = widgets.ListWidget(prefix_label=False)
+	option_widget = widgets.CheckboxInput()
 
+
+class CategorizedCheckboxListField(CheckboxListField):
+	class _CategorizedCheckboxInput(widgets.CheckboxInput):
+		def __init__(self, input_type=None, category=u''):
+			super(CategorizedCheckboxListField._CategorizedCheckboxInput, self).__init__(input_type)
+			self.category = category
+			
+		def __call__(self, field, **kwargs):
+			kwargs.update({'data-category': self.category})
+			return super(CategorizedCheckboxListField._CategorizedCheckboxInput, self).__call__(field, **kwargs)
+	
+	def iter_choices(self):
+		for value, label, category in self.choices:
+			if self.data is not None:
+				selected = self.coerce(value) in self.data
+			else:
+				selected = self.default or False
+			yield (value, label, category, selected)
+	
+	def __iter__(self):
+		opts = dict(_name=self.name, _form=None)
+		for i, (value, label, category, checked) in enumerate(self.iter_choices()):
+			opt = self._Option(widget=self._CategorizedCheckboxInput(category=category),
+							label=label, id=u'%s-%d' % (self.id, i), **opts)
+			opt.process(None, value)
+			opt.checked = checked
+			yield opt
 
 

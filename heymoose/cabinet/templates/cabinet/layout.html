@@ -12,6 +12,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-ui.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.ui.datepicker-ru.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='./js/categorized.list.js') }}"></script>
 
 {% set activemenu = activemenu|default('orders') %}
 <script type="text/javascript">
@@ -20,6 +21,8 @@
 		$.datepicker.setDefaults($.datepicker.regional['ru']);
 		// Remove link and divider from last breadcrumb
 		$('ul.breadcrumb li:last').not('.status').text($('ul.breadcrumb li:last a').html());
+		
+		$('ul.categorized').categorizedList();
 	});
 </script>
 {% endblock %}

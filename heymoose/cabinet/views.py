@@ -9,7 +9,7 @@ from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.utils.gen import generate_password_hash
 from heymoose.views.common import json_get_ctr
 from heymoose.mail import transactional as mail
-from decorators import customer_only, developer_only
+from decorators import customer_only, developer_only, partner_only
 from datetime import datetime
 import base64
 
@@ -276,6 +276,18 @@ def apps_info_stats(id):
 	app = do_or_abort(actions.apps.get_app, id, full=True)
 	if app.user.id != g.user.id: abort(404)
 	return render_template('cabinet/apps-info-stats.html', app=app)
+
+
+@bp.route('/sites/new', methods=['GET', 'POST'])
+@partner_only
+def sites_new():
+	form = forms.SiteForm(request.form)
+	#form.regions.choices = [(city.id, city.name) for city in actions.cities.get_cities()]
+	
+	if request.method == 'POST' and form.validate():
+		flash(u'Все ОК', 'success')
+	
+	return render_template('cabinet/sites-new.html', form=form)
 
 
 @bp.route('/info', methods=['GET', 'POST'])

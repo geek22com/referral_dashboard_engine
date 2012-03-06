@@ -110,6 +110,7 @@ dl.features dd {
 .widelabels .input { margin-left: 220px; }
 .widelabels .well { padding-left: 0px; }
 .widelabels .actions { padding-left: 220px; }
+.widelabels .inputs-list label { width: auto; }
 
 .two-line-labels label { padding-top: 0px; }
 
@@ -117,6 +118,24 @@ dl.features dd {
 form.inline { margin: 0; }
 
 label.required { font-weight: bold; }
+label.simple {
+	width: auto;
+	float: none;
+	text-align: left;
+}
+
+.inputs-list ul { margin-left: 0px; }
+.checklist { border: 2px inset #CECECE;	overflow-y: scroll; }
+.checklist label { margin-left: 0px; }
+.checklist li { margin-left: 30px; width: auto; }
+
+ul.categorized a.category-collapse, ul.categorized a.category-collapse:hover {
+	text-decoration: none;
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+}
+
+form .clearfix.inner-field { margin-bottom: 0px; }
 
 div.scroll-area-x {	overflow-x: scroll; }
 div.scroll-area-y {	overflow-y: scroll; }

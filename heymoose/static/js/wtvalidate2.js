@@ -3,7 +3,11 @@
 		var valid = true;
 		this.each(function() {
 			var field = $(this);
-			if (field.val().trim() == '') {
+			var ul = field.is('ul');
+			var cl = field.find(':checked').length;
+			
+			if (field.is('ul') && !field.find(':checked').length ||
+				!field.is('ul') && field.val().trim() == '') {
 				error(field, field.data('requiredMessage'));
 				valid = false;
 			}
@@ -99,6 +103,18 @@
 		return valid;
 	}
 	
+	$.fn.validateInteger2 = function(error) {
+		var valid = true;
+		this.each(function() {
+			var field = $(this);
+			if (isNaN(parseInt(field.val().trim()))) {
+				error(field, field.data('integerMessage'));
+				valid = false;
+			}
+		});
+		return valid;
+	}
+	
 	$.fn.validateForm2 = function(options) {
 		var defaults = {
 			error: function(field, type) { },
@@ -108,6 +124,10 @@
 		
 		return this.each(function() {
 			$(this).find('input,textarea').keypress(function() {
+				settings.clear($(this));
+			});
+			
+			$(this).find('input,textarea').change(function() {
 				settings.clear($(this));
 			});
 			
@@ -123,6 +143,7 @@
 				valid = $(this).find('.validate-url').validateUrl2(settings.error) && valid;
 				valid = $(this).find('.validate-equal').validateEqual2(settings.error) && valid;
 				valid = $(this).find('.validate-decimal').validateDecimal2(settings.error) && valid;
+				valid = $(this).find('.validate-integer').validateInteger2(settings.error) && valid;
 				return valid;
 			});
 		});

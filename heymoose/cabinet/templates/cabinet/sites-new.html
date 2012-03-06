@@ -1,0 +1,76 @@
+{% extends "cabinet/sites-layout.html" %}
+
+{% set activetab = 'new' %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Добавление площадки', url_for('.sites_new')) }}
+{% endblock %}
+
+{% block tabcontent %}
+
+<div class="form-container">
+	<form method="post" action="" class="widelabels validate2">
+		<div class="input">
+			<span class="help-block">* Поля, выделенные <b>жирным шрифтом</b>, обязательны для заполнения.</span>
+		</div>
+		<fieldset>
+			{{ forms.singlefield(form.name, class='span10') }}
+			{{ forms.singlefield(form.url, class='span10') }}
+			{{ forms.singlefield(form.language, class='span4') }}
+			
+			<div class="clearfix">
+				<label class="required">Посещаемость</label>
+				<div class="input">
+					<div class="row">
+						<div class="span6 formfield clearfix inner-field {{ forms.css_errors(form.uniqs) }}">
+							{{ forms.field(form.uniqs, class='span2') }}
+							{{ forms.label(form.uniqs, class='simple') }}
+							{{ forms.errors(form.uniqs) }}
+						</div>
+						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.views) }}">
+							{{ forms.field(form.views, class='span2') }}
+							{{ forms.label(form.views, class='simple') }}
+							{{ forms.errors(form.views) }}
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			{% call forms.singlefield_desc(form.description, class='span10', rows=5) %}
+			<span class="help-block">
+				Минимум 100 символов. Данный текст будет виден рекламодателю.
+			</span>
+			{% endcall %}
+			
+			<div class="clearfix">
+				<div class="input">
+					<div class="row">
+						<div class="span6 formfield clearfix inner-field {{ forms.css_errors(form.categories) }}">
+							{{ forms.label(form.categories, class='simple') }}
+							<div class="checklist" style="height: 200px;">
+								{{ forms.field(form.categories, class='inputs-list categorized') }}
+							</div>
+							{{ forms.errors(form.categories) }}
+						</div>
+						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.regions) }}">
+							{{ forms.label(form.regions, class='simple') }}
+							<div class="checklist" style="height: 200px;">
+								{{ forms.field(form.regions, class='inputs-list') }}
+							</div>
+							{{ forms.errors(form.regions) }}
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			{{ forms.singlefield(form.comment, class='span10', rows=5) }}
+			
+			<div class="actions">
+				<input class="btn large primary" type="submit" value="Добавить площадку" />
+			</div>
+		</fieldset>
+	</form>
+</div>
+
+{% endblock %}

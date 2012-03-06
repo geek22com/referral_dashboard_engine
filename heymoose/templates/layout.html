@@ -13,7 +13,7 @@
 	</title>
 	
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.min.css') }}" media="screen">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.hm.css') }}" media="screen">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.hm.css', nocache=nocache()) }}" media="screen">
 	<style type="text/css">
 		body { background: url({{ url_for('static', filename='./img/background.png') }}) repeat scroll 0 0 transparent; }
 		.container.fluid { min-width: 940px; }
@@ -24,10 +24,10 @@
 	<script type="text/javascript" src="{{ url_for('static', filename='./js/bootstrap-dropdown.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='./js/bootstrap-modal.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='./js/bootstrap-alerts.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.twitter.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate2.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate2.twitter.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.js', nocache=nocache()) }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.twitter.js', nocache=nocache()) }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate2.js', nocache=nocache()) }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate2.twitter.js', nocache=nocache()) }}"></script>
 	
 	{% set activemenu = activemenu|default('index') %}
 	<script type="text/javascript">

@@ -2,7 +2,7 @@
 from heymoose import app
 from heymoose.utils import times, convert
 from datetime import datetime
-import base64, time
+import base64, time, random
 
 currency_sign = app.config.get('CURRENCY_SIGN')
 site_root = app.config.get('SITE_ROOT', 'http://www.heymoose.com')
@@ -65,6 +65,10 @@ def replace_if_contains(value, contains, newvalue):
 	return value
 
 
+def nocache():
+	return random.randrange(1000000)
+
+
 app.jinja_env.filters['error_type'] = error_type
 app.jinja_env.filters['datetimeformat'] = datetimeformat
 app.jinja_env.filters['datetime_nosec'] = datetime_nosec
@@ -84,3 +88,4 @@ app.jinja_env.globals['now'] = datetime.now
 app.jinja_env.globals['time'] = time.time
 app.jinja_env.globals['currency_sign'] = currency_sign
 app.jinja_env.globals['root'] = site_root
+app.jinja_env.globals['nocache'] = nocache

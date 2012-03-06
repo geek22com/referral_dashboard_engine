@@ -3,7 +3,7 @@
 		var valid = true;
 		this.each(function() {
 			var field = $(this);
-			if (field.val().trim() == '') {
+			if ($.trim(field.val()) == '') {
 				error(field, 'required');
 				valid = false;
 			}
@@ -92,7 +92,7 @@
 		var valid = true;
 		this.each(function() {
 			var field = $(this);
-			if (isNaN(parseFloat(field.val().trim()))) {
+			if (isNaN(parseFloat($.trim(field.val())))) {
 				error(field, 'decimal');
 				valid = false;
 			}

@@ -4,7 +4,7 @@
 		this.each(function() {
 			var field = $(this);			
 			if (field.is('ul') && !field.find(':checked').length ||
-				!field.is('ul') && field.val().trim() == '') {
+				!field.is('ul') && $.trim(field.val()) == '') {
 				error(field, field.data('requiredMessage'));
 				valid = false;
 			}
@@ -92,7 +92,7 @@
 		var valid = true;
 		this.each(function() {
 			var field = $(this);
-			if (isNaN(parseFloat(field.val().trim()))) {
+			if (isNaN(parseFloat($.trim(field.val())))) {
 				error(field, field.data('decimalMessage'));
 				valid = false;
 			}
@@ -104,7 +104,7 @@
 		var valid = true;
 		this.each(function() {
 			var field = $(this);
-			if (isNaN(parseInt(field.val().trim()))) {
+			if (isNaN(parseInt($.trim(field.val())))) {
 				error(field, field.data('integerMessage'));
 				valid = false;
 			}

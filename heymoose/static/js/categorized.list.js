@@ -13,7 +13,7 @@
 				var categName = $(this).data('category');
 				if (!categName) return;
 				
-				var index = categNames.indexOf(categName);
+				var index = $.inArray(categName, categNames);
 				var $categListItem = null;
 				if (index < 0) {
 					categNames.push(categName);

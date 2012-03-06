@@ -2,10 +2,7 @@
 	$.fn.validateRequired2 = function(error) {
 		var valid = true;
 		this.each(function() {
-			var field = $(this);
-			var ul = field.is('ul');
-			var cl = field.find(':checked').length;
-			
+			var field = $(this);			
 			if (field.is('ul') && !field.find(':checked').length ||
 				!field.is('ul') && field.val().trim() == '') {
 				error(field, field.data('requiredMessage'));

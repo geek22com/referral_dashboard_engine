@@ -1,14 +1,14 @@
 {% extends "admin/layout.html" %}
 
-{% block title %}Действия{% endblock %}
+{% block title %}Разное{% endblock %}
 
-{% set activemenu = "actions" %}
+{% set activemenu = "misc" %}
 
 {% block extrahead %}
 {{ super() }}
 {% set activetab = activetab|default('list') %}
 <script type="text/javascript">
-	$(function() { 
+	$(function() {
 		$('li#tab-{{ activetab }}').addClass('active');
 	})
 </script>
@@ -16,17 +16,18 @@
 
 {% block breadcrumbs %}
 	{{ super() }}
-	{{ macros.breadcrumb('Действия', url_for('.actions')) }}
+	{{ macros.breadcrumb(self.title(), url_for('.misc')) }}
 {% endblock %}
 
 {% block pageheader %}
-<h1>Действия</h1>
+<h1>{{ self.title() }}</h1>
 {% endblock %}
 
 {% block content %}
 <ul class="tabs">
-	<li id="tab-list"><a href="{{ url_for('.actions') }}">Список</a></li>
-	<li id="tab-stats"><a href="{{ url_for('.actions_stats') }}">Статистика</a></li>
+	<li id="tab-list"><a href="{{ url_for('.misc') }}">Список</a></li>
+	<li id="tab-site"><a href="{{ url_for('.misc_site') }}">Форма создания площадки</a></li>
+	<li id="tab-px"><a href="{{ url_for('.misc_px') }}">Тест пикселя</a></li>
 </ul>
 
 {% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}

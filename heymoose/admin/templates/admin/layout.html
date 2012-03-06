@@ -12,6 +12,7 @@
 <script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.ui.datepicker-ru.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('.static', filename='./js/admin.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='./js/categorized.list.js') }}"></script>
 
 {% set activemenu = activemenu|default('index') %}
 <script type="text/javascript">
@@ -22,6 +23,8 @@
 		$('ul.breadcrumb li:last').text($('ul.breadcrumb li:last a').html());
 		// Select all text in copyboxes
 		$('.copybox').focus(function() { this.select();	})
+		
+		$('ul.categorized').categorizedList();
 	});
 </script>
 {% endblock %}
@@ -41,6 +44,7 @@
 			Feedback{% if g.feedback_unread > 0 %} ({{ g.feedback_unread }}){% endif %}
 		</a>
 	</li>
+	<li id="menu-item-misc"><a href="{{ url_for('.misc') }}">Разное</a></li>
 </ul>
 
 <ul class="nav secondary-nav">

@@ -292,15 +292,6 @@ def actions():
 	acts = do_or_abort(a.actions.get_actions, offset=offset, limit=limit, full=True)
 	return render_template('admin/actions.html', actions=acts, pages=pages)
 
-@bp.route('/actions/test')
-def actions_test_px():
-	page = convert.to_int(request.args.get('page'), 1)
-	count = DummyAction.query.count()
-	per_page = app.config.get('ADMIN_ACTIONS_PER_PAGE', 10)
-	offset, limit, pages = paginate(page, count, per_page)
-	acts = DummyAction.query.descending(DummyAction.date).skip(offset).limit(limit)
-	return render_template('admin/actions-test-px.html', actions=acts.all(), pages=pages)
-
 @bp.route('/actions/stats')
 def actions_stats():
 	return render_template('admin/actions-stats.html')
@@ -616,6 +607,27 @@ def feedback():
 	offset, limit, pages = paginate(page, count, per_page)
 	contacts = Contact.query.filter(*filters).descending(Contact.date).skip(offset).limit(limit)
 	return render_template('admin/feedback.html', contacts=contacts.all(), pages=pages)
+
+
+@bp.route('/misc/')
+def misc():
+	return render_template('admin/misc.html')
+
+@bp.route('/misc/site', methods=['GET', 'POST'])
+def misc_site():
+	form = forms.SiteForm(request.form)
+	if request.method == 'POST' and form.validate():
+		flash(u'Все ОК', 'success')
+	return render_template('admin/misc-site.html', form=form)
+
+@bp.route('/misc/px')
+def misc_px():
+	page = convert.to_int(request.args.get('page'), 1)
+	count = DummyAction.query.count()
+	per_page = app.config.get('ADMIN_ACTIONS_PER_PAGE', 10)
+	offset, limit, pages = paginate(page, count, per_page)
+	acts = DummyAction.query.descending(DummyAction.date).skip(offset).limit(limit)
+	return render_template('admin/misc-px.html', actions=acts.all(), pages=pages)
 
 
 @bp.route('/orders/<int:id>/q/enable', methods=['POST'])

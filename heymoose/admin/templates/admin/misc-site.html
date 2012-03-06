@@ -1,12 +1,12 @@
-{% extends "cabinet/sites-layout.html" %}
+{% extends "admin/misc-layout.html" %}
 {% import 'common/forms/site.html' as site_form %}
-
-{% set activetab = 'new' %}
 
 {% block breadcrumbs %}
 	{{ super() }}
-	{{ macros.breadcrumb('Добавление площадки', url_for('.sites_new')) }}
+	{{ macros.breadcrumb('Форма создания площадки', url_for('.misc_px')) }}
 {% endblock %}
+
+{% set activetab = 'site' %}
 
 {% block tabcontent %}
 

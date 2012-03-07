@@ -539,7 +539,7 @@ class OfferForm(Form):
 		(2, u'Процент с совершенной покупки')
 	], coerce=int)
 	payment_value = DecimalField(u'Размер выплаты', [
-		validators.NumberRange(min=0.01, message=u'Введите положительное число'),
+		validators.NumberRange(min=0.00, message=u'Введите положительное число'),
 	], default=0.01)
 
 	

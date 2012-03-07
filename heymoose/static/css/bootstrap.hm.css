@@ -124,8 +124,16 @@ label.simple {
 	text-align: left;
 }
 
+.input label {
+	width: auto;
+	float: none;
+	text-align: left;
+	padding-top: 0px;
+}
+
 .inputs-list ul { margin-left: 0px; }
 .checklist { border: 2px inset #CECECE;	overflow-y: scroll; }
+.checklist.static { border: none; overflow-y: auto; }
 .checklist label { margin-left: 0px; }
 .checklist li { margin-left: 30px; width: auto; }
 
@@ -133,6 +141,13 @@ ul.categorized a.category-collapse, ul.categorized a.category-collapse:hover {
 	text-decoration: none;
 	border-bottom-width: 1px;
 	border-bottom-style: dotted;
+}
+
+a.dotted-link, a.dotted-link:hover {
+	text-decoration: none;
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+	font-size: 10px;
 }
 
 form .clearfix.inner-field { margin-bottom: 0px; }

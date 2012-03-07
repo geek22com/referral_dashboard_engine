@@ -1,0 +1,157 @@
+{% import 'common/forms.html' as forms %}
+
+{% macro head() %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/redactor/css/redactor.css') }}" media="all" />
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/redactor/redactor.js') }}"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('.redactor').redactor({
+				pathCss: "{{ url_for('static', filename='./css/redactor/css/') }}",
+				css: ['bootstrap.css?nocache={{ nocache() }}'],
+				toolbar: 'heymoose'
+			});
+			
+			var signs = ['руб. за клик', 'руб. за действие', '% с покупки'];
+			$('.payment-type-select').change(function() {
+				$('.payment-value-sign').text(signs[parseInt($(this).val())]);
+			}).change();
+		})
+	</script>
+{% endmacro %}
+
+{% macro html(form) %}
+	<form method="post" action="" class="widelabels validate2" enctype="multipart/form-data">
+		<div class="input">
+			<span class="help-block">* Поля, выделенные <b>жирным шрифтом</b>, обязательны для заполнения.</span>
+		</div>
+		<fieldset>
+			{{ forms.singlefield(form.name, class='span10') }}
+			{{ forms.singlefield(form.url, class='span10') }}
+			
+			<div class="clearfix">
+				<label class="required">Оплата</label>
+				<div class="input">
+					<div class="row">
+						<div class="span6 formfield clearfix inner-field {{ forms.css_errors(form.payment_type) }}">
+							{{ forms.field(form.payment_type, class='span6 payment-type-select') }}
+							<a href="#" class="dotted-link" data-controls-modal="payment-modal"
+							data-backdrop="true" data-keyboard="true">(что это?)</a>
+							{{ forms.errors(form.payment_type) }}
+						</div>
+						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.payment_value) }}">
+							{{ forms.field(form.payment_value, class='span2 right') }}
+							<span class="payment-value-sign">руб.</span>
+							{{ forms.errors(form.payment_value) }}
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			{% call forms.singlefield_desc(form.logo) %}
+			<span class="help-block">
+				Принимаются изображения в формате JPG (JPEG), GIF, PNG. Максимальный
+				размер загружаемого изображения &mdash; 1Мб. После загрузки изображение
+				будет сжато до размера ...
+			</span>
+			{% endcall %}
+			
+			{# <div class="clearfix formfield {{ forms.css_errors(form.targeting) }}">
+				<div class="input">
+					{{ forms.field(form.targeting) }} {{ forms.label(form.targeting) }}
+					<a href="#" class="dotted-link" style="margin-left: 10px;">(что это?)</a>
+				</div>
+			</div> #}
+			
+			<div class="clearfix">
+				<div class="input">
+					<div class="row">
+						<div class="span6 formfield clearfix inner-field {{ forms.css_errors(form.categories) }}">
+							{{ forms.label(form.categories) }}
+							<div class="checklist" style="height: 200px;">
+								{{ forms.field(form.categories, class='inputs-list categorized') }}
+							</div>
+							{{ forms.errors(form.categories) }}
+						</div>
+						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.regions) }}">
+							{{ forms.label(form.regions) }}
+							<div class="checklist" style="height: 200px;">
+								{{ forms.field(form.regions, class='inputs-list') }}
+							</div>
+							{{ forms.errors(form.regions) }}
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="clearfix">
+				<div class="input">
+					<div class="row">
+						<div class="span6 formfield clearfix inner-field {{ forms.css_errors(form.traffic) }}">
+							{{ forms.label(form.traffic) }}
+							<a href="#" class="dotted-link" data-controls-modal="traffic-modal"
+							data-backdrop="true" data-keyboard="true">(что это?)</a>
+							<div class="checklist" style="height: 160px;">
+								{{ forms.field(form.traffic, class='inputs-list') }}
+							</div>
+							{{ forms.errors(form.traffic) }}
+						</div>
+						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.targeting) }}"
+						 style="padding-top: 12px;">
+							{{ forms.field(form.targeting) }}
+							{{ forms.label(form.targeting, class='required') }}
+							<span class="help-block">
+								Позволяет фильтровать трафик по IP-адресам, пропуская трафик
+								только из указанных выше регионов.
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>Описание кампании</legend>
+			<div class="clearfix formfield {{ forms.css_errors(form.description) }}">
+				<div class="input">
+					{{ forms.errors(form.description) }}
+					{{ forms.field(form.description, class='span10 redactor', style='height: 250px;') }}
+					<a href="#" class="dotted-link" data-controls-modal="description-modal"
+					data-backdrop="true" data-keyboard="true">(о чем здесь писать?)</a>
+				</div>
+			</div>
+			
+			<div class="actions">
+				<input class="btn large primary" type="submit" value="Создать оффер" />
+			</div>
+		</fieldset>
+	</form>
+{% endmacro %}
+
+{% macro postbody() %}
+	<div id="payment-modal" class="modal fade" style="display: none;">
+		<div class="modal-header">
+			<a href="#" class="close">×</a>
+			<h3>Оплата оффера</h3>
+		</div>
+		<div class="modal-body">
+			Текст об оплате оффера.
+		</div>
+	</div>
+	<div id="traffic-modal" class="modal fade" style="display: none;">
+		<div class="modal-header">
+			<a href="#" class="close">×</a>
+			<h3>Выбор типов трафика</h3>
+		</div>
+		<div class="modal-body">
+			Текст о выборе типов трафика.
+		</div>
+	</div>
+	<div id="description-modal" class="modal fade" style="display: none;">
+		<div class="modal-header">
+			<a href="#" class="close">×</a>
+			<h3>Описание рекламной кампании</h3>
+		</div>
+		<div class="modal-body">
+			Текст об описании рекламной кампании.
+		</div>
+	</div>
+{% endmacro %}

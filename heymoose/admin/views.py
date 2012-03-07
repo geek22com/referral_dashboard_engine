@@ -620,6 +620,13 @@ def misc_site():
 		flash(u'Все ОК', 'success')
 	return render_template('admin/misc-site.html', form=form)
 
+@bp.route('/misc/offer', methods=['GET', 'POST'])
+def misc_offer():
+	form = forms.OfferForm(request.form)
+	if request.method == 'POST' and form.validate():
+		flash(u'Все ОК', 'success')
+	return render_template('admin/misc-offer.html', form=form)
+
 @bp.route('/misc/px')
 def misc_px():
 	page = convert.to_int(request.args.get('page'), 1)

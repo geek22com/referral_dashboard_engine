@@ -11,6 +11,35 @@ import fields as myfields
 import random, hashlib
 
 
+categories_choices = [
+	(1, u'Авто-страхование', u'Страхование и финансы'),
+	(2, u'Вклады', u'Страхование и финансы'),
+	(3, u'Кредитные карты', u'Страхование и финансы'),
+	(4, u'Потребительские кредиты', u'Страхование и финансы'),
+	
+	(5, u'Астрология', u'Интернет-услуги'),
+	(6, u'Знакомства и общение', u'Интернет-услуги'),
+	(7, u'Мобильные сервисы', u'Интернет-услуги'),
+	(8, u'Хостинг', u'Интернет-услуги'),
+	
+	(9,  u'TV и Video', u'Компьютеры и электроника'),
+	(10, u'Игровые приставки', u'Компьютеры и электроника'),
+	(11, u'Компьютеры и ноутбуки', u'Компьютеры и электроника'),
+	(12, u'Мобильные портативные устройства', u'Компьютеры и электроника'),
+	(13, u'Фототехника', u'Компьютеры и электроника'),
+]
+
+regions_choices = [
+	(1, u'Россия'),
+	(2, u'СНГ'),
+	(3, u'Украина'),
+	(4, u'Белорусь'),
+	(5, u'Польша'),
+	(6, u'Латвия'),
+	(7, u'Германия'),
+]
+
+
 class CaptchaForm(Form):
 	captcha = TextField(u'', [
 		validators.Required(message=u'Введите число')
@@ -465,37 +494,53 @@ class SiteForm(Form):
 		validators.Length(min=100, message=u'Описание площадки должно содержать минимум 100 символов'),
 		validators.Required(message=u'Введите описание площадки')
 	])
-	categories = myfields.CategorizedCheckboxListField(u'Категории', choices=[
-		(1, u'Авто-страхование', u'Страхование и финансы'),
-		(2, u'Вклады', u'Страхование и финансы'),
-		(3, u'Кредитные карты', u'Страхование и финансы'),
-		(4, u'Потребительские кредиты', u'Страхование и финансы'),
-		
-		(5, u'Астрология', u'Интернет-услуги'),
-		(6, u'Знакомства и общение', u'Интернет-услуги'),
-		(7, u'Мобильные сервисы', u'Интернет-услуги'),
-		(8, u'Хостинг', u'Интернет-услуги'),
-		
-		(9,  u'TV и Video', u'Компьютеры и электроника'),
-		(10, u'Игровые приставки', u'Компьютеры и электроника'),
-		(11, u'Компьютеры и ноутбуки', u'Компьютеры и электроника'),
-		(12, u'Мобильные портативные устройства', u'Компьютеры и электроника'),
-		(13, u'Фототехника', u'Компьютеры и электроника'),
-	], coerce=int, default=True)
-	
+	categories = myfields.CategorizedCheckboxListField(u'Категории', choices=categories_choices,
+		coerce=int, default=True)
 	regions = myfields.CheckboxListField(u'Регионы', [
 		validators.Required(message=u'Выберите хотя бы один регион')
-	], choices=[
-		(1, u'Россия'),
-		(2, u'СНГ'),
-		(3, u'Украина'),
-		(4, u'Белорусь'),
-		(5, u'Польша'),
-		(6, u'Латвия'),
-		(7, u'Германия'),
-	], coerce=int, default=(1,))
-	
+	], choices=regions_choices, coerce=int, default=(1,))
 	comment = TextAreaField(u'Комментарий для администрации')
+
+
+class OfferForm(Form):
+	name = TextField(u'Название оффера', [
+		validators.Length(min=1, max=100, message=u'Название должно иметь длину от 1 до 100 символов'),
+		validators.Required(message=u'Введите название оффера')
+	])
+	url = TextField(u'Ссылка', [
+		validators.Required(message=u'Введите URL'),
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False)
+	], default=u'http://')
+	logo = myfields.ImageField(u'Логотип', [
+		validators.FileRequired(message=u'Выберите изображение на диске'),
+		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
+	])
+	description = TextAreaField(u'Описание кампании', [
+		validators.Required(message=u'Введите описание кампании')
+	])
+	categories = myfields.CategorizedCheckboxListField(u'Категории', choices=categories_choices,
+		coerce=int, default=True)
+	regions = myfields.CheckboxListField(u'Регионы', [
+		validators.Required(message=u'Выберите хотя бы один регион')
+	], choices=regions_choices, coerce=int, default=(1,))
+	targeting = BooleanField(u'включить геотаргетинг', default=False)
+	traffic = myfields.CheckboxListField(u'Типы трафика', choices=[
+		(0, u'Cashback'),
+		(1, u'PopUp-реклама'),
+		(2, u'Контекстная реклама'),
+		(3, u'Дорвей-трафик'),
+		(4, u'Email-рассылка'),
+		(5, u'Контекстная реклама на бренд'),
+		(6, u'Трафик с социальных сетей')
+	], coerce=int)
+	payment_type = SelectField(u'Тип оплаты', choices=[
+		(0, u'Фиксированная за клик'),
+		(1, u'Фиксированная за совершенное действие'),
+		(2, u'Процент с совершенной покупки')
+	], coerce=int)
+	payment_value = DecimalField(u'Размер выплаты', [
+		validators.NumberRange(min=0.01, message=u'Введите положительное число'),
+	], default=0.01)
 
 	
 class AppsShowDeletedForm(Form):

@@ -120,6 +120,8 @@ class URLWithParams(wtvalidators.Regexp):
 class URI(wtvalidators.Regexp):
 	'''Validator for string representing URI'''
 	
+	css_class = 'validate-url'
+	
 	def __init__(self, verify_exists=True, message=None):
 		self.verify_exists = verify_exists
 		
@@ -134,6 +136,9 @@ class URI(wtvalidators.Regexp):
 	def __call__(self, form, field):
 		super(URI, self).__call__(form, field)
 		url = field.data
+		
+		if url.strip() == 'http://':
+			raise ValidationError(self.message)
 		
 		if self.verify_exists:
 			headers = {
@@ -169,6 +174,11 @@ class URI(wtvalidators.Regexp):
 				raise ValidationError(u'Введите правильный URL')
 			except: # urllib2.URLError, httplib.InvalidURL, etc.
 				raise ValidationError(u'Похоже, что указанная ссылка битая')
+	
+	def data_attrs(self):
+		return dict_update_filled_params(dict(), **{
+			'data-url-message': self.message,
+		})
 		
 		
 class FileFormat(object):

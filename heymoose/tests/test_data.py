@@ -1,4 +1,4 @@
-from heymoose.resource.models import User
+from heymoose.data.models import User
 
 xml = '''\
 	<user id="5">

@@ -1,113 +1,68 @@
-from decimal import Decimal
+from types import TypeBase, ModelType
+import models
 
-
-class FieldBase:
-	def __init__(self, xpath, readonly=False, default=None):
+class FieldBase(object):
+	def __init__(self, field_type_class, xpath, readonly=False, **params):
+		if not field_type_class:
+			raise ValueError('No type supplied for {0}'.format(self.__class__.__name__))
 		if not xpath:
-			raise ValueError('No xpath supplied for Field')
+			raise ValueError('No xpath supplied for {0}'.format(self.__class__.__name__))
+		self.field_type = self.init_field_type(field_type_class, **params)
 		self.xpath = xpath
 		self.readonly = readonly
-		self.default = default
+		self.params = params
 	
 	def xpath_unique(self, xml):
 		elements = xml.xpath(self.xpath)
 		if elements:
 			if len(elements) > 1:
-				raise ValueError('More than one XPath match for non-collection field')
+				raise ValueError('Expected unique value but there is more than one XPath match')
 			else:
 				return elements[0]
 		return None
 	
 	def xpath_list(self, xml):
-		return xml.xpath(self.xpath)	
+		return xml.xpath(self.xpath)
 	
-	def process(self, xml=None, value=None):
+	def parse(self, xml):
 		raise NotImplementedError()
-		
-	def default_value(self):
-		try:
-			return self.default()
-		except TypeError:
-			return self.default
+	
+	def validate(self, value):
+		raise NotImplementedError()
+	
+	def init_field_type(self, field_type_class, **params):
+		if issubclass(field_type_class, TypeBase):
+			return field_type_class(**params)
+		elif issubclass(field_type_class, models.ModelBase):
+			return ModelType(field_type_class, **params)
+		else:
+			raise TypeError(u'Field type must be subclass of TypeBase or ModelBase')
 
 
 class Field(FieldBase):
-	def process(self, xml=None, value=None):
-		xml_value = self.xpath_unique(xml) if xml is not None else None
-		if value is not None:
-			return self.process_value(value)
-		elif xml_value is not None:
-			return self.process_xmlvalue(xml_value)
+	def parse(self, xml):
+		matched_xml = self.xpath_unique(xml) if xml is not None else None
+		if matched_xml is not None:
+			return self.field_type.parse(matched_xml)
 		else:
-			return self.default_value()
+			return self.field_type.default_value()
+
+
+class FieldCollection(FieldBase):
+	collection_class = None
 	
-	def process_value(self, value):
-		return value
-	
-	def process_xmlvalue(self, value):
-		return value
-
-
-class PrimitiveField(Field):
-	value_type = None
-	
-	def process_value(self, value):
-		if not isinstance(value, self.value_type):
-			return self.value_type(value)
-		return value
-	
-	def process_xmlvalue(self, value):
-		return self.value_type(value)
-
-
-class StringField(PrimitiveField):
-	value_type = unicode
-
-class IntegerField(PrimitiveField):
-	value_type = int
-
-class FloatField(PrimitiveField):
-	value_type = float
-
-class DecimalField(PrimitiveField):
-	value_type = Decimal
-
-class ModelField(PrimitiveField):
-	def __init__(self, model, xpath, readonly=False, default=None):	
-		PrimitiveField.__init__(self, xpath, readonly=readonly, default=default)
-		if not model:
-			raise ValueError('No model supplied for ModelField')
-		self.value_type = model
-
-
-class Collection(FieldBase):
-	collection_type = None
-	
-	def __init__(self, field_type, xpath, default=[], **params):
-		FieldBase.__init__(self, xpath=xpath, default=default, **params)
-		self.field_type = field_type
-		self.field_params = params
-		
-	def process(self, xml=None, value=None):
-		xml_values = self.xpath_list(xml) if xml is not None else []
-		
-		if value is not None:
-			return self.collection_type(self.process_item(item) for item in value)
-		elif xml_values:
-			field = self.field_type(xpath='.', **self.field_params)
-			return self.collection_type(field.process(xml_value) for xml_value in xml_values)
+	def parse(self, xml):
+		matched_xml_list = self.xpath_list(xml) if xml is not None else []
+		if matched_xml_list:
+			return self.collection_class([self.field_type.parse(matched_xml) for matched_xml in matched_xml_list])
 		else:
-			return self.default_value()
-	
-	def process_item(self, item):
-		return item
+			return self.field_type.default_value()
 
+class FieldList(FieldCollection):
+	collection_class = list
 
-class List(Collection):
-	collection_type = list
-
-class Set(Collection):
-	collection_type = set
+class FieldSet(FieldCollection):
+	collection_class = set
 
 
 

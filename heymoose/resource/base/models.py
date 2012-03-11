@@ -1,11 +1,21 @@
 from fields import FieldBase
 from lxml import etree
 
-class ModelMeta:
-	def __init__(self, name, bases, attrs):
-		self.fields = dict((name, field) for name, field in attrs.iteritems() if isinstance(field, FieldBase))
-		for name, field in self.fields.iteritems():
-			setattr(self, name, self._property_for_field(name, field))
+class ModelMeta(type):
+	def __init__(cls, name, bases, attrs):
+		type.__init__(cls, name, bases, attrs)
+		cls.fields = None
+		
+	def __call__(cls, *args, **kwargs): #@NoSelf
+		if cls.fields is None:
+			cls.fields = dict()
+			for attr_name in dir(cls):
+				attr_value = getattr(cls, attr_name)
+				if isinstance(attr_value, FieldBase):
+					cls.fields[attr_name] = attr_value
+			for name, field in cls.fields.iteritems():
+				setattr(cls, name, cls._property_for_field(name, field))
+		return type.__call__(cls, *args, **kwargs)
 			
 	def _property_for_field(self, name, field):
 		if not field.readonly:
@@ -14,13 +24,13 @@ class ModelMeta:
 			return property(lambda self: self.get_field_value(name))
 
 
-class Model:
+class ModelBase(object):
 	__metaclass__ = ModelMeta
 	
 	def __init__(self, xml=None, **kwargs):
 		self._values = dict()
 		self._dirty = dict()
-		self._process(xml, **kwargs)
+		self._parse(xml, **kwargs)
 	
 	def get_field_value(self, name):
 		self._check_field_exists(name)
@@ -36,8 +46,8 @@ class Model:
 		if name not in self.fields:
 			raise KeyError('No field with name {0}'.format(name))
 	
-	def _process(self, xml, **kwargs):
+	def _parse(self, xml, **kwargs):
 		if xml is not None and (isinstance(xml, str) or isinstance(xml, unicode)):
 			xml = etree.fromstring(xml)
 		for name, field in self.fields.iteritems():
-			self._values[name] = field.process(xml, kwargs[name])
+			self._values[name] = kwargs.get(name, None) or field.parse(xml)

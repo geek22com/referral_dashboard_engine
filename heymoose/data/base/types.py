@@ -1,3 +1,5 @@
+import registry
+
 class TypeBase(object):
 	def __init__(self, default=None):
 		self.default = default
@@ -72,4 +74,19 @@ class ModelType(TypeBase):
 	
 	def parse(self, xml):
 		return self.model_class(xml)
-		
+
+
+class LazyModelType(ModelType):
+	def __init__(self, model_name, default=None):
+		super(LazyModelType, self).__init__(None, default=default)
+		self.model_name = model_name
+	
+	@property
+	def model_class(self):
+		if getattr(self, '_model_class', None) is None:
+			self._model_class = registry.get_model(self.model_name)
+		return self._model_class
+	
+	@model_class.setter
+	def model_class(self, value):
+		self._model_class = value

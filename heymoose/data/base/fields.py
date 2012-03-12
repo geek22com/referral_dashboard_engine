@@ -1,4 +1,4 @@
-from types import TypeBase, ModelType
+from types import TypeBase, ModelType, LazyModelType
 import models
 
 class FieldBase(object):
@@ -31,12 +31,14 @@ class FieldBase(object):
 		raise NotImplementedError()
 	
 	def init_field_type(self, field_type_class, **params):
-		if issubclass(field_type_class, TypeBase):
-			return field_type_class(**params)
+		if isinstance(field_type_class, str):
+			return LazyModelType(field_type_class, **params)
 		elif issubclass(field_type_class, models.ModelBase):
 			return ModelType(field_type_class, **params)
+		elif issubclass(field_type_class, TypeBase):
+			return field_type_class(**params)
 		else:
-			raise TypeError(u'Field type must be subclass of TypeBase or ModelBase')
+			raise TypeError(u'Field type must be subclass of TypeBase, ModelBase or model name')
 
 
 class Field(FieldBase):

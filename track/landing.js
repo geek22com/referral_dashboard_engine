@@ -25,11 +25,11 @@
 	}
 	
 	var domain = heymooseGetDomain();
-	//if (!domain) return;
+	if (!domain) return;
 	
 	var matchClickId = /_hm_click_id=(\d+)/i.exec(document.location.href);
 	if (matchClickId && matchClickId.length > 1) {
 		var clickId = matchClickId[1];
-		heymooseSetCookie('click_id', clickId, domain, 180);
+		heymooseSetCookie('heymoose_click_id', clickId, domain, 180);
 	}
 })();

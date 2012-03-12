@@ -1,4 +1,14 @@
 ;(function() {
+	function heymooseGetDomain() {
+		var match = /((?:\.?[^\.\s]+){2})$/.exec(document.domain);
+		if (match && match.length > 1) {
+			var domain2 = match[1];
+			if (domain2.substring(0, 1) != '.')
+				domain2 = '.' + domain2;
+			return domain2;
+		}
+	}
+	
 	function heymooseGetCookie(name) {
 		var cookie = ' ' + document.cookie;
 		var search = ' ' + name + '=';
@@ -29,8 +39,8 @@
 			(domain ? '; domain=' + domain : '');
 	}
 	
-	function heymooseDeleteCookie(name) {
-		heymooseSetCookie(name, '', '', -1);
+	function heymooseDeleteCookie(name, domain) {
+		heymooseSetCookie(name, '', domain, -1);
 	}
 	
 	function heymooseGetParam(name) {
@@ -61,7 +71,10 @@
 		} catch(e) { }
 	}
 	
-	var clickId = heymooseGetCookie('click_id');
+	var domain = heymooseGetDomain();
+	if (!domain) return;
+	
+	var clickId = heymooseGetCookie('heymoose_click_id');
 	if (!clickId) return;
 	
 	var offer = heymooseGetParam('offer');
@@ -75,5 +88,5 @@
 		'&offer=' + offer +
 		'&transaction_id=' + transactionId;
 	heymooseCreatePixel(url);
-	heymooseDeleteCookie('click_id');
+	heymooseDeleteCookie('heymoose_click_id', domain);
 })();

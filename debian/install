@@ -7,5 +7,6 @@ heymoose/static/* /usr/share/nginx/www/frontend_static/static
 heymoose/site/static/* /usr/share/nginx/www/frontend_static/site/static
 heymoose/admin/static/* /usr/share/nginx/www/frontend_static/admin/static
 heymoose/cabinet/static/* /usr/share/nginx/www/frontend_static/cabinet/static
+track/* /usr/share/nginx/www/frontend_static/track
 notifier/worker.py /usr/local/notifier
 notifier/notifier /etc/init.d

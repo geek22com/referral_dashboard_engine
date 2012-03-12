@@ -9,21 +9,6 @@
 		}
 	}
 	
-	function heymooseGetCookie(name) {
-		var cookie = ' ' + document.cookie;
-		var search = ' ' + name + '=';
-		var offset = cookie.indexOf(search);
-		var end = 0;
-		
-		if (offset != -1) {
-			offset += search.length;
-			end = cookie.indexOf(';', offset);
-			if (end == -1)
-				end = cookie.length;
-			return cookie.substring(offset, end);
-		}
-	}
-	
 	function heymooseSetCookie(name, value, domain, days) {
 		if (days) {
 			var date = new Date();
@@ -40,7 +25,7 @@
 	}
 	
 	var domain = heymooseGetDomain();
-	if (!domain) return;
+	//if (!domain) return;
 	
 	var matchClickId = /_hm_click_id=(\d+)/i.exec(document.location.href);
 	if (matchClickId && matchClickId.length > 1) {

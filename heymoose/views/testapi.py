@@ -17,14 +17,14 @@ def test_api():
 
 
 def report_action():
-	try:
+	'''try:
 		offer_id = int(request.args.get('offer_id', None))
 	except (TypeError, ValueError):
 		abort(400)
 	
 	action = DummyAction.query.get_or_create(offer_id=offer_id)
 	action.date = datetime.now()
-	action.save()
+	action.save()'''
 	
 	response = send_from_directory(app.static_folder, filename='img/px/px.png', cache_timeout=0)
 	response.cache_control.no_cache = True

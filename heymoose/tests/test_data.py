@@ -29,7 +29,7 @@ print user.id, user.email, user.roles, user.account, user.orders
 print user.account.id, user.account.balance
 
 for order in user.orders:
-	print order.id, order.title
+	print order.id, order.title, order.user
 
 user.email = u'aaa@bbb.ru'
 user.email = u'bbb@ccc.ru'

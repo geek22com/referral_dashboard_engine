@@ -15,6 +15,7 @@ class Account(IdentifiableModel):
 	
 class Order(IdentifiableModel):
 	title = Field(types.String, 'title', default=u'UNKNOWN')
+	user = Field('User', 'user')
 
 
 registry.register_models_from_module(__name__)

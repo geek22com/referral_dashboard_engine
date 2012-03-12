@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import request, abort, send_from_directory
+from flask import request, abort, send_from_directory, make_response
 from heymoose import app
 from heymoose.db.models import DummyAction
 from datetime import datetime
@@ -26,6 +26,8 @@ def report_action():
 	action.date = datetime.now()
 	action.save()'''
 	
-	response = send_from_directory(app.static_folder, filename='img/px/px.png', cache_timeout=0)
+	#response = send_from_directory(app.static_folder, filename='img/px/px.png', cache_timeout=0)
+	#response.cache_control.no_cache = True
+	response = make_response('/* action.js */')
 	response.cache_control.no_cache = True
 	return response

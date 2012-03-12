@@ -27,8 +27,8 @@ setup(
 	url = "https://github.com/kshilov/frontend",
 	packages=find_packages(),
 	include_package_data = True,
-	package_data = find_package_data('./heymoose', ('.html', '.css', '.js', '.png', '.gif', '.jpg')),
-	install_requires = ['flask>=0.7', 'wtforms', 'flask-mongoalchemy', 'uwsgi', 
+	package_data = find_package_data('./heymoose', ('.html', '.css', '.js', '.png', '.gif', '.jpg', '.ico')),
+	install_requires = ['flask>=0.7', 'wtforms', 'flask-mongoalchemy', 'uwsgi',
 						'lxml', 'restkit', 'amqplib', 'python-dateutil==1.5', 'PIL', 'PyCrypto'],
 	long_description=read('README'),
 )

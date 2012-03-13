@@ -402,18 +402,20 @@ def become_developer():
 @bp.route('/apps/q/ctr')
 @developer_only
 def ajax_apps_ctr():
-	ids = request.args.getlist('id', int)
+	'''ids = request.args.getlist('id', int)
 	stats = actions.stats.get_stats_ctr_by_ids(app_ids=ids, fm=times.delta(datetime.now(), days=-3))
 	result = dict([(s.id, dict(actions=s.actions, shows=s.shows, ctr='%.4f' % s.ctr)) for s in stats])
-	return jsonify(result)
+	return jsonify(result)'''
+	return jsonify(disabled=1)
 
 @bp.route('/orders/q/ctr')
 @customer_only
 def ajax_orders_ctr():
-	ids = request.args.getlist('id', int)
+	'''ids = request.args.getlist('id', int)
 	stats = actions.stats.get_stats_ctr_by_ids(offer_ids=ids, fm=times.delta(datetime.now(), days=-3))
 	result = dict([(s.id, dict(actions=s.actions, shows=s.shows, ctr='%.4f' % s.ctr)) for s in stats])
-	return jsonify(result)
+	return jsonify(result)'''
+	return jsonify(disabled=1)
 
 
 @bp.route('/orders/<int:id>/stats/q/ctr/')

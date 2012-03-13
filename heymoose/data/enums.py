@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from base.enum import Enum, e
+from base.enums import Enum, e
 
 class Roles(Enum):
 	CUSTOMER = e('CUSTOMER', name=u'рекламодатель', shortname=u'рекл.')

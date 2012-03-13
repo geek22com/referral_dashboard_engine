@@ -58,7 +58,7 @@ class FieldCollection(FieldBase):
 		if matched_xml_list:
 			return self.collection_class([self.field_type.parse(matched_xml) for matched_xml in matched_xml_list])
 		else:
-			return self.field_type.default_value()
+			return [] #self.field_type.default_value()
 
 class FieldList(FieldCollection):
 	collection_class = list

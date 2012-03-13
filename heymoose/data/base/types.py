@@ -1,3 +1,4 @@
+from decimal import Decimal as _Decimal
 import registry
 
 class TypeBase(object):
@@ -45,6 +46,14 @@ class String(PrimitiveType):
 			raise ValueError(u'Too long string')
 
 
+class Boolean(PrimitiveType):
+	type_class = bool
+	
+	def parse(self, xml):
+		xmlvalue = xml.text if hasattr(xml, 'text') else xml
+		return True if xmlvalue and xmlvalue.lower() not in ('f', 'false', '0') else False
+
+
 class DecimalBase(PrimitiveType):
 	def __init__(self, min=None, max=None, default=None):
 		super(DecimalBase, self).__init__(default)
@@ -60,6 +69,9 @@ class DecimalBase(PrimitiveType):
 
 class Integer(DecimalBase):
 	type_class = int
+
+class Decimal(DecimalBase):
+	type_class = _Decimal
 
 
 class ModelType(TypeBase):

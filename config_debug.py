@@ -70,8 +70,9 @@ FACEBOOK_APP_DOMAIN = "http://heymoose.com:8090"
 FACEBOOK_APP_URL = "http://apps.facebook.com/heymoose_debug/"
 FACEBOOK_AUTH_SCOPE = "publish_stream,email,create_event,sms,publish_actions,user_likes,user_about_me"
 
-BACKEND_PRIVATE_URL = "http://localhost"
-BACKEND_PRIVATE_PORT = 1234
+BACKEND_BASE_URL = 'http://localhost:5468'
+BACKEND_TIMEOUT = 5
+BACKEND_MAX_TRIES = 1
 
 # Mongo parameters
 MONGOALCHEMY_SERVER_AUTH = False

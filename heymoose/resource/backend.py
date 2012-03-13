@@ -1,6 +1,8 @@
 from heymoose import app
+from heymoose.data.base import registry
 from restkit import Resource
 from restkit.errors import ResourceError
+from lxml import etree
 import urlparse
 
 
@@ -19,7 +21,8 @@ class BackendResource(Resource):
 		uri = urlparse.urljoin(self.base_url, path)
 		super(BackendResource, self).__init__(uri, timeout=timeout, max_tries=max_tries, **kwargs)
 	
-	def request(self, method, path=None, payload=None, headers=None, params_dict=None, **params):
+	def request(self, method, path=None, payload=None, headers=None, params_dict=None,
+			renderer=etree.fromstring, **params):
 		# Unify our interface
 		if params_dict:
 			params.update(params_dict)
@@ -52,4 +55,40 @@ class BackendResource(Resource):
 		resp = response.body_string()
 		if response.charset != 'utf8':
 			resp = resp.decode('utf8')
-		return resp
+		return renderer(resp)
+
+
+class ModelResource(BackendResource):
+	model_name = None
+	
+	@property
+	def model(self):
+		if getattr(self, '_model', None) is None:
+			self._model = registry.get_model(self.model_name)
+		return self._model
+	
+	def apply_mapping(self, mapping, params):
+		return dict(((mapping[name] if name in mapping else name), value) for name, value in params.iteritems())
+	
+	def extract_params(self, obj, required=[], optional=[]):
+		params = dict()
+		for param in required:
+			name, value = self._extract_param(obj, param)
+			if value is None:
+				raise ValueError('{0} is required'.format(name))
+			params[name] = value
+		for param in optional:
+			name, value = self._extract_param(obj, param)
+			if value is not None:
+				params[name] = value
+		return params
+	
+	def _extract_param(self, obj, param):
+		if isinstance(param, tuple):
+			attr_name, param_name = param
+		else:
+			attr_name = param_name = param
+		return param_name, getattr(obj, attr_name)
+		
+		
+		

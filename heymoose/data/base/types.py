@@ -1,4 +1,5 @@
 from decimal import Decimal as _Decimal
+from datetime import datetime
 import registry
 
 class TypeBase(object):
@@ -26,9 +27,11 @@ class PrimitiveType(TypeBase):
 			raise ValueError(u'Invalid value {0} for field type {1}'.format(value, self.__class__.__name__))
 	
 	def parse(self, xml):
-		if hasattr(xml, 'text'):
-			return self.type_class(xml.text)
-		return self.type_class(xml)
+		xmlvalue = xml.text if hasattr(xml, 'text') else xml
+		return self.parse_value(xmlvalue)
+	
+	def parse_value(self, xmlvalue):
+		return self.type_class(xmlvalue)
 
 
 class String(PrimitiveType):
@@ -49,8 +52,7 @@ class String(PrimitiveType):
 class Boolean(PrimitiveType):
 	type_class = bool
 	
-	def parse(self, xml):
-		xmlvalue = xml.text if hasattr(xml, 'text') else xml
+	def parse_value(self, xmlvalue):
 		return True if xmlvalue and xmlvalue.lower() not in ('f', 'false', '0') else False
 
 
@@ -70,8 +72,17 @@ class DecimalBase(PrimitiveType):
 class Integer(DecimalBase):
 	type_class = int
 
+
 class Decimal(DecimalBase):
 	type_class = _Decimal
+
+
+class DateTime(PrimitiveType):
+	type_class = datetime
+	
+	def parse_value(self, xmlvalue):
+		without_tz = xmlvalue[:-1] if xmlvalue.endswith('Z') else xmlvalue[:-6]
+		return datetime.strptime(without_tz, '%Y-%m-%dT%H:%M:%S.%f')
 
 
 class ModelType(TypeBase):

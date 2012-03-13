@@ -38,9 +38,16 @@ class ModelBase(object):
 	
 	def set_field_value(self, name, value):
 		self._check_field_exists(name)
-		if name not in self._dirty:
+		if self._values[name] != value:
+			self.mark_dirty(name)
+			self._values[name] = value
+	
+	def is_dirty(self, name):
+		return (name in self._dirty)
+			
+	def mark_dirty(self, name, force=False):
+		if not self.is_dirty(name) or force:
 			self._dirty[name] = self._values[name]
-		self._values[name] = value
 	
 	def _check_field_exists(self, name):
 		if name not in self.fields:
@@ -51,3 +58,9 @@ class ModelBase(object):
 			xml = etree.fromstring(xml)
 		for name, field in self.fields.iteritems():
 			self._values[name] = kwargs.get(name, None) or field.parse(xml)
+	
+	def updated_values(self):
+		return dict((name, self._values[name]) for name in self._dirty.iterkeys())
+	
+	def values(self):
+		return self._values

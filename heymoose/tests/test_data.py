@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from heymoose.data.models import User
 from heymoose.data.enums import Roles, ExtendedRoles, MessengerTypes
+import pprint
 
 xml = '''\
 	<user id="5">
@@ -25,8 +26,11 @@ xml = '''\
 		<blocked />
 	</user>
 '''
-
+'''
 user = User(xml)
+
+User.resource.update(user)
+user.update()
 
 print user.fields
 print user.id, user.email, user.roles, user.account, user.orders, user.confirmed, user.blocked
@@ -46,3 +50,14 @@ print Roles.tuples('name', 'shortname')
 print MessengerTypes.tuples('name')
 print ExtendedRoles.values()
 print ExtendedRoles.values('name')
+'''
+
+pp = pprint.PrettyPrinter(indent=4)
+
+user = User.resource.get_by_id(3)
+pp.pprint(user.values())
+
+user._values['id'] = None
+user.email = 'aaa@bbb.ccc'
+user.save()
+

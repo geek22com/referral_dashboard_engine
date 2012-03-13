@@ -1,3 +1,1 @@
-import user
-
-users = user.UserResource()
+from user import UserResource

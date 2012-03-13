@@ -51,7 +51,6 @@ def contacts():
 
 @bp.route('/partner', methods=['GET', 'POST'])
 def contacts_partner():
-	if not g.user or not g.user.is_admin(): abort(403)
 	form = forms.PartnerContactForm(request.form)
 	if request.method == 'POST' and form.validate():
 		contact = Contact(date=datetime.now(), partner=True)

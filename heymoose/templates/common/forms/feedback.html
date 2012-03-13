@@ -8,9 +8,10 @@
 			{{ forms.singlefield(form.phone, class='span4') }}
 			{% call forms.singlefield_desc(form.desc, class='span10', rows=4) %}
 			{% if partner %}
-			<span class="help-block">
+			<span class="help-block span10">
 				В этом поле перечислите, пожалуйста, площадки, которые вы можете
-				подключить к партнерской сети, их суточную аудиторию и особенности.
+				подключить к партнерской сети, их суточную аудиторию, тематику
+				и особенности.
 			</span>
 			{% endif %}
 			{% endcall %}

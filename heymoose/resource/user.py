@@ -1,19 +1,18 @@
 from backend import ModelResource
-from utils.path import path
 
 
 class UserResource(ModelResource):
 	model_name = 'User'
-	path = '/users'
+	base_path = '/users'
 	
 	def get_by_id(self, id, **kwargs):
-		return self.model(self.get(path(id).build(), **kwargs))
+		return self.model(self.path(id).get(**kwargs))
 	
 	def get_by_email(self, email, **kwargs):
 		return self.model(self.get(**kwargs))
 	
 	def add_role(self, id, role):
-		return self.post(path(id).path('roles').build(), role=role)
+		return self.path(id).path('roles').post(role=role)
 	
 	def add(self, user):
 		params = self.extract_params(user,

@@ -41,7 +41,7 @@ regions_choices = [
 ]
 
 
-class Form(WTForm):
+'''class Form(WTForm):
 	def process(self, formdata=None, obj=None, **kwargs):
 		if formdata is not None and not hasattr(formdata, 'getlist'):
 			raise TypeError("formdata should be a multidict-type wrapper that supports the 'getlist' method")
@@ -57,7 +57,8 @@ class Form(WTForm):
 	def populate_obj(self, obj):
 		for name, field in self._fields.iteritems():
 			handler = getattr(self, 'populate_' + name, field.populate_obj)
-			handler(obj, name)
+			handler(obj, name)'''
+Form = WTForm
 
 
 class CaptchaForm(Form):

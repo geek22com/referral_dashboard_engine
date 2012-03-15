@@ -122,14 +122,15 @@ label.simple {
 	width: auto;
 	float: none;
 	text-align: left;
+	padding-top: 0px;
 }
 
-.input label {
+/*.input label {
 	width: auto;
 	float: none;
 	text-align: left;
 	padding-top: 0px;
-}
+}*/
 
 .inputs-list ul { margin-left: 0px; }
 .checklist { border: 2px inset #CECECE;	overflow-y: scroll; }

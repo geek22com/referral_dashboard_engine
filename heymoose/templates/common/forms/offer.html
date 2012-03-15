@@ -11,41 +11,118 @@
 				toolbar: 'heymoose'
 			});
 			
-			var signs = ['руб. за клик', 'руб. за действие', '% с покупки'];
+			var signs = ['руб. за действие', '% с покупки'];
 			$('.payment-type-select').change(function() {
-				$('.payment-value-sign').text(signs[parseInt($(this).val())]);
+				$(this).closest('.input').find('.payment-value-sign').text(signs[parseInt($(this).val())]);
 			}).change();
+			
+			$('.add-suboffer-form').click(function() {
+				var $formList = $('.suboffer-form-list');
+				var $template = $('#suboffer-form-template .suboffer-form').clone(true);
+				var match = /-(\d+)-/i.exec($formList.find('.suboffer-form:last input').attr('name'));
+				var number = parseInt(match[1]) + 1;
+				
+				$template.find('input,select').each(function() {
+					var prev_id = $(this).attr('id') || '';
+					var id = prev_id.replace('-0', '-' + number);
+					var name = ($(this).attr('name') || '').replace('-0', '-' + number);
+					
+					if (id) $(this).attr('id', id);
+					if (name) $(this).attr('name', name);
+					$('label[for=' + prev_id + ']').attr('for', id);
+				});
+				$template.hide().appendTo($formList).show('fast');
+				return false;
+			});
+			
+			$('.remove-suboffer-form').click(function() {
+				$(this).closest('.suboffer-form').hide('fast', function() {
+					$(this).remove();
+				});
+				return false;
+			});
 		})
 	</script>
 {% endmacro %}
 
-{% macro html(form) %}
+{% macro suboffer_html_base(form) %}
+	<div class="clearfix">
+		{{ forms.label(form.description) }}
+		<div class="input">
+			<div class="row">
+				<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.description) }}">
+					{{ forms.field(form.description, class='span4') }}
+					{{ forms.errors(form.description) }}
+				</div>
+				<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.reentrant) }}" style="width: 180px;">
+					{{ forms.field(form.reentrant) }} {{ forms.label(form.reentrant, class='simple') }}
+					{{ forms.errors(form.reentrant) }}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix">
+		<label class="required">Оплата</label>
+		<div class="input">
+			<div class="row">
+				<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.payment_type) }}">
+					{{ forms.field(form.payment_type, class='span4 payment-type-select') }}
+					{{ forms.errors(form.payment_type) }}
+				</div>
+				<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.payment_value) }}" style="width: 180px;">
+					{{ forms.field(form.payment_value, class='span1 right', style='width: 60px') }}
+					<span class="payment-value-sign">руб.</span>
+					{{ forms.errors(form.payment_value) }}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endmacro %}
+
+{% macro suboffer_html(form) %}
 	<form method="post" action="" class="widelabels validate2" enctype="multipart/form-data">
+		<div class="input">
+			<span class="help-block">* Поля, выделенные <b>жирным шрифтом</b>, обязательны для заполнения.</span>
+		</div>
+		<fieldset>
+			{{ suboffer_html_base(form) }}
+		</fieldset>
+		<div class="actions">
+			<input class="btn large primary" type="submit" value="Создать шаг выполнения" />
+		</div>
+	</form>
+{% endmacro %}
+
+{% macro suboffer_embedded(form, first=false) %}
+	<div class="clearfix suboffer-form">
+		<div class="input span10">
+			{% if not first %}
+			<hr class="" style="margin-top: 0px;"/>
+			{% endif %}
+			{{ suboffer_html_base(form) }}
+			{% if not first %}
+			<div class="clearfix">
+				<div class="input right" >
+					<img src="{{ url_for('static', filename='./img/icon_deletelink.gif') }}" alt="" />
+					<a href="#" class="dotted-link remove-suboffer-form">удалить это действие</a>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+{% endmacro %}
+
+{% macro html(form, tmpl) %}
+	<div id="suboffer-form-template" style="display: none;">
+		{{ suboffer_embedded(tmpl) }}
+	</div>
+	<form method="post" action="" class="validate2" enctype="multipart/form-data">
 		<div class="input">
 			<span class="help-block">* Поля, выделенные <b>жирным шрифтом</b>, обязательны для заполнения.</span>
 		</div>
 		<fieldset>
 			{{ forms.singlefield(form.name, class='span10') }}
 			{{ forms.singlefield(form.url, class='span10') }}
-			
-			<div class="clearfix">
-				<label class="required">Оплата</label>
-				<div class="input">
-					<div class="row">
-						<div class="span6 formfield clearfix inner-field {{ forms.css_errors(form.payment_type) }}">
-							{{ forms.field(form.payment_type, class='span6 payment-type-select') }}
-							<a href="#" class="dotted-link" data-controls-modal="payment-modal"
-							data-backdrop="true" data-keyboard="true">(что это?)</a>
-							{{ forms.errors(form.payment_type) }}
-						</div>
-						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.payment_value) }}">
-							{{ forms.field(form.payment_value, class='span2 right') }}
-							<span class="payment-value-sign">руб.</span>
-							{{ forms.errors(form.payment_value) }}
-						</div>
-					</div>
-				</div>
-			</div>
 			
 			{% call forms.singlefield_desc(form.logo) %}
 			<span class="help-block">
@@ -54,26 +131,47 @@
 				будет сжато до размера ...
 			</span>
 			{% endcall %}
-			
-			{# <div class="clearfix formfield {{ forms.css_errors(form.targeting) }}">
+		</fieldset>
+		<fieldset>
+			<legend>
+				Действия
+				<a href="#" class="dotted-link" style="margin-left: 10px;"
+				 data-controls-modal="suboffers-modal" data-backdrop="true" data-keyboard="true">(что это?)</a>
+			</legend>
+			<div class="suboffer-form-list">
+				{% for suboffer in form.suboffers %}
+					{{ suboffer_embedded(suboffer.form, loop.first) }}
+				{% endfor %}
+			</div>
+			<div class="clearfix">
 				<div class="input">
-					{{ forms.field(form.targeting) }} {{ forms.label(form.targeting) }}
-					<a href="#" class="dotted-link" style="margin-left: 10px;">(что это?)</a>
+					<img src="{{ url_for('static', filename='./img/icon_addlink.gif') }}" alt="" />
+					<a href="#" class="dotted-link add-suboffer-form">добавить действие</a>
 				</div>
-			</div> #}
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>Параметры</legend>
+			<div class="clearfix formfield {{ forms.css_errors(form.targeting) }}">
+				<div class="input">
+					{{ forms.field(form.targeting) }} {{ forms.label(form.targeting, class='required simple') }}
+					<a href="#" class="dotted-link" style="margin-left: 10px;"
+					data-controls-modal="targeting-modal" data-backdrop="true" data-keyboard="true">(что это?)</a>
+				</div>
+			</div>
 			
 			<div class="clearfix">
 				<div class="input">
 					<div class="row">
 						<div class="span6 formfield clearfix inner-field {{ forms.css_errors(form.categories) }}">
-							{{ forms.label(form.categories) }}
+							{{ forms.label(form.categories, class='simple') }}
 							<div class="checklist" style="height: 200px;">
 								{{ forms.field(form.categories, class='inputs-list categorized') }}
 							</div>
 							{{ forms.errors(form.categories) }}
 						</div>
 						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.regions) }}">
-							{{ forms.label(form.regions) }}
+							{{ forms.label(form.regions, class='simple') }}
 							<div class="checklist" style="height: 200px;">
 								{{ forms.field(form.regions, class='inputs-list') }}
 							</div>
@@ -83,7 +181,7 @@
 				</div>
 			</div>
 			
-			<div class="clearfix">
+			{# <div class="clearfix">
 				<div class="input">
 					<div class="row">
 						<div class="span6 formfield clearfix inner-field {{ forms.css_errors(form.traffic) }}">
@@ -106,7 +204,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+		</div> #}
 		</fieldset>
 		<fieldset>
 			<legend>Описание кампании</legend>
@@ -118,22 +216,21 @@
 					data-backdrop="true" data-keyboard="true">(о чем здесь писать?)</a>
 				</div>
 			</div>
-			
-			<div class="actions">
-				<input class="btn large primary" type="submit" value="Создать оффер" />
-			</div>
 		</fieldset>
+		<div class="actions">
+			<input class="btn large primary" type="submit" value="Создать оффер" />
+		</div>
 	</form>
 {% endmacro %}
 
 {% macro postbody() %}
-	<div id="payment-modal" class="modal fade" style="display: none;">
+	<div id="suboffers-modal" class="modal fade" style="display: none;">
 		<div class="modal-header">
 			<a href="#" class="close">×</a>
-			<h3>Оплата оффера</h3>
+			<h3>Действия по офферу</h3>
 		</div>
 		<div class="modal-body">
-			Текст об оплате оффера.
+			Текст о действиях по офферу.
 		</div>
 	</div>
 	<div id="traffic-modal" class="modal fade" style="display: none;">
@@ -143,6 +240,18 @@
 		</div>
 		<div class="modal-body">
 			Текст о выборе типов трафика.
+		</div>
+	</div>
+	<div id="targeting-modal" class="modal fade" style="display: none;">
+		<div class="modal-header">
+			<a href="#" class="close">×</a>
+			<h3>Геотаргетинг</h3>
+		</div>
+		<div class="modal-body">
+			<p>
+				Позволяет фильтровать потенциальных клиентов по IP-адресам,
+				пропуская трафик только из указанных регионов.
+			</p>
 		</div>
 	</div>
 	<div id="description-modal" class="modal fade" style="display: none;">

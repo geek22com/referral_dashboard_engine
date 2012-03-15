@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from wtforms import Form as WTForm
-from wtforms import BooleanField, TextField, PasswordField, \
+from wtforms import FieldList, FormField, BooleanField, TextField, PasswordField, \
 	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField
 from wtforms.fields import Label
 from heymoose import app
@@ -518,6 +518,27 @@ class SiteForm(Form):
 	comment = TextAreaField(u'Комментарий для администрации')
 
 
+class SubOfferForm(Form):
+	description_select = SelectField(u'Название', choices=[
+		(u'Регистрация', u'Регистрация'),
+		(u'Активный пользователь', u'Активный пользователь'),
+		(u'Активный игрок', u'Активный игрок'),
+		(u'', u'другое...')
+	])
+	description = TextField(u'Описание', [
+		validators.Length(min=1, max=30, message=u'Описание должно иметь длину от 1 до 50 символов'),
+		validators.Required(message=u'Введите описание действия')
+	])
+	payment_type = SelectField(u'Тип оплаты', choices=[
+		(0, u'Фиксированная'),
+		(1, u'Процент с заказа или покупки')
+	], coerce=int)
+	payment_value = DecimalField(u'Размер выплаты', [
+		validators.NumberRange(min=0.00, message=u'Введите положительное число'),
+	], default=0.01)
+	reentrant = BooleanField(u'многократ. прохождение', default=True)
+
+
 class OfferForm(Form):
 	name = TextField(u'Название оффера', [
 		validators.Length(min=1, max=100, message=u'Название должно иметь длину от 1 до 100 символов'),
@@ -549,14 +570,7 @@ class OfferForm(Form):
 		(5, u'Контекстная реклама на бренд'),
 		(6, u'Трафик с социальных сетей')
 	], coerce=int)
-	payment_type = SelectField(u'Тип оплаты', choices=[
-		(0, u'Фиксированная за клик'),
-		(1, u'Фиксированная за совершенное действие'),
-		(2, u'Процент с совершенной покупки')
-	], coerce=int)
-	payment_value = DecimalField(u'Размер выплаты', [
-		validators.NumberRange(min=0.00, message=u'Введите положительное число'),
-	], default=0.01)
+	suboffers = FieldList(FormField(SubOfferForm), min_entries=1)
 
 	
 class AppsShowDeletedForm(Form):

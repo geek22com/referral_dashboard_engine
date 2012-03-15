@@ -11,3 +11,8 @@ print order.values()
 print order.user.values()
 print order.stats.values()
 print order.type.name
+
+from heymoose.forms.forms import OfferForm
+
+form = OfferForm()
+print form.suboffers

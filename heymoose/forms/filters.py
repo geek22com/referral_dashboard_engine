@@ -7,6 +7,9 @@ def formfield(field, **kwargs):
 	css_class = kwargs.pop('class', '') or kwargs.pop('class_', '')
 	attrs = dict()
 	
+	if field.default is not None and not hasattr(field.default, '__call__'):
+		attrs['data-default'] = field.default
+	
 	for validator in field.validators:
 		if hasattr(validator, 'css_class') and validator.css_class:
 			css_class += ' ' + validator.css_class

@@ -622,10 +622,12 @@ def misc_site():
 
 @bp.route('/misc/offer', methods=['GET', 'POST'])
 def misc_offer():
+	tmpl = forms.SubOfferForm(prefix='suboffers-0-')
 	form = forms.OfferForm(request.form)
 	if request.method == 'POST' and form.validate():
+		print form.suboffers.data
 		flash(u'Все ОК', 'success')
-	return render_template('admin/misc-offer.html', form=form)
+	return render_template('admin/misc-offer.html', form=form, tmpl=tmpl)
 
 @bp.route('/misc/px')
 def misc_px():

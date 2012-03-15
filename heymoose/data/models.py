@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from heymoose import resource
 from base import models, types, registry
-from base.fields import Field, FieldList
+from base.fields import Field, FieldList, FieldSet
 from functools import partial
+import enums
 
 class ResourceModel(models.ModelBase):
 	resource = None
@@ -66,8 +67,50 @@ class Account(IdentifiableModel):
 	balance = Field(types.Decimal, 'balance')
 	
 class Order(IdentifiableModel):
-	title = Field(types.String, 'title', default=u'UNKNOWN')
+	resource = resource.OrderResource()
+	
+	offer_id = Field(types.Integer, 'offer-id')
+	type = Field(enums.OrderTypes, 'type')
+	
+	account = Field('Account', 'account')
 	user = Field('User', 'user')
+	stats = Field('OrderStat', 'stats')
+	
+	cpa = Field(types.Decimal, 'cpa')
+	title = Field(types.String, 'title')
+	url = Field(types.String, 'url')
+	video_url = Field(types.String, 'video-url')
+	description = Field(types.String, 'description')
+	banners = Field('Banner', 'banners')
+	
+	auto_approve = Field(types.Boolean, 'auto-approve')
+	reentrant = Field(types.Boolean, 'reentrant')
+	
+	male = Field(types.Boolean, 'male')
+	min_age = Field(types.Integer, 'min-age')
+	max_age = Field(types.Integer, 'max-age')
+	min_hour = Field(types.Integer, 'min-hour')
+	max_hour = Field(types.Integer, 'max-hour')
+	
+	city_filter_type = Field(enums.FilterTypes, 'city-filter-type')
+	cities = FieldSet('City', 'cities/city')
+	app_filter_type = Field(enums.FilterTypes, 'app-filter-type')
+	apps = FieldSet('App', 'apps/app')
+	
+	disabled = Field(types.Boolean, 'disabled')
+	paused = Field(types.Boolean, 'paused')
+	creation_time = Field(types.DateTime, 'creation-time')
+	
+class OrderStat(IdentifiableModel):
+	shows_overall = Field(types.Integer, 'shows-overall')
+	actions_overall = Field(types.Integer, 'actions-overall')
+
+class Banner(IdentifiableModel):
+	mime_type = Field(types.String, 'mime-type')
+
+class City(IdentifiableModel):
+	name = Field(types.String, 'name')
+	disabled = Field(types.Boolean, 'disabled')
 
 class App(IdentifiableModel):
 	pass

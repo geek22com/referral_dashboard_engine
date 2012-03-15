@@ -1,5 +1,5 @@
-from types import TypeBase, ModelType, LazyModelType
-import models
+from types import TypeBase, ModelType, LazyModelType, EnumType
+import models, enums
 
 class FieldBase(object):
 	def __init__(self, field_type_class, xpath, readonly=False, **params):
@@ -35,10 +35,12 @@ class FieldBase(object):
 			return LazyModelType(field_type_class, **params)
 		elif issubclass(field_type_class, models.ModelBase):
 			return ModelType(field_type_class, **params)
+		elif issubclass(field_type_class, enums.Enum):
+			return EnumType(field_type_class, **params)
 		elif issubclass(field_type_class, TypeBase):
 			return field_type_class(**params)
 		else:
-			raise TypeError(u'Field type must be subclass of TypeBase, ModelBase or model name')
+			raise TypeError(u'Field type must be subclass of TypeBase, ModelBase, Enum or model name')
 
 
 class Field(FieldBase):
@@ -58,7 +60,7 @@ class FieldCollection(FieldBase):
 		if matched_xml_list:
 			return self.collection_class([self.field_type.parse(matched_xml) for matched_xml in matched_xml_list])
 		else:
-			return [] #self.field_type.default_value()
+			return self.collection_class([]) #self.field_type.default_value()
 
 class FieldList(FieldCollection):
 	collection_class = list

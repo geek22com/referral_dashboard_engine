@@ -30,6 +30,14 @@ class Enum(object):
 	@classmethod
 	def tuples(cls, *attrs):
 		return [(element, ) + tuple(getattr(element, attr) for attr in attrs) for element in cls.elements]
+	
+	@classmethod
+	def has(cls, value):
+		return (value in cls.elements)
+	
+	@classmethod
+	def of(cls, value):
+		return cls.elements[cls.elements.index(value)]
 			
 
 def e(val, **kwargs):

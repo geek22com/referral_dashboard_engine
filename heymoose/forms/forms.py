@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from wtforms import Form, BooleanField, TextField, PasswordField, \
+from wtforms import Form as WTForm
+from wtforms import BooleanField, TextField, PasswordField, \
 	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField
 from wtforms.fields import Label
 from heymoose import app
@@ -40,19 +41,36 @@ regions_choices = [
 ]
 
 
+class Form(WTForm):
+	def process(self, formdata=None, obj=None, **kwargs):
+		if formdata is not None and not hasattr(formdata, 'getlist'):
+			raise TypeError("formdata should be a multidict-type wrapper that supports the 'getlist' method")
+
+		for name, field, in self._fields.iteritems():
+			if obj is not None and hasattr(obj, name):
+				field.process(formdata, getattr(obj, name))
+			elif name in kwargs:
+				field.process(formdata, kwargs[name])
+			else:
+				field.process(formdata)
+	
+	def populate_obj(self, obj):
+		for name, field in self._fields.iteritems():
+			handler = getattr(self, 'populate_' + name, field.populate_obj)
+			handler(obj, name)
+
+
 class CaptchaForm(Form):
 	captcha = TextField(u'', [
 		validators.Required(message=u'Введите число')
 	], description=u'(докажите, что вы не робот)')
 	ch = HiddenField()
 	
-	
 	def __init__(self, formdata=None, obj=None, prefix='', **kwargs):
 		super(CaptchaForm, self).__init__(formdata, obj, prefix, **kwargs)
 		if (formdata is None or 'ch' not in formdata) and obj is None:
 			self.regenerate()
-			
-			
+				
 	def validate_captcha(self, field):
 		answer = self.ch.data
 		guess = self.generate_hash(self.captcha.data)
@@ -61,7 +79,6 @@ class CaptchaForm(Form):
 		if guess != answer:
 			raise ValueError(u'Ответ неверный, попробуйте еще раз')
 			
-	
 	def regenerate(self):
 		first = random.randrange(1000, 9000)
 		second = random.randrange(1, 9)
@@ -69,13 +86,11 @@ class CaptchaForm(Form):
 		self.captcha.data = u''
 		self.ch.data = self.generate_hash(first + second)
 		
-		
 	def generate_hash(self, value):
 		m = hashlib.md5()
 		m.update(u'hey{0}moo{1}se'.format(value, self.captcha.id))
 		return m.hexdigest()
 			
-
 
 class LoginForm(Form):
 	username = TextField(u'E-mail', [validators.Required(message = u'Введите электронный адрес')])

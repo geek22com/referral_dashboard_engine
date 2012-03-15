@@ -14,3 +14,13 @@ class MessengerTypes(Enum):
 	SKYPE = e('SKYPE', name=u'Skype')
 	JABBER = e('JABBER', name=u'Jabber')
 	ICQ = e('ICQ', name=u'ICQ')
+
+class OrderTypes(Enum):
+	REGULAR = e('REGULAR', name=u'обычный')
+	BANNER = e('BANNER', name=u'баннер')
+	VIDEO = e('VIDEO', name=u'видео')
+
+class FilterTypes(Enum):
+	NONE = e('', name=u'не учитывать')
+	INCLUSIVE = e('INCLUSIVE', name=u'только указанные')
+	EXCLUSIVE = e('EXCLUSIVE', name=u'все, кроме указанных')

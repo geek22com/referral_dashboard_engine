@@ -113,3 +113,18 @@ class LazyModelType(ModelType):
 	@model_class.setter
 	def model_class(self, value):
 		self._model_class = value
+
+
+class EnumType(TypeBase):
+	def __init__(self, enum, default=None):
+		super(EnumType, self).__init__(default)
+		self.enum = enum
+	
+	def validate(self, value):
+		if not self.enum.has(value):
+			raise ValueError(u'Invalid value {0} for field with enum type {1}'
+				.format(value, self.enum.__class__.__name__))
+	
+	def parse(self, xml):
+		xmlvalue = xml.text if hasattr(xml, 'text') else xml
+		return self.enum.of(xmlvalue)

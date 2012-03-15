@@ -104,5 +104,5 @@
 		'&offer=' + offer +
 		'&transaction_id=' + transactionId;
 	heymooseCreateScript(url);
-	heymooseDeleteCookie('heymoose_click_id', domain);
+	//heymooseDeleteCookie('heymoose_click_id', domain);
 })();

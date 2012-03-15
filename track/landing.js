@@ -28,8 +28,11 @@
 	if (!domain) return;
 	
 	var matchClickId = /_hm_click_id=(\d+)/i.exec(document.location.href);
-	if (matchClickId && matchClickId.length > 1) {
-		var clickId = matchClickId[1];
-		heymooseSetCookie('heymoose_click_id', clickId, domain, 180);
-	}
+	var clickId = (matchClickId && matchClickId.length > 1) ? matchClickId[1] : null;
+	if (!clickId) return;
+	
+	var matchTtl = /_hm_ttl=(\d+)/i.exec(document.location.href);
+	var ttl = (matchTtl && matchTtl.length > 1) ? matchTtl[1] : 180;
+	
+	heymooseSetCookie('heymoose_click_id', clickId, domain, ttl);
 })();

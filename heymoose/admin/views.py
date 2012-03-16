@@ -638,7 +638,7 @@ def misc_px():
 	acts = DummyAction.query.descending(DummyAction.date).skip(offset).limit(limit)
 	return render_template('admin/misc-px.html', actions=acts.all(), pages=pages)
 
-@bp.route('misc/offer/info')
+@bp.route('/misc/offer/info')
 def misc_offer_info():
 	return render_template('admin/misc-offer-info.html')
 

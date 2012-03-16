@@ -233,12 +233,6 @@ a.danger, a.danger:hover {
 	border-left: 1px solid #ddd;
 }
 
-.roundbox {
-	border: 1px solid #DDDDDD;
-	border-radius: 20px;
-	padding: 5px;
-}
-
 .btn.huge {
 	width: 200px;
 	text-align: center;
@@ -253,48 +247,8 @@ form.validate2 .clearfix.error .errors .help-block {
 	color: #B94A48;
 }
 
-.infopage-sidebar-item {
-	margin-bottom: 20px;
-}
 
-.params-group {
-	box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.5);
-	border-radius: 10px;
-}
 
-.params-group .params-group-header {
-	background-image: -moz-linear-gradient(center top , #5BC0DE, #339BB9);
-	border-radius: 10px 10px 0px 0px;
-	background-color: #5BC0DE;
-	padding: 0px 10px;
-}
-
-.params-group .params-group-header h4 {
-	color: #FFF;
-}
-
-.params-group .params-group-table {
-	border: solid #DDD;
-	border-width: 0px 1px 1px 1px;
-	border-radius: 0px 0px 10px 10px;
-	border-collapse: separate;
-	margin-bottom: 0px;
-}
-
-.params-group .params-group-table td {
-	border: none;
-}
-
-.params-group .params-group-table th {
-	border: none;
-}
-
-.params-group .params-group-body {
-	border: solid #DDD;
-	border-width: 0px 1px 1px 1px;
-	border-radius: 0px 0px 10px 10px;
-	padding: 10px;
-}
 
 .categories-list {
 	list-style: none;
@@ -318,14 +272,86 @@ form.validate2 .clearfix.error .errors .help-block {
 	padding-left: 20px;
 }
 
-.infopage-description ul {
+.redactor-text ul {
 	margin-left: 0px;
 	list-style: none;
 }
 
-.infopage-description ul > li {
+.redactor-text ul > li {
 	color: #404040;
-	background: url('li.gif') no-repeat 0 10px;
-	padding-left: 20px;
+	background: url('li.gif') no-repeat 4px 10px;
+	padding-left: 25px;
+}
+.redactor-text ul > ul {
+	margin-left: 25px;
+}
+
+.redactor-text ol > li {
+	color: #404040;
+}
+
+dl.kv {
+	padding: 0;
+	margin: -10px;
+	margin-bottom: 0;
+	clear: both;
+}
+
+dl.kv:before, dl.kv:after {
+	content: '';
+	display: table;
+}
+
+dl.kv:after {
+	clear: both;
+}
+
+dl.kv dt, dl.kv dd {
+	float: left;
+	margin: 0;
+	padding: 10px;
+}
+
+dl.kv dt {
+	clear: left;
+	font-weight: bold;
+	width: 180px;
+}
+
+.roundbox {
+	border-radius: 10px;
+	box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.5);
+	margin-bottom: 20px;
+}
+
+.roundbox > :first-child {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+
+.roundbox > :last-child {
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.roundbox-header {
+	background-image: -moz-linear-gradient(center top , #049CDB, #0064CD);
+	background-image: -webkit-linear-gradient(top , #049CDB, #0064CD);
+	background-color: #0064CD;
+	font-weight: bold;
+	color: #FFF;
+}
+
+.roundbox-content {
+	/*border: 1px solid #DDD;*/
+	background-color: #DDF4FB;
+}
+
+.roundbox-header, .roundbox-content {
+	padding: 10px;
+}
+
+.roundbox-header + .roundbox-content {
+	border-top: none;
 }
 

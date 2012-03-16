@@ -88,8 +88,8 @@ ul > li {
 	background: url('li.gif') no-repeat 4px 10px;
 	padding-left: 25px;
 }
-ul ul {
-	margin-left: 20px;
+ul > ul {
+	margin-left: 25px;
 }
 
 ol > li {

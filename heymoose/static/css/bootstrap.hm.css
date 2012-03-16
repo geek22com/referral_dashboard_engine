@@ -253,5 +253,79 @@ form.validate2 .clearfix.error .errors .help-block {
 	color: #B94A48;
 }
 
+.infopage-sidebar-item {
+	margin-bottom: 20px;
+}
 
+.params-group {
+	box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.5);
+	border-radius: 10px;
+}
+
+.params-group .params-group-header {
+	background-image: -moz-linear-gradient(center top , #5BC0DE, #339BB9);
+	border-radius: 10px 10px 0px 0px;
+	background-color: #5BC0DE;
+	padding: 0px 10px;
+}
+
+.params-group .params-group-header h4 {
+	color: #FFF;
+}
+
+.params-group .params-group-table {
+	border: solid #DDD;
+	border-width: 0px 1px 1px 1px;
+	border-radius: 0px 0px 10px 10px;
+	border-collapse: separate;
+	margin-bottom: 0px;
+}
+
+.params-group .params-group-table td {
+	border: none;
+}
+
+.params-group .params-group-table th {
+	border: none;
+}
+
+.params-group .params-group-body {
+	border: solid #DDD;
+	border-width: 0px 1px 1px 1px;
+	border-radius: 0px 0px 10px 10px;
+	padding: 10px;
+}
+
+.categories-list {
+	list-style: none;
+	margin: 0px;
+}
+
+.categories-list > li {
+	color: #404040;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.categories-list ul {
+	list-style: none;
+	margin: 0px;
+}
+
+.categories-list ul > li {
+	color: #404040;
+	background: url('li.gif') no-repeat 0 10px;
+	padding-left: 20px;
+}
+
+.infopage-description ul {
+	margin-left: 0px;
+	list-style: none;
+}
+
+.infopage-description ul > li {
+	color: #404040;
+	background: url('li.gif') no-repeat 0 10px;
+	padding-left: 20px;
+}
 

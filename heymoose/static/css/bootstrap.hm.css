@@ -261,6 +261,10 @@ form.validate2 .clearfix.error .errors .help-block {
 	margin-bottom: 10px;
 }
 
+.categories-list > li:last-child {
+	margin-bottom: 0;
+}
+
 .categories-list ul {
 	list-style: none;
 	margin: 0px;
@@ -293,7 +297,6 @@ form.validate2 .clearfix.error .errors .help-block {
 dl.kv {
 	padding: 0;
 	margin: -10px;
-	margin-bottom: 0;
 	clear: both;
 }
 
@@ -335,11 +338,12 @@ dl.kv dt {
 }
 
 .roundbox-header {
-	background-image: -moz-linear-gradient(center top , #049CDB, #0064CD);
-	background-image: -webkit-linear-gradient(top , #049CDB, #0064CD);
+	background-image: -moz-linear-gradient(center top, #049CDB, #0064CD);
+	background-image: -webkit-linear-gradient(top, #049CDB, #0064CD);
 	background-color: #0064CD;
 	font-weight: bold;
 	color: #FFF;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 
 .roundbox-content {

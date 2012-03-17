@@ -271,8 +271,8 @@ form.validate2 .clearfix.error .errors .help-block {
 }
 
 .categories-list ul > li {
-	margin: 0;
-	padding: 0 0 0 0.2em;
+	margin: 0 0 0 1.5em;
+	text-indent: -1.3em;
 	list-style-type: none;
 	behavior: expression(!this.before ? this.before = this.innerHTML = '&mdash;  ' + this.innerHTML : '');
 	color: #404040;
@@ -289,30 +289,29 @@ form.validate2 .clearfix.error .errors .help-block {
 	margin-bottom: 9px;
 }
 
+.redactor-text ul ul, .redactor-text ul ol, .redactor-text ol ul, .redactor-text ol ol {
+	margin-bottom: 0;
+}
+
+.redactor-text ul > *, .redactor-text ol > * {
+	margin: 0 0 0 1.5em;
+	color: #404040;
+}
+
 .redactor-text ul > li {
-	margin: 0;
-	padding: 0 0 0 0.2em;
+	text-indent: -1.3em;
 	list-style-type: none;
 	behavior: expression(!this.before ? this.before = this.innerHTML = '&mdash;  ' + this.innerHTML : '');
-	color: #404040;
+}
+
+.redactor-text ul > li > * {
+	text-indent: 0;
 }
 
 .redactor-text ul > li:before {
 	content: '\2014  ';
 }
 
-.redactor-text ul ul, .redactor-text ul ol, .redactor-text ol ul, .redactor-text ol ol {
-	margin-left: 1.4em;
-	margin-bottom: 0;
-}
-
-.redactor-text ol {
-	list-style-position: inside;
-}
-
-.redactor-text ol > li {
-	color: #404040;
-}
 
 dl.kv {
 	padding: 0;

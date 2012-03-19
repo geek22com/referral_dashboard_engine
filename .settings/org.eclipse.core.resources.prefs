@@ -1,4 +1,4 @@
-#Tue Mar 13 17:41:19 MSK 2012
+#Sun Mar 18 20:55:36 SAMT 2012
 eclipse.preferences.version=1
 encoding//heymoose/__init__.py=utf-8
 encoding//heymoose/admin/views.py=utf-8
@@ -20,6 +20,8 @@ encoding//heymoose/tests/test_data.py=utf-8
 encoding//heymoose/utils/robokassa.py=utf-8
 encoding//heymoose/views/common.py=utf-8
 encoding//heymoose/views/testapi.py=utf-8
+encoding//misc/mkrugparse.py=utf-8
+encoding//misc/yacaparse.py=utf-8
 encoding/config.py=utf-8
 encoding/config_debug.py=utf-8
 encoding/dbfill.py=utf-8

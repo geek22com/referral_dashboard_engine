@@ -59,6 +59,10 @@ dev-db:
 dev-py:
 	$(ENV_PY) $(arg)
 
+deb:
+	debuild -uc -us -b
+	debclean
+
 all:
 	rm -rf ./frontend_deb
 	mkdir ./frontend_deb

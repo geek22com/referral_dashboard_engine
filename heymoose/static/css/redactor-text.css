@@ -1,0 +1,28 @@
+.redactor-text ul, .redactor-text ol {
+	margin: 0;
+	padding: 0;
+	margin-bottom: 9px;
+}
+
+.redactor-text ul ul, .redactor-text ul ol, .redactor-text ol ul, .redactor-text ol ol {
+	margin-bottom: 0;
+}
+
+.redactor-text ul > *, .redactor-text ol > * {
+	margin: 0 0 0 1.5em;
+	color: #404040;
+}
+
+.redactor-text ul > li {
+	text-indent: -1.3em;
+	list-style-type: none;
+	behavior: expression(!this.before ? this.before = this.innerHTML = '&mdash;  ' + this.innerHTML : '');
+}
+
+.redactor-text ul > li > * {
+	text-indent: 0;
+}
+
+.redactor-text ul > li:before {
+	content: '\2014  ';
+}

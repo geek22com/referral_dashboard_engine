@@ -1,0 +1,80 @@
+ul.dashed-list, ol.enumerated-list {
+	margin: 0;
+	padding: 0;
+	margin-bottom: 9px;
+}
+
+ul.dashed-list ul, ul.dashed-list ol,
+ul.toplevel-list ul, ul.toplevel-list ol,
+ol.enumerated-list ul, ol.enumerated-list ol {
+	margin-bottom: 0;
+}
+
+ul.dashed-list > *, ol.enumerated-list > * {
+	margin: 0 0 0 1.5em;
+	color: #404040;
+}
+
+ul.dashed-list > li {
+	text-indent: -1.3em;
+	list-style-type: none;
+	behavior: expression(!this.before ? this.before = this.innerHTML = '&mdash;  ' + this.innerHTML : '');
+}
+
+ul.dashed-list > li > * {
+	text-indent: 0;
+}
+
+ul.dashed-list > li:before {
+	content: '\2014  ';
+}
+
+
+ul.toplevel-list {
+	list-style: none;
+	margin: 0px;
+}
+
+ul.toplevel-list > li {
+	color: #404040;
+	font-weight: bold;
+	margin-bottom: 9px;
+}
+
+ul.toplevel-list.toplevel-list--no-bottom-margin > li:last-child {
+	margin-bottom: 0;
+}
+
+
+dl.kv {
+	padding: 0;
+	clear: both;
+}
+
+dl.kv:before, dl.kv:after {
+	content: '';
+	display: table;
+}
+
+dl.kv:after {
+	clear: both;
+}
+
+dl.kv dt, dl.kv dd {
+	float: left;
+	margin: 0;
+	padding: 10px;
+}
+
+dl.kv dt {
+	clear: left;
+	font-weight: bold;
+}
+
+dl.kv.kv--inscribed {
+	margin: -10px;
+}
+
+dl.kv.kv--key180 dt {
+	width: 180px;
+}

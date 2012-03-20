@@ -1,5 +1,5 @@
-import os
 from setuptools import setup, find_packages
+import os, re
 
 # Utility function to read the README file.
 # Used for the long_description.  It's nice, because now 1) we have a top level
@@ -8,6 +8,34 @@ from setuptools import setup, find_packages
 def read(fname):
 	return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+# Next two functions are nice shortcut for parsing pip requirements file
+# instead of manually specifying dependencies in setup call below.
+# Links:
+#     http://cburgmer.posterous.com/pip-requirementstxt-and-setuppy
+#     https://github.com/cburgmer/pdfserver/blob/master/setup.py
+def parse_requirements(file_name):
+	requirements = []
+	for line in open(file_name, 'r').read().split('\n'):
+		if re.match(r'(\s*#)|(\s*$)', line):
+			continue
+		if re.match(r'\s*-e\s+', line):
+			# TODO support version numbers
+			requirements.append(re.sub(r'\s*-e\s+.*#egg=(.*)$', r'\1', line))
+		elif re.match(r'\s*-f\s+', line):
+			pass
+		else:
+			requirements.append(line)
+	return requirements
+
+def parse_dependency_links(file_name):
+	dependency_links = []
+	for line in open(file_name, 'r').read().split('\n'):
+		if re.match(r'\s*-[ef]\s+', line):
+			dependency_links.append(re.sub(r'\s*-[ef]\s+', '', line))
+	return dependency_links
+
+# Finds package data with specified file extensions in root_dir and
+# represents it in format for setup package_data parameter.
 def find_package_data(root_dir, exts):
 	data = []
 	for root, _dirnames, filenames in os.walk(root_dir):
@@ -27,9 +55,9 @@ setup(
 	url = "https://github.com/kshilov/frontend",
 	packages=find_packages(),
 	include_package_data = True,
-	package_data = find_package_data('./heymoose', ('.html', '.css', '.js', '.png', '.gif', '.jpg', '.ico')),
-	install_requires = ['flask>=0.7', 'wtforms', 'flask-mongoalchemy', 'uwsgi',
-						'lxml', 'restkit', 'amqplib', 'python-dateutil==1.5', 'PIL', 'PyCrypto'],
-	long_description=read('README'),
+	package_data = find_package_data('./heymoose', tuple('.html .css .js .png .gif .jpg .ico'.split())),
+	install_requires = parse_requirements('reqs.pip'),
+	dependency_links = parse_dependency_links('reqs.pip'),
+	long_description=read('README')
 )
 

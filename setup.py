@@ -36,6 +36,7 @@ def parse_dependency_links(file_name):
 
 # Finds package data with specified file extensions in root_dir and
 # represents it in format for setup package_data parameter.
+# ! Deprecated: now using MANIFEST.in instead.
 def find_package_data(root_dir, exts):
 	data = []
 	for root, _dirnames, filenames in os.walk(root_dir):
@@ -55,7 +56,7 @@ setup(
 	url = "https://github.com/kshilov/frontend",
 	packages=find_packages(),
 	include_package_data = True,
-	package_data = find_package_data('./heymoose', tuple('.html .css .js .png .gif .jpg .ico'.split())),
+	#package_data = find_package_data('./heymoose', tuple('.html .css .js .png .gif .jpg .ico'.split())),
 	install_requires = parse_requirements('reqs.pip'),
 	dependency_links = parse_dependency_links('reqs.pip'),
 	long_description=read('README')

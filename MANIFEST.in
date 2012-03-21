@@ -1,0 +1,2 @@
+include reqs.pip
+recursive-include heymoose *.html

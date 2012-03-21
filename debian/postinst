@@ -23,17 +23,14 @@ case "$1" in
 	useradd -M -s /sbin/nologin frontend || true
 	useradd -M -s /sbin/nologin notifier || true
 	useradd -M -s /sbin/nologin uwsgi || true
-	mkdir /var/log/uwsgi || true
+	mkdir -p /var/log/uwsgi || true
 	chown -R uwsgi /var/log/uwsgi || true
 	/usr/sbin/update-rc.d -f uwsgi defaults || true
 	
 	#install python frontend package. (If you know how install dependencies from setup.py with deb, then refact deb)
-	cd /tmp/
-	tar -xzf frontend_deb.tar.gz
-	cd frontend_deb
+	cd /tmp/frontend && ARCH=`ls frontend-*.tar.gz`; tar -xzvf ${ARCH} && cd ${ARCH%.tar.gz}
 	python setup.py install
-	cd ../
-	rm -rf frontend_deb*
+	rm -rf /tmp/frontend
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

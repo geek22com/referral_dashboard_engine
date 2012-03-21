@@ -1,14 +1,13 @@
 Source: frontend
-Section: unknown
+Section: python
 Priority: extra
-Maintainer: unknown <ksshilov@unknown>
-Build-Depends: cdbs, debhelper (>= 7.0.50~)
+Maintainer: HeyMoose <info@heymoose.com>
+Build-Depends: cdbs, debhelper (>= 7.0.50~), python-setuptools (>= 0.6b3)
 Standards-Version: 3.9.1
-Homepage: <insert the upstream URL, if relevant>
-#Vcs-Git: git://git.debian.org/collab-maint/frontend.git
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/frontend.git;a=summary
+Homepage: http://heymoose.com
 
 Package: frontend
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libxml2, libxml2-dev, libxslt1.1, libxslt1-dev, nginx (>= 1.0.6), python-dev, mongodb-10gen, rabbitmq-server
-Description: Heymoose frontend on flask
+Description: HeyMoose frontend
+ Web application for HeyMoose project.

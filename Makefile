@@ -24,8 +24,6 @@ PYTHONBREW = $(PYTHONBREW_PATH)/bin/pythonbrew
 dev-install-deps:
 	echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" > \
 		/etc/apt/sources.list.d/heymoose-frontend-dev.list
-	#apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
-	#apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
 	apt-get update
 	apt-get install build-essential libxml2 libxml2-dev libxslt1.1 libxslt1-dev \
 		python-pip python-dev python-virtualenv mongodb-10gen curl
@@ -64,18 +62,10 @@ deb:
 	debclean
 
 all:
-	rm -rf ./frontend_deb
-	mkdir ./frontend_deb
-	cp -rf ./heymoose ./frontend_deb/
-	cp README ./frontend_deb/
-	cp ./frontend_nginx.conf ./frontend_deb/
-	cp ./heymoose_production.py ./frontend_deb/
-	cp ./setup.py ./frontend_deb/
-	cp ./reqs.pip ./frontend_deb/
-	cp ./uwsgi ./frontend_deb/
-	tar czf frontend_deb.tar.gz ./frontend_deb
-	rm -rf ./frontend_deb
+	$(ENV_PY) setup.py -q sdist
 
 clean:
 	rm -rf frontend_deb*
-	rm -rf $(CURDIR)/debian/frontend
+	rm -rf debian/frontend
+	rm -rf dist
+	rm -rf *.egg-info

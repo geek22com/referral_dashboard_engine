@@ -1,5 +1,5 @@
 frontend (1.0-1) unstable; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Package for HeyMoose frontend
 
- -- unknown <ksshilov@unknown>  Tue, 27 Sep 2011 10:29:41 +0000
+ -- HeyMoose <info@heymoose.com>  Tue, 21 Mar 2012 00:00:00 +0400

@@ -54,21 +54,6 @@
 		</div>
 	</div>
 	<div class="clearfix">
-		{{ forms.label(form.hold_days) }}
-		<div class="input">
-			<div class="row">
-				<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.hold_days) }}">
-					{{ forms.field(form.hold_days, class='span3 right') }} дней
-					{{ forms.errors(form.hold_days) }}
-				</div>
-				<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.reentrant) }}" style="width: 180px;">
-					{{ forms.field(form.reentrant) }} {{ forms.label(form.reentrant, class='simple') }}
-					{{ forms.errors(form.reentrant) }}
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="clearfix">
 		<label class="required">Оплата</label>
 		<div class="input">
 			<div class="row">
@@ -84,16 +69,34 @@
 			</div>
 		</div>
 	</div>
+	<div class="clearfix">
+		{{ forms.label(form.hold_days) }}
+		<div class="input">
+			<div class="row">
+				<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.hold_days) }}">
+					{{ forms.field(form.hold_days, class='span3 right') }} дней
+					{{ forms.errors(form.hold_days) }}
+				</div>
+				<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.reentrant) }}" style="width: 180px;">
+					{{ forms.field(form.reentrant) }} {{ forms.label(form.reentrant, class='simple') }}
+					{{ forms.errors(form.reentrant) }}
+				</div>
+			</div>
+		</div>
+	</div>
 {% endmacro %}
 
-{% macro suboffer_html(form) %}
-	<form method="post" action="" class="widelabels validate2" enctype="multipart/form-data">
+{% macro suboffer_html(form, wide=true) %}
+	<form method="post" action="" class="{{ 'widelabels' if wide }} validate2" enctype="multipart/form-data">
 		<fieldset>
 			<div class="input">
 				<span class="help-block">* Поля, выделенные <b>жирным шрифтом</b>, обязательны для заполнения.</span>
 			</div>
 		</fieldset>
 		<fieldset>
+			{% for name, value in kwargs.iteritems() %}
+			<input type="hidden" name="{{ name }}" value="{{ value }}" />
+			{% endfor %}
 			{{ suboffer_html_base(form) }}
 		</fieldset>
 		<div class="actions">
@@ -137,7 +140,7 @@
 			<span class="help-block">
 				Принимаются изображения в формате JPG (JPEG), GIF, PNG. Максимальный
 				размер загружаемого изображения &mdash; 1Мб. После загрузки изображение
-				будет сжато до размера ...
+				будет вписано в размер 150&nbsp;х&nbsp;100 пикселей.
 			</span>
 			{% endcall %}
 		</fieldset>

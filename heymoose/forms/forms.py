@@ -526,7 +526,7 @@ class SubOfferForm(Form):
 		(u'', u'другое...')
 	])
 	description = TextField(u'Описание', [
-		validators.Length(min=1, max=30, message=u'Описание должно иметь длину от 1 до 50 символов'),
+		validators.Length(min=1, max=50, message=u'Описание должно иметь длину от 1 до 50 символов'),
 		validators.Required(message=u'Введите описание действия')
 	])
 	payment_type = SelectField(u'Тип оплаты', choices=[
@@ -535,12 +535,12 @@ class SubOfferForm(Form):
 	], coerce=int)
 	payment_value = DecimalField(u'Размер выплаты', [
 		validators.NumberRange(min=0.00, message=u'Введите положительное число'),
-	], default=0.01)
+	], default=1.00)
 	reentrant = BooleanField(u'многократ. прохождение', default=True)
 	hold_days = IntegerField(u'Время холда', [
 		validators.NumberRange(min=1, max=360, message=u'Время холда должно быть в интервале от 1 до 360 дней'),
 		validators.Required(message=u'Введите время холда')
-	])
+	], default=30)
 
 
 class OfferForm(Form):

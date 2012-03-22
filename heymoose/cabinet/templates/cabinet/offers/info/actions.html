@@ -11,7 +11,7 @@
 		<th class="header right">Оплата</th>
 		<th class="header center">Многокр. прохождение</th>
 		<th class="header right">Время холда</th>
-		<th class="header center" colspan="2">Опции</th>
+		<th class="header center"></th>
 	</thead>
 	<tbody>
 		<tr>
@@ -19,24 +19,30 @@
 			<td class="right">30.00&nbsp;руб.</td>
 			<td class="center">{{ macros.to_icon(false) }}</td>
 			<td class="right">30 дней</td>
-			<td class="center"><a href="#">изменить</a></td>
-			<td class="center"></td>
+			<td class="center">
+				<a href="#" data-controls-modal="suboffer-modal-1"
+				 data-backdrop="true" data-keyboard="true">изменить</a>
+			</td>
 		</tr>
 		<tr>
 			<td>Пополнение счета в платежной системе</td>
 			<td class="right">50.00&nbsp;руб.</td>
 			<td class="center">{{ macros.to_icon(true) }}</td>
 			<td class="right">30 дней</td>
-			<td class="center"><a href="#">изменить</a></td>
-			<td class="center"><a href="#" class="danger">удалить</a></td>
+			<td class="center">
+				<a href="#" data-controls-modal="suboffer-modal-2"
+				 data-backdrop="true" data-keyboard="true">изменить</a>
+			</td>
 		</tr>
 		<tr>
 			<td>Покупка товара</td>
 			<td class="right">5&nbsp;%</td>
 			<td class="center">{{ macros.to_icon(true) }}</td>
 			<td class="right">30 дней</td>
-			<td class="center"><a href="#">изменить</a></td>
-			<td class="center"><a href="#" class="danger">удалить</a></td>
+			<td class="center">
+				<a href="#" data-controls-modal="suboffer-modal-3"
+				 data-backdrop="true" data-keyboard="true">изменить</a>
+			</td>
 		</tr>
 	</tbody>
 </table>
@@ -46,4 +52,34 @@
 	{{ offer_form.suboffer_html(form) }}
 </div>
 
+{% endblock %}
+
+{% block postbody %}
+	<div id="suboffer-modal-1" class="modal fade" style="display: none; width: 640px;">
+		<div class="modal-header">
+			<a href="#" class="close">×</a>
+			<h3>Изменение действия</h3>
+		</div>
+		<div class="modal-body">
+			{{ offer_form.suboffer_html(form, wide=false, suboffer_id=1) }}
+		</div>
+	</div>
+	<div id="suboffer-modal-2" class="modal fade" style="display: none; width: 640px;">
+		<div class="modal-header">
+			<a href="#" class="close">×</a>
+			<h3>Изменение действия</h3>
+		</div>
+		<div class="modal-body">
+			{{ offer_form.suboffer_html(form, wide=false, suboffer_id=2) }}
+		</div>
+	</div>
+	<div id="suboffer-modal-3" class="modal fade" style="display: none; width: 640px;">
+		<div class="modal-header">
+			<a href="#" class="close">×</a>
+			<h3>Изменение действия</h3>
+		</div>
+		<div class="modal-body">
+			{{ offer_form.suboffer_html(form, wide=false, suboffer_id=3) }}
+		</div>
+	</div>
 {% endblock %}

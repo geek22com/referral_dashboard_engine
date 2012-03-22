@@ -99,8 +99,16 @@
 	</div>
 	<div class="span5" style="width: 300px;">
 		<div class="roundbox roundbox--primary roundbox--shadowed">
-			<div class="roundbox-header">Информация</div>
+			<div class="roundbox-header">
+				<a href="{{ url_for('.offers_info_edit', id=offer.id) }}"
+				 class="roundbox-header-link">изменить &raquo;</a>
+				Информация
+			</div>
 			<div class="roundbox-content">
+				<div class="center clearfix" style="margin: 20px 0;">
+					<img src="{{ url_for('static', filename='img/partners/hse.gif') }}"
+					 alt="Крутой оффер" width="150" />
+				</div>
 				<dl class="kv kv--inscribed kv--key180">
 					<dt>Дата запуска</dt><dd>16.03.2012</dd>
 					<dt>Время жизни cookie</dt><dd>30 дней</dd>
@@ -112,7 +120,11 @@
 			</div>
 		</div>
 		<div class="roundbox roundbox--primary roundbox--shadowed">
-			<div class="roundbox-header">Показатели</div>
+			<div class="roundbox-header">
+				<a href="{{ url_for('.offers_info_stats', id=offer.id) }}"
+				 class="roundbox-header-link">статистика &raquo;</a>
+				Показатели
+			</div>
 			<div class="roundbox-content">
 				<dl class="kv kv--inscribed kv--key180">
 					<dt>eCPC</dt><dd>1.43 руб.</dd>

@@ -23,6 +23,12 @@
 	background-color: #E6E6E6;
 }
 
+.roundbox-header-link {
+	float: right;
+	font-weight: normal;
+	text-shadow: none;
+}
+
 .roundbox-content {
 
 }
@@ -54,6 +60,13 @@
 .roundbox.roundbox--warning .roundbox-header,
 .roundbox.roundbox--danger .roundbox-header {
 	border: none;
+	color: #FFF;
+}
+
+.roundbox.roundbox--primary .roundbox-header-link,
+.roundbox.roundbox--success .roundbox-header-link,
+.roundbox.roundbox--warning .roundbox-header-link,
+.roundbox.roundbox--danger .roundbox-header-link {
 	color: #FFF;
 }
 

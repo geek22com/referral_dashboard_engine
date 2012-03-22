@@ -46,13 +46,20 @@
 {% endmacro %}
 
 {% macro suboffer_html_base(form) %}
-	<div class="clearfix">
+	<div class="clearfix formfield {{ forms.css_errors(form.description) }}">
 		{{ forms.label(form.description) }}
 		<div class="input">
+			{{ forms.field(form.description, class='span7', style='width: 420px;') }}
+			{{ forms.errors(form.description) }}
+		</div>
+	</div>
+	<div class="clearfix">
+		{{ forms.label(form.hold_days) }}
+		<div class="input">
 			<div class="row">
-				<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.description) }}">
-					{{ forms.field(form.description, class='span4') }}
-					{{ forms.errors(form.description) }}
+				<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.hold_days) }}">
+					{{ forms.field(form.hold_days, class='span3 right') }} дней
+					{{ forms.errors(form.hold_days) }}
 				</div>
 				<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.reentrant) }}" style="width: 180px;">
 					{{ forms.field(form.reentrant) }} {{ forms.label(form.reentrant, class='simple') }}

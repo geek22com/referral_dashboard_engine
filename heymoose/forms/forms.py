@@ -537,6 +537,10 @@ class SubOfferForm(Form):
 		validators.NumberRange(min=0.00, message=u'Введите положительное число'),
 	], default=0.01)
 	reentrant = BooleanField(u'многократ. прохождение', default=True)
+	hold_days = IntegerField(u'Время холда', [
+		validators.NumberRange(min=1, max=360, message=u'Время холда должно быть в интервале от 1 до 360 дней'),
+		validators.Required(message=u'Введите время холда')
+	])
 
 
 class OfferForm(Form):

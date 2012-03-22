@@ -103,7 +103,6 @@
 			<div class="roundbox-content">
 				<dl class="kv kv--inscribed kv--key180">
 					<dt>Дата запуска</dt><dd>16.03.2012</dd>
-					<dt>Время холда</dt><dd>30 дней</dd>
 					<dt>Время жизни cookie</dt><dd>30 дней</dd>
 				</dl>
 				<p>
@@ -123,7 +122,11 @@
 			</div>
 		</div>
 		<div class="roundbox roundbox--primary roundbox--shadowed">
-			<div class="roundbox-header">Оплата за действия</div>
+			<div class="roundbox-header">
+				<a href="{{ url_for('.offers_info_actions', id=offer.id) }}"
+				 class="roundbox-header-link">подробно &raquo;</a>
+				Оплата за действия
+			</div>
 			<div class="roundbox-content">
 				<dl class="kv kv--inscribed kv--key180">
 					<dt>Регистрация</dt><dd>30.00 руб.</dd>

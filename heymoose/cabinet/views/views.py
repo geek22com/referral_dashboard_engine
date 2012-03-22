@@ -9,7 +9,7 @@ from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.utils.gen import generate_password_hash
 from heymoose.views.common import json_get_ctr
 from heymoose.mail import transactional as mail
-from decorators import customer_only, developer_only, partner_only
+from heymoose.cabinet.decorators import customer_only, developer_only, partner_only
 from datetime import datetime
 import base64
 

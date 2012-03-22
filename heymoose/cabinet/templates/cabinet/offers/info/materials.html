@@ -1,0 +1,31 @@
+{% extends "cabinet/offers/info/layout.html" %}
+
+{% set activetab = 'materials' %}
+
+{% block tabcontent %}
+
+<table class="bordered-table zebra-striped nosort banners-table">
+	<thead>
+		<th class="header center">Формат</th>
+		<th class="header center">Размер</th>
+		<th class="header right">eCPC, руб.</th>
+		<th class="header right">eCPM, руб.</th>
+		<th class="header center minimal-width"></th>
+	</thead>
+	<tbody>
+		{% for i in range(5) %}
+		<tr>
+			<td class="center">GIF</td>
+			<td class="center">100 x 100</td>
+			<td class="right">1.52</td>
+			<td class="right">13.65</td>
+			<td class="center"><a href="#" class="danger">удалить</a></td>
+		</tr>
+		<tr>
+			<td colspan="5"><img src="{{ url_for('static', filename='img/partners/playflock.jpg')}}" alt="" /></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+{% endblock %}

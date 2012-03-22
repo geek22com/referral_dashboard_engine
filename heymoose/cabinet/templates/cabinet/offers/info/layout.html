@@ -1,0 +1,44 @@
+{% extends "cabinet/layout.html" %}
+
+{% block title %}Оффер &laquo;Инкубатор HSE&raquo;{% endblock %}
+
+{% set activemenu = 'offers' %}
+
+{% block extrahead %}
+{{ super() }}
+{% set activetab = activetab|default('info') %}
+<script type="text/javascript">
+	$(function() { 
+		$('li#tab-{{ activetab }}').addClass('active');
+	})
+</script>
+{% endblock %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Офферы', url_for('.offers_list')) }}
+	{{ macros.breadcrumb(self.title(), url_for('.offers_info', id=offer.id)) }}
+{% endblock %}
+
+{% block pageheader %}
+<h1>{{ self.title() }}</h1>
+{% endblock %}
+
+{% block content %}
+<ul class="tabs">
+	<li id="tab-info"><a href="{{ url_for('.offers_info', id=offer.id) }}">Описание</a></li>
+	{% if g.user.is_advertiser %}
+	<li id="tab-edit"><a href="{{ url_for('.offers_info_edit', id=offer.id) }}">Редактировать</a></li>
+	{% endif %}
+	<li id="tab-actions"><a href="{{ url_for('.offers_info_actions', id=offer.id) }}">Действия</a></li>
+	<li id="tab-materials"><a href="{{ url_for('.offers_info_materials', id=offer.id) }}">Рекламные материалы</a></li>
+	{% if g.user.is_advertiser %}
+	<li id="tab-partners"><a href="{{ url_for('.offers_info_partners', id=offer.id) }}">Партнеры</a></li>
+	<li id="tab-balance"><a href="{{ url_for('.offers_info_balance', id=offer.id) }}">Операции со счетом</a></li>
+	{% endif %}
+	<li id="tab-stats"><a href="{{ url_for('.offers_info_stats', id=offer.id) }}">Статистика</a></li>
+</ul>
+
+{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+{% endblock %}
+

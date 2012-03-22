@@ -1,0 +1,22 @@
+{% extends "cabinet/offers/layout.html" %}
+{% import 'common/forms/offer.html' as offer_form %}
+
+{% set activetab = 'new' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ offer_form.head() }}
+{% endblock %}
+
+{% block tabcontent %}
+
+<div class="form-container">
+	{{ offer_form.html(form, tmpl) }}
+</div>
+
+{% endblock %}
+
+{% block postbody %}
+	{{ super() }}
+	{{ offer_form.postbody() }}
+{% endblock %}

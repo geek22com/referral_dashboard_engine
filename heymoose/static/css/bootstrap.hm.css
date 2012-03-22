@@ -229,7 +229,7 @@ a.danger, a.danger:hover {
 	border-top: 0px;
 }
 
-.bordered-table thead tr.subrow th {
+.bordered-table tr.subrow > * {
 	border-left: 1px solid #ddd;
 }
 

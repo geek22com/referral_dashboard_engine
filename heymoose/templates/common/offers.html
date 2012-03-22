@@ -1,0 +1,78 @@
+{% import 'common/macros.html' as macros %}
+
+{% macro table(offers) %}
+	<table class="bordered-table nosort offers-table">
+		<thead>
+			<tr>
+				<th class="header center" rowspan="2">Оффер</th>
+				<th class="header center" colspan="3">Действия</th>
+				<th class="header center" colspan="3">Показатели</th>
+				<th class="header" rowspan="2">Регионы</th>
+				<th class="header" rowspan="2">Категории</th>
+			</tr>
+			<tr class="subrow">
+				<th class="header">Название</th>
+				<th class="header right">Оплата</th>
+				<th class="header center">Многокр.</th>
+				
+				<th class="header right">eCPC,&nbsp;руб.</th>
+				<th class="header right">eCPM,&nbsp;руб.</th>
+				<th class="header right">CR,&nbsp;%</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for i in range(5) %}
+			<tr>
+				<td class="center" rowspan="3">
+					<a href="{{ url_for('.offers_info', id=1) }}">
+						<div>
+							<img src="{{ url_for('static', filename='img/partners/hse.gif') }}"
+							alt="Крутой оффер" width="150" />
+						</div>
+						Инкубатор HSE
+					</a>
+				</td>
+				
+				<td>Регистрация</td>
+				<td class="right">30.00&nbsp;руб.</td>
+				<td class="center">{{ macros.to_icon(false) }}</td>
+				
+				<td class="right" rowspan="3">1.43</td>
+				<td class="right" rowspan="3">15.70</td>
+				<td class="right" rowspan="3">1.52</td>
+				
+				<td rowspan="3">Россия, СНГ, Германия, Италия, Франция, Фареры</td>
+				<td rowspan="3">
+					<ul class="toplevel-list toplevel-list--no-bottom-margin">
+						<li>
+							Страхование и финансы
+							<ul class="dashed-list">
+								<li>Авто-страхование</li>
+								<li>Кредитные карты</li>
+							</ul>
+						</li>
+						<li>
+							Компьютеры и электроника
+							<ul class="dashed-list">
+								<li>Мобильные портативные устройства для станков с ЧПУ</li>
+								<li>Фототехника</li>
+								<li>Компьютеры и ноутбуки</li>
+							</ul>
+						</li>
+					</ul>
+				</td>
+			</tr>
+			<tr class="subrow">
+				<td>Пополнение счета в платежной системе</td>
+				<td class="right">50.00&nbsp;руб.</td>
+				<td class="center">{{ macros.to_icon(true) }}</td>
+			</tr>
+			<tr class="subrow">
+				<td>Покупка товара</td>
+				<td class="right">5&nbsp;%</td>
+				<td class="center">{{ macros.to_icon(true) }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endmacro %}

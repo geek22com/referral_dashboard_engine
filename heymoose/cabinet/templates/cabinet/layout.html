@@ -29,6 +29,7 @@
 
 {% block prebrand %}Личный кабинет{% endblock %}
 
+{% set topbar_fluid = true %}
 {% block topbar %}
 <ul class="nav">
 	{% if g.user.is_customer() %}
@@ -36,6 +37,9 @@
 	{% endif %}
 	{% if g.user.is_developer() %}
 	<li id="menu-item-apps"><a href="{{ url_for('.apps') }}">Приложения</a></li>
+	{% endif %}
+	{% if g.user.is_advertiser or g.user.is_partner %}
+	<li id="menu-item-offers"><a href="{{ url_for('.offers_list') }}">Офферы</a></li>
 	{% endif %}
 	<li id="menu-item-info"><a href="{{ url_for('.info') }}">Профиль</a></li>
 </ul>

@@ -1,0 +1,36 @@
+{% extends "cabinet/offers/layout.html" %}
+{% import 'common/offers.html' as offer_macros %}
+
+{% set content_fluid = true %}
+{% set activetab = 'list' %}
+
+{% block tabcontent %}
+
+{{ offer_macros.table(null) }}
+
+{#
+{% if offers %}
+	{% call(head, order) order_macros.table(orders, orders_config) %}{% endcall %}
+	{{ macros.paginate(pages, '.orders') }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		{% if g.user.is_advertiser %}
+		<p><strong>Список пуст.</strong> Вы еще не создали ни одного оффера.</p>
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.offers_new') }}">Создать оффер</a>
+		</div>
+		{% elif g.user.is_partner %}
+		<p>
+			<strong>Список пуст.</strong>
+			Вы еще не добавили ни одного оффера. Найдите в нашем каталоге офферы,
+			подходящие для ваших площадок, и начните сотрудничать с рекламодателями.
+		</p>
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.offers_all') }}">Перейти в каталог</a>
+		</div>
+		{% endif %}
+	</div>
+{% endif %}
+#}
+
+{% endblock %}

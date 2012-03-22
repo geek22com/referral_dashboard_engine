@@ -56,9 +56,6 @@ class User(BaseModel):
 
 	def is_developer(self):
 		return roles.DEVELOPER in self.roles
-	
-	def is_partner(self):
-		return roles.PARTNER in self.roles
 
 	def is_customer(self):
 		return roles.CUSTOMER in self.roles
@@ -68,6 +65,14 @@ class User(BaseModel):
 
 	def is_somebody(self):
 		return len(self.roles) > 0
+	
+	@property
+	def is_advertiser(self):
+		return self.is_customer()
+	
+	@property
+	def is_partner(self):
+		return self.is_developer()
 	
 	def full_name(self):
 		return u'{0} {1}'.format(self.first_name, self.last_name)

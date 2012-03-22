@@ -81,14 +81,16 @@
 
 {% macro suboffer_html(form) %}
 	<form method="post" action="" class="widelabels validate2" enctype="multipart/form-data">
-		<div class="input">
-			<span class="help-block">* Поля, выделенные <b>жирным шрифтом</b>, обязательны для заполнения.</span>
-		</div>
+		<fieldset>
+			<div class="input">
+				<span class="help-block">* Поля, выделенные <b>жирным шрифтом</b>, обязательны для заполнения.</span>
+			</div>
+		</fieldset>
 		<fieldset>
 			{{ suboffer_html_base(form) }}
 		</fieldset>
 		<div class="actions">
-			<input class="btn large primary" type="submit" value="Создать шаг выполнения" />
+			<input class="btn primary" type="submit" value="Добавить действие" />
 		</div>
 	</form>
 {% endmacro %}

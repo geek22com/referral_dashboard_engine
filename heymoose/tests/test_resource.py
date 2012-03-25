@@ -1,18 +1,16 @@
-from heymoose.data.models import User, Order
+# -*- coding: utf-8 -*-
+from heymoose.resource import UserResource
 
-user = User.resource.get_by_id(2)
-print user.id, user.email, user.roles, user.developer_account, user.customer_account, user.orders
 
-account = user.developer_account or user.customer_account
-print account.id, account.balance
+r = UserResource()
 
-order = Order.resource.get_by_id(1)
-print order.values()
-print order.user.values()
-print order.stats.values()
-print order.type.name
+users = r.list(limit=100)
+for user in users:
+	print user.first_name, user.last_name, user.roles
 
-from heymoose.forms.forms import OfferForm
+user = users[1]
+user.first_name = u'Петр'
+user.last_name = u'Грачев'
+r.update(user)
 
-form = OfferForm()
-print form.suboffers
+print r.count()

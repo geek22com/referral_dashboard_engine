@@ -1,8 +1,8 @@
-from backend import ModelResource
+from backend import BackendResource
+from heymoose.data.models import Order
 
-class OrderResource(ModelResource):
-	model_name = 'Order'
+class OrderResource(BackendResource):
 	base_path = '/orders'
 	
 	def get_by_id(self, id, **kwargs):
-		return self.model(self.path(id).get(**kwargs))
+		return Order(self.path(id).get(**kwargs))

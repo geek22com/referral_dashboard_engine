@@ -1,12 +1,11 @@
 from heymoose import app
-from heymoose.data.base import registry
 from restkit import Resource
 from restkit.errors import ResourceError
 from lxml import etree
 import urlparse
 
 
-class PathRequest(object):
+class RequestBuilder(object):
 	def __init__(self, resource, part):
 		self.resource = resource
 		self.parts = [str(part)]
@@ -24,6 +23,73 @@ class PathRequest(object):
 	def delete(self, **kwargs): return self.resource.delete(self.build(), **kwargs)
 
 
+class ResponseRenderer(object):
+	def __init__(self, response):
+		self.response = response
+	
+	def as_xml(self): return etree.fromstring(self.response)
+	def as_xmlvalue(self, vtype): return vtype(self.as_xml().text)
+	def as_obj(self, model): return model(self.as_xml())
+	def as_objlist(self, model): return [model(xml) for xml in self.as_xml()]
+	def as_str(self): return unicode(self.response)
+	def as_int(self): return int(self.response)
+	def render(self, fun): return fun(self.response)
+
+
+class ParamsExtractor(object):	
+	def __init__(self, aliases=None):
+		self.aliases = aliases or {}
+	
+	def alias(self, **aliases):
+		self.aliases.update(aliases)
+		return self
+	
+	def extract(self, obj, required=[], optional=[], updated=[]):
+		params = {}
+		for param in required:
+			params[param] = self._extract_param(obj, param)
+		for param in optional:
+			try:
+				params[param] = self._extract_param(obj, param)
+			except ValueError:
+				pass
+		for param in updated:
+			value, updated = self._extract_updated_param(obj, param)
+			if updated: params[param] = value
+		return params
+	
+	def _extract_param(self, obj, param):
+		alias = self.aliases.get(param, None) or param
+		attr_chain = alias.split('.')
+		
+		value = obj
+		for attr_name in attr_chain:
+			if value is None: break
+			value = getattr(value, attr_name)
+		if value is None:
+			raise ValueError('{0} is required'.format(alias))
+		return value
+	
+	def _extract_updated_param(self, obj, param):
+		alias = self.aliases.get(param, None) or param
+		attr_chain = alias.split('.')
+		
+		updated = False
+		value = obj
+		for attr_name in attr_chain:
+			if value is None: break
+			updated = value.is_dirty(attr_name)
+			value = getattr(value, attr_name, None)
+		return value, updated
+	
+	def extend(self):
+		return ParamsExtractor(self.aliases.copy())
+
+
+def extractor():
+	return ParamsExtractor()
+
+
 class BackendResource(Resource):
 	base_url = app.config.get('BACKEND_BASE_URL')
 	timeout = app.config.get('BACKEND_TIMEOUT')
@@ -39,10 +105,9 @@ class BackendResource(Resource):
 		super(BackendResource, self).__init__(uri, timeout=timeout, max_tries=max_tries, **kwargs)
 		
 	def path(self, part):
-		return PathRequest(self, part)
+		return RequestBuilder(self, part)
 	
-	def request(self, method, path=None, payload=None, headers=None, params_dict=None,
-			renderer=etree.fromstring, **params):
+	def request(self, method, path=None, payload=None, headers=None, params_dict=None, **params):
 		# Unify our interface
 		if params_dict:
 			params.update(params_dict)
@@ -75,40 +140,7 @@ class BackendResource(Resource):
 		resp = response.body_string()
 		if response.charset != 'utf8':
 			resp = resp.decode('utf8')
-		return renderer(resp)
-
-
-class ModelResource(BackendResource):
-	model_name = None
-	
-	@property
-	def model(self):
-		if getattr(self, '_model', None) is None:
-			self._model = registry.get_model(self.model_name)
-		return self._model
-	
-	def apply_mapping(self, mapping, params):
-		return dict(((mapping[name] if name in mapping else name), value) for name, value in params.iteritems())
-	
-	def extract_params(self, obj, required=[], optional=[]):
-		params = dict()
-		for param in required:
-			name, value = self._extract_param(obj, param)
-			if value is None:
-				raise ValueError('{0} is required'.format(name))
-			params[name] = value
-		for param in optional:
-			name, value = self._extract_param(obj, param)
-			if value is not None:
-				params[name] = value
-		return params
-	
-	def _extract_param(self, obj, param):
-		if isinstance(param, tuple):
-			attr_name, param_name = param
-		else:
-			attr_name = param_name = param
-		return param_name, getattr(obj, attr_name)
+		return ResponseRenderer(resp)
 		
 		
 		

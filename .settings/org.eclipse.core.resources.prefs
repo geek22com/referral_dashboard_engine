@@ -1,8 +1,11 @@
-#Thu Mar 22 15:43:36 MSK 2012
+#Sun Mar 25 17:10:49 MSD 2012
 eclipse.preferences.version=1
 encoding//heymoose/__init__.py=utf-8
 encoding//heymoose/admin/views.py=utf-8
+encoding//heymoose/cabinet/views/apps.py=utf-8
+encoding//heymoose/cabinet/views/info.py=utf-8
 encoding//heymoose/cabinet/views/offers.py=utf-8
+encoding//heymoose/cabinet/views/orders.py=utf-8
 encoding//heymoose/cabinet/views/views.py=utf-8
 encoding//heymoose/core/actions/base.py=utf-8
 encoding//heymoose/core/actions/roles.py=utf-8
@@ -18,6 +21,7 @@ encoding//heymoose/forms/forms.py=utf-8
 encoding//heymoose/forms/validators.py=utf-8
 encoding//heymoose/site/views.py=utf-8
 encoding//heymoose/tests/test_data.py=utf-8
+encoding//heymoose/tests/test_resource.py=utf-8
 encoding//heymoose/utils/robokassa.py=utf-8
 encoding//heymoose/views/common.py=utf-8
 encoding//heymoose/views/testapi.py=utf-8

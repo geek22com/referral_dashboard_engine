@@ -1,36 +1,17 @@
 # -*- coding: utf-8 -*-
-from heymoose import resource
 from base import models, types, registry
 from base.fields import Field, FieldList, FieldSet
-from functools import partial
 import enums
 
-class ResourceModel(models.ModelBase):
-	resource = None
-	
-	def __getattr__(self, name):
-		'''Some proxying: Model.resource.foo(obj) == obj.foo()'''
-		if self.resource is not None and hasattr(self.resource, name):
-			return partial(getattr(self.resource, name), self)
-		raise AttributeError(name)
 
-
-class IdentifiableModel(ResourceModel):
+class IdentifiableModel(models.ModelBase):
 	id = Field(types.Integer, '@id', readonly=True)
-	
-	def save(self):
-		if self.id is None:
-			self._values['id'] = self.resource.add(self)
-		else:
-			self.resource.update(self)
 	
 	def __cmp__(self, other):
 		return self.id - other.id
 
 
 class User(IdentifiableModel):
-	resource = resource.UserResource()
-	
 	email = Field(types.String, 'email')
 	password_hash = Field(types.String, 'password-hash')
 	first_name = Field(types.String, 'first-name')
@@ -51,7 +32,7 @@ class User(IdentifiableModel):
 	
 	orders = FieldList('Order', 'orders/order')
 	apps = FieldList('App', 'apps/app')
-	roles = FieldList(types.String, 'roles/role')
+	roles = FieldList(enums.Roles, 'roles/role')
 	
 	referrer = Field(types.Integer, 'referrer')
 	referrals = FieldList(types.String, 'referrals/referral')
@@ -60,15 +41,22 @@ class User(IdentifiableModel):
 	stats = Field('UserStat', 'stats')
 	
 	@property
-	def account(self):
-		return self.developer_account or self.customer_account
+	def account(self): return self.developer_account or self.customer_account
+	
+	@property
+	def is_developer(self): return enums.Roles.DEVELOPER in self.roles
+	@property
+	def is_customer(self): return enums.Roles.CUSTOMER in self.roles
+	@property
+	def is_partner(self): return enums.Roles.PARTNER in self.roles
+	@property
+	def is_advertiser(self): return enums.Roles.ADVERTISER in self.roles
+	
 
 class Account(IdentifiableModel):
 	balance = Field(types.Decimal, 'balance')
 	
 class Order(IdentifiableModel):
-	resource = resource.OrderResource()
-	
 	offer_id = Field(types.Integer, 'offer-id')
 	type = Field(enums.OrderTypes, 'type')
 	

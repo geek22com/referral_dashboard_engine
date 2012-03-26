@@ -13,10 +13,11 @@ import forms.filters
 
 config=app.config
 
-from heymoose import site, admin, cabinet
+from heymoose import site, admin, cabinet, cabinetcpa
 app.register_blueprint(site.blueprint, url_prefix='')
 app.register_blueprint(admin.blueprint, url_prefix='/admin')
 app.register_blueprint(cabinet.blueprint, url_prefix='/cabinet')
+app.register_blueprint(cabinetcpa.blueprint, url_prefix='/cpa/cabinet')
 
 import handlers
 from views import common, testapi

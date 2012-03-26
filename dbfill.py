@@ -12,17 +12,23 @@ os.environ["FRONTEND_SETTINGS_PATH"] = config_path
 
 from heymoose.core import actions
 from heymoose.utils.gen import generate_password_hash
+from heymoose.data.models import User
+from heymoose.data.enums import Roles
+from heymoose.resource import users
 import time, random
 
 pw = generate_password_hash('password')
 email_admin = 'a@a.ru'
 email_customer_template = 'c{0}@c.ru'
 email_developer_template = 'd{0}@d.ru'
+email_advertiser_template = 'ad{0}@ad.ru'
 first_names = (u'Иван', u'Петр', u'Сидор', u'Евгений')
 last_names = (u'Иванов', u'Петров', u'Сидоров', u'Ковалев')
 
 customers_count = 10
 developers_count = 10
+advertisers_count = 3
+affiliates_count = 3
 orders_per_customer = 10
 apps_per_developer = 1
 actions_per_app_and_order = 1
@@ -58,6 +64,21 @@ def fill_db():
 		actions.users.confirm_user(developer.id)
 		actions.users.add_user_role(developer.id, actions.roles.DEVELOPER)
 		developers.append(developer)
+	
+	# Create advertisers
+	advertisers = []
+	for i in range(advertisers_count):
+		email_advertiser = email_advertiser_template.format(i)
+		users.add(User(
+			email=email_advertiser,
+			password_hash=pw,
+			first_name=random.choice(first_names),
+			last_name=random.choice(last_names)
+		))
+		advertiser = users.get_by_email(email_advertiser)
+		users.confirm(advertiser.id)
+		users.add_role(advertiser.id, Roles.ADVERTISER)
+		advertisers.append(advertiser)
 		
 	platforms = ('VKONTAKTE', 'FACEBOOK', 'ODNOKLASSNIKI')
 			

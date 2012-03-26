@@ -17,7 +17,7 @@ class UserResource(BackendResource):
 		return self.path(id).get(**kwargs).as_obj(User)
 	
 	def get_by_email(self, email, **kwargs):
-		return self.get(**kwargs).as_obj(User)
+		return self.get(email=email, **kwargs).as_obj(User)
 	
 	def add_role(self, id, role):
 		return self.path(id).path('roles').post(role=role)
@@ -27,7 +27,7 @@ class UserResource(BackendResource):
 			required='email passwordHash firstName lastName'.split(),
 			optional='organization phone sourceUrl messengerType messengerUid referrer'.split()
 		)
-		return self.post(**params).as_int()
+		self.post(**params)
 	
 	def update(self, user):
 		params = self.extractor.extract(user,

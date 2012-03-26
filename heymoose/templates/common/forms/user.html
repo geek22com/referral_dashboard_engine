@@ -1,7 +1,7 @@
 {% import 'common/forms.html' as forms %}
 
-{% macro head(user) %}
-	{% if user.is_customer() %}
+{% macro head(messenger_optional=false) %}
+	{% if messenger_optional %}
 	<script type="text/javascript">
 		$(function() {
 			var form = $('#form-user');
@@ -17,7 +17,7 @@
 	{% endif %}
 {% endmacro %}
 
-{% macro html(form, admin=false) %}
+{% macro html(form, captcha=false, admin=false) %}
 	<form id="form-user" action="" method="post" class="widelabels validate2">
 		<fieldset>
 			<legend>Данные</legend>

@@ -10,7 +10,7 @@
 
 {% block extrahead %}
 	{{ super() }}
-	{{ user_form.head(user) }}
+	{{ user_form.head(messenger_optional=user.is_customer()) }}
 {% endblock %}
 
 {% block tabcontent %}

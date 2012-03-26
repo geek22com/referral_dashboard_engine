@@ -13,6 +13,18 @@ class MessengerTypes(Enum):
 	JABBER = e('JABBER', name=u'Jabber')
 	ICQ = e('ICQ', name=u'ICQ')
 
+class TransactionTypes(Enum):
+	UNKNOWN = e('UNKNOWN', desc=u'--')
+	TRANSFER = e('TRANSFER', desc=u'Перевод')
+	RESERVATION = e('RESERVATION', desc=u'Резервирование')
+	ACTION_APPROVED = e('ACTION_APPROVED', desc=u'Оплата за клики')
+	MLM = e('MLM', desc=u'MLM')
+	RESERVATION_CANCELLED = e('RESERVATION_CANCELLED', desc=u'Отмена резервирования')
+	REPLENISHMENT_ROBOKASSA = e('REPLENISHMENT_ROBOKASSA', desc=u'Пополнение счета с помощью системы "RoboKassa"')
+	WITHDRAW = e('WITHDRAW', desc=u'Выплата разработчику')
+	REPLENISHMENT_ADMIN = e('REPLENISHMENT_ADMIN', desc=u'Пополнение счета администрацией')
+	WITHDRAW_DELETED = e('WITHDRAW_DELETED', desc=u'Отмена выплаты разработчику')
+
 class OrderTypes(Enum):
 	REGULAR = e('REGULAR', name=u'обычный')
 	BANNER = e('BANNER', name=u'баннер')

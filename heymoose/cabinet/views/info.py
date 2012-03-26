@@ -55,8 +55,7 @@ def info_edit():
 
 @bp.route('/info/password', methods=['GET', 'POST'])
 def info_password_change():
-	form = forms.PasswordChangeForm(request.form)
-	form.oldpassword.user = g.user
+	form = forms.PasswordChangeForm(request.form, user=g.user)
 	if request.method == 'POST' and form.validate():
 		actions.users.update_user(g.user.id, password_hash=generate_password_hash(form.password.data))
 		flash(u'Пароль успешно изменен', 'success')

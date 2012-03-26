@@ -1,0 +1,35 @@
+{% extends "cabinetcpa/layout.html" %}
+
+{% block title %}Профиль{% endblock %}
+
+{% set activemenu = 'info' %}
+
+{% block extrahead %}
+{{ super() }}
+{% set activetab = activetab|default('info') %}
+<script type="text/javascript">
+	$(function() { 
+		$('li#tab-{{ activetab }}').addClass('active');
+	})
+</script>
+{% endblock %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb(self.title(), url_for('.profile')) }}
+{% endblock %}
+
+{% block pageheader %}<h1>{{ self.title() }}</h1>{% endblock %}
+
+{% block content %}
+
+<ul class="tabs">
+	<li id="tab-info"><a href="{{ url_for('.profile') }}">Общее</a></li>
+	<li id="tab-edit"><a href="{{ url_for('.profile_edit') }}">Редактировать</a></li>
+	<li id="tab-balance"><a href="{{ url_for('.profile_balance') }}">Операции со счетом</a></li>
+	<li id="tab-password"><a href="{{ url_for('.profile_password_change') }}">Изменить пароль</a></li>
+</ul>
+
+{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+
+{% endblock %}

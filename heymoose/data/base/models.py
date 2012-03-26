@@ -57,6 +57,9 @@ class ModelBase(object):
 		for name, field in self.fields.iteritems():
 			self._values[name] = kwargs.get(name, None) or field.parse(xml)
 	
+	def updated(self):
+		return len(self._dirty.keys()) > 0
+	
 	def updated_values(self):
 		return dict((name, self._values[name]) for name in self._dirty.iterkeys())
 	

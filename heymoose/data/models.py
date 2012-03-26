@@ -44,6 +44,9 @@ class User(IdentifiableModel):
 	def account(self): return self.developer_account or self.customer_account
 	
 	@property
+	def full_name(self): return u'{0} {1}'.format(self.first_name, self.last_name)
+	
+	@property
 	def is_developer(self): return enums.Roles.DEVELOPER in self.roles
 	@property
 	def is_customer(self): return enums.Roles.CUSTOMER in self.roles
@@ -55,7 +58,22 @@ class User(IdentifiableModel):
 
 class Account(IdentifiableModel):
 	balance = Field(types.Decimal, 'balance')
+
+class Transaction(IdentifiableModel):
+	diff = Field(types.Decimal, 'diff')
+	balance = Field(types.Decimal, 'balance')
+	description = Field(types.String, 'description')
+	type = Field(enums.TransactionTypes, 'type')
+	creation_time = Field(types.DateTime, 'creation-time')
+	end_time = Field(types.DateTime, 'end-time')
 	
+	def type_verbose(self):
+		desc = self.type.desc
+		if self.type == 'WITHDRAW_DELETED':
+			desc += u' ({0})'.format(self.description)
+		return desc
+
+
 class Order(IdentifiableModel):
 	offer_id = Field(types.Integer, 'offer-id')
 	type = Field(enums.OrderTypes, 'type')

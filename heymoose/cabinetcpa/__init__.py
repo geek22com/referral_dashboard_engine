@@ -1,13 +1,15 @@
 from flask import Blueprint, g, abort, request, redirect, url_for
+from heymoose.resource import users
 
-blueprint = Blueprint('cabinet', __name__, url_prefix='/cabinet', 
+blueprint = Blueprint('cabinetcpa', __name__, url_prefix='/cpa/cabinet', 
 					static_folder='static', template_folder='templates')
 
 @blueprint.before_request
-def before_request():	
+def before_request():
 	if not g.user:
 		return redirect(url_for('site.login', back=request.url))
-	elif not g.user.is_developer() and not g.user.is_customer():
+	g.user = users.get_by_id(g.user.id)
+	if not g.user.is_affiliate and not g.user.is_advertiser:
 		return redirect(url_for('site.gateway'))
 	
 	# Do not allow blocked or unconfirmed users to create and manage orders or apps 
@@ -21,4 +23,4 @@ def before_request():
 
 
 # Import all views in blueprint for registering in app's url map
-from views import views, info, apps, orders
+from views import base, offers, sites, profile

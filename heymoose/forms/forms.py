@@ -7,6 +7,7 @@ from heymoose import app
 from heymoose.core import actions
 from heymoose.core.actions import roles
 from heymoose.filters import currency, currency_sign
+from heymoose.utils.gen import generate_password_hash
 import validators
 import fields as myfields
 import random, hashlib
@@ -41,7 +42,7 @@ regions_choices = [
 ]
 
 
-'''class Form(WTForm):
+class Form(WTForm):
 	def process(self, formdata=None, obj=None, **kwargs):
 		if formdata is not None and not hasattr(formdata, 'getlist'):
 			raise TypeError("formdata should be a multidict-type wrapper that supports the 'getlist' method")
@@ -57,8 +58,7 @@ regions_choices = [
 	def populate_obj(self, obj):
 		for name, field in self._fields.iteritems():
 			handler = getattr(self, 'populate_' + name, field.populate_obj)
-			handler(obj, name)'''
-Form = WTForm
+			handler(obj, name)
 
 
 class CaptchaForm(Form):
@@ -103,7 +103,7 @@ class RoleForm(Form):
 										(roles.CUSTOMER, roles.CUSTOMER)])
 
 
-class UserFormBase(Form):
+class UserFormMixin:
 	first_name = TextField(u'Ваше имя', [
 		validators.Length(min=2, max=200, message = u'Имя может иметь длину от 2 до 200 символов'),
 		validators.Required(message = u'Введите ваше имя')
@@ -148,7 +148,13 @@ class DeveloperFormMixin:
 		validators.Required(message = u'Введите UID в выбранном мессенджере')
 	])
 
-class RegisterForm(UserFormBase):
+class AdvertiserFormMixin(CustomerFormMixin):
+	pass
+
+class AffiliateFormMixin(DeveloperFormMixin):
+	pass
+
+class RegisterFormMixin:
 	password = PasswordField(u'Пароль', [
 		validators.Length(min=4, max=16, message = u'Длина пароля должна быть от 4 до 16 символов'),
 		validators.Required(message = u'Введите пароль')
@@ -164,22 +170,34 @@ class RegisterForm(UserFormBase):
 		validators.check_email_not_registered
 	])
 	
-class DeveloperRegisterForm(RegisterForm, DeveloperFormMixin):
+class DeveloperRegisterForm(Form, UserFormMixin, RegisterFormMixin, DeveloperFormMixin):
 	invite = TextAreaField(u'Код приглашения', [
 		validators.Required(message=u'Скопируйте сюда полученный код приглашения'),
 		validators.check_invite
 	])
 	
-class CustomerRegisterForm(RegisterForm, CustomerFormMixin):
+class CustomerRegisterForm(Form, UserFormMixin, RegisterFormMixin, CustomerFormMixin):
 	pass
 
-class DeveloperEditForm(UserFormBase, DeveloperFormMixin):
+class AffiliateRegisterForm(CaptchaForm, UserFormMixin, RegisterFormMixin, AffiliateFormMixin):
 	pass
 
-class CustomerEditForm(UserFormBase, CustomerFormMixin):
+class AdvertiserRegisterForm(CaptchaForm, UserFormMixin, RegisterFormMixin, AdvertiserFormMixin):
 	pass
 
-class AdminUserEditFormMixin:
+class DeveloperEditForm(Form, UserFormMixin, DeveloperFormMixin):
+	pass
+
+class CustomerEditForm(Form, UserFormMixin, CustomerFormMixin):
+	pass
+
+class AffiliateEditForm(Form, UserFormMixin, AffiliateFormMixin):
+	pass
+
+class AdvertiserEditForm(Form, UserFormMixin, AdvertiserFormMixin):
+	pass
+
+class AdminUserFormMixin:
 	email = TextField(u'E-mail', [
 		validators.Email(message = u'Некорректный адрес электронной почты'),
 		validators.Required(message = u'Введите адрес электронной почты')
@@ -190,10 +208,16 @@ class AdminUserEditFormMixin:
 		if hasattr(self, 'user') and self.user.email != self.email.data:
 			validators.check_email_not_registered(self, self.email)
 	
-class AdminDeveloperEditForm(DeveloperEditForm, AdminUserEditFormMixin):
+class AdminDeveloperEditForm(Form, UserFormMixin, DeveloperFormMixin, AdminUserFormMixin):
 	pass
 
-class AdminCustomerEditForm(CustomerEditForm, AdminUserEditFormMixin):
+class AdminCustomerEditForm(Form, UserFormMixin, CustomerFormMixin, AdminUserFormMixin):
+	pass
+
+class AdminAffiliateEditForm(Form, UserFormMixin, AffiliateFormMixin, AdminUserFormMixin):
+	pass
+
+class AdminAdvertiserEditForm(Form, UserFormMixin, AdvertiserFormMixin, AdminUserFormMixin):
 	pass
 
 
@@ -207,8 +231,15 @@ class AdminPasswordChangeForm(Form):
 		validators.EqualTo('password', message=u'Введенные пароли не совпадают'),
 		validators.Required(message=u'Введите пароль повторно')
 	])
+	
+	def populate_password(self, obj, name):
+		obj.password_hash = generate_password_hash(self.password.data)
 
 class PasswordChangeForm(AdminPasswordChangeForm):
+	def __init__(self, *args, **kwargs):
+		self.user = kwargs.pop('user', None)
+		super(PasswordChangeForm, self).__init__(*args, **kwargs)
+	
 	oldpassword = PasswordField(u'Текущий пароль', [
 		validators.Required(message=u'Введите текущий пароль'),
 		validators.check_password

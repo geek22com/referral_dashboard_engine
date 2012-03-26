@@ -206,7 +206,7 @@ def check_invite(form, field):
 
 
 def check_password(form, field):
-	if not hasattr(field, 'user') or not check_password_hash(field.user.password_hash, field.data):
+	if not form.user or not check_password_hash(form.user.password_hash, field.data):
 		raise ValidationError(u'Неверный пароль')
 		
 		

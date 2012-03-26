@@ -62,6 +62,20 @@ def contacts_partner():
 	return render_template('site/contacts-partner.html', form=form)
 
 
+@bp.route('/gateway')
+def gateway():
+	if not g.user:
+		return redirect(url_for('.index'))
+	elif g.user.is_admin():
+		return redirect(url_for('admin.index'))
+	elif g.user.is_developer() or g.user.is_customer():
+		return redirect(url_for('cabinet.index'))
+	elif g.user.is_affiliate() or g.user.is_advertiser():
+		return redirect(url_for('cabinetcpa.index'))
+	else:
+		app.logger.error('Shit happened: registered user has unknown role')
+		return redirect(url_for('.index'))
+
 @bp.route('/register/')
 def register():
 	ref = request.args.get('ref', None)
@@ -97,7 +111,7 @@ def register_developer():
 			invites.register_invite(form.invite.data)
 			session['user_id'] = user.id
 			flash(u'Вы успешно зарегистрированы', 'success')
-			return redirect(url_for('cabinet.index'))
+			return redirect(url_for('.gateway'))
 		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
 		
 	return render_template('site/register-developer.html', form=form)
@@ -139,7 +153,7 @@ def register_customer():
 				tmail.user_confirm_email(user)
 				flash(u'Вы успешно зарегистрированы. На указанный электронный адрес'
 					u' было выслано письмо с подтверждением.', 'success')
-				return redirect(url_for('cabinet.index'))
+				return redirect(url_for('.gateway'))
 			flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
 	
 	return render_template('site/register-customer.html', form=form)
@@ -157,7 +171,7 @@ def login():
 		else:
 			session['user_id'] = user.id
 			session.permanent = form.remember.data
-			return redirect(request.args.get('back', None) or url_for('cabinet.index'))
+			return redirect(request.args.get('back', None) or url_for('.gateway'))
 	return render_template('site/login.html', form=form)
 
 

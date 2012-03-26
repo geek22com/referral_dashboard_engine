@@ -1,16 +1,16 @@
-{% extends "cabinet/info-layout.html" %}
+{% extends "cabinetcpa/profile/layout.html" %}
 {% import 'common/forms/user.html' as user_form %}
 
 {% set activetab = 'edit' %}
 
 {% block breadcrumbs %}
 	{{ super() }}
-	{{ macros.breadcrumb('Редактирование', url_for('.info_edit')) }}
+	{{ macros.breadcrumb('Редактирование', url_for('.profile_edit')) }}
 {% endblock %}
 
 {% block extrahead %}
 	{{ super() }}
-	{{ user_form.head(messenger_optional=g.user.is_customer()) }}
+	{{ user_form.head(messenger_optional=g.user.is_advertiser) }}
 {% endblock %}
 
 {% block tabcontent %}

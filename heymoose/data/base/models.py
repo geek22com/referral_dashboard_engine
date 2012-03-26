@@ -1,5 +1,5 @@
 from fields import FieldBase
-from lxml import etree
+
 
 class ModelMeta(type):
 	def __init__(cls, name, bases, attrs):
@@ -54,8 +54,6 @@ class ModelBase(object):
 			raise KeyError('No field with name {0}'.format(name))
 	
 	def _parse(self, xml, **kwargs):
-		if xml is not None and (isinstance(xml, str) or isinstance(xml, unicode)):
-			xml = etree.fromstring(xml)
 		for name, field in self.fields.iteritems():
 			self._values[name] = kwargs.get(name, None) or field.parse(xml)
 	

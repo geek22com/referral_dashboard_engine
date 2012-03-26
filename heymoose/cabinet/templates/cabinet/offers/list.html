@@ -19,7 +19,7 @@
 		<div class="alert-actions">
 			<a class="btn small" href="{{ url_for('.offers_new') }}">Создать оффер</a>
 		</div>
-		{% elif g.user.is_partner %}
+		{% elif g.user.is_affiliate %}
 		<p>
 			<strong>Список пуст.</strong>
 			Вы еще не добавили ни одного оффера. Найдите в нашем каталоге офферы,

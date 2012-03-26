@@ -5,7 +5,7 @@ class Roles(Enum):
 	CUSTOMER = e('CUSTOMER', name=u'рекламодатель', shortname=u'рекл.')
 	DEVELOPER = e('DEVELOPER', name=u'разработчик', shortname=u'разр.')
 	ADMIN = e('ADMIN', name=u'администратор', shortname=u'админ.')
-	PARTNER	= e('PARTNER', name=u'партнер', shortname=u'парт.')
+	AFFILIATE = e('AFFILIATE', name=u'партнер', shortname=u'парт.')
 	ADVERTISER = e('ADVERTISER', name=u'рекламодатель', shortname=u'рекл.')
 
 class MessengerTypes(Enum):

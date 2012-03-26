@@ -48,7 +48,7 @@ class User(IdentifiableModel):
 	@property
 	def is_customer(self): return enums.Roles.CUSTOMER in self.roles
 	@property
-	def is_partner(self): return enums.Roles.PARTNER in self.roles
+	def is_affiliate(self): return enums.Roles.AFFILIATE in self.roles
 	@property
 	def is_advertiser(self): return enums.Roles.ADVERTISER in self.roles
 	

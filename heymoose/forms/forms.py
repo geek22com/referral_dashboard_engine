@@ -607,6 +607,12 @@ class OfferForm(Form):
 	], coerce=int)
 	suboffers = FieldList(FormField(SubOfferForm), min_entries=1)
 
+
+class OfferRequestForm(Form):
+	message = TextAreaField(u'Описание площадок', [
+		validators.Required(message=u'Введите описание')
+	])
+
 	
 class AppsShowDeletedForm(Form):
 	show = BooleanField(u'Показывать удаленные приложения', default=False)

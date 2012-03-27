@@ -3,6 +3,7 @@
 {% set activetab = 'info' %}
 
 {% block tabcontent %}
+{% with user = g.user %}
 
 <div class="row">
 	<div class="span10">
@@ -98,6 +99,10 @@
 		</div>
 	</div>
 	<div class="span5" style="width: 300px;">
+		<div class="well center">
+			<a class="btn success" href="#" data-controls-modal="offer-grant-modal"
+			 data-backdrop="true" data-keyboard="true">Сотрудничать с кампанией</a>
+		</div>
 		<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">
 				<a href="{{ url_for('.offers_info_edit', id=offer.id) }}"
@@ -113,10 +118,10 @@
 					<dt>Дата запуска</dt><dd>16.03.2012</dd>
 					<dt>Время жизни cookie</dt><dd>30 дней</dd>
 				</dl>
-				<p>
+				<div>
 					<strong>Регионы:</strong>
 					Россия, СНГ, Германия, Италия, Франция, Фареры
-				</p>
+				</div>
 			</div>
 		</div>
 		<div class="roundbox roundbox--primary roundbox--shadowed">
@@ -172,4 +177,32 @@
 	</div>
 </div>
 
+{% endwith %}
+{% endblock %}
+
+{% block postbody %}
+	{{ super() }}
+	<div id="offer-grant-modal" class="modal fade" style="display: none;">
+		<form method="post" action="" class="validate2">
+			<div class="modal-header">
+				<a href="#" class="close">×</a>
+				<h3>Заявка на сотрудничество с рекламной кампанией</h3>
+			</div>
+			<div class="modal-body">
+				<div class="formfield clearfix {{ forms.css_errors(form.message) }}">
+					<div class="span9">
+						<label class="simple">
+							Опишите свою заявку, а также площадки, на которых
+							вы будете показывать рекламные материалы оффера.
+						</label>
+					</div>
+					{{ forms.field(form.message, rows=5, class='span9') }}
+					{{ forms.errors(form.message) }}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<input type="submit" class="btn primary" value="Отправить" />
+			</div>
+		</form>
+	</div>
 {% endblock %}

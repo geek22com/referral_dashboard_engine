@@ -26,7 +26,8 @@ def offers_new():
 
 @bp.route('/offers/<int:id>')
 def offers_info(id):
-	return render_template('cabinetcpa/offers/info/info.html', offer=offer)
+	form = forms.OfferRequestForm()
+	return render_template('cabinetcpa/offers/info/info.html', offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/edit')
 @advertiser_only

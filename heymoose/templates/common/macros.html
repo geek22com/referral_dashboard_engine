@@ -172,3 +172,20 @@
 		</div>
 	</div>
 {% endmacro %}
+
+{% macro filter(value, choices, rule, rule_args={}, title='Фильтр:', param='filter') %}
+	{% set current = value if value in choices|itemlist(0) else none %}
+	<div class="pills-filter">
+		<div class="pills-filter-title">{{ title }}</div>
+		<div class="pills-filter-content">
+			<ul class="pills">
+				{% for val, name in choices %}
+				{% set dummy = rule_args.update({param: val}) %}
+				<li {% if val == current %}class="active"{% endif %}>
+					<a href="{{ url_for(rule, **rule_args) }}">{{ name }}</a>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+{% endmacro %}

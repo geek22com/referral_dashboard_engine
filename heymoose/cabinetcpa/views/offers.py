@@ -43,10 +43,10 @@ def offers_info_actions(id):
 def offers_info_materials(id):
 	return render_template('cabinetcpa/offers/info/materials.html', offer=offer)
 
-@bp.route('/offers/<int:id>/partners')
+@bp.route('/offers/<int:id>/requests')
 @advertiser_only
-def offers_info_partners(id):
-	return render_template('cabinetcpa/offers/info/partners.html', offer=offer)
+def offers_info_requests(id):
+	return render_template('cabinetcpa/offers/info/requests.html', offer=offer)
 
 @bp.route('/offers/<int:id>/balance')
 @advertiser_only

@@ -1,0 +1,13 @@
+{% extends "cabinetcpa/offers/info/layout.html" %}
+{% import 'common/offers.html' as offer_macros %}
+
+{% set activetab = 'requests' %}
+
+{% block tabcontent %}
+	{{ macros.filter(request.args.get('filter', none),
+		((none, 'все'), ('confirmed', 'разрешенные'), ('unconfirmed', 'на рассмотрении')),
+		'.offers_info_requests', {'id': offer.id})
+	}}
+
+	{{ offer_macros.requests_table(null) }}
+{% endblock %}

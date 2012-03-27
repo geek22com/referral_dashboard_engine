@@ -79,6 +79,7 @@ app.jinja_env.filters['noproto'] = noproto
 app.jinja_env.filters['addclass'] = addclass
 app.jinja_env.filters['classname'] = classname
 app.jinja_env.filters['attrlist'] = attrlist
+app.jinja_env.filters['itemlist'] = itemlist
 app.jinja_env.filters['delta'] = times.delta
 app.jinja_env.filters['currency'] = currency
 app.jinja_env.filters['replace_if_contains'] = replace_if_contains

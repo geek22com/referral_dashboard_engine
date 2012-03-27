@@ -31,6 +31,9 @@
 						</div>
 						Инкубатор HSE
 					</a>
+					<div>
+						<span class="label info">заявка в рассмотрении</span>
+					</div>
 				</td>
 				
 				<td>Регистрация</td>
@@ -71,6 +74,46 @@
 				<td>Покупка товара</td>
 				<td class="right">5&nbsp;%</td>
 				<td class="center">{{ macros.to_icon(true) }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endmacro %}
+
+{% macro requests_table(requests, offer=false) %}
+	<table class="bordered-table nosort offer-grants-table">
+		<thead>
+			<tr>
+				{% if offer %}<th class="header center">Оффер</th>{% endif %}
+				<th class="header">Заявка</th>
+				<th class="header"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for i in range(5) %}
+			<tr>
+				{% if offer %}
+				<td class="center">
+					<a href="{{ url_for('.offers_info', id=1) }}">
+						<div>
+							<img src="{{ url_for('static', filename='img/partners/hse.gif') }}"
+							alt="Крутой оффер" width="150" />
+						</div>
+						Инкубатор HSE
+					</a>
+				</td>
+				{% endif %}
+				
+				<td>
+					Здравствуйте! Я владелец кучи крутых площадок с миллионным трафиком.
+					Прошу разрешить мне откручивать ваш постясающий оффер.
+				</td>
+				<td>
+					<form method="post" action="" class="inline">
+						<input type="hidden" name="id" value="{{ i }}" />
+						<input type="submit" class="btn success" value="Разрешить" />
+					</form>
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>

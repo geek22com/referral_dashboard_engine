@@ -33,7 +33,7 @@
 	<li id="tab-actions"><a href="{{ url_for('.offers_info_actions', id=offer.id) }}">Действия</a></li>
 	<li id="tab-materials"><a href="{{ url_for('.offers_info_materials', id=offer.id) }}">Рекламные материалы</a></li>
 	{% if g.user.is_advertiser %}
-	<li id="tab-partners"><a href="{{ url_for('.offers_info_partners', id=offer.id) }}">Партнеры</a></li>
+	<li id="tab-requests"><a href="{{ url_for('.offers_info_requests', id=offer.id) }}">Заявки</a></li>
 	<li id="tab-balance"><a href="{{ url_for('.offers_info_balance', id=offer.id) }}">Операции со счетом</a></li>
 	{% endif %}
 	<li id="tab-stats"><a href="{{ url_for('.offers_info_stats', id=offer.id) }}">Статистика</a></li>

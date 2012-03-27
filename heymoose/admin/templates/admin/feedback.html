@@ -15,23 +15,11 @@
 
 {% block content %}
 
-<div class="clearfix" style="min-height: 40px; margin-bottom: 10px;">
-	<div style="width: 70px; float: left; padding: 5px 0px;">
-		<b style="line-height: 30px;">Фильтр:</b>
-	</div>
-	<div style="width: 400px; float: left;">
-		<ul class="pills" style="display: inline-block;">
-			<li {% if not request.args.get('filter', none) %}class="active"{% endif %}>
-				<a href="{{ url_for('.feedback') }}">все</a>
-			</li>
-			<li {% if request.args.get('filter', none) == 'contacts' %}class="active"{% endif %}>
-				<a href="{{ url_for('.feedback', filter='contacts') }}">контакты</a>
-			</li>
-			<li {% if request.args.get('filter', none) == 'partners' %}class="active"{% endif %}>
-				<a href="{{ url_for('.feedback', filter='partners') }}">партнеры</a>
-			</li>
-		</ul>
-	</div>
+<div class="clearfix">
+	{{ macros.filter(request.args.get('filter', none),
+		((none, 'все'), ('contacts', 'контакты'), ('partners', 'партнеры')),
+		'.feedback')
+	}}
 	
 	{% if contacts %}
 	<div class="form-container right" style="width: 300px; float: right;">

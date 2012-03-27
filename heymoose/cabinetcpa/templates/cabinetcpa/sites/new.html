@@ -1,0 +1,12 @@
+{% extends "cabinetcpa/sites/layout.html" %}
+{% import 'common/forms/site.html' as site_form %}
+
+{% set activetab = 'new' %}
+
+{% block tabcontent %}
+
+<div class="form-container">
+	{{ site_form.html(form) }}
+</div>
+
+{% endblock %}

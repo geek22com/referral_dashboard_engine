@@ -22,6 +22,7 @@ email_admin = 'a@a.ru'
 email_customer_template = 'c{0}@c.ru'
 email_developer_template = 'd{0}@d.ru'
 email_advertiser_template = 'ad{0}@ad.ru'
+email_affiliate_template = 'af{0}@af.ru'
 first_names = (u'Иван', u'Петр', u'Сидор', u'Евгений')
 last_names = (u'Иванов', u'Петров', u'Сидоров', u'Ковалев')
 
@@ -79,6 +80,21 @@ def fill_db():
 		users.confirm(advertiser.id)
 		users.add_role(advertiser.id, Roles.ADVERTISER)
 		advertisers.append(advertiser)
+	
+	# Create affiliates
+	affiliates = []
+	for i in range(affiliates_count):
+		email_affiliate = email_affiliate_template.format(i)
+		users.add(User(
+			email=email_affiliate,
+			password_hash=pw,
+			first_name=random.choice(first_names),
+			last_name=random.choice(last_names)
+		))
+		affiliate = users.get_by_email(email_affiliate)
+		users.confirm(affiliate.id)
+		users.add_role(affiliate.id, Roles.AFFILIATE)
+		affiliates.append(affiliate)
 		
 	platforms = ('VKONTAKTE', 'FACEBOOK', 'ODNOKLASSNIKI')
 			

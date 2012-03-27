@@ -1,0 +1,11 @@
+{% extends "cabinetcpa/sites/layout.html" %}
+{% import 'common/sites.html' as site_macros %}
+
+{% set content_fluid = true %}
+{% set activetab = 'list' %}
+
+{% block tabcontent %}
+
+{{ site_macros.table(null) }}
+
+{% endblock %}

@@ -33,7 +33,7 @@
 {% block topbar %}
 <ul class="nav">
 	{% if g.user.is_affiliate %}
-	<li id="menu-item-sites"><a href="#">Площадки</a></li>
+	<li id="menu-item-sites"><a href="{{ url_for('.sites_list') }}">Площадки</a></li>
 	{% endif %}
 	<li id="menu-item-offers"><a href="{{ url_for('.offers_list') }}">Офферы</a></li>
 	<li id="menu-item-info"><a href="{{ url_for('.profile') }}">Профиль</a></li>

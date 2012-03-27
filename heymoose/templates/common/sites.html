@@ -1,0 +1,44 @@
+{% import 'common/macros.html' as macros %}
+
+{% macro table(sites) %}
+	<table class="bordered-table nosort offers-table">
+		<thead>
+			<tr>
+				<th class="header">Название</th>
+				<th class="header">Адрес</th>
+				<th class="header">Язык</th>
+				<th class="header">Регионы</th>
+				<th class="header">Категории</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for i in range(5) %}
+			<tr>
+				<td>Моя площадка {{ i }}</td>
+				<td><a href="http://ya.ru?id={{ i }}" target="_blank">http://ya.ru?id={{ i -}}</a></td>
+				<td>Русский</td>
+				<td>Россия, СНГ, Германия, Италия, Франция, Фареры</td>
+				<td>
+					<ul class="toplevel-list toplevel-list--no-bottom-margin">
+						<li>
+							Страхование и финансы
+							<ul class="dashed-list">
+								<li>Авто-страхование</li>
+								<li>Кредитные карты</li>
+							</ul>
+						</li>
+						<li>
+							Компьютеры и электроника
+							<ul class="dashed-list">
+								<li>Мобильные портативные устройства для станков с ЧПУ</li>
+								<li>Фототехника</li>
+								<li>Компьютеры и ноутбуки</li>
+							</ul>
+						</li>
+					</ul>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endmacro %}

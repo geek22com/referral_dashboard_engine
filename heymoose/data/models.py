@@ -111,6 +111,7 @@ class OrderStat(IdentifiableModel):
 	shows_overall = Field(types.Integer, 'shows-overall')
 	actions_overall = Field(types.Integer, 'actions-overall')
 
+
 class Banner(IdentifiableModel):
 	mime_type = Field(types.String, 'mime-type')
 

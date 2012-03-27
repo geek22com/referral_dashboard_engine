@@ -2,7 +2,7 @@
 from flask import render_template, request, flash
 from heymoose.forms import forms
 from heymoose.cabinetcpa import blueprint as bp
-from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
+from heymoose.cabinetcpa.decorators import advertiser_only
 
 offer = dict(id=1)
 

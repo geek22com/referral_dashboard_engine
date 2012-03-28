@@ -34,3 +34,17 @@ class FilterTypes(Enum):
 	NONE = e('', name=u'не учитывать')
 	INCLUSIVE = e('INCLUSIVE', name=u'только указанные')
 	EXCLUSIVE = e('EXCLUSIVE', name=u'все, кроме указанных')
+
+
+class PayMethods(Enum):
+	CPA = e('CPA', name=u'за действие')
+	CPC = e('CPC', name=u'за клик')
+
+class CpaPolicies(Enum):
+	PERCENT = e('PERCENT', name=u'процент')
+	FIXED = e('FIXED', name=u'фиксированная')
+
+class Regions(Enum):
+	RUSSIA = e('RU')
+	UKRAINE = e('UA')
+	BELARUS = e('BY')

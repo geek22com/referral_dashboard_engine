@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from base import models, types, registry
 from base.fields import Field, FieldList, FieldSet
+from heymoose import app
 import enums
+import os
 
 
 class IdentifiableModel(models.ModelBase):
@@ -125,6 +127,59 @@ class App(IdentifiableModel):
 class UserStat(IdentifiableModel):
 	payments = Field(types.Decimal, 'payments')
 	unpaid_actions = Field(types.Integer, 'unpaid-actions')
+
+
+class Offer(IdentifiableModel):
+	title = Field(types.String, 'title')
+	url = Field(types.String, 'url')
+	auto_approve = Field(types.Boolean, 'auto-approve')
+	reentrant = Field(types.Boolean, 'reentrant')
+	creation_time = Field(types.DateTime, 'creation-time')
+	advertiser = Field('User', 'advertiser')
+	account = Field('Account', 'account')
+	pay_method = Field(enums.PayMethods, 'pay-method')
+	cpa_policy = Field(enums.CpaPolicies, 'cpa-policy')
+	cost = Field(types.Decimal, 'cost')
+	percent = Field(types.Decimal, 'percent')
+	regions = FieldList(enums.Regions, 'regions/region')
+	disabled = Field(types.Boolean, 'disabled')
+	paused = Field(types.Boolean, 'paused')
 	
+	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
 	
+	_logos_path = os.path.join(app.config.get('UPLOAD_PATH'), 'offer-logos')
+	
+	@classmethod
+	def make_logo_path(cls, id, ext):
+		return os.path.join(cls._logos_path, '{0}.{1}'.format(id, ext))
+	
+	@property
+	def logo(self):
+		for ext in 'png gif jpg jpeg'.split():
+			path = self.make_logo_path(ext)
+			if os.path.exists(path):
+				return path
+		return None
+
+
+class SubOffer(IdentifiableModel):
+	title = Field(types.String, 'title')
+	auto_approve = Field(types.Boolean, 'auto-approve')
+	reentrant = Field(types.Boolean, 'reentrant')
+	creation_time = Field(types.DateTime, 'creation-time')
+	cpa_policy = Field(enums.CpaPolicies, 'cpa-policy')
+	cost = Field(types.Decimal, 'cost')
+	percent = Field(types.Decimal, 'percent')
+
+
+class OfferGrant(IdentifiableModel):
+	offer = Field('Offer', 'offer')
+	affiliate = Field('User', 'affiliate')
+	back_url = Field(types.String, 'back-url')
+	postback_url = Field(types.String, 'postback-url')
+	message = Field(types.String, 'message')
+	approved = Field(types.Boolean, 'approved')
+	active = Field(types.Boolean, 'active')
+
+
 registry.register_models_from_module(__name__)

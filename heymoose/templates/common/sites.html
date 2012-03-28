@@ -14,7 +14,7 @@
 		<tbody>
 			{% for i in range(5) %}
 			<tr>
-				<td>Моя площадка {{ i }}</td>
+				<td><a href="{{ url_for('.sites_info', id=i) }}">Моя площадка {{ i }}</a></td>
 				<td><a href="http://ya.ru?id={{ i }}" target="_blank">http://ya.ru?id={{ i -}}</a></td>
 				<td>Русский</td>
 				<td>Россия, СНГ, Германия, Италия, Франция, Фареры</td>

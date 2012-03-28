@@ -129,18 +129,22 @@ class UserStat(IdentifiableModel):
 	unpaid_actions = Field(types.Integer, 'unpaid-actions')
 
 
-class Offer(IdentifiableModel):
+class SubOffer(IdentifiableModel):
 	title = Field(types.String, 'title')
-	url = Field(types.String, 'url')
 	auto_approve = Field(types.Boolean, 'auto-approve')
 	reentrant = Field(types.Boolean, 'reentrant')
 	creation_time = Field(types.DateTime, 'creation-time')
-	advertiser = Field('User', 'advertiser')
-	account = Field('Account', 'account')
-	pay_method = Field(enums.PayMethods, 'pay-method')
 	cpa_policy = Field(enums.CpaPolicies, 'cpa-policy')
 	cost = Field(types.Decimal, 'cost')
 	percent = Field(types.Decimal, 'percent')
+
+
+class Offer(SubOffer):
+	name = Field(types.String, 'name')
+	url = Field(types.String, 'url')
+	advertiser = Field('User', 'advertiser')
+	account = Field('Account', 'account')
+	pay_method = Field(enums.PayMethods, 'pay-method')
 	regions = FieldList(enums.Regions, 'regions/region')
 	disabled = Field(types.Boolean, 'disabled')
 	paused = Field(types.Boolean, 'paused')
@@ -155,21 +159,14 @@ class Offer(IdentifiableModel):
 	
 	@property
 	def logo(self):
-		for ext in 'png gif jpg jpeg'.split():
+		for ext in 'png gif jpg jpeg jpe'.split():
 			path = self.make_logo_path(ext)
 			if os.path.exists(path):
 				return path
 		return None
-
-
-class SubOffer(IdentifiableModel):
-	title = Field(types.String, 'title')
-	auto_approve = Field(types.Boolean, 'auto-approve')
-	reentrant = Field(types.Boolean, 'reentrant')
-	creation_time = Field(types.DateTime, 'creation-time')
-	cpa_policy = Field(enums.CpaPolicies, 'cpa-policy')
-	cost = Field(types.Decimal, 'cost')
-	percent = Field(types.Decimal, 'percent')
+	
+	def save_logo(self, image):
+		pass
 
 
 class OfferGrant(IdentifiableModel):

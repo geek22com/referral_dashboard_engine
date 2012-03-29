@@ -79,6 +79,7 @@ def fill_db():
 		advertiser = users.get_by_email(email_advertiser)
 		users.confirm(advertiser.id)
 		users.add_role(advertiser.id, Roles.ADVERTISER)
+		users.add_to_customer_account(advertiser.id, 10000 * (i + 1))
 		advertisers.append(advertiser)
 	
 	# Create affiliates
@@ -176,7 +177,7 @@ def fill_db():
 			sizes = random.sample(banner_sizes[1:], 3)
 			for i in range(3):
 				actions.orders.add_order_banner(order.id, sizes[i].id, 'image/png', 'aGVsbG8h')
-			
+	'''		
 	# Create actions for apps and offers
 	for app in apps:
 		for order in orders:
@@ -221,7 +222,7 @@ def fill_db():
 					filter=filter,
 					hour=random.randrange(23),
 					secret=app.secret)
-
+	'''
 	
 if __name__ == '__main__':
 	fill_db()

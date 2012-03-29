@@ -30,10 +30,17 @@ class ResponseRenderer(object):
 	def as_xml(self): return etree.fromstring(self.response)
 	def as_xmlvalue(self, vtype): return vtype(self.as_xml().text)
 	def as_obj(self, model): return model(self.as_xml())
-	def as_objlist(self, model): return [model(xml) for xml in self.as_xml()]
 	def as_str(self): return unicode(self.response)
 	def as_int(self): return int(self.response)
 	def render(self, fun): return fun(self.response)
+	
+	def as_objlist(self, model, with_count=False):
+		xml = self.as_xml()
+		objects = [model(elem) for elem in xml]
+		if with_count:
+			count = xml.attrib['count']
+			return objects, count
+		return objects
 
 
 class ParamsExtractor(object):	
@@ -44,33 +51,31 @@ class ParamsExtractor(object):
 		self.aliases.update(aliases)
 		return self
 	
-	def extract(self, obj, required=[], optional=[], updated=[]):
+	def extend(self):
+		return ParamsExtractor(self.aliases.copy())
+	
+	def extract(self, obj, required=[], nonempty=[], optional=[], updated=[]):
 		params = {}
 		for param in required:
-			params[param] = self._extract_param(obj, param)
+			value, _ = self._extract_param(obj, param)
+			if value is None:
+				raise ValueError('{0} is required'.format(param))
+			params[param] = value
+		for param in nonempty:
+			value, _ = self._extract_param(obj, param)
+			if not value:
+				raise ValueError('{0} should not be empty'.format(param))
+			params[param] = value
 		for param in optional:
-			try:
-				params[param] = self._extract_param(obj, param)
-			except ValueError:
-				pass
+			value, _ = self._extract_param(obj, param)
+			if value is not None:
+				params[param] = value
 		for param in updated:
-			value, updated = self._extract_updated_param(obj, param)
+			value, updated = self._extract_param(obj, param)
 			if updated: params[param] = value
 		return params
 	
 	def _extract_param(self, obj, param):
-		alias = self.aliases.get(param, None) or param
-		attr_chain = alias.split('.')
-		
-		value = obj
-		for attr_name in attr_chain:
-			if value is None: break
-			value = getattr(value, attr_name)
-		if value is None:
-			raise ValueError('{0} is required'.format(alias))
-		return value
-	
-	def _extract_updated_param(self, obj, param):
 		alias = self.aliases.get(param, None) or param
 		attr_chain = alias.split('.')
 		
@@ -81,9 +86,6 @@ class ParamsExtractor(object):
 			updated = value.is_dirty(attr_name)
 			value = getattr(value, attr_name, None)
 		return value, updated
-	
-	def extend(self):
-		return ParamsExtractor(self.aliases.copy())
 
 
 def extractor():

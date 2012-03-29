@@ -38,6 +38,9 @@ class UserResource(BackendResource):
 	
 	def change_email(self, id, email):
 		self.path(id).path('email').put(email=email)
+	
+	def add_to_customer_account(self, id, amount):
+		self.path(id).path('customer-account').put(amount=amount)
 
 	def confirm(self, id):
 		self.path(id).path('confirmed').put()
@@ -53,5 +56,3 @@ class UserResource(BackendResource):
 	
 	def count(self, **kwargs):
 		return self.path('list').path('count').get(**kwargs).as_xmlvalue(int)
-	
-

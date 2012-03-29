@@ -1,63 +1,23 @@
 # -*- coding: utf-8 -*-
-from heymoose.data.models import User
-from heymoose.data.enums import Roles, ExtendedRoles, MessengerTypes
+from heymoose import resource
+from heymoose.data import enums
+from heymoose.data.models import Offer
+
+from decimal import Decimal
 import pprint
-
-xml = '''\
-	<user id="5">
-		<email>testuser@example.com</email>
-		<roles>
-			<role>ADMIN</role>
-			<role>DEVELOPER</role>
-		</roles>
-		<customer-account id="123">
-			<balance>345</balance>
-		</customer-account>
-		<orders>
-			<order id="1">
-				<title>Order 1</title>
-			</order>
-			<order id="2">
-				<title>Order 2</title>
-			</order>
-			<order />
-		</orders>
-		<confirmed>t</confirmed>
-		<blocked />
-	</user>
-'''
-'''
-user = User(xml)
-
-User.resource.update(user)
-user.update()
-
-print user.fields
-print user.id, user.email, user.roles, user.account, user.orders, user.confirmed, user.blocked
-print user.account.id, user.account.balance
-
-for order in user.orders:
-	print order.id, order.title, order.user
-
-user.email = u'aaa@bbb.ru'
-user.email = u'bbb@ccc.ru'
-print user._dirty
-
-
-print Roles.values()
-print Roles.values('name')
-print Roles.tuples('name', 'shortname')
-print MessengerTypes.tuples('name')
-print ExtendedRoles.values()
-print ExtendedRoles.values('name')
-'''
-
 pp = pprint.PrettyPrinter(indent=4)
 
-user = User.resource.get_by_id(3)
-pp.pprint(user.values())
+advertiser = resource.users.get_by_email('ad1@ad.ru')
+offer = Offer(
+	advertiser=advertiser,
+	pay_method=enums.PayMethods.CPC,
+	cost=Decimal('2.23'),
+	name=u'Мой первый оффер',
+	url='http://ya.ru',
+	title=u'Регистрация',
+	regions=[]
+)
+resource.offers.add(offer, Decimal('100.50'))
 
-user._values['id'] = None
-user.email = 'aaa@bbb.ccc'
-user.save()
-
+offers, count = resource.offers.list(offset=0, limit=20, ord='ID', asc=True)
+pp.pprint(offers[0].values())

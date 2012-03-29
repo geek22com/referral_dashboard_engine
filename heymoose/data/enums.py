@@ -45,6 +45,6 @@ class CpaPolicies(Enum):
 	FIXED = e('FIXED', name=u'фиксированная')
 
 class Regions(Enum):
-	RUSSIA = e('RU')
-	UKRAINE = e('UA')
-	BELARUS = e('BY')
+	RUSSIA = e('RUSSIA')
+	UKRAINE = e('UKRAINE')
+	BELARUS = e('BELARUS')

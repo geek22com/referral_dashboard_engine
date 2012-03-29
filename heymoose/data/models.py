@@ -137,6 +137,9 @@ class SubOffer(IdentifiableModel):
 	cpa_policy = Field(enums.CpaPolicies, 'cpa-policy')
 	cost = Field(types.Decimal, 'cost')
 	percent = Field(types.Decimal, 'percent')
+	
+	@property
+	def value(self): return self.cost or self.percent
 
 
 class Offer(SubOffer):

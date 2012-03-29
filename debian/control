@@ -8,6 +8,6 @@ Homepage: http://heymoose.com
 
 Package: frontend
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libxml2, libxml2-dev, libxslt1.1, libxslt1-dev, nginx (>= 1.0.6), python-dev, mongodb-10gen, rabbitmq-server
+Depends: ${shlibs:Depends}, ${misc:Depends}, libxml2, libxml2-dev, libxslt1.1, libxslt1-dev, nginx (>= 1.0.6), python-dev, mongodb-10gen, rabbitmq-server, libjpeg62-dev
 Description: HeyMoose frontend
  Web application for HeyMoose project.

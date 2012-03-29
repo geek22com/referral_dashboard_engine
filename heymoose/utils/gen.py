@@ -1,10 +1,12 @@
 from werkzeug import check_password_hash, generate_password_hash
 from Crypto.Cipher import AES 
-import random, string, base64
+import random, string, base64, time, uuid, os
 
 def generate_uid(size, chars=string.ascii_letters+string.digits):
 	return ''.join(random.choice(chars) for _x in range(size))
 
+def generate_unique_filename():
+	return '{0}{1}{2}'.format(int(time.time() * 100000), str(uuid.uuid4())[:8], os.getpid())
 
 def aes_encrypt(key, data):
 	obj = AES.new(key, AES.MODE_ECB)

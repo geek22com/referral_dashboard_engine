@@ -6,7 +6,7 @@ from heymoose.data.models import Offer
 from decimal import Decimal
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
-
+'''
 advertiser = resource.users.get_by_email('ad1@ad.ru')
 offer = Offer(
 	advertiser=advertiser,
@@ -20,4 +20,6 @@ offer = Offer(
 resource.offers.add(offer, Decimal('100.50'))
 
 offers, count = resource.offers.list(offset=0, limit=20, ord='ID', asc=True)
-pp.pprint(offers[0].values())
+pp.pprint(offers[0].values())'''
+
+print enums.Regions.tuples('name')

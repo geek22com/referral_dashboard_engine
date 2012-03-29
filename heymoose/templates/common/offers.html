@@ -1,6 +1,6 @@
 {% import 'common/macros.html' as macros %}
 
-{% macro table(offers) %}
+{% macro table(offers, affiliate=false) %}
 	<table class="bordered-table nosort offers-table">
 		<thead>
 			<tr>
@@ -12,8 +12,8 @@
 			</tr>
 			<tr class="subrow">
 				<th class="header">Название</th>
-				<th class="header right">Оплата</th>
-				<th class="header center">Многокр.</th>
+				<th class="header right" style="min-width: 70px;">Оплата</th>
+				<th class="header center">Мн.</th>
 				
 				<th class="header right">eCPC,&nbsp;руб.</th>
 				<th class="header right">eCPM,&nbsp;руб.</th>
@@ -21,31 +21,39 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for i in range(5) %}
+			{% for offer in offers %}
+			{% set rowspan = 'rowspan="{0}"'.format(offer.suboffers|length + 1)|safe %}
 			<tr>
-				<td class="center" rowspan="3">
-					<a href="{{ url_for('.offers_info', id=1) }}">
+				<td class="center" {{ rowspan }}>
+					<a href="{{ url_for('.offers_info', id=offer.id) }}">
+						{% if offer.logo_filename %}
 						<div>
-							<img src="{{ url_for('static', filename='img/partners/hse.gif') }}"
-							alt="Крутой оффер" width="150" />
+							<img src="{{ url_for('upload', filename=offer.logo) }}"
+							alt="логотип" width="150" />
 						</div>
-						Инкубатор HSE
+						{% endif %}
+						{{ offer.name }}
 					</a>
+					{% if affiliate %}
 					<div>
 						<span class="label info">заявка в рассмотрении</span>
 					</div>
+					{% endif %}
 				</td>
 				
-				<td>Регистрация</td>
-				<td class="right">30.00&nbsp;руб.</td>
-				<td class="center">{{ macros.to_icon(false) }}</td>
+				<td>{{ offer.title }}</td>
+				<td class="right">
+					{{ offer.cost|currency if offer.cost }}
+					{{ offer.percent|percent if offer.percent }}
+				</td>
+				<td class="center">{{ macros.to_icon(offer.reentrant) }}</td>
 				
-				<td class="right" rowspan="3">1.43</td>
-				<td class="right" rowspan="3">15.70</td>
-				<td class="right" rowspan="3">1.52</td>
+				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
+				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
+				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
 				
-				<td rowspan="3">Россия, СНГ, Германия, Италия, Франция, Фареры</td>
-				<td rowspan="3">
+				<td {{ rowspan }}>{{ offer.regions|attrlist('name')|join(', ') }}</td>
+				<td {{ rowspan }}>
 					<ul class="toplevel-list toplevel-list--no-bottom-margin">
 						<li>
 							Страхование и финансы
@@ -65,16 +73,16 @@
 					</ul>
 				</td>
 			</tr>
+			{% for suboffer in offer.suboffers %}
 			<tr class="subrow">
-				<td>Пополнение счета в платежной системе</td>
-				<td class="right">50.00&nbsp;руб.</td>
-				<td class="center">{{ macros.to_icon(true) }}</td>
+				<td>{{ suboffer.title }}</td>
+				<td class="right">
+					{{ suboffer.cost|currency if suboffer.cost }}
+					{{ suboffer.percent|percent if suboffer.percent }}
+				</td>
+				<td class="center">{{ macros.to_icon(suboffer.reentrant) }}</td>
 			</tr>
-			<tr class="subrow">
-				<td>Покупка товара</td>
-				<td class="right">5&nbsp;%</td>
-				<td class="center">{{ macros.to_icon(true) }}</td>
-			</tr>
+			{% endfor %}
 			{% endfor %}
 		</tbody>
 	</table>

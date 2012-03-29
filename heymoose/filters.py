@@ -56,7 +56,10 @@ def itemlist(values, index):
 
 
 def currency(value, sign=True):
-	return (u'%.2f' % value) + (u' ' + currency_sign if sign else u'')
+	return (u'%.2f' % float(value)) + (u' ' + currency_sign if sign else u'')
+
+def percent(value, sign=True, multiply=False):
+	return (u'%.2f' % (float(value) * 100.0 if multiply else float(value))) + (u' %' if sign else u'')
 
 
 def replace_if_contains(value, contains, newvalue):
@@ -82,6 +85,7 @@ app.jinja_env.filters['attrlist'] = attrlist
 app.jinja_env.filters['itemlist'] = itemlist
 app.jinja_env.filters['delta'] = times.delta
 app.jinja_env.filters['currency'] = currency
+app.jinja_env.filters['percent'] = percent
 app.jinja_env.filters['replace_if_contains'] = replace_if_contains
 app.jinja_env.filters['unicode'] = unicode
 

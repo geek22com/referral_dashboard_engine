@@ -11,7 +11,7 @@
 				toolbar: 'heymoose'
 			});
 			
-			var signs = ['руб. за действие', '% с покупки'];
+			var signs = ['руб. за клик', 'руб. за действие', '% с покупки'];
 			$('.payment-type-select').change(function() {
 				$(this).closest('.input').find('.payment-value-sign').text(signs[parseInt($(this).val())]);
 			}).change();
@@ -20,7 +20,7 @@
 				var $formList = $('.suboffer-form-list');
 				var $template = $('#suboffer-form-template .suboffer-form').clone(true);
 				var match = /-(\d+)-/i.exec($formList.find('.suboffer-form:last input').attr('name'));
-				var number = parseInt(match[1]) + 1;
+				var number = match && match.length > 1 ? parseInt(match[1]) + 1 : 0;
 				
 				$template.find('input,select').each(function() {
 					var prev_id = $(this).attr('id') || '';
@@ -46,11 +46,11 @@
 {% endmacro %}
 
 {% macro suboffer_html_base(form) %}
-	<div class="clearfix formfield {{ forms.css_errors(form.description) }}">
-		{{ forms.label(form.description) }}
+	<div class="clearfix formfield {{ forms.css_errors(form.title) }}">
+		{{ forms.label(form.title) }}
 		<div class="input">
-			{{ forms.field(form.description, class='span7', style='width: 420px;') }}
-			{{ forms.errors(form.description) }}
+			{{ forms.field(form.title, class='span7', style='width: 420px;') }}
+			{{ forms.errors(form.title) }}
 		</div>
 	</div>
 	<div class="clearfix">
@@ -105,14 +105,14 @@
 	</form>
 {% endmacro %}
 
-{% macro suboffer_embedded(form, first=false) %}
+{% macro suboffer_embedded(form, main=false) %}
 	<div class="clearfix suboffer-form">
 		<div class="input span10">
-			{% if not first %}
+			{% if not main %}
 			<hr class="" style="margin-top: 0px;"/>
 			{% endif %}
 			{{ suboffer_html_base(form) }}
-			{% if not first %}
+			{% if not main %}
 			<div class="clearfix">
 				<div class="input right" >
 					<img src="{{ url_for('static', filename='./img/icon_deletelink.gif') }}" alt="" />
@@ -151,6 +151,7 @@
 				 data-controls-modal="suboffers-modal" data-backdrop="true" data-keyboard="true">(что это?)</a>
 			</legend>
 			<div class="suboffer-form-list">
+				{{ suboffer_embedded(form.main_suboffer, main=true) }}
 				{% for suboffer in form.suboffers %}
 					{{ suboffer_embedded(suboffer.form, loop.first) }}
 				{% endfor %}

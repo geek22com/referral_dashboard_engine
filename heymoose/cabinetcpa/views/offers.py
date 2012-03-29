@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, request, flash
+from flask import render_template, request, flash, g
+from heymoose import resource as rc
 from heymoose.forms import forms
+from heymoose.data.models import Offer, SubOffer
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only
 
@@ -8,19 +10,29 @@ offer = dict(id=1)
 
 @bp.route('/offers/')
 def offers_list():
-	return render_template('cabinetcpa/offers/list.html')
+	offers, count = rc.offers.list()
+	return render_template('cabinetcpa/offers/list.html', offers=offers)
 
 @bp.route('/offers/all')
 def offers_all():
 	return 'OK'
 
-@bp.route('/offers/new')
+@bp.route('/offers/new', methods=['GET', 'POST'])
 @advertiser_only
 def offers_new():
 	tmpl = forms.SubOfferForm(prefix='suboffers-0-')
 	form = forms.OfferForm(request.form)
 	if request.method == 'POST' and form.validate():
-		print form.suboffers.data
+		offer = Offer(advertiser=g.user)
+		form.populate_obj(offer)
+		suboffers = []
+		for suboffer_field in form.suboffers:
+			suboffer = SubOffer()
+			suboffer_field.form.populate_obj(suboffer)
+			suboffers.append(suboffer)
+		id = rc.offers.add(offer, 100.00)
+		for suboffer in suboffers:
+			rc.offers.add_suboffer(id, suboffer)
 		flash(u'Все ОК', 'success')
 	return render_template('cabinetcpa/offers/new.html', form=form, tmpl=tmpl)
 

@@ -16,6 +16,7 @@ RESTKIT_LOG_LEVEL = 'info'
 
 THIS_PATH = os.path.realpath(os.path.dirname(__file__))
 UPLOAD_PATH = os.path.join(os.path.dirname(THIS_PATH), 'upload')
+OFFER_LOGOS_DIR = 'offer-logos'
 
 APP_ID = "243934035656884"
 APP_SECRET = "054cec4abf69a4dd6fcaa4b75cd04f01"

@@ -1,5 +1,5 @@
 from backend import BackendResource, extractor
-from heymoose.data.models import Offer
+from heymoose.data.models import Offer, SubOffer
 
 
 class OfferResource(BackendResource):
@@ -18,12 +18,21 @@ class OfferResource(BackendResource):
 	
 	def add(self, offer, balance, **kwargs):
 		params = self.extractor.extract(offer,
-			required='advertiser_id pay_method cost name url title'.split(),
+			required='advertiser_id pay_method cost name description url title'.split(),
 			nonempty='regions'.split(),
-			optional='cpa_policy allow_negative_balance auto_approve reentrant'.split()
+			optional='cpa_policy allow_negative_balance auto_approve reentrant logo_filename'.split()
 		)
 		params.update(balance=balance)
 		params.update(kwargs)
 		return self.post(**params).as_int()
 	
+	def list_suboffers(self, id, **kwargs):
+		return self.path(id).path('suboffers').get(**kwargs).as_objlist(SubOffer)
 	
+	def add_suboffer(self, id, suboffer, **kwargs):
+		params = self.extractor.extract(suboffer,
+			required='cpa_policy cost title'.split(),
+			optional='auto_approve reentrant'.split()
+		)
+		params.update(kwargs)
+		return self.path(id).path('suboffers').post(**params).as_int()

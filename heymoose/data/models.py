@@ -130,6 +130,7 @@ class UserStat(IdentifiableModel):
 
 
 class SubOffer(IdentifiableModel):
+	parent = Field('Offer', 'parent')
 	title = Field(types.String, 'title')
 	auto_approve = Field(types.Boolean, 'auto-approve')
 	reentrant = Field(types.Boolean, 'reentrant')
@@ -144,6 +145,8 @@ class SubOffer(IdentifiableModel):
 
 class Offer(SubOffer):
 	name = Field(types.String, 'name')
+	description = Field(types.String, 'description')
+	logo_filename = Field(types.String, 'logo-filename')
 	url = Field(types.String, 'url')
 	advertiser = Field('User', 'advertiser')
 	account = Field('Account', 'account')
@@ -154,22 +157,15 @@ class Offer(SubOffer):
 	
 	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
 	
-	_logos_path = os.path.join(app.config.get('UPLOAD_PATH'), 'offer-logos')
+	_logos_dir = app.config.get('OFFER_LOGOS_DIR')
 	
-	@classmethod
-	def make_logo_path(cls, id, ext):
-		return os.path.join(cls._logos_path, '{0}.{1}'.format(id, ext))
+	@property
+	def all_suboffers(self):
+		return [self] + (self.suboffers or [])
 	
 	@property
 	def logo(self):
-		for ext in 'png gif jpg jpeg jpe'.split():
-			path = self.make_logo_path(ext)
-			if os.path.exists(path):
-				return path
-		return None
-	
-	def save_logo(self, image):
-		pass
+		return os.path.join(self._logos_dir, self.logo_filename) if self.logo_filename else None
 
 
 class OfferGrant(IdentifiableModel):

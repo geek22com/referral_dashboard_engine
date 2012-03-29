@@ -6,11 +6,12 @@ from wtforms.fields import Label
 from heymoose import app
 from heymoose.core import actions
 from heymoose.core.actions import roles
+from heymoose.data import enums
 from heymoose.filters import currency, currency_sign
-from heymoose.utils.gen import generate_password_hash
+from heymoose.utils.gen import generate_password_hash, generate_unique_filename
 import validators
 import fields as myfields
-import random, hashlib
+import random, hashlib, os
 
 
 categories_choices = [
@@ -29,16 +30,6 @@ categories_choices = [
 	(11, u'Компьютеры и ноутбуки', u'Компьютеры и электроника'),
 	(12, u'Мобильные портативные устройства', u'Компьютеры и электроника'),
 	(13, u'Фототехника', u'Компьютеры и электроника'),
-]
-
-regions_choices = [
-	(1, u'Россия'),
-	(2, u'СНГ'),
-	(3, u'Украина'),
-	(4, u'Белорусь'),
-	(5, u'Польша'),
-	(6, u'Латвия'),
-	(7, u'Германия'),
 ]
 
 
@@ -545,24 +536,18 @@ class SiteForm(Form):
 		coerce=int, default=True)
 	regions = myfields.CheckboxListField(u'Регионы', [
 		validators.Required(message=u'Выберите хотя бы один регион')
-	], choices=regions_choices, coerce=int, default=(1,))
+	], choices=enums.Regions.tuples('name'), coerce=int, default=(enums.Regions.RUSSIA,))
 	comment = TextAreaField(u'Комментарий для администрации')
 
 
 class SubOfferForm(Form):
-	description_select = SelectField(u'Название', choices=[
-		(u'Регистрация', u'Регистрация'),
-		(u'Активный пользователь', u'Активный пользователь'),
-		(u'Активный игрок', u'Активный игрок'),
-		(u'', u'другое...')
-	])
-	description = TextField(u'Описание', [
+	title = TextField(u'Описание', [
 		validators.Length(min=1, max=50, message=u'Описание должно иметь длину от 1 до 50 символов'),
 		validators.Required(message=u'Введите описание действия')
 	])
 	payment_type = SelectField(u'Тип оплаты', choices=[
-		(0, u'Фиксированная'),
-		(1, u'Процент с заказа или покупки')
+		(1, u'Фиксированная за действие'),
+		(2, u'Процент с заказа или покупки')
 	], coerce=int)
 	payment_value = DecimalField(u'Размер выплаты', [
 		validators.NumberRange(min=0.00, message=u'Введите положительное число'),
@@ -572,6 +557,25 @@ class SubOfferForm(Form):
 		validators.NumberRange(min=1, max=360, message=u'Время холда должно быть в интервале от 1 до 360 дней'),
 		validators.Required(message=u'Введите время холда')
 	], default=30)
+	
+	def populate_payment_type(self, obj, name):
+		if self.payment_type.data == 0:
+			obj.pay_method = enums.PayMethods.CPC
+		else:
+			obj.pay_method = enums.PayMethods.CPA
+			obj.cpa_policy = enums.CpaPolicies.FIXED if self.payment_type.data == 1 else enums.CpaPolicies.PERCENT
+	
+	def populate_payment_value(self, obj, name):
+		if self.payment_type.data in (0, 1):
+			obj.cost = self.payment_value.data
+		else:
+			obj.percent = self.payment_value.data
+
+
+class MainSubOfferForm(SubOfferForm):
+	def __init__(self, *args, **kwargs):
+		super(MainSubOfferForm, self).__init__(*args, **kwargs)
+		self.payment_type.choices = [(0, u'Фиксированная за клик')] + self.payment_type.choices
 
 
 class OfferForm(Form):
@@ -584,7 +588,6 @@ class OfferForm(Form):
 		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False)
 	], default=u'http://')
 	logo = myfields.ImageField(u'Логотип', [
-		validators.FileRequired(message=u'Выберите изображение на диске'),
 		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
 	])
 	description = TextAreaField(u'Описание кампании', [
@@ -594,7 +597,7 @@ class OfferForm(Form):
 		coerce=int, default=True)
 	regions = myfields.CheckboxListField(u'Регионы', [
 		validators.Required(message=u'Выберите хотя бы один регион')
-	], choices=regions_choices, coerce=int, default=(1,))
+	], choices=enums.Regions.tuples('name'), default=(enums.Regions.RUSSIA,))
 	targeting = BooleanField(u'включить геотаргетинг', default=False)
 	traffic = myfields.CheckboxListField(u'Типы трафика', choices=[
 		(0, u'Cashback'),
@@ -605,7 +608,22 @@ class OfferForm(Form):
 		(5, u'Контекстная реклама на бренд'),
 		(6, u'Трафик с социальных сетей')
 	], coerce=int)
-	suboffers = FieldList(FormField(SubOfferForm), min_entries=1)
+	main_suboffer = FormField(MainSubOfferForm)
+	suboffers = FieldList(FormField(SubOfferForm))
+	
+	def populate_main_suboffer(self, obj, name):
+		self.main_suboffer.form.populate_obj(obj)
+	
+	def populate_suboffers(self, obj, name):
+		pass
+	
+	logo_max_size = (150, 100)
+	logos_path = os.path.join(app.config.get('UPLOAD_PATH'), app.config.get('OFFER_LOGOS_DIR'))
+	def populate_logo(self, obj, name):
+		if not self.logo.data: return
+		obj.logo_filename = '{0}.{1}'.format(generate_unique_filename(), self.logo.format)
+		self.logo.data.thumbnail(self.logo_max_size)
+		self.logo.data.save(os.path.join(self.logos_path, obj.logo_filename))
 
 
 class OfferRequestForm(Form):

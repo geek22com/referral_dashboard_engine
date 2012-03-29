@@ -1,0 +1,18 @@
+{% extends "cabinetcpa/offers/layout.html" %}
+{% import 'common/offers.html' as offer_macros %}
+
+{% set content_fluid = true %}
+{% set activetab = 'all' %}
+
+{% block tabcontent %}
+
+{% if offers %}
+	{{ offer_macros.table(offers) }}
+	{{ macros.paginate(pages, '.offers_all') }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Еще не было создано ни одного оффера.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

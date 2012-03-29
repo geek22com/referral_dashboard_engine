@@ -166,6 +166,9 @@ class Offer(SubOffer):
 	@property
 	def logo(self):
 		return os.path.join(self._logos_dir, self.logo_filename) if self.logo_filename else None
+	
+	def owned_by(self, user):
+		return self.advertiser.id == user.id
 
 
 class OfferGrant(IdentifiableModel):

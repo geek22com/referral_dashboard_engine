@@ -3,59 +3,58 @@
 
 {% set activetab = 'actions' %}
 
+{% block extrahead %}
+	{{ super() }}
+	{{ offer_form.suboffer_head() }}
+{% endblock %}
+
+{% set my = g.user.is_advertiser and offer.owned_by(g.user) %}
+
 {% block tabcontent %}
 
 <table class="bordered-table zebra-striped nosort suboffers-table">
 	<thead>
-		<th class="header">Название</th>
-		<th class="header right">Оплата</th>
-		<th class="header center">Многокр. прохождение</th>
-		<th class="header right">Время холда</th>
-		<th class="header center"></th>
+		<tr>
+			<th class="header">Название</th>
+			<th class="header right">Оплата</th>
+			<th class="header center">Многокр. прохождение</th>
+			<th class="header right">Время холда</th>
+			{% if my %}<th class="header center"></th>{% endif %}
+		</tr>
 	</thead>
 	<tbody>
+		{% for suboffer in offer.all_suboffers %}
 		<tr>
-			<td>Регистрация</td>
-			<td class="right">30.00&nbsp;руб.</td>
-			<td class="center">{{ macros.to_icon(false) }}</td>
+			<td>{{ suboffer.title }}</td>
+			<td class="right">
+				{{ suboffer.cost|currency if suboffer.cost }}
+				{{ suboffer.percent|percent if suboffer.percent }}
+			</td>
+			<td class="center">{{ macros.to_icon(suboffer.reentrant) }}</td>
 			<td class="right">30 дней</td>
+			{% if my %}
 			<td class="center">
 				<a href="#" data-controls-modal="suboffer-modal-1"
 				 data-backdrop="true" data-keyboard="true">изменить</a>
 			</td>
+			{% endif %}
 		</tr>
-		<tr>
-			<td>Пополнение счета в платежной системе</td>
-			<td class="right">50.00&nbsp;руб.</td>
-			<td class="center">{{ macros.to_icon(true) }}</td>
-			<td class="right">30 дней</td>
-			<td class="center">
-				<a href="#" data-controls-modal="suboffer-modal-2"
-				 data-backdrop="true" data-keyboard="true">изменить</a>
-			</td>
-		</tr>
-		<tr>
-			<td>Покупка товара</td>
-			<td class="right">5&nbsp;%</td>
-			<td class="center">{{ macros.to_icon(true) }}</td>
-			<td class="right">30 дней</td>
-			<td class="center">
-				<a href="#" data-controls-modal="suboffer-modal-3"
-				 data-backdrop="true" data-keyboard="true">изменить</a>
-			</td>
-		</tr>
+		{% endfor %}
 	</tbody>
 </table>
 
+{% if my %}
 <h2>Добавить действие</h2>
 <div class="form-container">
 	{{ offer_form.suboffer_html(form) }}
 </div>
+{% endif %}
 
 {% endblock %}
 
 {% block postbody %}
 	{{ super() }}
+	{% if my %}
 	<div id="suboffer-modal-1" class="modal fade" style="display: none; width: 640px;">
 		<div class="modal-header">
 			<a href="#" class="close">×</a>
@@ -83,4 +82,5 @@
 			{{ offer_form.suboffer_html(form, wide=false, suboffer_id=3) }}
 		</div>
 	</div>
+	{% endif %}
 {% endblock %}

@@ -1,21 +1,29 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, request, flash, g
-from heymoose import resource as rc
+from flask import render_template, request, flash, g, redirect
+from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import Offer, SubOffer
+from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only
 
-offer = dict(id=1)
-
 @bp.route('/offers/')
 def offers_list():
-	offers, count = rc.offers.list()
-	return render_template('cabinetcpa/offers/list.html', offers=offers)
+	page = current_page()
+	per_page = app.config.get('OFFERS_PER_PAGE', 10)
+	offset, limit = page_limits(page, per_page)
+	offers, count = rc.offers.list(offset=offset, limit=limit, advertiser_id=g.user.id)
+	pages = paginate(page, count, per_page)
+	return render_template('cabinetcpa/offers/list.html', offers=offers, pages=pages)
 
 @bp.route('/offers/all')
 def offers_all():
-	return 'OK'
+	page = current_page()
+	per_page = app.config.get('OFFERS_PER_PAGE', 10)
+	offset, limit = page_limits(page, per_page)
+	offers, count = rc.offers.list(offset=offset, limit=limit)
+	pages = paginate(page, count, per_page)
+	return render_template('cabinetcpa/offers/all.html', offers=offers, pages=pages)
 
 @bp.route('/offers/new', methods=['GET', 'POST'])
 @advertiser_only
@@ -38,34 +46,47 @@ def offers_new():
 
 @bp.route('/offers/<int:id>')
 def offers_info(id):
+	offer = rc.offers.get_by_id(id)
 	form = forms.OfferRequestForm()
 	return render_template('cabinetcpa/offers/info/info.html', offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/edit')
 @advertiser_only
 def offers_info_edit(id):
+	offer = rc.offers.get_by_id(id)
 	return render_template('cabinetcpa/offers/info/edit.html', offer=offer)
 
-@bp.route('/offers/<int:id>/actions')
+@bp.route('/offers/<int:id>/actions', methods=['GET', 'POST'])
 def offers_info_actions(id):
-	form = forms.SubOfferForm()
+	offer = rc.offers.get_by_id(id)
+	form = forms.SubOfferForm(request.form)
+	if request.method == 'POST' and form.validate():
+		suboffer = SubOffer()
+		form.populate_obj(suboffer)
+		rc.offers.add_suboffer(id, suboffer)
+		flash(u'Действие успешно добавлено', 'success')
+		return redirect(request.url)
 	return render_template('cabinetcpa/offers/info/actions.html', offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/materials')
 def offers_info_materials(id):
+	offer = rc.offers.get_by_id(id)
 	return render_template('cabinetcpa/offers/info/materials.html', offer=offer)
 
 @bp.route('/offers/<int:id>/requests')
 @advertiser_only
 def offers_info_requests(id):
+	offer = rc.offers.get_by_id(id)
 	return render_template('cabinetcpa/offers/info/requests.html', offer=offer)
 
 @bp.route('/offers/<int:id>/balance')
 @advertiser_only
 def offers_info_balance(id):
+	offer = rc.offers.get_by_id(id)
 	return render_template('cabinetcpa/offers/info/balance.html', offer=offer)
 
 @bp.route('/offers/<int:id>/stats')
 def offers_info_stats(id):
+	offer = rc.offers.get_by_id(id)
 	return render_template('cabinetcpa/offers/info/stats.html', offer=offer)
 

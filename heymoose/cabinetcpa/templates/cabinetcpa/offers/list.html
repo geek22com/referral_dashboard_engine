@@ -6,31 +6,16 @@
 
 {% block tabcontent %}
 
-{{ offer_macros.table(offers) }}
-
-{#
 {% if offers %}
-	{% call(head, order) order_macros.table(orders, orders_config) %}{% endcall %}
-	{{ macros.paginate(pages, '.orders') }}
+	{{ offer_macros.table(offers) }}
+	{{ macros.paginate(pages, '.offers_list') }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
-		{% if g.user.is_advertiser %}
 		<p><strong>Список пуст.</strong> Вы еще не создали ни одного оффера.</p>
 		<div class="alert-actions">
 			<a class="btn small" href="{{ url_for('.offers_new') }}">Создать оффер</a>
 		</div>
-		{% elif g.user.is_affiliate %}
-		<p>
-			<strong>Список пуст.</strong>
-			Вы еще не добавили ни одного оффера. Найдите в нашем каталоге офферы,
-			подходящие для ваших площадок, и начните сотрудничать с рекламодателями.
-		</p>
-		<div class="alert-actions">
-			<a class="btn small" href="{{ url_for('.offers_all') }}">Перейти в каталог</a>
-		</div>
-		{% endif %}
 	</div>
 {% endif %}
-#}
 
 {% endblock %}

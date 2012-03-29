@@ -1,8 +1,20 @@
 {% import 'common/forms.html' as forms %}
 
+{% macro suboffer_head() %}
+	<script type="text/javascript">
+		$(function() {
+			var signs = ['руб. за клик', 'руб. за действие', '% с покупки'];
+			$('.payment-type-select').change(function() {
+				$(this).closest('.input').find('.payment-value-sign').text(signs[parseInt($(this).val())]);
+			}).change();
+		})
+	</script>
+{% endmacro %}
+
 {% macro head() %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/redactor/css/redactor.css') }}" media="all" />
 	<script type="text/javascript" src="{{ url_for('static', filename='./js/redactor/redactor.js') }}"></script>
+	{{ suboffer_head() }}
 	<script type="text/javascript">
 		$(function() {
 			$('.redactor').redactor({
@@ -10,11 +22,6 @@
 				css: ['bootstrap.css?nocache={{ nocache() }}'],
 				toolbar: 'heymoose'
 			});
-			
-			var signs = ['руб. за клик', 'руб. за действие', '% с покупки'];
-			$('.payment-type-select').change(function() {
-				$(this).closest('.input').find('.payment-value-sign').text(signs[parseInt($(this).val())]);
-			}).change();
 			
 			$('.add-suboffer-form').click(function() {
 				var $formList = $('.suboffer-form-list');

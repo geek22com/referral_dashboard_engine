@@ -631,7 +631,7 @@ class OfferRequestForm(Form):
 		validators.Required(message=u'Введите описание')
 	])
 
-	
+
 class AppsShowDeletedForm(Form):
 	show = BooleanField(u'Показывать удаленные приложения', default=False)
 	dummy = HiddenField(default='1')

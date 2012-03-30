@@ -5,6 +5,18 @@
 {% block tabcontent %}
 {% with user = g.user %}
 
+{% if user.is_affiliate and offer.grant %}
+	{% if offer.grant.active %}
+	<div class="clearfix alert-message block-message info">
+		<p>Вы сотрудничаете с этой рекламной кампанией.</p>
+	</div>
+	{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>Ваша заявка на сотрудничество с этой рекламной кампанией находится на модерации.</p>
+	</div>
+	{% endif %}
+{% endif %}
+
 <div class="row">
 	<div class="span10">
 		<div class="redactor-text">
@@ -12,7 +24,7 @@
 		</div>
 	</div>
 	<div class="span5" style="width: 300px;">
-		{% if user.is_affiliate %}
+		{% if user.is_affiliate and not offer.grant %}
 		<div class="well center">
 			<a class="btn success" href="#" data-controls-modal="offer-grant-modal"
 			 data-backdrop="true" data-keyboard="true">Сотрудничать с кампанией</a>
@@ -105,6 +117,7 @@
 
 {% block postbody %}
 	{{ super() }}
+	{% if g.user.is_affiliate and not offer.grant %}
 	<div id="offer-grant-modal" class="modal fade" style="display: none;">
 		<form method="post" action="" class="validate2">
 			<div class="modal-header">
@@ -128,4 +141,5 @@
 			</div>
 		</form>
 	</div>
+	{% endif %}
 {% endblock %}

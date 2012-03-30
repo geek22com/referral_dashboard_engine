@@ -16,7 +16,22 @@ class OfferGrantResource(BackendResource):
 	def list(self, **kwargs):
 		return self.get(**kwargs).as_objlist(OfferGrant, with_count=True)
 	
+	def list_offers(self, **kwargs):
+		grants, count = self.list(**kwargs)
+		offers = []
+		for grant in grants:
+			offer = grant.offer
+			offer.grant = grant
+			offers.append(offer)
+		return offers, count
+	
 	def add(self, offer_grant, **kwargs):
 		params = self.extractor.extract(offer_grant, required='offer_id aff_id message'.split())
 		params.update(kwargs)
 		return self.post(**params).as_int()
+	
+	def activate(self, id):
+		self.path(id).path('active').put()
+	
+	def approve(self, id):
+		self.path(id).path('approved').put()

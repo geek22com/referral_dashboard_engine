@@ -7,11 +7,11 @@
 {% block tabcontent %}
 
 {% if offers %}
-	{{ offer_macros.table(offers) }}
+	{{ offer_macros.table(offers, grant_status=g.user.is_affiliate) }}
 	{{ macros.paginate(pages, '.offers_all') }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
-		<p><strong>Список пуст.</strong> Еще не было создано ни одного оффера.</p>
+		<p><strong>Список пуст.</strong> Не найдено ни одного активного оффера.</p>
 	</div>
 {% endif %}
 

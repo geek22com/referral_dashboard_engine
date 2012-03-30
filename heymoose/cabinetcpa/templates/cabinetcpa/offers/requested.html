@@ -1,0 +1,25 @@
+{% extends "cabinetcpa/offers/layout.html" %}
+{% import 'common/offers.html' as offer_macros %}
+
+{% set content_fluid = true %}
+{% set activetab = 'list' %}
+
+{% block tabcontent %}
+
+{% if offers %}
+	{{ offer_macros.table(offers, affiliate=true) }}
+	{{ macros.paginate(pages, '.offers_requested') }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>
+			<strong>Список пуст.</strong>
+			Вы еще не добавили ни одного оффера. Вы можете сделать это прямо сейчас,
+			выбрав понравившийся вам оффер в нашем каталоге.
+		</p>
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.offers_all') }}">Перейти в каталог</a>
+		</div>
+	</div>
+{% endif %}
+
+{% endblock %}

@@ -16,7 +16,7 @@
 
 {% block breadcrumbs %}
 	{{ super() }}
-	{{ macros.breadcrumb('Офферы', url_for('.offers_list')) }}
+	{{ macros.breadcrumb('Офферы', url_for('.offers_list' if g.user.is_advertiser else '.offers_requested')) }}
 	{{ macros.breadcrumb(self.title(), url_for('.offers_info', id=offer.id)) }}
 {% endblock %}
 

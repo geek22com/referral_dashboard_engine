@@ -8,6 +8,15 @@
 		((none, 'все'), ('confirmed', 'разрешенные'), ('unconfirmed', 'на рассмотрении')),
 		'.offers_info_requests', {'id': offer.id})
 	}}
-
-	{{ offer_macros.requests_table(null) }}
+	
+	<div style="clear: both;">
+	{% if grants %}
+		{{ offer_macros.requests_table(grants) }}
+		{{ macros.paginate(pages, '.offers_info_requests', id=offer.id) }}
+	{% else %}
+		<div class="clearfix alert-message block-message info">
+			<p><strong>Список пуст.</strong> Не найдено ни одной заявки на сотрудничество.</p>
+		</div>
+	{% endif %}
+	</div>
 {% endblock %}

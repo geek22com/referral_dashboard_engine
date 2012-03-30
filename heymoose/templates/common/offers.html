@@ -1,6 +1,6 @@
 {% import 'common/macros.html' as macros %}
 
-{% macro table(offers, affiliate=false) %}
+{% macro table(offers, status=false, grant_status=false) %}
 	<table class="bordered-table nosort offers-table">
 		<thead>
 			<tr>
@@ -25,6 +25,26 @@
 			{% set rowspan = 'rowspan="{0}"'.format(offer.suboffers|length + 1)|safe %}
 			<tr>
 				<td class="center" {{ rowspan }}>
+					{% if status %}
+					<div class="offer-status" style="padding-bottom: 5px;">
+						{% if not offer.approved %}
+						<span class="label info">на модерации</span>
+						{% elif not offer.active %}
+						<span class="label danger">приостановлен</span>
+						{% else %}
+						<span class="label success">активен</span>
+						{% endif %}
+					</div>
+					{% endif %}
+					{% if grant_status and offer.grant %}
+					<div class="offer-grant-status" style="padding-bottom: 5px;">
+						{% if offer.grant.active %}
+						<span class="label success">сотрудничество</span>
+						{% else %}
+						<span class="label info">заявка в рассмотрении</span>
+						{% endif %}
+					</div>
+					{% endif %}
 					<a href="{{ url_for('.offers_info', id=offer.id) }}">
 						{% if offer.logo_filename %}
 						<div>
@@ -34,11 +54,6 @@
 						{% endif %}
 						{{ offer.name }}
 					</a>
-					{% if affiliate %}
-					<div>
-						<span class="label info">заявка в рассмотрении</span>
-					</div>
-					{% endif %}
 				</td>
 				
 				<td>{{ offer.title }}</td>
@@ -94,31 +109,28 @@
 			<tr>
 				{% if offer %}<th class="header center">Оффер</th>{% endif %}
 				<th class="header">Заявка</th>
-				<th class="header"></th>
+				<th class="header minimal-width"></th>
 			</tr>
 		</thead>
 		<tbody>
-			{% for i in range(5) %}
+			{% for request in requests %}
 			<tr>
 				{% if offer %}
-				<td class="center">
-					<a href="{{ url_for('.offers_info', id=1) }}">
-						<div>
-							<img src="{{ url_for('static', filename='img/partners/hse.gif') }}"
-							alt="Крутой оффер" width="150" />
-						</div>
-						Инкубатор HSE
-					</a>
-				</td>
+				<a href="{{ url_for('.offers_info', id=offer.id) }}">
+					{% if request.offer.logo_filename %}
+					<div>
+						<img src="{{ url_for('upload', filename=request.offer.logo) }}"
+						alt="логотип" width="150" />
+					</div>
+					{% endif %}
+					{{ request.offer.name }}
+				</a>
 				{% endif %}
 				
-				<td>
-					Здравствуйте! Я владелец кучи крутых площадок с миллионным трафиком.
-					Прошу разрешить мне откручивать ваш постясающий оффер.
-				</td>
+				<td>{{ request.message }}</td>
 				<td>
 					<form method="post" action="" class="inline">
-						<input type="hidden" name="id" value="{{ i }}" />
+						<input type="hidden" name="id" value="{{ request.id }}" />
 						<input type="submit" class="btn success" value="Разрешить" />
 					</form>
 				</td>

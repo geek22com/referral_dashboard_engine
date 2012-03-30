@@ -1,5 +1,6 @@
 from backend import BackendResource, extractor
 from heymoose.data.models import Offer, SubOffer
+from restkit.errors import ResourceNotFound
 
 
 class OfferResource(BackendResource):
@@ -15,6 +16,18 @@ class OfferResource(BackendResource):
 	
 	def list(self, **kwargs):
 		return self.get(**kwargs).as_objlist(Offer, with_count=True)
+	
+	def get_requested(self, id, aff_id):
+		return self.path(id).path('requested').get(aff_id=aff_id).as_obj(Offer)
+	
+	def get_try_requested(self, id, aff_id):
+		try:
+			return self.get_requested(id, aff_id)
+		except ResourceNotFound:
+			return self.get_by_id(id)
+	
+	def list_requested(self, aff_id, **kwargs):
+		return self.path('requested').get(aff_id=aff_id, **kwargs).as_objlist(Offer, with_count=True)
 	
 	def add(self, offer, balance, **kwargs):
 		params = self.extractor.extract(offer,

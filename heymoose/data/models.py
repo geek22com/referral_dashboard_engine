@@ -46,6 +46,9 @@ class User(IdentifiableModel):
 	def account(self): return self.developer_account or self.customer_account
 	
 	@property
+	def active(self): return self.confirmed and not self.blocked
+	
+	@property
 	def full_name(self): return u'{0} {1}'.format(self.first_name, self.last_name)
 	
 	@property
@@ -152,10 +155,11 @@ class Offer(SubOffer):
 	account = Field('Account', 'account')
 	pay_method = Field(enums.PayMethods, 'pay-method')
 	regions = FieldList(enums.Regions, 'regions/region')
-	disabled = Field(types.Boolean, 'disabled')
-	paused = Field(types.Boolean, 'paused')
+	approved = Field(types.Boolean, 'approved')
+	active = Field(types.Boolean, 'active')
 	
 	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
+	grant = Field('OfferGrant', 'grant')
 	
 	_logos_dir = app.config.get('OFFER_LOGOS_DIR')
 	
@@ -169,6 +173,10 @@ class Offer(SubOffer):
 	
 	def owned_by(self, user):
 		return self.advertiser.id == user.id
+	
+	@property
+	def visible(self):
+		return self.approved and self.active
 
 
 class OfferGrant(IdentifiableModel):

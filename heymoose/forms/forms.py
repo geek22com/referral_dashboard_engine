@@ -248,7 +248,13 @@ class OrderBlockForm(EmailNotifyForm):
 	reason = TextAreaField(u'Причина', [
 		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
 	], default=u'Заказ не соответствует правилам размещения рекламы в сети ВКонтакте.')
-	
+
+class OfferBlockForm(EmailNotifyForm):
+	reason = TextAreaField(u'Причина', [
+		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
+	])
+
+
 class WithdrawalDeleteForm(Form):
 	reason = TextAreaField(u'Причина', [
 		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов')),

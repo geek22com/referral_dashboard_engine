@@ -1,0 +1,207 @@
+{% import 'common/macros.html' as macros %}
+{% import 'common/forms.html' as forms %}
+
+{% macro html(offer, owner=false, affiliate=false, admin=false, form=none) %}
+
+{% if admin %}
+	{% if not offer.approved %}
+		<div class="clearfix alert-message block-message error">
+			<p>Оффер заблокирован.</p>
+		</div>
+	{% elif not offer.active %}
+		<div class="clearfix alert-message block-message warning">
+			<p>Оффер отключен рекламодателем.</p>
+		</div>
+	{% else %}
+		<div class="clearfix alert-message block-message success">
+			<p>Оффер активен.</p>
+		</div>
+	{% endif %}
+{% endif %}
+
+{% if affiliate and offer.grant %}
+	{% if offer.grant.active %}
+	<div class="clearfix alert-message block-message info">
+		<p>Вы сотрудничаете с этой рекламной кампанией.</p>
+	</div>
+	{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>Ваша заявка на сотрудничество с этой рекламной кампанией находится на модерации.</p>
+	</div>
+	{% endif %}
+{% endif %}
+
+<div class="row">
+	<div class="span10">
+		<div class="redactor-text">
+			{{ offer.description|safe }}
+		</div>
+	</div>
+	<div class="span5" style="width: 300px;">
+		{% if affiliate and not offer.grant %}
+		<div class="well center">
+			<a class="btn success" href="#" data-controls-modal="offer-grant-modal"
+			 data-backdrop="true" data-keyboard="true">Сотрудничать с кампанией</a>
+		</div>
+		{% endif %}
+		{% if admin %}
+			<div class="well center">
+				<a href="#" class="btn danger" data-controls-modal="modal-block"
+				 data-backdrop="true" data-keyboard="true"
+				 >{{ 'Заблокировать оффер' if offer.approved else 'Уведомление о нарушении'}}</a>
+				{% if not offer.approved %}
+				<a href="#" class="btn success" data-controls-modal="modal-unblock"
+				 data-backdrop="true" data-keyboard="true" style="margin-top: 10px;">Разблокировать оффер</a>
+				{% endif %}
+			</div>
+		{% endif %}
+		<div class="roundbox roundbox--primary roundbox--shadowed">
+			<div class="roundbox-header">
+				{% if owner %}
+				<a href="{{ url_for('.offers_info_edit', id=offer.id) }}"
+				 class="roundbox-header-link">изменить &raquo;</a>
+				{% endif %}
+				Информация
+			</div>
+			<div class="roundbox-content">
+				{% if offer.logo_filename %}
+				<div class="center clearfix" style="margin: 20px 0;">
+					<img src="{{ url_for('upload', filename=offer.logo) }}"
+					 alt="логотип" width="150" />
+				</div>
+				{% endif %}
+				<dl class="kv kv--inscribed kv--key180">
+					<dt>Дата запуска</dt><dd>{{ offer.creation_time|dateformat }}</dd>
+					<dt>Время жизни cookie</dt><dd>30 дней</dd>
+				</dl>
+				<div>
+					<strong>Регионы:</strong>
+					{{ offer.regions|attrlist('name')|join(', ') }}
+				</div>
+			</div>
+		</div>
+		<div class="roundbox roundbox--primary roundbox--shadowed">
+			<div class="roundbox-header">
+				<a href="{{ url_for('.offers_info_stats', id=offer.id) }}"
+				 class="roundbox-header-link">статистика &raquo;</a>
+				Показатели
+			</div>
+			<div class="roundbox-content">
+				<dl class="kv kv--inscribed kv--key180">
+					<dt>eCPC</dt><dd>1.43 руб.</dd>
+					<dt>eCPM</dt><dd>15.70 руб.</dd>
+					<dt>CR</dt><dd>1.52 %</dd>
+				</dl>
+			</div>
+		</div>
+		<div class="roundbox roundbox--primary roundbox--shadowed">
+			<div class="roundbox-header">
+				<a href="{{ url_for('.offers_info_actions', id=offer.id) }}"
+				 class="roundbox-header-link">подробно &raquo;</a>
+				Оплата за действия
+			</div>
+			<div class="roundbox-content">
+				<dl class="kv kv--inscribed kv--key180">
+					{% for suboffer in offer.all_suboffers %}
+					<dt>{{ suboffer.title }}</dt>
+					<dd>
+						{{ suboffer.cost|currency if suboffer.cost }}
+						{{ suboffer.percent|percent if suboffer.percent }}
+					</dd>
+					{% endfor %}
+				</dl>
+			</div>
+		</div>
+		<div class="roundbox roundbox--primary roundbox--shadowed">
+			<div class="roundbox-header">Категории</div>
+			<div class="roundbox-content">
+				<ul class="toplevel-list toplevel-list--no-bottom-margin">
+					<li>
+						Страхование и финансы
+						<ul class="dashed-list">
+							<li>Авто-страхование</li>
+							<li>Кредитные карты</li>
+						</ul>
+					</li>
+					<li>
+						Компьютеры и электроника
+						<ul class="dashed-list">
+							<li>Мобильные портативные устройства для станков с ЧПУ</li>
+							<li>Фототехника</li>
+							<li>Компьютеры и ноутбуки</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% if affiliate and not offer.grant %}
+	<div id="offer-grant-modal" class="modal fade" style="display: none;">
+		<form method="post" action="" class="validate2">
+			<div class="modal-header">
+				<a href="#" class="close">×</a>
+				<h3>Заявка на сотрудничество с рекламной кампанией</h3>
+			</div>
+			<div class="modal-body">
+				<div class="formfield clearfix {{ forms.css_errors(form.message) }}">
+					<div class="span9">
+						<label class="simple">
+							Опишите свою заявку, а также площадки, на которых
+							вы будете показывать рекламные материалы оффера.
+						</label>
+					</div>
+					{{ forms.field(form.message, rows=5, class='span9') }}
+					{{ forms.errors(form.message) }}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<input type="submit" class="btn primary" value="Отправить" />
+			</div>
+		</form>
+	</div>
+{% endif %}
+
+{% if admin %}
+	<div id="modal-block" class="modal" style="display: none;">
+		<form method="post" action="" class="validate">
+			<div class="modal-header">
+				<a href="#" class="close">×</a>
+				<h3>{{ 'Блокировка оффера' if offer.approved else 'Уведомление о нарушении'}}</h3>
+			</div>
+			<div class="modal-body">
+				<fieldset>
+					<input type="hidden" name="action" value="block" />
+					{{ forms.singlefield(form.reason, class='span6', rows=6) }}
+					<div class="input">
+						{{ form.mail() }} уведомить пользователя по почте
+					</div>
+				</fieldset>
+			</div>
+			<div class="modal-footer">
+				<input type="submit" class="btn primary" value="{{ 'Заблокировать' if offer.approved else 'Уведомить'}}" />
+			</div>
+		</form>
+	</div>
+	{% if not offer.approved %}
+	<div id="modal-unblock" class="modal" style="display: none;">
+		<form method="post" action="" class="validate">
+			<div class="modal-header">
+				<a href="#" class="close">×</a>
+				<h3>Разблокировка оффера</h3>
+			</div>
+			<div class="modal-body">
+				<p>Разблокировать оффер?</p>
+				<input type="hidden" name="action" value="unblock" />
+				{{ form.mail() }} уведомить пользователя по почте
+			</div>
+			<div class="modal-footer">
+				<input type="submit" class="btn primary" value="Разблокировать" />
+			</div>
+		</form>
+	</div>
+	{% endif %}
+{% endif %}
+
+{% endmacro %}

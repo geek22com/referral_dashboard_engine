@@ -1,0 +1,10 @@
+{% extends "admin/offers/info/layout.html" %}
+{% import 'common/infos/offer.html' as offer_macro %}
+
+{% set activetab = 'info' %}
+
+{% block tabcontent %}
+
+{{ offer_macro.html(offer, admin=true, form=form) }}
+
+{% endblock %}

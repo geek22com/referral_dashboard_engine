@@ -39,6 +39,12 @@ class OfferResource(BackendResource):
 		params.update(kwargs)
 		return self.post(**params).as_int()
 	
+	def block(self, id, reason):
+		self.path(id).path('blocked').put(reason=reason)
+	
+	def unblock(self, id):
+		self.path(id).path('blocked').delete()
+	
 	def list_suboffers(self, id, **kwargs):
 		return self.path(id).path('suboffers').get(**kwargs).as_objlist(SubOffer)
 	

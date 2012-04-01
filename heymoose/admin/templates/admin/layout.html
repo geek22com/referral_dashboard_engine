@@ -44,6 +44,7 @@
 			Feedback{% if g.feedback_unread > 0 %} ({{ g.feedback_unread }}){% endif %}
 		</a>
 	</li>
+	<li id="menu-item-offers"><a href="{{ url_for('.offers_list') }}">Офферы</a></li>
 	<li id="menu-item-misc"><a href="{{ url_for('.misc') }}">Разное</a></li>
 </ul>
 

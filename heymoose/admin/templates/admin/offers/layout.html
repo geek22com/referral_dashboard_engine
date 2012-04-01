@@ -1,0 +1,32 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Офферы{% endblock %}
+
+{% set activemenu = "offers" %}
+
+{% block extrahead %}
+{{ super() }}
+{% set activetab = activetab|default('list') %}
+<script type="text/javascript">
+	$(function() { 
+		$('li#tab-{{ activetab }}').addClass('active');
+	})
+</script>
+{% endblock %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb(self.title(), url_for('.actions')) }}
+{% endblock %}
+
+{% block pageheader %}
+<h1>{{ self.title() }}</h1>
+{% endblock %}
+
+{% block content %}
+<ul class="tabs">
+	<li id="tab-list"><a href="{{ url_for('.offers_list') }}">Список</a></li>
+</ul>
+
+{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+{% endblock %}

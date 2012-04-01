@@ -3,6 +3,7 @@ from flask import render_template, request, flash, g, redirect, url_for, abort
 from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import Offer, OfferGrant, SubOffer
+from heymoose.data.enums import OfferGrantState
 from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
@@ -98,10 +99,18 @@ def offers_info_requests(id):
 	offer = rc.offers.get_by_id(id)
 	if not offer.owned_by(g.user): abort(403)
 	
+	filter_args = {
+		None: dict(),
+		'moderation': dict(status=OfferGrantState.MODERATION, blocked=False),
+		'approved': dict(status=OfferGrantState.APPROVED, blocked=False),
+		'rejected': dict(status=OfferGrantState.REJECTED, blocked=False),
+		'blocked': dict(blocked=True)
+	}.get(request.args.get('filter', None), dict())
+	
 	page = current_page()
 	per_page = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
 	offset, limit = page_limits(page, per_page)
-	grants, count = rc.offer_grants.list(offer_id=offer.id, approved=True, offset=offset, limit=limit, full=False)
+	grants, count = rc.offer_grants.list(offer_id=offer.id, offset=offset, limit=limit, full=False, **filter_args)
 	pages = paginate(page, count, per_page)
 	
 	if request.method == 'POST':

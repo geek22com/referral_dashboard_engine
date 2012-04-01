@@ -30,8 +30,14 @@ class OfferGrantResource(BackendResource):
 		params.update(kwargs)
 		return self.post(**params).as_int()
 	
-	def activate(self, id):
-		self.path(id).path('active').put()
-	
 	def approve(self, id):
 		self.path(id).path('approved').put()
+	
+	def reject(self, id, reason):
+		self.path(id).path('approved').delete(reason=reason)
+	
+	def block(self, id, reason):
+		self.path(id).path('blocked').put(reason=reason)
+	
+	def unblock(self, id):
+		self.path(id).path('blocked').delete()

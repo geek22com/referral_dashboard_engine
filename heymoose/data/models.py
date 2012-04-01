@@ -185,8 +185,14 @@ class OfferGrant(IdentifiableModel):
 	back_url = Field(types.String, 'back-url')
 	postback_url = Field(types.String, 'postback-url')
 	message = Field(types.String, 'message')
-	approved = Field(types.Boolean, 'approved')
-	active = Field(types.Boolean, 'active')
+	state = Field(enums.OfferGrantState, 'state')
+	blocked = Field(types.Boolean, 'blocked')
+	reject_reason = Field(types.String, 'reject-reason')
+	block_reason = Field(types.String, 'block-reason')
+
+	@property
+	def visible(self):
+		return self.state == enums.OfferGrantState.APPROVED and not self.blocked
 
 
 registry.register_models_from_module(__name__)

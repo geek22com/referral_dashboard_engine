@@ -48,3 +48,9 @@ class Regions(Enum):
 	RUSSIA = e('RUSSIA', code=u'RU', name=u'Россия')
 	UKRAINE = e('UKRAINE', code=u'UA', name=u'Украина')
 	BELARUS = e('BELARUS', code=u'BY', name=u'Белорусь')
+
+class OfferGrantState(Enum):
+	MODERATION = e('MODERATION', name=u'на модерации')
+	APPROVED = e('APPROVED', name=u'подтвержден')
+	REJECTED = e('REJECTED', name=u'отклонен')
+

@@ -5,7 +5,13 @@
 
 {% block tabcontent %}
 	{{ macros.filter(request.args.get('filter', none),
-		((none, 'все'), ('confirmed', 'разрешенные'), ('unconfirmed', 'на рассмотрении')),
+		(
+			(none, 'все'),
+			('moderation', 'не рассмотренные'),
+			('approved', 'подтвержденные'),
+			('rejected', 'отклоненные'),
+			('blocked', 'заблокированные')
+		),
 		'.offers_info_requests', {'id': offer.id})
 	}}
 	

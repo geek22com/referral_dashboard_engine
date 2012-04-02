@@ -1,4 +1,5 @@
 {% import 'common/macros.html' as macros %}
+{% import 'common/forms.html' as forms %}
 
 {% macro table(offers, status=false, grant_status=false) %}
 	<table class="bordered-table nosort offers-table">
@@ -28,7 +29,11 @@
 					{% if status %}
 					<div class="offer-status" style="padding-bottom: 5px;">
 						{% if not offer.approved %}
-						<span class="label info">на модерации</span>
+							{% if offer.block_reason %}
+							<span class="label important">заблокирован</span>
+							{% else %}
+							<span class="label info">на модерации</span>
+							{% endif %}
 						{% elif not offer.active %}
 						<span class="label danger">приостановлен</span>
 						{% else %}
@@ -38,10 +43,20 @@
 					{% endif %}
 					{% if grant_status and offer.grant %}
 					<div class="offer-grant-status" style="padding-bottom: 5px;">
-						{% if offer.grant.active %}
-						<span class="label success">сотрудничество</span>
+						{% if offer.grant.blocked %}
+							{% if offer.grant.block_reason %}
+							<span class="label important">заявка заблокирована администрацией</span>
+							{% else %}
+							<span class="label info">заявка в рассмотрении</span>
+							{% endif %}
 						{% else %}
-						<span class="label info">заявка в рассмотрении</span>
+							{% if offer.grant.moderation %}
+							<span class="label info">заявка в рассмотрении</span>
+							{% elif offer.grant.approved %}
+							<span class="label success">сотрудничество</span>
+							{% elif offer.grant.rejected %}
+							<span class="label important">заявка отклонена</span>
+							{% endif %}
 						{% endif %}
 					</div>
 					{% endif %}
@@ -103,13 +118,14 @@
 	</table>
 {% endmacro %}
 
-{% macro requests_table(requests, offer=false) %}
+{% macro requests_table(requests, offer=false, admin=false, form=none) %}
 	<table class="bordered-table nosort offer-grants-table">
 		<thead>
 			<tr>
 				{% if offer %}<th class="header center">Оффер</th>{% endif %}
 				<th class="header">Заявка</th>
-				<th class="header minimal-width"></th>
+				<th class="header">Состояние</th>
+				<th class="header center minimal-width" colspan="2">Действия</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -129,11 +145,118 @@
 				
 				<td>{{ request.message }}</td>
 				<td>
-					<form method="post" action="" class="inline">
-						<input type="hidden" name="id" value="{{ request.id }}" />
-						<input type="submit" class="btn success" value="Разрешить" />
-					</form>
+					{% if not request.blocked %}
+						{{ request.state.name }}
+						{% if request.rejected and request.reject_reason %}
+							по причине:<br /><i>{{ request.reject_reason }}</i>
+						{% endif %}
+					{% else %}
+						{% if request.block_reason %}
+						заблокирована администрацией по причине:<br /><i>{{ request.block_reason }}</i>
+						{% else %}
+						проверяется администрацией
+						{% endif %}
+					{% endif %}
 				</td>
+				{% if not admin %}
+					{% if request.blocked %}
+					<td colspan="2">&mdash;</td>
+					{% else %}
+						{% set colspan = 1 if request.moderation else 2 %}
+						{% if not request.approved %}
+						<td colspan="{{ colspan }}" class="center">
+							<a href="#" class="success" data-controls-modal="modal-approve-{{ request.id -}}"
+					 		 data-backdrop="true" data-keyboard="true">разрешить</a>
+					 		<div id="modal-approve-{{ request.id -}}" class="modal" style="display: none;">
+								<form method="post" action="" class="validate">
+									<div class="modal-header">
+										<a href="#" class="close">×</a>
+										<h3>Подтверждение заявки</h3>
+									</div>
+									<div class="modal-body">
+										<p>Подтвердить заявку?</p>
+										{{ form.grant_id(value=request.id) }}
+										{{ form.action(value='approve') }}
+									</div>
+									<div class="modal-footer">
+										<input type="submit" class="btn primary" value="Подтвердить" />
+									</div>
+								</form>
+							</div>
+						</td>
+						{% endif %}
+						{% if not request.rejected %}
+						<td colspan="{{ colspan }}" class="center">
+							<a href="#" class="danger" data-controls-modal="modal-reject-{{ request.id -}}"
+					 		 data-backdrop="true" data-keyboard="true">отклонить</a>
+							<div id="modal-reject-{{ request.id -}}" class="modal" style="display: none;">
+								<form method="post" action="" class="validate">
+									<div class="modal-header">
+										<a href="#" class="close">×</a>
+										<h3>Отклонение заявки</h3>
+									</div>
+									<div class="modal-body">
+										<fieldset>
+											{{ form.grant_id(value=request.id) }}
+											{{ form.action(value='reject') }}
+											{{ forms.singlefield(form.reason, class='span6', rows=6) }}
+										</fieldset>
+									</div>
+									<div class="modal-footer">
+										<input type="submit" class="btn primary" value="Отклонить" />
+									</div>
+								</form>
+							</div>
+						</td>
+						{% endif %}
+					{% endif %}
+				{% else %}
+					{% set colspan = 1 if request.blocked else 2 %}
+					{% if request.blocked %}
+					<td colspan="{{ colspan }}" class="center">
+						<a href="#" class="success" data-controls-modal="modal-unblock-{{ request.id -}}"
+				 		 data-backdrop="true" data-keyboard="true">разблокировать</a>
+				 		<div id="modal-unblock-{{ request.id -}}" class="modal" style="display: none;">
+							<form method="post" action="" class="validate">
+								<div class="modal-header">
+									<a href="#" class="close">×</a>
+									<h3>Разблокирование заявки</h3>
+								</div>
+								<div class="modal-body">
+									<p>Разблокировать заявку?</p>
+									{{ form.grant_id(value=request.id) }}
+									{{ form.action(value='unblock') }}
+								</div>
+								<div class="modal-footer">
+									<input type="submit" class="btn primary" value="Разблокировать" />
+								</div>
+							</form>
+						</div>
+					</td>
+					{% endif %}
+					<td colspan="{{ colspan }}" class="center">
+						<a href="#" class="danger" data-controls-modal="modal-block-{{ request.id -}}"
+				 		 data-backdrop="true" data-keyboard="true">заблокировать</a>
+						<div id="modal-block-{{ request.id -}}" class="modal" style="display: none;">
+							<form method="post" action="" class="validate">
+								<div class="modal-header">
+									<a href="#" class="close">×</a>
+									<h3>Блокировка заявки</h3>
+								</div>
+								<div class="modal-body">
+									<fieldset>
+										{{ form.grant_id(value=request.id) }}
+										{{ form.action(value='block') }}
+										{{ forms.singlefield(form.reason, class='span6', rows=6) }}
+									</fieldset>
+								</div>
+								<div class="modal-footer">
+									<input type="submit" class="btn primary" value="Заблокировать" />
+								</div>
+							</form>
+						</div>
+					</td>
+				{% endif %}
 			</tr>
 			{% endfor %}
 		</tbody>

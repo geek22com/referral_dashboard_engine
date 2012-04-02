@@ -27,6 +27,7 @@
 {% block content %}
 <ul class="tabs">
 	<li id="tab-info"><a href="{{ url_for('.offers_info', id=offer.id) }}">Общее</a></li>
+	<li id="tab-requests"><a href="{{ url_for('.offers_info_requests', id=offer.id) }}">Заявки</a></li>
 </ul>
 
 {% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}

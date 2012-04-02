@@ -50,7 +50,7 @@ class Regions(Enum):
 	BELARUS = e('BELARUS', code=u'BY', name=u'Белорусь')
 
 class OfferGrantState(Enum):
-	MODERATION = e('MODERATION', name=u'на модерации')
-	APPROVED = e('APPROVED', name=u'подтвержден')
-	REJECTED = e('REJECTED', name=u'отклонен')
+	MODERATION = e('MODERATION', name=u'на рассмотрении рекламодателем')
+	APPROVED = e('APPROVED', name=u'подтверждена')
+	REJECTED = e('REJECTED', name=u'отклонена рекламодателем')
 

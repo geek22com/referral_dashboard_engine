@@ -1,5 +1,5 @@
-{% extends "cabinetcpa/offers/info/layout.html" %}
-{% import 'common/offers.html' as offer_macros %}
+{% extends "admin/offers/info/layout.html" %}
+{% import 'common/offers.html' as offer_macro %}
 
 {% set activetab = 'requests' %}
 
@@ -17,7 +17,7 @@
 	
 	<div style="clear: both;">
 	{% if grants %}
-		{{ offer_macros.requests_table(grants, form=form) }}
+		{{ offer_macro.requests_table(grants, admin=true, form=form) }}
 		{{ macros.paginate(pages, '.offers_info_requests', id=offer.id) }}
 	{% else %}
 		<div class="clearfix alert-message block-message info">

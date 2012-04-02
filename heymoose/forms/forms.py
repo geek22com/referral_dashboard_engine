@@ -638,6 +638,14 @@ class OfferRequestForm(Form):
 	])
 
 
+class OfferRequestDecisionForm(Form):
+	action = HiddenField()
+	grant_id = HiddenField()
+	reason = TextAreaField(u'Причина', [
+		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
+	])
+
+
 class AppsShowDeletedForm(Form):
 	show = BooleanField(u'Показывать удаленные приложения', default=False)
 	dummy = HiddenField(default='1')

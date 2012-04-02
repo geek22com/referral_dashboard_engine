@@ -31,7 +31,7 @@ class PrimitiveType(TypeBase):
 		return self.parse_value(xmlvalue)
 	
 	def parse_value(self, xmlvalue):
-		return self.type_class(xmlvalue)
+		return self.type_class(xmlvalue) if xmlvalue is not None else None
 
 
 class String(PrimitiveType):

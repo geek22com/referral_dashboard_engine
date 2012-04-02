@@ -3,11 +3,18 @@
 
 {% macro html(offer, owner=false, affiliate=false, admin=false, form=none) %}
 
-{% if admin %}
+{% if admin or owner %}
 	{% if not offer.approved %}
+		{% if offer.block_reason %}
 		<div class="clearfix alert-message block-message error">
-			<p>Оффер заблокирован.</p>
+			<p>Оффер заблокирован администрацией. Причина блокировки:</p>
+			<p><i>{{ offer.block_reason }}</i></p>
 		</div>
+		{% else %}
+		<div class="clearfix alert-message block-message error">
+			<p>Оффер находится на модерации. Он станет активным после проверки администрацией.</p>
+		</div>
+		{% endif %}
 	{% elif not offer.active %}
 		<div class="clearfix alert-message block-message warning">
 			<p>Оффер отключен рекламодателем.</p>
@@ -20,14 +27,32 @@
 {% endif %}
 
 {% if affiliate and offer.grant %}
-	{% if offer.grant.active %}
-	<div class="clearfix alert-message block-message info">
-		<p>Вы сотрудничаете с этой рекламной кампанией.</p>
-	</div>
+	{% if offer.grant.blocked %}
+		{% if offer.grant.block_reason %}
+		<div class="clearfix alert-message block-message error">
+			<p>Ваша заявка на сотрудничество с этой рекламной кампанией заблокирована администрацией. Причина:</p>
+			<p><i>{{ offer.grant.block_reason }}</i></p>
+		</div>
+		{% else %}
+		<div class="clearfix alert-message block-message info">
+			<p>Ваша заявка на сотрудничество с этой рекламной кампанией находится на модерации.</p>
+		</div>
+		{% endif %}
 	{% else %}
-	<div class="clearfix alert-message block-message info">
-		<p>Ваша заявка на сотрудничество с этой рекламной кампанией находится на модерации.</p>
-	</div>
+		{% if offer.grant.moderation %}
+		<div class="clearfix alert-message block-message info">
+			<p>Ваша заявка на сотрудничество с этой рекламной кампанией находится на модерации.</p>
+		</div>
+		{% elif offer.grant.approved %}
+		<div class="clearfix alert-message block-message success">
+			<p>Вы сотрудничаете с этой рекламной кампанией.</p>
+		</div>
+		{% elif offer.grant.rejected %}
+		<div class="clearfix alert-message block-message error">
+			<p>Ваша заявка на сотрудничество с этой рекламной кампанией отклонена рекламодателем. Причина:</p>
+			<p><i>{{ offer.grant.reject_reason }}</i></p>
+		</div>
+		{% endif %}
 	{% endif %}
 {% endif %}
 

@@ -17,6 +17,10 @@ def offers_list():
 	pages = paginate(page, count, per_page)
 	return render_template('admin/offers/list.html', offers=offers, pages=pages)
 
+@bp.route('/offers/requests')
+def offers_requests():
+	return render_template('admin/offers/requests.html')
+
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 def offers_info(id):
 	offer = rc.offers.get_by_id(id)
@@ -31,6 +35,38 @@ def offers_info(id):
 			flash(u'Оффер разблокирован', 'success')
 		return redirect(request.url)
 	return render_template('admin/offers/info/info.html', offer=offer, form=form)
+
+@bp.route('/offers/<int:id>/requests', methods=['GET', 'POST'])
+def offers_info_requests(id):
+	offer = rc.offers.get_by_id(id)
+	
+	filter_args = {
+		None: dict(),
+		'moderation': dict(state=OfferGrantState.MODERATION, blocked=False),
+		'approved': dict(state=OfferGrantState.APPROVED, blocked=False),
+		'rejected': dict(state=OfferGrantState.REJECTED, blocked=False),
+		'blocked': dict(blocked=True)
+	}.get(request.args.get('filter', None), dict())
+	
+	page = current_page()
+	per_page = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
+	offset, limit = page_limits(page, per_page)
+	grants, count = rc.offer_grants.list(offer_id=offer.id, offset=offset, limit=limit, full=False, **filter_args)
+	pages = paginate(page, count, per_page)
+	
+	form = forms.OfferRequestDecisionForm(request.form)
+	if request.method == 'POST' and form.validate():
+		grant = rc.offer_grants.get_by_id(form.grant_id.data)
+		if grant and grant.offer.id == offer.id:
+			action = form.action.data
+			if action == 'unblock':
+				rc.offer_grants.unblock(grant.id)
+				flash(u'Заявка разблокирована', 'success')
+			elif action == 'block':
+				rc.offer_grants.block(grant.id, form.reason.data)
+				flash(u'Заявка заблокирована', 'success')
+			return redirect(request.url)
+	return render_template('admin/offers/info/requests.html', offer=offer, grants=grants, pages=pages, form=form)
 
 @bp.route('/offers/<int:id>/stats')
 def offers_info_stats(id):

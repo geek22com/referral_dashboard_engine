@@ -93,7 +93,7 @@ def offers_info_materials(id):
 	offer = rc.offers.get_by_id(id)
 	return render_template('cabinetcpa/offers/info/materials.html', offer=offer)
 
-@bp.route('/offers/<int:id>/requests')
+@bp.route('/offers/<int:id>/requests', methods=['GET', 'POST'])
 @advertiser_only
 def offers_info_requests(id):
 	offer = rc.offers.get_by_id(id)
@@ -101,9 +101,9 @@ def offers_info_requests(id):
 	
 	filter_args = {
 		None: dict(),
-		'moderation': dict(status=OfferGrantState.MODERATION, blocked=False),
-		'approved': dict(status=OfferGrantState.APPROVED, blocked=False),
-		'rejected': dict(status=OfferGrantState.REJECTED, blocked=False),
+		'moderation': dict(state=OfferGrantState.MODERATION, blocked=False),
+		'approved': dict(state=OfferGrantState.APPROVED, blocked=False),
+		'rejected': dict(state=OfferGrantState.REJECTED, blocked=False),
 		'blocked': dict(blocked=True)
 	}.get(request.args.get('filter', None), dict())
 	
@@ -113,14 +113,19 @@ def offers_info_requests(id):
 	grants, count = rc.offer_grants.list(offer_id=offer.id, offset=offset, limit=limit, full=False, **filter_args)
 	pages = paginate(page, count, per_page)
 	
-	if request.method == 'POST':
-		id = int(request.form.get('id'))
-		grant = rc.offer_grants.get_by_id(id)
-		if grant.offer.id == offer.id:
-			rc.offer_grants.activate(grant.id)
-			flash(u'Заявка успешно утверждена', 'success')
+	form = forms.OfferRequestDecisionForm(request.form)
+	if request.method == 'POST' and form.validate():
+		grant = rc.offer_grants.get_by_id(form.grant_id.data)
+		if grant and grant.offer.id == offer.id and not grant.blocked:
+			action = form.action.data
+			if action == 'approve' and not grant.approved:
+				rc.offer_grants.approve(grant.id)
+				flash(u'Заявка утверждена', 'success')
+			elif action == 'reject' and not grant.rejected:
+				rc.offer_grants.reject(grant.id, form.reason.data)
+				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
-	return render_template('cabinetcpa/offers/info/requests.html', offer=offer, grants=grants, pages=pages)
+	return render_template('cabinetcpa/offers/info/requests.html', offer=offer, grants=grants, pages=pages, form=form)
 
 @bp.route('/offers/<int:id>/balance')
 @advertiser_only

@@ -157,6 +157,7 @@ class Offer(SubOffer):
 	regions = FieldList(enums.Regions, 'regions/region')
 	approved = Field(types.Boolean, 'approved')
 	active = Field(types.Boolean, 'active')
+	block_reason = Field(types.String, 'block-reason')
 	
 	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
 	grant = Field('OfferGrant', 'grant')
@@ -189,10 +190,15 @@ class OfferGrant(IdentifiableModel):
 	blocked = Field(types.Boolean, 'blocked')
 	reject_reason = Field(types.String, 'reject-reason')
 	block_reason = Field(types.String, 'block-reason')
-
+	
 	@property
-	def visible(self):
-		return self.state == enums.OfferGrantState.APPROVED and not self.blocked
+	def approved(self): return not self.blocked and self.state == enums.OfferGrantState.APPROVED
+	
+	@property
+	def rejected(self): return not self.blocked and self.state == enums.OfferGrantState.REJECTED
+	
+	@property
+	def moderation(self): return not self.blocked and self.state == enums.OfferGrantState.MODERATION
 
 
 registry.register_models_from_module(__name__)

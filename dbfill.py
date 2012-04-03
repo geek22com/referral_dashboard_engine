@@ -36,7 +36,7 @@ actions_per_app_and_order = 1
 
 def fill_db():
 	# Dummy request forces server to regenerate schema
-	actions.orders.get_orders()
+	actions.users.get_users()
 	time.sleep(1)
 	
 	# Create admin
@@ -46,7 +46,7 @@ def fill_db():
 	actions.users.add_user_role(admin.id, actions.roles.ADMIN)
 	
 	# Create customers
-	customers = []
+	'''customers = []
 	for i in range(customers_count):
 		email_customer = email_customer_template.format(i)
 		actions.users.add_user(email_customer, pw, random.choice(first_names), random.choice(last_names))
@@ -64,7 +64,7 @@ def fill_db():
 		developer = actions.users.get_user_by_email(email_developer)
 		actions.users.confirm_user(developer.id)
 		actions.users.add_user_role(developer.id, actions.roles.DEVELOPER)
-		developers.append(developer)
+		developers.append(developer)'''
 	
 	# Create advertisers
 	advertisers = []
@@ -97,7 +97,7 @@ def fill_db():
 		users.add_role(affiliate.id, Roles.AFFILIATE)
 		affiliates.append(affiliate)
 		
-	platforms = ('VKONTAKTE', 'FACEBOOK', 'ODNOKLASSNIKI')
+	'''platforms = ('VKONTAKTE', 'FACEBOOK', 'ODNOKLASSNIKI')
 			
 	# Create apps for developers
 	apps = []
@@ -177,7 +177,7 @@ def fill_db():
 			sizes = random.sample(banner_sizes[1:], 3)
 			for i in range(3):
 				actions.orders.add_order_banner(order.id, sizes[i].id, 'image/png', 'aGVsbG8h')
-	'''		
+			
 	# Create actions for apps and offers
 	for app in apps:
 		for order in orders:

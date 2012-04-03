@@ -56,3 +56,12 @@ class OfferResource(BackendResource):
 		)
 		params.update(kwargs)
 		return self.path(id).path('suboffers').post(**params).as_int()
+	
+	def add_banner(self, id, banner, image, **kwargs):
+		params = self.extractor.extract(banner, required='width height mime_type'.split())
+		params.update(image=image)
+		params.update(kwargs)
+		return self.path(id).path('banners').post(**params).as_int()
+	
+	def delete_banner(self, id, banner_id):
+		self.path(id).path('banners').path(banner_id).delete()

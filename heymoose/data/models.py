@@ -116,10 +116,6 @@ class OrderStat(IdentifiableModel):
 	shows_overall = Field(types.Integer, 'shows-overall')
 	actions_overall = Field(types.Integer, 'actions-overall')
 
-
-class Banner(IdentifiableModel):
-	mime_type = Field(types.String, 'mime-type')
-
 class City(IdentifiableModel):
 	name = Field(types.String, 'name')
 	disabled = Field(types.Boolean, 'disabled')
@@ -156,6 +152,7 @@ class Offer(SubOffer):
 	pay_method = Field(enums.PayMethods, 'pay-method')
 	regions = FieldList(enums.Regions, 'regions/region')
 	categories = FieldList('Category', 'categories/category')
+	banners = FieldList('Banner', 'banners/banner')
 	approved = Field(types.Boolean, 'approved')
 	active = Field(types.Boolean, 'active')
 	block_reason = Field(types.String, 'block-reason')
@@ -204,6 +201,29 @@ class OfferGrant(IdentifiableModel):
 	
 	@property
 	def moderation(self): return not self.blocked and self.state == enums.OfferGrantState.MODERATION
+
+
+class Banner(IdentifiableModel):
+	width = Field(types.Integer, 'width')
+	height = Field(types.Integer, 'height')
+	mime_type = Field(types.String, 'mime-type')
+	
+	_mime_to_formats = {
+		u'image/png': u'PNG',
+		u'image/gif': u'GIF',
+		u'image/jpeg': u'JPEG'
+	}
+	
+	_banners_path = app.config.get('BACKEND_BANNERS_PATH')
+	
+	@property
+	def size(self): return u'{0} x {1}'.format(self.width, self.height)
+	
+	@property
+	def format(self): return self._mime_to_formats.get(self.mime_type, 'UNKNOWN')
+	
+	@property
+	def url(self): return os.path.join(self._banners_path, str(self.id))
 
 
 class Category(IdentifiableModel):

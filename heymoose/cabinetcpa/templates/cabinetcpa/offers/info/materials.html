@@ -1,31 +1,42 @@
 {% extends "cabinetcpa/offers/info/layout.html" %}
+{% import 'common/materials.html' as materials_macros %}
 
 {% set activetab = 'materials' %}
 
 {% block tabcontent %}
 
-<table class="bordered-table zebra-striped nosort banners-table">
-	<thead>
-		<th class="header center">Формат</th>
-		<th class="header center">Размер</th>
-		<th class="header right">eCPC, руб.</th>
-		<th class="header right">eCPM, руб.</th>
-		<th class="header center minimal-width"></th>
-	</thead>
-	<tbody>
-		{% for i in range(5) %}
-		<tr>
-			<td class="center">GIF</td>
-			<td class="center">100 x 100</td>
-			<td class="right">1.52</td>
-			<td class="right">13.65</td>
-			<td class="center"><a href="#" class="danger">удалить</a></td>
-		</tr>
-		<tr>
-			<td colspan="5"><img src="{{ url_for('static', filename='img/partners/playflock.jpg')}}" alt="" /></td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
+{% if offer.owned_by(g.user) %}
+	<form method="post" action="" class="widelabels validate2" enctype="multipart/form-data">
+		<fieldset>
+			<legend>Загрузка баннера</legend>
+			{% call forms.singlefield_desc(form.image) %}
+			<span class="help-block">
+				Принимаются изображения в формате JPG (JPEG), GIF, PNG. Максимальный
+				размер загружаемого изображения &mdash; 1Мб.
+			</span>
+			{% endcall %}
+			<div class="actions">
+				<input class="btn primary" type="submit" value="Загрузить" />
+			</div>
+		</fieldset>
+	</form>
+{% endif %}
+
+{% if offer.banners %}
+	{% call(head, banner) materials_macros.table(offer.banners, colspan=5) %}
+		{% if head %}
+			<th class="header minimal-width"></th>
+		{% else %}
+			<td>
+				<a href="{{ url_for('.offers_info_materials_delete', id=offer.id, bid=banner.id)}}"
+				 class="danger" onclick="return confirm('Удалить баннер?');">удалить</a>
+			</td>
+		{% endif %}
+	{% endcall %}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Еще не было добавлено никаких материалов.</p>
+	</div>
+{% endif %}
 
 {% endblock %}

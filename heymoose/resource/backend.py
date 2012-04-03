@@ -109,6 +109,17 @@ class BackendResource(Resource):
 	def path(self, part):
 		return RequestBuilder(self, part)
 	
+	def loggable_dict(self, d):
+		if d is None: return None
+		result = {}
+		for key, value in d.iteritems():
+			if (isinstance(value, str) or isinstance(value, unicode)) and len(value) > 100:
+				value = unicode(value)
+				result[key] = value[:100] + u'...'
+			else:
+				result[key] = value
+		return result
+	
 	def request(self, method, path=None, payload=None, headers=None, params_dict=None, **params):
 		# Unify our interface
 		if params_dict:
@@ -122,7 +133,7 @@ class BackendResource(Resource):
 
 		app.logger.debug('{resource} {method}: url={url} params={params} payload={payload}'.format(
 			resource=self.__class__.__name__, method=method, url=urlparse.urljoin(self.uri, path),
-			params=params, payload=payload
+			params=self.loggable_dict(params), payload=self.loggable_dict(payload)
 		))
 		
 		try:

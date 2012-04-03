@@ -645,6 +645,18 @@ class OfferRequestDecisionForm(Form):
 	])
 
 
+class OfferBannerForm(Form):
+	image = myfields.ImageField(u'Выберите изображение', [
+		validators.FileRequired(message=u'Выберите файл на диске'),
+		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
+	])
+	
+	def populate_image(self, obj, name):
+		obj.width = self.image.width
+		obj.height = self.image.height
+		obj.mime_type = self.image.mime_type
+
+
 class AppsShowDeletedForm(Form):
 	show = BooleanField(u'Показывать удаленные приложения', default=False)
 	dummy = HiddenField(default='1')

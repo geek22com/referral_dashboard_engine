@@ -1,0 +1,10 @@
+alter table category alter column id set default nextval('category_seq');
+insert into category(grouping, name) values('Группа 1', 'Категория 1.1');
+insert into category(grouping, name) values('Группа 1', 'Категория 1.2');
+insert into category(grouping, name) values('Группа 1', 'Категория 1.3');
+insert into category(grouping, name) values('Группа 2', 'Категория 2.1');
+insert into category(grouping, name) values('Группа 2', 'Категория 2.2');
+insert into category(grouping, name) values('Группа 2', 'Категория 2.3');
+insert into category(grouping, name) values('Группа 3', 'Категория 3.1');
+insert into category(grouping, name) values('Группа 3', 'Категория 3.2');
+insert into category(grouping, name) values('Группа 3', 'Категория 3.3');

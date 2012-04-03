@@ -2,11 +2,12 @@
 from flask import render_template, request, flash, g, redirect, url_for, abort
 from heymoose import app, resource as rc
 from heymoose.forms import forms
-from heymoose.data.models import Offer, OfferGrant, SubOffer
+from heymoose.data.models import Offer, OfferGrant, SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
 from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
+import base64
 
 
 @bp.route('/offers/')
@@ -88,10 +89,28 @@ def offers_info_actions(id):
 		return redirect(request.url)
 	return render_template('cabinetcpa/offers/info/actions.html', offer=offer, form=form)
 
-@bp.route('/offers/<int:id>/materials')
+@bp.route('/offers/<int:id>/materials', methods=['GET', 'POST'])
 def offers_info_materials(id):
 	offer = rc.offers.get_by_id(id)
-	return render_template('cabinetcpa/offers/info/materials.html', offer=offer)
+	form = forms.OfferBannerForm(request.form)
+	if offer.owned_by(g.user) and request.method == 'POST' and form.validate():
+		banner = Banner()
+		form.populate_obj(banner)
+		image_base64 = base64.encodestring(request.files['image'].stream.read())
+		rc.offers.add_banner(offer.id, banner, image_base64)
+		flash(u'Баннер успешно загружен', 'success')
+		return redirect(request.url)
+	return render_template('cabinetcpa/offers/info/materials.html', offer=offer, form=form)
+
+@bp.route('/offers/<int:id>/materials/<int:bid>/delete')
+@advertiser_only
+def offers_info_materials_delete(id, bid):
+	offer = rc.offers.get_by_id(id)
+	if not offer.owned_by(g.user): abort(403)
+	if not bid in [banner.id for banner in offer.banners]: abort(404)
+	rc.offers.delete_banner(id, bid)
+	flash(u'Баннер удален', 'success')
+	return redirect(url_for('.offers_info_materials', id=id))
 
 @bp.route('/offers/<int:id>/requests', methods=['GET', 'POST'])
 @advertiser_only

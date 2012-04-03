@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from wtforms.fields import TextField, IntegerField, FileField, SelectField, SelectMultipleField
 from PIL import Image
+from heymoose import resource as rc
 from heymoose.utils import swfheader, svgheader
 import widgets
 
@@ -132,3 +133,27 @@ class CategorizedCheckboxListField(CheckboxListField):
 			yield opt
 
 
+class CategoriesField(CategorizedCheckboxListField):
+	def __init__(self, label=None, validators=None, **kwargs):
+		self.categories = rc.categories.list()
+		choices = [(c.id, c.name, c.grouping) for c in self.categories]
+		super(CategoriesField, self).__init__(label, validators, int, choices, **kwargs)
+	
+	def process_formdata(self, valuelist):
+		super(CategoriesField, self).process_formdata(valuelist)
+		categories_dict = {category.id : category for category in self.categories}
+		self.selected_categories = []
+		if self.data:
+			for id in self.data:
+				if id in categories_dict:
+					self.selected_categories.append(categories_dict.get(id))
+	
+	def populate_obj(self, obj, name):
+		setattr(obj, name, self.selected_categories)
+		
+		
+		
+			
+
+	
+	

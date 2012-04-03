@@ -155,6 +155,7 @@ class Offer(SubOffer):
 	account = Field('Account', 'account')
 	pay_method = Field(enums.PayMethods, 'pay-method')
 	regions = FieldList(enums.Regions, 'regions/region')
+	categories = FieldList('Category', 'categories/category')
 	approved = Field(types.Boolean, 'approved')
 	active = Field(types.Boolean, 'active')
 	block_reason = Field(types.String, 'block-reason')
@@ -167,6 +168,10 @@ class Offer(SubOffer):
 	@property
 	def all_suboffers(self):
 		return [self] + (self.suboffers or [])
+	
+	@property
+	def categories_ids(self):
+		return [category.id for category in self.categories]
 	
 	@property
 	def logo(self):
@@ -199,6 +204,11 @@ class OfferGrant(IdentifiableModel):
 	
 	@property
 	def moderation(self): return not self.blocked and self.state == enums.OfferGrantState.MODERATION
+
+
+class Category(IdentifiableModel):
+	name = Field(types.String, 'name')
+	grouping = Field(types.String, 'grouping')
 
 
 registry.register_models_from_module(__name__)

@@ -584,7 +584,7 @@ class MainSubOfferForm(SubOfferForm):
 		self.payment_type.choices = [(0, u'Фиксированная за клик')] + self.payment_type.choices
 
 
-class OfferForm(Form):
+class OfferForm(Form):	
 	name = TextField(u'Название оффера', [
 		validators.Length(min=1, max=100, message=u'Название должно иметь длину от 1 до 100 символов'),
 		validators.Required(message=u'Введите название оффера')
@@ -599,8 +599,7 @@ class OfferForm(Form):
 	description = TextAreaField(u'Описание кампании', [
 		validators.Required(message=u'Введите описание кампании')
 	])
-	categories = myfields.CategorizedCheckboxListField(u'Категории', choices=categories_choices,
-		coerce=int, default=True)
+	categories = myfields.CategoriesField(u'Категории', default=True)
 	regions = myfields.CheckboxListField(u'Регионы', [
 		validators.Required(message=u'Выберите хотя бы один регион')
 	], choices=enums.Regions.tuples('name'), default=(enums.Regions.RUSSIA,))

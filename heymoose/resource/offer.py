@@ -8,7 +8,8 @@ class OfferResource(BackendResource):
 	
 	extractor = extractor().alias(
 		advertiser_id='advertiser.id',
-		cost='value'
+		cost='value',
+		categories='categories_ids'
 	)
 	
 	def get_by_id(self, id, **kwargs):
@@ -33,7 +34,7 @@ class OfferResource(BackendResource):
 		params = self.extractor.extract(offer,
 			required='advertiser_id pay_method cost name description url title'.split(),
 			nonempty='regions'.split(),
-			optional='cpa_policy allow_negative_balance auto_approve reentrant logo_filename'.split()
+			optional='cpa_policy allow_negative_balance auto_approve reentrant logo_filename categories'.split()
 		)
 		params.update(balance=balance)
 		params.update(kwargs)

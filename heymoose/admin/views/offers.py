@@ -56,7 +56,7 @@ def offers_info_requests(id):
 	page = current_page()
 	per_page = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
 	offset, limit = page_limits(page, per_page)
-	grants, count = rc.offer_grants.list(offer_id=offer.id, offset=offset, limit=limit, full=False, **filter_args)
+	grants, count = rc.offer_grants.list(offer_id=offer.id, offset=offset, limit=limit, full=True, **filter_args)
 	pages = paginate(page, count, per_page)
 	
 	form = forms.OfferRequestDecisionForm(request.form)

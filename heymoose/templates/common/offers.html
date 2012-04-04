@@ -122,6 +122,7 @@
 	<table class="bordered-table nosort offer-grants-table">
 		<thead>
 			<tr>
+				{% if admin %}<th class="header">Партнер</th>{% endif %}
 				{% if offer %}<th class="header center">Оффер</th>{% endif %}
 				<th class="header">Заявка</th>
 				<th class="header">Состояние</th>
@@ -131,16 +132,25 @@
 		<tbody>
 			{% for request in requests %}
 			<tr>
+				{% if admin %}
+				<td>
+					<a href="{{ url_for('.users_info', id=request.affiliate.id) }}"
+					 >{{ request.affiliate.full_name }}</a>
+				</td>
+				{% endif %}
+				
 				{% if offer %}
-				<a href="{{ url_for('.offers_info', id=offer.id) }}">
-					{% if request.offer.logo_filename %}
-					<div>
-						<img src="{{ url_for('upload', filename=request.offer.logo) }}"
-						alt="логотип" width="150" />
-					</div>
-					{% endif %}
-					{{ request.offer.name }}
-				</a>
+				<td>
+					<a href="{{ url_for('.offers_info', id=offer.id) }}">
+						{% if request.offer.logo_filename %}
+						<div>
+							<img src="{{ url_for('upload', filename=request.offer.logo) }}"
+							alt="логотип" width="150" />
+						</div>
+						{% endif %}
+						{{ request.offer.name }}
+					</a>
+				</td>
 				{% endif %}
 				
 				<td>{{ request.message }}</td>

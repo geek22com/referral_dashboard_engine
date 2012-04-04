@@ -5,7 +5,10 @@
 
 {% block tabcontent %}
 
-{% if offer.owned_by(g.user) %}
+{% set advertiser_is_owner = g.user.is_advertiser and offer.owned_by(g.user) %}
+{% set affiliate_is_granted = g.user.is_affiliate and offer.grant and offer.grant.approved %}
+
+{% if advertiser_is_owner %}
 	<form method="post" action="" class="widelabels validate2" enctype="multipart/form-data">
 		<fieldset>
 			<legend>Загрузка баннера</legend>
@@ -22,15 +25,41 @@
 	</form>
 {% endif %}
 
+{% if affiliate_is_granted %}
+	<div class="clearfix alert-message block-message success">
+		<p>
+			Вы сотрудничаете с данной кампанией, и можете получить коды баннеров ниже.
+			Если вы не желаете использовать баннеры, вы можете получить код ссылки отдельно.
+		</p>
+		<div class="alert-actions">
+			<a class="btn small" href="#">Получить код ссылки</a>
+		</div>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>Получить коды баннеров можно только после начала сотрудничества с данной кампанией.</p>
+	</div>
+{% endif %}
+
 {% if offer.banners %}
-	{% call(head, banner) materials_macros.table(offer.banners, colspan=5) %}
+	{% set colspan = 5 if advertiser_is_owner or affiliate_is_granted else 4 %}
+	{% call(head, banner) materials_macros.table(offer.banners, colspan=colspan) %}
 		{% if head %}
+			{% if advertiser_is_owner or affiliate_is_granted %}
 			<th class="header minimal-width"></th>
+			{% endif %}
 		{% else %}
+			{% if advertiser_is_owner %}
 			<td>
 				<a href="{{ url_for('.offers_info_materials_delete', id=offer.id, bid=banner.id)}}"
 				 class="danger" onclick="return confirm('Удалить баннер?');">удалить</a>
 			</td>
+			{% endif %}
+			{% if affiliate_is_granted %}
+			<td>
+				<a href="#">получить&nbsp;код</a>
+			</td>
+			{% endif %}
 		{% endif %}
 	{% endcall %}
 {% else %}

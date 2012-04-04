@@ -1,0 +1,16 @@
+{% extends "admin/offers/info/layout.html" %}
+{% import 'common/materials.html' as materials_macros %}
+
+{% set activetab = 'materials' %}
+
+{% block tabcontent %}
+
+{% if offer.banners %}
+	{% call(head, banner) materials_macros.table(offer.banners) %}{% endcall %}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Еще не было добавлено никаких материалов.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

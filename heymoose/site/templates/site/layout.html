@@ -91,6 +91,7 @@
 </ul>
 {% endblock %}
 
+{% block secondary_nav %}
 <ul class="nav secondary-nav">
 	{% if g.user %}
 	<li id="menu-item-cabinet"><a href="{{ url_for('cabinet.index') }}">Личный кабинет</a></li>
@@ -108,6 +109,8 @@
 	</li>
 	{% endif %}
 </ul>
+{% endblock %}
+
 {% endblock %}
 
 {% block footer_signs %}

@@ -1,4 +1,5 @@
 {% extends "cabinetcpa/offers/info/layout.html" %}
+{% import 'common/suboffers.html' as suboffer_macros %}
 {% import 'common/forms/offer.html' as offer_form %}
 
 {% set activetab = 'actions' %}
@@ -8,79 +9,37 @@
 	{{ offer_form.suboffer_head() }}
 {% endblock %}
 
-{% set my = g.user.is_advertiser and offer.owned_by(g.user) %}
+{% set advertiser_is_owner = g.user.is_advertiser and offer.owned_by(g.user) %}
 
 {% block tabcontent %}
 
-<table class="bordered-table zebra-striped nosort suboffers-table">
-	<thead>
-		<tr>
-			<th class="header">Название</th>
-			<th class="header right">Оплата</th>
-			<th class="header center">Многокр. прохождение</th>
-			<th class="header right">Время холда</th>
-			{% if my %}<th class="header center"></th>{% endif %}
-		</tr>
-	</thead>
-	<tbody>
-		{% for suboffer in offer.all_suboffers %}
-		<tr>
-			<td>{{ suboffer.title }}</td>
-			<td class="right">
-				{{ suboffer.cost|currency if suboffer.cost }}
-				{{ suboffer.percent|percent if suboffer.percent }}
-			</td>
-			<td class="center">{{ macros.to_icon(suboffer.reentrant) }}</td>
-			<td class="right">30 дней</td>
-			{% if my %}
-			<td class="center">
-				<a href="#" data-controls-modal="suboffer-modal-1"
-				 data-backdrop="true" data-keyboard="true">изменить</a>
-			</td>
-			{% endif %}
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
+{% call(head, suboffer) suboffer_macros.table(offer.all_suboffers) %}
+	{% if advertiser_is_owner %}
+		{% if head %}
+		<th class="header center"></th>
+		{% else %}
+		<td class="center">
+			<a href="#" data-controls-modal="suboffer-modal-{{ suboffer.id -}}"
+			 data-backdrop="true" data-keyboard="true">изменить</a>
+			<div id="suboffer-modal-{{ suboffer.id -}}" class="modal fade" style="display: none; width: 640px;">
+				<div class="modal-header">
+					<a href="#" class="close">×</a>
+					<h3>Изменение действия</h3>
+				</div>
+				<div class="modal-body">
+					{{ offer_form.suboffer_html(form, wide=false, suboffer_id=suboffer.id) }}
+				</div>
+			</div>
+		</td>
+		{% endif %}
+	{% endif %}
+{% endcall %}
 
-{% if my %}
+{% if advertiser_is_owner %}
 <h2>Добавить действие</h2>
 <div class="form-container">
 	{{ offer_form.suboffer_html(form) }}
 </div>
 {% endif %}
 
-{% endblock %}
-
-{% block postbody %}
-	{{ super() }}
-	{% if my %}
-	<div id="suboffer-modal-1" class="modal fade" style="display: none; width: 640px;">
-		<div class="modal-header">
-			<a href="#" class="close">×</a>
-			<h3>Изменение действия</h3>
-		</div>
-		<div class="modal-body">
-			{{ offer_form.suboffer_html(form, wide=false, suboffer_id=1) }}
-		</div>
-	</div>
-	<div id="suboffer-modal-2" class="modal fade" style="display: none; width: 640px;">
-		<div class="modal-header">
-			<a href="#" class="close">×</a>
-			<h3>Изменение действия</h3>
-		</div>
-		<div class="modal-body">
-			{{ offer_form.suboffer_html(form, wide=false, suboffer_id=2) }}
-		</div>
-	</div>
-	<div id="suboffer-modal-3" class="modal fade" style="display: none; width: 640px;">
-		<div class="modal-header">
-			<a href="#" class="close">×</a>
-			<h3>Изменение действия</h3>
-		</div>
-		<div class="modal-body">
-			{{ offer_form.suboffer_html(form, wide=false, suboffer_id=3) }}
-		</div>
-	</div>
-	{% endif %}
 {% endblock %}

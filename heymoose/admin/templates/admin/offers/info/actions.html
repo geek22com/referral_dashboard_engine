@@ -1,0 +1,10 @@
+{% extends "admin/offers/info/layout.html" %}
+{% import 'common/suboffers.html' as suboffer_macros %}
+
+{% set activetab = 'actions' %}
+
+{% block tabcontent %}
+
+{% call(head, suboffer) suboffer_macros.table(offer.all_suboffers) %}{% endcall %}
+
+{% endblock %}

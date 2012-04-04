@@ -36,6 +36,11 @@ def offers_info(id):
 		return redirect(request.url)
 	return render_template('admin/offers/info/info.html', offer=offer, form=form)
 
+@bp.route('/offers/<int:id>/actions')
+def offers_info_actions(id):
+	offer = rc.offers.get_by_id(id)
+	return render_template('admin/offers/info/actions.html', offer=offer)
+
 @bp.route('/offers/<int:id>/materials')
 def offers_info_materials(id):
 	offer = rc.offers.get_by_id(id)
@@ -75,10 +80,5 @@ def offers_info_requests(id):
 
 @bp.route('/offers/<int:id>/stats')
 def offers_info_stats(id):
-	offer = rc.offers.get_by_id(id)
-	return 'OK'
-
-@bp.route('/offers/<int:id>/actions')
-def offers_info_actions(id):
 	offer = rc.offers.get_by_id(id)
 	return 'OK'

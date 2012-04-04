@@ -1,0 +1,29 @@
+{% import 'common/macros.html' as macros %}
+
+{% macro table(suboffers) %}
+	<table class="bordered-table zebra-striped nosort suboffers-table">
+		<thead>
+			<tr>
+				<th class="header">Название</th>
+				<th class="header right">Оплата</th>
+				<th class="header center">Многокр. прохождение</th>
+				<th class="header right">Время холда</th>
+				{{ caller(true, none) }}
+			</tr>
+		</thead>
+		<tbody>
+			{% for suboffer in suboffers %}
+			<tr>
+				<td>{{ suboffer.title }}</td>
+				<td class="right">
+					{{ suboffer.cost|currency if suboffer.cost }}
+					{{ suboffer.percent|percent if suboffer.percent }}
+				</td>
+				<td class="center">{{ macros.to_icon(suboffer.reentrant) }}</td>
+				<td class="right">30 дней</td>
+				{{ caller(false, suboffer) }}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endmacro %}

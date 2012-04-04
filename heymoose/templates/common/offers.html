@@ -84,23 +84,22 @@
 				
 				<td {{ rowspan }}>{{ offer.regions|attrlist('name')|join(', ') }}</td>
 				<td {{ rowspan }}>
+					{% if offer.categories %}
 					<ul class="toplevel-list toplevel-list--no-bottom-margin">
+						{% for group in offer.categories|groupby('grouping') %}
 						<li>
-							Страхование и финансы
+							{{ group.grouper }}
 							<ul class="dashed-list">
-								<li>Авто-страхование</li>
-								<li>Кредитные карты</li>
+								{% for category in group.list %}
+								<li>{{ category.name }}</li>
+								{% endfor %}
 							</ul>
 						</li>
-						<li>
-							Компьютеры и электроника
-							<ul class="dashed-list">
-								<li>Мобильные портативные устройства для станков с ЧПУ</li>
-								<li>Фототехника</li>
-								<li>Компьютеры и ноутбуки</li>
-							</ul>
-						</li>
+						{% endfor %}
 					</ul>
+					{% else %}
+					(не указаны)
+					{% endif %}
 				</td>
 			</tr>
 			{% for suboffer in offer.suboffers %}

@@ -140,23 +140,22 @@
 		<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">Категории</div>
 			<div class="roundbox-content">
+				{% if offer.categories %}
 				<ul class="toplevel-list toplevel-list--no-bottom-margin">
+					{% for group in offer.categories|groupby('grouping') %}
 					<li>
-						Страхование и финансы
+						{{ group.grouper }}
 						<ul class="dashed-list">
-							<li>Авто-страхование</li>
-							<li>Кредитные карты</li>
+							{% for category in group.list %}
+							<li>{{ category.name }}</li>
+							{% endfor %}
 						</ul>
 					</li>
-					<li>
-						Компьютеры и электроника
-						<ul class="dashed-list">
-							<li>Мобильные портативные устройства для станков с ЧПУ</li>
-							<li>Фототехника</li>
-							<li>Компьютеры и ноутбуки</li>
-						</ul>
-					</li>
+					{% endfor %}
 				</ul>
+				{% else %}
+				(не указаны)
+				{% endif %}
 			</div>
 		</div>
 	</div>

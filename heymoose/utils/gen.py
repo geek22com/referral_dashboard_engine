@@ -1,4 +1,5 @@
-from werkzeug import check_password_hash, generate_password_hash
+#@PydevCodeAnalysisIgnore
+from werkzeug import check_password_hash, generate_password_hash 
 from Crypto.Cipher import AES 
 import random, string, base64, time, uuid, os
 

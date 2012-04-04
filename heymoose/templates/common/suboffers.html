@@ -20,7 +20,7 @@
 					{{ suboffer.percent|percent if suboffer.percent }}
 				</td>
 				<td class="center">{{ macros.to_icon(suboffer.reentrant) }}</td>
-				<td class="right">30 дней</td>
+				<td class="right">{{ suboffer.hold_days }} дней</td>
 				{{ caller(false, suboffer) }}
 			</tr>
 			{% endfor %}

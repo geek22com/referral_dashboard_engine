@@ -7,6 +7,10 @@
 			$('.payment-type-select').change(function() {
 				$(this).closest('.input').find('.payment-value-sign').text(signs[parseInt($(this).val())]);
 			}).change();
+			
+			$('.code-checkbox').change(function() {
+				$(this).closest('.input').find('.code-input').attr('disabled', !$(this).is(':checked'));
+			}).change();
 		})
 	</script>
 {% endmacro %}
@@ -77,6 +81,22 @@
 		</div>
 	</div>
 	<div class="clearfix">
+		{{ forms.label(form.code) }}
+		<div class="input">
+			<div class="row">
+				<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.code) }}">
+					{{ forms.field(form.code, class='span4 code-input') }}
+					{{ forms.errors(form.code) }}
+				</div>
+				<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.manual_code) }}" style="width: 180px;">
+					{{ forms.field(form.manual_code, class='code-checkbox') }}
+					{{ forms.label(form.manual_code, class='simple') }}
+					{{ forms.errors(form.manual_code) }}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix">
 		{{ forms.label(form.hold_days) }}
 		<div class="input">
 			<div class="row">
@@ -142,6 +162,7 @@
 		<fieldset>
 			{{ forms.singlefield(form.name, class='span10') }}
 			{{ forms.singlefield(form.url, class='span10') }}
+			{{ forms.singlefield(form.cookie_ttl, class='span4', inline='дней') }}
 			
 			{% call forms.singlefield_desc(form.logo) %}
 			<span class="help-block">

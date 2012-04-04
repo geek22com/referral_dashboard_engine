@@ -137,6 +137,8 @@ class SubOffer(IdentifiableModel):
 	cpa_policy = Field(enums.CpaPolicies, 'cpa-policy')
 	cost = Field(types.Decimal, 'cost')
 	percent = Field(types.Decimal, 'percent')
+	code = Field(types.String, 'code')
+	hold_days = Field(types.Integer, 'hold-days')
 	
 	@property
 	def value(self): return self.cost or self.percent
@@ -156,6 +158,7 @@ class Offer(SubOffer):
 	approved = Field(types.Boolean, 'approved')
 	active = Field(types.Boolean, 'active')
 	block_reason = Field(types.String, 'block-reason')
+	cookie_ttl = Field(types.Integer, 'cookie-ttl')
 	
 	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
 	grant = Field('OfferGrant', 'grant')

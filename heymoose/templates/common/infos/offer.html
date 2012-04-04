@@ -97,7 +97,7 @@
 				{% endif %}
 				<dl class="kv kv--inscribed kv--key180">
 					<dt>Дата запуска</dt><dd>{{ offer.creation_time|dateformat }}</dd>
-					<dt>Время жизни cookie</dt><dd>30 дней</dd>
+					<dt>Время жизни cookie</dt><dd>{{ offer.cookie_ttl }} дней</dd>
 				</dl>
 				<div>
 					<strong>Регионы:</strong>

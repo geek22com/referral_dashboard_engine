@@ -16,8 +16,10 @@
 {% call(head, suboffer) suboffer_macros.table(offer.all_suboffers) %}
 	{% if advertiser_is_owner %}
 		{% if head %}
+		<th class="header">Код</th>
 		<th class="header center"></th>
 		{% else %}
+		<td>{{ suboffer.code }}</td>
 		<td class="center">
 			<a href="#" data-controls-modal="suboffer-modal-{{ suboffer.id -}}"
 			 data-backdrop="true" data-keyboard="true">изменить</a>

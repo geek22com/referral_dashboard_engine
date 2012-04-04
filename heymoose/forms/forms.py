@@ -3,34 +3,16 @@ from wtforms import Form as WTForm
 from wtforms import FieldList, FormField, BooleanField, TextField, PasswordField, \
 	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField
 from wtforms.fields import Label
-from heymoose import app
+from heymoose import app, resource as rc
 from heymoose.core import actions
 from heymoose.core.actions import roles
 from heymoose.data import enums
 from heymoose.filters import currency, currency_sign
-from heymoose.utils.gen import generate_password_hash, generate_unique_filename
+from heymoose.utils.gen import generate_password_hash, generate_unique_filename, generate_uid
+from flask import g
 import validators
 import fields as myfields
 import random, hashlib, os
-
-
-categories_choices = [
-	(1, u'Авто-страхование', u'Страхование и финансы'),
-	(2, u'Вклады', u'Страхование и финансы'),
-	(3, u'Кредитные карты', u'Страхование и финансы'),
-	(4, u'Потребительские кредиты', u'Страхование и финансы'),
-	
-	(5, u'Астрология', u'Интернет-услуги'),
-	(6, u'Знакомства и общение', u'Интернет-услуги'),
-	(7, u'Мобильные сервисы', u'Интернет-услуги'),
-	(8, u'Хостинг', u'Интернет-услуги'),
-	
-	(9,  u'TV и Video', u'Компьютеры и электроника'),
-	(10, u'Игровые приставки', u'Компьютеры и электроника'),
-	(11, u'Компьютеры и ноутбуки', u'Компьютеры и электроника'),
-	(12, u'Мобильные портативные устройства', u'Компьютеры и электроника'),
-	(13, u'Фототехника', u'Компьютеры и электроника'),
-]
 
 
 class Form(WTForm):
@@ -39,12 +21,13 @@ class Form(WTForm):
 			raise TypeError("formdata should be a multidict-type wrapper that supports the 'getlist' method")
 
 		for name, field, in self._fields.iteritems():
+			handler = getattr(self, 'process_' + name, field.process)
 			if obj is not None and hasattr(obj, name):
-				field.process(formdata, getattr(obj, name))
+				handler(formdata, getattr(obj, name))
 			elif name in kwargs:
-				field.process(formdata, kwargs[name])
+				handler(formdata, kwargs[name])
 			else:
-				field.process(formdata)
+				handler(formdata)
 	
 	def populate_obj(self, obj):
 		for name, field in self._fields.iteritems():
@@ -538,8 +521,7 @@ class SiteForm(Form):
 		validators.Length(min=100, message=u'Описание площадки должно содержать минимум 100 символов'),
 		validators.Required(message=u'Введите описание площадки')
 	])
-	categories = myfields.CategorizedCheckboxListField(u'Категории', choices=categories_choices,
-		coerce=int, default=True)
+	categories = myfields.CategoriesField(u'Категории', default=True)
 	regions = myfields.CheckboxListField(u'Регионы', [
 		validators.Required(message=u'Выберите хотя бы один регион')
 	], choices=enums.Regions.tuples('name'), coerce=int, default=(enums.Regions.RUSSIA,))
@@ -560,10 +542,30 @@ class SubOfferForm(Form):
 	], default=1.00)
 	reentrant = BooleanField(u'многократ. прохождение', default=True)
 	hold_days = IntegerField(u'Время холда', [
-		validators.NumberRange(min=1, max=360, message=u'Время холда должно быть в интервале от 1 до 360 дней'),
+		validators.NumberRange(min=0, max=180, message=u'Время холда должно быть в интервале от 0 до 180 дней'),
 		validators.Required(message=u'Введите время холда')
 	], default=30)
+	code = myfields.NullableTextField(u'Код', [
+		validators.Length(max=10, message=u'Код может быть длиной от 1 до 10 символов')
+	])
+	manual_code = BooleanField(u'указать код вручную', default=False)
 	
+	def validate_code(self, field):
+		if self.code.data and not rc.offers.check_code(g.user.id, self.code.data):
+			raise ValueError(u'У вас уже имеется оффер с таким кодом')
+		
+	def generate_code(self):
+		return u'{0}{1}'.format(g.user.id, generate_uid(5))
+	
+	def populate_code(self, obj, name):
+		if self.code.data:
+			code = self.code.data
+		else:
+			code = self.generate_code()
+			while not rc.offers.check_code(g.user.id, code):
+				code = self.generate_code()
+		obj.code = code
+		
 	def populate_payment_type(self, obj, name):
 		if self.payment_type.data == 0:
 			obj.pay_method = enums.PayMethods.CPC
@@ -599,6 +601,10 @@ class OfferForm(Form):
 	description = TextAreaField(u'Описание кампании', [
 		validators.Required(message=u'Введите описание кампании')
 	])
+	cookie_ttl = IntegerField(u'Время жизни Cookie', [
+		validators.Required(message=u'Введите время жизни cookie'),
+		validators.NumberRange(min=0, message=u'Время жизни должно быть больше нуля')
+	], default=30)
 	categories = myfields.CategoriesField(u'Категории', default=True)
 	regions = myfields.CheckboxListField(u'Регионы', [
 		validators.Required(message=u'Выберите хотя бы один регион')

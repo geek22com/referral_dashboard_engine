@@ -1,6 +1,6 @@
 from backend import BackendResource, extractor
 from heymoose.data.models import Offer, SubOffer
-from restkit.errors import ResourceNotFound
+from restkit.errors import ResourceError, ResourceNotFound
 
 
 class OfferResource(BackendResource):
@@ -32,7 +32,7 @@ class OfferResource(BackendResource):
 	
 	def add(self, offer, balance, **kwargs):
 		params = self.extractor.extract(offer,
-			required='advertiser_id pay_method cost name description url title'.split(),
+			required='advertiser_id pay_method cost name description url title code hold_days cookie_ttl'.split(),
 			nonempty='regions'.split(),
 			optional='cpa_policy allow_negative_balance auto_approve reentrant logo_filename categories'.split()
 		)
@@ -51,7 +51,7 @@ class OfferResource(BackendResource):
 	
 	def add_suboffer(self, id, suboffer, **kwargs):
 		params = self.extractor.extract(suboffer,
-			required='cpa_policy cost title'.split(),
+			required='cpa_policy cost title code hold_days'.split(),
 			optional='auto_approve reentrant'.split()
 		)
 		params.update(kwargs)
@@ -65,3 +65,10 @@ class OfferResource(BackendResource):
 	
 	def delete_banner(self, id, banner_id):
 		self.path(id).path('banners').path(banner_id).delete()
+	
+	def check_code(self, advertiser_id, code):
+		try:
+			self.path('code').put(advertiser_id=advertiser_id, code=code)
+			return True
+		except ResourceError:
+			return False

@@ -651,6 +651,15 @@ class OfferRequestDecisionForm(Form):
 	])
 
 
+class OfferGrantForm(Form):
+	back_url = myfields.NullableTextField(u'Back URL', [
+		validators.URI(message = u'Введите URL в формате http://*.*', verify_exists=False)
+	])
+	postback_url = myfields.NullableTextField(u'Postback URL', [
+		validators.URI(message = u'Введите URL в формате http://*.*', verify_exists=False)
+	])
+
+
 class OfferBannerForm(Form):
 	image = myfields.ImageField(u'Выберите изображение', [
 		validators.FileRequired(message=u'Выберите файл на диске'),

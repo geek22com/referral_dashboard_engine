@@ -60,6 +60,10 @@ def offers_new():
 		return redirect(url_for('.offers_info', id=id))
 	return render_template('cabinetcpa/offers/new.html', form=form, tmpl=tmpl)
 
+@bp.route('/offers/stats')
+def offers_stats():
+	return render_template('cabinetcpa/offers/stats.html')
+
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 def offers_info(id):
 	offer = rc.offers.get_try_requested(id, g.user.id) if g.user.is_affiliate else rc.offers.get_by_id(id)
@@ -145,6 +149,23 @@ def offers_info_requests(id):
 				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
 	return render_template('cabinetcpa/offers/info/requests.html', offer=offer, grants=grants, pages=pages, form=form)
+
+@bp.route('/offers/<int:id>/settings', methods=['GET', 'POST'])
+@affiliate_only
+def offers_info_settings(id):
+	offer = rc.offers.get_try_requested(id, g.user.id)
+	grant = offer.grant
+	if not grant or not grant.approved: abort(403)
+	form = forms.OfferGrantForm(request.form, obj=grant)
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(grant)
+		if grant.updated():
+			rc.offer_grants.update(grant)
+			flash(u'Настройки успешно обновлены', 'success')
+		else:
+			flash(u'Вы не изменили ни одного поля', 'warning')
+		return redirect(request.url)
+	return render_template('cabinetcpa/offers/info/settings.html', offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/balance')
 @advertiser_only

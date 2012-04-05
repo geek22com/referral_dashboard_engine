@@ -1,0 +1,17 @@
+{% extends "cabinetcpa/offers/info/layout.html" %}
+
+{% set activetab = 'settings' %}
+
+{% block tabcontent %}
+
+<form method="post" action="" class="widelabels validate2">
+	<fieldset>
+		{{ forms.singlefield(form.back_url, class='span10') }}
+		{{ forms.singlefield(form.postback_url, class='span10') }}
+	</fieldset>
+	<div class="actions">
+		<input class="btn primary" type="submit" value="Сохранить" />
+	</div>
+</form>
+
+{% endblock %}

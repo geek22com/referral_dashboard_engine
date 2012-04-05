@@ -1,0 +1,25 @@
+{% extends "cabinetcpa/offers/layout.html" %}
+{% import 'common/stats.html' as stat_macros %}
+
+{% set content_fluid = true %}
+{% set activetab = 'stats' %}
+
+{% block tabcontent %}
+
+{{ stat_macros.table([]) }}
+
+{#
+{% if offers %}
+	{{ offer_macros.table(offers, status=true) }}
+	{{ macros.paginate(pages, '.offers_list') }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Вы еще не создали ни одного оффера.</p>
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.offers_new') }}">Создать оффер</a>
+		</div>
+	</div>
+{% endif %}
+#}
+
+{% endblock %}

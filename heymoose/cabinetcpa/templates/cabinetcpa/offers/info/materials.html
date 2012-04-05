@@ -25,20 +25,22 @@
 	</form>
 {% endif %}
 
-{% if affiliate_is_granted %}
-	<div class="clearfix alert-message block-message success">
-		<p>
-			Вы сотрудничаете с данной кампанией, и можете получить коды баннеров ниже.
-			Если вы не желаете использовать баннеры, вы можете получить код ссылки отдельно.
-		</p>
-		<div class="alert-actions">
-			<a class="btn small" href="#">Получить код ссылки</a>
+{% if g.user.is_affiliate %}
+	{% if affiliate_is_granted %}
+		<div class="clearfix alert-message block-message success">
+			<p>
+				Вы сотрудничаете с данной кампанией, и можете получить коды баннеров ниже.
+				Если вы не желаете использовать баннеры, вы можете получить код ссылки отдельно.
+			</p>
+			<div class="alert-actions">
+				<a class="btn small" href="#">Получить код ссылки</a>
+			</div>
 		</div>
-	</div>
-{% else %}
-	<div class="clearfix alert-message block-message info">
-		<p>Получить коды баннеров можно только после начала сотрудничества с данной кампанией.</p>
-	</div>
+	{% else %}
+		<div class="clearfix alert-message block-message info">
+			<p>Получить коды баннеров можно только после начала сотрудничества с данной кампанией.</p>
+		</div>
+	{% endif %}
 {% endif %}
 
 {% if offer.banners %}

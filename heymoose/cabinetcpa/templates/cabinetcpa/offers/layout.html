@@ -34,6 +34,7 @@
 	{% if g.user.is_advertiser %}
 	<li id="tab-new"><a href="{{ url_for('.offers_new') }}">Создать оффер</a></li>
 	{% endif %}
+	<li id="tab-stats"><a href="{{ url_for('.offers_stats') }}">Статистика</a></li>
 </ul>
 
 {% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}

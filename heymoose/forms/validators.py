@@ -134,6 +134,7 @@ class URI(wtvalidators.Regexp):
 		super(URI, self).__init__(regex, re.IGNORECASE, message)
 
 	def __call__(self, form, field):
+		if not field.data: return
 		super(URI, self).__call__(form, field)
 		url = field.data
 		

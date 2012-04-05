@@ -30,6 +30,11 @@ class OfferGrantResource(BackendResource):
 		params.update(kwargs)
 		return self.post(**params).as_int()
 	
+	def update(self, offer_grant, **kwargs):
+		params = self.extractor.extract(offer_grant, updated='back_url postback_url'.split())
+		params.update(kwargs)
+		return self.path(offer_grant.id).put(**params)
+	
 	def approve(self, id):
 		self.path(id).path('approved').put()
 	

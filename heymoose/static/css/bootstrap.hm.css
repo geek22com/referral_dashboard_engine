@@ -162,7 +162,7 @@ div.ui-datepicker {
 	font-size: 12px;
 }
 
-textarea.copybox { cursor: auto; }
+textarea.copybox, input.copybox { cursor: auto; }
 
 ul.breadcrumb .status {
 	float: right;

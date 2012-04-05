@@ -83,7 +83,7 @@ def offers_info_edit(id):
 
 @bp.route('/offers/<int:id>/actions', methods=['GET', 'POST'])
 def offers_info_actions(id):
-	offer = rc.offers.get_by_id(id)
+	offer = rc.offers.get_try_requested(id, g.user.id) if g.user.is_affiliate else rc.offers.get_by_id(id)
 	form = forms.SubOfferForm(request.form)
 	if offer.owned_by(g.user) and request.method == 'POST' and form.validate():
 		suboffer = SubOffer()
@@ -175,6 +175,6 @@ def offers_info_balance(id):
 
 @bp.route('/offers/<int:id>/stats')
 def offers_info_stats(id):
-	offer = rc.offers.get_by_id(id)
+	offer = rc.offers.get_try_requested(id, g.user.id) if g.user.is_affiliate else rc.offers.get_by_id(id)
 	return render_template('cabinetcpa/offers/info/stats.html', offer=offer)
 

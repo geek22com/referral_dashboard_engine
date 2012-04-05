@@ -21,6 +21,8 @@
 		$.datepicker.setDefaults($.datepicker.regional['ru']);
 		// Remove link and divider from last breadcrumb
 		$('ul.breadcrumb li:last').not('.status').text($('ul.breadcrumb li:last a').html());
+		// Select all text in copyboxes
+		$('.copybox').focus(function() { this.select();	})
 		
 		$('ul.categorized').categorizedList();
 	});

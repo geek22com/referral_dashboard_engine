@@ -3,6 +3,16 @@
 
 {% set activetab = 'materials' %}
 
+{% macro tracking_url(offer_id) -%}{{ root -}}?offer_id={{ offer_id -}}{% endmacro -%}
+
+{% macro pixel_code(offer_id, banner_id=none) -%}
+<img src="{{ root -}}{{ '&banner_id={0}'.format(banner_id) if banner_id -}}" alt="" style="width: 0; height: 0; position: absolute;" />
+{% endmacro -%}
+
+{% macro banner_code(offer_id, banner) %}
+<a href="{{ tracking_url(offer_id) }}"><img src="{{ banner.url }}" alt="" width="{{ banner.width }}" height="{{ banner.height }}" /></a>{{ pixel_code(offer_id, banner.id) -}}
+{% endmacro %}
+
 {% block tabcontent %}
 
 {% set advertiser_is_owner = g.user.is_advertiser and offer.owned_by(g.user) %}
@@ -26,15 +36,26 @@
 {% endif %}
 
 {% if g.user.is_affiliate %}
-	{% if affiliate_is_granted %}
-		<div class="clearfix alert-message block-message success">
-			<p>
-				Вы сотрудничаете с данной кампанией, и можете получить коды баннеров ниже.
-				Если вы не желаете использовать баннеры, вы можете получить код ссылки отдельно.
-			</p>
-			<div class="alert-actions">
-				<a class="btn small" href="#">Получить код ссылки</a>
-			</div>
+	{% if affiliate_is_granted %}	
+		<div class="well form-container">
+			<form class="widelabels">
+				<div class="clearfix">
+					<label for="tracking-url">Трекинг-ссылка</label>
+					<div class="input">
+						<input type="text" id="tracking-url" class="span10 copybox"
+						 style="background-color: #FFF;" readonly="readonly"
+						 value="{{ tracking_url(offer.id) -}}" />
+					</div>
+				</div>
+				<div class="clearfix" style="margin-bottom: 0;">
+					<label for="tracking-pixel">Пиксель для трекинга показов</label>
+					<div class="input">
+						<textarea rows="2" id="tracking-pixel" class="span10 copybox"
+						readonly="readonly" style="background-color: #FFF;"
+						>{{ pixel_code(offer.id) -}}</textarea>
+					</div>
+				</div>
+			</form>
 		</div>
 	{% else %}
 		<div class="clearfix alert-message block-message info">
@@ -59,7 +80,27 @@
 			{% endif %}
 			{% if affiliate_is_granted %}
 			<td>
-				<a href="#">получить&nbsp;код</a>
+				<a href="#" data-controls-modal="modal-code-{{ banner.id -}}"
+		 		 data-backdrop="true" data-keyboard="true">получить&nbsp;код</a>
+				<div id="modal-code-{{ banner.id -}}" class="modal" style="display: none;">
+					<form>
+						<div class="modal-header">
+							<a href="#" class="close">×</a>
+							<h3>Код баннера</h3>
+						</div>
+						<div class="modal-body">
+							<fieldset>
+								<div class="clearfix" style="margin-bottom: 0;">
+									<label for="banner-code">Код баннера</label>
+									<div class="input">
+										<textarea rows="6" id="banner-code" class="span6 copybox" readonly="readonly"
+										 style="background-color: #FFF;">{{ banner_code(offer.id, banner) }}</textarea>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</form>
+				</div>
 			</td>
 			{% endif %}
 		{% endif %}

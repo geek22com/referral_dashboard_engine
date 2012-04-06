@@ -7,7 +7,7 @@ from heymoose.cabinetcpa import blueprint as bp
 @bp.route('/')
 def index():
 	if g.user.is_affiliate:
-		return redirect(url_for('.sites_list'))
+		return redirect(url_for('.offers_requested'))
 	elif g.user.is_advertiser:
 		return redirect(url_for('.offers_list'))
 	else:

@@ -45,3 +45,55 @@
 		</div>
 	</form>
 {% endmacro %}
+
+{% macro register_html(form) %}
+	<form id="form-user" method="post" action="" class="widelabels validate2">
+		<fieldset>
+			<legend>Данные</legend>
+			<div class="input">
+				<p class="span10">
+					Пожалуйста, введите ваши имя и фамилию, чтобы наши менеджеры
+					смогли обращаться к вам в случае возникновения вопросов или
+					проблем. Если вы являетесь представителем организации,
+					заполните также ее название.
+				</p>
+			</div>
+			{{ forms.singlefield(form.first_name, class='span10') }}
+			{{ forms.singlefield(form.last_name, class='span10') }}
+			{{ forms.singlefield(form.organization, class='span10') }}
+		</fieldset>
+		<fieldset>
+			<legend>Пароль</legend>
+			<div class="input">
+				<p class="span10">
+					Введите два раза пароль длиной от 4 до 16 символов.
+				</p>
+			</div>
+			{{ forms.singlefield(form.password, class='span10') }}
+			{{ forms.singlefield(form.password2, class='span10') }}
+		</fieldset>
+		<fieldset>
+			<legend>Контакты</legend>
+			<div class="input">
+				<p class="span10">
+					Здесь вам необходимо ввести адрес своей электронной почты и телефон.
+					На ваш e-mail будет послано письмо с подтверждением электронного
+					адреса. Вы также можете указать один из своих мессенджеров, для
+					связи с вами.
+				</p>
+			</div>
+			{{ forms.singlefield(form.email, class='span10', type='email') }}
+			{{ forms.singlefield(form.phone, class='span10') }}
+			{{ forms.singlefield(form.messenger_type, class='span4 messenger-type') }}
+			{{ forms.singlefield(form.messenger_uid, class='span4 messenger-uid') }}
+		</fieldset>
+		<fieldset>
+			<legend>Подтверждение</legend>
+			{{ form.ch() }}
+			{{ forms.singlefield(form.captcha, class='span4') }}
+		</fieldset>
+		<div class="actions">
+			<input class="btn primary" type="submit" value="Зарегистрироваться"/>
+		</div>
+	</form>
+{% endmacro %}

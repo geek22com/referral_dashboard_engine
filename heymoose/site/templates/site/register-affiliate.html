@@ -1,0 +1,23 @@
+{% extends "site/cpa-layout.html" %}
+{% import 'common/forms/user.html' as user_form %}
+
+{% block title %}Регистрация партнера{% endblock %}
+
+{% set activemenu = 'register' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ user_form.head() }}
+{% endblock %}
+
+{% block pageheader %}
+<h1>{{ self.title() }}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+	{{ user_form.register_html(form) }}
+</div>
+
+{% endblock %}

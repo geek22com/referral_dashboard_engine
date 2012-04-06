@@ -3,7 +3,7 @@ from base import models, types, registry
 from base.fields import Field, FieldList, FieldSet
 from heymoose import app
 import enums
-import os
+import os, hashlib
 
 
 class IdentifiableModel(models.ModelBase):
@@ -60,6 +60,14 @@ class User(IdentifiableModel):
 	@property
 	def is_advertiser(self): return enums.Roles.ADVERTISER in self.roles
 	
+	def get_confirm_code(self):
+		m = hashlib.md5()
+		m.update('hey{0}moose{1}confirm'.format(self.id, self.email))
+		return m.hexdigest()
+	
+	def check_confirm_code(self, code):
+		return code == self.get_confirm_code()
+
 
 class Account(IdentifiableModel):
 	balance = Field(types.Decimal, 'balance')

@@ -10,6 +10,9 @@ from heymoose.db.models import Contact, GamakApp
 from heymoose.db.actions import invites
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
+from heymoose.data.models import User
+from heymoose.data.enums import Roles
+from heymoose import resource as rc
 from datetime import datetime
 import random
 
@@ -169,6 +172,56 @@ def register_customer():
 	
 	return render_template('site/register-customer.html', form=form)
 
+@bp.route('/cpa/register/')
+def cpa_register():
+	return render_template('site/cpa-register.html')
+
+@bp.route('/cpa/register/advertiser', methods=['GET', 'POST'])
+def register_advertiser():
+	if g.user:
+		flash(u'Вы уже зарегистрированы', 'warning')
+		return redirect(url_for('.index'))
+	
+	form = forms.AdvertiserRegisterForm(request.form)
+	if request.method == 'POST' and form.validate():
+		user = User()
+		form.populate_obj(user)
+		rc.users.add(user)
+		user = rc.users.get_by_email(user.email)
+		if user:
+			rc.users.add_role(user.id, Roles.ADVERTISER)
+			user.roles.append(Roles.ADVERTISER)
+			session['user_id'] = user.id
+			tmail.user_confirm_email(user)
+			flash(u'Вы успешно зарегистрированы. На указанный электронный адрес'
+				u' было выслано письмо с подтверждением.', 'success')
+			return redirect(url_for('.gateway'))
+		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
+	return render_template('site/register-advertiser.html', form=form)
+			
+
+@bp.route('/cpa/register/affiliate', methods=['GET', 'POST'])
+def register_affiliate():
+	if g.user:
+		flash(u'Вы уже зарегистрированы', 'warning')
+		return redirect(url_for('.index'))
+	
+	form = forms.AffiliateRegisterForm(request.form)
+	if request.method == 'POST' and form.validate():
+		user = User()
+		form.populate_obj(user)
+		rc.users.add(user)
+		user = rc.users.get_by_email(user.email)
+		if user:
+			rc.users.add_role(user.id, Roles.AFFILIATE)
+			user.roles.append(Roles.AFFILIATE)
+			session['user_id'] = user.id
+			tmail.user_confirm_email(user)
+			flash(u'Вы успешно зарегистрированы. На указанный электронный адрес'
+				u' было выслано письмо с подтверждением.', 'success')
+			return redirect(url_for('.gateway'))
+		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
+	return render_template('site/register-affiliate.html', form=form)
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -192,7 +245,7 @@ def logout():
 		flash(u'Вы вышли из системы', 'info')
 		session.pop('user_id', None)
 		session.permanent = False
-	return redirect(url_for('.index'))
+	return redirect(url_for('.main_index'))
 
 
 @bp.route('/confirm/<int:id>/<code>')

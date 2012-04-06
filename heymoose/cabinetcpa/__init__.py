@@ -13,8 +13,8 @@ def before_request():
 		return redirect(url_for('site.gateway'))
 	
 	# Do not allow blocked or unconfirmed users to create and manage orders or apps 
-	if (g.user.blocked or not g.user.confirmed) and 'cabinet/info' not in request.url:
-		return redirect(url_for('.info'))
+	if (g.user.blocked or not g.user.confirmed) and 'cabinet/profile' not in request.url:
+		return redirect(url_for('.profile'))
 	
 	# For form validation
 	if request.method == 'POST' and request.files:

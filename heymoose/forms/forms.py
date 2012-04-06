@@ -144,6 +144,9 @@ class RegisterFormMixin:
 		validators.check_email_not_registered
 	])
 	
+	def populate_password(self, obj, name):
+		obj.password_hash = generate_password_hash(self.password.data)
+	
 class DeveloperRegisterForm(Form, UserFormMixin, RegisterFormMixin, DeveloperFormMixin):
 	invite = TextAreaField(u'Код приглашения', [
 		validators.Required(message=u'Скопируйте сюда полученный код приглашения'),

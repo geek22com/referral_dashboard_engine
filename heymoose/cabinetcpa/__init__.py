@@ -23,4 +23,4 @@ def before_request():
 
 
 # Import all views in blueprint for registering in app's url map
-from views import base, offers, sites, profile
+from views import base, offers, profile

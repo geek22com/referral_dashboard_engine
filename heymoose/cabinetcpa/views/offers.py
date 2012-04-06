@@ -7,6 +7,8 @@ from heymoose.data.enums import OfferGrantState
 from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import base64
 
 
@@ -62,7 +64,8 @@ def offers_new():
 
 @bp.route('/offers/stats')
 def offers_stats():
-	form = forms.DateTimeRangeForm(request.args)
+	now = datetime.now()
+	form = forms.DateTimeRangeForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
 	if 'dt_from' in request.args and 'dt_to' in request.args and form.validate():
 		print '\n\n\n', form.dt_from.data, form.dt_to.data
 		flash(u'Все ОК', 'success')

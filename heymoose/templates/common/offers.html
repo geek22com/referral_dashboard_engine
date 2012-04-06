@@ -6,7 +6,7 @@
 		<thead>
 			<tr>
 				<th class="header center" rowspan="2">Оффер</th>
-				<th class="header center" colspan="3">Действия</th>
+				<th class="header center" colspan="2">Действия</th>
 				<th class="header center" colspan="3">Показатели</th>
 				<th class="header" rowspan="2">Регионы</th>
 				<th class="header" rowspan="2">Категории</th>
@@ -14,7 +14,7 @@
 			<tr class="subrow">
 				<th class="header">Название</th>
 				<th class="header right" style="min-width: 70px;">Оплата</th>
-				<th class="header center">Мн.</th>
+				{#<th class="header center">Мн.</th>#}
 				
 				<th class="header right">eCPC,&nbsp;руб.</th>
 				<th class="header right">eCPM,&nbsp;руб.</th>
@@ -76,7 +76,7 @@
 					{{ offer.cost|currency if offer.cost }}
 					{{ offer.percent|percent if offer.percent }}
 				</td>
-				<td class="center">{{ macros.to_icon(offer.reentrant) }}</td>
+				{#<td class="center">{{ macros.to_icon(offer.reentrant) }}</td>#}
 				
 				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
 				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
@@ -109,7 +109,7 @@
 					{{ suboffer.cost|currency if suboffer.cost }}
 					{{ suboffer.percent|percent if suboffer.percent }}
 				</td>
-				<td class="center">{{ macros.to_icon(suboffer.reentrant) }}</td>
+				{#<td class="center">{{ macros.to_icon(suboffer.reentrant) }}</td>#}
 			</tr>
 			{% endfor %}
 			{% endfor %}

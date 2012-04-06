@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from wtforms import Form as WTForm
 from wtforms import FieldList, FormField, BooleanField, TextField, PasswordField, \
-	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField
+	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField, DateTimeField
 from wtforms.fields import Label
 from heymoose import app, resource as rc
 from heymoose.core import actions
@@ -709,6 +709,15 @@ class SettingsForm(Form):
 		validators.NumberRange(min=0.0, message=u'Такая комиссия недопустима')
 	], description=u'C &ge; D + M')
 	mail = BooleanField(u'Письмо пользователю', default=False)
+
+
+class DateTimeRangeForm(Form):
+	dt_from = DateTimeField(u'с', format='%d.%m.%Y %H:%M', validators=[
+		validators.Required(message=u'Введите время')
+	])
+	dt_to = DateTimeField(u'по', format='%d.%m.%Y %H:%M', validators=[
+		validators.Required(message=u'Введите время')
+	])
 	
 	
 class GamakAppForm(Form):

@@ -62,7 +62,11 @@ def offers_new():
 
 @bp.route('/offers/stats')
 def offers_stats():
-	return render_template('cabinetcpa/offers/stats.html')
+	form = forms.DateTimeRangeForm(request.args)
+	if 'dt_from' in request.args and 'dt_to' in request.args and form.validate():
+		print '\n\n\n', form.dt_from.data, form.dt_to.data
+		flash(u'Все ОК', 'success')
+	return render_template('cabinetcpa/offers/stats.html', form=form)
 
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 def offers_info(id):

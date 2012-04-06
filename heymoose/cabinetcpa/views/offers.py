@@ -67,7 +67,6 @@ def offers_stats():
 	now = datetime.now()
 	form = forms.DateTimeRangeForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
 	if 'dt_from' in request.args and 'dt_to' in request.args and form.validate():
-		print '\n\n\n', form.dt_from.data, form.dt_to.data
 		flash(u'Все ОК', 'success')
 	return render_template('cabinetcpa/offers/stats.html', form=form)
 

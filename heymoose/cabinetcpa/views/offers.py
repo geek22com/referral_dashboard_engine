@@ -81,11 +81,21 @@ def offers_info(id):
 		return redirect(url_for('.offers_requested'))
 	return render_template('cabinetcpa/offers/info/info.html', offer=offer, form=form)
 
-@bp.route('/offers/<int:id>/edit')
+@bp.route('/offers/<int:id>/edit', methods=['GET', 'POST'])
 @advertiser_only
 def offers_info_edit(id):
 	offer = rc.offers.get_by_id(id)
-	return render_template('cabinetcpa/offers/info/edit.html', offer=offer)
+	if not offer.owned_by(g.user): abort(403)
+	form = forms.OfferEditForm(request.form, obj=offer)
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(offer)
+		if offer.updated():
+			rc.offers.update(offer)
+			flash(u'Оффер успешно изменен', 'success')
+			return redirect(url_for('.offers_info', id=offer.id))
+		else:
+			flash(u'Вы не изменили ни одного поля', 'warning')
+	return render_template('cabinetcpa/offers/info/edit.html', offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/actions', methods=['GET', 'POST'])
 def offers_info_actions(id):

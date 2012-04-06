@@ -82,7 +82,7 @@
 				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
 				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
 				
-				<td {{ rowspan }}>{{ offer.regions|attrlist('name')|join(', ') }}</td>
+				<td {{ rowspan }}>{{ offer.regions_ordered|attrlist('name')|join(', ') }}</td>
 				<td {{ rowspan }}>
 					{% if offer.categories %}
 					<ul class="toplevel-list toplevel-list--no-bottom-margin">

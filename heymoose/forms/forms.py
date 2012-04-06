@@ -21,13 +21,15 @@ class Form(WTForm):
 			raise TypeError("formdata should be a multidict-type wrapper that supports the 'getlist' method")
 
 		for name, field, in self._fields.iteritems():
-			handler = getattr(self, 'process_' + name, field.process)
-			if obj is not None and hasattr(obj, name):
-				handler(formdata, getattr(obj, name))
+			handler = getattr(self, 'get_' + name, None)
+			if obj is not None and handler is not None:
+				field.process(formdata, handler(obj))
+			elif obj is not None and hasattr(obj, name):
+				field.process(formdata, getattr(obj, name))
 			elif name in kwargs:
-				handler(formdata, kwargs[name])
+				field.process(formdata, kwargs[name])
 			else:
-				handler(formdata)
+				field.process(formdata)
 	
 	def populate_obj(self, obj):
 		for name, field in self._fields.iteritems():
@@ -589,7 +591,7 @@ class MainSubOfferForm(SubOfferForm):
 		self.payment_type.choices = [(0, u'Фиксированная за клик')] + self.payment_type.choices
 
 
-class OfferForm(Form):	
+class OfferFormBase(Form):
 	name = TextField(u'Название оффера', [
 		validators.Length(min=1, max=100, message=u'Название должно иметь длину от 1 до 100 символов'),
 		validators.Required(message=u'Введите название оффера')
@@ -609,9 +611,9 @@ class OfferForm(Form):
 		validators.NumberRange(min=0, message=u'Время жизни должно быть больше нуля')
 	], default=30)
 	categories = myfields.CategoriesField(u'Категории', default=True)
-	regions = myfields.CheckboxListField(u'Регионы', [
+	regions = myfields.RegionsField(u'Регионы', [
 		validators.Required(message=u'Выберите хотя бы один регион')
-	], choices=enums.Regions.tuples('name'), default=(enums.Regions.RUSSIA,))
+	], default=(enums.Regions.RUSSIA,))
 	targeting = BooleanField(u'включить геотаргетинг', default=False)
 	traffic = myfields.CheckboxListField(u'Типы трафика', choices=[
 		(0, u'Cashback'),
@@ -622,15 +624,7 @@ class OfferForm(Form):
 		(5, u'Контекстная реклама на бренд'),
 		(6, u'Трафик с социальных сетей')
 	], coerce=int)
-	main_suboffer = FormField(MainSubOfferForm)
-	suboffers = FieldList(FormField(SubOfferForm))
-	
-	def populate_main_suboffer(self, obj, name):
-		self.main_suboffer.form.populate_obj(obj)
-	
-	def populate_suboffers(self, obj, name):
-		pass
-	
+
 	logo_max_size = (150, 100)
 	logos_path = os.path.join(app.config.get('UPLOAD_PATH'), app.config.get('OFFER_LOGOS_DIR'))
 	def populate_logo(self, obj, name):
@@ -639,6 +633,18 @@ class OfferForm(Form):
 		self.logo.data.thumbnail(self.logo_max_size)
 		self.logo.data.save(os.path.join(self.logos_path, obj.logo_filename))
 
+class OfferForm(OfferFormBase):	
+	main_suboffer = FormField(MainSubOfferForm)
+	suboffers = FieldList(FormField(SubOfferForm))
+	
+	def populate_main_suboffer(self, obj, name):
+		self.main_suboffer.form.populate_obj(obj)
+	
+	def populate_suboffers(self, obj, name):
+		pass
+
+class OfferEditForm(OfferFormBase):
+	pass
 
 class OfferRequestForm(Form):
 	message = TextAreaField(u'Описание площадок', [

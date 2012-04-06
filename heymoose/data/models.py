@@ -11,6 +11,9 @@ class IdentifiableModel(models.ModelBase):
 	
 	def __cmp__(self, other):
 		return self.id - other.id
+	
+	def __hash__(self):
+		return hash(self.id)
 
 
 class User(IdentifiableModel):
@@ -160,8 +163,8 @@ class Offer(SubOffer):
 	advertiser = Field('User', 'advertiser')
 	account = Field('Account', 'account')
 	pay_method = Field(enums.PayMethods, 'pay-method')
-	regions = FieldList(enums.Regions, 'regions/region')
-	categories = FieldList('Category', 'categories/category')
+	regions = FieldSet(enums.Regions, 'regions/region')
+	categories = FieldSet('Category', 'categories/category')
 	banners = FieldList('Banner', 'banners/banner')
 	approved = Field(types.Boolean, 'approved')
 	active = Field(types.Boolean, 'active')
@@ -191,6 +194,10 @@ class Offer(SubOffer):
 	@property
 	def visible(self):
 		return self.approved and self.active
+	
+	@property
+	def regions_ordered(self):
+		return [r for r in enums.Regions.values() if r in self.regions]
 
 
 class OfferGrant(IdentifiableModel):

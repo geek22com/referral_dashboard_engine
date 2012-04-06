@@ -77,15 +77,17 @@ class ParamsExtractor(object):
 	
 	def _extract_param(self, obj, param):
 		alias = self.aliases.get(param, None) or param
-		attr_chain = alias.split('.')
-		
-		updated = False
-		value = obj
-		for attr_name in attr_chain:
-			if value is None: break
-			updated = value.is_dirty(attr_name)
-			value = getattr(value, attr_name, None)
-		return value, updated
+		if hasattr(alias, '__call__'):
+			return alias(obj)
+		else:
+			attr_chain = alias.split('.')
+			updated = False
+			value = obj
+			for attr_name in attr_chain:
+				if value is None: break
+				updated = value.is_dirty(attr_name)
+				value = getattr(value, attr_name, None)
+			return value, updated
 
 
 def extractor():

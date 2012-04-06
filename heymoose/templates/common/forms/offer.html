@@ -151,10 +151,12 @@
 	</div>
 {% endmacro %}
 
-{% macro html(form, tmpl) %}
+{% macro html(form, tmpl=none, edit=false) %}
+	{% if not edit %}
 	<div id="suboffer-form-template" style="display: none;">
 		{{ suboffer_embedded(tmpl) }}
 	</div>
+	{% endif %}
 	<form method="post" action="" class="validate2" enctype="multipart/form-data">
 		<div class="input">
 			<span class="help-block">* Поля, выделенные <b>жирным шрифтом</b>, обязательны для заполнения.</span>
@@ -172,6 +174,7 @@
 			</span>
 			{% endcall %}
 		</fieldset>
+		{% if not edit %}
 		<fieldset>
 			<legend>
 				Действия
@@ -191,6 +194,7 @@
 				</div>
 			</div>
 		</fieldset>
+		{% endif %}
 		<fieldset>
 			<legend>Параметры</legend>
 			<div class="clearfix formfield {{ forms.css_errors(form.targeting) }}">
@@ -259,7 +263,7 @@
 			</div>
 		</fieldset>
 		<div class="actions">
-			<input class="btn large primary" type="submit" value="Создать оффер" />
+			<input class="btn large primary" type="submit" value="{{ 'Создать оффер' if not edit else 'Подтвердить' }}" />
 		</div>
 	</form>
 {% endmacro %}

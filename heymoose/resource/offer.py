@@ -2,6 +2,11 @@ from backend import BackendResource, extractor
 from heymoose.data.models import Offer, SubOffer
 from restkit.errors import ResourceError, ResourceNotFound
 
+def extract_categories(offer):
+	return [c.id for c in offer.categories] if offer.categories is not None else None, offer.is_dirty('categories')
+
+def extract_regions(offer):
+	return list(offer.regions), offer.is_dirty('regions')
 
 class OfferResource(BackendResource):
 	base_path = '/offers'
@@ -9,7 +14,8 @@ class OfferResource(BackendResource):
 	extractor = extractor().alias(
 		advertiser_id='advertiser.id',
 		cost='value',
-		categories='categories_ids'
+		categories=extract_categories,
+		regions=extract_regions
 	)
 	
 	def get_by_id(self, id, **kwargs):
@@ -39,6 +45,14 @@ class OfferResource(BackendResource):
 		params.update(balance=balance)
 		params.update(kwargs)
 		return self.post(**params).as_int()
+	
+	def update(self, offer, **kwargs):
+		params = self.extractor.extract(offer,
+			updated='''name description url cookie_ttl categories regions allow_negative_balance
+				auto_approve reentrant logo_filename'''.split()
+		)
+		params.update(kwargs)
+		self.path(offer.id).put(**params)
 	
 	def block(self, id, reason):
 		self.path(id).path('blocked').put(reason=reason)

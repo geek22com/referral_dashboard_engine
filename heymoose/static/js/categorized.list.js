@@ -4,6 +4,10 @@
 			category.find('li input[type=checkbox]').length;
 	}
 	
+	function categoryUnchecked(category) {
+		return category.find('li input[type=checkbox]:checked').length == 0;
+	}
+	
 	$.fn.categorizedList = function() {
 		return this.each(function() {
 			var categNames = [];
@@ -51,6 +55,9 @@
 				$(this).appendTo($('ul.categorized'));
 				if (categoryChecked($(this))) {
 					$(this).find('input.category-checkbox').attr('checked', true)
+					$(this).find('ul').toggle();
+				}
+				if (categoryUnchecked($(this))) {
 					$(this).find('ul').toggle();
 				}
 			});

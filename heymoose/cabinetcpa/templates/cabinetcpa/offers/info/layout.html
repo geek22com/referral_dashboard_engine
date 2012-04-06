@@ -27,7 +27,7 @@
 {% block content %}
 <ul class="tabs">
 	<li id="tab-info"><a href="{{ url_for('.offers_info', id=offer.id) }}">Описание</a></li>
-	{% if g.user.is_advertiser %}
+	{% if g.user.is_advertiser and offer.owned_by(g.user) %}
 	<li id="tab-edit"><a href="{{ url_for('.offers_info_edit', id=offer.id) }}">Редактировать</a></li>
 	{% endif %}
 	<li id="tab-actions"><a href="{{ url_for('.offers_info_actions', id=offer.id) }}">Действия</a></li>

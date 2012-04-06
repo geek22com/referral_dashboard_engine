@@ -1,0 +1,11 @@
+{% extends 'site/layout.html' %}
+
+{% block nav %}
+<ul class="nav">
+	<li id="menu-item-index"><a href="{{ url_for('.cpa_index') }}">Главная</a></li>
+	<li id="menu-item-advertisers"><a href="{{ url_for('.cpa_advertisers') }}">Рекламодателям</a></li>
+	<li id="menu-item-affiliates"><a href="{{ url_for('.cpa_affiliates') }}">Веб-мастерам</a></li>
+</ul>
+{% endblock %}
+
+{% block secondary_nav %}{% endblock %}

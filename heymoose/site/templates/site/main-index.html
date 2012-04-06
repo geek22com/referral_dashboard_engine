@@ -1,0 +1,54 @@
+{% extends "site/layout.html" %}
+
+{% block fulltitle %}HeyMoose!{% endblock %}
+
+{% set activemenu = "" %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		div.header-container {
+			height: 100px;
+		}
+		
+		.go {
+			width: 200px;
+			text-align: center;
+			font-weight: bold;
+		}
+	</style>
+{% endblock %}
+
+{% block nav %}{% endblock %}
+{% block secondary_nav %}{% endblock %}
+
+{% block container %}
+
+{% block flash_messages %}
+	{{ super() }}
+{% endblock %}
+
+<div class="center" style="margin-top: 50px;">
+	<img src="{{ url_for('static', filename='./img/logo_200x150.png') }}" alt="HeyMoose" />
+</div>
+
+<div class="row">
+	<div class="span8">
+		<div class="content center">
+			<div class="header-container">
+				<h2>&laquo;HeyMoose!&raquo; &mdash; партнерская сеть с&nbsp;оплатой за действия</h2>
+			</div>
+			<a href="{{ url_for('.cpa_index') }}" class="btn large primary go">Перейти &raquo;</a>
+		</div>
+	</div>
+	<div class="span8">
+		<div class="content center">
+			<div class="header-container">
+				<h2>&laquo;HeyMoose!&raquo; &mdash; рекламная сеть</h2>
+			</div>
+			<a href="{{ url_for('.index') }}" class="btn large primary go">Перейти &raquo;</a>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

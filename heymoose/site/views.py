@@ -15,14 +15,12 @@ import random
 
 
 @bp.route('/')
+def main_index():
+	return render_template('site/main-index.html')
+
+@bp.route('/index')
 def index():
 	return render_template('site/index.html')
-
-
-#@bp.route('/about')
-def about():
-	'''Deprecated'''
-	return render_template('site/about.html')
 
 @bp.route('/customers')
 def customers():
@@ -35,6 +33,19 @@ def developers():
 @bp.route('/platforms')
 def platforms():
 	return render_template('site/platforms.html')
+
+
+@bp.route('/cpa/')
+def cpa_index():
+	return render_template('site/cpa-index.html')
+
+@bp.route('/cpa/advertisers')
+def cpa_advertisers():
+	return render_template('site/cpa-advertisers.html')
+
+@bp.route('/cpa/affiliates')
+def cpa_affiliates():
+	return render_template('site/cpa-affiliates.html')
 
 
 @bp.route('/contacts', methods=['GET', 'POST'])

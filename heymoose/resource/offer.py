@@ -8,12 +8,15 @@ def extract_categories(offer):
 def extract_regions(offer):
 	return list(offer.regions), offer.is_dirty('regions')
 
+def extract_cost(offer):
+	return offer.cost or offer.percent, offer.is_dirty('cost') or offer.is_dirty('percent')
+
 class OfferResource(BackendResource):
 	base_path = '/offers'
 	
 	extractor = extractor().alias(
 		advertiser_id='advertiser.id',
-		cost='value',
+		cost=extract_cost,
 		categories=extract_categories,
 		regions=extract_regions
 	)
@@ -48,8 +51,9 @@ class OfferResource(BackendResource):
 	
 	def update(self, offer, **kwargs):
 		params = self.extractor.extract(offer,
-			updated='''name description url cookie_ttl categories regions allow_negative_balance
-				auto_approve reentrant logo_filename'''.split()
+			updated='''pay_method cpa_policy cost title code hold_days auto_approve reentrant
+				name description url cookie_ttl categories regions allow_negative_balance
+				logo_filename'''.split()
 		)
 		params.update(kwargs)
 		self.path(offer.id).put(**params)
@@ -71,6 +75,13 @@ class OfferResource(BackendResource):
 		params.update(kwargs)
 		return self.path(id).path('suboffers').post(**params).as_int()
 	
+	def update_suboffer(self, id, suboffer, **kwargs):
+		params = self.extractor.extract(suboffer,
+			updated='cpa_policy cost title code hold_days auto_approve reentrant active'.split()
+		)
+		params.update(kwargs)
+		self.path(id).path('suboffers').path(suboffer.id).put(**params)
+	
 	def add_banner(self, id, banner, image, **kwargs):
 		params = self.extractor.extract(banner, required='width height mime_type'.split())
 		params.update(image=image)
@@ -80,9 +91,9 @@ class OfferResource(BackendResource):
 	def delete_banner(self, id, banner_id):
 		self.path(id).path('banners').path(banner_id).delete()
 	
-	def check_code(self, advertiser_id, code):
+	def check_code(self, advertiser_id, code, **kwargs):
 		try:
-			self.path('code').put(advertiser_id=advertiser_id, code=code)
+			self.path('code').put(advertiser_id=advertiser_id, code=code, **kwargs)
 			return True
 		except ResourceError:
 			return False

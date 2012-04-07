@@ -145,14 +145,26 @@ class SubOffer(IdentifiableModel):
 	auto_approve = Field(types.Boolean, 'auto-approve')
 	reentrant = Field(types.Boolean, 'reentrant')
 	creation_time = Field(types.DateTime, 'creation-time')
+	pay_method = Field(enums.PayMethods, 'pay-method')
 	cpa_policy = Field(enums.CpaPolicies, 'cpa-policy')
 	cost = Field(types.Decimal, 'cost')
 	percent = Field(types.Decimal, 'percent')
 	code = Field(types.String, 'code')
 	hold_days = Field(types.Integer, 'hold-days')
+	active = Field(types.Boolean, 'active')
 	
 	@property
 	def value(self): return self.cost or self.percent
+	
+	@property
+	def payment_type(self):
+		if self.pay_method == enums.PayMethods.CPC:
+			return u'фиксированная за клик'
+		elif self.cpa_policy == enums.CpaPolicies.FIXED:
+			return u'фиксированная за действие'
+		elif self.cpa_policy == enums.CpaPolicies.PERCENT:
+			return u'процент с заказа или покупки'
+		return u'неизвестно'
 
 
 class Offer(SubOffer):
@@ -162,12 +174,10 @@ class Offer(SubOffer):
 	url = Field(types.String, 'url')
 	advertiser = Field('User', 'advertiser')
 	account = Field('Account', 'account')
-	pay_method = Field(enums.PayMethods, 'pay-method')
 	regions = FieldSet(enums.Regions, 'regions/region')
 	categories = FieldSet('Category', 'categories/category')
 	banners = FieldList('Banner', 'banners/banner')
 	approved = Field(types.Boolean, 'approved')
-	active = Field(types.Boolean, 'active')
 	block_reason = Field(types.String, 'block-reason')
 	cookie_ttl = Field(types.Integer, 'cookie-ttl')
 	

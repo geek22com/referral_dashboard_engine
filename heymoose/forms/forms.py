@@ -554,9 +554,12 @@ class SubOfferForm(Form):
 		validators.Length(max=10, message=u'Код может быть длиной от 1 до 10 символов')
 	])
 	manual_code = BooleanField(u'указать код вручную', default=False)
+	active = BooleanField(u'Активно', default=True)
 	
 	def validate_code(self, field):
-		if self.code.data and not rc.offers.check_code(g.user.id, self.code.data):
+		if self.manual_code.data and not self.code.data:
+			raise ValueError(u'Введите код вручную')
+		if self.code.data and not rc.offers.check_code(g.user.id, self.code.data, offer_id=getattr(self, 'offer_id', None)):
 			raise ValueError(u'У вас уже имеется оффер с таким кодом')
 		
 	def generate_code(self):
@@ -570,6 +573,17 @@ class SubOfferForm(Form):
 			while not rc.offers.check_code(g.user.id, code):
 				code = self.generate_code()
 		obj.code = code
+	
+	def get_manual_code(self, obj):
+		return True if obj.code else False
+	
+	def get_payment_type(self, obj):
+		if obj.pay_method and obj.pay_method == enums.PayMethods.CPC:
+			return 0
+		elif obj.cpa_policy == enums.CpaPolicies.FIXED:
+			return 1
+		else:
+			return 2
 		
 	def populate_payment_type(self, obj, name):
 		if self.payment_type.data == 0:
@@ -578,16 +592,22 @@ class SubOfferForm(Form):
 			obj.pay_method = enums.PayMethods.CPA
 			obj.cpa_policy = enums.CpaPolicies.FIXED if self.payment_type.data == 1 else enums.CpaPolicies.PERCENT
 	
+	def get_payment_value(self, obj):
+		return obj.cost or obj.percent
+	
 	def populate_payment_value(self, obj, name):
 		if self.payment_type.data in (0, 1):
 			obj.cost = self.payment_value.data
+			obj.percent = None
 		else:
 			obj.percent = self.payment_value.data
+			obj.cost = None
 
 
 class MainSubOfferForm(SubOfferForm):
 	def __init__(self, *args, **kwargs):
 		super(MainSubOfferForm, self).__init__(*args, **kwargs)
+		del self.active
 		self.payment_type.choices = [(0, u'Фиксированная за клик')] + self.payment_type.choices
 
 

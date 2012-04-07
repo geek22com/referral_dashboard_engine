@@ -17,22 +17,21 @@
 	{% if advertiser_is_owner %}
 		{% if head %}
 		<th class="header">Код</th>
+		<th class="header center">Активно</th>
 		<th class="header center"></th>
 		{% else %}
 		<td>{{ suboffer.code }}</td>
+		{% if suboffer.id != offer.id %}
+		<td class="center">{{ macros.to_icon(suboffer.active) }}</td>
 		<td class="center">
-			<a href="#" data-controls-modal="suboffer-modal-{{ suboffer.id -}}"
-			 data-backdrop="true" data-keyboard="true">изменить</a>
-			<div id="suboffer-modal-{{ suboffer.id -}}" class="modal fade" style="display: none; width: 640px;">
-				<div class="modal-header">
-					<a href="#" class="close">×</a>
-					<h3>Изменение действия</h3>
-				</div>
-				<div class="modal-body">
-					{{ offer_form.suboffer_html(form, wide=false, suboffer_id=suboffer.id) }}
-				</div>
-			</div>
+			<a href="{{ url_for('.offers_info_actions_edit', id=offer.id, sid=suboffer.id) }}">изменить</a>
 		</td>
+		{% else %}
+		<td class="center">{{ macros.to_icon(true) }}</td>
+		<td class="center">
+			<a href="{{ url_for('.offers_info_actions_main_edit', id=offer.id) }}">изменить</a>
+		</td>
+		{% endif %}
 		{% endif %}
 	{% endif %}
 {% endcall %}

@@ -134,7 +134,7 @@ class BackendResource(Resource):
 			params = {}
 
 		app.logger.debug('{resource} {method}: url={url} params={params} payload={payload}'.format(
-			resource=self.__class__.__name__, method=method, url=os.path.join(self.uri, path),
+			resource=self.__class__.__name__, method=method, url=os.path.join(self.uri, path or ''),
 			params=self.loggable_dict(params), payload=self.loggable_dict(payload)
 		))
 		

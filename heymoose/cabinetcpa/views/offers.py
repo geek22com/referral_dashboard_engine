@@ -97,9 +97,12 @@ def offers_info_edit(id):
 			flash(u'Вы не изменили ни одного поля', 'warning')
 	return render_template('cabinetcpa/offers/info/edit.html', offer=offer, form=form)
 
-@bp.route('/offers/<int:id>/actions', methods=['GET', 'POST'])
+@bp.route('/offers/<int:id>/actions/', methods=['GET', 'POST'])
 def offers_info_actions(id):
 	offer = rc.offers.get_try_requested(id, g.user.id) if g.user.is_affiliate else rc.offers.get_by_id(id)
+	for suboffer in offer.suboffers:
+		suboffer.form = forms.SubOfferForm(request.form, obj=suboffer)
+	
 	form = forms.SubOfferForm(request.form)
 	if offer.owned_by(g.user) and request.method == 'POST' and form.validate():
 		suboffer = SubOffer()
@@ -108,6 +111,46 @@ def offers_info_actions(id):
 		flash(u'Действие успешно добавлено', 'success')
 		return redirect(request.url)
 	return render_template('cabinetcpa/offers/info/actions.html', offer=offer, form=form)
+
+@bp.route('/offers/<int:id>/actions/edit', methods=['GET', 'POST'])
+@advertiser_only
+def offers_info_actions_main_edit(id):
+	offer = rc.offers.get_by_id(id)
+	if not offer.owned_by(g.user): abort(403)
+	suboffer = offer
+	form = forms.MainSubOfferForm(request.form, obj=offer)
+	form.offer_id = offer.id
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(offer)
+		if offer.updated():
+			rc.offers.update(offer)
+			flash(u'Действие успешно изменено', 'success')
+		else:
+			flash(u'Вы не изменили ни одного поля', 'warning')
+		return redirect(url_for('.offers_info_actions', id=offer.id))
+	return render_template('cabinetcpa/offers/info/actions-edit.html', **locals())
+
+@bp.route('/offers/<int:id>/actions/<int:sid>/edit', methods=['GET', 'POST'])
+@advertiser_only
+def offers_info_actions_edit(id, sid):
+	offer = rc.offers.get_by_id(id)
+	if not offer.owned_by(g.user): abort(403)
+	suboffer = None
+	for sub in offer.all_suboffers:
+		if sub.id == sid: suboffer = sub
+	if not suboffer: abort(404)
+	form = forms.SubOfferForm(request.form, obj=suboffer)
+	form.offer_id = suboffer.id
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(suboffer)
+		if suboffer.updated():
+			print suboffer.updated_values()
+			rc.offers.update_suboffer(offer.id, suboffer)
+			flash(u'Действие успешно изменено', 'success')
+		else:
+			flash(u'Вы не изменили ни одного поля', 'warning')
+		return redirect(url_for('.offers_info_actions', id=offer.id))
+	return render_template('cabinetcpa/offers/info/actions-edit.html', **locals())
 
 @bp.route('/offers/<int:id>/materials', methods=['GET', 'POST'])
 def offers_info_materials(id):

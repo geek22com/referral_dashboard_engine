@@ -81,7 +81,7 @@
 		</div>
 	</div>
 	<div class="clearfix">
-		{{ forms.label(form.code) }}
+		{{ forms.label(form.code, class='required') }}
 		<div class="input">
 			<div class="row">
 				<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.code) }}">
@@ -113,7 +113,7 @@
 	</div>
 {% endmacro %}
 
-{% macro suboffer_html(form, wide=true) %}
+{% macro suboffer_html(form, wide=true, edit=false) %}
 	<form method="post" action="" class="{{ 'widelabels' if wide }} validate2" enctype="multipart/form-data">
 		<fieldset>
 			<div class="input">
@@ -121,13 +121,13 @@
 			</div>
 		</fieldset>
 		<fieldset>
-			{% for name, value in kwargs.iteritems() %}
-			<input type="hidden" name="{{ name }}" value="{{ value }}" />
-			{% endfor %}
 			{{ suboffer_html_base(form) }}
+			{% if edit and form.active %}
+			{{ forms.singlefield(form.active) }}
+			{% endif %}
 		</fieldset>
 		<div class="actions">
-			<input class="btn primary" type="submit" value="Добавить действие" />
+			<input class="btn primary" type="submit" value="{{ 'Добавить действие' if not edit else 'Подтвердить' }}" />
 		</div>
 	</form>
 {% endmacro %}

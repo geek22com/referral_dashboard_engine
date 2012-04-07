@@ -5,9 +5,10 @@
 		<thead>
 			<tr>
 				<th class="header">Название</th>
+				<th class="header">Тип выплат</th>
 				<th class="header right">Оплата</th>
-				<th class="header center">Многокр. прохождение</th>
-				<th class="header right">Время холда</th>
+				<th class="header center">Многократное<br />прохождение</th>
+				<th class="header right">Время<br />холда</th>
 				{{ caller(true, none) }}
 			</tr>
 		</thead>
@@ -15,6 +16,7 @@
 			{% for suboffer in suboffers %}
 			<tr>
 				<td>{{ suboffer.title }}</td>
+				<td>{{ suboffer.payment_type }}</td>
 				<td class="right">
 					{{ suboffer.cost|currency if suboffer.cost }}
 					{{ suboffer.percent|percent if suboffer.percent }}

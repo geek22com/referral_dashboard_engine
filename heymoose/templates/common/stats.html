@@ -24,7 +24,20 @@
 		<tbody>
 			{% for stat in stats %}
 			<tr>
+				<td>{{ stat.offer_id }}</td>
+				<td class="right">{{ stat.shows }}</td>
+				<td class="right">{{ stat.clicks }}</td>
+				<td class="right">{{ stat.ctr|default('&mdash;', true)|safe }}</td>
+				<td class="right">{{ stat.ecpc|default('&mdash;', true)|safe }}</td>
+				<td class="right">{{ stat.ecpm|default('&mdash;', true)|safe }}</td>
+				<td class="right">{{ stat.cr|default('&mdash;', true)|safe }}</td>
 				
+				<td class="right">{{ stat.leads }}</td>
+				<td class="right">{{ stat.sales }}</td>
+				
+				<td class="right">{{ stat.cancelled_revenue }}</td>
+				<td class="right">{{ stat.not_confirmed_revenue }}</td>
+				<td class="right">{{ stat.confirmed_revenue }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

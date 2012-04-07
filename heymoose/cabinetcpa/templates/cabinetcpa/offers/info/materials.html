@@ -3,10 +3,10 @@
 
 {% set activetab = 'materials' %}
 
-{% macro tracking_url(offer_id) -%}{{ root -}}?offer_id={{ offer_id -}}{% endmacro -%}
+{% macro tracking_url(offer_id, banner_id=none) -%}http://partner.heymoose.com/api?method=click&offer_id={{ offer_id -}}&aff_id={{ g.user.id -}}{{ '&banner_id={0}'.format(banner_id) if banner_id -}}{% endmacro -%}
 
 {% macro pixel_code(offer_id, banner_id=none) -%}
-<img src="{{ root -}}{{ '&banner_id={0}'.format(banner_id) if banner_id -}}" alt="" style="width: 0; height: 0; position: absolute;" />
+<img src="http://partner.heymoose.com/api?method=track&offer_id={{ offer.id -}}&aff_id={{ g.user.id -}}{{ '&banner_id={0}'.format(banner_id) if banner_id -}}" alt="" style="width: 0; height: 0; position: absolute;" />
 {% endmacro -%}
 
 {% macro banner_code(offer_id, banner) %}
@@ -40,7 +40,7 @@
 		<div class="well form-container">
 			<form class="widelabels">
 				<div class="clearfix">
-					<label for="tracking-url">Трекинг-ссылка</label>
+					<label for="tracking-url">Прямая ссылка</label>
 					<div class="input">
 						<input type="text" id="tracking-url" class="span10 copybox"
 						 style="background-color: #FFF;" readonly="readonly"

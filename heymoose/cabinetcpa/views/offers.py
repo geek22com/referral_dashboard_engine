@@ -64,11 +64,15 @@ def offers_new():
 
 @bp.route('/offers/stats')
 def offers_stats():
+	stats = []
+	if g.user.is_affiliate:
+		stats = rc.offer_stats.list(aff_id=g.user.id)
+	
 	now = datetime.now()
 	form = forms.DateTimeRangeForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
 	if 'dt_from' in request.args and 'dt_to' in request.args and form.validate():
 		flash(u'Все ОК', 'success')
-	return render_template('cabinetcpa/offers/stats.html', form=form)
+	return render_template('cabinetcpa/offers/stats.html', form=form, stats=stats)
 
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 def offers_info(id):

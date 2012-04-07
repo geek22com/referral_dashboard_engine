@@ -259,4 +259,19 @@ class Category(IdentifiableModel):
 	grouping = Field(types.String, 'grouping')
 
 
+class OverallOfferStat(models.ModelBase):
+	offer_id = Field(types.Integer, 'offer-id')
+	shows = Field(types.Integer, 'shows')
+	clicks = Field(types.Integer, 'clicks')
+	leads = Field(types.Integer, 'leads')
+	sales = Field(types.Integer, 'sales')
+	confirmed_revenue = Field(types.Decimal, 'confirmed-revenue')
+	not_confirmed_revenue = Field(types.Decimal, 'not-confirmed-revenue')
+	cancelled_revenue = Field(types.Decimal, 'canceled-revenue')
+	ctr = Field(types.Decimal, 'ctr')
+	cr = Field(types.Decimal, 'cr')
+	ecpc = Field(types.Decimal, 'ecpc')
+	ecpm = Field(types.Decimal, 'ecpm')	
+
+
 registry.register_models_from_module(__name__)

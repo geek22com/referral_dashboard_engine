@@ -6,7 +6,7 @@ from heymoose.cabinetcpa.decorators import advertiser_only
 from heymoose.forms import forms
 from heymoose.core import actions
 from heymoose.utils import convert, robokassa
-from heymoose.utils.shortcuts import paginate
+from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.mail import transactional as mail
 
 
@@ -53,12 +53,12 @@ def profile_balance():
 	else:
 		form = None
 	
-	page = convert.to_int(request.args.get('page'), 1)
-	count = resource.accounts.transactions_count(g.user.account.id)
-	per_page = app.config.get('ADMIN_TRANSACTIONS_PER_PAGE', 20)
-	offset, limit, pages = paginate(page, count, per_page)
-	transactions = resource.accounts.transactions_list(g.user.account.id, offset=offset, limit=limit)
-	return render_template('cabinetcpa/profile/balance.html', transactions=transactions, pages=pages, form=form)
+	page = current_page()
+	per_page = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
+	offset, limit = page_limits(page, per_page)
+	entries, count = resource.accounts.entries_list(g.user.account.id, offset=offset, limit=limit)
+	pages = paginate(page, count, per_page)
+	return render_template('cabinetcpa/profile/balance.html', entries=entries, pages=pages, form=form)
 	
 @bp.route('/profile/balance/success', methods=['POST'])
 @advertiser_only

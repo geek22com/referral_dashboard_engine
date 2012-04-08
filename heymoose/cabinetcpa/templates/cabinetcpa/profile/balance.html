@@ -1,5 +1,5 @@
 {% extends "cabinetcpa/profile/layout.html" %}
-{% import 'common/transactions.html' as transaction_macros %}
+{% import 'common/accounting-entries.html' as entry_macros %}
 
 {% set activetab = 'balance' %}
 
@@ -44,8 +44,8 @@
 
 <h2>История операций</h2>
 
-{% if transactions %}
-	{% call(head, transaction) transaction_macros.table(transactions, {}) %}{% endcall %}
+{% if entries %}
+	{% call(head, entry) entry_macros.table(entries) %}{% endcall %}
 	{{ macros.paginate(pages, '.profile_balance') }}
 {% else %}
 	<div class="clearfix alert-message block-message info">

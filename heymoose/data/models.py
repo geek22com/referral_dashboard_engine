@@ -75,6 +75,11 @@ class User(IdentifiableModel):
 class Account(IdentifiableModel):
 	balance = Field(types.Decimal, 'balance')
 
+class AccountingEntry(IdentifiableModel):
+	amount = Field(types.Decimal, 'amount')
+	event = Field(enums.AccountingEvents, 'event')
+	creation_time = Field(types.DateTime, 'creation-time')
+
 class Transaction(IdentifiableModel):
 	diff = Field(types.Decimal, 'diff')
 	balance = Field(types.Decimal, 'balance')

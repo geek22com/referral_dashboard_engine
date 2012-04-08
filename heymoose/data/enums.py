@@ -25,6 +25,14 @@ class TransactionTypes(Enum):
 	REPLENISHMENT_ADMIN = e('REPLENISHMENT_ADMIN', desc=u'Пополнение счета администрацией')
 	WITHDRAW_DELETED = e('WITHDRAW_DELETED', desc=u'Отмена выплаты разработчику')
 
+class AccountingEvents(Enum):
+	CLICK_CREATED = e('CLICK_CREATED', name=u'клик')
+	ACTION_CREATED = e('ACTION_CREATED', name=u'совершение действия')
+	ACTION_APPROVED = e('ACTION_APPROVED', name=u'подтверждение действия')
+	ACTION_CANCELED = e('ACTION_CANCELED', name=u'отмена действия')
+	OFFER_ACCOUNT_ADD = e('OFFER_ACCOUNT_ADD', name=u'пополнение счета оффера')
+	ROBOKASSA_ADD = e('ROBOKASSA_ADD', name=u'пополнение счета с помощью системы "RoboKassa"')
+
 class OrderTypes(Enum):
 	REGULAR = e('REGULAR', name=u'обычный')
 	BANNER = e('BANNER', name=u'баннер')

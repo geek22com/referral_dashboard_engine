@@ -1,0 +1,30 @@
+{% import 'common/macros.html' as macros %}
+
+{% macro table(entries) %}
+	<table class="bordered-table zebra-striped nosort transactions-table">
+		<thead>
+			<tr>
+				<th class="header right" style="width: 50px;">#</th>
+				<th class="header right" style="width: 120px;">Изменение, {{ currency_sign }}</th>
+				<th class="header center" style="width: 150px;">Время</th>
+				<th class="header">Описание</th>
+				{{ caller(true, none) }}
+			</tr>
+		</thead>
+		<tbody>
+			{% for entry in entries %}
+			<tr>
+				<td class="right">{{ entry.id }}</td>
+				<td class="right">
+					<span class="transaction-{% if entry.amount < 0 -%}minus{% else -%}plus{% endif -%}">
+						{{ entry.amount|currency(False) }}
+					</span>
+				</td>
+				<td class="center">{{ entry.creation_time|datetimeformat }}</td>
+				<td>{{ entry.event.name|default('&mdash;', true)|safe }}</td>
+				{{ caller(false, transaction) }}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endmacro %}

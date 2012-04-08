@@ -90,13 +90,19 @@
 			</div>
 			<div class="roundbox-content">
 				{% if offer.logo_filename %}
-				<div class="center clearfix" style="margin: 20px 0;">
+				<div class="center clearfix" style="margin: 20px 20px 0 20px;">
 					<img src="{{ url_for('upload', filename=offer.logo) }}"
 					 alt="логотип" style="max-width: 150px;" />
 				</div>
 				{% endif %}
+				<div class="center clearfix" style="margin-bottom: 10px;">
+					<a href="{{ offer.url }}" target="_blank">{{ offer.url }}</a>
+				</div>
 				<dl class="kv kv--inscribed kv--key180">
-					<dt>Дата запуска</dt><dd>{{ offer.creation_time|dateformat }}</dd>
+					{% if owner or admin %}
+					<dt>Баланс</dt><dd>{{ offer.account.balance|currency }}</dd>
+					{% endif %}
+					<dt>Дата создания</dt><dd>{{ offer.creation_time|dateformat }}</dd>
 					<dt>Время жизни cookie</dt><dd>{{ offer.cookie_ttl }} дней</dd>
 				</dl>
 				<div>
@@ -105,7 +111,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="roundbox roundbox--primary roundbox--shadowed">
+		{#<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">
 				<a href="{{ url_for('.offers_info_stats', id=offer.id) }}"
 				 class="roundbox-header-link">статистика &raquo;</a>
@@ -118,7 +124,7 @@
 					<dt>CR</dt><dd>1.52 %</dd>
 				</dl>
 			</div>
-		</div>
+		</div>#}
 		<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">
 				<a href="{{ url_for('.offers_info_actions', id=offer.id) }}"
@@ -126,13 +132,10 @@
 				Оплата за действия
 			</div>
 			<div class="roundbox-content">
-				<dl class="kv kv--inscribed kv--key180">
+				<dl class="kv kv--inscribed kv--key150">
 					{% for suboffer in offer.all_suboffers %}
 					<dt>{{ suboffer.title }}</dt>
-					<dd>
-						{{ suboffer.cost|currency if suboffer.cost }}
-						{{ suboffer.percent|percent if suboffer.percent }}
-					</dd>
+					<dd>{{ suboffer.value_verbose }}</dd>
 					{% endfor %}
 				</dl>
 			</div>

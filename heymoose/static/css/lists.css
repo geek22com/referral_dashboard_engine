@@ -78,3 +78,7 @@ dl.kv.kv--inscribed {
 dl.kv.kv--key180 dt {
 	width: 180px;
 }
+
+dl.kv.kv--key150 dt {
+	width: 150px;
+}

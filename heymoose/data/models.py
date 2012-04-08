@@ -169,6 +169,15 @@ class SubOffer(IdentifiableModel):
 	def value(self): return self.cost or self.percent
 	
 	@property
+	def value_verbose(self):
+		if self.cost:
+			method = u'клик' if self.pay_method == enums.PayMethods.CPC else u'дейст.'
+			return u'{0} руб. / {1}'.format(self.cost, method)
+		elif self.percent:
+			return u'{0} %'.format(self.percent)
+		return u'--'
+	
+	@property
 	def payment_type(self):
 		if self.pay_method == enums.PayMethods.CPC:
 			return u'фиксированная за клик'

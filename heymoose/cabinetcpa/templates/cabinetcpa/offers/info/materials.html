@@ -3,14 +3,12 @@
 
 {% set activetab = 'materials' %}
 
-{% macro tracking_url(offer_id, banner_id=none) -%}http://partner.heymoose.com/api?method=click&offer_id={{ offer_id -}}&aff_id={{ g.user.id -}}{{ '&banner_id={0}'.format(banner_id) if banner_id -}}{% endmacro -%}
-
-{% macro pixel_code(offer_id, banner_id=none) -%}
-<img src="http://partner.heymoose.com/api?method=track&offer_id={{ offer.id -}}&aff_id={{ g.user.id -}}{{ '&banner_id={0}'.format(banner_id) if banner_id -}}" alt="" style="width: 0; height: 0; position: absolute;" />
+{% macro pixel_code(offer, banner=none) -%}
+<img src="{{ offer.tracking_url(request.host_url, g.user.id, banner.id if banner else none) }}" alt="" style="width: 0; height: 0; position: absolute;" />
 {% endmacro -%}
 
 {% macro banner_code(offer_id, banner) %}
-<a href="{{ tracking_url(offer_id) }}"><img src="{{ banner.url }}" alt="" width="{{ banner.width }}" height="{{ banner.height }}" /></a>{{ pixel_code(offer_id, banner.id) -}}
+<a href="{{ offer.click_url(request.host_url, g.user.id, banner.id) }}"><img src="{{ banner.url }}" alt="" width="{{ banner.width }}" height="{{ banner.height }}" /></a>{{ pixel_code(offer_id, banner.id) -}}
 {% endmacro %}
 
 {% block tabcontent %}
@@ -36,24 +34,42 @@
 {% endif %}
 
 {% if g.user.is_affiliate %}
-	{% if affiliate_is_granted %}	
-		<div class="well form-container">
-			<form class="widelabels">
-				<div class="clearfix">
-					<label for="tracking-url">Прямая ссылка</label>
-					<div class="input">
-						<input type="text" id="tracking-url" class="span10 copybox"
-						 style="background-color: #FFF;" readonly="readonly"
-						 value="{{ tracking_url(offer.id) -}}" />
-					</div>
+	{% if affiliate_is_granted %}
+		<div class="clearfix alert-message block-message success">
+			<p>
+				Вы сотрудничаете с данной кампанией, и можете получить коды баннеров ниже.
+				Если вы не желаете использовать баннеры, вы можете получить код ссылки отдельно.
+			</p>
+			<div class="alert-actions">
+				<a class="btn small" href="#" data-controls-modal="modal-link"
+		 		 data-backdrop="true" data-keyboard="true">Получить код ссылки</a>
+			</div>
+		</div>
+		<div id="modal-link" class="modal" style="display: none;">
+			<form>
+				<div class="modal-header">
+					<a href="#" class="close">×</a>
+					<h3>Партнерская ссылка</h3>
 				</div>
-				<div class="clearfix" style="margin-bottom: 0;">
-					<label for="tracking-pixel">Пиксель для трекинга показов</label>
-					<div class="input">
-						<textarea rows="2" id="tracking-pixel" class="span10 copybox"
-						readonly="readonly" style="background-color: #FFF;"
-						>{{ pixel_code(offer.id) -}}</textarea>
-					</div>
+				<div class="modal-body">
+					<fieldset>
+						<div class="clearfix">
+							<label for="tracking-url">Прямая ссылка</label>
+							<div class="input">
+								<input type="text" id="tracking-url" class="span6 copybox"
+								 style="background-color: #FFF;" readonly="readonly"
+								 value="{{ offer.click_url(request.host_url, g.user.id) -}}" />
+							</div>
+						</div>
+						<div class="clearfix" style="margin-bottom: 0;">
+							<label for="tracking-pixel">Код пикселя для трекинга показов</label>
+							<div class="input">
+								<textarea rows="4" id="tracking-pixel" class="span6 copybox"
+								readonly="readonly" style="background-color: #FFF;"
+								>{{ pixel_code(offer) -}}</textarea>
+							</div>
+						</div>
+					</fieldset>
 				</div>
 			</form>
 		</div>
@@ -94,7 +110,7 @@
 									<label for="banner-code">Код баннера</label>
 									<div class="input">
 										<textarea rows="6" id="banner-code" class="span6 copybox" readonly="readonly"
-										 style="background-color: #FFF;">{{ banner_code(offer.id, banner) }}</textarea>
+										 style="background-color: #FFF;">{{ banner_code(offer, banner) }}</textarea>
 									</div>
 								</div>
 							</fieldset>

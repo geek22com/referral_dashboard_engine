@@ -208,6 +208,18 @@ class Offer(SubOffer):
 	@property
 	def regions_ordered(self):
 		return [r for r in enums.Regions.values() if r in self.regions]
+	
+	def tracking_url(self, host_url, aff_id, banner_id=None):
+		return u'{0}?method=track&offer_id={1}&aff_id={2}{3}'.format(
+			os.path.join(host_url, u'api'), self.id, aff_id,
+			u'banner_id={0}'.format(banner_id) if banner_id else u''
+		)
+	
+	def click_url(self, host_url, aff_id, banner_id=None):
+		return u'{0}?method=click&offer_id={1}&aff_id={2}{3}'.format(
+			os.path.join(host_url, u'api'), self.id, aff_id,
+			u'banner_id={0}'.format(banner_id) if banner_id else u''
+		)
 
 
 class OfferGrant(IdentifiableModel):

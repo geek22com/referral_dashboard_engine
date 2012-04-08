@@ -158,6 +158,9 @@ def offers_info_actions_edit(id, sid):
 
 @bp.route('/offers/<int:id>/materials', methods=['GET', 'POST'])
 def offers_info_materials(id):
+	print request.host
+	print request.host_url
+	
 	offer = rc.offers.get_try_requested(id, g.user.id) if g.user.is_affiliate else rc.offers.get_by_id(id)
 	form = forms.OfferBannerForm(request.form)
 	if offer.owned_by(g.user) and request.method == 'POST' and form.validate():

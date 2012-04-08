@@ -55,7 +55,7 @@ def offers_new():
 			suboffer = SubOffer()
 			suboffer_field.form.populate_obj(suboffer)
 			suboffers.append(suboffer)
-		id = rc.offers.add(offer, 100.00)
+		id = rc.offers.add(offer, 0.00)
 		for suboffer in suboffers:
 			rc.offers.add_suboffer(id, suboffer)
 		flash(u'Оффер успешно создан', 'success')

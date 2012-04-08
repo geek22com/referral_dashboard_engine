@@ -101,7 +101,7 @@
 				</dl>
 				<div>
 					<strong>Регионы:</strong>
-					{{ offer.regions_ordered|attrlist('name')|join(', ') }}
+					{{ offer.regions_ordered|attrlist('name')|join(', ')|default('(не указаны)', true) }}
 				</div>
 			</div>
 		</div>

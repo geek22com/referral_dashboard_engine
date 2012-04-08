@@ -42,7 +42,6 @@ class OfferResource(BackendResource):
 	def add(self, offer, balance, **kwargs):
 		params = self.extractor.extract(offer,
 			required='advertiser_id pay_method cost name description url title code hold_days cookie_ttl'.split(),
-			nonempty='regions'.split(),
 			optional='cpa_policy allow_negative_balance auto_approve reentrant logo_filename categories'.split()
 		)
 		params.update(balance=balance)

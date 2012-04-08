@@ -1,0 +1,24 @@
+{% import 'common/macros.html' as macros %}
+
+{% macro table(withdrawals) %}
+	<table class="bordered-table zebra-striped nosort">
+		<thead>
+			<tr>
+				<th class="header right" style="width: 50px;">#</th>
+				<th class="header right" style="width: 100px;">Размер, {{ currency_sign }}</th>
+				<th class="header center">Время</th>
+				{{ caller(true, none) }}
+			</tr>
+		</thead>
+		<tbody>
+			{% for withdrawal in withdrawals %}
+			<tr>
+				<td class="right">{{ withdrawal.id }}</td>
+				<td class="right">{{ withdrawal.amount|currency(False) }}</td>
+				<td class="center">{{ withdrawal.timestamp|datetimeformat }}</td>
+				{{ caller(false, withdrawal) }}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endmacro %}

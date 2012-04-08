@@ -10,6 +10,11 @@ site_root = app.config.get('SITE_ROOT', 'http://www.heymoose.com')
 def error_type(value, type):
 	return filter(lambda x: x[0] == type, value) if value else None
 
+def safecall(value):
+	try:
+		return value()
+	except TypeError:
+		return value
 
 def datetimeformat(value, format=convert.datetime_format):
 	return value.strftime(format) if value else None
@@ -73,6 +78,7 @@ def nocache():
 
 
 app.jinja_env.filters['error_type'] = error_type
+app.jinja_env.filters['safecall'] = safecall
 app.jinja_env.filters['datetimeformat'] = datetimeformat
 app.jinja_env.filters['datetime_nosec'] = datetime_nosec
 app.jinja_env.filters['dateformat'] = dateformat

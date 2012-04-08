@@ -32,6 +32,7 @@ class User(IdentifiableModel):
 	register_time = Field(types.DateTime, 'register-time')
 	
 	developer_account = Field('Account', 'developer-account')
+	developer_account_not_confirmed = Field('Account', 'developer-account-not-confirmed')
 	customer_account = Field('Account', 'customer-account')
 	customer_secret = Field(types.String, 'customer-secret')
 	
@@ -93,6 +94,12 @@ class Transaction(IdentifiableModel):
 		if self.type == 'WITHDRAW_DELETED':
 			desc += u' ({0})'.format(self.description)
 		return desc
+
+
+class Withdrawal(IdentifiableModel):
+	amount = Field(types.Decimal, 'amount')
+	timestamp = Field(types.DateTime, 'timestamp')
+	done = Field(types.Boolean, 'done')
 
 
 class Order(IdentifiableModel):

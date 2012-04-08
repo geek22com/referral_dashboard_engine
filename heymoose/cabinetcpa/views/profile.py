@@ -2,10 +2,9 @@
 from flask import render_template, g, redirect, url_for, abort, request, flash
 from heymoose import app, resource
 from heymoose.cabinetcpa import blueprint as bp
-from heymoose.cabinetcpa.decorators import advertiser_only
+from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
 from heymoose.forms import forms
-from heymoose.core import actions
-from heymoose.utils import convert, robokassa
+from heymoose.utils import robokassa
 from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.mail import transactional as mail
 
@@ -40,26 +39,30 @@ def profile_password_change():
 		return redirect(url_for('.profile'))
 	return render_template('cabinetcpa/profile/password-change.html', form=form)
 
+@bp.route('/profile/withdrawals')
+@affiliate_only
+def profile_withdrawals():
+	withdrawals = resource.accounts.withdrawals_list(g.user.account.id)
+	withdrawals = [w for w in withdrawals if w.done]
+	return render_template('cabinetcpa/profile/withdrawals.html', withdrawals=withdrawals)
+
 @bp.route('/profile/balance', methods=['GET', 'POST'])
+@advertiser_only
 def profile_balance():
-	if g.user.is_advertiser:
-		form = forms.BalanceForm(request.form)
-		if request.method == 'POST' and form.validate():
-			url = robokassa.account_pay_url(
-				account_id=g.user.customer_account.id,
-				sum=round(form.amount.data, 2),
-				email=g.user.email)
-			return redirect(url)
-	else:
-		form = None
-	
+	form = forms.BalanceForm(request.form)
+	if request.method == 'POST' and form.validate():
+		url = robokassa.account_pay_url(
+			account_id=g.user.customer_account.id,
+			sum=round(form.amount.data, 2),
+			email=g.user.email)
+		return redirect(url)
 	page = current_page()
 	per_page = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
 	offset, limit = page_limits(page, per_page)
 	entries, count = resource.accounts.entries_list(g.user.account.id, offset=offset, limit=limit)
 	pages = paginate(page, count, per_page)
 	return render_template('cabinetcpa/profile/balance.html', entries=entries, pages=pages, form=form)
-	
+
 @bp.route('/profile/balance/success', methods=['POST'])
 @advertiser_only
 def info_balance_success():

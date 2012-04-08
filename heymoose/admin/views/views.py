@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from flask import render_template, g, request, abort, redirect, flash, url_for, jsonify, session
-from heymoose import app
+from heymoose import app, resource as rc
 from heymoose.admin import blueprint as bp
 from heymoose.core import actions as a
 from heymoose.core.actions import roles
-from heymoose.utils import convert, gen, times
+from heymoose.utils import convert, gen, times, pagination
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.views import common as cmnviews
 from heymoose.forms import forms
@@ -482,55 +482,53 @@ def users_info_lists_add(id):
 
 @bp.route('/users/<int:id>/balance', methods=['GET', 'POST'])
 def users_info_balance(id):
-	user = do_or_abort(a.users.get_user_by_id, id)
+	user = rc.users.get_by_id(id)
 	delete_form = forms.WithdrawalDeleteForm()
-	withdrawals = None
-	if user.is_customer():
-		account = user.customer_account
+	
+	if user.is_customer or user.is_advertiser:
+		withdrawals = None
 		form = forms.BalanceForm(request.form)
 		if request.method == 'POST' and form.validate():
-			a.users.increase_customer_balance(user.id, round(form.amount.data, 2))
+			rc.users.add_to_customer_account(user.id, round(form.amount.data, 2))
 			flash(u'Баланс успешно пополнен', 'success')
-			return redirect(url_for('.users_info_balance', id=user.id))
-	elif user.is_developer():
-		account = user.developer_account
-		form = forms.BalanceForm(request.form, amount=account.balance)
+			return redirect(request.url)
+	elif user.is_developer or user.is_affiliate:
+		withdrawals = rc.accounts.withdrawals_list(user.account.id)
+		form = forms.BalanceForm(request.form, amount=user.account.balance)
 		if request.method == 'POST' and form.validate():
-			a.users.make_user_withdrawal(user.id, round(form.amount.data, 2))
-			flash(u'Выплата разработчику успешно создана', 'success')
-			return redirect(url_for('.users_info_balance', id=user.id))
-		
-		withdrawals = a.users.get_user_withdrawals(user.id)
+			rc.accounts.make_withdrawal(user.account.id, round(form.amount.data, 2))
+			flash(u'Выплата успешно создана', 'success')
+			return redirect(request.url)
 	else:
 		flash(u'Пользователь не имеет счета', 'error')
 		return redirect(url_for('.users_info', id=user.id))
 	
-	page = convert.to_int(request.args.get('page'), 1)
-	count = a.accounts.get_account_transactions_count(account.id)
-	per_page = app.config.get('ADMIN_TRANSACTIONS_PER_PAGE', 20)
-	offset, limit, pages = paginate(page, count, per_page)
-	transactions = a.accounts.get_account_transactions(account_id=account.id, offset=offset, limit=limit)
-	return render_template('admin/users-info-balance.html', transactions=transactions,
+	page = pagination.current_page()
+	per_page = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
+	offset, limit = pagination.page_limits(page, per_page)
+	entries, count = rc.accounts.entries_list(user.account.id, offset=offset, limit=limit)
+	pages = pagination.paginate(page, count, per_page)
+	
+	return render_template('admin/users-info-balance.html', entries=entries,
 		withdrawals=withdrawals, pages=pages, user=user, form=form, delete_form=delete_form)
 	
 @bp.route('/users/<int:id>/balance/withdrawals/<int:wid>/approve', methods=['POST'])
 def users_info_approve_withdrawal(id, wid):
-	user = do_or_abort(a.users.get_user_by_id, id)
-	a.users.approve_user_withdrawal(user.id, wid)
-	flash(u'Выплата разработчику подтверждена', 'success')
+	user = rc.users.get_by_id(id)
+	rc.accounts.approve_withdrawal(user.account.id, wid)
+	flash(u'Выплата подтверждена', 'success')
 	return redirect(url_for('.users_info_balance', id=user.id))
 
 @bp.route('/users/<int:id>/balance/withdrawals/<int:wid>/delete', methods=['POST'])
 def users_info_delete_withdrawal(id, wid):
-	user = do_or_abort(a.users.get_user_by_id, id)
+	user = rc.users.get_by_id(id)
 	form = forms.WithdrawalDeleteForm(request.form)
 	if form.validate():
-		a.users.delete_user_withdrawal(user.id, wid, form.reason.data)
+		rc.accounts.delete_withdrawal(user.account.id, wid, form.reason.data)
 		flash(u'Выплата разработчику отменена', 'success')
 	else:
 		flash(u'При выплате разработчику произошла ошибка', 'error')
 	return redirect(url_for('.users_info_balance', id=user.id))
-
 
 @bp.route('/performers/')
 def performers():

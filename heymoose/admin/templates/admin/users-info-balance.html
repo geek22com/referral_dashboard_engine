@@ -1,5 +1,6 @@
 {% extends "admin/users-info-layout.html" %}
-{% import 'common/transactions.html' as transaction_macros %}
+{% import 'common/accounting-entries.html' as entry_macros %}
+{% import 'common/withdrawals.html' as withdrawal_macros %}
 
 {% set activetab = 'balance' %}
 
@@ -10,7 +11,7 @@
 
 {% block extrahead %}
 	{{ super() }}
-	{% if user.is_developer() %}
+	{% if user.is_developer or user.is_affiliate %}
 	<script type="text/javascript">
 		$(function() {
 			$('.withdrawal-delete-link').click(function() {
@@ -26,14 +27,14 @@
 
 {% block tabcontent %}
 
-{% if user.is_customer() %}
+{% if user.is_customer or user.is_advertiser %}
 	<h2>Пополнение счета</h2>
 	<div class="row">
 		<div class="span8">
 			<div class="form-container">
 				<form id="form-balance-pay" action="" method="post" class="validate">
 					<fieldset>
-						{{ macros.formfield(form.amount, class='span4') }}
+						{{ forms.singlefield(form.amount, class='span4') }}
 					</fieldset>
 					<div class="input">
 						<input class="btn primary" type="submit" value="Пополнить баланс"/>
@@ -49,15 +50,15 @@
 			</p>
 		</div>
 	</div>
-{% elif user.is_developer() %}
-	<h2>Выплата разработчику</h2>
-	{% if user.developer_account.balance >= 1.0 %}
+{% elif user.is_developer or user.is_affiliate %}
+	<h2>Выплата партнеру</h2>
+	{% if user.account.balance >= 1.0 %}
 		<div class="row">
 			<div class="span8">
 				<div class="form-container">
 					<form id="form-balance-pay" action="" method="post" class="validate">
 						<fieldset style="margin-bottom: 0px;">
-							{{ macros.formfield(form.amount, class='span4', max_range=user.developer_account.balance) }}
+							{{ forms.singlefield(form.amount, class='span4', max_range=user.account.balance) }}
 						</fieldset>
 						<div class="input">
 							<input class="btn primary" type="submit" value="Выплатить"/>
@@ -69,52 +70,39 @@
 				<p>
 					Сумма выплаты будет округлена до двух десятичных знаков. Минимальный размер выплаты 
 					&mdash; 1.00 {{ currency_sign }}, максимальный &mdash;
-					<nobr>{{ user.developer_account.balance|currency }}</nobr>
-					(текущий баланс разработчика)
+					<nobr>{{ user.account.balance|currency }}</nobr>
+					(текущий баланс пользователя)
 				</p>
 			</div>
 		</div>
 	{% else %}
 		<div class="clearfix alert-message block-message info">
-			<p><strong>Невозможно совершить выплату.</strong> На счету разработчика недостаточно средств.</p>
+			<p><strong>Невозможно совершить выплату.</strong> На счету пользователя недостаточно средств.</p>
 		</div>
 	{% endif %}
 	
 	<h2>История выплат</h2>
 	{% if withdrawals %}
-		<table class="bordered-table zebra-striped nosort">
-			<thead>
-				<tr>
-					<th class="header right" style="width: 50px;">#</th>
-					<th class="header right" style="width: 100px;">Размер, {{ currency_sign }}</th>
-					<th class="header center">Время</th>
-					<th class="header center" colspan="2">Операции</th>
-					<th class="header center minimal-width">Подтв.</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for withdrawal in withdrawals %}
-				<tr>
-					<td class="right">{{ withdrawal.id }}</td>
-					<td class="right">{{ withdrawal.amount|currency(False) }}</td>
-					<td class="center">{{ withdrawal.timestamp|datetimeformat }}</td>
-					<td class="center" style="width: 100px;">
-						{% if not withdrawal.done %}
-						<a data-url="{{ url_for('.users_info_approve_withdrawal', id=user.id, wid=withdrawal.id) }}"
-						href="#" class="withdrawal-approve-link" data-controls-modal="modal-approve" 
-						data-backdrop="true" data-keyboard="true">подтвердить</a>
-						{% endif %}
-					</td>
-					<td class="center" style="width: 100px;">
-						<a data-url="{{ url_for('.users_info_delete_withdrawal', id=user.id, wid=withdrawal.id) }}"
-						href="#" class="withdrawal-delete-link danger" data-controls-modal="modal-delete" 
-						data-backdrop="true" data-keyboard="true">отменить</a>
-					</td>
-					<td class="center">{{ macros.to_icon(withdrawal.done)}}</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+		{% call(head, withdrawal) withdrawal_macros.table(withdrawals) %}
+			{% if head %}
+				<th class="header center" colspan="2">Опции</th>
+				<th class="header center minimal-width">Подтв.</th>
+			{% else %}
+				<td class="center" style="width: 100px;">
+					{% if not withdrawal.done %}
+					<a data-url="{{ url_for('.users_info_approve_withdrawal', id=user.id, wid=withdrawal.id) }}"
+					href="#" class="withdrawal-approve-link" data-controls-modal="modal-approve" 
+					data-backdrop="true" data-keyboard="true">подтвердить</a>
+					{% endif %}
+				</td>
+				<td class="center" style="width: 100px;">
+					<a data-url="{{ url_for('.users_info_delete_withdrawal', id=user.id, wid=withdrawal.id) }}"
+					href="#" class="withdrawal-delete-link danger" data-controls-modal="modal-delete" 
+					data-backdrop="true" data-keyboard="true">отменить</a>
+				</td>
+				<td class="center">{{ macros.to_icon(withdrawal.done) }}</td>
+			{% endif %}
+		{% endcall %}
 	{% else %}
 		<div class="clearfix alert-message block-message info">
 			<p><strong>Список пуст.</strong> Не было совершено ни одной выплаты разработчику.</p>
@@ -124,12 +112,12 @@
 
 <h2>История операций</h2>
 
-{% if transactions %}
-	{% call(head, transaction) transaction_macros.table(transactions, {}) %}{% endcall %}
+{% if entries %}
+	{% call(head, entry) entry_macros.table(entries) %}{% endcall %}
 	{{ macros.paginate(pages, '.users_info_balance', id=user.id) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
-		<p><strong>Список пуст.</strong> По счету пользователя не проводилось ни одной операции.</p>
+		<p><strong>Список пуст.</strong> По вашему счету не проводилось ни одной операции.</p>
 	</div>
 {% endif %}
 
@@ -137,7 +125,7 @@
 
 {% block postbody %}
 	{{ super() }}
-	{% if user.is_developer() %}
+	{% if user.is_developer or user.is_affiliate %}
 	<div id="modal-delete" class="modal" style="display: none;">
 		<form method="post" action="" class="validate">
 			<div class="modal-header">
@@ -146,7 +134,7 @@
 			</div>
 			<div class="modal-body">
 				<fieldset>
-					{{ macros.formfield(delete_form.reason, class='span6', rows=6) }}
+					{{ forms.singlefield(delete_form.reason, class='span6', rows=6) }}
 				</fieldset>
 			</div>
 			<div class="modal-footer">
@@ -158,7 +146,7 @@
 		<form method="post" action="" class="validate">
 			<div class="modal-header">
 				<a href="#" class="close">×</a>
-				<h3>Подтверждение выплаты разработчику</h3>
+				<h3>Подтверждение выплаты</h3>
 			</div>
 			<div class="modal-body">
 				<p>Подтвердить выплату?</p>

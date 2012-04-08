@@ -92,7 +92,7 @@
 				{% if offer.logo_filename %}
 				<div class="center clearfix" style="margin: 20px 0;">
 					<img src="{{ url_for('upload', filename=offer.logo) }}"
-					 alt="логотип" width="150" />
+					 alt="логотип" style="max-width: 150px;" />
 				</div>
 				{% endif %}
 				<dl class="kv kv--inscribed kv--key180">

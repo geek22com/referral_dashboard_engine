@@ -64,7 +64,7 @@
 						{% if offer.logo_filename %}
 						<div>
 							<img src="{{ url_for('upload', filename=offer.logo) }}"
-							alt="логотип" width="150" />
+							alt="логотип" style="max-width: 150px;" />
 						</div>
 						{% endif %}
 						{{ offer.name }}

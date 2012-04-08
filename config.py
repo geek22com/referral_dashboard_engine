@@ -8,7 +8,7 @@ SECRET_KEY = 'lola pola_mola_cola'
 RESTAPI_SERVER = 'http://localhost:5468'
 USE_DATABASE = True
 
-SITE_ROOT = 'http://www.heymoose.com'
+SITE_ROOT = 'http://partner.heymoose.com'
 
 # Restkit configuration
 RESTKIT_TIMEOUT = 60
@@ -17,7 +17,7 @@ RESTKIT_LOG_LEVEL = 'info'
 
 THIS_PATH = os.path.realpath(os.path.dirname(__file__))
 UPLOAD_PATH = '/usr/share/nginx/uwsgi_upload'
-STATIC_PATH = '/usr/share/nginx/www/static'
+OFFER_LOGOS_DIR = 'offer-logos'
 
 APP_ID = "196817947051588"
 APP_SECRET = "3ca1d75b952eeef29625ffc42df61ddf"
@@ -82,7 +82,7 @@ BACKEND_BANNERS_PATH = '/banners/'
 
 # Mongo parameters
 MONGOALCHEMY_SERVER_AUTH = False
-MONGOALCHEMY_DATABASE = 'facebook'
+MONGOALCHEMY_DATABASE = 'heymoose'
 
 # Business logic parameters
 MIN_CPC = 2.0

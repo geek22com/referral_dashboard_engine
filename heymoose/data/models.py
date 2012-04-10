@@ -2,6 +2,7 @@
 from base import models, types, registry
 from base.fields import Field, FieldList, FieldSet
 from heymoose import app
+from decimal import Decimal
 import enums
 import os, hashlib
 
@@ -43,6 +44,7 @@ class User(IdentifiableModel):
 	referrer = Field(types.Integer, 'referrer')
 	referrals = FieldList(types.String, 'referrals/referral')
 	revenue = Field(types.Decimal, 'revenue')
+	fee = Field(types.Integer, 'fee')
 	
 	stats = Field('UserStat', 'stats')
 	
@@ -165,17 +167,21 @@ class SubOffer(IdentifiableModel):
 	hold_days = Field(types.Integer, 'hold-days')
 	active = Field(types.Boolean, 'active')
 	
-	@property
-	def value(self): return self.cost or self.percent
+	def value(self, tax=0):
+		v = self.cost or self.percent
+		return (v * Decimal(1.0 - float(tax) / 100.0)).quantize(Decimal('1.00'))
 	
 	@property
-	def value_verbose(self):
+	def value_measure(self):
 		if self.cost:
-			method = u'клик' if self.pay_method == enums.PayMethods.CPC else u'дейст.'
-			return u'{0} руб. / {1}'.format(self.cost, method)
+			return u'руб. / кл.' if self.pay_method == enums.PayMethods.CPC else u'руб. / д.'
 		elif self.percent:
-			return u'{0} %'.format(self.percent)
-		return u'--'
+			return u'%'
+		return u''
+	
+	@property
+	def value_measure_short(self):
+		return u'руб.' if self.cost else u'%' if self.percent else u''
 	
 	@property
 	def payment_type(self):

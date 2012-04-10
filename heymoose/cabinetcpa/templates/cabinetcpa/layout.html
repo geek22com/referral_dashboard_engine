@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block posttitle %}Личный кабинет HeyMoose{% endblock %}
+{% block posttitle %}Личный кабинет {{ 'рекламодателя' if g.user.is_advertiser else 'партнера' }} HeyMoose{% endblock %}
 
 {% block extrahead %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/jquery-ui.css') }}" media="all" />
@@ -29,7 +29,7 @@
 </script>
 {% endblock %}
 
-{% block prebrand %}Личный кабинет{% endblock %}
+{% block prebrand %}Личный кабинет {{ 'рекламодателя' if g.user.is_advertiser else 'партнёра' }}{% endblock %}
 
 {% set topbar_fluid = true %}
 {% block topbar %}
@@ -62,6 +62,10 @@
 	
 	<span class="status">
 		<a href="#" data-controls-modal="manager-modal" data-backdrop="true" data-keyboard="true">Ваш личный менеджер</a>
+		{% if g.user.is_advertiser %}
+		<span class="divider">/</span>
+		Ваш ID: {{ g.user.id }}
+		{% endif %}
 		<span class="divider">/</span>
 		Ваш баланс: {{ g.user.account.balance|currency }}
 	</span>

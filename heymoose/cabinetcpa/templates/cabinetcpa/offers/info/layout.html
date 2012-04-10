@@ -39,7 +39,7 @@
 	{% if g.user.is_affiliate and offer.grant and offer.grant.approved %}
 	<li id="tab-settings"><a href="{{ url_for('.offers_info_settings', id=offer.id) }}">Настройки</a></li>
 	{% endif %}
-	<li id="tab-stats"><a href="{{ url_for('.offers_info_stats', id=offer.id) }}">Статистика</a></li>
+	{#<li id="tab-stats"><a href="{{ url_for('.offers_info_stats', id=offer.id) }}">Статистика</a></li>#}
 </ul>
 
 {% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}

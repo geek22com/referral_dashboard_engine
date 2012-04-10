@@ -7,7 +7,7 @@
 {% block tabcontent %}
 
 {% if offers %}
-	{{ offer_macros.table(offers, status=true) }}
+	{{ offer_macros.table(offers, status=true, user=g.user) }}
 	{{ macros.paginate(pages, '.offers_list') }}
 {% else %}
 	<div class="clearfix alert-message block-message info">

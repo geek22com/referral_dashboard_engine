@@ -15,7 +15,7 @@
 
 {% block tabcontent %}
 
-<div class="row">
+{#<div class="row">
 	<div class="span14">
 		<div class="well">
 			<form method="get" action="" class="validate2">
@@ -42,22 +42,14 @@
 			</form>
 		</div>
 	</div>
-</div>
+</div>#}
 
-{{ stat_macros.table(stats) }}
-
-{#
-{% if offers %}
-	{{ offer_macros.table(offers, status=true) }}
-	{{ macros.paginate(pages, '.offers_list') }}
+{% if stats %}
+	{{ stat_macros.table(stats) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
-		<p><strong>Список пуст.</strong> Вы еще не создали ни одного оффера.</p>
-		<div class="alert-actions">
-			<a class="btn small" href="{{ url_for('.offers_new') }}">Создать оффер</a>
-		</div>
+		<p>Нет данных для получения статистики.</p>
 	</div>
 {% endif %}
-#}
 
 {% endblock %}

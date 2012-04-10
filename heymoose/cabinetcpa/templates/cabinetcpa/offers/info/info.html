@@ -5,6 +5,6 @@
 
 {% block tabcontent %}
 
-{{ offer_macros.html(offer, owner=offer.owned_by(g.user), affiliate=g.user.is_affiliate, form=form) }}
+{{ offer_macros.html(offer, user=g.user, form=form) }}
 
 {% endblock %}

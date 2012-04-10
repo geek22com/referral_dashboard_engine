@@ -1,7 +1,10 @@
 {% import 'common/macros.html' as macros %}
 {% import 'common/forms.html' as forms %}
 
-{% macro table(offers, status=false, grant_status=false) %}
+{% macro table(offers, status=false, grant_status=false, user=none) %}
+
+{% set affiliate = user.is_affiliate %}
+
 	<table class="bordered-table nosort offers-table">
 		<thead>
 			<tr>
@@ -14,7 +17,6 @@
 			<tr class="subrow">
 				<th class="header">Название</th>
 				<th class="header right" style="min-width: 70px;">Оплата</th>
-				{#<th class="header center">Мн.</th>#}
 				
 				<th class="header right">eCPC,&nbsp;руб.</th>
 				<th class="header right">eCPM,&nbsp;руб.</th>
@@ -73,10 +75,8 @@
 				
 				<td>{{ offer.title }}</td>
 				<td class="right">
-					{{ offer.cost|currency if offer.cost }}
-					{{ offer.percent|percent if offer.percent }}
+					{{ offer.value(tax=user.fee if affiliate else 0) }} {{ offer.value_measure }}
 				</td>
-				{#<td class="center">{{ macros.to_icon(offer.reentrant) }}</td>#}
 				
 				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
 				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
@@ -106,10 +106,8 @@
 			<tr class="subrow">
 				<td>{{ suboffer.title }}</td>
 				<td class="right">
-					{{ suboffer.cost|currency if suboffer.cost }}
-					{{ suboffer.percent|percent if suboffer.percent }}
+					{{ suboffer.value(tax=user.fee if affiliate else 0) }} {{ offer.value_measure }}
 				</td>
-				{#<td class="center">{{ macros.to_icon(suboffer.reentrant) }}</td>#}
 			</tr>
 			{% endfor %}
 			{% endfor %}

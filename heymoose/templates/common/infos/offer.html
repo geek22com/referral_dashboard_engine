@@ -1,7 +1,10 @@
 {% import 'common/macros.html' as macros %}
 {% import 'common/forms.html' as forms %}
 
-{% macro html(offer, owner=false, affiliate=false, admin=false, form=none) %}
+{% macro html(offer, user=none, admin=false, form=none) %}
+
+{% set affiliate = user and user.is_affiliate %}
+{% set owner = user and user.is_advertiser and offer.owned_by(user) %}
 
 {% if admin or owner %}
 	{% if not offer.approved %}
@@ -135,7 +138,7 @@
 				<dl class="kv kv--inscribed kv--key150">
 					{% for suboffer in offer.all_suboffers %}
 					<dt>{{ suboffer.title }}</dt>
-					<dd>{{ suboffer.value_verbose }}</dd>
+					<dd>{{ suboffer.value(tax=user.fee if affiliate else 0) }} {{ suboffer.value_measure }}</dd>
 					{% endfor %}
 				</dl>
 			</div>

@@ -64,17 +64,6 @@
 		return url + delim + 'nocache=' + Math.round(Math.random()*100000);
 	}
 	
-	function heymooseCreatePixel(url) {
-		if (!url) return;
-		try {
-			var d = document, b = d.body;
-			var img = d.createElement('img');
-			img.src = heymooseUrlNoCache(url);
-			with (img.style) { position = 'absolute'; width = '0px'; height = '0px'; }
-			b.insertBefore(img, b.firstChild);
-		} catch(e) { }
-	}
-	
 	function heymooseCreateScript(url) {
 		if (!url) return;
 		try {
@@ -97,7 +86,6 @@
 	var transactionId = heymooseGetParam('transaction_id');
 	if (!offer || !transactionId) return;
 	
-	//var host = 'http://localhost:8989';
 	var host = 'http://partner.heymoose.com';
 	var url = host + '/api/?method=reportAction' +
 		'&token=' + token +

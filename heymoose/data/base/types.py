@@ -74,7 +74,17 @@ class Integer(DecimalBase):
 
 
 class Decimal(DecimalBase):
-	type_class = _Decimal
+	def __init__(self, min=None, max=None, quantize=None, default=None):
+		super(Decimal, self).__init__(min, max, default)
+		self.quantize = quantize
+	
+	def parse_value(self, xmlvalue):
+		if xmlvalue is not None:
+			value = _Decimal(xmlvalue)
+			if self.quantize:
+				value = value.quantize(_Decimal(self.quantize))
+			return value
+		return None
 
 
 class DateTime(PrimitiveType):

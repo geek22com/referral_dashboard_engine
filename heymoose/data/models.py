@@ -307,10 +307,10 @@ class OverallOfferStat(models.ModelBase):
 	confirmed_revenue = Field(types.Decimal, 'confirmed-revenue')
 	not_confirmed_revenue = Field(types.Decimal, 'not-confirmed-revenue')
 	cancelled_revenue = Field(types.Decimal, 'canceled-revenue')
-	ctr = Field(types.Decimal, 'ctr')
-	cr = Field(types.Decimal, 'cr')
-	ecpc = Field(types.Decimal, 'ecpc')
-	ecpm = Field(types.Decimal, 'ecpm')	
+	ctr = Field(types.Decimal, 'ctr', quantize='1.00')
+	cr = Field(types.Decimal, 'cr', quantize='1.00')
+	ecpc = Field(types.Decimal, 'ecpc', quantize='1.00')
+	ecpm = Field(types.Decimal, 'ecpm', quantize='1.00')
 
 
 registry.register_models_from_module(__name__)

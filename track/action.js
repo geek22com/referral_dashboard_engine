@@ -87,7 +87,7 @@
 	if (!offer || !transactionId) return;
 	
 	var host = 'http://partner.heymoose.com';
-	var url = host + '/api/?method=reportAction' +
+	var url = host + '/api?method=reportAction' +
 		'&token=' + token +
 		'&offer=' + offer +
 		'&transaction_id=' + transactionId;

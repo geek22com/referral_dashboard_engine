@@ -90,19 +90,19 @@
 	var domain = heymooseGetDomain();
 	if (!domain) return;
 	
-	var clickId = heymooseGetCookie('heymoose_click_id');
-	if (!clickId) return;
+	var token = heymooseGetCookie('heymoose_token');
+	if (!token) return;
 	
 	var offer = heymooseGetParam('offer');
 	var transactionId = heymooseGetParam('transaction_id');
 	if (!offer || !transactionId) return;
 	
 	//var host = 'http://localhost:8989';
-	var host = 'http://heymoose.com';
-	var url = host + '/test-api/?method=reportAction' +
-		'&click_id=' + clickId +
+	var host = 'http://partner.heymoose.com';
+	var url = host + '/api/?method=reportAction' +
+		'&token=' + token +
 		'&offer=' + offer +
 		'&transaction_id=' + transactionId;
 	heymooseCreateScript(url);
-	//heymooseDeleteCookie('heymoose_click_id', domain);
+	//heymooseDeleteCookie('heymoose_token', domain);
 })();

@@ -27,12 +27,12 @@
 	var domain = heymooseGetDomain();
 	if (!domain) return;
 	
-	var matchClickId = /_hm_click_id=(\d+)/i.exec(document.location.href);
-	var clickId = (matchClickId && matchClickId.length > 1) ? matchClickId[1] : null;
-	if (!clickId) return;
+	var matchToken = /_hm_token=([a-z0-9]{32})/i.exec(document.location.href);
+	var token = (matchToken && matchToken.length > 1) ? matchToken[1] : null;
+	if (!token) return;
 	
 	var matchTtl = /_hm_ttl=(\d+)/i.exec(document.location.href);
 	var ttl = (matchTtl && matchTtl.length > 1) ? matchTtl[1] : 180;
 	
-	heymooseSetCookie('heymoose_click_id', clickId, domain, ttl);
+	heymooseSetCookie('heymoose_token', token, domain, ttl);
 })();

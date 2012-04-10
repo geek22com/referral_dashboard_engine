@@ -84,13 +84,15 @@
 	
 	var offer = heymooseGetParam('offer');
 	var transactionId = heymooseGetParam('transaction_id');
-	if (!offer || !transactionId) return;
+	var advertiserId = heymooseGetParam('advertiser_id');
+	if (!offer || !transactionId || !advertiserId) return;
 	
 	var host = 'http://partner.heymoose.com';
 	var url = host + '/api?method=reportAction' +
 		'&token=' + token +
 		'&offer=' + offer +
-		'&transaction_id=' + transactionId;
+		'&transaction_id=' + transactionId +
+		'&advertiser_id=' + advertiserId;
 	heymooseCreateScript(url);
 	//heymooseDeleteCookie('heymoose_token', domain);
 })();

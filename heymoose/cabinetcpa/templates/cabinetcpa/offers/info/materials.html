@@ -8,7 +8,7 @@
 {% endmacro -%}
 
 {% macro banner_code(offer_id, banner) %}
-<a href="{{ offer.click_url(request.host_url, g.user.id, banner.id) }}"><img src="{{ banner.url }}" alt="" width="{{ banner.width }}" height="{{ banner.height }}" /></a>{{ pixel_code(offer_id, banner.id) -}}
+<a href="{{ offer.click_url(request.host_url, g.user.id, banner.id) }}"><img src="{{ banner.url }}" alt="" width="{{ banner.width }}" height="{{ banner.height }}" /></a>{{ pixel_code(offer_id, banner) -}}
 {% endmacro %}
 
 {% block tabcontent %}

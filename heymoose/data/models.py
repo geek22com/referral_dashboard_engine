@@ -239,13 +239,13 @@ class Offer(SubOffer):
 	def tracking_url(self, host_url, aff_id, banner_id=None):
 		return u'{0}?method=track&offer_id={1}&aff_id={2}{3}'.format(
 			os.path.join(host_url, u'api'), self.id, aff_id,
-			u'banner_id={0}'.format(banner_id) if banner_id else u''
+			u'&banner_id={0}'.format(banner_id) if banner_id else u''
 		)
 	
 	def click_url(self, host_url, aff_id, banner_id=None):
 		return u'{0}?method=click&offer_id={1}&aff_id={2}{3}'.format(
 			os.path.join(host_url, u'api'), self.id, aff_id,
-			u'banner_id={0}'.format(banner_id) if banner_id else u''
+			u'&banner_id={0}'.format(banner_id) if banner_id else u''
 		)
 
 

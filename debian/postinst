@@ -21,7 +21,6 @@ set -e
 case "$1" in
     configure)
 	useradd -M -s /sbin/nologin frontend || true
-	useradd -M -s /sbin/nologin notifier || true
 	useradd -M -s /sbin/nologin uwsgi || true
 	mkdir -p /var/log/uwsgi || true
 	chown -R uwsgi /var/log/uwsgi || true

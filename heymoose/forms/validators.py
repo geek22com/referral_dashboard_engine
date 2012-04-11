@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from wtforms import ValidationError
 from wtforms import validators as wtvalidators
-from heymoose.core import actions
+from heymoose import resource as rc
 from heymoose.db.actions import invites
 from heymoose.utils.gen import check_password_hash
 from heymoose.utils.shortcuts import dict_update_filled_params
@@ -197,7 +197,7 @@ class FileFormat(object):
 		
 		
 def check_email_not_registered(form, field):
-	if actions.users.get_user_by_email(field.data) is not None:
+	if rc.users.get_by_email_safe(field.data) is not None:
 		raise ValidationError(u'Пользователь с таким e-mail уже существует')
 	
 	

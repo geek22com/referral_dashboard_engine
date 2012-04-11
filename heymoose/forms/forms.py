@@ -5,7 +5,6 @@ from wtforms import FieldList, FormField, BooleanField, TextField, PasswordField
 from wtforms.fields import Label
 from heymoose import app, resource as rc
 from heymoose.core import actions
-from heymoose.core.actions import roles
 from heymoose.data import enums
 from heymoose.filters import currency, currency_sign
 from heymoose.utils.gen import generate_password_hash, generate_unique_filename, generate_uid
@@ -73,10 +72,6 @@ class LoginForm(Form):
 	username = TextField(u'E-mail', [validators.Required(message = u'Введите электронный адрес')])
 	password = PasswordField(u'Пароль', [validators.Required(message = u'Введите пароль')])
 	remember = BooleanField(u'Запомнить меня', default=False)
-
-class RoleForm(Form):
-	role = SelectField('role', choices=[(roles.DEVELOPER, roles.DEVELOPER),
-										(roles.CUSTOMER, roles.CUSTOMER)])
 
 
 class UserFormMixin:
@@ -429,32 +424,6 @@ class OrderAppsForm(Form):
 		(u'EXCLUSIVE', u'все, кроме указанных')
 	])
 	apps = HiddenField()
-	
-	
-class BannerForm(Form):
-	size = SelectField(u'Размер баннера', coerce=int)
-	image = myfields.BannerField(u'Выберите файл', [
-		validators.FileRequired(message=u'Выберите файл на диске'),
-		validators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf', 'svg'),
-			message=u'Выберите файл в формате JPG, GIF, PNG, SVG или SWF')
-	])
-	
-	def validate_image(self, field):
-		if field.data is None: return
-		size = actions.bannersizes.get_banner_size(self.size.data)
-		if field.width != size.width or field.height != size.height:
-			raise ValueError(u'Размер баннера должен совпадать с указанным')
-	
-	
-class BannerSizeForm(Form):
-	width = IntegerField(u'Ширина', [
-		validators.Required(message=u'Укажите ширину баннера'),
-		validators.NumberRange(min=1, max=3000, message=u'Баннер может иметь ширину от 1 до 3000 пикселей')
-	])
-	height = IntegerField(u'Высота', [
-		validators.Required(message=u'Укажите высоту баннера'),
-		validators.NumberRange(min=1, max=3000, message=u'Баннер может иметь высоту от 1 до 3000 пикселей')
-	])
 	
 
 class CityForm(Form):

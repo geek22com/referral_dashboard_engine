@@ -44,9 +44,9 @@ def contacts():
 def gateway():
 	if not g.user:
 		return redirect(url_for('.index'))
-	elif g.user.is_admin():
+	elif g.user.is_admin:
 		return redirect(url_for('admin.index'))
-	elif g.user.is_affiliate() or g.user.is_advertiser():
+	elif g.user.is_affiliate or g.user.is_advertiser:
 		return redirect(url_for('cabinetcpa.index'))
 	else:
 		app.logger.error('Shit happened: registered user has unknown role')
@@ -105,7 +105,8 @@ def register_affiliate():
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-	if g.user: return redirect(url_for('.index'))
+	if g.user:
+		return redirect(url_for('.index'))
 
 	form = forms.LoginForm(request.form)
 	if request.method == 'POST' and form.validate():

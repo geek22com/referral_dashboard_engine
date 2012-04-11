@@ -11,7 +11,7 @@
 
 {% block extrahead %}
 	{{ super() }}
-	{% if user.is_developer or user.is_affiliate %}
+	{% if user.is_affiliate %}
 	<script type="text/javascript">
 		$(function() {
 			$('.withdrawal-delete-link').click(function() {
@@ -27,7 +27,7 @@
 
 {% block tabcontent %}
 
-{% if user.is_customer or user.is_advertiser %}
+{% if user.is_advertiser %}
 	<h2>Пополнение счета</h2>
 	<div class="row">
 		<div class="span8">
@@ -50,7 +50,7 @@
 			</p>
 		</div>
 	</div>
-{% elif user.is_developer or user.is_affiliate %}
+{% elif user.is_affiliate %}
 	<h2>Выплата партнеру</h2>
 	{% if user.account.balance >= 1.0 %}
 		<div class="row">
@@ -125,7 +125,7 @@
 
 {% block postbody %}
 	{{ super() }}
-	{% if user.is_developer or user.is_affiliate %}
+	{% if user.is_affiliate %}
 	<div id="modal-delete" class="modal" style="display: none;">
 		<form method="post" action="" class="validate">
 			<div class="modal-header">

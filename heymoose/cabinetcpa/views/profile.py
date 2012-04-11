@@ -27,6 +27,7 @@ def profile_edit():
 			flash(u'Профиль успешно изменен', 'success')
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
+		return redirect(url_for('.profile'))
 	return render_template('cabinetcpa/profile/edit.html', form=form)
 
 @bp.route('/profile/edit/password', methods=['GET', 'POST'])

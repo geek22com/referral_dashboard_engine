@@ -1,13 +1,13 @@
 {% extends "mail/layout-admin.html" %}
 
 {% block subject %}
-Учетная запись заблокирована: {{ user.full_name() }} ({{ user.email }}) 
+Учетная запись заблокирована: {{ user.full_name }} ({{ user.email }}) 
 {% endblock %}
 
 {% block html %}
 <p>
-	Учетная запись пользователя {{ user.full_name() }} ({{ user.email }}) была заблокирована
-	администратором {{ admin.full_name() }} ({{ admin.email }}).
+	Учетная запись пользователя {{ user.full_name }} ({{ user.email }}) была заблокирована
+	администратором {{ admin.full_name }} ({{ admin.email }}).
 </p>
 {% if reason %}
 <p>Причина блокировки:</p>
@@ -16,8 +16,8 @@
 {% endblock %}
 
 {% block plain %}
-Учетная запись пользователя {{ user.full_name() }} ({{ user.email }}) была заблокирована
-администратором {{ admin.full_name() }} ({{ admin.email }}).
+Учетная запись пользователя {{ user.full_name }} ({{ user.email }}) была заблокирована
+администратором {{ admin.full_name }} ({{ admin.email }}).
 
 {% if reason %}
 Причина блокировки:

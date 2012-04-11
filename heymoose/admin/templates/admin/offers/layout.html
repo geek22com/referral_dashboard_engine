@@ -16,7 +16,7 @@
 
 {% block breadcrumbs %}
 	{{ super() }}
-	{{ macros.breadcrumb(self.title(), url_for('.actions')) }}
+	{{ macros.breadcrumb(self.title(), url_for('.offers_list')) }}
 {% endblock %}
 
 {% block pageheader %}

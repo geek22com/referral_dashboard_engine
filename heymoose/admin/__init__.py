@@ -8,8 +8,8 @@ blueprint = Blueprint('admin', __name__, url_prefix='/admin',
 def before_request():
 	if not g.user:
 		return redirect(url_for('site.login', back=request.url))
-	elif not g.user.is_admin():
-		return redirect(url_for('cabinet.index'))
+	elif not g.user.is_admin:
+		return redirect(url_for('cabinetcpa.index'))
 		
 	# For form validation
 	if request.method == 'POST' and request.files:
@@ -19,4 +19,4 @@ def before_request():
 	g.feedback_unread = Contact.query.filter(Contact.read == False).count()
 
 # Import all views in blueprint for registering in app's url map
-from views import views, offers
+from views import base, users, offers

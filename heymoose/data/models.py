@@ -58,13 +58,11 @@ class User(IdentifiableModel):
 	def full_name(self): return u'{0} {1}'.format(self.first_name, self.last_name)
 	
 	@property
-	def is_developer(self): return enums.Roles.DEVELOPER in self.roles
-	@property
-	def is_customer(self): return enums.Roles.CUSTOMER in self.roles
-	@property
 	def is_affiliate(self): return enums.Roles.AFFILIATE in self.roles
 	@property
 	def is_advertiser(self): return enums.Roles.ADVERTISER in self.roles
+	@property
+	def is_admin(self): return enums.Roles.ADMIN in self.roles
 	
 	def get_confirm_code(self):
 		m = hashlib.md5()

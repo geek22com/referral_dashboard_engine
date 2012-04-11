@@ -2,11 +2,9 @@
 from base.enums import Enum, e
 
 class Roles(Enum):
-	CUSTOMER = e('CUSTOMER', name=u'рекламодатель', shortname=u'рекл.')
-	DEVELOPER = e('DEVELOPER', name=u'разработчик', shortname=u'разр.')
-	ADMIN = e('ADMIN', name=u'администратор', shortname=u'админ.')
-	AFFILIATE = e('AFFILIATE', name=u'партнер', shortname=u'парт.')
-	ADVERTISER = e('ADVERTISER', name=u'рекламодатель', shortname=u'рекл.')
+	ADMIN = e('ADMIN', name=u'администратор', shortname=u'админ.', label_class=u'info')
+	AFFILIATE = e('AFFILIATE', name=u'партнер', shortname=u'парт.', label_class=u'notice')
+	ADVERTISER = e('ADVERTISER', name=u'рекламодатель', shortname=u'рекл.', label_class=u'important')
 
 class MessengerTypes(Enum):
 	SKYPE = e('SKYPE', name=u'Skype')

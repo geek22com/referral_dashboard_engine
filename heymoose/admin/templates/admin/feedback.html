@@ -15,12 +15,7 @@
 
 {% block content %}
 
-<div class="clearfix">
-	{{ macros.filter(request.args.get('filter', none),
-		((none, 'все'), ('contacts', 'контакты'), ('partners', 'партнеры')),
-		'.feedback')
-	}}
-	
+<div class="clearfix">	
 	{% if contacts %}
 	<div class="form-container right" style="width: 300px; float: right;">
 		<form id="form-mark-read" method="post" action ="">

@@ -1,6 +1,6 @@
 {% extends "admin/layout.html" %}
 
-{% block title %}Пользователь {{ user.full_name|safecall }}{% endblock %}
+{% block title %}Пользователь {{ user.full_name }}{% endblock %}
 
 {% set activemenu = "users" %}
 
@@ -16,7 +16,7 @@
 
 {% block breadcrumbs %}
 	{{ super() }}
-	{{ macros.breadcrumb('Пользователи', url_for('.users')) }}
+	{{ macros.breadcrumb('Пользователи', url_for('.users_list')) }}
 	{{ macros.breadcrumb(self.title(), url_for('.users_info', id=user.id)) }}
 {% endblock %}
 
@@ -27,12 +27,6 @@
 {% block content %}
 <ul class="tabs">
 	<li id="tab-info"><a href="{{ url_for('.users_info', id=user.id) }}">Общее</a></li>
-	{% if user.is_developer|safecall %}
-	<li id="tab-apps"><a href="{{ url_for('.users_info_apps', id=user.id) }}">Приложения</a></li>
-	{% endif %}
-	{% if user.is_customer|safecall %}
-	<li id="tab-orders"><a href="{{ url_for('.users_info_orders', id=user.id) }}">Заказы</a></li>
-	{% endif %}
 	<li id="tab-balance"><a href="{{ url_for('.users_info_balance', id=user.id) }}">Операции со счетом</a></li>
 	<li id="tab-edit"><a href="{{ url_for('.users_info_edit', id=user.id) }}">Редактировать</a></li>
 	<li id="tab-password"><a href="{{ url_for('.users_info_password_change', id=user.id) }}">Изменить пароль</a></li>

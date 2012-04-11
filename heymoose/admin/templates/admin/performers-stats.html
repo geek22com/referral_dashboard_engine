@@ -1,8 +1,0 @@
-{% extends "admin/performers-layout.html" %}
-
-{% block breadcrumbs %}
-	{{ super() }}
-	{{ macros.breadcrumb('Статистика', url_for('.performers_stats')) }}
-{% endblock %}
-
-{% set activetab = 'stats' %}

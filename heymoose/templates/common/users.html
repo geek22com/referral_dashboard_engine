@@ -10,7 +10,6 @@
 				<th class="header">Имя</th>
 				<th class="header">E-mail</th>
 				<th class="header">Организация</th>
-				{% if config.get('balance', false) %}<th class="header right">Баланс, {{ currency_sign }}</th>{% endif %}
 				{% if config.get('stat-payments', false) %}<th class="header right">Вклад, {{ currency_sign }}</th>{% endif %}
 				{% if config.get('role', false) %}<th class="header center">Роль</th>{% endif %}
 				<th class="header center">Зарегистрирован</th>
@@ -22,22 +21,10 @@
 			{% for user in users %}
 			<tr>
 				<td class="right {% if user.blocked %}deleted{% endif %}">{{ user.id }}</td>
-				<td><a href="{{ url_for('.users_info', id=user.id) }}">{{ user.full_name() }}</a></td>
+				<td><a href="{{ url_for('.users_info', id=user.id) }}">{{ user.full_name }}</a></td>
 				<td>{{ user.email }}</td>
 				<td>{{ user.organization|default('--', true) }}</td>
-				
-				{% if config.get('balance', false) %}
-				<td class="right">
-					{% if user.is_customer() %}
-						{{ user.customer_account.balance|currency(False) }}
-					{% elif user.is_developer() %}
-						{{ user.developer_account.balance|currency(False) }}
-					{% else %}
-						&mdash;
-					{% endif %}
-				</td>
-				{% endif %}
-				
+								
 				{% if config.get('stat-payments', false) %}
 				<td class="right">
 					{% if user.stats %}{{ user.stats.payments|currency(False) }}{% else %}&mdash;{% endif %}
@@ -46,15 +33,9 @@
 				
 				{% if config.get('role', false) %}
 				<td class="center">
-					{% if user.is_admin() %}
-						<span class="label info">Админ.</span>
-					{% elif user.is_customer() %}
-						<span class="label important">Реклам.</span>
-					{% elif user.is_developer() %}
-						<span class="label notice">Разраб.</span>
-					{% else %}
-						<span class="label warning">Неизв.</span>
-					{% endif %}
+					{% for role in user.roles %}
+					<span class="label {{ role.label_class }}">{{ role.name }}</span>
+					{% endfor %}
 				</td>
 				{% endif %}
 				

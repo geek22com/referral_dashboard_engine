@@ -13,7 +13,7 @@
 
 {% if users %}
 	{% call(head, user) user_macros.table(users, users_config) %}{% endcall %}
-	{{ macros.paginate(pages, '.users') }}
+	{{ macros.paginate(pages, '.users_list') }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Еще не было зарегистрировано ни одного пользователя.</p>

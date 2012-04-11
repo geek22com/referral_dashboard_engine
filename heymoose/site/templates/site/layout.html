@@ -78,15 +78,9 @@
 
 {% block nav %}
 <ul class="nav">
-	<li id="menu-item-index"><a href="{{ url_for('.index') }}">Главная</a></li>
-	<li class="dropdown">
-		<a class="dropdown-toggle" href="#">Рекламодателям</a>
-		<ul class="dropdown-menu">
-			<li id="menu-item-customers"><a href="{{ url_for('.customers') }}">Наши преимущества</a></li>
-			<li id="menu-item-platforms"><a href="{{ url_for('.platforms') }}">Площадки и баннеры</a></li>
-		</ul>
-	</li>
-	<li id="menu-item-developers"><a href="{{ url_for('.developers') }}">Разработчикам</a></li>
+	<li id="menu-item-index"><a href="{{ url_for('.cpa_index') }}">Главная</a></li>
+	<li id="menu-item-advertisers"><a href="{{ url_for('.cpa_advertisers') }}">Рекламодателям</a></li>
+	<li id="menu-item-affiliates"><a href="{{ url_for('.cpa_affiliates') }}">Веб-мастерам</a></li>
 	<li id="menu-item-contacts"><a href="{{ url_for('.contacts') }}">Контакты</a></li>
 </ul>
 {% endblock %}
@@ -105,7 +99,7 @@
 	<li id="menu-item-register"><a href="{{ url_for('.register') }}">Регистрация</a></li>
 	<li id="menu-item-login">
 		<a href="{{ url_for('.login') }}" data-controls-modal="login-modal" 
-		data-backdrop="true" data-keyboard="true">Войти</a>
+		 data-backdrop="true" data-keyboard="true">Войти</a>
 	</li>
 	{% endif %}
 </ul>

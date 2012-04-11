@@ -1,27 +1,8 @@
 {% extends "site/layout.html" %}
 
-{% block fulltitle %}HeyMoose! &mdash; рекламная сеть{% endblock %}
+{% block fulltitle %}HeyMoose! &mdash; партнерская сеть{% endblock %}
 
 {% set activemenu = "index" %}
-
-{% block extrahead %}
-	{{ super() }}
-	<style type="text/css">
-		div.row .feature {
-			margin-top: 10px;
-		}
-		
-		div.feature div.icon {
-			text-align: center;
-			width: 40px;
-			height: 40px;
-		}
-		
-		div.feature div.description {
-			width: 295px;
-		}
-	</style>
-{% endblock %}
 
 {% block container %}
 
@@ -38,127 +19,51 @@
 			<div class="span9">
 				<h2>Доставка аудитории вашей рекламе!</h2>
 				<p>
-					Система &laquo;HeyMoose!&raquo; позволяет размещать рекламу в приложениях 
-					на любых платформах	и предоставляет централизованный доступ к управлению 
-					рекламной кампанией. <a href="{{ url_for('.customers') }}">Узнать больше »</a>
+					Партнерская программа &laquo;HeyMoose!&raquo; &mdash; это система взаимодействия
+					рекламодателя и веб-мастеров. Оплата за рекламу происходит по CPA-модели после
+					конкретных действий пользователя.
 				</p>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="content">
-	<h3><a href="{{ url_for('.gamak') }}">Конкурс для разработчиков игр &raquo;</a></h3>
-</div>
-
 <div class="row">
-	<div class="span9">
-		<div class="content" style="padding: 30px; height: 480px;">
-			<h5>О чем речь?</h5>
-			<p>
-				<strong>&laquo;HeyMoose!&raquo;</strong> &mdash; это система, которая поможет вашей компании
-				стать богаче. Интересно? Тогда поехали дальше.
-			</p>
-			<h5>Вы &mdash; рекламодатель...</h5>
-			<p>
-				Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных
-				сетях и рекламу в мобильных играх, а так же предлагаем средства как  для раскрутки
-				бренда, так и для точечных продаж. Как это работает, и чем мы отличаемся от других,
-				<a href="{{ url_for('.customers') }}">читаем тут</a>.
-			</p>
-			<h5>...или разработчик приложений?</h5>
-			<p>
-				Если же вы являетесь разработчиком игр &mdash; мы рады видеть вас в числе партнеров.
-				Ознакомьтесь с нашей документацией, подключите нашу систему в свои приложения
-				и начинайте зарабатывать вместе с нами! Подробнее
-				<a href="{{ url_for('.developers') }}">читайте здесь</a>.
-			</p>
-			<hr />
-			<p>
-				Мы не говорим, что мы первые, мы говорим, что мы &mdash; лучшие. Используя уже
-				проверенные технологии, мы взяли из них самые  передовые и создали уникальную
-				платформу для рекламы в социальных сетях. Действуя, как команда вовлеченных
-				профессионалов, мы постоянно совершенствуем свой продукт, чтобы вы получили
-				качественную рекламу в интернете по доступным ценам.
-			</p>
-		</div>
-		<div class="content" style="height: 100px;">
-			<img src="{{ url_for('static', filename='./img/platforms.png') }}" alt="Платформы" title="Наши платформы" />
+	<div class="span8">
+		<div class="content">
+			<div style="min-height: 200px;">
+				<h2>Для рекламодателя</h2>
+				<p>
+					Всем известно, что все большую роль в торговле играет интернет. Как же привлечь
+					пользователей сети делать покупки в вашей компании?
+				</p>
+				<p>
+					Очевидный ответ &mdash; это размещать информацию о своем товаре там, где находятся
+					ваши потенциальные покупатели. Но как узнать, что это за сайты и ресурсы?
+				</p>
+				<p>
+					В помощь вам будет партнерская программа.
+				</p>
+			</div>
+			<p><a href="{{ url_for('.cpa_advertisers') }}">Узнать больше &raquo;</a></p>
 		</div>
 	</div>
-	<div class="span7">
-		<div class="content" style="height: 660px;">
-			<div class="row feature">
-				<div class="span1 icon">
-					<img src="{{ url_for('static', filename='./img/icons/users.png') }}" alt="пользователи" />
-				</div>
-				<div class="span3 description">
-					<h5>Более двух миллионов пользователей!</h5>
-					<p>
-						В нашей рекламной сети большое количество пользователей, заинтересованных
-						вашим товаром или услугой.
-					</p>
-				</div>
+	<div class="span8">
+		<div class="content">
+			<div style="min-height: 200px;">
+				<h2>Для веб-мастера</h2>
+				<p>
+					Дополнительный источник монетизации вашего посещаемого ресурса в сети Интернет
+					&mdash; партнерская программа. Говоря иначе, это магазин рекламы, где платите не
+					вы, а наоборот.
+				</p>
+				<p>
+					Мы берем на себя привлечение рекламодателей, предоставляем техническую платформу
+					для отслеживания статистики. Спорные вопросы и урегулирование выплат решаются
+					компанией &laquo;HeyMoose!&raquo;. 
+				</p>
 			</div>
-			<div class="row feature">
-				<div class="span1 icon">
-					<img src="{{ url_for('static', filename='./img/icons/facebook.png') }}" alt="платформы" />
-				</div>
-				<div class="span3 description">
-					<h5>Охват всех основных платформ</h5>
-					<p>
-						Мы размещаем вашу рекламу в приложениях на платформах ВКонтакте, Facebook,
-						Одноклассники, Мой Мир, iOS, Android. 
-					</p>
-				</div>
-			</div>
-			<div class="row feature">
-				<div class="span1 icon">
-					<img src="{{ url_for('static', filename='./img/icons/ipod.png') }}" alt="площадки" />
-				</div>
-				<div class="span3 description">
-					<h5>Нестандартные рекламные площадки</h5>
-					<p>
-						Через приложения вы получаете доступ к пользователям мобильных устройств
-						и планшетных компьютеров. 
-					</p>
-				</div>
-			</div>
-			<div class="row feature">
-				<div class="span1 icon">
-					<img src="{{ url_for('static', filename='./img/icons/target.png') }}" alt="таргетинг" />
-				</div>
-				<div class="span3 description">
-					<h5>Точная система таргетинга</h5>
-					<p>
-						Вы сами можете настроить параметры целевой аудитории для вашей рекламы
-						(пол, возраст, город и т.п.)
-					</p>
-				</div>
-			</div>
-			<div class="row feature">
-				<div class="span1 icon">
-					<img src="{{ url_for('static', filename='./img/icons/graph.png') }}" alt="статистика" />
-				</div>
-				<div class="span3 description">
-					<h5>Гибкая система статистики</h5>
-					<p>
-						Вы получаете возможность оценить эффективность рекламной кампании, а также
-						отследить динамику активности ваших клиентов.
-					</p>
-				</div>
-			</div>
-			<div class="row feature">
-				<div class="span1 icon">
-					<img src="{{ url_for('static', filename='./img/icons/check.png') }}" alt="модерация" />
-				</div>
-				<div class="span3 description">
-					<h5>Ручная модерация приложений</h5>
-					<p>
-						Мы показываем вашу рекламу только в проверенных приложениях.
-					</p>
-				</div>
-			</div>
+			<p><a href="{{ url_for('.cpa_affiliates') }}">Узнать больше &raquo;</a></p>
 		</div>
 	</div>
 </div>

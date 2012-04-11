@@ -24,12 +24,12 @@ def cpa_index():
 	return redirect(url_for('.index'))
 
 @bp.route('/advertisers')
-def cpa_advertisers():
-	return render_template('site/cpa-advertisers.html')
+def advertisers():
+	return render_template('site/advertisers.html')
 
 @bp.route('/affiliates')
-def cpa_affiliates():
-	return render_template('site/cpa-affiliates.html')
+def affiliates():
+	return render_template('site/affiliates.html')
 
 @bp.route('/contacts', methods=['GET', 'POST'])
 def contacts():
@@ -128,7 +128,7 @@ def logout():
 		flash(u'Вы вышли из системы', 'info')
 		session.pop('user_id', None)
 		session.permanent = False
-	return redirect(url_for('.main_index'))
+	return redirect(url_for('.index'))
 
 
 @bp.route('/confirm/<int:id>/<code>')

@@ -1,4 +1,4 @@
-from backend import BackendResource, extractor
+from backend import BackendResource, ResourceNotFound, extractor
 from heymoose.data.models import User
 
 class UserResource(BackendResource):
@@ -18,6 +18,12 @@ class UserResource(BackendResource):
 	
 	def get_by_email(self, email, **kwargs):
 		return self.get(email=email, **kwargs).as_obj(User)
+	
+	def get_by_email_safe(self, email, **kwargs):
+		try:
+			return self.get_by_email(email, **kwargs)
+		except ResourceNotFound:
+			return None
 	
 	def add_role(self, id, role):
 		return self.path(id).path('roles').post(role=role)

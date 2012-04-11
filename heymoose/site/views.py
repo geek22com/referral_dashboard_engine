@@ -4,11 +4,8 @@ from heymoose import app
 from heymoose.site import blueprint as bp
 from heymoose.forms import forms
 from heymoose.utils.gen import check_password_hash
-from heymoose.utils.shortcuts import do_or_abort
-from heymoose.core.actions import users
 from heymoose.db.models import Contact
-from heymoose.mail import marketing as mmail
-from heymoose.mail import transactional as tmail
+from heymoose.mail import marketing as mmail, transactional as tmail
 from heymoose.data.models import User
 from heymoose.data.enums import Roles
 from heymoose import resource as rc
@@ -70,7 +67,7 @@ def register_advertiser():
 		user = User()
 		form.populate_obj(user)
 		rc.users.add(user)
-		user = rc.users.get_by_email(user.email)
+		user = rc.users.get_by_email_safe(user.email)
 		if user:
 			rc.users.add_role(user.id, Roles.ADVERTISER)
 			user.roles.append(Roles.ADVERTISER)
@@ -94,7 +91,7 @@ def register_affiliate():
 		user = User()
 		form.populate_obj(user)
 		rc.users.add(user)
-		user = rc.users.get_by_email(user.email)
+		user = rc.users.get_by_email_safe(user.email)
 		if user:
 			rc.users.add_role(user.id, Roles.AFFILIATE)
 			user.roles.append(Roles.AFFILIATE)
@@ -112,7 +109,7 @@ def login():
 
 	form = forms.LoginForm(request.form)
 	if request.method == 'POST' and form.validate():
-		user = users.get_user_by_email(form.username.data)
+		user = rc.users.get_by_email_safe(form.username.data)
 		if user is None or not check_password_hash(user.password_hash, form.password.data):
 			flash(u'Неверный e-mail или пароль', 'error')
 		else:
@@ -133,10 +130,10 @@ def logout():
 
 @bp.route('/confirm/<int:id>/<code>')
 def confirm(id, code):
-	user = do_or_abort(users.get_user_by_id, id)
+	user = rc.users.get_by_id(id)
 	success = False
 	if user.check_confirm_code(code):
-		users.confirm_user(user.id)
+		rc.users.confirm(user.id)
 		mmail.lists_add_user(user)
 		success = True
 	return render_template('site/confirm.html', success=success)

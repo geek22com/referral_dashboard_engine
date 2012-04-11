@@ -19,10 +19,6 @@ THIS_PATH = os.path.realpath(os.path.dirname(__file__))
 UPLOAD_PATH = '/usr/share/nginx/uwsgi_upload'
 OFFER_LOGOS_DIR = 'offer-logos'
 
-APP_ID = "196817947051588"
-APP_SECRET = "3ca1d75b952eeef29625ffc42df61ddf"
-DEVELOPER_SECRET_KEY = "3ca2a85b953ffef29625ffc11df61eee"
-
 DATETIME_FORMAT = '%d.%m.%Y %H:%M:%S'
 DATETIME_NOSEC_FORMAT = DATETIME_FORMAT[:-3]
 DATE_FORMAT = DATETIME_FORMAT.split(' ')[0]
@@ -37,9 +33,9 @@ MAILJET_API_SECRET_KEY = 'c8f23ac9200c098f86a4cc5cae42ce19'
 MAILJET_API_URL = 'http://api.mailjet.com/0.1'
 MAILJET_TIMEOUT = 10
 MAILJET_MAX_TRIES = 1
-MAILJET_USERS_LIST_ID = 15815
-MAILJET_CUSTOMERS_LIST_ID = 15816
-MAILJET_DEVELOPERS_LIST_ID = 15817
+MAILJET_USERS_LIST_ID = 31041
+MAILJET_ADVERTISERS_LIST_ID = 31042
+MAILJET_AFFILIATES_LIST_ID = 31043
 
 # Mail sending parameters
 MAIL_ENABLED = True
@@ -63,17 +59,7 @@ ADMIN_TRANSACTIONS_PER_PAGE = 20
 
 # Encryption parameters
 REFERRAL_CRYPT_KEY = 'aGy3iRn7fRbIw4yM' # Must be 16 bytes long
-
-# Facebook parameters
-FACEBOOK_SERVICE_URL = "http://www.facebook.com"
-FACEBOOK_GRAPH_URL = "https://graph.facebook.com"
-FACEBOOK_APP_DOMAIN = "http://heymoose.com:8080"
-FACEBOOK_SECURE_APP_DOMAIN = "https://heymoose.com"
-
-FACEBOOK_APP_URL = "http://apps.facebook.com/heymoose/"
-FACEBOOK_SECURE_APP_URL = "https://apps.facebook.com/heymoose/"
-
-FACEBOOK_AUTH_SCOPE = "publish_stream,email,create_event,sms,publish_actions,user_likes,user_about_me"
+CONFIRM_CRYPT_KEY  = 'gR7Bsvu46jE623Gg'
 
 BACKEND_BASE_URL = 'http://localhost:5468'
 BACKEND_TIMEOUT = 60
@@ -85,7 +71,6 @@ MONGOALCHEMY_SERVER_AUTH = False
 MONGOALCHEMY_DATABASE = 'heymoose'
 
 # Business logic parameters
-MIN_CPC = 2.0
 CURRENCY_SIGN = u'руб.'
 
 # Robokassa parameters

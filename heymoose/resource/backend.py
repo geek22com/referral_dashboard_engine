@@ -1,6 +1,6 @@
 from heymoose import app
 from restkit import Resource
-from restkit.errors import ResourceError
+from restkit.errors import ResourceError, ResourceNotFound #@UnusedImport
 from lxml import etree
 import urlparse, os
 

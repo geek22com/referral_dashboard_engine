@@ -169,6 +169,17 @@ def confirm(id, code):
 def gamak():
 	return render_template('site/gamak.html')
 
+@bp.route('/gamak/articles/')
+def gamak_articles():
+	return render_template('site/gamak-articles.html')
+
+@bp.route('/gamak/articles/<name>')
+def gamak_article(name):
+	try:
+		return render_template('site/gamak-articles/{0}.html'.format(name))
+	except:
+		abort(404)
+
 @bp.route('/gamak/apps/')
 def gamak_apps():
 	if not g.user or not g.user.is_admin(): abort(403)

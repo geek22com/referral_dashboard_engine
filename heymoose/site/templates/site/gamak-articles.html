@@ -1,0 +1,62 @@
+{% extends "site/layout.html" %}
+
+{% block title %}Материалы :: Конкурс &laquo;Gamak&raquo;{% endblock %}
+
+{% set activemenu = "" %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		ol.articles li {
+			margin-bottom: 10px;
+		}
+	</style>
+{% endblock %}
+
+{% block container %}
+
+{% block flash_messages %}
+	{{ super() }}
+{% endblock %}
+
+<div class="content">
+	<div class="page-header"><h1>Материалы</h1></div>
+	<p>
+		На этой странице &mdash; кладезь информации от ведущих разработчиков игр для социальных
+		сетей Рунета. Все, что вы хотели узнать и то, о чем вы даже не догадывались! Наслаждайтесь! :)
+	</p>
+</div>
+
+<div class="content">
+	<ol class="enumerated-list articles">
+		<li><a href="{{ url_for('.gamak_article', name='nevosoft') }}">Nevosoft &mdash; о компании.</a></li>
+		<li><a href="{{ url_for('.gamak_article', name='playrix') }}">Playrix &mdash; секреты директоров (самое вкусное &mdash; в конце :)</a></li>
+		<li><a href="{{ url_for('.gamak_article', name='progrestar') }}">Progrestar &mdash; о будущем, конкуренции и коммерческой тайне.</a></li>
+		<li><a href="{{ url_for('.gamak_article', name='playflock') }}">PlayFlock &mdash; о стабильности и надежности.</a></li>
+	</ol>
+	<p class="right" style="font-style: italic;">Мучила всех вопросами Елена Привалова.</p>
+</div>
+
+<div class="content">
+	<h2>HeyMoose! &mdash; зачем нам все это нужно?</h2>
+	<p>
+		&mdash; Множество приложений в социальных сетях монетизируются за счет размещения рекламы в них.
+		Для рекламодателя в связи с этим стоит проблема управления рекламными кампаниями в этих приложениях
+		через одно окно. Именно для решения этой проблемы и существует сервис
+		<a href="{{ url_for('.index') }}">heymoose.com</a>. За счет
+		объединения приложений независимых разработчиков в одну сеть, удается достигнуть большого охвата
+		аудитории, при этом размещением рекламы и контролем накруток занимается технология &laquo;HeyMoose!&raquo;.
+		В связи с этим компания &laquo;HeyMoose!&raquo; проводит конкурс среди независимых разработчиков, для того
+		чтобы поддержать команды, а также в качестве приза предоставить им механизм для монетизации
+		их приложений.
+	</p>
+	<p class="right" style="font-style: italic;">
+		Кирилл Шилов, руководитель компании &laquo;HeyMoose!&raquo;
+	</p>
+</div>
+
+<div class="content">
+	<a href="{{ url_for('.gamak') }}">&laquo; Вернуться</a>
+</div>
+
+{% endblock %}

@@ -78,7 +78,7 @@ FACEBOOK_AUTH_SCOPE = "publish_stream,email,create_event,sms,publish_actions,use
 BACKEND_BASE_URL = 'http://localhost:5468'
 BACKEND_TIMEOUT = 60
 BACKEND_MAX_TRIES = 1
-BACKEND_BANNERS_PATH = '/pub/banners/'
+BACKEND_BANNERS_PATH = os.path.join(SITE_ROOT, 'pub/banners/')
 
 # Mongo parameters
 MONGOALCHEMY_SERVER_AUTH = False

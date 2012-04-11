@@ -12,35 +12,6 @@ import fields as myfields
 import random, hashlib
 
 
-categories_choices = [
-	(1, u'Авто-страхование', u'Страхование и финансы'),
-	(2, u'Вклады', u'Страхование и финансы'),
-	(3, u'Кредитные карты', u'Страхование и финансы'),
-	(4, u'Потребительские кредиты', u'Страхование и финансы'),
-	
-	(5, u'Астрология', u'Интернет-услуги'),
-	(6, u'Знакомства и общение', u'Интернет-услуги'),
-	(7, u'Мобильные сервисы', u'Интернет-услуги'),
-	(8, u'Хостинг', u'Интернет-услуги'),
-	
-	(9,  u'TV и Video', u'Компьютеры и электроника'),
-	(10, u'Игровые приставки', u'Компьютеры и электроника'),
-	(11, u'Компьютеры и ноутбуки', u'Компьютеры и электроника'),
-	(12, u'Мобильные портативные устройства', u'Компьютеры и электроника'),
-	(13, u'Фототехника', u'Компьютеры и электроника'),
-]
-
-regions_choices = [
-	(1, u'Россия'),
-	(2, u'СНГ'),
-	(3, u'Украина'),
-	(4, u'Белорусь'),
-	(5, u'Польша'),
-	(6, u'Латвия'),
-	(7, u'Германия'),
-]
-
-
 '''class Form(WTForm):
 	def process(self, formdata=None, obj=None, **kwargs):
 		if formdata is not None and not hasattr(formdata, 'getlist'):
@@ -481,96 +452,6 @@ class AdminAppEditForm(AppEditForm):
 		validators.NumberRange(min=0.0, message=u'Такой коэффициент недопустим')
 	], description=u'K = D + (C - D)*T', places=2)
 	appdeleted = BooleanField(u'Удалено', default=False)
-
-
-class SiteForm(Form):
-	name = TextField(u'Название площадки', [
-		validators.Length(min=1, max=100, message=u'Название должно иметь длину от 1 до 100 символов'),
-		validators.Required(message=u'Введите название площадки')
-	])
-	url = TextField(u'Адрес площадки', [
-		validators.Required(message=u'Введите URL'),
-		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False)
-	], default=u'http://')
-	language = SelectField(u'Язык площадки', default=u'', choices=[
-		(u'', u'(не указывать)'),
-		(u'1', u'Русский'),
-		(u'2', u'Английский'),
-		(u'3', u'Немецкий')
-	])
-	uniqs = IntegerField(u'уникальных посетителей', [
-		validators.Integer(message=u'Введите число'),
-		validators.NumberRange(min=0, message=u'Укажите неотрицательное целое число')
-	])
-	views = IntegerField(u'просмотров', [
-		validators.Integer(message=u'Введите число'),
-		validators.NumberRange(min=0, message=u'Укажите неотрицательное целое число')
-	])
-	description = TextAreaField(u'Описание площадки', [
-		validators.Length(min=100, message=u'Описание площадки должно содержать минимум 100 символов'),
-		validators.Required(message=u'Введите описание площадки')
-	])
-	categories = myfields.CategorizedCheckboxListField(u'Категории', choices=categories_choices,
-		coerce=int, default=True)
-	regions = myfields.CheckboxListField(u'Регионы', [
-		validators.Required(message=u'Выберите хотя бы один регион')
-	], choices=regions_choices, coerce=int, default=(1,))
-	comment = TextAreaField(u'Комментарий для администрации')
-
-
-class SubOfferForm(Form):
-	description_select = SelectField(u'Название', choices=[
-		(u'Регистрация', u'Регистрация'),
-		(u'Активный пользователь', u'Активный пользователь'),
-		(u'Активный игрок', u'Активный игрок'),
-		(u'', u'другое...')
-	])
-	description = TextField(u'Описание', [
-		validators.Length(min=1, max=30, message=u'Описание должно иметь длину от 1 до 50 символов'),
-		validators.Required(message=u'Введите описание действия')
-	])
-	payment_type = SelectField(u'Тип оплаты', choices=[
-		(0, u'Фиксированная'),
-		(1, u'Процент с заказа или покупки')
-	], coerce=int)
-	payment_value = DecimalField(u'Размер выплаты', [
-		validators.NumberRange(min=0.00, message=u'Введите положительное число'),
-	], default=0.01)
-	reentrant = BooleanField(u'многократ. прохождение', default=True)
-
-
-class OfferForm(Form):
-	name = TextField(u'Название оффера', [
-		validators.Length(min=1, max=100, message=u'Название должно иметь длину от 1 до 100 символов'),
-		validators.Required(message=u'Введите название оффера')
-	])
-	url = TextField(u'Ссылка', [
-		validators.Required(message=u'Введите URL'),
-		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False)
-	], default=u'http://')
-	logo = myfields.ImageField(u'Логотип', [
-		validators.FileRequired(message=u'Выберите изображение на диске'),
-		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
-	])
-	description = TextAreaField(u'Описание кампании', [
-		validators.Required(message=u'Введите описание кампании')
-	])
-	categories = myfields.CategorizedCheckboxListField(u'Категории', choices=categories_choices,
-		coerce=int, default=True)
-	regions = myfields.CheckboxListField(u'Регионы', [
-		validators.Required(message=u'Выберите хотя бы один регион')
-	], choices=regions_choices, coerce=int, default=(1,))
-	targeting = BooleanField(u'включить геотаргетинг', default=False)
-	traffic = myfields.CheckboxListField(u'Типы трафика', choices=[
-		(0, u'Cashback'),
-		(1, u'PopUp-реклама'),
-		(2, u'Контекстная реклама'),
-		(3, u'Дорвей-трафик'),
-		(4, u'Email-рассылка'),
-		(5, u'Контекстная реклама на бренд'),
-		(6, u'Трафик с социальных сетей')
-	], coerce=int)
-	suboffers = FieldList(FormField(SubOfferForm), min_entries=1)
 
 	
 class AppsShowDeletedForm(Form):

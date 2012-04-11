@@ -8,7 +8,7 @@ from heymoose.utils import convert, gen, times
 from heymoose.utils.shortcuts import do_or_abort, paginate
 from heymoose.views import common as cmnviews
 from heymoose.forms import forms
-from heymoose.db.models import Contact, GamakApp, UserInfo, OrderInfo, DummyAction
+from heymoose.db.models import Contact, GamakApp, UserInfo, OrderInfo
 from heymoose.db.actions import invites
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
@@ -607,40 +607,6 @@ def feedback():
 	offset, limit, pages = paginate(page, count, per_page)
 	contacts = Contact.query.filter(*filters).descending(Contact.date).skip(offset).limit(limit)
 	return render_template('admin/feedback.html', contacts=contacts.all(), pages=pages)
-
-
-@bp.route('/misc/')
-def misc():
-	return render_template('admin/misc.html')
-
-@bp.route('/misc/site', methods=['GET', 'POST'])
-def misc_site():
-	form = forms.SiteForm(request.form)
-	if request.method == 'POST' and form.validate():
-		flash(u'Все ОК', 'success')
-	return render_template('admin/misc-site.html', form=form)
-
-@bp.route('/misc/offer', methods=['GET', 'POST'])
-def misc_offer():
-	tmpl = forms.SubOfferForm(prefix='suboffers-0-')
-	form = forms.OfferForm(request.form)
-	if request.method == 'POST' and form.validate():
-		print form.suboffers.data
-		flash(u'Все ОК', 'success')
-	return render_template('admin/misc-offer.html', form=form, tmpl=tmpl)
-
-@bp.route('/misc/px')
-def misc_px():
-	page = convert.to_int(request.args.get('page'), 1)
-	count = DummyAction.query.count()
-	per_page = app.config.get('ADMIN_ACTIONS_PER_PAGE', 10)
-	offset, limit, pages = paginate(page, count, per_page)
-	acts = DummyAction.query.descending(DummyAction.date).skip(offset).limit(limit)
-	return render_template('admin/misc-px.html', actions=acts.all(), pages=pages)
-
-@bp.route('/misc/offer/info')
-def misc_offer_info():
-	return render_template('admin/misc-offer-info.html')
 
 
 @bp.route('/orders/<int:id>/q/enable', methods=['POST'])

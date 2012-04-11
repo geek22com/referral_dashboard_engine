@@ -140,7 +140,7 @@ def fill_db():
 			for i in range(3):
 				actions.orders.add_order_banner(order.id, sizes[i].id, 'image/png', 'aGVsbG8h')
 			
-	# Create actions for apps and offers
+	'''# Create actions for apps and offers
 	for app in apps:
 		for order in orders:
 			for i in range(actions_per_app_and_order):
@@ -183,7 +183,7 @@ def fill_db():
 					uid=performer.ext_id,
 					filter=filter,
 					hour=random.randrange(23),
-					secret=app.secret)
+					secret=app.secret)'''
 
 	
 if __name__ == '__main__':

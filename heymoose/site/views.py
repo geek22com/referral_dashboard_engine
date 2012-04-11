@@ -34,20 +34,6 @@ def developers():
 def platforms():
 	return render_template('site/platforms.html')
 
-
-@bp.route('/cpa/')
-def cpa_index():
-	return render_template('site/cpa-index.html')
-
-@bp.route('/cpa/advertisers')
-def cpa_advertisers():
-	return render_template('site/cpa-advertisers.html')
-
-@bp.route('/cpa/affiliates')
-def cpa_affiliates():
-	return render_template('site/cpa-affiliates.html')
-
-
 @bp.route('/contacts', methods=['GET', 'POST'])
 def contacts():
 	form = forms.ContactForm(request.form)
@@ -59,19 +45,6 @@ def contacts():
 		flash(u'Спасибо, мы обязательно с вами свяжемся!', 'success')
 		return redirect(url_for('.contacts'))
 	return render_template('site/contacts.html', form=form)
-
-@bp.route('/partner', methods=['GET', 'POST'])
-def contacts_partner():
-	form = forms.PartnerContactForm(request.form)
-	if request.method == 'POST' and form.validate():
-		contact = Contact(date=datetime.now(), partner=True)
-		form.populate_obj(contact)
-		contact.save()
-		tmail.admin_feedback_added(contact)
-		flash(u'Спасибо, мы обязательно с вами свяжемся!', 'success')
-		return redirect(url_for('.index'))
-	return render_template('site/contacts-partner.html', form=form)
-
 
 @bp.route('/register/')
 def register():

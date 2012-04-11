@@ -237,6 +237,7 @@ def offers_info_settings(id):
 @advertiser_only
 def offers_info_balance(id):
 	offer = rc.offers.get_by_id(id)
+	if not offer.owned_by(g.user): abort(403)
 	return render_template('cabinetcpa/offers/info/balance.html', offer=offer)
 
 @bp.route('/offers/<int:id>/stats')

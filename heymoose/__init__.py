@@ -16,7 +16,7 @@ config=app.config
 from heymoose import site, admin, cabinetcpa
 app.register_blueprint(site.blueprint, url_prefix='')
 app.register_blueprint(admin.blueprint, url_prefix='/admin')
-app.register_blueprint(cabinetcpa.blueprint, url_prefix='/cpa/cabinet')
+app.register_blueprint(cabinetcpa.blueprint, url_prefix='/cabinet')
 
 from heymoose.resource import users
 

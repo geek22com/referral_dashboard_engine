@@ -1,7 +1,7 @@
 from flask import Blueprint, g, abort, request, redirect, url_for
 from heymoose.resource import users
 
-blueprint = Blueprint('cabinetcpa', __name__, url_prefix='/cpa/cabinet', 
+blueprint = Blueprint('cabinetcpa', __name__, url_prefix='/cabinet', 
 					static_folder='static', template_folder='templates')
 
 @blueprint.before_request

@@ -205,6 +205,7 @@ class Offer(SubOffer):
 	approved = Field(types.Boolean, 'approved')
 	block_reason = Field(types.String, 'block-reason')
 	cookie_ttl = Field(types.Integer, 'cookie-ttl')
+	token_param_name = Field(types.String, 'token-param-name')
 	
 	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
 	grant = Field('OfferGrant', 'grant')

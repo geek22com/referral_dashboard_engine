@@ -157,7 +157,7 @@
 		{{ suboffer_embedded(tmpl) }}
 	</div>
 	{% endif %}
-	<form method="post" action="" class="validate2" enctype="multipart/form-data">
+	<form method="post" action="" class="validate2 {{ 'widelabels' if edit }}" enctype="multipart/form-data">
 		<div class="input">
 			<span class="help-block">* Поля, выделенные <b>жирным шрифтом</b>, обязательны для заполнения.</span>
 		</div>
@@ -165,6 +165,9 @@
 			{{ forms.singlefield(form.name, class='span10') }}
 			{{ forms.singlefield(form.url, class='span10') }}
 			{{ forms.singlefield(form.cookie_ttl, class='span4', inline='дней') }}
+			{% if edit %}
+			{{ forms.singlefield(form.token_param_name, class='span4') }}
+			{% endif %}
 			
 			{% call forms.singlefield_desc(form.logo) %}
 			<span class="help-block">

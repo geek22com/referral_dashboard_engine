@@ -3,10 +3,10 @@ from heymoose.data.models import Offer, SubOffer
 from restkit.errors import ResourceError, ResourceNotFound
 
 def extract_categories(offer):
-	return [c.id for c in offer.categories] if offer.categories is not None else None, offer.is_dirty('categories')
+	return [c.id for c in offer.categories] or u'' if offer.categories is not None else None, offer.is_dirty('categories')
 
 def extract_regions(offer):
-	return list(offer.regions), offer.is_dirty('regions')
+	return list(offer.regions) or u'', offer.is_dirty('regions')
 
 def extract_cost(offer):
 	return offer.cost or offer.percent, offer.is_dirty('cost') or offer.is_dirty('percent')
@@ -42,7 +42,7 @@ class OfferResource(BackendResource):
 	def add(self, offer, balance, **kwargs):
 		params = self.extractor.extract(offer,
 			required='advertiser_id pay_method cost name description url title code hold_days cookie_ttl'.split(),
-			optional='cpa_policy allow_negative_balance auto_approve reentrant logo_filename categories'.split()
+			optional='cpa_policy allow_negative_balance auto_approve reentrant logo_filename categories regions'.split()
 		)
 		params.update(balance=balance)
 		params.update(kwargs)
@@ -52,7 +52,7 @@ class OfferResource(BackendResource):
 		params = self.extractor.extract(offer,
 			updated='''pay_method cpa_policy cost title code hold_days auto_approve reentrant
 				name description url cookie_ttl categories regions allow_negative_balance
-				logo_filename'''.split()
+				logo_filename token_param_name'''.split()
 		)
 		params.update(kwargs)
 		self.path(offer.id).put(**params)

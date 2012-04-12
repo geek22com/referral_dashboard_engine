@@ -87,6 +87,8 @@ class ParamsExtractor(object):
 				if value is None: break
 				updated = value.is_dirty(attr_name)
 				value = getattr(value, attr_name, None)
+			# Workarund: RestKit can't pass empty lists
+			if value in ( [], (()), {} ): value = u''
 			return value, updated
 
 

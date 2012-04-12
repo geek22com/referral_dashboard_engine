@@ -631,7 +631,11 @@ class OfferForm(OfferFormBase):
 		pass
 
 class OfferEditForm(OfferFormBase):
-	pass
+	token_param_name = TextField(u'Название параметра токена', [
+		validators.Length(min=1, max=20, message=u'Название параметра должно иметь длину от 1 до 20 символов'),
+		validators.Required(message=u'Введите название параметра токена')
+	])
+
 
 class OfferRequestForm(Form):
 	message = TextAreaField(u'Описание площадок', [

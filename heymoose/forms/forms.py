@@ -617,7 +617,7 @@ class OfferFormBase(Form):
 	def populate_logo(self, obj, name):
 		if not self.logo.data: return
 		obj.logo_filename = '{0}.{1}'.format(generate_unique_filename(), self.logo.format)
-		self.logo.data.thumbnail(self.logo_max_size)
+		self.logo.data.thumbnail(self.logo_max_size, 1) # 1 == Image.ANTIALIAS
 		self.logo.data.save(os.path.join(self.logos_path, obj.logo_filename))
 
 class OfferForm(OfferFormBase):	

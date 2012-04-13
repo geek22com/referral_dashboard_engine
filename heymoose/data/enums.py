@@ -53,7 +53,11 @@ class CpaPolicies(Enum):
 class Regions(Enum):
 	RUSSIA = e('RUSSIA', code=u'RU', name=u'Россия')
 	UKRAINE = e('UKRAINE', code=u'UA', name=u'Украина')
-	BELARUS = e('BELARUS', code=u'BY', name=u'Белорусь')
+	BELARUS = e('BELARUS', code=u'BY', name=u'Белоруссия')
+	POLAND = e('POLAND', code=u'PL', name=u'Польша')
+	LATVIA = e('LATVIA', code=u'LV', name=u'Латвия')
+	GERMANY = e('GERMANY', code=u'DE', name=u'Германия')
+	CSI = e('CSI', code=u'CSI', name=u'СНГ')
 
 class OfferGrantState(Enum):
 	MODERATION = e('MODERATION', name=u'на рассмотрении рекламодателем')

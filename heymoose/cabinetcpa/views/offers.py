@@ -65,14 +65,19 @@ def offers_new():
 @bp.route('/offers/stats')
 def offers_stats():
 	stats = []
+	pages = {}
 	if g.user.is_affiliate:
-		stats = rc.offer_stats.list(aff_id=g.user.id)
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 10)
+		offset, limit = page_limits(page, per_page)
+		stats, count = rc.offer_stats.list(aff_id=g.user.id, offset=offset, limit=limit)
+		pages = paginate(page, count, per_page)
 	
 	now = datetime.now()
 	form = forms.DateTimeRangeForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
 	if 'dt_from' in request.args and 'dt_to' in request.args and form.validate():
 		flash(u'Все ОК', 'success')
-	return render_template('cabinetcpa/offers/stats.html', form=form, stats=stats)
+	return render_template('cabinetcpa/offers/stats.html', form=form, stats=stats, pages=pages)
 
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 def offers_info(id):

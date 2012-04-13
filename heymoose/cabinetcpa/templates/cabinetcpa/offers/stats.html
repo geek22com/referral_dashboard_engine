@@ -46,6 +46,7 @@
 
 {% if stats %}
 	{{ stat_macros.table(stats) }}
+	{{ macros.paginate(pages, '.offers_stats') }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p>Нет данных для получения статистики.</p>

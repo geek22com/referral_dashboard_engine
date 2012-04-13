@@ -3,10 +3,10 @@ from heymoose.data.models import Offer, SubOffer
 from restkit.errors import ResourceError, ResourceNotFound
 
 def extract_categories(offer):
-	return [c.id for c in offer.categories] or u'' if offer.categories is not None else None, offer.is_dirty('categories')
+	return [c.id for c in offer.categories] if offer.categories is not None else None, offer.is_dirty('categories')
 
 def extract_regions(offer):
-	return list(offer.regions) or u'', offer.is_dirty('regions')
+	return list(offer.regions), offer.is_dirty('regions')
 
 def extract_cost(offer):
 	return offer.cost or offer.percent, offer.is_dirty('cost') or offer.is_dirty('percent')

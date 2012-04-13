@@ -72,7 +72,10 @@ class ParamsExtractor(object):
 				params[param] = value
 		for param in updated:
 			value, updated = self._extract_param(obj, param)
-			if updated: params[param] = value
+			if updated:
+				# Workarund: RestKit can't pass empty lists
+				if value in ( [], (()), {} ): value = u''
+				params[param] = value
 		return params
 	
 	def _extract_param(self, obj, param):
@@ -87,8 +90,6 @@ class ParamsExtractor(object):
 				if value is None: break
 				updated = value.is_dirty(attr_name)
 				value = getattr(value, attr_name, None)
-			# Workarund: RestKit can't pass empty lists
-			if value in ( [], (()), {} ): value = u''
 			return value, updated
 
 

@@ -250,3 +250,13 @@ form.validate2 .clearfix.error .help-block, form .clearfix.error .help-inline {
 form.validate2 .clearfix.error .errors .help-block {
 	color: #B94A48;
 }
+
+.small {
+	font-size: 10px;
+}
+
+.well.offer-advertiser {
+	padding: 8px;
+	margin-bottom: 0;
+	margin-top: 5px;
+}

@@ -1,7 +1,7 @@
 {% import 'common/macros.html' as macros %}
 {% import 'common/forms.html' as forms %}
 
-{% macro table(offers, status=false, grant_status=false, user=none) %}
+{% macro table(offers, status=false, grant_status=false, user=none, admin=false) %}
 
 {% set affiliate = user.is_affiliate %}
 
@@ -71,6 +71,14 @@
 						{% endif %}
 						{{ offer.name }}
 					</a>
+					{% if admin %}
+					<div class="well small offer-advertiser">
+						<div><a href="{{ url_for('.users_info', id=offer.advertiser.id) }}"
+						 ">{{ offer.advertiser.full_name }}</a></div>
+						{#<div><a href="mailto:{{ offer.advertiser.email -}}">{{ offer.advertiser.email }}</a></div>#}
+						{% if offer.advertiser.organization %}<div>{{ offer.advertiser.organization }}</div>{% endif %}
+					</div>
+					{% endif %}
 				</td>
 				
 				<td>{{ offer.title }}</td>

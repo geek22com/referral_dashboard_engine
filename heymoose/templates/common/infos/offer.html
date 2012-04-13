@@ -114,6 +114,27 @@
 				</div>
 			</div>
 		</div>
+		{% if admin %}
+		<div class="roundbox roundbox--primary roundbox--shadowed">
+			<div class="roundbox-header">
+				Рекламодатель
+			</div>
+			<div class="roundbox-content">
+				<dl class="kv kv--inscribed kv--key50">
+					<dt>Имя</dt>
+					<dd>
+						<a href="{{ url_for('.users_info', id=offer.advertiser.id) }}"
+						 >{{ offer.advertiser.full_name }}</a>
+					</dd>
+					<dt>E-mail</dt>
+					<dd><a href="mailto:{{ offer.advertiser.email -}}">{{ offer.advertiser.email }}</a></dd>
+					{% if offer.advertiser.organization %}
+					<dt>Орг.</dt><dd>{{ offer.advertiser.organization }}</dd>
+					{% endif %}
+				</dl>
+			</div>
+		</div>
+		{% endif %}
 		{#<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">
 				<a href="{{ url_for('.offers_info_stats', id=offer.id) }}"

@@ -1,4 +1,28 @@
 ;(function() {
+	if(document.getElementsByClassName) {
+		heymooseGetElementsByClass = function(classList, node) {    
+			return (node || document).getElementsByClassName(classList)
+		}
+	} else {
+		heymooseGetElementsByClass = function(classList, node) {
+			var node = node || document,
+			list = node.getElementsByTagName('*'), 
+			length = list.length,
+			classArray = classList.split(/\s+/), 
+			classes = classArray.length,
+			result = [], i,j
+			for(i = 0; i < length; i++) {
+				for(j = 0; j < classes; j++)  {
+					if(list[i].className.search('\\b' + classArray[j] + '\\b') != -1) {
+						result.push(list[i])
+						break
+					}
+				}
+			}
+			return result
+		}
+	};
+	
 	function heymooseAddHandler(object, event, handler) {
 		if (typeof object.addEventListener != 'undefined')
 			object.addEventListener(event, handler, false);
@@ -17,7 +41,7 @@
 			
 			var params = '_hm_token=' + token + '&_hm_ttl=' + ttl;
 			
-			var links = document.getElementsByClassName('heymoose-transit-link');
+			var links = heymooseGetElementsByClass('heymoose-transit-link', document.body);
 			for (var i = 0; i < links.length; ++i) {
 				var href = links[i].href;
 				var pos = href.indexOf('#');

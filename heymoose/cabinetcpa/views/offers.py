@@ -238,12 +238,31 @@ def offers_info_settings(id):
 		return redirect(request.url)
 	return render_template('cabinetcpa/offers/info/settings.html', offer=offer, form=form)
 
-@bp.route('/offers/<int:id>/balance')
+@bp.route('/offers/<int:id>/balance', methods=['GET', 'POST'])
 @advertiser_only
 def offers_info_balance(id):
 	offer = rc.offers.get_by_id(id)
 	if not offer.owned_by(g.user): abort(403)
-	return render_template('cabinetcpa/offers/info/balance.html', offer=offer)
+	form_in = forms.BalanceForm()
+	form_out = forms.BalanceForm()
+	if request.method == 'POST':
+		type = request.form.get('type', '')
+		if type == 'in':
+			form_in = forms.BalanceForm(request.form)
+			if form_in.validate() and g.user.account.balance >= form_in.amount.data:
+				rc.accounts.transfer(g.user.account.id, offer.account.id, form_in.amount.data)
+				flash(u'Счет оффера успешно пополнен', 'success')
+				return redirect(url_for('.offers_info', id=offer.id))
+		elif type == 'out':
+			form_out = forms.BalanceForm(request.form)
+			if form_out.validate() and offer.account.balance >= form_out.amount.data:
+				rc.accounts.transfer(offer.account.id, g.user.account.id, form_out.amount.data)
+				flash(u'Средства успешно выведены со счета оффера', 'success')
+				return redirect(url_for('.offers_info', id=offer.id))
+		else:
+			flash(u'Ошибка операции со счетом', 'error')
+			return redirect(url_for('.offers_info', id=offer.id))	
+	return render_template('cabinetcpa/offers/info/balance.html', offer=offer, form_in=form_in, form_out=form_out)
 
 @bp.route('/offers/<int:id>/stats')
 def offers_info_stats(id):

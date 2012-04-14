@@ -1,3 +1,116 @@
 {% extends "cabinetcpa/offers/info/layout.html" %}
 
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Операции со счетом', url_for('.offers_info_balance', id=offer.id)) }}
+{% endblock %}
+
 {% set activetab = 'balance' %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		div.pad18 {
+			padding-top: 18px;
+		}
+	</style>
+{% endblock %}
+
+{% block tabcontent %}
+
+<h2>Пополнение счета</h2>
+{% if g.user.account.balance > 0 %}
+	<div class="row">
+		<div class="span8">
+			<div class="form-container">
+				<form id="form-balance-pay" action="" method="post" class="validate2">
+					<fieldset>
+						{{ forms.singlefield(form_in.amount, class='span4',
+							**{'data-range-max': g.user.account.balance}) }}
+						<input type="hidden" name="type" value="in" />
+					</fieldset>
+					<div class="input">
+						<input class="btn primary" type="submit" value="Пополнить счет"/>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="span7 pad18">
+			<p>
+				Здесь вы можете перевести средства с вашего основного баланса рекламодателя на баланс
+				оффера, тем самым пополнив счет оффера.
+			</p>
+			<p>
+				Максимальная доступная сумма пополнения &mdash; {{ g.user.account.balance|currency }}
+			</p>
+		</div>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message error">
+		<p><strong>Недостаточно средств.</strong> На вашем счету не хватает средств пополнения счета оффера.</p>
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.profile_balance') }}">Пополнить счет</a>
+		</div>
+	</div>
+{% endif %}
+
+<hr />
+<h2>Вывод средств со счета</h2>
+{% if offer.account.balance > 0 %}
+	<div class="row">
+		<div class="span8">
+			<div class="form-container">
+				<form id="form-balance-pay" action="" method="post" class="validate2">
+					<fieldset>
+						{{ forms.singlefield(form_out.amount, class='span4',
+							**{'data-range-max': offer.account.balance}) }}
+						<input type="hidden" name="type" value="out" />
+					</fieldset>
+					<div class="input">
+						<input class="btn primary" type="submit" value="Вывести средства"/>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="span7 pad18">
+			<p>Здесь вы можете вывести средства со счета оффера на ваш основной счет рекламодателя.</p>
+			<p>Максимальная доступная сумма для вывода &mdash; {{ offer.account.balance|currency }}</p>
+		</div>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message error">
+		<p><strong>Недостаточно средств.</strong> На счету оффера отсутствуют средства для вывода.</p>
+	</div>
+{% endif %}
+
+{#<hr />
+<h2>Перевод средств на счет другого оффера</h2>
+{% if order.account.balance > 0 %}
+	<div class="row">
+		<div class="span8">
+			<div class="form-container">
+				<form id="form-balance-pay" action="" method="post" class="validate2">
+					<fieldset>
+						{{ forms.singlefield(form_transfer.amount, class='span4',
+							**{'data-range-max': order.account.balance}) }}
+						{{ forms.singlefield(form_transfer.order, class='span4') }}
+						<input type="hidden" name="type" value="transfer" />
+					</fieldset>
+					<div class="input">
+						<input class="btn primary" type="submit" value="Перевести средства"/>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="span7 pad18">
+			<p>Здесь вы можете перевести средства со счета этого заказа на счет любого другого вашего заказа.</p>
+			<p>Максимальная доступная сумма для перевода &mdash; {{ order.account.balance|currency }}</p>
+		</div>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message error">
+		<p><strong>Недостаточно средств.</strong> На счету заказа отсутствуют средства для перевода.</p>
+	</div>
+{% endif %}#}
+
+{% endblock %}

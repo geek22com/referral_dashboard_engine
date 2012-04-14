@@ -102,10 +102,9 @@
 					<a href="{{ offer.url }}" target="_blank">{{ offer.url }}</a>
 				</div>
 				<dl class="kv kv--inscribed kv--key180">
-					{% if owner or admin %}
-					<dt>Баланс</dt><dd>{{ offer.account.balance|currency }}</dd>
-					{% endif %}
-					<dt>Дата создания</dt><dd>{{ offer.creation_time|dateformat }}</dd>
+					{% if owner or admin %}<dt>Баланс</dt><dd>{{ offer.account.balance|currency }}</dd>{% endif %}
+					{% if offer.launch_time %}<dt>Дата запуска</dt><dd>{{ offer.launch_time|dateformat }}</dd>{% endif %}
+					{% if admin %}<dt>Дата создания</dt><dd>{{ offer.creation_time|dateformat }}</dd>{% endif %}
 					<dt>Время жизни cookie</dt><dd>{{ offer.cookie_ttl }} дней</dd>
 				</dl>
 				<div>

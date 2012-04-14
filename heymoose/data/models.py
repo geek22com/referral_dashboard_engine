@@ -30,6 +30,7 @@ class User(IdentifiableModel):
 	
 	confirmed = Field(types.Boolean, 'confirmed')
 	blocked = Field(types.Boolean, 'blocked')
+	block_reason = Field(types.String, 'block-reason')
 	register_time = Field(types.DateTime, 'register-time')
 	
 	developer_account = Field('Account', 'developer-account')

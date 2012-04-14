@@ -51,8 +51,8 @@ class UserResource(BackendResource):
 	def confirm(self, id):
 		self.path(id).path('confirmed').put()
 	
-	def block(self, id):
-		self.path(id).path('blocked').put()
+	def block(self, id, reason):
+		self.path(id).path('blocked').put(reason=reason)
 	
 	def unblock(self, id):
 		self.path(id).path('blocked').delete()

@@ -20,8 +20,10 @@
 		<tbody>
 			{% for user in users %}
 			<tr>
-				<td class="right {% if user.blocked %}deleted{% endif %}">{{ user.id }}</td>
-				<td><a href="{{ url_for('.users_info', id=user.id) }}">{{ user.full_name }}</a></td>
+				<td class="right">{{ user.id }}</td>
+				<td>
+					<a href="{{ url_for('.users_info', id=user.id) }}"
+					 {% if user.blocked %}class="danger"{% endif %}>{{ user.full_name }}</a></td>
 				<td>{{ user.email }}</td>
 				<td>{{ user.organization|default('--', true) }}</td>
 								

@@ -7,6 +7,9 @@
 {% if user.blocked %}
 	<div class="clearfix alert-message block-message error">
 		<p>Учетная запись заблокирована.</p>
+		{% if user.block_reason %}
+		<p>Причина блокировки: <i>{{ user.block_reason }}</i></p>
+		{% endif %}
 	</div>
 {% endif %}
 

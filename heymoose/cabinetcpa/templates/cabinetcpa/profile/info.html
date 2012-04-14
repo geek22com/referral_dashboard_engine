@@ -6,14 +6,15 @@
 {% with user = g.user %}
 
 {% if user.blocked %}
-	<div class="clearfix alert-message block-message danger">
+	<div class="clearfix alert-message block-message error">
 		<p>
 			<strong>Учетная запись заблокирована.</strong>
 			Ваш аккаунт был заблокирован администрацией &laquo;HeyMoose!&raquo;, поэтому
-			вам недоступна большая часть интерфейса системы. Письмо	с объяснением причины
-			блокировки было отправлено на ваш электронный адрес. Если вы не получили письмо
-			и/или вам неясна причина блокировки, пожалуйста, свяжитесь с нами.
+			вам недоступна большая часть интерфейса системы.
 		</p>
+		{% if user.block_reason %}
+		<p>Причина блокировки: <i>{{ user.block_reason }}</i></p>
+		{% endif %}
 	</div>
 {% elif not user.confirmed %}
 	<div class="clearfix alert-message block-message info">

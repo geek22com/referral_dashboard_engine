@@ -30,11 +30,7 @@ def users_info(id):
 	form = forms.UserBlockForm(request.form)
 	if request.method == 'POST':
 		if not user.blocked and form.validate():
-			rc.users.block(user.id)
-			user_info = UserInfo.query.get_or_create(user_id=user.id)
-			user_info.block_reason = form.reason.data
-			user_info.block_date = datetime.now()
-			user_info.save()
+			rc.users.block(user.id, form.reason.data)
 			if form.mail.data:
 				tmail.user_blocked(user, form.reason.data)
 			tmail.admin_user_blocked(user, g.user, form.reason.data)
@@ -44,7 +40,6 @@ def users_info(id):
 			rc.users.unblock(user.id)
 			flash(u'Учетная запись разблокирована', 'success')
 			return redirect(url_for('.users_info', id=user.id))
-	
 	return render_template('admin/users-info.html', user=user, form=form)
 
 @bp.route('/users/<int:id>/stats')

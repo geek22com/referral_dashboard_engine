@@ -96,3 +96,9 @@ class OfferResource(BackendResource):
 			return True
 		except ResourceError:
 			return False
+	
+	def add_to_balance(self, id, amount):
+		self.path(id).path('account').put(amount=amount)
+	
+	def remove_from_balance(self, id, amount):
+		self.path(id).path('account').delete(amount=amount)

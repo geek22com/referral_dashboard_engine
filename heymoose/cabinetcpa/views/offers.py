@@ -250,13 +250,13 @@ def offers_info_balance(id):
 		if type == 'in':
 			form_in = forms.BalanceForm(request.form)
 			if form_in.validate() and g.user.account.balance >= form_in.amount.data:
-				rc.accounts.transfer(g.user.account.id, offer.account.id, form_in.amount.data)
+				rc.offers.add_to_balance(offer.id, form_in.amount.data)
 				flash(u'Счет оффера успешно пополнен', 'success')
 				return redirect(url_for('.offers_info', id=offer.id))
 		elif type == 'out':
 			form_out = forms.BalanceForm(request.form)
 			if form_out.validate() and offer.account.balance >= form_out.amount.data:
-				rc.accounts.transfer(offer.account.id, g.user.account.id, form_out.amount.data)
+				rc.offers.remove_from_balance(offer.id, form_out.amount.data)
 				flash(u'Средства успешно выведены со счета оффера', 'success')
 				return redirect(url_for('.offers_info', id=offer.id))
 		else:

@@ -30,6 +30,7 @@ class AccountingEvents(Enum):
 	ACTION_CANCELED = e('ACTION_CANCELED', name=u'отмена действия')
 	OFFER_ACCOUNT_ADD = e('OFFER_ACCOUNT_ADD', name=u'пополнение счета оффера')
 	ROBOKASSA_ADD = e('ROBOKASSA_ADD', name=u'пополнение счета с помощью системы "RoboKassa"')
+	OFFER_ACCOUNT_REMOVE = e('OFFER_ACCOUNT_REMOVE', name=u'снятие средств со счета оффера')
 
 class OrderTypes(Enum):
 	REGULAR = e('REGULAR', name=u'обычный')

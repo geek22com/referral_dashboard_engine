@@ -5,11 +5,11 @@
 				<th class="header" rowspan="2">Оффер</th>
 				<th class="header right" rowspan="2">Показы</th>
 				<th class="header right" rowspan="2">Клики</th>
+				<th class="header center" colspan="2">Выполненные действия</th>
 				<th class="header right" rowspan="2">CTR</th>
+				<th class="header right" rowspan="2">CR</th>
 				<th class="header right" rowspan="2">eCPC,&nbsp;{{ currency_sign -}}</th>
 				<th class="header right" rowspan="2">eCPM,&nbsp;{{ currency_sign -}}</th>
-				<th class="header right" rowspan="2">CR</th>
-				<th class="header center" colspan="2">Выполненные действия</th>
 				<th class="header center" colspan="3">Финансы,&nbsp;{{ currency_sign -}}</th>
 			</tr>
 			<tr class="subrow">				
@@ -27,13 +27,14 @@
 				<td><a href="{{ url_for('.offers_info', id=stat.offer_id) }}">{{ stat.name }}</a></td>
 				<td class="right">{{ stat.shows }}</td>
 				<td class="right">{{ stat.clicks }}</td>
-				<td class="right">{% if stat.ctr %}{{ stat.ctr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
-				<td class="right">{{ stat.ecpc|default('&mdash;', true)|safe }}</td>
-				<td class="right">{{ stat.ecpm|default('&mdash;', true)|safe }}</td>
-				<td class="right">{% if stat.cr %}{{ stat.cr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
 				
 				<td class="right">{{ stat.leads }}</td>
 				<td class="right">{{ stat.sales }}</td>
+				
+				<td class="right">{% if stat.ctr %}{{ stat.ctr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
+				<td class="right">{% if stat.cr %}{{ stat.cr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
+				<td class="right">{{ stat.ecpc|default('&mdash;', true)|safe }}</td>
+				<td class="right">{{ stat.ecpm|default('&mdash;', true)|safe }}</td>
 				
 				<td class="right">{{ stat.cancelled_revenue }}</td>
 				<td class="right">{{ stat.not_confirmed_revenue }}</td>

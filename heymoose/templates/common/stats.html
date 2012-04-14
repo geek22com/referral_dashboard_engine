@@ -30,7 +30,7 @@
 				<td class="right">{% if stat.ctr %}{{ stat.ctr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
 				<td class="right">{{ stat.ecpc|default('&mdash;', true)|safe }}</td>
 				<td class="right">{{ stat.ecpm|default('&mdash;', true)|safe }}</td>
-				<td class="right">{{ stat.cr|default('&mdash;', true)|safe }}</td>
+				<td class="right">{% if stat.cr %}{{ stat.cr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
 				
 				<td class="right">{{ stat.leads }}</td>
 				<td class="right">{{ stat.sales }}</td>

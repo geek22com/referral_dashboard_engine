@@ -90,7 +90,7 @@
 				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
 				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
 				
-				<td {{ rowspan }}>{{ offer.regions_ordered|attrlist('name')|join(', ')|default('&mdash;', true)|safe }}</td>
+				<td {{ rowspan }}>{{ offer.regions_ordered|attrlist('name')|join(', ')|default('(не&nbsp;указаны)', true)|safe }}</td>
 				<td {{ rowspan }}>
 					{% if offer.categories %}
 					<ul class="toplevel-list toplevel-list--no-bottom-margin">
@@ -106,7 +106,7 @@
 						{% endfor %}
 					</ul>
 					{% else %}
-					(не указаны)
+					(не&nbsp;указаны)
 					{% endif %}
 				</td>
 			</tr>
@@ -114,7 +114,7 @@
 			<tr class="subrow">
 				<td>{{ suboffer.title }}</td>
 				<td class="right">
-					{{ suboffer.value(tax=user.fee if affiliate else 0) }} {{ offer.value_measure }}
+					{{ suboffer.value(tax=user.fee if affiliate else 0) }} {{ suboffer.value_measure }}
 				</td>
 			</tr>
 			{% endfor %}

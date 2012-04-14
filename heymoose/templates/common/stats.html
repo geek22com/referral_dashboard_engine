@@ -24,7 +24,7 @@
 		<tbody>
 			{% for stat in stats %}
 			<tr>
-				<td>{{ stat.offer_id }}</td>
+				<td><a href="{{ url_for('.offers_info', id=stat.offer_id) }}">{{ stat.name }}</a></td>
 				<td class="right">{{ stat.shows }}</td>
 				<td class="right">{{ stat.clicks }}</td>
 				<td class="right">{% if stat.ctr %}{{ stat.ctr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>

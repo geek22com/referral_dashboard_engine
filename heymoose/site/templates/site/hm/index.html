@@ -1,0 +1,200 @@
+{% extends "site/hm/layout.html" %}
+
+{% block fulltitle %}HeyMoose! &mdash; партнерская сеть{% endblock %}
+
+{% set activemenu = "index" %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		.more-container {
+			margin-top: 20px;
+			margin-bottom: 20px;
+		}
+	
+		span.more {
+			font-size: 18px;
+		}
+		
+		p.support {
+			line-height: 30px;
+		}
+		
+		span.support-item {
+			margin-left: 20px;
+		}
+		
+		span.support-item > img {
+			vertical-align: middle;
+		}
+	</style>
+{% endblock %}
+
+{% block container %}
+
+<div class="hm-content">
+
+<div class="top-unit">
+	<div class="row">
+		<div class="span4" style="padding-left: 8px;">
+			<img src="{{ url_for('static', filename='./img/logo_200x150.png') }}" alt="HeyMoose" />
+		</div>
+		<div class="span11">
+			<p class="support right">
+				Служба поддержки:
+				<span class="support-item">
+					<img src="{{ url_for('static', filename='./img/hm/phone.png') }}" alt="Телефон" />
+					<span class="hey">+7 (905) 710-19-92</span>
+				</span>
+				<span class="support-item">
+					<img src="{{ url_for('static', filename='./img/hm/mail.png') }}" alt="E-mail" />
+					<a href="mailto:info@heymoose.com">info@heymoose.com</a>
+				</span>
+			</p>
+			<div class="top-unit-text">
+				<p>
+					Партнерская программа {{ heymoose() }} &mdash; это система взаимодействия
+					рекламодателя и веб-мастеров. Оплата за рекламу происходит по&nbsp;CPA-модели после
+					конкретных действий пользователя.
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="hm-roundbox">
+	<div class="hm-roundbox-content hm-roundbox-content--dark">
+		<div class="row">
+			<div class="span" style="width: 438px;">
+				<h2 class="bigger mrg-15b"><a href="#" class="hm-dashed-link sky">Рекламодателю</a></h2>
+				<h3>Мечтаете о 100% отдаче от рекламы?</h3>
+				<p>
+					Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
+					и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда,
+					так и для точечных продаж. Как это работает, и чем мы отличаемся от других.
+				</p>
+				<h3>Хотите платить за конкретный результат?</h3>
+				<p>
+					Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
+					и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда,
+					так и для точечных продаж. Как это работает, и чем мы отличаемся от других.
+				</p>
+				<div class="more-container">
+					<span class="more">
+						<a href="#" class="hm-dashed-link white">Подробнее</a> &raquo;
+					</span>
+				</div>
+			</div>
+			<div class="span" style="width: 438px;">
+				<h2 class="bigger mrg-15b"><a href="#" class="hm-dashed-link sky">Партнёру</a></h2>
+				<h3>У нас самые выгодные предложения!</h3>
+				<p>
+					Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
+					и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда,
+					так и для точечных продаж. Как это работает, и чем мы отличаемся от других.
+				</p>
+				<h3>Рекламодатели во всех популярных нишах</h3>
+				<p>
+					Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
+					и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда,
+					так и для точечных продаж. Как это работает, и чем мы отличаемся от других.
+				</p>
+				<div class="more-container">
+					<span class="more">
+						<a href="#" class="hm-dashed-link white">Подробнее</a> &raquo;
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="hm-roundbox">
+	<div class="hm-roundbox-content">
+		<h2>Новости</h2>
+		<div class="row">
+			<div class="span newsitem" style="width: 438px;">
+				<div class="newsitem-image-container"></div>
+				<div class="newsitem-content">
+					<h4>
+						<a href="#">Веб-мастеру</a>
+						<span class="section-divider">/</span>
+						Мы открылись!
+					</h4>
+					<p>
+						Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
+						и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда.
+						<a href="#">читать &raquo;</a>
+					</p>
+				</div>
+			</div>
+			<div class="span newsitem" style="width: 438px;">
+				<div class="newsitem-image-container"></div>
+				<div class="newsitem-content">
+					<h4>
+						<a href="#">Рекламодателю</a>
+						<span class="section-divider">/</span>
+						Мы открылись!
+					</h4>
+					<p>
+						Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
+						и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда.
+						<a href="#">читать &raquo;</a>
+					</p>
+				</div>
+			</div>
+			<div class="span newsitem" style="width: 438px;">
+				<div class="newsitem-image-container"></div>
+				<div class="newsitem-content">
+					<h4>Гомогенный заголовок новости</h4>
+					<p>
+						Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
+						и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда.
+						<a href="#">читать &raquo;</a>
+					</p>
+				</div>
+			</div>
+			<div class="span newsitem" style="width: 438px;">
+				<div class="newsitem-image-container"></div>
+				<div class="newsitem-content">
+					<h4>
+						<a href="#">Рекламодателю</a>
+						<span class="section-divider">/</span>
+						Более содержательный заголовок новости
+					</h4>
+					<p>
+						Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
+						и рекламу в мобильных играх.
+						<a href="#">читать &raquo;</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="hm-roundbox-content hm-roundbox-content--aqua">
+		<h2>Лента событий</h2>
+		<div class="row">
+			<div class="span event" style="width: 280px;">
+				<div class="event-date">12.06.2012</div>
+				<div class="event-content">
+					<p>Выплата бонусов партнерам системы HeyMoose! &raquo;</p>
+				</div>
+			</div>
+			<div class="span event" style="width: 280px;">
+				<div class="event-date">12.05.2012</div>
+				<div class="event-content">
+					<p>Однострочная хрень &raquo;</p>
+				</div>
+			</div>
+			<div class="span event" style="width: 280px;">
+				<div class="event-date">12.04.2012</div>
+				<div class="event-content">
+					<p>Мда, все же лучше расписать на две строки &raquo;</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</div>
+{% endblock %}

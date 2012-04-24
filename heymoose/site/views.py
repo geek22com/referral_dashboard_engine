@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, redirect, url_for, request, flash, session
+from flask import render_template, g, redirect, url_for, request, flash, session, abort
 from heymoose import app
 from heymoose.site import blueprint as bp
 from heymoose.forms import forms
@@ -138,4 +138,12 @@ def confirm(id, code):
 		mmail.lists_add_user(user)
 		success = True
 	return render_template('site/confirm.html', success=success)
+
+
+###
+
+@bp.route('/new/')
+def new_index():
+	if not g.user or not g.user.is_admin: abort(403)
+	return render_template('site/hm/index.html')
 

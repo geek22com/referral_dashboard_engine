@@ -1,0 +1,161 @@
+{% extends 'layout.html' %}
+
+{% macro heymoose() -%}<span class="hey">Hey</span><span class="moose">Moose!</span>{% endmacro -%}
+
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/margins.css', nocache=nocache()) }}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/spans.css', nocache=nocache()) }}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/links.css', nocache=nocache()) }}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/headers.css', nocache=nocache()) }}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/top-unit.css', nocache=nocache()) }}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/roundbox.css', nocache=nocache()) }}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/newsitem.css', nocache=nocache()) }}" media="screen" />
+
+<style type="text/css">
+	#login-modal { width: 440px; }
+	
+	body {
+		background-color: #FFF;
+		background-image: none;
+		color: #565555;
+	}
+	
+	.container > footer p {
+		color: #404040;
+	}
+</style>
+<script type="text/javascript">
+	$(function() {
+		$('#login-modal').bind('shown', function() {
+			$('#username').focus();
+		});
+	})
+</script>
+{% endblock %}
+	
+{% block prebody %}
+<div style="display:none;" class="li_counter">
+	<!-- Yandex.Metrika informer -->
+	<a href="http://metrika.yandex.ru/stat/?id=8819377&amp;from=informer" target="_blank" rel="nofollow">
+		<img src="//bs.yandex.ru/informer/8819377/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+			style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика"
+			title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" 
+		/>
+	</a>
+	<!-- /Yandex.Metrika informer -->
+
+	<!-- Yandex.Metrika counter -->
+	<div style="display:none;">
+		<script type="text/javascript">
+			(function(w, c) {
+			    (w[c] = w[c] || []).push(function() {
+			        try {
+			            w.yaCounter8819377 = new Ya.Metrika({id:8819377, enableAll: true});
+			        }
+			        catch(e) { }
+			    });
+			})(window, "yandex_metrika_callbacks");
+		</script>
+	</div>
+	<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+	<noscript>
+		<div style="display:none;">
+			<img src="//mc.yandex.ru/watch/8819377" style="position:absolute; left:-9999px;" alt="" />
+		</div>
+	</noscript>
+	<!-- /Yandex.Metrika counter -->
+	
+	<!--LiveInternet counter-->
+	<script type="text/javascript"><!--
+		document.write("<a href='http://www.liveinternet.ru/click' "+
+		"target=_blank><img class='i-hide' src='//counter.yadro.ru/hit?t44.6;r"+
+		escape(document.referrer)+((typeof(screen)=="undefined")?"":
+		";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+		screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+		";"+Math.random()+
+		"' alt='' title='LiveInternet' "+
+		"border='0' width='31' height='31'><\/a>")
+		//-->
+	</script>
+	<!--/LiveInternet-->
+</div>
+{% endblock %}
+
+{% block postbrand %}<span style="font-size: 16px;">(beta)</span>{% endblock %}
+
+{% block topbar %}
+
+{% block nav %}
+<ul class="nav">
+	<li id="menu-item-index"><a href="{{ url_for('.cpa_index') }}">Главная</a></li>
+	<li id="menu-item-advertisers"><a href="{{ url_for('.advertisers') }}">Рекламодателям</a></li>
+	<li id="menu-item-affiliates"><a href="{{ url_for('.affiliates') }}">Веб-мастерам</a></li>
+	<li id="menu-item-contacts"><a href="{{ url_for('.contacts') }}">Контакты</a></li>
+</ul>
+{% endblock %}
+
+{% block secondary_nav %}
+<ul class="nav secondary-nav">
+	{% if g.user %}
+	<li id="menu-item-cabinet"><a href="{{ url_for('cabinetcpa.index') }}">Личный кабинет</a></li>
+	<li class="dropdown">
+		<a class="dropdown-toggle" href="#">{{ g.user.full_name }}</a>
+		<ul class="dropdown-menu">
+			<li><a href="{{ url_for('.logout') }}">Выйти</a></li>
+		</ul>
+	</li>
+	{% else %}
+	<li id="menu-item-register"><a href="{{ url_for('.register') }}">Регистрация</a></li>
+	<li id="menu-item-login">
+		<a href="{{ url_for('.login') }}" data-controls-modal="login-modal" 
+		 data-backdrop="true" data-keyboard="true">Войти</a>
+	</li>
+	{% endif %}
+</ul>
+{% endblock %}
+
+{% endblock %}
+
+{% block footer_signs %}
+{% set wmid = g.config.get('ROBOKASSA_WMID', '000000000000') %}
+
+<a href="http://www.webmoney.ru" target="_blank">
+	<img src="http://www.webmoney.ru/img/icons/88x31_wm_blue_on_white_ru.png"
+	alt="Мы принимаем WebMoney" />
+</a>
+
+<!-- begin WebMoney Transfer : attestation label --> 
+<a href="https://passport.webmoney.ru/asp/certview.asp?wmid={{ wmid }}" target="_blank">
+	<IMG SRC="http://www.webmoney.ru/img/icons/88x31_wm_v_blue_on_white_ru.png" 
+	title="Здесь находится аттестат нашего WM идентификатора {{ wmid }}" border="0"><br>
+	<font size=1>Проверить аттестат</font>
+</a>
+<!-- end WebMoney Transfer : attestation label -->
+{% endblock %}
+
+{% block postbody %}	
+{% if not g.user %}
+<div id="login-modal" class="modal" style="display: none;">
+	<form id="login-form" action="{{ url_for('.login') }}" method="post" class="validate">
+		<div class="modal-header">
+			<a href="#" class="close">×</a>
+			<h3>HeyMoose :: Вход</h3>
+		</div>
+		<div class="modal-body span16">
+			<fieldset>
+				{{ macros.formfield(g.params.loginform.username, class='span3', type='email') }}
+				{{ macros.formfield(g.params.loginform.password, class='span3', type='password') }}
+				<div class="input">
+					{{ g.params.loginform.remember() }} запомнить меня
+				</div>
+			</fieldset>
+		</div>
+		<div class="modal-footer">
+			<input type="submit" class="btn primary" value="Войти" />
+		</div>
+	</form>
+</div>
+{% endif %}
+{% endblock %}
+
+

@@ -1,0 +1,14 @@
+.top-unit {
+	margin-top: 10px;
+	margin-bottom: -20px;
+}
+
+.top-unit-text {
+	margin-top: 20px;
+}
+
+.top-unit-text > p {
+	font-size: 18px;
+	line-height: 27px;
+	text-align: center;
+}

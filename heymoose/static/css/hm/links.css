@@ -1,0 +1,24 @@
+.hm-content a, .hm-content a:hover, .hm-content a:visited {
+	color: #0093dd;
+}
+
+a.hm-dashed-link, a.hm-dashed-link:visited {
+	color: #0093dd;
+	text-decoration: none;
+	border-bottom: 1px dashed #0093dd;
+}
+
+a.hm-dashed-link:hover {
+	text-decoration: none;
+	border-bottom: none;
+}
+
+a.hm-dashed-link.sky, a.hm-dashed-link.sky:visited {
+	color: #9ee4fb;
+	border-bottom: 1px dashed #9ee4fb;
+}
+
+a.hm-dashed-link.white, a.hm-dashed-link.white:visited {
+	color: #fff;
+	border-bottom: 1px dashed #fff;
+}

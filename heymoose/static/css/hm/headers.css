@@ -1,0 +1,24 @@
+h2 {
+	font-size: 20px;
+	font-weight: normal;
+	line-height: normal;
+	color: #0093dd;
+}
+
+h2 small {
+	font-size: 13px;
+}
+
+h3 {
+	font-size: 18px;
+	font-weight: normal;
+	line-height: normal;
+	color: #0093dd;
+}
+
+h4 {
+	font-size: 14px;
+	font-weight: bold;
+	line-height: normal;
+	color: #565555;
+}

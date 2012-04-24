@@ -4,7 +4,7 @@ import os
 # configuration
 HOST = '127.0.0.1'
 DEBUG = True
-SECRET_KEY = 'lola pola_mola_cola'
+SECRET_KEY = '47621c2a464441cb94918fa6853c1b0a'
 RESTAPI_SERVER = 'http://localhost:5468'
 USE_DATABASE = True
 

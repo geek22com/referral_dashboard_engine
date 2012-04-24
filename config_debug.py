@@ -3,7 +3,7 @@ import os
 
 # configuration
 DEBUG = True
-SECRET_KEY = 'lola pola_mola_cola'
+SECRET_KEY = '979cb5f1505f4f8f978c9502d8f3b04b'
 RESTAPI_SERVER = 'http://localhost:5468'
 USE_DATABASE = True
 

@@ -7,8 +7,19 @@
 	margin-top: 20px;
 }
 
+.top-unit-text.compact {
+	margin-top: 10px;
+}
+
 .top-unit-text > p {
 	font-size: 18px;
 	line-height: 27px;
 	text-align: center;
+}
+
+.top-unit-text.compact > p {
+	font-size: 16px;
+	line-height: normal;
+	text-align: center;
+	margin-bottom: 10px;
 }

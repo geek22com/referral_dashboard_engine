@@ -147,3 +147,8 @@ def new_index():
 	if not g.user or not g.user.is_admin: abort(403)
 	return render_template('site/hm/index.html')
 
+@bp.route('/new/advertisers')
+def new_advertisers():
+	if not g.user or not g.user.is_admin: abort(403)
+	return render_template('site/hm/advertisers.html')
+

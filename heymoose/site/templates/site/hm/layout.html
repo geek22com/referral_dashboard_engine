@@ -1,12 +1,13 @@
 {% extends 'layout.html' %}
 
-{% macro heymoose() -%}<span class="hey">Hey</span><span class="moose">Moose!</span>{% endmacro -%}
+{% macro heymoose(excl=true) -%}<span class="hey">Hey</span><span class="moose">Moose{{ '!' if excl -}}</span>{% endmacro -%}
 
 {% block extrahead %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/margins.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/spans.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/links.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/headers.css', nocache=nocache()) }}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/lists.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/top-unit.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/roundbox.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/newsitem.css', nocache=nocache()) }}" media="screen" />
@@ -22,6 +23,18 @@
 	
 	.container > footer p {
 		color: #404040;
+	}
+	
+	.support {
+		line-height: 30px;
+	}
+	
+	span.support-item {
+		margin-left: 20px;
+	}
+	
+	span.support-item > img {
+		vertical-align: middle;
 	}
 </style>
 <script type="text/javascript">
@@ -115,6 +128,54 @@
 {% endblock %}
 
 {% endblock %}
+
+
+{% block container %}
+	<div class="hm-content">
+		<div class="top-unit">
+			<div class="row">
+				<div class="span4" style="padding-left: 8px;">
+					<img src="{{ url_for('static', filename='./img/logo_200x150.png') }}" alt="HeyMoose" />
+				</div>
+				<div class="span11">
+					{% block top_unit_content %}{% endblock %}
+				</div>
+			</div>
+		</div>
+
+		{% block precontent %}{% endblock %}
+
+		<div class="hm-roundbox">
+			<div class="hm-roundbox-content">
+				{% block content %}{% endblock %}
+			</div>
+			<div class="hm-roundbox-content hm-roundbox-content--aqua">
+				<h2>Лента событий</h2>
+				<div class="row">
+					<div class="span event" style="width: 280px;">
+						<div class="event-date">12.06.2012</div>
+						<div class="event-content">
+							<p>Выплата бонусов партнерам системы HeyMoose! &raquo;</p>
+						</div>
+					</div>
+					<div class="span event" style="width: 280px;">
+						<div class="event-date">12.05.2012</div>
+						<div class="event-content">
+							<p>Однострочная хрень &raquo;</p>
+						</div>
+					</div>
+					<div class="span event" style="width: 280px;">
+						<div class="event-date">12.04.2012</div>
+						<div class="event-content">
+							<p>Мда, все же лучше расписать на две строки &raquo;</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
 
 {% block footer_signs %}
 {% set wmid = g.config.get('ROBOKASSA_WMID', '000000000000') %}

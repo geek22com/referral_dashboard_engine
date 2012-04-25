@@ -6,6 +6,15 @@
 	margin-top: 20px;
 }
 
+.hm-roundbox-header {
+	position: absolute;
+	text-align: right;
+	right: 40px;
+	top: -20px;
+	background-color: #fff;
+	padding: 0 10px;
+}
+
 .hm-roundbox > .hm-roundbox-content:first-child {
 	-moz-border-radius-topleft: 20px;
 	-moz-border-radius-topright: 20px;
@@ -27,6 +36,7 @@
 .hm-roundbox-content {
 	padding: 10px 20px;
 	border: 1px solid #ccc;
+	position: relative;
 }
 
 .hm-roundbox-content--dark {

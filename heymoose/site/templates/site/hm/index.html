@@ -84,58 +84,97 @@
 	<h2>Новости</h2>
 	<div class="row">
 		<div class="span newsitem with-image" style="width: 438px;">
-			<div class="newsitem-image-container"></div>
+			<div class="newsitem-left-container">
+				<div class="newsitem-image">
+					<img src="{{ url_for('.static', filename='./img/news/2012-04-26.jpg') }}" alt="" />
+				</div>
+				<div class="newsitem-date">26.04.2012</div>
+			</div>
 			<div class="newsitem-content">
-				<h4>
-					<a href="#">Веб-мастеру</a>
-					<span class="section-divider">/</span>
-					Мы открылись!
-				</h4>
+				<h4>Подведены итоги конкурса &laquo;GamaK&raquo;</h4>
 				<p>
-					Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
-					и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда.
-					<a href="#">читать &raquo;</a>
+					Подведены итоги конкурса &laquo;GamaK&raquo; от HeyMoose. Победителями стали:
+					игра &laquo;Заботань&raquo; &mdash; приз 100 тыс. рублей, игра &laquo;Fly in Space&raquo;
+					&mdash; 50 тыс. рублей, игра &laquo;Томато Комбат&raquo; &mdash; 20 тыс. рублей.
+					{#<a href="{{ url_for('.news_item', name='2012-04-26') }}">читать &raquo;</a>#}
 				</p>
 			</div>
 		</div>
 		<div class="span newsitem with-image" style="width: 438px;">
-			<div class="newsitem-image-container"></div>
+			<div class="newsitem-left-container">
+				<div class="newsitem-image">
+					<img src="{{ url_for('.static', filename='./img/news/2012-04-23.jpg') }}" alt="" />
+				</div>
+				<div class="newsitem-date">23.04.2012</div>
+			</div>
 			<div class="newsitem-content">
-				<h4>
-					<a href="#">Рекламодателю</a>
-					<span class="section-divider">/</span>
-					Мы открылись!
-				</h4>
+				<h4>Мы открылись!</h4>
 				<p>
-					Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
-					и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда.
-					<a href="#">читать &raquo;</a>
+					Ровно два месяца понадобилось нам на то, чтобы сделать идеальную партнёрскую
+					программу. Результат вы можете оценить по достоинству, зарегистрировавшись в нашей системе.
+					{#<a href="{{ url_for('.news_item', name='2012-04-23') }}">читать &raquo;</a>#}
 				</p>
 			</div>
 		</div>
 		<div class="span newsitem with-image" style="width: 438px;">
-			<div class="newsitem-image-container"></div>
+			<div class="newsitem-left-container">
+				<div class="newsitem-image">
+					<img src="{{ url_for('.static', filename='./img/news/2012-04-15.jpg') }}" alt="" />
+				</div>
+				<div class="newsitem-date">15.04.2012</div>	
+			</div>
 			<div class="newsitem-content">
-				<h4>Гомогенный заголовок новости</h4>
+				<h4>&laquo;GamaK&raquo; &mdash; интервью с разработчиками</h4>
 				<p>
-					Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
-					и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда.
-					<a href="#">читать &raquo;</a>
+					В рамках конкурса мы пообщались с ведущими разработчиками социальных игр Рунета.
+					Что они говорят о тенденциях развития игротворчества, рекламе и	способах монетизации
+					&mdash; читайте <a href="http://heymoose.com/gamak/articles/" target="_blank">тут</a>.
 				</p>
 			</div>
 		</div>
 		<div class="span newsitem with-image" style="width: 438px;">
-			<div class="newsitem-image-container"></div>
+			<div class="newsitem-left-container">
+				<div class="newsitem-image">
+					<img src="{{ url_for('.static', filename='./img/news/2012-02-15.jpg') }}" alt="" />
+				</div>
+				<div class="newsitem-date">15.02.2012</div>
+			</div>
 			<div class="newsitem-content">
-				<h4>
-					<a href="#">Рекламодателю</a>
-					<span class="section-divider">/</span>
-					Более содержательный заголовок новости
-				</h4>
+				<h4>Разработчики всех стран &mdash; объединяйтесь!</h4>
 				<p>
-					Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
-					и рекламу в мобильных играх.
-					<a href="#">читать &raquo;</a>
+					Стартовал конкурс &laquo;GamaK&raquo; от HeyMoose! Получайте призы за качественные
+					и красивые игры. Подробности о конкурсе читать
+					<a href="http://heymoose.com/gamak/" target="_blank">здесь</a>.
+				</p>
+			</div>
+		</div>
+		<div class="span newsitem with-image" style="width: 438px;">
+			<div class="newsitem-left-container">
+				<div class="newsitem-image">
+					<img src="{{ url_for('.static', filename='./img/news/2012-02-05.jpg') }}" alt="" />
+				</div>
+				<div class="newsitem-date">05.02.2012</div>
+			</div>
+			<div class="newsitem-content">
+				<h4>Партнерская сеть мирового масштаба</h4>
+				<p>
+					Миссия компании HeyMoose &mdash; повышение качества рекламных кампаний
+					в сети: веб-пространстве, мобильных телефонах, планшетах и даже в микроволновках.
+				</p>
+			</div>
+		</div>
+		<div class="span newsitem with-image" style="width: 438px;">
+			<div class="newsitem-left-container">
+				<div class="newsitem-image">
+					<img src="{{ url_for('.static', filename='./img/news/2011-11-15.jpg') }}" alt="" />
+				</div>
+				<div class="newsitem-date">15.11.2011</div>	
+			</div>
+			<div class="newsitem-content">
+				<h4>Запуск партнерской программы в приложениях для социальных сетей</h4>
+				<p>
+					Разработано техническое решение для размещения рекламы по схеме CPA в приложениях
+					для социальных сетей.
 				</p>
 			</div>
 		</div>

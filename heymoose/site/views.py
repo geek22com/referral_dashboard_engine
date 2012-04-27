@@ -142,6 +142,13 @@ def confirm(id, code):
 
 ###
 
+@bp.route('/news/<name>')
+def news_item(name):
+	try:
+		return render_template('site/news/{0}.html'.format(name))
+	except:
+		abort(404)
+
 @bp.route('/new/')
 def new_index():
 	if not g.user or not g.user.is_admin: abort(403)

@@ -12,15 +12,23 @@
 }*/
 
 .newsitem.with-image {
-	height: 102px;
+	height: 122px;
 	overflow: hidden;
 }
 
-.newsitem.with-image .newsitem-image-container {
+.newsitem.with-image .newsitem-left-container {
 	float: left;
+}
+
+.newsitem-image {
 	width: 100px;
 	height: 100px;
 	border: 1px solid #ccc;
+}
+
+.newsitem-date {
+	text-align: center;
+	font-size: 10px;
 }
 
 .newsitem.with-image .newsitem-content {

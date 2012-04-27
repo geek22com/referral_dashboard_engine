@@ -1,0 +1,122 @@
+{% extends "site/hm/layout.html" %}
+
+{% block title %}Рекламодателям{% endblock %}
+
+{% set activemenu = "contacts" %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		.invitation {
+			font-size: 16px;
+			line-height: normal;
+			text-align: center;
+		}
+		
+		.contact-list {
+			margin: 20px 0;
+		}
+		
+		.contact-item {
+			margin: 10px 0;
+		}
+		
+		.contact-item > img {
+			vertical-align: middle;
+		}
+	</style>
+{% endblock %}
+
+{% block top_unit_content %}
+	{{ support() }}
+	<div class="top-unit-text compact">
+		<p>
+			В случае возникновения проблем при регистрации или дополнительных вопросов, на которые
+			вы не нашли ответов на сайте, обязательно обратитесь к нашему менеджеру.
+		</p>
+	</div>
+{% endblock %}
+
+{% block content %}
+<h1 class="hm-roundbox-header" style="right: 110px;">Контакты {{ heymoose() }}</h1>
+<div class="row" style="margin-top: 30px;">
+	<div class="span7">
+		<h2>Служба поддержки</h2>
+		<span class="moose">по общим вопросам</span>
+		<div class="contact-list">
+			<div class="contact-item">
+				<img src="{{ url_for('static', filename='./img/hm/phone.png') }}" alt="Телефон" />
+				<span class="hey">+7 (905) 710-19-92</span>
+			</div>
+			<div class="contact-item">
+				<img src="{{ url_for('static', filename='./img/hm/mail.png') }}" alt="E-mail" />
+				<a href="mailto:info@heymoose.com">info@heymoose.com</a>
+			</div>
+		</div>
+		<h3>Менеджер по работе с рекламодателями</h3>
+		<span class="moose">Кирилл Шилов</span>
+		<div class="contact-list">
+			<div class="contact-item">
+				<img src="{{ url_for('static', filename='./img/hm/phone.png') }}" alt="Телефон" />
+				<span class="hey">+7 (905) 710-19-92</span>
+			</div>
+			<div class="contact-item">
+				<img src="{{ url_for('static', filename='./img/hm/mail.png') }}" alt="E-mail" />
+				<a href="mailto:ks.shilov@heymoose.com">ks.shilov@heymoose.com</a>
+			</div>
+			<div class="contact-item">
+				<img src="{{ url_for('static', filename='./img/hm/skype.png') }}" alt="Skype" />
+				<a href="skype:ksshilov">ksshilov</a>
+			</div>
+		</div>
+		<h3>Менеджер по работе с партнёрами</h3>
+		<span class="moose">Дмитрий Павлов</span>
+		<div class="contact-list">
+			<div class="contact-item">
+				<img src="{{ url_for('static', filename='./img/hm/phone.png') }}" alt="Телефон" />
+				<span class="hey">+7 (916) 082-20-87</span>
+			</div>
+			<div class="contact-item">
+				<img src="{{ url_for('static', filename='./img/hm/mail.png') }}" alt="E-mail" />
+				<a href="mailto:dmitriy.pavlov@heymoose.com">dmitriy.pavlov@heymoose.com</a>
+			</div>
+			<div class="contact-item">
+				<img src="{{ url_for('static', filename='./img/hm/skype.png') }}" alt="Skype" />
+				<a href="skype:ragdar777">ragdar777</a>
+			</div>
+		</div>
+	</div>
+	<div class="span8">
+		<p class="invitation">
+			Напишите нам и в самое ближайшее время наши менеджеры свяжутся с вами.
+		</p>
+		<form id="form-contacts" method="post" action="" class="validate2">
+			<fieldset>
+				{{ forms.singlefield_stacked(form.name, class='span8') }}
+				{{ forms.singlefield_stacked(form.email, class='span8', type='email') }}
+				{{ forms.singlefield_stacked(form.phone, class='span8') }}
+				{% call forms.singlefield_stacked_desc(form.desc, class='span8', rows=4) %}
+				{% if partner %}
+				<span class="help-block span10">
+					В этом поле перечислите, пожалуйста, площадки, которые вы можете
+					подключить к партнерской сети, их суточную аудиторию, тематику
+					и особенности.
+				</span>
+				{% endif %}
+				{% endcall %}
+				{{ forms.singlefield_stacked(form.captcha, class='span8') }}
+				{{ form.ch() }}
+				<span class="help-block">* Поля, выделенные <b>жирным шрифтом</b>, обязательны для заполнения.</span>
+			</fieldset>
+			<div class="center">
+				<input class="btn moose" type="submit" value="Отправить"/>
+			</div>
+		</form>
+		<p>
+			Пожалуйста, удостоверьтесь, что указанные данные введены верно,
+			и в них отсутствуют опечатки. В противном случае есть вероятность,
+			что мы не сможем связаться с вами!
+		</p>
+	</div>
+</div>
+{% endblock %}

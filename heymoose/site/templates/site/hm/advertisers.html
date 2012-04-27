@@ -6,8 +6,7 @@
 
 {% block top_unit_content %}
 	<div class="right">
-			Менеджер по работе с рекламодателями:
-			<span class="moose">Кирилл Шилов</span>
+		Менеджер по работе с рекламодателями: <span class="moose">Кирилл Шилов</span>
 		<p class="support right">
 			<span class="support-item">
 				<img src="{{ url_for('static', filename='./img/hm/phone.png') }}" alt="Телефон" />
@@ -127,5 +126,20 @@
 			sem eget lorem tempor vehicula vitae ac neque. Donec quis orci dolor.
 		</li>
 	</ul>
+	{% if not g.user %}
+	<h3>Стать рекламодателем партнерской программы {{ heymoose(false) }} очень просто!</h3>
+	<div class="row">
+		<div class="span" style="margin-top: 8px;">
+			<a href="{{ url_for('.register_advertiser') }}" class="btn moose large">Зарегистрироваться</a>
+		</div>
+		<div class="span12">
+			<p>
+				Для этого вам необходимо нажать на кнопку &laquo;Зарегистрироваться&raquo; и заполнить
+				несложную форму регистрации. Наш специалист свяжется с вами в самое ближайшее время
+				и поможет выбрать оптимальные параметры для вашей рекламной кампании.
+			</p>
+		</div>
+	</div>
+	{% endif %}
 </div>
 {% endblock %}

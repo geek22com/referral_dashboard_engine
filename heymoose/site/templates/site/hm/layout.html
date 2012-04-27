@@ -2,12 +2,28 @@
 
 {% macro heymoose(excl=true) -%}<span class="hey">Hey</span><span class="moose">Moose{{ '!' if excl -}}</span>{% endmacro -%}
 
+{% macro support() %}
+<p class="support right">
+	Служба поддержки:
+	<span class="support-item">
+		<img src="{{ url_for('static', filename='./img/hm/phone.png') }}" alt="Телефон" />
+		<span class="hey">+7 (905) 710-19-92</span>
+	</span>
+	<span class="support-item">
+		<img src="{{ url_for('static', filename='./img/hm/mail.png') }}" alt="E-mail" />
+		<a href="mailto:info@heymoose.com">info@heymoose.com</a>
+	</span>
+</p>
+{% endmacro %}
+
 {% block extrahead %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/margins.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/spans.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/links.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/headers.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/lists.css', nocache=nocache()) }}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/buttons.css', nocache=nocache()) }}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/forms.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/top-unit.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/roundbox.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/newsitem.css', nocache=nocache()) }}" media="screen" />
@@ -29,11 +45,11 @@
 		line-height: 30px;
 	}
 	
-	span.support-item {
+	.support-item {
 		margin-left: 20px;
 	}
 	
-	span.support-item > img {
+	.support-item > img {
 		vertical-align: middle;
 	}
 </style>

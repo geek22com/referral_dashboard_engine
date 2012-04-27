@@ -1,0 +1,10 @@
+label {
+	color: #565555;
+	float: none;
+	line-height: normal;
+	width: auto;
+}
+
+form .clearfix {
+	margin-bottom: 9px;
+}

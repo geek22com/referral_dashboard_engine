@@ -1,0 +1,20 @@
+.btn.moose {
+	color:#ffffff;
+	background-color:#ae8a07;
+	background-repeat:repeat-x;
+	background-image:-khtml-gradient(linear, left top, left bottom, from(#f6c100), to(#ae8a07));
+	background-image:-moz-linear-gradient(top, #f6c100, #ae8a07);
+	background-image:-ms-linear-gradient(top, #f6c100, #ae8a07);
+	background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6c100), color-stop(100%, #ae8a07));
+	background-image:-webkit-linear-gradient(top, #f6c100, #ae8a07);
+	background-image:-o-linear-gradient(top, #f6c100, #ae8a07);
+	background-image:linear-gradient(top, #f6c100, #ae8a07);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6c100', endColorstr='#ae8a07', GradientType=0);
+	text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);
+	border-color:#ae8a07 #ae8a07 #ae8a07;
+	border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+.btn.moose:hover {
+	color:#ffffff;
+}

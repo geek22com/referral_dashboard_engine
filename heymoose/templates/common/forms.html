@@ -43,6 +43,24 @@
 	</div>
 {% endmacro %}
 
+{% macro singlefield_stacked(fld, inline=none) %}
+	{% call singlefield_stacked_desc(fld, inline, **kwargs) %}{% endcall %}
+{% endmacro %}
+
+{% macro singlefield_stacked_desc(fld, inline=none) %}
+	<div class="{{ fld.id -}}-field formfield clearfix {{ css_errors(fld) }}">
+		{{ label(fld) }}
+		{% if inline or fld.description %}
+			<span class="help-inline">{{ inline or fld.description }}</span>
+		{% endif %}
+		<div>
+			{{ field(fld, **kwargs) }}
+			{{ errors(fld) }}
+			{{ caller() }}
+		</div>
+	</div>
+{% endmacro %}
+
 {% macro singlefield(fld, inline=none) %}
 	{% call singlefield_desc(fld, inline, **kwargs) %}{% endcall %}
 {% endmacro %}

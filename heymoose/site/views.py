@@ -152,3 +152,9 @@ def new_advertisers():
 	if not g.user or not g.user.is_admin: abort(403)
 	return render_template('site/hm/advertisers.html')
 
+@bp.route('/new/contacts')
+def new_contacts():
+	if not g.user or not g.user.is_admin: abort(403)
+	form = forms.ContactForm()
+	return render_template('site/hm/contacts.html', form=form)
+

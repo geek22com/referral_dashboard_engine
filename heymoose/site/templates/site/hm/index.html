@@ -19,17 +19,7 @@
 {% endblock %}
 
 {% block top_unit_content %}
-	<p class="support right">
-		Служба поддержки:
-		<span class="support-item">
-			<img src="{{ url_for('static', filename='./img/hm/phone.png') }}" alt="Телефон" />
-			<span class="hey">+7 (905) 710-19-92</span>
-		</span>
-		<span class="support-item">
-			<img src="{{ url_for('static', filename='./img/hm/mail.png') }}" alt="E-mail" />
-			<a href="mailto:info@heymoose.com">info@heymoose.com</a>
-		</span>
-	</p>
+	{{ support() }}
 	<div class="top-unit-text">
 		<p>
 			Партнерская программа {{ heymoose() }} &mdash; это система взаимодействия

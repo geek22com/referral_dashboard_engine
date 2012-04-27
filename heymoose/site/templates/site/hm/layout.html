@@ -22,6 +22,7 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/links.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/headers.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/lists.css', nocache=nocache()) }}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/tables.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/buttons.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/forms.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/top-unit.css', nocache=nocache()) }}" media="screen" />
@@ -154,6 +155,7 @@
 
 {% block container %}
 	<div class="hm-content">
+		{% block top_unit_container %}
 		<div class="top-unit">
 			<div class="row">
 				<div class="span4" style="padding-left: 8px;">
@@ -164,9 +166,11 @@
 				</div>
 			</div>
 		</div>
+		{% endblock %}
 
 		{% block precontent %}{% endblock %}
 
+		{% block content_container %}
 		<div class="hm-roundbox">
 			<div class="hm-roundbox-content">
 				{% block content %}{% endblock %}
@@ -175,26 +179,37 @@
 				<h2>Лента событий</h2>
 				<div class="row">
 					<div class="span event" style="width: 280px;">
-						<div class="event-date">12.06.2012</div>
-						<div class="event-content">
-							<p>Выплата бонусов партнерам системы HeyMoose! &raquo;</p>
-						</div>
-					</div>
-					<div class="span event" style="width: 280px;">
 						<div class="event-date">12.05.2012</div>
 						<div class="event-content">
-							<p>Однострочная хрень &raquo;</p>
+							<p>
+								&laquo;HeyMoose!&raquo; участвует в форуме
+								<a href="http://vk.com/findit" target="_blank">Найти IT</a>
+								в качестве партнера
+							</p>
 						</div>
 					</div>
 					<div class="span event" style="width: 280px;">
-						<div class="event-date">12.04.2012</div>
+						<div class="event-date">19.04.2012</div>
 						<div class="event-content">
-							<p>Мда, все же лучше расписать на две строки &raquo;</p>
+							<p>
+								Мы вышли в финал конкурса бизнес-проектов
+								<a href="http://10k.inc.hse.ru/" target="_blank">HSE{10K}</a>
+							</p>
+						</div>
+					</div>
+					<div class="span event" style="width: 280px;">
+						<div class="event-date">30.11.2011</div>
+						<div class="event-content">
+							<p>
+								Компания &laquo;HeyMoose!&raquo; стала резидентом<br />
+								<a href="http://inc.hse.ru/" target="_blank">Бизнес-инкубатора ВШЭ</a>
+							</p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		{% endblock %}
 	</div>
 {% endblock %}
 

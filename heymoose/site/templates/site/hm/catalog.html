@@ -1,0 +1,126 @@
+{% extends "site/hm/layout.html" %}
+
+{% block title %}Каталог офферов{% endblock %}
+
+{% set activemenu = "" %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		img.offer-logo {
+			max-width: 150px;
+			max-height: 100px;
+		}
+	</style>
+{% endblock %}
+
+{% block top_unit_container %}{% endblock %}
+
+{% block content_container %}
+
+<h1 style="margin-top: 20px;">Каталог программ {{ heymoose() }}</h1>
+<p>
+	Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+	Praesent quis risus sem. Nullam at purus justo, a lacinia leo. Duis eleifend, tellus a
+	commodo vulputate, lorem erat eleifend dui, dignissim adipiscing enim enim vel diam.
+	Duis egestas tellus ut augue tristique fringilla. Duis sed placerat nisl. Praesent
+	sagittis aliquam felis, in sollicitudin est lobortis eget. 
+</p>
+
+<table>
+	<thead>
+		<tr>
+			<th></th>
+			<th>Действие</th>
+			<th class="right">Цена</th>
+			<th>Описание</th>
+			<th>Категории</th>
+			<th>Регионы</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="minimal center" rowspan="3">
+				<img src="{{ url_for('static', filename='./img/partners/hse.gif') }}" alt="" class="offer-logo" />
+				<div>Инкубатор HSE-Inc</div>
+			</td>
+			
+			<td style="width: 150px;">Регистрация</td>
+			<td class="right" style="width: 100px;">20.00 руб.</td>
+			
+			<td class="small" rowspan="3">
+				Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+				Praesent quis risus sem. Nullam at purus justo, a lacinia leo.
+			</td>
+			<td class="small" rowspan="3">Бизнес-инкубаторы, Высшие школы экономики, ВИП-эскорт</td>
+			<td class="small" rowspan="3">Россия, СНГ, Германия</td>
+		</tr>
+		<tr>
+			<td>Пополнение счета</td>
+			<td class="right">35.00 руб.</td>
+		</tr>
+		<tr>
+			<td>Покупка товара</td>
+			<td class="right">5.25 %</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center" rowspan="2">
+				<img src="{{ url_for('static', filename='./img/partners/digitallhr.png') }}" alt="" class="offer-logo" />
+				<div>DigitallHR</div>
+			</td>
+			
+			<td style="width: 150px;">Регистрация</td>
+			<td class="right" style="width: 100px;">20.00 руб.</td>
+			
+			<td class="small" rowspan="2">
+				Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+			</td>
+			<td class="small" rowspan="2">Бизнес-инкубаторы, Высшие школы экономики, ВИП-эскорт</td>
+			<td class="small" rowspan="2">Россия, СНГ, Германия</td>
+		</tr>
+		<tr>
+			<td style="width: 150px;">Пополнение счета</td>
+			<td class="right" style="width: 100px;">35.00 руб.</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<img src="{{ url_for('static', filename='./img/partners/nevosoft.jpg') }}" alt="" class="offer-logo" />
+				<div>Nevosoft</div>
+			</td>
+			
+			<td style="width: 150px;">Регистрация</td>
+			<td class="right" style="width: 100px;">20.00 руб.</td>
+			
+			<td class="small">
+				Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+				Praesent quis risus sem. Nullam at purus justo, a lacinia leo.
+			</td>
+			<td class="small">Бизнес-инкубаторы, Высшие школы экономики, ВИП-эскорт</td>
+			<td class="small">Россия, СНГ, Германия</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="row">
+	<div class="span12">
+		<p>
+			На данный момент вы видите только ТОП-10 наиболее популярных рекламных предложений.
+			Для того, чтобы получить доступ ко всем рекламным предложениям, вам необходимо нажать
+			на кнопку &laquo;Зарегистрироваться&raquo; и заполнить несложную форму регистрации.
+		</p>
+	</div>
+	<div class="span" style="margin-top: 8px;">
+		<a href="{{ url_for('.register_affiliate') }}" class="btn moose large">Зарегистрироваться</a>
+	</div>
+</div>
+
+{#
+<p class="center" style="font-size: 16px;">
+	На данный момент вы видите только ТОП-10 наиболее популярных рекламных предложений.
+	После регистрации в&nbsp;{{ heymoose(false) }} вам будут доступны все рекламные предложения.
+</p>
+#}
+
+{% endblock %}

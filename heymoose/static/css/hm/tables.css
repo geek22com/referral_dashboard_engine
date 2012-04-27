@@ -1,0 +1,21 @@
+table th, table td {
+	border-bottom: 1px solid #ccc;
+}
+
+table th.noborder, table td.noborder {
+	border: 0;
+}
+
+table th {
+	font-size: 16px;
+	font-weight: normal;
+	color: #0093dd;
+}
+
+table td.minimal, table th.minimal {
+	width: 1%;
+}
+
+table td.small {
+	font-size: 11px;
+}

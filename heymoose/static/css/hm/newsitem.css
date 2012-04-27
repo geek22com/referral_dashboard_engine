@@ -43,7 +43,7 @@
 .event {
 	margin-top: 20px;
 	margin-bottom: 20px;
-	height: 40px;
+	height: 45px;
 	overflow: hidden;
 }
 
@@ -71,4 +71,9 @@
 
 .event-content > p {
 	line-height: 14px;
+}
+
+.event-content a, .event-content a:hover, .event-content a:visited {
+	color: #fff;
+	text-decoration: underline;
 }

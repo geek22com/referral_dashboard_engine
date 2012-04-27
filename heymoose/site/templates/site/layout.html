@@ -96,13 +96,7 @@
 		</ul>
 	</li>
 	{% else %}
-	<li class="dropdown">
-		<a class="dropdown-toggle" href="#">Регистрация</a>
-		<ul class="dropdown-menu">
-			<li id="menu-item-register-advertiser"><a href="{{ url_for('.register_advertiser') }}">Рекламодателя</a></li>
-			<li id="menu-item-register-affiliate"><a href="{{ url_for('.register_affiliate') }}">Партнёра</a></li>
-		</ul>
-	</li>
+	<li id="menu-item-register"><a href="{{ url_for('.register') }}">Регистрация</a></li>
 	<li id="menu-item-login">
 		<a href="{{ url_for('.login') }}" data-controls-modal="login-modal" 
 		 data-backdrop="true" data-keyboard="true">Войти</a>

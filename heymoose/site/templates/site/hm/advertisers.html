@@ -1,35 +1,6 @@
-{% extends "site/hm/layout.html" %}
+{% extends "site/hm/advertisers-layout.html" %}
 
 {% block title %}Рекламодателям{% endblock %}
-
-{% set activemenu = "advertisers" %}
-
-{% block top_unit_content %}
-	<div class="right">
-		Менеджер по работе с рекламодателями: <span class="moose">Кирилл Шилов</span>
-		<p class="support right">
-			<span class="support-item">
-				<img src="{{ url_for('static', filename='./img/hm/phone.png') }}" alt="Телефон" />
-				<span class="hey">+7 (905) 710-19-92</span>
-			</span>
-			<span class="support-item">
-				<img src="{{ url_for('static', filename='./img/hm/mail.png') }}" alt="E-mail" />
-				<a href="mailto:ks.shilov@heymoose.com">ks.shilov@heymoose.com</a>
-			</span>
-			<span class="support-item">
-				<img src="{{ url_for('static', filename='./img/hm/skype.png') }}" alt="Skype" />
-				<a href="skype:ksshilov">ksshilov</a>
-			</span>
-		</p>
-	</div>
-	<div class="top-unit-text compact">
-		<p>
-			Уважаемые рекламодатели, в случае возникновения проблем при регистрации или
-			дополнительных вопросов, на которые вы не нашли ответов на сайте, обязательно
-			обратитесь к нашему менеджеру.
-		</p>
-	</div>
-{% endblock %}
 
 {% block content %}
 <h1 class="hm-roundbox-header">Рекламодателям {{ heymoose() }}</h1>
@@ -37,109 +8,138 @@
 <div class="row">
 	<div class="span newsitem" style="width: 280px;">
 		<h4>
-			<a href="#">Стартапам</a>
+			Стартапам
 			<span class="section-divider">/</span>
-			Прокачаем ваш бизнес!
+			<a href="{{ url_for('.special', name='startups') }}">Прокачаем ваш бизнес!</a>
 		</h4>
 		<p>
-			Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
-			и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда.
-			<a href="#">читать &raquo;</a>
+			Специально для начинающих компаний мы предлагаем размещение рекламы в нашей сети с
+			низким порогом старта. Вы платите 20 тысяч рублей, и мы превращаем их в ваших клиентов.
+			<a href="{{ url_for('.special', name='startups') }}">читать &raquo;</a>
 		</p>
 	</div>
 	<div class="span newsitem" style="width: 280px;">
 		<h4>
-			<a href="#">Стартапам</a>
+			Рекламным агентствам
 			<span class="section-divider">/</span>
-			Прокачаем ваш бизнес!
+			<a href="{{ url_for('.special', name='agencies') }}">Выгодно!</a>
 		</h4>
 		<p>
-			Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
-			и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда.
-			<a href="#">читать &raquo;</a>
-		</p>
-	</div>
-	<div class="span newsitem" style="width: 280px;">
-		<h4>
-			<a href="#">Стартапам</a>
-			<span class="section-divider">/</span>
-			Прокачаем ваш бизнес!
-		</h4>
-		<p>
-			Мы размещаем рекламу и информацию о вашей фирме в игровых приложениях в социальных сетях
-			и рекламу в мобильных играх, а так же предлагаем средства как для раскрутки бренда.
-			<a href="#">читать &raquo;</a>
+			Рекламным агентствам, которые заинтересованы в больших объемах трафика, мы предоставляем
+			набор действительно выгодных и удобных сервисов.
+			<a href="{{ url_for('.special', name='agencies') }}">читать &raquo;</a>
 		</p>
 	</div>
 </div>
 <hr style="margin-top: 0;" />
 <div class="article">
-	<h3>Что такое партнерская программа {{ heymoose(false) }}?</h3>
 	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet tincidunt risus.
-		Maecenas varius egestas sem, vitae molestie risus rutrum eu. Morbi in nisi urna. Donec
-		commodo porta lectus, at vehicula arcu sollicitudin in. Proin nec erat lorem. Proin tempor
-		scelerisque sapien, vel dictum nisi blandit vitae. Phasellus sed semper turpis. Nunc
-		rhoncus fermentum egestas. Integer fringilla ullamcorper ipsum. In vel tempor nulla.
-		Aenean ullamcorper, libero at aliquet sollicitudin, turpis massa luctus orci, eget dictum
-		ante nunc sed nulla. Quisque id est sit amet arcu laoreet eleifend a ac massa. Nullam non
-		sem eget lorem tempor vehicula vitae ac neque. Donec quis orci dolor.
+		Стопроцентная отдача от рекламы &mdash; мечта? С помощью нашей системы безрискового
+		интернет-маркетинга эта мечта становится реальностью. Согласитесь, намного удобнее
+		планировать рекламный бюджет, заранее зная, во сколько обойдется привлечение каждого
+		клиента? А как насчет приятного дополнения в виде продвижения собственного бренда?
+		Дальнейшая информация &mdash; только для тех, кто хочет получить действительно
+		эффективное продвижение своих товаров и услуг и заработать много денег.
 	</p>
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet tincidunt risus.
-		Maecenas varius egestas sem, vitae molestie risus rutrum eu. Morbi in nisi urna. Donec
-		commodo porta lectus, at vehicula arcu sollicitudin in. Proin nec erat lorem. Proin tempor
-		scelerisque sapien, vel dictum nisi blandit vitae. Phasellus sed semper turpis. Nunc
-		rhoncus fermentum egestas. Integer fringilla ullamcorper ipsum. In vel tempor nulla.
-		Aenean ullamcorper, libero at aliquet sollicitudin, turpis massa luctus orci, eget dictum
-		ante nunc sed nulla. Quisque id est sit amet arcu laoreet eleifend a ac massa. Nullam non
-		sem eget lorem tempor vehicula vitae ac neque. Donec quis orci dolor.
-	</p>
+	
 	<h3>Какую проблему решает {{ heymoose(false) }}?</h3>
 	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet tincidunt risus.
-		Maecenas varius egestas sem, vitae molestie risus rutrum eu. Morbi in nisi urna. Donec
-		commodo porta lectus, at vehicula arcu sollicitudin in. Proin nec erat lorem. Proin tempor
-		scelerisque sapien, vel dictum nisi blandit vitae. Phasellus sed semper turpis. Nunc
-		rhoncus fermentum egestas. Integer fringilla ullamcorper ipsum. In vel tempor nulla.
-		Aenean ullamcorper, libero at aliquet sollicitudin, turpis massa luctus orci, eget dictum
-		ante nunc sed nulla. Quisque id est sit amet arcu laoreet eleifend a ac massa. Nullam non
-		sem eget lorem tempor vehicula vitae ac neque. Donec quis orci dolor.
+		При работе с партнерами напрямую возникает множество проблем: вам необходимо
+		разработать автоматизированную партнерскую систему, которая обеспечивает прозрачное
+		взаимодействие партнеров с вашим товаром, предоставляет статистику показов, кликов,
+		действий, которые совершают клиенты на вашем сайте, обеспечивает своевременные
+		выплаты, а также техническую поддержку. Более того, вам придется потратить средства
+		на привлечение самих партнеров. Все это делает компания &laquo;HeyMoose!&raquo;,
+		предоставляя вам полный спектр услуг партнерского маркетинга. Вам остается только
+		загрузить промо-материалы к нам на сайт, и ждать, когда клиенты начнут покупать ваш товар.
 	</p>
-	<h3>Преимущества партнерской программы {{ heymoose() }}</h3>
+	
+	<h3>Преимущества партнерской программы {{ heymoose(false) }}</h3>
 	<ul class="dashed-list">
 		<li>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet tincidunt risus.
-			Maecenas varius egestas sem, vitae molestie risus rutrum eu.
+			Мы работаем только с компаниями, которые ориентированы, в первую очередь, на
+			увеличение своей прибыли.
 		</li>
 		<li>
-			Morbi in nisi urna. Donec commodo porta lectus, at vehicula arcu sollicitudin in. Proin
-			nec erat lorem. Proin tempor scelerisque sapien, vel dictum nisi blandit vitae.
+			Каждый клиент получает своего персонального менеджера, который консультирует и
+			решает все возникшие проблемы. Более того, система поощрения сотрудников построена
+			таким образом, что каждый из них лично заинтересован в увеличении ваших доходов.
 		</li>
 		<li>
-			Phasellus sed semper turpis. Nunc rhoncus fermentum egestas. Integer fringilla ullamcorper
-			ipsum. In vel tempor nulla.
+			&laquo;HeyMoose!&raquo; для тех, кто верит в эффективное сотрудничество 
+			бизнес-партнеров и привык решать проблемы быстро и оперативно, тем самым постоянно
+			увеличивая эффективность и доход своей компании.
 		</li>
 		<li>
-			Aenean ullamcorper, libero at aliquet sollicitudin, turpis massa luctus orci, eget dictum
-			ante nunc sed nulla. Quisque id est sit amet arcu laoreet eleifend a ac massa. Nullam non
-			sem eget lorem tempor vehicula vitae ac neque. Donec quis orci dolor.
+			Мы привлекаем только сильных партнеров, профессионалов своего дела. Поэтому Ваша
+			рекламная компания будет иметь быстрый и качественный отклик в виде увеличения
+			прибыли.
 		</li>
 	</ul>
-	{% if not g.user %}
-	<h3>Стать рекламодателем партнерской программы {{ heymoose(false) }} очень просто!</h3>
-	<div class="row">
-		<div class="span" style="margin-top: 8px;">
-			<a href="{{ url_for('.register_advertiser') }}" class="btn moose large">Зарегистрироваться</a>
-		</div>
-		<div class="span12">
-			<p>
-				Для этого вам необходимо нажать на кнопку &laquo;Зарегистрироваться&raquo; и заполнить
-				несложную форму регистрации. Наш специалист свяжется с вами в самое ближайшее время
-				и поможет выбрать оптимальные параметры для вашей рекламной кампании.
-			</p>
-		</div>
-	</div>
-	{% endif %}
+	
+	<h3>Работа с {{ heymoose(false) }} на примере</h3>
+	<ol class="enumerated-list">
+		<li>Вы хотите увеличить продажи в своем интернет-магазине.
+			Загружаете рекламные материалы и выставляете оплату вебмастеру (в виде процента от продажи
+			или фиксированной суммы за регистрацию/заказ товара). Если ваше предложение интересно
+			вебмастеру, он размещает его у себя на сайте, а вы в личном кабинете отслеживаете количество
+			совершенных с его помощью действий.
+		</li>
+		<li>
+			Предположим вы разработали игру для iPhone. Потратили время и деньги на
+			программирование, графику и теперь осталось только разместить игру в AppStore и начать
+			зарабатывать деньги. После размещения вы получаете трафик с раздела &laquo;новинки&raquo;,
+			а дальше перед вами встает задача, как оставить игру на плаву и получить постоянный приток новых
+			пользователей, так как рекламные сети типа AdMob и iAd не так эффективны как о них пишут.
+			Вам необходимо поддерживать интерес к игре, привлекать новых пользователей при апдейтах
+			и т.д. Проблему привлечения пользователей решает сеть HeyMoose, мы размещаем ваше
+			приложение у нас, оно становится доступно нашим партнерам(опытные интернет маркетологи,
+			а также владельцы тематических ресурсов), вы получаете пользователей. Оплата происходит,
+			только за выбранные вами типы действий: установки, прохождение уровней. В личном кабинете
+			HeyMoose вы отслеживаете статистику, а также видите от каких партнеров вы получаете наиболее
+			качественный трафик.
+		</li>
+	</ol>
+	
+	<h3>Преимущества CPA-рекламы</h3>
+	<p class="center">
+		Интернет-маркетинг без рисков защищает ваши деньги от нецелевого использования.
+	</p>
+	<p>
+		Будем откровенны, мы все знаем, что, как бы идеально не был бы запланирован рекламный
+		бюджет, даже если аналитикой занималась сотня китайских и 15 британских ученых, даже если
+		мы обращаемся в супер-проверенное рекламное агентство, бОльшая часть денег все равно
+		вылетит в трубу. И это не от того, что статистика не верна. Просто люди &mdash; такие непостоянные.
+		Сегодня поголовно любят, скажем, сахарные пончики, а завтра ни в какую их покупать не желают.
+		Даже со скидкой в 100%. Но даже если вы пончик и вас уже съели &mdash; выход все равно есть.
+	</p>
+	<p>
+		Главная ошибка, которую совершают маркетологи &mdash; выбор целевых ресурсов для рекламы
+		определенных товаров. Кто сказал, что участники сообщества, скажем,
+		велосипедистов-горнолыжников будут интересоваться исключительно спортивными напитками,
+		а пончики покупать ни в коем случае не станут?
+	</p>
+	<p>
+		Практика показывает, что эффективней СРА остается только сарафанное радио. А что надо
+		сделать, чтобы о вашем товаре заговорили? Правильно &mdash; у вас должны его купить и попробовать.
+		Конечно, на качество отзывов о вашем продукте мы повлиять не можем, но мы можем сделать
+		так, чтобы у вас стало больше покупателей.
+	</p>
+	<p>
+		<b>СРА</b> (<i>cost per action</i>) &mdash; это реклама с оплатой за действие. Вы платите
+		только за ту пользу, которую принесет вам реклама. Это настолько прозрачная схема привлечения
+		клиентов, что по традиции компании, которые предоставляют такие услуги, называют не рекламными
+		агентствами, а партнерами, или партнерской сетью. Согласитесь, приятнее общаться с партнером,
+		который заинтересован в твоем процветании, чем с подрядчиком, который чаще думает лишь о том, как
+		сделать меньше работы за бОльшие деньги.
+	</p>
+	<p>
+		На чем основано доверие? Вы не вкладываете свои деньги в цветные картинки, которые кто-то
+		где-то разместит. Вы даете партнеру вознаграждение за то, что он привел вам клиентов.
+		Стоимость вознаграждения вы устанавливаете перед началом рекламной кампании. Таким
+		образом, вы заранее знаете во что вам обойдется каждый привлеченный клиент. Разумеется, если
+		оплата будет заниженной &mdash; работать с вами никто не будет. Но, поверьте, затраты того стоят.
+	</p>
 </div>
+{{ super() }}
 {% endblock %}

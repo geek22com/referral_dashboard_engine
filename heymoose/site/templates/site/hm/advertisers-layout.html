@@ -1,0 +1,50 @@
+{% extends "site/hm/layout.html" %}
+
+{% set activemenu = "advertisers" %}
+
+{% block top_unit_content %}
+	<div class="right">
+		Менеджер по работе с рекламодателями: <span class="moose">Кирилл Шилов</span>
+		<p class="support right">
+			<span class="support-item">
+				<img src="{{ url_for('static', filename='./img/hm/phone.png') }}" alt="Телефон" />
+				<span class="hey">+7 (905) 710-19-92</span>
+			</span>
+			<span class="support-item">
+				<img src="{{ url_for('static', filename='./img/hm/mail.png') }}" alt="E-mail" />
+				<a href="mailto:ks.shilov@heymoose.com">ks.shilov@heymoose.com</a>
+			</span>
+			<span class="support-item">
+				<img src="{{ url_for('static', filename='./img/hm/skype.png') }}" alt="Skype" />
+				<a href="skype:ksshilov">ksshilov</a>
+			</span>
+		</p>
+	</div>
+	<div class="top-unit-text compact">
+		<p>
+			Уважаемые рекламодатели, в случае возникновения проблем при регистрации или
+			дополнительных вопросов, на которые вы не нашли ответов на сайте, обязательно
+			обратитесь к нашему менеджеру.
+		</p>
+	</div>
+{% endblock %}
+
+{% block content %}
+{% if not g.user %}
+<div class="article">
+	<h3>Стать рекламодателем партнерской программы {{ heymoose(false) }} очень просто!</h3>
+	<div class="row">
+		<div class="span" style="margin-top: 8px;">
+			<a href="{{ url_for('.register_advertiser') }}" class="btn moose large">Зарегистрироваться</a>
+		</div>
+		<div class="span12">
+			<p>
+				Для этого вам необходимо нажать на кнопку &laquo;Зарегистрироваться&raquo; и заполнить
+				несложную форму регистрации. Наш специалист свяжется с вами в самое ближайшее время
+				и поможет выбрать оптимальные параметры для вашей рекламной кампании.
+			</p>
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endblock %}

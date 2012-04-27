@@ -1,0 +1,50 @@
+{% extends "site/hm/layout.html" %}
+
+{% set activemenu = "affiliates" %}
+
+{% block top_unit_content %}
+	<div class="right">
+		Менеджер по работе с партнерами: <span class="moose">Дмитрий Павлов</span>
+		<p class="support right">
+			<span class="support-item">
+				<img src="{{ url_for('static', filename='./img/hm/phone.png') }}" alt="Телефон" />
+				<span class="hey">+7 (916) 082-20-87</span>
+			</span>
+			<span class="support-item">
+				<img src="{{ url_for('static', filename='./img/hm/mail.png') }}" alt="E-mail" />
+				<a href="mailto:dmitriy.pavlov@heymoose.com">dmitriy.pavlov@heymoose.com</a>
+			</span>
+			<span class="support-item">
+				<img src="{{ url_for('static', filename='./img/hm/skype.png') }}" alt="Skype" />
+				<a href="skype:ragdar777">ragdar777</a>
+			</span>
+		</p>
+	</div>
+	<div class="top-unit-text compact">
+		<p>
+			Уважаемые партнёры, в случае возникновения проблем при регистрации или
+			дополнительных вопросов, на которые вы не нашли ответов на сайте, обязательно
+			обратитесь к нашему менеджеру.
+		</p>
+	</div>
+{% endblock %}
+
+{% block content %}
+{% if not g.user %}
+<div class="article">
+	<h3>Стать партнёром программы {{ heymoose(false) }} очень просто!</h3>
+	<div class="row">
+		<div class="span" style="margin-top: 8px;">
+			<a href="{{ url_for('.register_affiliate') }}" class="btn moose large">Зарегистрироваться</a>
+		</div>
+		<div class="span12">
+			<p>
+				Для этого вам необходимо нажать на кнопку &laquo;Зарегистрироваться&raquo; и заполнить
+				несложную форму регистрации. Наш специалист свяжется с вами в самое ближайшее время
+				и поможет выбрать оптимальные рекламные кампании для ваших площадок.
+			</p>
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endblock %}

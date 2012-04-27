@@ -149,6 +149,13 @@ def news_item(name):
 	except:
 		abort(404)
 
+@bp.route('/special/<name>')
+def special(name):
+	try:
+		return render_template('site/hm/special-{0}.html'.format(name))
+	except:
+		abort(404)
+
 @bp.route('/new/')
 def new_index():
 	if not g.user or not g.user.is_admin: abort(403)
@@ -158,6 +165,11 @@ def new_index():
 def new_advertisers():
 	if not g.user or not g.user.is_admin: abort(403)
 	return render_template('site/hm/advertisers.html')
+
+@bp.route('/new/affiliates')
+def new_affiliates():
+	if not g.user or not g.user.is_admin: abort(403)
+	return render_template('site/hm/affiliates.html')
 
 @bp.route('/new/contacts')
 def new_contacts():

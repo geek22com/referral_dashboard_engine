@@ -1,0 +1,23 @@
+{% extends "site/hm/register-layout.html" %}
+
+{% block title %}Регистрация рекламодателя{% endblock %}
+
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			var form = $('#form-register');
+			form.find('.messenger-type').change(function() {
+				var messengerUidField = form.find('.messenger-uid');
+				if ($(this).val())
+					messengerUidField.show('fast');
+				else
+					messengerUidField.hide('fast');
+			}).change();
+		})
+	</script>
+{% endblock %}
+
+{% block role_title %}
+<h2>Регистрация рекламодателя</h2>
+{% endblock %}

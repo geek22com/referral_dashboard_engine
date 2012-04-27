@@ -158,3 +158,15 @@ def new_contacts():
 	form = forms.ContactForm()
 	return render_template('site/hm/contacts.html', form=form)
 
+@bp.route('/new/register/advertiser')
+def new_register_advertiser():
+	if not g.user or not g.user.is_admin: abort(403)
+	form = forms.AdvertiserRegisterForm(request.form)
+	return render_template('site/hm/register-advertiser.html', form=form)
+
+@bp.route('/new/register/affiliate')
+def new_register_affiliate():
+	if not g.user or not g.user.is_admin: abort(403)
+	form = forms.AffiliateRegisterForm(request.form)
+	return render_template('site/hm/register-affiliate.html', form=form)
+

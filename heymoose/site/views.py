@@ -133,10 +133,8 @@ def confirm(id, code):
 		rc.users.confirm(user.id)
 		mmail.lists_add_user(user)
 		success = True
-	return render_template('site/confirm.html', success=success)
+	return render_template('site/hm/confirm.html', success=success)
 
-
-###
 
 @bp.route('/news/<name>')
 def news_item(name):

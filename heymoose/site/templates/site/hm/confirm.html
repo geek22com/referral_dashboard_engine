@@ -1,0 +1,33 @@
+{% extends "site/hm/layout.html" %}
+
+{% block title %}Подтверждение регистрации{% endblock %}
+
+{% set activemenu = "" %}
+
+{% block top_unit_container %}
+<div class="center">
+	<img src="{{ url_for('static', filename='./img/logo_200x150.png') }}" alt="HeyMoose" />
+</div>
+{% endblock %}
+
+{% block content %}
+<h1 class="hm-roundbox-header">Подтверждение регистрации в {{ heymoose() }}</h1>
+	
+{% if success %}
+	<div class="clearfix alert-message block-message success">
+		<p>
+			<strong>Почтовый адрес подтвержден.</strong>
+			Спасибо! Теперь вы можете пользоваться системой &laquo;HeyMoose!&raquo;
+		</p>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message error">
+		<p>
+			<strong>Неверный код подтверждения.</strong>
+			Попробуйте выслать письмо с подтверждением повторно из вашего личного кабинета.
+			Если проблема будет повторяться, обратитесь к администрации.
+		</p>
+	</div>
+{% endif %}
+
+{% endblock %}

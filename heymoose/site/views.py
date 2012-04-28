@@ -16,7 +16,8 @@ import random
 
 @bp.route('/')
 def main_index():
-	return render_template('site/main-index.html')
+	return redirect('http://partner.heymoose.com')
+	#return render_template('site/main-index.html')
 
 @bp.route('/index')
 def index():

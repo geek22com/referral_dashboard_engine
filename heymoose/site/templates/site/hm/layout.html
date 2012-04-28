@@ -251,11 +251,12 @@
 				{{ forms.singlefield_stacked(g.params.loginform.password, class='span4', type='password') }}
 				<div>
 					{{ g.params.loginform.remember() }} запомнить меня
+					<div class="float-right">
+						<input type="submit" class="btn hey" value="Войти" />
+					</div>
 				</div>
 			</fieldset>
-			<div class="center">
-				<input type="submit" class="btn hey" value="Войти" />
-			</div>
+			
 			</div>
 		</div>
 	</form>

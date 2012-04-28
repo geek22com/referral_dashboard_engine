@@ -19,13 +19,6 @@
 {% block content_container %}
 
 <h1 style="margin-top: 20px;">Каталог программ {{ heymoose() }}</h1>
-<p>
-	Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-	Praesent quis risus sem. Nullam at purus justo, a lacinia leo. Duis eleifend, tellus a
-	commodo vulputate, lorem erat eleifend dui, dignissim adipiscing enim enim vel diam.
-	Duis egestas tellus ut augue tristique fringilla. Duis sed placerat nisl. Praesent
-	sagittis aliquam felis, in sollicitudin est lobortis eget. 
-</p>
 
 <table>
 	<thead>
@@ -40,65 +33,157 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td class="minimal center" rowspan="3">
-				<img src="{{ url_for('static', filename='./img/partners/hse.gif') }}" alt="" class="offer-logo" />
-				<div>Инкубатор HSE-Inc</div>
+			<td class="minimal center">
+				<a href="http://tmgame.ru" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/1.jpg') }}" alt="" class="offer-logo" />
+					<div>Браузерная онлайн-игра &laquo;Техномагия&raquo;</div>
+				</a>
 			</td>
 			
-			<td style="width: 150px;">Регистрация</td>
-			<td class="right" style="width: 100px;">20.00 руб.</td>
+			<td style="width: 150px;">Регистрация в игре</td>
+			<td class="right" style="width: 100px;">10.50 руб.</td>
 			
-			<td class="small" rowspan="3">
-				Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-				Praesent quis risus sem. Nullam at purus justo, a lacinia leo.
+			<td class="small">
+				&laquo;Техномагия&raquo; &mdash; это бесплатная браузерная онлайн игра в жанре MMORPG.
+				&laquo;Техномагия&raquo; является проектом компании &laquo;GD-team Limited&raquo; &mdash;
+				разработчиком многих популярных браузерных проектов и приложений в социальных сетях.
 			</td>
-			<td class="small" rowspan="3">Бизнес-инкубаторы, Высшие школы экономики, ВИП-эскорт</td>
-			<td class="small" rowspan="3">Россия, СНГ, Германия</td>
-		</tr>
-		<tr>
-			<td>Пополнение счета</td>
-			<td class="right">35.00 руб.</td>
-		</tr>
-		<tr>
-			<td>Покупка товара</td>
-			<td class="right">5.25 %</td>
-		</tr>
-		
-		<tr>
-			<td class="minimal center" rowspan="2">
-				<img src="{{ url_for('static', filename='./img/partners/digitallhr.png') }}" alt="" class="offer-logo" />
-				<div>DigitallHR</div>
-			</td>
-			
-			<td style="width: 150px;">Регистрация</td>
-			<td class="right" style="width: 100px;">20.00 руб.</td>
-			
-			<td class="small" rowspan="2">
-				Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-			</td>
-			<td class="small" rowspan="2">Бизнес-инкубаторы, Высшие школы экономики, ВИП-эскорт</td>
-			<td class="small" rowspan="2">Россия, СНГ, Германия</td>
-		</tr>
-		<tr>
-			<td style="width: 150px;">Пополнение счета</td>
-			<td class="right" style="width: 100px;">35.00 руб.</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">Россия, СНГ</td>
 		</tr>
 		
 		<tr>
 			<td class="minimal center">
-				<img src="{{ url_for('static', filename='./img/partners/nevosoft.jpg') }}" alt="" class="offer-logo" />
-				<div>Nevosoft</div>
+				<a href="http://livjornal.ru/Pohudei/index.php?click=277&heymoose=true" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/2.png') }}" alt="" class="offer-logo" />
+					<div>Эффективная методика диет &mdash; CD-курс</div>
+				</a>
 			</td>
 			
-			<td style="width: 150px;">Регистрация</td>
-			<td class="right" style="width: 100px;">20.00 руб.</td>
+			<td style="width: 150px;">Подтвержденный заказ</td>
+			<td class="right" style="width: 100px;">210.00 руб.</td>
 			
 			<td class="small">
-				Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-				Praesent quis risus sem. Nullam at purus justo, a lacinia leo.
+				Похудение 25-й кадр. CD-курс &mdash; методика похудения. 
 			</td>
-			<td class="small">Бизнес-инкубаторы, Высшие школы экономики, ВИП-эскорт</td>
-			<td class="small">Россия, СНГ, Германия</td>
+			<td class="small">Инфопродукты</td>
+			<td class="small">Россия, Украина, Молдавия, Казахстан, Беларусь, Грузия, Эстония, Киргизия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://livjornal.ru/Ania/index.php?click=277&heymoose=true" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/3.png') }}" alt="" class="offer-logo" />
+					<div>Рост груди &mdash; CD-курс</div>
+				</a>
+			</td>
+			
+			<td style="width: 150px;">Подтвержденный заказ</td>
+			<td class="right" style="width: 100px;">210.00 руб.</td>
+			
+			<td class="small">
+				CD-курс &mdash; пособие по увеличению груди. 
+			</td>
+			<td class="small">Инфопродукты</td>
+			<td class="small">Россия, Украина, Молдавия, Казахстан, Беларусь, Грузия, Эстония, Киргизия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://www.romadoria.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/4.png') }}" alt="" class="offer-logo" />
+					<div>Romadoria</div>
+				</a>
+			</td>
+			
+			<td style="width: 150px;">Регистрация в игре</td>
+			<td class="right" style="width: 100px;">11.20 руб.</td>
+			
+			<td class="small">
+				Ромадория &mdash; новейшая, бесплатная онлайн стратегия, действия которой разворачиваются
+				в эпоху Древнего Рима. Погрузись в удивительтный мир открытий, завоеваний и отважных сражений!
+				Завоюй свое место под Солнцем и докажи, что ты искусный стратег!
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://www.desert-operations.ru" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/5.jpg') }}" alt="" class="offer-logo" />
+					<div>Desert Operations</div>
+				</a>
+			</td>
+			
+			<td style="width: 150px;">Регистрация в игре</td>
+			<td class="right" style="width: 100px;">11.20 руб.</td>
+			
+			<td class="small">
+				Являясь Владыкой своей территории, ты сражаешься с тысячами других игроков.
+				Обороняйся от вражеских нападений! Создавай альянсы и стань лучше всех!
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://sxodnoklassniki.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/7.gif') }}" alt="" class="offer-logo" />
+					<div>Сексоклассники</div>
+				</a>
+			</td>
+			
+			<td style="width: 150px;">Ввод номера</td>
+			<td class="right" style="width: 100px;">5.25 руб.</td>
+			
+			<td class="small">
+				Сексоклассники &mdash; социальная сеть для секс-знакомств.
+			</td>
+			<td class="small">Мобильный</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://vkeye.com" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/8.jpg') }}" alt="" class="offer-logo" />
+					<div>Гости ВКонтакте</div>
+				</a>
+			</td>
+			
+			<td style="width: 150px;">Ввод номера</td>
+			<td class="right" style="width: 100px;">5.25 руб.</td>
+			
+			<td class="small">
+				Гости вконтакте &mdash; узнай кто посещал твою страницу ВКонтакте.
+			</td>
+			<td class="small">Мобильный</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center" rowspan="2">
+				<a href="http://hoppenia.ru/reg.html" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/9.png') }}" alt="" class="offer-logo" />
+					<div>Браузерная игра &laquo;Хоппения&raquo;</div>
+				</a>
+			</td>
+			
+			<td style="width: 150px;">Достижение второго уровня</td>
+			<td class="right" style="width: 100px;">21.00 руб.</td>
+			
+			<td class="small" rowspan="2">
+				Бесплатная браузерная игра. Не нужно ничего скачивать. Играй с тысячями игроков онлайн
+				прямо сейчас, найди себе новых друзей.
+			</td>
+			<td class="small" rowspan="2">Браузерные игры</td>
+			<td class="small" rowspan="2">Россия, Украина, Белоруссия, СНГ</td>
+		</tr>
+		<tr>
+			<td style="width: 150px;">Процент с потраченных игроком средств</td>
+			<td class="right" style="width: 100px;">28.00 %</td>
 		</tr>
 	</tbody>
 </table>
@@ -107,7 +192,7 @@
 <div class="row">
 	<div class="span12">
 		<p>
-			На данный момент вы видите только ТОП-10 наиболее популярных рекламных предложений.
+			На данный момент вы видите только наиболее популярные рекламные предложения.
 			Для того, чтобы получить доступ ко всем рекламным предложениям, вам необходимо нажать
 			на кнопку &laquo;Зарегистрироваться&raquo; и заполнить несложную форму регистрации.
 		</p>

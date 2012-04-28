@@ -2,3 +2,9 @@ span.section-divider {
 	color: #bfbfbf;
 	/*padding: 0 5px;*/
 }
+
+.article p, .article ul li, .article ol li {
+	font-size: 14px;
+	line-height: 22px;
+}
+

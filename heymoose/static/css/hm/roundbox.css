@@ -4,15 +4,19 @@
 	-o-border-radius: 20px;
 	border-radius: 20px;
 	margin-top: 20px;
+	background-color: #fff;
+	box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.5);
 }
 
 .hm-roundbox-header {
-	position: absolute;
+	/*position: absolute;*/
 	text-align: right;
 	right: 40px;
-	top: -20px;
+	/*top: -20px;*/
 	background-color: #fff;
 	padding: 0 10px;
+	
+	border-bottom: 1px solid #ccc;
 }
 
 .hm-roundbox > .hm-roundbox-content:first-child {

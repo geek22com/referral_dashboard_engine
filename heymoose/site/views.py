@@ -166,6 +166,11 @@ def new_advertisers():
 	if not g.user or not g.user.is_admin: abort(403)
 	return render_template('site/hm/advertisers.html')
 
+@bp.route('/new/advertisers/cpa')
+def new_advertisers_cpa():
+	if not g.user or not g.user.is_admin: abort(403)
+	return render_template('site/hm/advertisers-cpa.html')
+
 @bp.route('/new/affiliates')
 def new_affiliates():
 	if not g.user or not g.user.is_admin: abort(403)

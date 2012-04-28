@@ -103,6 +103,7 @@
 	</tbody>
 </table>
 
+{% if not g.user %}
 <div class="row">
 	<div class="span12">
 		<p>
@@ -115,6 +116,7 @@
 		<a href="{{ url_for('.register_affiliate') }}" class="btn moose large">Зарегистрироваться</a>
 	</div>
 </div>
+{% endif %}
 
 {#
 <p class="center" style="font-size: 16px;">

@@ -35,7 +35,7 @@
 		<div class="row">
 			<div class="span" style="width: 438px;">
 				<h2 class="bigger mrg-15b">
-					<a href="{{ url_for('.new_advertisers') }}" class="hm-dashed-link sky">Рекламодателю</a>
+					<a href="{{ url_for('.advertisers') }}" class="hm-dashed-link sky">Рекламодателю</a>
 				</h2>
 				<h3>Хотите платить за конкретный результат?</h3>
 				<p>
@@ -51,12 +51,12 @@
 				</p>
 				<div class="more-container">
 					<span class="more">
-						<a href="{{ url_for('.new_advertisers') }}" class="hm-dashed-link white">Подробнее</a> &raquo;
+						<a href="{{ url_for('.advertisers') }}" class="hm-dashed-link white">Подробнее</a> &raquo;
 					</span>
 				</div>
 			</div>
 			<div class="span" style="width: 438px;">
-				<h2 class="bigger mrg-15b"><a href="#" class="hm-dashed-link sky">Партнёру</a></h2>
+				<h2 class="bigger mrg-15b"><a href="{{ url_for('.affiliates') }}" class="hm-dashed-link sky">Партнёру</a></h2>
 				<h3>Хотите денег?</h3>
 				<p>
 					У вас есть популярный сайт, или сеть сайтов? Вы профессионально занимаетесь арбитражем
@@ -71,7 +71,7 @@
 				</p>
 				<div class="more-container">
 					<span class="more">
-						<a href="#" class="hm-dashed-link white">Подробнее</a> &raquo;
+						<a href="{{ url_for('.affiliates') }}" class="hm-dashed-link white">Подробнее</a> &raquo;
 					</span>
 				</div>
 			</div>

@@ -14,7 +14,7 @@ from datetime import datetime
 
 @bp.route('/')
 def index():
-	return render_template('site/index.html')
+	return render_template('site/hm/index.html')
 
 @bp.route('/cpa/')
 def cpa_index():
@@ -22,11 +22,11 @@ def cpa_index():
 
 @bp.route('/advertisers')
 def advertisers():
-	return render_template('site/advertisers.html')
+	return render_template('site/hm/advertisers.html')
 
 @bp.route('/affiliates')
 def affiliates():
-	return render_template('site/affiliates.html')
+	return render_template('site/hm/affiliates.html')
 
 @bp.route('/contacts', methods=['GET', 'POST'])
 def contacts():
@@ -38,7 +38,7 @@ def contacts():
 		tmail.admin_feedback_added(contact)
 		flash(u'Спасибо, мы обязательно с вами свяжемся!', 'success')
 		return redirect(url_for('.contacts'))
-	return render_template('site/contacts.html', form=form)
+	return render_template('site/hm/contacts.html', form=form)
 
 @bp.route('/gateway')
 def gateway():
@@ -51,10 +51,6 @@ def gateway():
 	else:
 		app.logger.error('Shit happened: registered user has unknown role')
 		return redirect(url_for('.index'))
-
-@bp.route('/register/')
-def register():
-	return render_template('site/register.html')
 
 @bp.route('/register/advertiser', methods=['GET', 'POST'])
 def register_advertiser():
@@ -77,7 +73,7 @@ def register_advertiser():
 				u' было выслано письмо с подтверждением.', 'success')
 			return redirect(url_for('.gateway'))
 		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
-	return render_template('site/register-advertiser.html', form=form)
+	return render_template('site/hm/register-advertiser.html', form=form)
 			
 
 @bp.route('/register/affiliate', methods=['GET', 'POST'])
@@ -101,7 +97,7 @@ def register_affiliate():
 				u' было выслано письмо с подтверждением.', 'success')
 			return redirect(url_for('.gateway'))
 		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
-	return render_template('site/register-affiliate.html', form=form)
+	return render_template('site/hm/register-affiliate.html', form=form)
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -117,7 +113,7 @@ def login():
 			session['user_id'] = user.id
 			session.permanent = form.remember.data
 			return redirect(request.args.get('back', None) or url_for('.gateway'))
-	return render_template('site/login.html', form=form)
+	return render_template('site/hm/login.html', form=form)
 
 
 @bp.route('/logout')
@@ -156,45 +152,10 @@ def special(name):
 	except:
 		abort(404)
 
-@bp.route('/new/')
-def new_index():
-	if not g.user or not g.user.is_admin: abort(403)
-	return render_template('site/hm/index.html')
-
-@bp.route('/new/advertisers')
-def new_advertisers():
-	if not g.user or not g.user.is_admin: abort(403)
-	return render_template('site/hm/advertisers.html')
-
-@bp.route('/new/advertisers/cpa')
-def new_advertisers_cpa():
-	if not g.user or not g.user.is_admin: abort(403)
+@bp.route('/advertisers/cpa')
+def advertisers_cpa():
 	return render_template('site/hm/advertisers-cpa.html')
-
-@bp.route('/new/affiliates')
-def new_affiliates():
-	if not g.user or not g.user.is_admin: abort(403)
-	return render_template('site/hm/affiliates.html')
-
-@bp.route('/new/contacts')
-def new_contacts():
-	if not g.user or not g.user.is_admin: abort(403)
-	form = forms.ContactForm()
-	return render_template('site/hm/contacts.html', form=form)
-
-@bp.route('/new/register/advertiser')
-def new_register_advertiser():
-	if not g.user or not g.user.is_admin: abort(403)
-	form = forms.AdvertiserRegisterForm(request.form)
-	return render_template('site/hm/register-advertiser.html', form=form)
-
-@bp.route('/new/register/affiliate')
-def new_register_affiliate():
-	if not g.user or not g.user.is_admin: abort(403)
-	form = forms.AffiliateRegisterForm(request.form)
-	return render_template('site/hm/register-affiliate.html', form=form)
 
 @bp.route('/catalog/')
 def catalog():
-	if not g.user or not g.user.is_admin: abort(403)
 	return render_template('site/hm/catalog.html')

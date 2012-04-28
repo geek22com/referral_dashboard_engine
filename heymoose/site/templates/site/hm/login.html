@@ -1,0 +1,26 @@
+{% extends "site/hm/layout.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% set activemenu = "" %}
+
+{% block top_unit_container %}{% endblock %}
+
+{% block content %}
+
+	<h1 class="hm-roundbox-header">Вход в систему {{ heymoose() }}</h1>
+	
+	<div class="form-container span4" style="margin-left: 330px;">
+		<form id="login-form" action="" method="post" class="validate2">
+			<fieldset>
+				{{ forms.singlefield_stacked(form.username, class='span4', type='email') }}
+				{{ forms.singlefield_stacked(form.password, class='span4', type='password') }}
+				<div>{{ form.remember() }} запомнить меня</div>
+			</fieldset>
+			<div class="center">
+				<input type="submit" class="btn hey" value="Войти" />
+			</div>
+		</form>
+	</div>
+
+{% endblock %}

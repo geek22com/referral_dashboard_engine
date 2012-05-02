@@ -49,6 +49,7 @@ def contacts():
 
 @bp.route('/register/')
 def register():
+	return redirect(url_for('.index'))
 	ref = request.args.get('ref', None)
 	if ref:
 		session['ref'] = ref
@@ -58,6 +59,7 @@ def register():
 
 @bp.route('/register/developer', methods=['GET', 'POST'])
 def register_developer():
+	return redirect(url_for('.index'))
 	if g.user:
 		flash(u'Вы уже зарегистрированы', 'warning')
 		return redirect(url_for('.index'))
@@ -89,6 +91,7 @@ def register_developer():
 
 @bp.route('/register/customer', methods = ['GET', 'POST'])
 def register_customer():
+	return redirect(url_for('.index'))
 	if g.user:
 		flash(u'Вы уже зарегистрированы', 'warning')
 		return redirect(url_for('.index'))

@@ -249,7 +249,10 @@
 			<fieldset>
 				{{ forms.singlefield_stacked(g.params.loginform.username, class='span4', type='email') }}
 				{{ forms.singlefield_stacked(g.params.loginform.password, class='span4', type='password') }}
-				<div>
+				<div class="right">
+					<a href="{{ url_for('.password') }}">Забыли пароль?</a>
+				</div>
+				<div style="margin-top: 20px;">
 					{{ g.params.loginform.remember() }} запомнить меня
 					<div class="float-right">
 						<input type="submit" class="btn hey" value="Войти" />

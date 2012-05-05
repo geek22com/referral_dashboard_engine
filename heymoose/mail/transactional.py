@@ -40,6 +40,10 @@ def admin_order_moderation_failed(order, admin, reason):
 def user_confirm_email(user):
 	subject, text, html = render.mail_from_template('mail/user-confirm-email.html', user=user)
 	smtp.send_multipart(from_address, [user.email], subject, text, html)
+
+def user_restore_password(user, password):
+	subject, text, html = render.mail_from_template('mail/user-restore-password.html', user=user, password=password)
+	smtp.send_multipart(from_address, [user.email], subject, text, html)
 	
 def user_blocked(user, reason):
 	subject, text, html = render.mail_from_template('mail/user-blocked.html', user=user, reason=reason)

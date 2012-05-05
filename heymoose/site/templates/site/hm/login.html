@@ -10,15 +10,29 @@
 </div>
 {% endblock %}
 
+{% block flash_messages %}{% endblock %}
+
 {% block content %}
 	<h1 class="hm-roundbox-header">Вход в систему {{ heymoose() }}</h1>
+	
+	{% with messages = get_flashed_messages(with_categories=True) %}
+		{% for category, message in messages %}
+		<div class="alert-message {{ category }} fade in">
+			<a class="close" href="#">×</a>
+			<p>{{ message }}</p>
+		</div>
+		{% endfor %}
+	{% endwith %}
 	
 	<div class="form-container span4" style="margin-left: 340px;">
 		<form id="login-form" action="" method="post" class="validate2">
 			<fieldset>
 				{{ forms.singlefield_stacked(form.username, class='span4', type='email') }}
 				{{ forms.singlefield_stacked(form.password, class='span4', type='password') }}
-				<div>
+				<div class="right">
+					<a href="{{ url_for('.password') }}">Забыли пароль?</a>
+				</div>
+				<div style="margin-top: 20px;">
 					{{ form.remember() }} запомнить меня
 					<div class="float-right">
 						<input type="submit" class="btn hey" value="Войти" />

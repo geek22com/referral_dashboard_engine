@@ -124,6 +124,24 @@ def logout():
 		session.permanent = False
 	return redirect(url_for('.index'))
 
+@bp.route('/password', methods=['GET', 'POST'])
+def password():
+	if g.user:
+		return redirect(url_for('.index'))
+	
+	form = forms.ForgottenPasswordForm(request.form)
+	if request.method == 'POST' and form.validate():
+		user = rc.users.get_by_email_safe(form.email.data)
+		if user is not None:
+			new_password = user.generate_password()
+			rc.users.update(user)
+			tmail.user_restore_password(user, new_password)
+			flash(u'Новый пароль выслан на указанный электронный адрес', 'success')
+			return redirect(url_for('.login'))
+		else:
+			flash(u'Неверный e-mail', 'error')
+	return render_template('site/hm/password.html', form=form)
+
 
 @bp.route('/confirm/<int:id>/<code>')
 def confirm(id, code):

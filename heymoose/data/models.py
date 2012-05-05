@@ -2,9 +2,10 @@
 from base import models, types, registry
 from base.fields import Field, FieldList, FieldSet
 from heymoose import app
+from heymoose.utils.gen import generate_password_hash
 from decimal import Decimal
 import enums
-import os, hashlib
+import os, hashlib, uuid
 
 
 class IdentifiableModel(models.ModelBase):
@@ -72,6 +73,14 @@ class User(IdentifiableModel):
 	
 	def check_confirm_code(self, code):
 		return code == self.get_confirm_code()
+	
+	def change_password(self, raw_password):
+		self.password_hash = generate_password_hash(raw_password)
+	
+	def generate_password(self):
+		new_password = unicode(uuid.uuid4())[:8]
+		self.change_password(new_password)
+		return new_password
 
 
 class Account(IdentifiableModel):

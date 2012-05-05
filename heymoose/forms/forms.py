@@ -7,7 +7,7 @@ from heymoose import app, resource as rc
 from heymoose.core import actions
 from heymoose.data import enums
 from heymoose.filters import currency, currency_sign
-from heymoose.utils.gen import generate_password_hash, generate_unique_filename, generate_uid
+from heymoose.utils.gen import generate_unique_filename, generate_uid
 from flask import g
 import validators
 import fields as myfields
@@ -72,6 +72,9 @@ class LoginForm(Form):
 	username = TextField(u'E-mail', [validators.Required(message = u'Введите электронный адрес')])
 	password = PasswordField(u'Пароль', [validators.Required(message = u'Введите пароль')])
 	remember = BooleanField(u'Запомнить меня', default=False)
+
+class ForgottenPasswordForm(CaptchaForm):
+	email = TextField(u'E-mail', [validators.Required(message = u'Введите электронный адрес')])
 
 
 class UserFormMixin:
@@ -142,7 +145,7 @@ class RegisterFormMixin:
 	])
 	
 	def populate_password(self, obj, name):
-		obj.password_hash = generate_password_hash(self.password.data)
+		obj.change_password(self.password.data)
 	
 class DeveloperRegisterForm(Form, UserFormMixin, RegisterFormMixin, DeveloperFormMixin):
 	invite = TextAreaField(u'Код приглашения', [
@@ -207,7 +210,8 @@ class AdminPasswordChangeForm(Form):
 	])
 	
 	def populate_password(self, obj, name):
-		obj.password_hash = generate_password_hash(self.password.data)
+		obj.change_password(self.password.data)
+
 
 class PasswordChangeForm(AdminPasswordChangeForm):
 	def __init__(self, *args, **kwargs):

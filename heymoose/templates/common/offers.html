@@ -27,7 +27,8 @@
 			{% for offer in offers %}
 			{% set rowspan = 'rowspan="{0}"'.format(offer.suboffers|length + 1)|safe %}
 			<tr>
-				<td class="center" {{ rowspan }}>
+				<td class="center" style="position: relative;" {{ rowspan }}>
+					<div style="position: absolute;">#{{ offer.id }}</div>
 					{% if status %}
 					<div class="offer-status" style="padding-bottom: 5px;">
 						{% if not offer.approved %}

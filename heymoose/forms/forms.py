@@ -589,7 +589,11 @@ class OfferFormBase(Form):
 		validators.Length(min=1, max=100, message=u'Название должно иметь длину от 1 до 100 символов'),
 		validators.Required(message=u'Введите название оффера')
 	])
-	url = TextField(u'Ссылка', [
+	site_url = TextField(u'Ссылка на сайт рекламодателя', [
+		validators.Required(message=u'Введите URL'),
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False)
+	], default=u'http://')
+	url = TextField(u'Партнерская ссылка', [
 		validators.Required(message=u'Введите URL'),
 		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False)
 	], default=u'http://')

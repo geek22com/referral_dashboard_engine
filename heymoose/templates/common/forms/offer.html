@@ -163,7 +163,18 @@
 		</div>
 		<fieldset>
 			{{ forms.singlefield(form.name, class='span10') }}
-			{{ forms.singlefield(form.url, class='span10') }}
+			{% call forms.singlefield_desc(form.site_url, class='span10') %}
+			<span class="help-block">
+				Ссылка, которая будет видна только партнерам в каталоге офферов
+				в нашей системе.
+			</span>
+			{% endcall %}
+			{% call forms.singlefield_desc(form.url, class='span10') %}
+			<span class="help-block">
+				Ссылка, ведущая на лендинговую страницу для оффера. Эту ссылку партнеры
+				будут размещать на своих площадках.
+			</span>
+			{% endcall %}
 			{{ forms.singlefield(form.cookie_ttl, class='span4', inline='дней') }}
 			{% if edit %}
 			{{ forms.singlefield(form.token_param_name, class='span4') }}

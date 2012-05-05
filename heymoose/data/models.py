@@ -207,6 +207,7 @@ class Offer(SubOffer):
 	description = Field(types.String, 'description')
 	logo_filename = Field(types.String, 'logo-filename')
 	url = Field(types.String, 'url')
+	site_url = Field(types.String, 'site-url')
 	advertiser = Field('User', 'advertiser')
 	account = Field('Account', 'account')
 	regions = FieldSet(enums.Regions, 'regions/region')

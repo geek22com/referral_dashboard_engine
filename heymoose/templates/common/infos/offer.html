@@ -99,7 +99,7 @@
 				</div>
 				{% endif %}
 				<div class="center clearfix" style="margin-bottom: 10px;">
-					<a href="{{ offer.url }}" target="_blank">{{ offer.url }}</a>
+					<a href="{{ offer.site_url or offer.url }}" target="_blank">{{ offer.site_url or offer.url }}</a>
 				</div>
 				<dl class="kv kv--inscribed kv--key180">
 					{% if owner or admin %}<dt>Баланс</dt><dd>{{ offer.account.balance|currency }}</dd>{% endif %}

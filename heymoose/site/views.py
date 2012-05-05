@@ -132,7 +132,7 @@ def password():
 	form = forms.ForgottenPasswordForm(request.form)
 	if request.method == 'POST' and form.validate():
 		user = rc.users.get_by_email_safe(form.email.data)
-		if user is not None:
+		if user is not None and not user.is_admin:
 			new_password = user.generate_password()
 			rc.users.update(user)
 			tmail.user_restore_password(user, new_password)

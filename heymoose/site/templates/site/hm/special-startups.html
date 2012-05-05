@@ -22,6 +22,55 @@
 		вдруг произойдет так, что ваш рекламный бюджет не будет потрачен полностью &mdash; мы возвращаем
 		остаток средств с вашего счета.
 	</p>
+	
+	<div class="center">
+		<table class="bordered-table zebra-striped nosort" style="width: auto; margin: 30px auto;">
+			<thead>
+				<th></th>
+				<th class="center" style="width: 160px;">Старт продаж</th>
+				<th class="center" style="width: 160px;">Рост продаж</th>
+				<th class="center" style="width: 160px;">Магнат</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Отчет по кампании</td>
+					<td class="center">{{ macros.to_icon(true) }}</td>
+					<td class="center">{{ macros.to_icon(true) }}</td>
+					<td class="center">{{ macros.to_icon(true) }}</td>
+				</tr>
+				<tr>
+					<td>Баннеры</td>
+					<td class="center">{{ macros.to_icon(false) }}</td>
+					<td class="center">{{ macros.to_icon(true) }}</td>
+					<td class="center">{{ macros.to_icon(true) }}</td>
+				</tr>
+				<tr>
+					<td>Лендинговая страница</td>
+					<td class="center">{{ macros.to_icon(false) }}</td>
+					<td class="center">{{ macros.to_icon(true) }}</td>
+					<td class="center">{{ macros.to_icon(true) }}</td>
+				</tr>
+				<tr>
+					<td>Отслеживание звонков</td>
+					<td class="center">{{ macros.to_icon(false) }}</td>
+					<td class="center">{{ macros.to_icon(true) }}</td>
+					<td class="center">{{ macros.to_icon(true) }}</td>
+				</tr>
+				<tr>
+					<td>Трафик в кредит</td>
+					<td class="center">{{ macros.to_icon(false) }}</td>
+					<td class="center">{{ macros.to_icon(false) }}</td>
+					<td class="center">{{ macros.to_icon(true) }}</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td class="center" style="font-weight: bold;">20 000 руб.</td>
+					<td class="center" style="font-weight: bold;">50 000 руб.</td>
+					<td class="center" style="font-weight: bold;">100 000 руб.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </div>
 {{ super() }}
 <h2>Другие спецпредложения для рекламодателей</h2>

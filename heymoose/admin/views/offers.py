@@ -50,10 +50,58 @@ def offers_info_edit(id):
 			flash(u'Вы не изменили ни одного поля', 'warning')
 	return render_template('admin/offers/info/edit.html', offer=offer, form=form)
 
-@bp.route('/offers/<int:id>/actions')
+'''@bp.route('/offers/<int:id>/actions')
 def offers_info_actions(id):
 	offer = rc.offers.get_by_id(id)
-	return render_template('admin/offers/info/actions.html', offer=offer)
+	return render_template('admin/offers/info/actions.html', offer=offer)'''
+
+@bp.route('/offers/<int:id>/actions/', methods=['GET', 'POST'])
+def offers_info_actions(id):
+	offer = rc.offers.get_by_id(id)	
+	form = forms.SubOfferForm(request.form)
+	if request.method == 'POST' and form.validate():
+		suboffer = SubOffer()
+		form.populate_obj(suboffer)
+		rc.offers.add_suboffer(id, suboffer)
+		flash(u'Действие успешно добавлено', 'success')
+		return redirect(request.url)
+	return render_template('admin/offers/info/actions.html', offer=offer, form=form)
+
+@bp.route('/offers/<int:id>/actions/edit', methods=['GET', 'POST'])
+def offers_info_actions_main_edit(id):
+	offer = rc.offers.get_by_id(id)
+	suboffer = offer
+	form = forms.MainSubOfferForm(request.form, obj=offer)
+	form.offer_id = offer.id
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(offer)
+		if offer.updated():
+			rc.offers.update(offer)
+			flash(u'Действие успешно изменено', 'success')
+		else:
+			flash(u'Вы не изменили ни одного поля', 'warning')
+		return redirect(url_for('.offers_info_actions', id=offer.id))
+	return render_template('admin/offers/info/actions-edit.html', **locals())
+
+@bp.route('/offers/<int:id>/actions/<int:sid>/edit', methods=['GET', 'POST'])
+def offers_info_actions_edit(id, sid):
+	offer = rc.offers.get_by_id(id)
+	suboffer = None
+	for sub in offer.all_suboffers:
+		if sub.id == sid: suboffer = sub
+	if not suboffer: abort(404)
+	form = forms.SubOfferForm(request.form, obj=suboffer)
+	form.offer_id = suboffer.id
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(suboffer)
+		if suboffer.updated():
+			rc.offers.update_suboffer(offer.id, suboffer)
+			flash(u'Действие успешно изменено', 'success')
+		else:
+			flash(u'Вы не изменили ни одного поля', 'warning')
+		return redirect(url_for('.offers_info_actions', id=offer.id))
+	return render_template('admin/offers/info/actions-edit.html', **locals())
+
 
 @bp.route('/offers/<int:id>/materials')
 def offers_info_materials(id):

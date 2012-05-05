@@ -1,0 +1,18 @@
+{% extends "admin/offers/info/layout.html" %}
+{% import 'common/forms/offer.html' as offer_form %}
+
+{% set activetab = 'actions' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ offer_form.suboffer_head() }}
+{% endblock %}
+
+{% block tabcontent %}
+
+<h2>Изменение действия</h2>
+<div class="form-container">
+	{{ offer_form.suboffer_html(form, edit=true) }}
+</div>
+
+{% endblock %}

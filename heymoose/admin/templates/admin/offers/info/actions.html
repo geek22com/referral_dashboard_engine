@@ -1,10 +1,41 @@
 {% extends "admin/offers/info/layout.html" %}
 {% import 'common/suboffers.html' as suboffer_macros %}
+{% import 'common/forms/offer.html' as offer_form %}
 
 {% set activetab = 'actions' %}
 
+{% block extrahead %}
+	{{ super() }}
+	{{ offer_form.suboffer_head() }}
+{% endblock %}
+
 {% block tabcontent %}
 
-{% call(head, suboffer) suboffer_macros.table(offer.all_suboffers) %}{% endcall %}
+{% call(head, suboffer) suboffer_macros.table(offer.all_suboffers, user=g.user) %}
+	{% if head %}
+	<th class="header">Код</th>
+	<th class="header center">Активно</th>
+	<th class="header center"></th>
+	{% else %}
+	<td>{{ suboffer.code }}</td>
+	{% if suboffer.id != offer.id %}
+	<td class="center">{{ macros.to_icon(suboffer.active) }}</td>
+	<td class="center">
+		<a href="{{ url_for('.offers_info_actions_edit', id=offer.id, sid=suboffer.id) }}">изменить</a>
+	</td>
+	{% else %}
+	<td class="center">{{ macros.to_icon(true) }}</td>
+	<td class="center">
+		<a href="{{ url_for('.offers_info_actions_main_edit', id=offer.id) }}">изменить</a>
+	</td>
+	{% endif %}
+	{% endif %}
+{% endcall %}
 
+{#
+<h2>Добавить действие</h2>
+<div class="form-container">
+	{{ offer_form.suboffer_html(form) }}
+</div>
+#}
 {% endblock %}

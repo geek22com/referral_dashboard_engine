@@ -1,0 +1,15 @@
+{% extends "admin/offers/info/layout.html" %}
+{% import 'common/forms/offer.html' as offer_form %}
+
+{% set activetab = 'edit' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ offer_form.head() }}
+{% endblock %}
+
+{% block tabcontent %}
+
+{{ offer_form.html(form, edit=true) }}
+
+{% endblock %}

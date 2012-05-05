@@ -36,6 +36,20 @@ def offers_info(id):
 		return redirect(request.url)
 	return render_template('admin/offers/info/info.html', offer=offer, form=form)
 
+@bp.route('/offers/<int:id>/edit', methods=['GET', 'POST'])
+def offers_info_edit(id):
+	offer = rc.offers.get_by_id(id)
+	form = forms.OfferEditForm(request.form, obj=offer)
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(offer)
+		if offer.updated():
+			rc.offers.update(offer)
+			flash(u'Оффер успешно изменен', 'success')
+			return redirect(url_for('.offers_info', id=offer.id))
+		else:
+			flash(u'Вы не изменили ни одного поля', 'warning')
+	return render_template('admin/offers/info/edit.html', offer=offer, form=form)
+
 @bp.route('/offers/<int:id>/actions')
 def offers_info_actions(id):
 	offer = rc.offers.get_by_id(id)

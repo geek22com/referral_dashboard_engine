@@ -10,13 +10,13 @@
 
 {% block extrahead %}
 	{{ super() }}
-	{{ user_form.head(messenger_optional=user.is_advertiser) }}
+	{{ user_form.head(affiliate=user.is_affiliate) }}
 {% endblock %}
 
 {% block tabcontent %}
 
 <div class="form-container">
-	{{ user_form.html(form, admin=true) }}
+	{{ user_form.html(form, affiliate=user.is_affiliate, admin=true) }}
 </div>
 
 {% endblock %}

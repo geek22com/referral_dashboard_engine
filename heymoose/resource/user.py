@@ -31,14 +31,14 @@ class UserResource(BackendResource):
 	def add(self, user):
 		params = self.extractor.extract(user,
 			required='email passwordHash firstName lastName'.split(),
-			optional='organization phone sourceUrl messengerType messengerUid referrer'.split()
+			optional='organization phone sourceUrl messengerType messengerUid wmr referrer'.split()
 		)
 		self.post(**params)
 	
 	def update(self, user):
 		params = self.extractor.extract(user,
 			updated='''email passwordHash firstName lastName organization phone
-				sourceUrl messengerType messengerUid confirmed blocked'''.split()
+				sourceUrl messengerType messengerUid wmr confirmed blocked'''.split()
 		)
 		self.path(user.id).put(**params)
 	

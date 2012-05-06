@@ -126,7 +126,7 @@ class AdvertiserFormMixin(CustomerFormMixin):
 	pass
 
 class AffiliateFormMixin(DeveloperFormMixin):
-	pass
+	wmr = myfields.NullableTextField(u'Ваш WMR-кошелёк')
 
 class RegisterFormMixin:
 	password = PasswordField(u'Пароль', [

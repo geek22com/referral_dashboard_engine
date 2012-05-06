@@ -28,6 +28,7 @@ class User(IdentifiableModel):
 	source_url = Field(types.String, 'source-url')
 	messenger_type = Field(types.String, 'messenger-type')
 	messenger_uid = Field(types.String, 'messenger-uid')
+	wmr = Field(types.String, 'wmr')
 	
 	confirmed = Field(types.Boolean, 'confirmed')
 	blocked = Field(types.Boolean, 'blocked')

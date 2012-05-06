@@ -36,6 +36,9 @@
 	<tbody>
 		<tr><th>Имя</th><td>{{ user.full_name }}</td></tr>
 		<tr><th>Организация</th><td>{{ user.organization|default('(не указана)', true) }}</td></tr>
+		{% if user.is_affiliate %}
+		<tr><th>WMR-кошелёк</th><td>{{ user.wmr|default('(не указан)', true) }}</td></tr>
+		{% endif %}
 	</tbody>
 </table>
 

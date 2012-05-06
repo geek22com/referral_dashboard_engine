@@ -16,14 +16,14 @@
 		}
 		
 		.fieldset-help {
-			min-height: 90px;
+			min-height: {{ '120px;' if affiliate else '90px;' }}
 		}
 		
-		.messenger-type {
+		.inline-first {
 			width: 120px;
 		}
 		
-		.messenger-uid {
+		.inline-second {
 			width: 120px;
 			margin-left: 14px;
 		}
@@ -40,6 +40,8 @@
 	</div>
 {% endblock %}
 
+{% set affiliate = affiliate|default(false) %}
+
 {% block content %}
 <h1 class="hm-roundbox-header">Регистрация в {{ heymoose() }}</h1>
 {% block role_title %}{% endblock %}
@@ -55,11 +57,18 @@
 						смогли обращаться к вам в случае возникновения вопросов или
 						проблем. Если вы являетесь представителем организации,
 						заполните также ее название.
+						{% if affiliate %}
+						Заполните номер вашего WMR-кошелька в системе WebMoney для
+						получения выплат.
+						{% endif %}
 					</p>
 				</div>
 				{{ forms.singlefield_stacked(form.first_name, class='span260') }}
 				{{ forms.singlefield_stacked(form.last_name, class='span260') }}
 				{{ forms.singlefield_stacked(form.organization, class='span260') }}
+				{% if affiliate %}
+				{{ forms.singlefield_stacked(form.wmr, class='span260') }}
+				{% endif %}
 			</fieldset>
 		</div>
 		<div class="span280">
@@ -76,14 +85,19 @@
 				{{ forms.singlefield_stacked(form.email, class='span260', type='email') }}
 				{{ forms.singlefield_stacked(form.phone, class='span260') }}
 				
+				{% if affiliate %}
+				{{ forms.singlefield_stacked(form.messenger_type, class='messenger-type span260') }}
+				{{ forms.singlefield_stacked(form.messenger_uid, class='messenger-uid span260') }}
+				{% else %}
 				<div class="formfield clearfix {{ forms.css_errors(form.messenger_uid) }}">
 					{{ forms.label(form.messenger_type) }}
 					<div>
-						{{ forms.field(form.messenger_type, class='messenger-type') }}
-						{{ forms.field(form.messenger_uid, class='messenger-uid') }}
+						{{ forms.field(form.messenger_type, class='messenger-type inline-first') }}
+						{{ forms.field(form.messenger_uid, class='messenger-uid inline-second') }}
 						{{ forms.errors(form.messenger_uid) }}
 					</div>
 				</div>
+				{% endif %}
 			</fieldset>
 		</div>
 		<div class="span280">

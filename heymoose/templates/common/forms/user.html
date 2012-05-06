@@ -1,7 +1,7 @@
 {% import 'common/forms.html' as forms %}
 
-{% macro head(messenger_optional=false) %}
-	{% if messenger_optional %}
+{% macro head(affiliate=false) %}
+	{% if not affiliate %}
 	<script type="text/javascript">
 		$(function() {
 			var form = $('#form-user');
@@ -17,7 +17,7 @@
 	{% endif %}
 {% endmacro %}
 
-{% macro html(form, captcha=false, admin=false) %}
+{% macro html(form, affiliate=false, admin=false) %}
 	<form id="form-user" action="" method="post" class="widelabels validate2">
 		<fieldset>
 			<legend>Данные</legend>
@@ -29,6 +29,9 @@
 				заполните это поле.
 			</span>
 			{% endcall %}
+			{% if affiliate %}
+			{{ forms.singlefield(form.wmr, class='span10') }}
+			{% endif %}
 		</fieldset>
 		<fieldset>
 			<legend>Контакты</legend>

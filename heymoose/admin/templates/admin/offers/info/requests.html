@@ -4,7 +4,8 @@
 {% set activetab = 'requests' %}
 
 {% block tabcontent %}
-	{{ macros.filter(request.args.get('filter', none),
+	{% set filter = request.args.get('filter', none) %}
+	{{ macros.filter(filter,
 		(
 			(none, 'все'),
 			('moderation', 'не рассмотренные'),
@@ -18,7 +19,7 @@
 	<div style="clear: both;">
 	{% if grants %}
 		{{ offer_macro.requests_table(grants, admin=true, form=form) }}
-		{{ macros.paginate(pages, '.offers_info_requests', id=offer.id) }}
+		{{ macros.paginate(pages, '.offers_info_requests', id=offer.id, filter=filter) }}
 	{% else %}
 		<div class="clearfix alert-message block-message info">
 			<p><strong>Список пуст.</strong> Не найдено ни одной заявки на сотрудничество.</p>

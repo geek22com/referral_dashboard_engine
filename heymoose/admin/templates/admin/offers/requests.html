@@ -1,5 +1,30 @@
 {% extends "admin/offers/layout.html" %}
-{% import "common/offers.html" as offer_macros %}
+{% import "common/offers.html" as offer_macro %}
 
 {% set content_fluid = true %}
 {% set activetab = 'requests' %}
+
+{% block tabcontent %}
+	{% set filter = request.args.get('filter', none) %}
+	{{ macros.filter(filter,
+		(
+			(none, 'все'),
+			('moderation', 'не рассмотренные'),
+			('approved', 'подтвержденные'),
+			('rejected', 'отклоненные'),
+			('blocked', 'заблокированные')
+		),
+		'.offers_requests')
+	}}
+	
+	<div style="clear: both;">
+	{% if grants %}
+		{{ offer_macro.requests_table(grants, offer=true, admin=true, form=form) }}
+		{{ macros.paginate(pages, '.offers_requests', filter=filter) }}
+	{% else %}
+		<div class="clearfix alert-message block-message info">
+			<p><strong>Список пуст.</strong> Не найдено ни одной заявки на сотрудничество.</p>
+		</div>
+	{% endif %}
+	</div>
+{% endblock %}

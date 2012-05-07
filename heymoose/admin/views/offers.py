@@ -21,10 +21,12 @@ def offers_list():
 def offers_requests():	
 	filter_args = {
 		None: dict(),
+		'new': dict(blocked=True, moderation=True),
+		'blocked': dict(blocked=True, moderation=False),
+		'unblocked': dict(blocked=False),
 		'moderation': dict(state=OfferGrantState.MODERATION, blocked=False),
 		'approved': dict(state=OfferGrantState.APPROVED, blocked=False),
 		'rejected': dict(state=OfferGrantState.REJECTED, blocked=False),
-		'blocked': dict(blocked=True)
 	}.get(request.args.get('filter', None), dict())
 	
 	page = current_page()
@@ -33,7 +35,7 @@ def offers_requests():
 	grants, count = rc.offer_grants.list(offset=offset, limit=limit, full=True, **filter_args)
 	pages = paginate(page, count, per_page)
 	
-	form = forms.OfferRequestDecisionForm(request.form)
+	form = forms.AdminOfferRequestDecisionForm(request.form)
 	if request.method == 'POST' and form.validate():
 		grant = rc.offer_grants.get_by_id(form.grant_id.data)
 		action = form.action.data
@@ -145,10 +147,12 @@ def offers_info_requests(id):
 	
 	filter_args = {
 		None: dict(),
+		'new': dict(blocked=True, moderation=True),
+		'blocked': dict(blocked=True, moderation=False),
+		'unblocked': dict(blocked=False),
 		'moderation': dict(state=OfferGrantState.MODERATION, blocked=False),
 		'approved': dict(state=OfferGrantState.APPROVED, blocked=False),
 		'rejected': dict(state=OfferGrantState.REJECTED, blocked=False),
-		'blocked': dict(blocked=True)
 	}.get(request.args.get('filter', None), dict())
 	
 	page = current_page()

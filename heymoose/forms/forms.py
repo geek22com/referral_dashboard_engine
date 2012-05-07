@@ -655,8 +655,14 @@ class OfferRequestDecisionForm(Form):
 	action = HiddenField()
 	grant_id = HiddenField()
 	reason = TextAreaField(u'Причина', [
-		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
+		validators.Length(max=500, message=u'Причина должна быть длиной не более 500 символов')
 	])
+
+
+class AdminOfferRequestDecisionForm(OfferRequestDecisionForm):
+	reason = TextAreaField(u'Причина', [
+		validators.Length(max=500, message=u'Причина должна быть длиной не более 500 символов')
+	], default=u'Ваш способ продвижения не подходит для данной рекламной кампании')
 
 
 class OfferGrantForm(Form):

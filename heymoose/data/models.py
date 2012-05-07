@@ -280,6 +280,9 @@ class OfferGrant(IdentifiableModel):
 	
 	@property
 	def moderation(self): return not self.blocked and self.state == enums.OfferGrantState.MODERATION
+	
+	@property
+	def admin_moderation(self): return self.blocked and not self.block_reason
 
 
 class Banner(IdentifiableModel):

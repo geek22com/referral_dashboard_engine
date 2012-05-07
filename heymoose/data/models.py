@@ -2,7 +2,7 @@
 from base import models, types, registry
 from base.fields import Field, FieldList, FieldSet
 from heymoose import app
-from heymoose.utils.gen import generate_password_hash
+from heymoose.utils.gen import generate_password_hash, aes_base16_encrypt, aes_base16_decrypt
 from decimal import Decimal
 import enums
 import os, hashlib, uuid
@@ -51,6 +51,8 @@ class User(IdentifiableModel):
 	
 	stats = Field('UserStat', 'stats')
 	
+	_ref_crypt_key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
+	
 	@property
 	def account(self): return self.developer_account or self.customer_account
 	
@@ -75,6 +77,21 @@ class User(IdentifiableModel):
 	def check_confirm_code(self, code):
 		return code == self.get_confirm_code()
 	
+	def get_refcode(self):
+		key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
+		salt = 'hmrefsalt'
+		data = '{0}${1}'.format(self.id, salt)
+		data = '{0:X<16}'.format(data)
+		return aes_base16_encrypt(key, data).lower()
+	
+	@staticmethod
+	def get_referrer_id(ref):
+		try:
+			id, _salt = aes_base16_decrypt(User._ref_crypt_key, ref).split('$')
+			return id
+		except:
+			return None
+
 	def change_password(self, raw_password):
 		self.password_hash = generate_password_hash(raw_password)
 	

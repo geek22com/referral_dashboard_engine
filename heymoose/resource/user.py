@@ -16,6 +16,12 @@ class UserResource(BackendResource):
 	def get_by_id(self, id, **kwargs):
 		return self.path(id).get(**kwargs).as_obj(User)
 	
+	def get_by_id_safe(self, id, **kwargs):
+		try:
+			return self.get_by_id(id, **kwargs)
+		except ResourceNotFound:
+			return None
+	
 	def get_by_email(self, email, **kwargs):
 		return self.get(email=email, **kwargs).as_obj(User)
 	

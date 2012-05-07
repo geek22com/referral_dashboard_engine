@@ -62,6 +62,38 @@
 	</tbody>
 </table>
 
+{% if user.is_affiliate %}
+<h3>Реферальная программа</h3>
+<table class="key-value">
+	<tbody>
+		{% with ref = root + url_for('site.register_affiliate', ref=user.get_refcode()) %}
+		<tr><th>Реферальная ссылка</th><td><a href="{{ ref }}">{{ ref }}</a></td></tr>
+		{% endwith %}
+		<tr>
+			<th>Реферер</th>
+			<td>
+				{% if user.referrer %}
+				<a href="{{ url_for('.users_info', id=user.referrer) }}">Пользователь {{ user.referrer }}</a>
+				{% else %}
+				(нет)
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<th>Рефералы</th>
+			<td>
+				{% for referral in user.referrals %}
+				<p><a href="mailto:{{ referral }}">{{ referral }}</a></p>
+				{% else %}
+				(нет)
+				{% endfor %}
+			</td>
+		</tr>
+		<tr><th>Доход от рефералов</th><td>{{ user.revenue|default('0.00', true)|currency }}</td></tr>
+	</tbody>
+</table>
+{% endif %}
+
 {% endblock %}
 
 {% block postbody %}

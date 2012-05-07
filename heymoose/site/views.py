@@ -82,16 +82,27 @@ def register_affiliate():
 		flash(u'Вы уже зарегистрированы', 'warning')
 		return redirect(url_for('.index'))
 	
+	ref = request.args.get('ref', None)
+	if ref:
+		session['ref'] = ref
+		return redirect(url_for('.register_affiliate'))
+	
 	form = forms.AffiliateRegisterForm(request.form)
 	if request.method == 'POST' and form.validate():
 		user = User()
 		form.populate_obj(user)
+		ref = session.get('ref', '')
+		referrer_id = User.get_referrer_id(ref)
+		referrer = rc.users.get_by_id_safe(referrer_id) if referrer_id else None
+		if referrer and referrer.is_affiliate:
+			user.referrer = referrer_id
 		rc.users.add(user)
 		user = rc.users.get_by_email_safe(user.email)
 		if user:
 			rc.users.add_role(user.id, Roles.AFFILIATE)
 			user.roles.append(Roles.AFFILIATE)
 			session['user_id'] = user.id
+			session['ref'] = ''
 			tmail.user_confirm_email(user)
 			flash(u'Вы успешно зарегистрированы. На указанный электронный адрес'
 				u' было выслано письмо с подтверждением.', 'success')

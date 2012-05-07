@@ -82,16 +82,11 @@ def register_affiliate():
 		flash(u'Вы уже зарегистрированы', 'warning')
 		return redirect(url_for('.index'))
 	
-	ref = request.args.get('ref', None)
-	if ref:
-		session['ref'] = ref
-		return redirect(url_for('.register_affiliate'))
-	
 	form = forms.AffiliateRegisterForm(request.form)
 	if request.method == 'POST' and form.validate():
 		user = User()
 		form.populate_obj(user)
-		ref = session.get('ref', '')
+		ref = request.args.get('ref', '')
 		referrer_id = User.get_referrer_id(ref)
 		referrer = rc.users.get_by_id_safe(referrer_id) if referrer_id else None
 		if referrer and referrer.is_affiliate:

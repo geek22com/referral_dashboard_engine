@@ -190,6 +190,9 @@
 									<p>Подтвердить заявку?</p>
 									{{ form.grant_id(value=request.id) }}
 									{{ form.action(value='approve') }}
+									{% if admin %}
+									{{ form.mail() }} уведомить пользователя по почте
+									{% endif %}
 								</div>
 								<div class="modal-footer">
 									<input type="submit" class="btn primary" value="Подтвердить" />
@@ -213,6 +216,11 @@
 										{{ form.grant_id(value=request.id) }}
 										{{ form.action(value='reject') }}
 										{{ forms.singlefield(form.reason, class='span6', rows=6) }}
+										{% if admin %}
+										<div class="input">
+										{{ form.mail() }} уведомить пользователя по почте
+										</div>
+										{% endif %}
 									</fieldset>
 								</div>
 								<div class="modal-footer">
@@ -240,6 +248,9 @@
 									<p>Разблокировать заявку?</p>
 									{{ form.grant_id(value=request.id) }}
 									{{ form.action(value='unblock') }}
+									{% if request.state == 'APPROVED' %}
+									{{ form.mail() }} уведомить пользователя по почте
+									{% endif %}
 								</div>
 								<div class="modal-footer">
 									<input type="submit" class="btn primary" value="Разблокировать" />
@@ -262,6 +273,9 @@
 										{{ form.grant_id(value=request.id) }}
 										{{ form.action(value='block') }}
 										{{ forms.singlefield(form.reason, class='span6', rows=6) }}
+										<div class="input">
+										{{ form.mail() }} уведомить пользователя по почте
+										</div>
 									</fieldset>
 								</div>
 								<div class="modal-footer">

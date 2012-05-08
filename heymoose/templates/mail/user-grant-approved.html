@@ -1,0 +1,17 @@
+{% extends "mail/layout-user.html" %}
+
+{% block subject %}
+Подтверждено сотрудничество с рекламной кампанией "{{ offer.name }}"
+{% endblock %}
+
+{% block html %}
+<p>
+	Ваша заявка на сотрудничество с рекламной кампанией
+	<a href="{{ root + url_for('cabinetcpa.offers_info', id=offer.id) }}">{{ offer.name }}</a>
+	подтверждена.
+</p>
+{% endblock %}
+
+{% block plain %}
+Ваша заявка на сотрудничество с рекламной кампанией "{{ offer.name }}" подтверждена.
+{% endblock %}

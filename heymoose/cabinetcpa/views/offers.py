@@ -4,6 +4,7 @@ from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import Offer, OfferGrant, SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
+from heymoose.mail import transactional as mail
 from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
@@ -209,14 +210,16 @@ def offers_info_requests(id):
 	
 	form = forms.OfferRequestDecisionForm(request.form)
 	if request.method == 'POST' and form.validate():
-		grant = rc.offer_grants.get_by_id(form.grant_id.data)
+		grant = rc.offer_grants.get_by_id(form.grant_id.data, full=True)
 		if grant and grant.offer.id == offer.id and not grant.blocked:
 			action = form.action.data
 			if action == 'approve' and not grant.approved:
 				rc.offer_grants.approve(grant.id)
+				mail.user_grant_approved(grant.offer, grant.affiliate)
 				flash(u'Заявка утверждена', 'success')
 			elif action == 'reject' and not grant.rejected:
 				rc.offer_grants.reject(grant.id, form.reason.data)
+				mail.user_grant_rejected(grant.offer, grant.affiliate, form.reason.data)
 				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
 	return render_template('cabinetcpa/offers/info/requests.html', offer=offer, grants=grants, pages=pages, form=form)

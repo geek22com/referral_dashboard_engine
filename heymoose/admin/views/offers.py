@@ -4,6 +4,7 @@ from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import Offer, OfferGrant, SubOffer
 from heymoose.data.enums import OfferGrantState
+from heymoose.mail import transactional as mail
 from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.admin import blueprint as bp
 
@@ -37,19 +38,28 @@ def offers_requests():
 	
 	form = forms.AdminOfferRequestDecisionForm(request.form)
 	if request.method == 'POST' and form.validate():
-		grant = rc.offer_grants.get_by_id(form.grant_id.data)
+		grant = rc.offer_grants.get_by_id(form.grant_id.data, full=True)
 		action = form.action.data
 		if action == 'unblock':
 			rc.offer_grants.unblock(grant.id)
+			grant.blocked = False
+			if form.mail.data and grant.approved:
+				mail.user_grant_approved(grant.offer, grant.affiliate)
 			flash(u'Заявка разблокирована', 'success')
 		elif action == 'block':
 			rc.offer_grants.block(grant.id, form.reason.data)
+			if form.mail.data:
+				mail.user_grant_blocked(grant.offer, grant.affiliate, form.reason.data)
 			flash(u'Заявка заблокирована', 'success')
 		elif action == 'approve' and not grant.approved:
 			rc.offer_grants.approve(grant.id)
+			if form.mail.data and not grant.blocked:
+				mail.user_grant_approved(grant.offer, grant.affiliate)
 			flash(u'Заявка утверждена', 'success')
 		elif action == 'reject' and not grant.rejected:
 			rc.offer_grants.reject(grant.id, form.reason.data)
+			if form.mail.data:
+				mail.user_grant_rejected(grant.offer, grant.affiliate, form.reason.data)
 			flash(u'Заявка отклонена', 'success')
 		return redirect(request.url)
 	return render_template('admin/offers/requests.html', grants=grants, pages=pages, form=form)
@@ -161,22 +171,31 @@ def offers_info_requests(id):
 	grants, count = rc.offer_grants.list(offer_id=offer.id, offset=offset, limit=limit, full=True, **filter_args)
 	pages = paginate(page, count, per_page)
 	
-	form = forms.OfferRequestDecisionForm(request.form)
+	form = forms.AdminOfferRequestDecisionForm(request.form)
 	if request.method == 'POST' and form.validate():
-		grant = rc.offer_grants.get_by_id(form.grant_id.data)
+		grant = rc.offer_grants.get_by_id(form.grant_id.data, full=True)
 		if grant and grant.offer.id == offer.id:
 			action = form.action.data
 			if action == 'unblock':
 				rc.offer_grants.unblock(grant.id)
+				grant.blocked = False
+				if form.mail.data and grant.approved:
+					mail.user_grant_approved(grant.offer, grant.affiliate)
 				flash(u'Заявка разблокирована', 'success')
 			elif action == 'block':
 				rc.offer_grants.block(grant.id, form.reason.data)
+				if form.mail.data:
+					mail.user_grant_blocked(grant.offer, grant.affiliate, form.reason.data)
 				flash(u'Заявка заблокирована', 'success')
 			elif action == 'approve' and not grant.approved:
 				rc.offer_grants.approve(grant.id)
+				if form.mail.data and not grant.blocked:
+					mail.user_grant_approved(grant.offer, grant.affiliate)
 				flash(u'Заявка утверждена', 'success')
 			elif action == 'reject' and not grant.rejected:
 				rc.offer_grants.reject(grant.id, form.reason.data)
+				if form.mail.data:
+					mail.user_grant_rejected(grant.offer, grant.affiliate, form.reason.data)
 				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
 	return render_template('admin/offers/info/requests.html', offer=offer, grants=grants, pages=pages, form=form)

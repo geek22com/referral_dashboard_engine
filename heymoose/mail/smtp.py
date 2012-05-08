@@ -43,8 +43,10 @@ def safe_disconnect(s):
 	
 
 def send_multipart(fm, to, subject, text, html):
-	if not enabled: return
 	app.logger.info(u'Sending email with subject <{0}> to {1}'.format(subject, unicode(to)))
+	if not enabled:
+		app.logger.info(u'But emailing is disabled!')
+		return
 	s = safe_connect()
 	if s is None: return
 	try:
@@ -55,8 +57,10 @@ def send_multipart(fm, to, subject, text, html):
 	safe_disconnect(s)
 
 def send_multipart_bulk(fm, to, subject, text, html):
-	if not enabled: return
 	app.logger.info(u'Sending bulk email with subject <{0}> to {1}'.format(subject, unicode(to)))
+	if not enabled:
+		app.logger.info(u'But emailing is disabled!')
+		return
 	s = safe_connect()
 	if s is None: return
 	for rcpt in to:

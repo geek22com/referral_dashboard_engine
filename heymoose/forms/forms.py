@@ -663,7 +663,7 @@ class AdminOfferRequestDecisionForm(OfferRequestDecisionForm):
 	reason = TextAreaField(u'Причина', [
 		validators.Length(max=500, message=u'Причина должна быть длиной не более 500 символов')
 	], default=u'Ваш способ продвижения не подходит для данной рекламной кампании')
-	#mail = BooleanField(u'уведомить пользователя по почте', default=True)
+	mail = BooleanField(u'уведомить пользователя по почте', default=True)
 
 
 class OfferGrantForm(Form):

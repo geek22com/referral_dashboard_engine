@@ -65,3 +65,16 @@ def user_order_priced_off(orders, c):
 	emails = list(set([order.user.email for order in orders]))
 	subject, text, html = render.mail_from_template('mail/user-order-priced-off.html', c=c)
 	smtp.send_multipart_bulk(from_address, emails, subject, text, html)
+
+def user_grant_approved(offer, affiliate):
+	subject, text, html = render.mail_from_template('mail/user-grant-approved.html', offer=offer)
+	smtp.send_multipart(from_address, [affiliate.email], subject, text, html)
+
+def user_grant_rejected(offer, affiliate, reason):
+	subject, text, html = render.mail_from_template('mail/user-grant-rejected.html', offer=offer, reason=reason)
+	smtp.send_multipart(from_address, [affiliate.email], subject, text, html)
+
+def user_grant_blocked(offer, affiliate, reason):
+	subject, text, html = render.mail_from_template('mail/user-grant-blocked.html', offer=offer, reason=reason)
+	smtp.send_multipart(from_address, [affiliate.email], subject, text, html)
+

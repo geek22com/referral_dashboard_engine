@@ -200,6 +200,21 @@ def offers_info_requests(id):
 			return redirect(request.url)
 	return render_template('admin/offers/info/requests.html', offer=offer, grants=grants, pages=pages, form=form)
 
+@bp.route('/offers/<int:id>/operations', methods=['GET', 'POST'])
+def offers_info_operations(id):
+	offer = rc.offers.get_by_id(id)
+	if request.method == 'POST':
+		type = request.form.get('type', '')
+		if type == 'approve':
+			count = rc.actions.approve_expired(offer.id)
+			flash(u'{0} действий подтверждено'.format(count), 'success')
+		elif type == 'cancel' and 'csv' in request.files:
+			transactions = [t.strip() for t in request.files['csv'].read().split(',')]
+			count = rc.actions.cancel_by_transactions(offer.id, transactions)
+			flash(u'{0} действий отменено'.format(count), 'success')
+		return redirect(request.url)
+	return render_template('admin/offers/info/operations.html', offer=offer)
+
 @bp.route('/offers/<int:id>/stats')
 def offers_info_stats(id):
 	offer = rc.offers.get_by_id(id)

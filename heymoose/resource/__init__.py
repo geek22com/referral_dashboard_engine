@@ -5,6 +5,7 @@ from offer import OfferResource
 from offergrant import OfferGrantResource
 from offerstat import OfferStatResource
 from category import CategoryResource
+from action import ActionResource
 
 users = UserResource()
 accounts = AccountResource()
@@ -13,3 +14,4 @@ offers = OfferResource()
 offer_grants = OfferGrantResource()
 offer_stats = OfferStatResource()
 categories = CategoryResource()
+actions = ActionResource()

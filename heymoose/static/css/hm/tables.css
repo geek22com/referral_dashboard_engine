@@ -1,6 +1,14 @@
 table th, table td {
-	border-bottom: 1px solid #ccc;
+	
 }
+
+table > tbody > th, table > tbody > td {
+	border-top: 1px solid #ccc;
+}
+
+table tr.noborder th, table tr.noborder td {
+	border: 0;
+} 
 
 table th.noborder, table td.noborder {
 	border: 0;

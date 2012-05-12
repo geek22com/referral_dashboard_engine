@@ -11,6 +11,15 @@
 			max-width: 150px;
 			max-height: 100px;
 		}
+		
+		.action-cell {
+			width: 180px;
+		}
+		
+		.cost-cell {
+			width: 70px;
+			text-align: right;
+		}
 	</style>
 {% endblock %}
 
@@ -34,14 +43,34 @@
 	<tbody>
 		<tr>
 			<td class="minimal center">
+				<a href="http://go-legend.onga.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/57.png') }}" alt="" class="offer-logo" />
+					<div>Браузерная онлайн-игра &laquo;Легенды героев&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">7.00 руб.</td>
+			
+			<td class="small">
+				&laquo;Легенды героев&raquo; &mdash; это браузерная многопользовательская ролевая онлайн-игра,
+				переносящая вас в удивительный мир, где демоны, сказочные чудовища, ожившие мертвецы и храбрые
+				рыцари встанут под знамена ваших героев!
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
 				<a href="http://tmgame.ru" target="_blank">
 					<img src="{{ url_for('static', filename='./img/catalog/1.jpg') }}" alt="" class="offer-logo" />
 					<div>Браузерная онлайн-игра &laquo;Техномагия&raquo;</div>
 				</a>
 			</td>
 			
-			<td style="width: 150px;">Регистрация в игре</td>
-			<td class="right" style="width: 100px;">10.50 руб.</td>
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">10.50 руб.</td>
 			
 			<td class="small">
 				&laquo;Техномагия&raquo; &mdash; это бесплатная браузерная онлайн игра в жанре MMORPG.
@@ -60,8 +89,8 @@
 				</a>
 			</td>
 			
-			<td style="width: 150px;">Подтвержденный заказ</td>
-			<td class="right" style="width: 100px;">210.00 руб.</td>
+			<td class="action-cell">Подтвержденный заказ</td>
+			<td class="cost-cell">210.00 руб.</td>
 			
 			<td class="small">
 				Похудение 25-й кадр. CD-курс &mdash; методика похудения. 
@@ -78,8 +107,8 @@
 				</a>
 			</td>
 			
-			<td style="width: 150px;">Подтвержденный заказ</td>
-			<td class="right" style="width: 100px;">210.00 руб.</td>
+			<td class="action-cell">Подтвержденный заказ</td>
+			<td class="cost-cell">210.00 руб.</td>
 			
 			<td class="small">
 				CD-курс &mdash; пособие по увеличению груди. 
@@ -96,8 +125,8 @@
 				</a>
 			</td>
 			
-			<td style="width: 150px;">Регистрация в игре</td>
-			<td class="right" style="width: 100px;">11.20 руб.</td>
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">11.20 руб.</td>
 			
 			<td class="small">
 				Ромадория &mdash; новейшая, бесплатная онлайн стратегия, действия которой разворачиваются
@@ -116,8 +145,8 @@
 				</a>
 			</td>
 			
-			<td style="width: 150px;">Регистрация в игре</td>
-			<td class="right" style="width: 100px;">11.20 руб.</td>
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">11.20 руб.</td>
 			
 			<td class="small">
 				Являясь Владыкой своей территории, ты сражаешься с тысячами других игроков.
@@ -135,8 +164,8 @@
 				</a>
 			</td>
 			
-			<td style="width: 150px;">Ввод номера</td>
-			<td class="right" style="width: 100px;">5.25 руб.</td>
+			<td class="action-cell">Ввод номера</td>
+			<td class="cost-cell">5.25 руб.</td>
 			
 			<td class="small">
 				Сексоклассники &mdash; социальная сеть для секс-знакомств.
@@ -153,8 +182,8 @@
 				</a>
 			</td>
 			
-			<td style="width: 150px;">Ввод номера</td>
-			<td class="right" style="width: 100px;">5.25 руб.</td>
+			<td class="action-cell">Ввод номера</td>
+			<td class="cost-cell">5.25 руб.</td>
 			
 			<td class="small">
 				Гости вконтакте &mdash; узнай кто посещал твою страницу ВКонтакте.
@@ -171,8 +200,8 @@
 				</a>
 			</td>
 			
-			<td style="width: 150px;">Достижение второго уровня</td>
-			<td class="right" style="width: 100px;">21.00 руб.</td>
+			<td class="action-cell">Достижение второго уровня</td>
+			<td class="cost-cell">21.00 руб.</td>
 			
 			<td class="small" rowspan="2">
 				Бесплатная браузерная игра. Не нужно ничего скачивать. Играй с тысячами игроков онлайн
@@ -181,9 +210,95 @@
 			<td class="small" rowspan="2">Браузерные игры</td>
 			<td class="small" rowspan="2">Россия, Украина, Белоруссия, СНГ</td>
 		</tr>
+		<tr class="noborder">
+			<td class="action-cell">Процент с потраченных игроком средств</td>
+			<td class="cost-cell">28.00 %</td>
+		</tr>
+		
 		<tr>
-			<td style="width: 150px;">Процент с потраченных игроком средств</td>
-			<td class="right" style="width: 100px;">28.00 %</td>
+			<td class="minimal center">
+				<a href="http://drako.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/44.png') }}" alt="" class="offer-logo" />
+					<div>Браузерная онлайн-игра &laquo;Драконы&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">14.00 руб.</td>
+			
+			<td class="small">
+				&laquo;Драконы&raquo; &mdash; это новая браузерная игра для всех любителей фэнтезийных MMORPG.
+				Игра удивляет своим сюжетом и красотой графики любого, даже самого требовательного РПГ-шника.
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center" rowspan="3">
+				<a href="http://www.siegeonline.ru/ru/start/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/38.gif') }}" alt="" class="offer-logo" />
+					<div>Клиентская стратегия &laquo;Осада онлайн&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Создание учетной записи</td>
+			<td class="cost-cell">3.50 руб.</td>
+			
+			<td class="small" rowspan="3">
+				&laquo;Осада Онлайн&raquo; &mdash; это бесплатная онлайн стратегия с увлекательными тактическими
+				сражениями в причудливом средневековом мире. Развивай персонажа, строй замок, обучай армию,
+				путешествуй, торгуй, сражайся за контроль над игровыми территориями и найди новых друзей.
+			</td>
+			<td class="small" rowspan="3">Клиентские игры</td>
+			<td class="small" rowspan="3">все</td>
+		</tr>
+		<tr class="noborder">
+			<td class="action-cell">Достижение 3-го уровня</td>
+			<td class="cost-cell">3.50 руб.</td>
+		</tr>
+		<tr class="noborder">
+			<td class="action-cell">Достижение 5-го уровня</td>
+			<td class="cost-cell">21.00 руб.</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://mycultures.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/8.png') }}" alt="" class="offer-logo" />
+					<div>Браузерная игра &laquo;Cultures Онлайн&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">14.00 руб.</td>
+			
+			<td class="small">
+				&laquo;Cultures Онлайн&raquo; &mdash; это бесплатная браузерная MMORPG. Зарегистрируйтесь в игре
+				&mdash; и сможете мериться силами с другими викингами и общаться с другими игроками на форуме.
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">все</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://zovdrakona.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/9a.png') }}" alt="" class="offer-logo" />
+					<div>Браузерная онлайн-игра &laquo;Зов Дракона&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">14.00 руб.</td>
+			
+			<td class="small">
+				&laquo;Зов Дракона&raquo; &mdash; браузерная MMORPG, не требующая установки на компьютер.
+				Выберите один из трех классов персонажей и сразитесь с коварными монстрами начиная от
+				хищных Белых кроликов и заканчивая коварными древними драконами.
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">все</td>
 		</tr>
 	</tbody>
 </table>

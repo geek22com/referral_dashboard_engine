@@ -12,4 +12,4 @@ def before_request():
 	
 	
 # Import all views in blueprint for registering in app's url map
-import views
+import views, feeds

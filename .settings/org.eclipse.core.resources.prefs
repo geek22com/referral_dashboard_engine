@@ -1,4 +1,4 @@
-#Sun May 13 20:57:27 SAMST 2012
+#Mon May 14 00:23:05 SAMST 2012
 eclipse.preferences.version=1
 encoding//heymoose/__init__.py=utf-8
 encoding//heymoose/admin/views/base.py=utf-8
@@ -21,6 +21,7 @@ encoding//heymoose/forms/fields.py=utf-8
 encoding//heymoose/forms/filters.py=utf-8
 encoding//heymoose/forms/forms.py=utf-8
 encoding//heymoose/forms/validators.py=utf-8
+encoding//heymoose/site/feeds.py=utf-8
 encoding//heymoose/site/views.py=utf-8
 encoding//heymoose/tests/test_data.py=utf-8
 encoding//heymoose/tests/test_resource.py=utf-8

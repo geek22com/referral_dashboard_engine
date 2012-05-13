@@ -17,6 +17,8 @@
 {% endmacro %}
 
 {% block extrahead %}
+<link rel="alternate" type="application/rss+xml" title="Последние новости HeyMoose" href="{{ url_for('.rss_feed', _external=True) }}"> 
+
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/margins.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/spans.css', nocache=nocache()) }}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/links.css', nocache=nocache()) }}" media="screen" />

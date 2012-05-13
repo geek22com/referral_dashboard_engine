@@ -32,7 +32,7 @@ dev-install-deps:
 # python packages for development.
 dev-deploy:
 	curl -kL http://xrl.us/pythonbrewinstall | bash
-	$(PYTHONBREW) install --no-test $(PYTHON_VERSION)
+	$(PYTHONBREW) install $(PYTHON_VERSION)
 	$(PYTHONBREW) venv create --python=$(PYTHON_VERSION) --no-site-packages $(ENV_PATH)
 	pip install -E $(ENV_PATH) -r $(REQS_PATH)
 

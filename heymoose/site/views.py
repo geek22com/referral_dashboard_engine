@@ -170,6 +170,10 @@ def news_item(name):
 		return render_template('site/news/{0}.html'.format(name))
 	except:
 		abort(404)'''
+
+@bp.route('/news/')
+def news_list():
+	return 'OK'
 		
 @bp.route('/news/<id>')
 def news_item(id):

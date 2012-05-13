@@ -3,7 +3,7 @@
 {% macro heymoose(excl=true) -%}<span class="hey">Hey</span><span class="moose">Moose{{ '!' if excl -}}</span>{% endmacro -%}
 
 {% macro support() %}
-<p class="support right">
+<p class="support center">
 	Служба поддержки:
 	<span class="support-item">
 		<img src="{{ url_for('static', filename='./img/hm/phone.png') }}" alt="Телефон" />

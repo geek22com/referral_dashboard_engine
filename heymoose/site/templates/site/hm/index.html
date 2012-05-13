@@ -15,6 +15,21 @@
 		span.more {
 			font-size: 18px;
 		}
+		
+		.allnews {
+			position: absolute;
+			right: -1px;
+			bottom: -1px;
+			padding: 3px 10px;
+			background-color: #0093DD;
+			color: #fff;
+			border-top-left-radius: 8px;
+		}
+		
+		.allnews a, .allnews a:hover, .allnews a:visited {
+			color: #fff;
+			text-decoration: underline;
+		}
 	</style>
 {% endblock %}
 
@@ -101,4 +116,5 @@
 		</div>
 		{% endfor %}
 	</div>
+	<span class="allnews"><a href="{{ url_for('.news_list') }}">все новости</a> &raquo;</span>
 {% endblock %}

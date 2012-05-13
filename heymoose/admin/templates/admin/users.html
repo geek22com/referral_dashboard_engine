@@ -11,9 +11,23 @@
 
 {% block tabcontent %}
 
+{% set filter = request.args.get('filter', none) %}
+{{ macros.filter(filter,
+	(
+		(none, 'все'),
+		('advertisers', 'рекламодатели'),
+		('affiliates', 'партнёры'),
+		('admins', 'администраторы')
+	),
+	'.users_list')
+}}
+
 {% if users %}
+	<div style="clear: both;">
+		<strong>Всего: {{ count }}</strong>
+	</div>
 	{% call(head, user) user_macros.table(users, users_config) %}{% endcall %}
-	{{ macros.paginate(pages, '.users_list') }}
+	{{ macros.paginate(pages, '.users_list', filter=filter) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Еще не было зарегистрировано ни одного пользователя.</p>

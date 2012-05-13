@@ -7,18 +7,26 @@ from heymoose.utils.pagination import current_page, page_limits, paginate as pag
 from heymoose.utils.shortcuts import paginate
 from heymoose.forms import forms
 from heymoose.db.models import UserInfo
+from heymoose.data.enums import Roles
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
 from datetime import datetime
 
 @bp.route('/users/')
 def users_list():
+	filter_args = {
+		None: dict(),
+		'advertisers': dict(role=Roles.ADVERTISER),
+		'affiliates': dict(role=Roles.AFFILIATE),
+		'admins': dict(role=Roles.ADMIN)
+	}.get(request.args.get('filter', None), dict())
+	
 	page = current_page()
-	count = rc.users.count()
+	count = rc.users.count(**filter_args)
 	per_page = app.config.get('USERS_PER_PAGE', 20)
 	offset, limit, pages = paginate(page, count, per_page)
-	users = rc.users.list(offset=offset, limit=limit, full=True)
-	return render_template('admin/users.html', users=users, pages=pages)
+	users = rc.users.list(offset=offset, limit=limit, full=True, **filter_args)
+	return render_template('admin/users.html', users=users, pages=pages, count=count)
 
 @bp.route('/users/stats')
 def users_stats():

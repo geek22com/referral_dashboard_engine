@@ -3,7 +3,7 @@ from flask import render_template, g, request, redirect, flash, url_for
 from heymoose import app, resource as rc
 from heymoose.admin import blueprint as bp
 from heymoose.utils import pagination
-from heymoose.utils.pagination import current_page
+from heymoose.utils.pagination import current_page, page_limits, paginate as paginate2
 from heymoose.utils.shortcuts import paginate
 from heymoose.forms import forms
 from heymoose.db.models import UserInfo
@@ -45,7 +45,12 @@ def users_info(id):
 @bp.route('/users/<int:id>/stats')
 def users_info_stats(id):
 	user = rc.users.get_by_id(id)
-	return render_template('admin/users-info-stats.html', user=user)
+	page = current_page()
+	per_page = app.config.get('OFFERS_PER_PAGE', 10)
+	offset, limit = page_limits(page, per_page)
+	stats, count = rc.offer_stats.list_user(user, offset=offset, limit=limit)
+	pages = paginate2(page, count, per_page)
+	return render_template('admin/users-info-stats.html', user=user, stats=stats, pages=pages)
 
 @bp.route('/users/<int:id>/edit', methods=['GET', 'POST'])
 def users_info_edit(id):

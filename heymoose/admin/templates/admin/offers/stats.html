@@ -1,20 +1,14 @@
-{% extends "admin/users-info-layout.html" %}
+{% extends "admin/offers/layout.html" %}
 {% import 'common/stats.html' as stat_macros %}
 
 {% set content_fluid = true %}
-
-{% block breadcrumbs %}
-	{{ super() }}
-	{{ macros.breadcrumb('Статистика', url_for('.users_info_stats', id=user.id)) }}
-{% endblock %}
-
 {% set activetab = 'stats' %}
 
 {% block tabcontent %}
 
 {% if stats %}
 	{{ stat_macros.table(stats) }}
-	{{ macros.paginate(pages, '.users_info_stats', id=user.id) }}
+	{{ macros.paginate(pages, '.offers_stats') }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p>Нет данных для получения статистики.</p>

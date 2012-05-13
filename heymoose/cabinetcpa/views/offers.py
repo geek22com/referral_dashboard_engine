@@ -65,15 +65,11 @@ def offers_new():
 
 @bp.route('/offers/stats')
 def offers_stats():
-	stats = []
-	pages = {}
-	if g.user.is_affiliate:
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 10)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list(aff_id=g.user.id, offset=offset, limit=limit)
-		pages = paginate(page, count, per_page)
-	
+	page = current_page()
+	per_page = app.config.get('OFFERS_PER_PAGE', 10)
+	offset, limit = page_limits(page, per_page)
+	stats, count = rc.offer_stats.list_user(g.user, offset=offset, limit=limit)
+	pages = paginate(page, count, per_page)
 	now = datetime.now()
 	form = forms.DateTimeRangeForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
 	if 'dt_from' in request.args and 'dt_to' in request.args and form.validate():

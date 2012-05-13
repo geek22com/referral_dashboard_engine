@@ -64,6 +64,15 @@ def offers_requests():
 		return redirect(request.url)
 	return render_template('admin/offers/requests.html', grants=grants, pages=pages, form=form)
 
+@bp.route('/offers/stats')
+def offers_stats():
+	page = current_page()
+	per_page = app.config.get('OFFERS_PER_PAGE', 10)
+	offset, limit = page_limits(page, per_page)
+	stats, count = rc.offer_stats.list_all(offset=offset, limit=limit)
+	pages = paginate(page, count, per_page)
+	return render_template('admin/offers/stats.html', stats=stats, pages=pages)
+
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 def offers_info(id):
 	offer = rc.offers.get_by_id(id)

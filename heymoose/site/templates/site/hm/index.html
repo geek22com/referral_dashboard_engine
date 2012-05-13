@@ -83,117 +83,22 @@
 {% block content %}
 	<h2>Новости</h2>
 	<div class="row">
+		{% for n in news %}
 		<div class="span newsitem with-image" style="width: 438px;">
 			<div class="newsitem-left-container">
 				<div class="newsitem-image">
-					<img src="{{ url_for('.static', filename='./img/news/2012-05-10.png') }}" alt="" />
+					<img src="{{ url_for('upload', filename=n.image_url) }}" alt="" />
 				</div>
-				<div class="newsitem-date">10.05.2012</div>
+				<div class="newsitem-date">{{ n.date|dateformat }}</div>
 			</div>
 			<div class="newsitem-content">
-				<h4>Уважаемые партнеры HeyMoose!</a></h4>
+				<h4>{{ n.title }}</h4>
 				<p>
-					Представляем вам нашего партнера &mdash; компанию Whisla, занимающуюся размещением рекламы
-					в приложениях социальных сетей. Подробнее о сервисе можно узнать по адресу 
-					<a href="http://platform.whisla.com" target="_blank">platform.whisla.com</a>
+					{{ n.summary|safe }}
+					<a href="{{ url_for('.news_item', id=n.mongo_id) }}">читать &raquo;</a>
 				</p>
 			</div>
 		</div>
-		<div class="span newsitem with-image" style="width: 438px;">
-			<div class="newsitem-left-container">
-				<div class="newsitem-image">
-					<img src="{{ url_for('.static', filename='./img/news/2012-04-26.jpg') }}" alt="" />
-				</div>
-				<div class="newsitem-date">26.04.2012</div>
-			</div>
-			<div class="newsitem-content">
-				<h4>Подведены итоги конкурса <a href="http://heymoose.com/gamak">&laquo;GamaK&raquo;</a></h4>
-				<p>
-					Подведены итоги <a href="http://heymoose.com/gamak">конкурса &laquo;GamaK&raquo; от HeyMoose</a>.
-					Победителями стали:
-					игра &laquo;Заботань&raquo; &mdash; приз 100 тыс. рублей, игра &laquo;Fly in Space&raquo;
-					&mdash; 50 тыс. рублей, игра &laquo;Томато Комбат&raquo; &mdash; 20 тыс. рублей.
-					{#<a href="{{ url_for('.news_item', name='2012-04-26') }}">читать &raquo;</a>#}
-				</p>
-			</div>
-		</div>
-		<div class="span newsitem with-image" style="width: 438px;">
-			<div class="newsitem-left-container">
-				<div class="newsitem-image">
-					<img src="{{ url_for('.static', filename='./img/news/2012-04-23.jpg') }}" alt="" />
-				</div>
-				<div class="newsitem-date">23.04.2012</div>
-			</div>
-			<div class="newsitem-content">
-				<h4>Мы открылись!</h4>
-				<p>
-					Ровно два месяца понадобилось нам на то, чтобы сделать идеальную партнёрскую
-					программу. Результат вы можете оценить по достоинству, зарегистрировавшись в нашей системе.
-					{#<a href="{{ url_for('.news_item', name='2012-04-23') }}">читать &raquo;</a>#}
-				</p>
-			</div>
-		</div>
-		<div class="span newsitem with-image" style="width: 438px;">
-			<div class="newsitem-left-container">
-				<div class="newsitem-image">
-					<img src="{{ url_for('.static', filename='./img/news/2012-04-15.jpg') }}" alt="" />
-				</div>
-				<div class="newsitem-date">15.04.2012</div>	
-			</div>
-			<div class="newsitem-content">
-				<h4>&laquo;GamaK&raquo; &mdash; интервью с разработчиками</h4>
-				<p>
-					В рамках конкурса мы пообщались с ведущими разработчиками социальных игр Рунета.
-					Что они говорят о тенденциях развития игротворчества, рекламе и	способах монетизации
-					&mdash; читайте <a href="http://heymoose.com/gamak/articles/" target="_blank">тут</a>.
-				</p>
-			</div>
-		</div>
-		<div class="span newsitem with-image" style="width: 438px;">
-			<div class="newsitem-left-container">
-				<div class="newsitem-image">
-					<img src="{{ url_for('.static', filename='./img/news/2012-02-15.jpg') }}" alt="" />
-				</div>
-				<div class="newsitem-date">15.02.2012</div>
-			</div>
-			<div class="newsitem-content">
-				<h4>Разработчики всех стран &mdash; объединяйтесь!</h4>
-				<p>
-					Стартовал конкурс &laquo;GamaK&raquo; от HeyMoose! Получайте призы за качественные
-					и красивые игры. Подробности о конкурсе читать
-					<a href="http://heymoose.com/gamak/" target="_blank">здесь</a>.
-				</p>
-			</div>
-		</div>
-		<div class="span newsitem with-image" style="width: 438px;">
-			<div class="newsitem-left-container">
-				<div class="newsitem-image">
-					<img src="{{ url_for('.static', filename='./img/news/2012-02-05.jpg') }}" alt="" />
-				</div>
-				<div class="newsitem-date">05.02.2012</div>
-			</div>
-			<div class="newsitem-content">
-				<h4>Партнерская сеть мирового масштаба</h4>
-				<p>
-					Миссия компании HeyMoose &mdash; повышение качества рекламных кампаний
-					в сети: веб-пространстве, мобильных телефонах, планшетах и даже в микроволновках.
-				</p>
-			</div>
-		</div>
-		{#<div class="span newsitem with-image" style="width: 438px;">
-			<div class="newsitem-left-container">
-				<div class="newsitem-image">
-					<img src="{{ url_for('.static', filename='./img/news/2011-11-15.jpg') }}" alt="" />
-				</div>
-				<div class="newsitem-date">15.11.2011</div>	
-			</div>
-			<div class="newsitem-content">
-				<h4>Запуск партнерской программы в приложениях для социальных сетей</h4>
-				<p>
-					Разработано техническое решение для размещения рекламы по схеме CPA в приложениях
-					для социальных сетей.
-				</p>
-			</div>
-		</div>#}
+		{% endfor %}
 	</div>
 {% endblock %}

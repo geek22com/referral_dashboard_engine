@@ -1,0 +1,48 @@
+{% extends "admin/site/news-layout.html" %}
+
+{% set activetab = 'list' %}
+
+{% block tabcontent %}
+
+{% if news %}
+	<table class="bordered-table zebra-striped nosort">
+		<thead>
+			<tr>
+				<th class="header"></th>
+				<th class="header">Описание</th>
+				<th class="header center">Создана</th>
+				<th class="header center">На&nbsp;главной</th>
+				<th class="header center">Активна</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for newsitem in news %}
+			<tr>
+				<td class="center">
+					{% if newsitem.image %}
+					<img src="{{ url_for('upload', filename=newsitem.image_url) }}" alt="изображение" />
+					{% endif %}
+				</td>
+				<td>
+					<p>
+						<strong>
+							<a href="{{ url_for('.news_edit', id=newsitem.mongo_id) }}">{{ newsitem.title }}</a>
+						</strong>
+					</p>
+					<p>{{ newsitem.summary }}</p>
+				</td>
+				<td class="center">{{ newsitem.date|datetime_nosec }}</td>
+				<td class="center">{{ macros.to_icon(newsitem.on_main) }}</td>
+				<td class="center">{{ macros.to_icon(newsitem.active) }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{{ macros.paginate(pages, '.news_list') }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Еще не было добавлено ни одной новости.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

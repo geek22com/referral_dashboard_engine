@@ -17,6 +17,7 @@ RESTKIT_LOG_LEVEL = 'info'
 THIS_PATH = os.path.realpath(os.path.dirname(__file__))
 UPLOAD_PATH = os.path.join(os.path.dirname(THIS_PATH), 'upload')
 OFFER_LOGOS_DIR = 'offer-logos'
+NEWS_IMAGES_DIR = 'news'
 
 DATETIME_FORMAT = '%d.%m.%Y %H:%M:%S'
 DATETIME_NOSEC_FORMAT = DATETIME_FORMAT[:-3]

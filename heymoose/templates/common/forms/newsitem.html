@@ -1,0 +1,68 @@
+{% import 'common/forms.html' as forms %}
+
+{% macro head() %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/redactor/css/redactor.css') }}" media="all" />
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/redactor/redactor.js') }}"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('.redactor').redactor({
+				pathCss: "{{ url_for('static', filename='./css/redactor/css/') }}",
+				css: ['bootstrap.css?nocache={{ nocache() }}'],
+				toolbar: 'heymoose'
+			});
+			
+			$('.datetimepicker').datetimepicker({showButtonPanel: false});
+		})
+	</script>
+{% endmacro %}
+
+{% macro html(form, edit=false) %}
+	<div class="form-container">
+		<form method="post" action="" enctype="multipart/form-data" class="widelabels validate2">
+			<fieldset>
+				{{ forms.singlefield(form.title, class='span10') }}
+				{{ forms.singlefield(form.date, class='span4 datetimepicker') }}
+				{% call forms.singlefield_desc(form.image) %}
+				<span class="help-block">
+					Принимаются изображения в формате JPG (JPEG), GIF, PNG. Максимальный
+					размер загружаемого изображения &mdash; 1Мб. После загрузки изображение
+					будет вписано в размер 100&nbsp;х&nbsp;100 пикселей.
+				</span>
+				{% endcall %}
+				{% call forms.singlefield_desc(form.summary, rows=3, class='span10') %}
+				<span class="help-block">
+					Максимум 180 символов. Эта часть новости появляется на главной (если
+					включена соответствующая опция), а также в качестве summary в RSS-ленте.
+					Краткое описание НЕ отображается в полном тексте новости, поэтому при
+					необходимости его нужно дублировать в поле &laquo;Текст новости&raquo;.
+				</span>
+				{% endcall %}
+			</fieldset>
+			<fieldset>
+				<legend>Текст новости</legend>
+				<div class="clearfix formfield {{ forms.css_errors(form.text) }}">
+					<div class="input">
+						{{ forms.errors(form.text) }}
+						{{ forms.field(form.text, class='span10 redactor', style='height: 250px;') }}
+					</div>
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend>Опции</legend>
+				<div class="clearfix">
+					<div class="input">
+						{{ form.on_main() }} отображать на главной
+					</div>
+				</div>
+				<div class="clearfix">
+					<div class="input">
+						{{ form.active() }} активна
+					</div>
+				</div>
+			</fieldset>
+			<div class="actions">
+				<input class="btn large primary" type="submit" value="{{ 'Создать новость' if not edit else 'Подтвердить' }}" />
+			</div>
+		</form>
+	</div>
+{% endmacro %}

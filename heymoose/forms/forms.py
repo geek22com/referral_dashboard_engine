@@ -744,3 +744,32 @@ class GamakAppEditForm(GamakAppForm):
 	], description=u'Форматы: JPG (JPEG), GIF, PNG')
 
 
+class NewsItemForm(Form):
+	title = TextField(u'Заголовок', [
+		validators.Required(message=u'Введите заголовок новости'),
+		validators.Length(min=1, max=100, message=u'Заголовок может иметь длину от 1 до 100 символов')
+	])
+	summary = TextAreaField(u'Краткое описание', [
+		validators.Length(max=180, message=u'Краткое описание может иметь длину до 180 символов')
+	])
+	text = TextAreaField(u'Текст', [
+		validators.Required(message=u'Введите текст новости'),					
+	])
+	date = DateTimeField(u'Время публикации', format='%d.%m.%Y %H:%M', validators=[
+		validators.Required(message=u'Введите время публикации')
+	])
+	image = myfields.ImageField(u'Изображение', [
+		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
+	])
+	on_main = BooleanField(u'Отображать на главной', default=False)
+	active = BooleanField(u'Активна', default=True)
+	
+	image_max_size = (100, 100)
+	images_path = os.path.join(app.config.get('UPLOAD_PATH'), app.config.get('NEWS_IMAGES_DIR'))
+	def populate_image(self, obj, name):
+		if not self.image.data: return
+		obj.image = '{0}.{1}'.format(generate_unique_filename(), self.image.format)
+		self.image.data.thumbnail(self.image_max_size, 1) # 1 == Image.ANTIALIAS
+		self.image.data.save(os.path.join(self.images_path, obj.image))
+
+

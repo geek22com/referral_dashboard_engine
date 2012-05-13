@@ -103,3 +103,19 @@ class DummyAction(mongo.Document):
 	
 	offer_id = mongo.IntField()
 	date = mongo.DateTimeField()
+
+
+class NewsItem(mongo.Document):
+	title = mongo.StringField()
+	summary = mongo.StringField()
+	text = mongo.StringField()
+	image = mongo.StringField(default='heymoose.png')
+	date = mongo.DateTimeField()
+	active = mongo.BoolField(default=True)
+	on_main = mongo.BoolField(default=False)
+	
+	_images_dir = app.config.get('NEWS_IMAGES_DIR')
+	
+	@property
+	def image_url(self):
+		return os.path.join(self._images_dir, self.image or 'heymoose.png')

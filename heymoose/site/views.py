@@ -4,7 +4,7 @@ from heymoose import app
 from heymoose.site import blueprint as bp
 from heymoose.forms import forms
 from heymoose.utils.gen import check_password_hash
-from heymoose.db.models import Contact
+from heymoose.db.models import Contact, NewsItem
 from heymoose.mail import marketing as mmail, transactional as tmail
 from heymoose.data.models import User
 from heymoose.data.enums import Roles
@@ -14,7 +14,11 @@ from datetime import datetime
 
 @bp.route('/')
 def index():
-	return render_template('site/hm/index.html')
+	news = NewsItem.query.filter(
+		NewsItem.active == True,
+		NewsItem.on_main == True
+	).descending(NewsItem.date).limit(6)
+	return render_template('site/hm/index.html', news=news)
 
 @bp.route('/cpa/')
 def cpa_index():
@@ -160,12 +164,21 @@ def confirm(id, code):
 	return render_template('site/hm/confirm.html', success=success)
 
 
-@bp.route('/news/<name>')
+'''@bp.route('/news/<name>')
 def news_item(name):
 	try:
 		return render_template('site/news/{0}.html'.format(name))
 	except:
-		abort(404)
+		abort(404)'''
+		
+@bp.route('/news/<id>')
+def news_item(id):
+	newsitem = NewsItem.query.get(id)
+	news = NewsItem.query.filter(
+		NewsItem.mongo_id != newsitem.mongo_id,
+		NewsItem.active == True
+	).descending(NewsItem.date).limit(2)
+	return render_template('site/hm/newsitem.html', newsitem=newsitem, news=news)
 
 @bp.route('/special/<name>')
 def special(name):

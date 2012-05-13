@@ -1,0 +1,15 @@
+{% extends "admin/site/news-layout.html" %}
+{% import 'common/forms/newsitem.html' as newsitem_macros %}
+
+{% set activetab = 'new' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ newsitem_macros.head() }}
+{% endblock %}
+
+{% block tabcontent %}
+
+{{ newsitem_macros.html(form) }}
+
+{% endblock %}

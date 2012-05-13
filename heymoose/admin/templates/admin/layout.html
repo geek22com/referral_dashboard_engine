@@ -30,6 +30,13 @@
 {% block topbar %}
 <ul class="nav">
 	<li id="menu-item-index"><a href="{{ url_for('.index') }}">Главная</a></li>
+	<li class="dropdown">
+		<a class="dropdown-toggle" href="#">Сайт</a>
+		<ul class="dropdown-menu">
+			<li><a href="{{ url_for('.news_list') }}">Новости</a></li>
+		</ul>
+	</li>
+	
 	<li id="menu-item-users"><a href="{{ url_for('.users_list') }}">Пользователи</a></li>
 	<li id="menu-item-offers"><a href="{{ url_for('.offers_list') }}">Офферы</a></li>
 	<li id="menu-item-feedback">

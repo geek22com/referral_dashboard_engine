@@ -1,0 +1,47 @@
+{% extends "admin/site/news-layout.html" %}
+{% import 'common/forms/newsitem.html' as newsitem_macros %}
+
+{% block extrahead %}
+	{{ super() }}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/hm/newsitem.css', nocache=nocache()) }}" media="screen" />
+	<style type="text/css">
+		h4 {
+			font-size: 14px;
+			font-weight: bold;
+			line-height: normal;
+			color: #565555;
+		}
+	</style>
+	{{ newsitem_macros.head() }}
+{% endblock %}
+
+{% block title %}Новость &laquo;{{ newsitem.title }}&raquo;{% endblock %}
+
+{% block content %}
+
+<h2>Превью новости для главной страницы</h2>
+
+<div class="span newsitem with-image" style="width: 438px; margin: 20px auto;">
+	<div class="newsitem-left-container">
+		<div class="newsitem-image">
+			<img src="{{ url_for('upload', filename=newsitem.image_url) }}" alt="" />
+		</div>
+		<div class="newsitem-date">{{ newsitem.date|dateformat }}</div>
+	</div>
+	<div class="newsitem-content">
+		<h4>{{ newsitem.title }}</h4>
+		<p>
+			{{ newsitem.summary|safe }}
+			<a href="#">читать &raquo;</a>
+		</p>
+	</div>
+</div>
+
+<h2>Текст новости</h2>
+
+{{ newsitem.text|safe }}
+
+<h2>Изменить новость</h2>
+{{ newsitem_macros.html(form, edit=true) }}
+
+{% endblock %}

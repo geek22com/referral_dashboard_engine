@@ -1,8 +1,9 @@
-#Thu Apr 12 01:00:46 MSD 2012
+#Sun May 13 20:57:27 SAMST 2012
 eclipse.preferences.version=1
 encoding//heymoose/__init__.py=utf-8
 encoding//heymoose/admin/views/base.py=utf-8
 encoding//heymoose/admin/views/offers.py=utf-8
+encoding//heymoose/admin/views/site.py=utf-8
 encoding//heymoose/admin/views/users.py=utf-8
 encoding//heymoose/cabinetcpa/views/base.py=utf-8
 encoding//heymoose/cabinetcpa/views/offers.py=utf-8

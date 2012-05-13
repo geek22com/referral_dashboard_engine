@@ -1,0 +1,32 @@
+{% extends "site/hm/common-layout.html" %}
+
+{% block title %}{{ newsitem.title }}{% endblock %}
+
+{% block content %}
+<h1 class="hm-roundbox-header">{{ newsitem.title }}</h1>
+<div class="article" style="min-height: 100px;">
+	<img src="{{ url_for('upload', filename=newsitem.image_url) }}" alt="" style="float: left; margin-right: 20px;" />
+	{{ newsitem.text|safe }}
+</div>
+<hr />
+<h2>Другие новости</h2>
+<div class="row">
+	{% for n in news %}
+	<div class="span newsitem with-image" style="width: 438px;">
+		<div class="newsitem-left-container">
+			<div class="newsitem-image">
+				<img src="{{ url_for('upload', filename=n.image_url) }}" alt="" />
+			</div>
+			<div class="newsitem-date">{{ n.date|dateformat }}</div>
+		</div>
+		<div class="newsitem-content">
+			<h4>{{ n.title }}</h4>
+			<p>
+				{{ n.summary|safe }}
+				<a href="{{ url_for('.news_item', id=n.mongo_id) }}">читать &raquo;</a>
+			</p>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}

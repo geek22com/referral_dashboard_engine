@@ -19,4 +19,4 @@ def before_request():
 	g.feedback_unread = Contact.query.filter(Contact.read == False).count()
 
 # Import all views in blueprint for registering in app's url map
-from views import base, users, offers
+from views import base, users, offers, site

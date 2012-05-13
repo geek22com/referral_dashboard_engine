@@ -18,6 +18,7 @@ RESTKIT_LOG_LEVEL = 'info'
 THIS_PATH = os.path.realpath(os.path.dirname(__file__))
 UPLOAD_PATH = '/usr/share/nginx/uwsgi_upload'
 OFFER_LOGOS_DIR = 'offer-logos'
+NEWS_IMAGES_DIR = 'news'
 
 DATETIME_FORMAT = '%d.%m.%Y %H:%M:%S'
 DATETIME_NOSEC_FORMAT = DATETIME_FORMAT[:-3]

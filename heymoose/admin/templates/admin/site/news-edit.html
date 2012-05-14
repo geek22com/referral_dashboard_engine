@@ -39,7 +39,9 @@
 
 <h2>Текст новости</h2>
 
-{{ newsitem.text|safe }}
+<div class="redactor-text">
+	{{ newsitem.text|safe }}
+</div>
 
 <h2>Изменить новость</h2>
 {{ newsitem_macros.html(form, edit=true) }}

@@ -6,7 +6,7 @@
 
 {% block content %}
 <h1 class="hm-roundbox-header">{{ newsitem.title }}</h1>
-<div class="article" style="min-height: 100px;">
+<div class="article redactor-text" style="min-height: 100px;">
 	<img src="{{ url_for('upload', filename=newsitem.image_url) }}" alt="" style="float: left; margin-right: 20px;" />
 	{{ newsitem.text|safe }}
 </div>

@@ -1,52 +1,22 @@
 {% extends "cabinetcpa/offers/layout.html" %}
 {% import 'common/stats.html' as stat_macros %}
+{% import 'common/forms/datetime-range.html' as datetime_range %}
 
 {% set content_fluid = true %}
 {% set activetab = 'stats' %}
 
 {% block extrahead %}
 	{{ super() }}
-	<script type="text/javascript">
-		$(function() {
-			$('.datetimepicker').datetimepicker({showButtonPanel: false});
-		})
-	</script>
+	{{ datetime_range.head() }}
 {% endblock %}
 
 {% block tabcontent %}
 
-{#<div class="row">
-	<div class="span14">
-		<div class="well">
-			<form method="get" action="" class="validate2">
-				<div class="clearfix" style="margin-bottom: 0;">
-					<div class="row">
-						<div class="span4" style="line-height: 28px;">
-							<label class="simple required">Показать статистику за время:</label>
-						</div>
-						<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.dt_from) }}">
-							<label class="simple required">с</label>
-							{{ forms.field(form.dt_from, class='datetimepicker', style='width: 130px;') }}
-							{{ forms.errors(form.dt_from) }}
-						</div>
-						<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.dt_to) }}">
-							<label class="simple required">по</label>
-							{{ forms.field(form.dt_to, class='datetimepicker', style='width: 130px;') }}
-							{{ forms.errors(form.dt_to) }}
-						</div>
-						<div class="span3" style="float: right;">
-							<input type="submit" class="btn primary span3" value="Показать" />
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>#}
+{{ datetime_range.html(form, 'Показать статистику за время:') }}
 
 {% if stats %}
 	{{ stat_macros.table(stats) }}
-	{{ macros.paginate(pages, '.offers_stats') }}
+	{{ macros.paginate(pages, '.offers_stats', dt_from=form.dt_from.data|datetime_nosec, dt_to=form.dt_to.data|datetime_nosec) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p>Нет данных для получения статистики.</p>

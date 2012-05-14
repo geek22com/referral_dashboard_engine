@@ -5,8 +5,9 @@ from heymoose.admin import blueprint as bp
 from heymoose.utils import pagination
 from heymoose.utils.pagination import current_page, page_limits, paginate as paginate2
 from heymoose.utils.shortcuts import paginate
+from heymoose.utils.convert import to_unixtime
+from heymoose.utils.times import relativedelta
 from heymoose.forms import forms
-from heymoose.db.models import UserInfo
 from heymoose.data.enums import Roles
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
@@ -53,12 +54,18 @@ def users_info(id):
 @bp.route('/users/<int:id>/stats')
 def users_info_stats(id):
 	user = rc.users.get_by_id(id)
-	page = current_page()
-	per_page = app.config.get('OFFERS_PER_PAGE', 10)
-	offset, limit = page_limits(page, per_page)
-	stats, count = rc.offer_stats.list_user(user, offset=offset, limit=limit)
-	pages = paginate2(page, count, per_page)
-	return render_template('admin/users-info-stats.html', user=user, stats=stats, pages=pages)
+	now = datetime.now()
+	form = forms.DateTimeRangeForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
+	if form.validate():
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 10)
+		offset, limit = page_limits(page, per_page)
+		stats, count = rc.offer_stats.list_user(user, offset=offset, limit=limit,
+			**{'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)})
+		pages = paginate2(page, count, per_page)
+	else:
+		stats, pages = [], None
+	return render_template('admin/users-info-stats.html', user=user, stats=stats, pages=pages, form=form)
 
 @bp.route('/users/<int:id>/edit', methods=['GET', 'POST'])
 def users_info_edit(id):

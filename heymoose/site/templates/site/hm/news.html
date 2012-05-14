@@ -1,0 +1,58 @@
+{% extends "site/hm/common-layout.html" %}
+
+{% block title %}Новости{% endblock %}
+
+{% set activemenu = 'news' %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		.big-newsitem {
+			margin-bottom: 30px;
+		}
+		
+		.big-newsitem-body {
+			margin-left: 120px;
+		}
+		
+		.big-newsitem-image {
+			float: left;
+		}
+		
+		.big-newsitem-footer {
+			
+		}
+		
+		.big-newsitem-footer .date {
+			float: right;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+<h1 class="hm-roundbox-header">Новости {{ heymoose() }}</h1>
+<div class="article">
+	{% if news %}
+		{% for n in news %}
+		<div class="big-newsitem">
+			<div class="big-newsitem-image newsitem-image">
+				<img src="{{ url_for('upload', filename=n.image_url) }}" alt="" />
+			</div>
+			<div class="big-newsitem-body">
+				<h2>{{ n.title }}</h2>
+				<p>{{ n.summary|safe }}</p>
+				<div class="big-newsitem-footer">
+					<a href="{{ url_for('.news_item', id=n.mongo_id) }}">Читать полностью &raquo;</a>
+					<span class="date">{{ n.date|dateformat }}</span>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+		{{ macros.paginate(pages, '.news_list') }}
+	{% else %}
+		<div class="clearfix alert-message block-message info">
+			<p><strong>Список пуст.</strong> Еще не было добавлено ни одной новости.</p>
+		</div>
+	{% endif %}
+</div>
+{% endblock %}

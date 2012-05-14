@@ -4,6 +4,7 @@ from heymoose import app
 from heymoose.site import blueprint as bp
 from heymoose.forms import forms
 from heymoose.utils.gen import check_password_hash
+from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.db.models import Contact, NewsItem
 from heymoose.mail import marketing as mmail, transactional as tmail
 from heymoose.data.models import User
@@ -163,21 +164,21 @@ def confirm(id, code):
 		success = True
 	return render_template('site/hm/confirm.html', success=success)
 
-
-'''@bp.route('/news/<name>')
-def news_item(name):
-	try:
-		return render_template('site/news/{0}.html'.format(name))
-	except:
-		abort(404)'''
-
 @bp.route('/news/')
-def news_list():
-	return 'OK'
+def news_list():	
+	page = current_page()
+	per_page = 10
+	offset, limit = page_limits(page, per_page)
+	news = NewsItem.query.filter(NewsItem.active == True).descending(NewsItem.date).skip(offset).limit(limit)
+	count = NewsItem.query.filter(NewsItem.active == True).count()
+	pages = paginate(page, count, per_page)
+	return render_template('site/hm/news.html', news=news.all(), pages=pages)
 		
 @bp.route('/news/<id>')
 def news_item(id):
 	newsitem = NewsItem.query.get(id)
+	if not newsitem.active:
+		abort(404)
 	news = NewsItem.query.filter(
 		NewsItem.mongo_id != newsitem.mongo_id,
 		NewsItem.active == True

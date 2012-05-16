@@ -72,6 +72,11 @@
 						{% endif %}
 						{{ offer.name }}
 					</a>
+					{% if offer.launch_time %}
+					<div class="small center" style="font-style: italic;">
+						Дата запуска: {{ offer.launch_time|dateformat }}
+					</div>
+					{% endif %}
 					{% if admin %}
 					<div class="well small offer-advertiser">
 						<div><a href="{{ url_for('.users_info', id=offer.advertiser.id) }}"

@@ -1,5 +1,6 @@
 from backend import BackendResource, extractor
 from heymoose.data.models import Offer, SubOffer
+from heymoose.utils.convert import to_unixtime
 from restkit.errors import ResourceError, ResourceNotFound
 
 def extract_categories(offer):
@@ -11,6 +12,9 @@ def extract_regions(offer):
 def extract_cost(offer):
 	return offer.cost or offer.percent, offer.is_dirty('cost') or offer.is_dirty('percent')
 
+def extract_launch_time(offer):
+	return to_unixtime(offer.launch_time, msec=True), offer.is_dirty('launch_time')
+
 class OfferResource(BackendResource):
 	base_path = '/offers'
 	
@@ -18,7 +22,8 @@ class OfferResource(BackendResource):
 		advertiser_id='advertiser.id',
 		cost=extract_cost,
 		categories=extract_categories,
-		regions=extract_regions
+		regions=extract_regions,
+		launch_time=extract_launch_time
 	)
 	
 	def get_by_id(self, id, **kwargs):
@@ -41,7 +46,7 @@ class OfferResource(BackendResource):
 	
 	def add(self, offer, balance, **kwargs):
 		params = self.extractor.extract(offer,
-			required='advertiser_id pay_method cost name description url site_url title code hold_days cookie_ttl'.split(),
+			required='advertiser_id pay_method cost name description url site_url title code hold_days cookie_ttl launch_time'.split(),
 			optional='cpa_policy allow_negative_balance auto_approve reentrant logo_filename categories regions'.split()
 		)
 		params.update(balance=balance)
@@ -52,7 +57,7 @@ class OfferResource(BackendResource):
 		params = self.extractor.extract(offer,
 			updated='''pay_method cpa_policy cost title code hold_days auto_approve reentrant
 				name description url site_url cookie_ttl categories regions allow_negative_balance
-				logo_filename token_param_name'''.split()
+				logo_filename token_param_name launch_time'''.split()
 		)
 		params.update(kwargs)
 		self.path(offer.id).put(**params)

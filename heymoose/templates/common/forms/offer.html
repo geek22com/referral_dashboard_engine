@@ -176,6 +176,7 @@
 			</span>
 			{% endcall %}
 			{{ forms.singlefield(form.cookie_ttl, class='span4', inline='дней') }}
+			{{ forms.singlefield(form.launch_time, class='span4 datepicker') }}
 			{% if edit %}
 			{{ forms.singlefield(form.token_param_name, class='span4') }}
 			{% endif %}

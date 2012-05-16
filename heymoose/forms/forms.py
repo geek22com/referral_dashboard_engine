@@ -9,6 +9,7 @@ from heymoose.data import enums
 from heymoose.filters import currency, currency_sign
 from heymoose.utils.gen import generate_unique_filename, generate_uid
 from flask import g
+from datetime import datetime
 import validators
 import fields as myfields
 import random, hashlib, os
@@ -603,6 +604,9 @@ class OfferFormBase(Form):
 	description = TextAreaField(u'Описание кампании', [
 		validators.Required(message=u'Введите описание кампании')
 	])
+	launch_time = DateTimeField(u'Дата запуска', format='%d.%m.%Y', validators=[
+		validators.Required(message=u'Введите дату запуска оффера')
+	], default=datetime.now)
 	cookie_ttl = IntegerField(u'Время жизни Cookie', [
 		validators.Required(message=u'Введите время жизни cookie'),
 		validators.NumberRange(min=0, message=u'Время жизни должно быть больше нуля')

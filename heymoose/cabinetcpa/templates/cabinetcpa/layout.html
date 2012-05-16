@@ -3,7 +3,8 @@
 {% block posttitle %}Личный кабинет {{ 'рекламодателя' if g.user.is_advertiser else 'партнера' }} HeyMoose{% endblock %}
 
 {% block extrahead %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/jquery-ui.css') }}" media="all" />
+{#<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/jquery-ui.css') }}" media="all" />#}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/redmond/jquery-ui-1.8.20.custom.css') }}" media="all" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/timepicker-addon.css') }}" media="all" />
 <style type="text/css">
 	#manager-modal { width: 400px; }}

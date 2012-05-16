@@ -46,6 +46,9 @@
 			$('form.validate').validateForm(twitterValidateHandlers);
 			$('form.validate2').validateForm2(twitterValidateHandlers2);
 			
+			var datepickers = $('.datepicker');
+			if (datepickers.length) datepickers.datepicker();
+			
 			$(window).resize(function() {
 				var width = $(window).width();
 				if (width > 940) $('.container.fluid').css('width', width - 60);

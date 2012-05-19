@@ -719,7 +719,9 @@ class DateTimeRangeForm(Form):
 	dt_to = DateTimeField(u'по', format='%d.%m.%Y %H:%M', validators=[
 		validators.Required(message=u'Введите время')
 	])
-	
+
+class OfferStatsFilterForm(DateTimeRangeForm):
+	requested = BooleanField(u'с заявками', default=True)	
 	
 class GamakAppForm(Form):
 	name = TextField(u'Название приложения', [

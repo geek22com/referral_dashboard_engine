@@ -10,7 +10,7 @@
 
 {% macro html(form, title) %}
 	<div class="row">
-		<div class="span14">
+		<div class="span16">
 			<div class="well">
 				<form method="get" action="" class="validate2">
 					<div class="clearfix" style="margin-bottom: 0;">
@@ -28,6 +28,19 @@
 								{{ forms.field(form.dt_to, class='datetimepicker', style='width: 130px;') }}
 								{{ forms.errors(form.dt_to) }}
 							</div>
+							{% if form.requested %}
+							<div class="span2 formfield clearfix inner-field {{ forms.css_errors(form.requested) }}">
+								<ul class="inputs-list">
+									<li>
+										<label class="required">
+											{{ forms.field(form.requested) }}
+											<span>с заявками</span>
+										</label>
+									</li>
+								</ul>
+								{{ forms.errors(form.requested) }}
+							</div>
+							{% endif %}
 							<div class="span3" style="float: right;">
 								<input type="submit" class="btn primary span3" value="Показать" />
 							</div>

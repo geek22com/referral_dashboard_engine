@@ -247,6 +247,10 @@ class Offer(SubOffer):
 		return [self] + (self.suboffers or [])
 	
 	@property
+	def active_suboffers(self):
+		return [s for s in self.suboffers if s.active]
+	
+	@property
 	def categories_ids(self):
 		return [category.id for category in self.categories]
 	

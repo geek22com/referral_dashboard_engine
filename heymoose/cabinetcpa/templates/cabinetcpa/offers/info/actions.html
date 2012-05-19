@@ -13,7 +13,7 @@
 
 {% block tabcontent %}
 
-{% call(head, suboffer) suboffer_macros.table(offer.all_suboffers, user=g.user) %}
+{% call(head, suboffer) suboffer_macros.table(offer.all_suboffers, user=g.user, show_all=advertiser_is_owner) %}
 	{% if advertiser_is_owner %}
 		{% if head %}
 		<th class="header">Код</th>

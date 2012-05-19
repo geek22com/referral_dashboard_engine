@@ -11,7 +11,7 @@
 
 {% block tabcontent %}
 
-{% call(head, suboffer) suboffer_macros.table(offer.all_suboffers, user=g.user) %}
+{% call(head, suboffer) suboffer_macros.table(offer.all_suboffers, user=g.user, show_all=true) %}
 	{% if head %}
 	<th class="header">Код</th>
 	<th class="header center">Активно</th>

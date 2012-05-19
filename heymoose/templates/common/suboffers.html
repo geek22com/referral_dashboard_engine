@@ -1,6 +1,6 @@
 {% import 'common/macros.html' as macros %}
 
-{% macro table(suboffers, user=none) %}
+{% macro table(suboffers, user=none, show_all=false) %}
 	<table class="bordered-table zebra-striped nosort suboffers-table">
 		<thead>
 			<tr>
@@ -13,15 +13,15 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for suboffer in suboffers %}
+			{% for suboffer in suboffers if show_all or suboffer.active %}
 			<tr>
 				<td>{{ suboffer.title }}</td>
 				<td>{{ suboffer.payment_type }}</td>
 				<td class="right">
-					{{ suboffer.value(tax=user.fee if user.is_affiliate else 0) }} {{ suboffer.value_measure_short }}
+					{{ suboffer.value(tax=user.fee if user.is_affiliate else 0) }}&nbsp;{{ suboffer.value_measure_short }}
 				</td>
 				<td class="center">{{ macros.to_icon(suboffer.reentrant) }}</td>
-				<td class="right">{{ suboffer.hold_days }} дней</td>
+				<td class="right">{{ suboffer.hold_days -}}&nbsp;дней</td>
 				{{ caller(false, suboffer) }}
 			</tr>
 			{% endfor %}

@@ -25,7 +25,7 @@
 		</thead>
 		<tbody>
 			{% for offer in offers %}
-			{% set rowspan = 'rowspan="{0}"'.format(offer.suboffers|length + 1)|safe %}
+			{% set rowspan = 'rowspan="{0}"'.format(offer.active_suboffers|length + 1)|safe %}
 			<tr>
 				<td class="center" style="position: relative;" {{ rowspan }}>
 					<div style="position: absolute;">#{{ offer.id }}</div>
@@ -116,7 +116,7 @@
 					{% endif %}
 				</td>
 			</tr>
-			{% for suboffer in offer.suboffers %}
+			{% for suboffer in offer.active_suboffers %}
 			<tr class="subrow">
 				<td>{{ suboffer.title }}</td>
 				<td class="right">

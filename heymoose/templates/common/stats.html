@@ -1,8 +1,8 @@
-{% macro table(stats) %}
+{% macro table(stats, affiliate=false) %}
 	<table class="bordered-table zebra-striped nosort stats-table">
 		<thead>
 			<tr>
-				<th class="header" rowspan="2">Оффер</th>
+				<th class="header" rowspan="2">{{ 'Партнер' if affiliate else 'Оффер' }}</th>
 				<th class="header right" rowspan="2">Показы</th>
 				<th class="header right" rowspan="2">Клики</th>
 				<th class="header center" colspan="2">Выполненные действия</th>
@@ -24,7 +24,11 @@
 		<tbody>
 			{% for stat in stats %}
 			<tr>
-				<td><a href="{{ url_for('.offers_info', id=stat.offer_id) }}">{{ stat.name }}</a></td>
+				{% if affiliate %}
+				<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
+				{% else %}
+				<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
+				{% endif %}
 				<td class="right">{{ stat.shows }}</td>
 				<td class="right">{{ stat.clicks }}</td>
 				

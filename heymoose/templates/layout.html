@@ -68,7 +68,7 @@
 			<div class="{% if topbar_fluid %}container-fluid{% else %}container{% endif %}">
 				<span class="brand">
 					{% block prebrand %}{% endblock %}
-					<a href="{{ url_for('.index') }}"><span class="hey">Hey</span><span class="moose">Moose</span></a>
+					<a href="{{ url_for('site.index') }}"><span class="hey">Hey</span><span class="moose">Moose</span></a>
 					{% block postbrand %}{% endblock %}
 				</span>
 				{% block topbar %}{% endblock %}

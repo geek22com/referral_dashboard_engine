@@ -335,7 +335,7 @@ class Category(IdentifiableModel):
 
 
 class OverallOfferStat(models.ModelBase):
-	offer_id = Field(types.Integer, 'offer-id')
+	id = Field(types.Integer, 'id')
 	name = Field(types.String, 'name')
 	shows = Field(types.Integer, 'shows')
 	clicks = Field(types.Integer, 'clicks')

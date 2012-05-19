@@ -37,7 +37,7 @@ def users_stats():
 		page = current_page()
 		per_page = app.config.get('OFFERS_PER_PAGE', 10)
 		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_all(offset=offset, limit=limit,
+		stats, count = rc.offer_stats.list_affiliate(offset=offset, limit=limit,
 			**{'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)})
 		pages = paginate2(page, count, per_page)
 	else:

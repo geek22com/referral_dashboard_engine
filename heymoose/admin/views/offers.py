@@ -75,7 +75,7 @@ def offers_stats():
 		page = current_page()
 		per_page = app.config.get('OFFERS_PER_PAGE', 10)
 		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_all(offset=offset, limit=limit,
+		stats, count = rc.offer_stats.list_all(offset=offset, limit=limit, granted=form.requested.data,
 			**{'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)})
 		pages = paginate(page, count, per_page)
 	else:
@@ -236,4 +236,15 @@ def offers_info_operations(id):
 @bp.route('/offers/<int:id>/stats')
 def offers_info_stats(id):
 	offer = rc.offers.get_by_id(id)
-	return 'OK'
+	now = datetime.now()
+	form = forms.DateTimeRangeForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
+	if form.validate():
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 10)
+		offset, limit = page_limits(page, per_page)
+		stats, count = rc.offer_stats.list_affiliate_by_offer(offset=offset, limit=limit, offer_id=offer.id,
+			**{'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)})
+		pages = paginate(page, count, per_page)
+	else:
+		stats, pages = [], None
+	return render_template('admin/offers/info/stats.html', offer=offer, stats=stats, pages=pages, form=form)

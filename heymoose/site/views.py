@@ -45,6 +45,10 @@ def contacts():
 		return redirect(url_for('.contacts'))
 	return render_template('site/hm/contacts.html', form=form)
 
+@bp.route('/job')
+def job():
+	return render_template('site/hm/job.html')
+
 @bp.route('/gateway')
 def gateway():
 	if not g.user:

@@ -31,7 +31,18 @@ def users_list():
 
 @bp.route('/users/stats')
 def users_stats():
-	return render_template('admin/users-stats.html')
+	now = datetime.now()
+	form = forms.DateTimeRangeForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
+	if form.validate():
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 10)
+		offset, limit = page_limits(page, per_page)
+		stats, count = rc.offer_stats.list_all(offset=offset, limit=limit,
+			**{'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)})
+		pages = paginate2(page, count, per_page)
+	else:
+		stats, pages = [], None
+	return render_template('admin/users-stats.html', stats=stats, pages=pages, form=form)
 
 @bp.route('/users/<int:id>', methods=['GET', 'POST'])
 def users_info(id):

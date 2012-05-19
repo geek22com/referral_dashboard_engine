@@ -1,8 +1,31 @@
 {% extends "admin/users-layout.html" %}
+{% import 'common/stats.html' as stat_macros %}
+{% import 'common/forms/datetime-range.html' as datetime_range %}
 
 {% block breadcrumbs %}
 	{{ super() }}
 	{{ macros.breadcrumb('Статистика', url_for('.users_stats')) }}
 {% endblock %}
 
+{% set content_fluid = true %}
 {% set activetab = 'stats' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ datetime_range.head() }}
+{% endblock %}
+
+{% block tabcontent %}
+
+{{ datetime_range.html(form, 'Показать статистику за время:') }}
+
+{% if stats %}
+	{{ stat_macros.table(stats) }}
+	{{ macros.paginate(pages, '.users_stats', dt_from=form.dt_from.data|datetime_nosec, dt_to=form.dt_to.data|datetime_nosec) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>Нет данных для получения статистики.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

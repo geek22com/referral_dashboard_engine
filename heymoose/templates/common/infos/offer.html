@@ -155,10 +155,10 @@
 				Оплата за действия
 			</div>
 			<div class="roundbox-content">
-				<dl class="kv kv--inscribed kv--key150">
+				<dl class="stacked inscribed">
 					{% for suboffer in offer.all_suboffers if suboffer.active %}
 					<dt>{{ suboffer.title }}</dt>
-					<dd>{{ suboffer.value(tax=user.fee if affiliate else 0) }} {{ suboffer.value_measure }}</dd>
+					<dd>{{ suboffer.value(tax=user.fee if affiliate else 0) }}</dd>
 					{% endfor %}
 				</dl>
 			</div>

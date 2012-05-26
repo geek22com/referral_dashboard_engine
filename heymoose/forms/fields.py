@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from wtforms.fields import TextField, IntegerField, FileField, SelectField, SelectMultipleField
+from wtforms.fields import TextField, IntegerField, DecimalField, FileField, SelectField, SelectMultipleField
 from PIL import Image
 from heymoose import resource as rc
 from heymoose.utils import swfheader, svgheader
@@ -14,6 +14,14 @@ class NullableIntegerField(IntegerField):
 			self.data = None
 			return
 		super(NullableIntegerField, self).process_formdata(valuelist)
+
+class NullableDecimalField(DecimalField):
+	def process_formdata(self, valuelist):
+		value = valuelist[0]
+		if value is None or value == '' or value == u'':
+			self.data = None
+			return
+		super(NullableDecimalField, self).process_formdata(valuelist)
 		
 class NullableTextField(TextField):
 	def process_formdata(self, valuelist):

@@ -9,9 +9,6 @@ def extract_categories(offer):
 def extract_regions(offer):
 	return list(offer.regions), offer.is_dirty('regions')
 
-def extract_cost(offer):
-	return offer.cost or offer.percent, offer.is_dirty('cost') or offer.is_dirty('percent')
-
 def extract_launch_time(offer):
 	return to_unixtime(offer.launch_time, msec=True), offer.is_dirty('launch_time')
 
@@ -20,7 +17,6 @@ class OfferResource(BackendResource):
 	
 	extractor = extractor().alias(
 		advertiser_id='advertiser.id',
-		cost=extract_cost,
 		categories=extract_categories,
 		regions=extract_regions,
 		launch_time=extract_launch_time
@@ -46,8 +42,8 @@ class OfferResource(BackendResource):
 	
 	def add(self, offer, balance, **kwargs):
 		params = self.extractor.extract(offer,
-			required='advertiser_id pay_method cost name description url site_url title code hold_days cookie_ttl launch_time'.split(),
-			optional='cpa_policy allow_negative_balance auto_approve reentrant logo_filename categories regions'.split()
+			required='advertiser_id pay_method name description url site_url title code hold_days cookie_ttl launch_time'.split(),
+			optional='cpa_policy cost cost2 percent allow_negative_balance auto_approve reentrant logo_filename categories regions'.split()
 		)
 		params.update(balance=balance)
 		params.update(kwargs)
@@ -55,7 +51,7 @@ class OfferResource(BackendResource):
 	
 	def update(self, offer, **kwargs):
 		params = self.extractor.extract(offer,
-			updated='''pay_method cpa_policy cost title code hold_days auto_approve reentrant
+			updated='''pay_method cpa_policy cost cost2 percent title code hold_days auto_approve reentrant
 				name description url site_url cookie_ttl categories regions allow_negative_balance
 				logo_filename token_param_name launch_time'''.split()
 		)
@@ -73,15 +69,15 @@ class OfferResource(BackendResource):
 	
 	def add_suboffer(self, id, suboffer, **kwargs):
 		params = self.extractor.extract(suboffer,
-			required='cpa_policy cost title code hold_days'.split(),
-			optional='auto_approve reentrant'.split()
+			required='cpa_policy title code hold_days'.split(),
+			optional='auto_approve cost cost2 percent reentrant'.split()
 		)
 		params.update(kwargs)
 		return self.path(id).path('suboffers').post(**params).as_int()
 	
 	def update_suboffer(self, id, suboffer, **kwargs):
 		params = self.extractor.extract(suboffer,
-			updated='cpa_policy cost title code hold_days auto_approve reentrant active'.split()
+			updated='cpa_policy cost cost2 percent title code hold_days auto_approve reentrant active'.split()
 		)
 		params.update(kwargs)
 		self.path(id).path('suboffers').path(suboffer.id).put(**params)

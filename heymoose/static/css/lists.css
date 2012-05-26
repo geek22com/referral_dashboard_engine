@@ -86,3 +86,17 @@ dl.kv.kv--key150 dt {
 dl.kv.kv--key50 dt {
 	width: 50px;
 }
+
+
+dl.stacked {
+	
+}
+
+dl.stacked dd {
+	margin-left: 20px;
+	margin-bottom: 10px;
+}
+
+dl.stacked.inscribed {
+	margin-bottom: 0;
+}

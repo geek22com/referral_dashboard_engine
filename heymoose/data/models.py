@@ -188,26 +188,26 @@ class SubOffer(IdentifiableModel):
 	pay_method = Field(enums.PayMethods, 'pay-method')
 	cpa_policy = Field(enums.CpaPolicies, 'cpa-policy')
 	cost = Field(types.Decimal, 'cost')
+	cost2 = Field(types.Decimal, 'cost2')
 	percent = Field(types.Decimal, 'percent')
 	code = Field(types.String, 'code')
 	hold_days = Field(types.Integer, 'hold-days')
 	active = Field(types.Boolean, 'active')
 	
 	def value(self, tax=0):
-		v = self.cost or self.percent
-		return (v * Decimal(1.0 - float(tax) / 100.0)).quantize(Decimal('1.00'))
+		if self.pay_method == enums.PayMethods.CPC:
+			return u'{0} руб. за клик'.format(self.taxed(self.cost, tax))
+		elif self.cpa_policy == enums.CpaPolicies.FIXED:
+			return u'{0} руб. за действие'.format(self.taxed(self.cost, tax))
+		elif self.cpa_policy == enums.CpaPolicies.DOUBLE_FIXED:
+			return u'{0} руб. за первое действие и {1} руб. за последующие'.format(
+				self.taxed(self.cost, tax), self.taxed(self.cost2, tax))
+		elif self.cpa_policy == enums.CpaPolicies.PERCENT:
+			return u'{0}% с заказа или покупки'.format(self.taxed(self.percent, tax))
+		return u'неизвестно'
 	
-	@property
-	def value_measure(self):
-		if self.cost:
-			return u'руб. / кл.' if self.pay_method == enums.PayMethods.CPC else u'руб. / д.'
-		elif self.percent:
-			return u'%'
-		return u''
-	
-	@property
-	def value_measure_short(self):
-		return u'руб.' if self.cost else u'%' if self.percent else u''
+	def taxed(self, value, tax):
+		return (value * Decimal(1.0 - float(tax) / 100.0)).quantize(Decimal('1.00'))
 	
 	@property
 	def payment_type(self):
@@ -215,6 +215,8 @@ class SubOffer(IdentifiableModel):
 			return u'фиксированная за клик'
 		elif self.cpa_policy == enums.CpaPolicies.FIXED:
 			return u'фиксированная за действие'
+		elif self.cpa_policy == enums.CpaPolicies.DOUBLE_FIXED:
+			return u'фиксированная за первое и последующие действия'
 		elif self.cpa_policy == enums.CpaPolicies.PERCENT:
 			return u'процент с заказа или покупки'
 		return u'неизвестно'

@@ -50,6 +50,7 @@ class PayMethods(Enum):
 class CpaPolicies(Enum):
 	PERCENT = e('PERCENT', name=u'процент')
 	FIXED = e('FIXED', name=u'фиксированная')
+	DOUBLE_FIXED = e('DOUBLE_FIXED', name=u'фиксированная за первое и последующие действия')
 
 class Regions(Enum):
 	RUSSIA = e('RUSSIA', code=u'RU', name=u'Россия')

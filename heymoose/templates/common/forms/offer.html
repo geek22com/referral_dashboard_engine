@@ -3,9 +3,11 @@
 {% macro suboffer_head() %}
 	<script type="text/javascript">
 		$(function() {
-			var signs = ['руб. за клик', 'руб. за действие', '% с покупки'];
+			var signs = ['руб. за клик', 'руб. за действие', 'руб. за первое д.', '% с покупки'];
 			$('.payment-type-select').change(function() {
-				$(this).closest('.input').find('.payment-value-sign').text(signs[parseInt($(this).val())]);
+				var val = $(this).val();
+				$(this).closest('.input').find('.payment-value-sign').text(signs[parseInt(val)]);
+				$(this).closest('.payment-fields').find('.cost2-field').toggle(val == 2);
 			}).change();
 			
 			$('.code-checkbox').change(function() {
@@ -64,6 +66,7 @@
 			{{ forms.errors(form.title) }}
 		</div>
 	</div>
+	<div class="payment-fields">
 	<div class="clearfix">
 		<label class="required">Оплата</label>
 		<div class="input">
@@ -79,6 +82,18 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="clearfix cost2-field">
+		<div class="input">
+			<div class="row">
+				<div class="span4">&nbsp;</div>
+				<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.cost2) }}" style="width: 180px;">
+					{{ forms.field(form.cost2, class='span1 right', style='width: 60px') }} руб. за другие д.
+					{{ forms.errors(form.cost2) }}
+				</div>
+			</div>
+		</div>
+	</div>
 	</div>
 	<div class="clearfix">
 		{{ forms.label(form.code, class='required') }}

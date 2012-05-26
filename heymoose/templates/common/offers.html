@@ -16,7 +16,7 @@
 			</tr>
 			<tr class="subrow">
 				<th class="header">Название</th>
-				<th class="header right" style="min-width: 70px;">Оплата</th>
+				<th class="header" style="min-width: 70px;">Оплата</th>
 				
 				<th class="header right">eCPC,&nbsp;руб.</th>
 				<th class="header right">eCPM,&nbsp;руб.</th>
@@ -88,9 +88,7 @@
 				</td>
 				
 				<td>{{ offer.title }}</td>
-				<td class="right">
-					{{ offer.value(tax=user.fee if affiliate else 0) }} {{ offer.value_measure }}
-				</td>
+				<td>{{ offer.value(tax=user.fee if affiliate else 0) }}</td>
 				
 				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
 				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
@@ -119,9 +117,7 @@
 			{% for suboffer in offer.active_suboffers %}
 			<tr class="subrow">
 				<td>{{ suboffer.title }}</td>
-				<td class="right">
-					{{ suboffer.value(tax=user.fee if affiliate else 0) }} {{ suboffer.value_measure }}
-				</td>
+				<td>{{ suboffer.value(tax=user.fee if affiliate else 0) }}</td>
 			</tr>
 			{% endfor %}
 			{% endfor %}

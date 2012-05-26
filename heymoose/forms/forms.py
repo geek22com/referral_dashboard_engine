@@ -13,6 +13,7 @@ from datetime import datetime
 import validators
 import fields as myfields
 import random, hashlib, os
+from heymoose.forms.fields import NullableIntegerField, NullableDecimalField
 
 
 class Form(WTForm):
@@ -514,11 +515,13 @@ class SubOfferForm(Form):
 	])
 	payment_type = SelectField(u'Тип оплаты', choices=[
 		(1, u'Фиксированная за действие'),
-		(2, u'Процент с заказа или покупки')
+		(2, u'Фиксированная за первое действие и за последующие'),
+		(3, u'Процент с заказа или покупки')
 	], coerce=int)
 	payment_value = DecimalField(u'Размер выплаты', [
 		validators.NumberRange(min=0.00, message=u'Введите положительное число'),
 	], default=1.00)
+	cost2 = NullableDecimalField(u'', default=1.0)
 	reentrant = BooleanField(u'многократ. прохождение', default=True)
 	hold_days = IntegerField(u'Время холда', [
 		validators.NumberRange(min=0, max=180, message=u'Время холда должно быть в интервале от 0 до 180 дней'),
@@ -556,26 +559,37 @@ class SubOfferForm(Form):
 			return 0
 		elif obj.cpa_policy == enums.CpaPolicies.FIXED:
 			return 1
-		else:
+		elif obj.cpa_policy == enums.CpaPolicies.DOUBLE_FIXED:
 			return 2
+		else:
+			return 3
 		
 	def populate_payment_type(self, obj, name):
 		if self.payment_type.data == 0:
 			obj.pay_method = enums.PayMethods.CPC
 		else:
 			obj.pay_method = enums.PayMethods.CPA
-			obj.cpa_policy = enums.CpaPolicies.FIXED if self.payment_type.data == 1 else enums.CpaPolicies.PERCENT
+			if self.payment_type.data == 1:	
+				obj.cpa_policy = enums.CpaPolicies.FIXED
+			elif self.payment_type.data == 2:
+				obj.cpa_policy = enums.CpaPolicies.DOUBLE_FIXED
+			else:
+				obj.cpa_policy = enums.CpaPolicies.PERCENT
 	
 	def get_payment_value(self, obj):
 		return obj.cost or obj.percent
 	
 	def populate_payment_value(self, obj, name):
-		if self.payment_type.data in (0, 1):
+		if self.payment_type.data in (0, 1, 2):
 			obj.cost = self.payment_value.data
 			obj.percent = None
 		else:
 			obj.percent = self.payment_value.data
 			obj.cost = None
+	
+	def validate_cost2(self, field):
+		if self.payment_type.data == 2 and (self.cost2.data is None or self.cost2.data <= 0):
+			raise ValueError(u'Введите положительное число')
 
 
 class MainSubOfferForm(SubOfferForm):

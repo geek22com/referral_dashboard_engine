@@ -705,6 +705,12 @@ class OfferBannerForm(Form):
 		obj.mime_type = self.image.mime_type
 
 
+class OfferBannerUrlForm(Form):
+	url = myfields.NullableTextField(u'URL', [
+		validators.URI(message = u'Введите URL в формате http://*.*', verify_exists=False)
+	])
+
+
 class AppsShowDeletedForm(Form):
 	show = BooleanField(u'Показывать удаленные приложения', default=False)
 	dummy = HiddenField(default='1')

@@ -88,6 +88,11 @@ class OfferResource(BackendResource):
 		params.update(kwargs)
 		return self.path(id).path('banners').post(**params).as_int()
 	
+	def update_banner(self, id, banner, **kwargs):
+		params = self.extractor.extract(banner, updated=['url'])
+		params.update(kwargs)
+		self.path(id).path('banners').path(banner.id).put(**params)
+	
 	def delete_banner(self, id, banner_id):
 		self.path(id).path('banners').path(banner_id).delete()
 	

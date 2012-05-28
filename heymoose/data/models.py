@@ -263,6 +263,12 @@ class Offer(SubOffer):
 	def owned_by(self, user):
 		return self.advertiser.id == user.id
 	
+	def banner_by_id(self, banner_id):
+		for banner in self.banners:
+			if banner.id == banner_id:
+				return banner
+		return None
+	
 	@property
 	def visible(self):
 		return self.approved and self.active
@@ -312,6 +318,7 @@ class Banner(IdentifiableModel):
 	width = Field(types.Integer, 'width')
 	height = Field(types.Integer, 'height')
 	mime_type = Field(types.String, 'mime-type')
+	url = Field(types.String, 'url')
 	
 	_mime_to_formats = {
 		u'image/png': u'PNG',
@@ -328,7 +335,7 @@ class Banner(IdentifiableModel):
 	def format(self): return self._mime_to_formats.get(self.mime_type, 'UNKNOWN')
 	
 	@property
-	def url(self): return os.path.join(self._banners_path, str(self.id))
+	def image_url(self): return os.path.join(self._banners_path, str(self.id))
 
 
 class Category(IdentifiableModel):

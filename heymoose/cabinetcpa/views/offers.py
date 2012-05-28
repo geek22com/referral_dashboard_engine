@@ -163,10 +163,9 @@ def offers_info_actions_edit(id, sid):
 
 @bp.route('/offers/<int:id>/materials', methods=['GET', 'POST'])
 def offers_info_materials(id):
-	print request.host
-	print request.host_url
-	
 	offer = rc.offers.get_try_requested(id, g.user.id) if g.user.is_affiliate else rc.offers.get_by_id(id)
+	for banner in offer.banners:
+		banner.form = forms.OfferBannerUrlForm(obj=banner)
 	form = forms.OfferBannerForm(request.form)
 	if offer.owned_by(g.user) and request.method == 'POST' and form.validate():
 		banner = Banner()
@@ -182,9 +181,22 @@ def offers_info_materials(id):
 def offers_info_materials_delete(id, bid):
 	offer = rc.offers.get_by_id(id)
 	if not offer.owned_by(g.user): abort(403)
-	if not bid in [banner.id for banner in offer.banners]: abort(404)
+	if not offer.banner_by_id(bid): abort(404)
 	rc.offers.delete_banner(id, bid)
 	flash(u'Баннер удален', 'success')
+	return redirect(url_for('.offers_info_materials', id=id))
+
+@bp.route('/offers/<int:id>/materials/<int:bid>', methods=['POST'])
+@advertiser_only
+def offers_info_materials_update(id, bid):
+	offer = rc.offers.get_by_id(id)
+	if not offer.owned_by(g.user): abort(403)
+	banner = offer.banner_by_id(bid) or abort(404)
+	form = forms.OfferBannerUrlForm(request.form, obj=banner)
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(banner)
+		rc.offers.update_banner(id, banner)
+		flash(u'Баннер успешно изменен', 'success')
 	return redirect(url_for('.offers_info_materials', id=id))
 
 @bp.route('/offers/<int:id>/requests', methods=['GET', 'POST'])

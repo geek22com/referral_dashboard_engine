@@ -152,7 +152,7 @@ class RegionsField(CheckboxListField):
 
 class CategoriesField(CategorizedCheckboxListField):
 	def __init__(self, label=None, validators=None, **kwargs):
-		self.categories = rc.categories.list()
+		self.categories = [cat for cat in rc.categories.list() if cat.name]
 		choices = [(c.id, c.name, c.grouping) for c in self.categories]
 		super(CategoriesField, self).__init__(label, validators, int, choices, **kwargs)
 	

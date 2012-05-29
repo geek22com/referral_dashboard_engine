@@ -27,7 +27,7 @@
 	width: 100px;
 	height: 100px;
 	text-align: center;
-	border: 1px solid #ccc;
+	/*border: 1px solid #ccc;*/
 }
 
 .newsitem-image > img {

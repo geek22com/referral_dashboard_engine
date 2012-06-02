@@ -98,11 +98,11 @@
 			<td class="small" {{ rowspan }}>{{ offer.short_description|default('&mdash;', true)|safe }}</td>
 			
 			{% if g.user %}
-			<td class="conversion-cell">
+			<td class="conversion-cell" {{ rowspan }}>
 				{% if offer.cr is not none %}{{ offer.cr|percent }}{% else %}&mdash;{% endif %}
 			</td>
 			{% else %}
-			<td class="conversion-cell locked">
+			<td class="conversion-cell locked" {{ rowspan }}>
 				<a href="{{ url_for('.register_affiliate') }}">
 					<img src="{{ url_for('static', filename='./img/icons/lock.png') }}" alt="недоступно" />
 				</a>

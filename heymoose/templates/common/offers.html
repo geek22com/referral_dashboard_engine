@@ -8,19 +8,16 @@
 	<table class="bordered-table nosort offers-table">
 		<thead>
 			<tr>
-				<th class="header center" rowspan="2">Оффер</th>
+				<th class="header center" rowspan="2" style="min-width: 180px;">Оффер</th>
 				<th class="header center" colspan="2">Действия</th>
-				<th class="header center" colspan="3">Показатели</th>
+				<th class="header" rowspan="2">Описание</th>
+				<th class="header right" rowspan="2">Средняя конверсия</th>
 				<th class="header" rowspan="2">Регионы</th>
-				<th class="header" rowspan="2">Категории</th>
+				<th class="header" rowspan="2" style="min-width: 180px;">Категории</th>
 			</tr>
 			<tr class="subrow">
-				<th class="header">Название</th>
-				<th class="header" style="min-width: 70px;">Оплата</th>
-				
-				<th class="header right">eCPC,&nbsp;руб.</th>
-				<th class="header right">eCPM,&nbsp;руб.</th>
-				<th class="header right">CR,&nbsp;%</th>
+				<th class="header" style="min-width: 180px;">Название</th>
+				<th class="header" style="min-width: 150px;">Оплата</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -90,9 +87,10 @@
 				<td>{{ offer.title }}</td>
 				<td>{{ offer.value(tax=user.fee if affiliate else 0) }}</td>
 				
-				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
-				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
-				<td class="right" {{ rowspan }}>(нет&nbsp;данных)</td>
+				<td {{ rowspan }}>{{ offer.short_description|default('&mdash;', true)|safe }}</td>
+				<td class="right" {{ rowspan }}>
+					{% if offer.cr is not none %}{{ offer.cr|percent }}{% else %}(нет&nbsp;данных){% endif %}
+				</td>
 				
 				<td {{ rowspan }}>{{ offer.regions_ordered|attrlist('name')|join(', ')|default('(не&nbsp;указаны)', true)|safe }}</td>
 				<td {{ rowspan }}>

@@ -84,13 +84,6 @@
 			</div>
 		{% endif %}
 		<div class="roundbox roundbox--primary roundbox--shadowed">
-			<div class="roundbox-header">
-				{% if owner %}
-				<a href="{{ url_for('.offers_info_edit', id=offer.id) }}"
-				 class="roundbox-header-link">изменить &raquo;</a>
-				{% endif %}
-				Информация
-			</div>
 			<div class="roundbox-content">
 				{% if offer.logo_filename %}
 				<div class="center clearfix" style="margin: 20px 20px 0 20px;">
@@ -101,10 +94,26 @@
 				<div class="center clearfix" style="margin-bottom: 10px;">
 					<a href="{{ offer.site_url or offer.url }}" target="_blank">{{ offer.site_url or offer.url }}</a>
 				</div>
+				{% if offer.short_description %}
+				<p class="small center">{{ offer.short_description }}</p>
+				{% endif %}
+			</div>
+		</div>
+		<div class="roundbox roundbox--primary roundbox--shadowed">
+			<div class="roundbox-header">
+				{% if owner %}
+				<a href="{{ url_for('.offers_info_edit', id=offer.id) }}"
+				 class="roundbox-header-link">изменить &raquo;</a>
+				{% endif %}
+				Информация
+			</div>
+			<div class="roundbox-content">
 				<dl class="kv kv--inscribed kv--key180">
 					{% if owner or admin %}<dt>Баланс</dt><dd>{{ offer.account.balance|currency }}</dd>{% endif %}
-					{% if offer.launch_time %}<dt>Дата запуска</dt><dd>{{ offer.launch_time|dateformat }}</dd>{% endif %}
+					{% if offer.cr is not none %}<dt>Средняя конверсия</dt><dd>{{ offer.cr|percent }}</dd>{% endif %}
 					{% if admin %}<dt>Дата создания</dt><dd>{{ offer.creation_time|dateformat }}</dd>{% endif %}
+					{% if offer.launch_time %}<dt>Дата запуска</dt><dd>{{ offer.launch_time|dateformat }}</dd>{% endif %}
+					{% if admin %}<dt>Отображать в витрине</dt><dd>{{ macros.to_icon(offer.showcase) }}</dd>{% endif %}
 					<dt>Время жизни cookie</dt><dd>{{ offer.cookie_ttl }} дней</dd>
 				</dl>
 				<div>
@@ -114,18 +123,6 @@
 			</div>
 		</div>
 		{% if admin %}
-		<div class="roundbox roundbox--primary roundbox--shadowed">
-			<div class="roundbox-header">
-				Дополнительная информация
-			</div>
-			<div class="roundbox-content">
-				<dl class="kv kv--inscribed kv--key180">
-					<dt>Конверсия (ручная)</dt>
-					<dd>{% if offer.cr %}{{ offer.cr|percent }}{% else %}&mdash;{% endif %}</dd>
-					<dt>Отображать в витрине</dt><dd>{{ macros.to_icon(offer.showcase) }}</dd>
-				</dl>
-			</div>
-		</div>
 		<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">
 				Рекламодатель

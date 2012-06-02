@@ -20,6 +20,18 @@
 			min-width: 150px;
 		}
 		
+		.conversion-cell {
+			text-align: right;
+			width: 1%;
+		}
+		
+		.conversion-cell.locked {
+			text-align: center;
+			font-size: 11px;
+			font-style: italic;
+			min-width: 120px;
+		}
+		
 		.categories-cell {
 			min-width: 180px;
 		}
@@ -35,14 +47,14 @@
 
 {% block content_container %}
 
-<h1 style="margin-top: 20px;">Каталог программ {{ heymoose() }}</h1>
+<h1 style="margin-top: 20px; text-align: center;">Каталог программ {{ heymoose() }}</h1>
 
 {% if not g.user %}
-<div class="row" style="margin-bottom: 40px;">
+<div class="row" style="width: 1000px; margin: 0 auto; margin-bottom: 40px;">
 	<div class="span12">
 		<p>
-			На данный момент вы видите только наиболее популярные рекламные предложения.
-			Для того, чтобы получить доступ ко всем рекламным предложениям, вам необходимо нажать
+			Для того, чтобы получить доступ ко всем рекламным материалам и подробной статистике
+			программ, приведенных в этом каталоге, вам необходимо нажать
 			на кнопку &laquo;Зарегистрироваться&raquo; и заполнить несложную форму регистрации.
 		</p>
 	</div>
@@ -60,7 +72,7 @@
 			<th>Действие</th>
 			<th>Оплата</th>
 			<th>Описание</th>
-			<th class="right">Конверсия</th>
+			<th class="{{ 'right' if g.user else 'center' }}">Конверсия</th>
 			<th>Регионы</th>
 			<th>Категории</th>
 		</tr>
@@ -84,7 +96,19 @@
 			<td class="cost-cell">{{ offer.value(tax=30.0) }}</td>
 			
 			<td class="small" {{ rowspan }}>{{ offer.short_description|default('&mdash;', true)|safe }}</td>
-			<td class="minimal right">{% if offer.cr is not none %}{{ offer.cr|percent }}{% else %}&mdash;{% endif %}</td>
+			
+			{% if g.user %}
+			<td class="conversion-cell">
+				{% if offer.cr is not none %}{{ offer.cr|percent }}{% else %}&mdash;{% endif %}
+			</td>
+			{% else %}
+			<td class="conversion-cell locked">
+				<a href="{{ url_for('.register_affiliate') }}">
+					<img src="{{ url_for('static', filename='./img/icons/lock.png') }}" alt="недоступно" />
+				</a>
+				<div>Доступно только зарегистрированным</div>
+			</td>
+			{% endif %}
 			<td class="small" {{ rowspan }}>
 				{{ offer.regions_ordered|attrlist('name')|join(', ')|default('&mdash;', true)|safe }}
 			</td>

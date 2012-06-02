@@ -8,6 +8,10 @@ from heymoose.utils.shortcuts import dict_update_filled_params
 import re, urllib, urllib2
 
 
+class Optional(wtvalidators.Optional):
+	css_class = 'validate-optional'
+
+
 class Required(wtvalidators.Required):
 	css_class = 'validate-required'
 	

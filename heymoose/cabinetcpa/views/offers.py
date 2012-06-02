@@ -20,7 +20,7 @@ def offers_all():
 	per_page = app.config.get('OFFERS_PER_PAGE', 10)
 	offset, limit = page_limits(page, per_page)
 	aff_id_arg = dict(aff_id=g.user.id) if g.user.is_affiliate else dict()
-	offers, count = rc.offers.list(offset=offset, limit=limit, approved=True, active=True, **aff_id_arg)
+	offers, count = rc.offers.list(offset=offset, limit=limit, approved=True, active=True, launched=True, **aff_id_arg)
 	pages = paginate(page, count, per_page)
 	return render_template('cabinetcpa/offers/all.html', offers=offers, pages=pages)
 

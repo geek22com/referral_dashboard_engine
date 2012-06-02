@@ -100,7 +100,7 @@ def offers_info(id):
 @bp.route('/offers/<int:id>/edit', methods=['GET', 'POST'])
 def offers_info_edit(id):
 	offer = rc.offers.get_by_id(id)
-	form = forms.OfferEditForm(request.form, obj=offer)
+	form = forms.AdminOfferEditForm(request.form, obj=offer)
 	if request.method == 'POST' and form.validate():
 		form.populate_obj(offer)
 		if offer.updated():
@@ -110,11 +110,6 @@ def offers_info_edit(id):
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
 	return render_template('admin/offers/info/edit.html', offer=offer, form=form)
-
-'''@bp.route('/offers/<int:id>/actions')
-def offers_info_actions(id):
-	offer = rc.offers.get_by_id(id)
-	return render_template('admin/offers/info/actions.html', offer=offer)'''
 
 @bp.route('/offers/<int:id>/actions/', methods=['GET', 'POST'])
 def offers_info_actions(id):

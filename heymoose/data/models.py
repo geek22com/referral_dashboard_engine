@@ -225,6 +225,9 @@ class SubOffer(IdentifiableModel):
 class Offer(SubOffer):
 	name = Field(types.String, 'name')
 	description = Field(types.String, 'description')
+	short_description = Field(types.String, 'short-description')
+	cr = Field(types.Decimal, 'cr')
+	showcase = Field(types.Boolean, 'showcase')
 	logo_filename = Field(types.String, 'logo-filename')
 	url = Field(types.String, 'url')
 	site_url = Field(types.String, 'site-url')

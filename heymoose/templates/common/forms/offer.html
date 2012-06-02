@@ -166,7 +166,7 @@
 	</div>
 {% endmacro %}
 
-{% macro html(form, tmpl=none, edit=false) %}
+{% macro html(form, tmpl=none, edit=false, admin=false) %}
 	{% if not edit %}
 	<div id="suboffer-form-template" style="display: none;">
 		{{ suboffer_embedded(tmpl) }}
@@ -283,15 +283,37 @@
 		</fieldset>
 		<fieldset>
 			<legend>Описание кампании</legend>
+			{% call forms.singlefield_desc(form.short_description, class='span10', rows='4') %}
+			<span class="help-block">
+				Краткое описание будет отображаться в каталоге офферов. Его цель &mdash; вызвать
+				у партнера заинтересованность в размещении кампании на своих рекламных площадках
+				и уверенность в гарантированных выплатах. Постарайтесь описать здесь коротко,
+				почему именно эта кампания будет приносить партнеру доходы. Максимальная длина текста
+				&mdash; 250 символов.
+			</span>
+			{% endcall %}
 			<div class="clearfix formfield {{ forms.css_errors(form.description) }}">
+				{{ forms.label(form.description) }}
 				<div class="input">
 					{{ forms.errors(form.description) }}
 					{{ forms.field(form.description, class='span10 redactor', style='height: 250px;') }}
-					<a href="#" class="dotted-link" data-controls-modal="description-modal"
-					data-backdrop="true" data-keyboard="true">(о чем здесь писать?)</a>
+					{#<a href="#" class="dotted-link" data-controls-modal="description-modal"
+					data-backdrop="true" data-keyboard="true">(о чем здесь писать?)</a>#}
+					<span class="help-block">
+						Здесь вы во всех подробностях можете описать вашу рекламную кампанию и рассказать
+						все то, что не поместилось в краткое описание. Чем больший текст вы разместите,
+						тем лучше.
+					</span>
 				</div>
 			</div>
 		</fieldset>
+		{% if edit and admin %}
+		<fieldset>
+			<legend>Дополнительные параметры</legend>
+			{{ forms.singlefield(form.cr, class='span4') }}
+			{{ forms.singlefield(form.showcase) }}
+		</fieldset>
+		{% endif %}
 		<div class="actions">
 			<input class="btn large primary" type="submit" value="{{ 'Создать оффер' if not edit else 'Подтвердить' }}" />
 		</div>

@@ -202,4 +202,13 @@ def advertisers_cpa():
 
 @bp.route('/catalog/')
 def catalog():
-	return render_template('site/hm/catalog.html')
+	page = current_page()
+	per_page = app.config.get('OFFERS_PER_PAGE', 10)
+	offset, limit = page_limits(page, per_page)
+	offers, count = rc.offers.list(offset=offset, limit=limit, approved=True, active=True, launched=True, showcase=True)
+	pages = paginate(page, count, per_page)
+	return render_template('site/hm/catalog.html', offers=offers, pages=pages)
+
+@bp.route('/catalog/old')
+def catalog_old():
+	return render_template('site/hm/catalog-old.html')

@@ -116,6 +116,18 @@
 		{% if admin %}
 		<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">
+				Дополнительная информация
+			</div>
+			<div class="roundbox-content">
+				<dl class="kv kv--inscribed kv--key180">
+					<dt>Конверсия (ручная)</dt>
+					<dd>{% if offer.cr %}{{ offer.cr|percent }}{% else %}&mdash;{% endif %}</dd>
+					<dt>Отображать в витрине</dt><dd>{{ macros.to_icon(offer.showcase) }}</dd>
+				</dl>
+			</div>
+		</div>
+		<div class="roundbox roundbox--primary roundbox--shadowed">
+			<div class="roundbox-header">
 				Рекламодатель
 			</div>
 			<div class="roundbox-content">

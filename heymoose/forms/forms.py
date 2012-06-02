@@ -615,7 +615,11 @@ class OfferFormBase(Form):
 	logo = myfields.ImageField(u'Логотип', [
 		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
 	])
-	description = TextAreaField(u'Описание кампании', [
+	short_description = TextAreaField(u'Краткое описание кампании', [
+		validators.Required(message=u'Введите краткое описание кампании'),
+		validators.Length(min=1, max=250, message=u'Краткое описание должно иметь длину до 250 символов')
+	])
+	description = TextAreaField(u'Подробное описание', [
 		validators.Required(message=u'Введите описание кампании')
 	])
 	launch_time = DateTimeField(u'Дата запуска', format='%d.%m.%Y', validators=[
@@ -661,6 +665,13 @@ class OfferEditForm(OfferFormBase):
 		validators.Length(min=1, max=20, message=u'Название параметра должно иметь длину от 1 до 20 символов'),
 		validators.Required(message=u'Введите название параметра токена')
 	])
+
+class AdminOfferEditForm(OfferEditForm):
+	cr = DecimalField(u'Конверсия', [
+		validators.Optional(),
+		validators.NumberRange(min=0.00, max=100.00, message=u'Конверсия может быть от 0% до 100%'),
+	])
+	showcase = BooleanField(u'Отображать в витрине', default=False)
 
 
 class OfferRequestForm(Form):

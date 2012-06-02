@@ -1,0 +1,467 @@
+{% extends "site/hm/layout.html" %}
+
+{% block title %}Каталог офферов{% endblock %}
+
+{% set activemenu = "" %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		img.offer-logo {
+			max-width: 150px;
+			max-height: 100px;
+		}
+		
+		.action-cell {
+			width: 180px;
+		}
+		
+		.cost-cell {
+			width: 70px;
+			text-align: right;
+		}
+	</style>
+{% endblock %}
+
+{% block top_unit_container %}{% endblock %}
+
+{% block content_container %}
+
+<h1 style="margin-top: 20px;">Каталог программ {{ heymoose() }}</h1>
+
+<table>
+	<thead>
+		<tr>
+			<th></th>
+			<th>Действие</th>
+			<th class="right">Цена</th>
+			<th>Описание</th>
+			<th>Категории</th>
+			<th>Регионы</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="minimal center">
+				<a href="http://sapato.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/68.jpeg') }}" alt="" class="offer-logo" />
+					<div>Интернет-магазин обуви &laquo;Sapato.ru&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Подтвержденный заказ</td>
+			<td class="cost-cell">1000 руб.</td>
+			
+			<td class="small">
+				&laquo;SAPATO.RU&raquo; &mdash; крупнейший в России интернет-магазин обуви и аксессуаров,
+				в котором представлены более 200 брендов. Sapato.ru рад предложить Вам сервис, которого
+				еще не было в России!
+			</td>
+			<td class="small">Интернет-магазины</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://rsb.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/65.gif') }}" alt="" class="offer-logo" />
+					<div>Кредитные карты банка &laquo;Русский Cтандарт&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Оформленная заявка на карту</td>
+			<td class="cost-cell">170.00 руб.</td>
+			
+			<td class="small">
+				Карта &laquo;Русский Стандарт Классик&raquo;:
+				лимит до 450 тысяч рублей;
+				льготный период до 55 дней;
+				кредитная ставка на любые операции &mdash; 36% годовых;
+				участие в программе скидок.
+			</td>
+			<td class="small">Кредитные карты</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://go-legend.onga.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/57.png') }}" alt="" class="offer-logo" />
+					<div>Браузерная онлайн-игра &laquo;Легенды героев&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">7.00 руб.</td>
+			
+			<td class="small">
+				&laquo;Легенды героев&raquo; &mdash; это браузерная многопользовательская ролевая онлайн-игра,
+				переносящая вас в удивительный мир, где демоны, сказочные чудовища, ожившие мертвецы и храбрые
+				рыцари встанут под знамена ваших героев!
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://tmgame.ru" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/1.jpg') }}" alt="" class="offer-logo" />
+					<div>Браузерная онлайн-игра &laquo;Техномагия&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">10.50 руб.</td>
+			
+			<td class="small">
+				&laquo;Техномагия&raquo; &mdash; это бесплатная браузерная онлайн игра в жанре MMORPG.
+				&laquo;Техномагия&raquo; является проектом компании &laquo;GD-team Limited&raquo; &mdash;
+				разработчиком многих популярных браузерных проектов и приложений в социальных сетях.
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">Россия, СНГ</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://sofi-cb.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/63.jpeg') }}" alt="" class="offer-logo" />
+					<div>Интернет-магазин бижутерии &laquo;SOFI&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Оформленный заказ</td>
+			<td class="cost-cell">203.00 руб.</td>
+			
+			<td class="small">
+				Украшения и бижутерия французской марки SOFI Créateur de Bijoux &mdash; это
+    			эксклюзивные модные украшения, наполненные французским шармом &mdash; по доступным ценам!
+			</td>
+			<td class="small">Интернет-магазины</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://unic.edu.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/62.jpeg') }}" alt="" class="offer-logo" />
+					<div>Институт &laquo;УНИК&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Оформленная заявка на обучение</td>
+			<td class="cost-cell">237.00 руб.</td>
+			
+			<td class="small">
+				Мы предлагаем абитуриентам обучение на факультетах практической журналистики, психологии,
+				культурологии, дизайна, переводов.
+			</td>
+			<td class="small">&mdash;</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://mamaznaetvse.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/61.jpeg') }}" alt="" class="offer-logo" />
+					<div>Образовательная программа &laquo;УНИК&nbsp;Мама&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Оформленная заявка на обучение</td>
+			<td class="cost-cell">250.00 руб.</td>
+			
+			<td class="small">
+				Образовательная программа &laquo;УНИК Мама&raquo; &mdash; это уникальная возможность
+				для каждой мамы получить классическое высшее или дополнительное образование в период
+				декретного отпуска. 
+			</td>
+			<td class="small">&mdash;</td>
+			<td class="small">Россия, Украина, Белоруссия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://spk-up.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/59.jpeg') }}" alt="" class="offer-logo" />
+					<div>Курсы английского языка &laquo;Speak UP&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Оформленная заявка</td>
+			<td class="cost-cell">250.00 руб.</td>
+			
+			<td class="small">
+				В языковых центрах Speak Up мы создали уникальный метод обучения, основанный на индивидуальном
+				подходе к каждому студенту. Мы предлагаем Вам гибкий график занятий и индивидуальную программу.
+			</td>
+			<td class="small">&mdash;</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://spk-up.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/56.jpeg') }}" alt="" class="offer-logo" />
+					<div>Психологические онлайн-консультации &laquo;Psycraft&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Бронирование консультации</td>
+			<td class="cost-cell">400.00 руб.</td>
+			
+			<td class="small">
+				Психологические консультации онлайн &mdash; современный и удобный способ решения психологических проблем.
+				Где бы вы ни находились &mdash; дома, на работе, в машине, в парке &mdash; вы можете в любой момент
+				связаться со специалистом. Благодаря Псикрафт, это стало также легко и доступно, как сделать звонок другу.
+			</td>
+			<td class="small">&mdash;</td>
+			<td class="small">Россия, СНГ, Польша, Латвия, Германия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://livjornal.ru/Pohudei/index.php?click=277&heymoose=true" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/2.png') }}" alt="" class="offer-logo" />
+					<div>Эффективная методика диет &mdash; CD-курс</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Подтвержденный заказ</td>
+			<td class="cost-cell">210.00 руб.</td>
+			
+			<td class="small">
+				Похудение 25-й кадр. CD-курс &mdash; методика похудения. 
+			</td>
+			<td class="small">Инфопродукты</td>
+			<td class="small">Россия, Украина, Молдавия, Казахстан, Беларусь, Грузия, Эстония, Киргизия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://livjornal.ru/Ania/index.php?click=277&heymoose=true" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/3.png') }}" alt="" class="offer-logo" />
+					<div>Рост груди &mdash; CD-курс</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Подтвержденный заказ</td>
+			<td class="cost-cell">210.00 руб.</td>
+			
+			<td class="small">
+				CD-курс &mdash; пособие по увеличению груди. 
+			</td>
+			<td class="small">Инфопродукты</td>
+			<td class="small">Россия, Украина, Молдавия, Казахстан, Беларусь, Грузия, Эстония, Киргизия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://www.romadoria.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/4.png') }}" alt="" class="offer-logo" />
+					<div>Romadoria</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">11.20 руб.</td>
+			
+			<td class="small">
+				Ромадория &mdash; новейшая, бесплатная онлайн стратегия, действия которой разворачиваются
+				в эпоху Древнего Рима. Погрузись в удивительтный мир открытий, завоеваний и отважных сражений!
+				Завоюй свое место под Солнцем и докажи, что ты искусный стратег!
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://www.desert-operations.ru" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/5.jpg') }}" alt="" class="offer-logo" />
+					<div>Desert Operations</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">11.20 руб.</td>
+			
+			<td class="small">
+				Являясь Владыкой своей территории, ты сражаешься с тысячами других игроков.
+				Обороняйся от вражеских нападений! Создавай альянсы и стань лучше всех!
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		{#<tr>
+			<td class="minimal center">
+				<a href="http://sxodnoklassniki.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/7.gif') }}" alt="" class="offer-logo" />
+					<div>Сексоклассники</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Ввод номера</td>
+			<td class="cost-cell">5.25 руб.</td>
+			
+			<td class="small">
+				Сексоклассники &mdash; социальная сеть для секс-знакомств.
+			</td>
+			<td class="small">Мобильный</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://vkeye.com" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/8.jpg') }}" alt="" class="offer-logo" />
+					<div>Гости ВКонтакте</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Ввод номера</td>
+			<td class="cost-cell">5.25 руб.</td>
+			
+			<td class="small">
+				Гости вконтакте &mdash; узнай кто посещал твою страницу ВКонтакте.
+			</td>
+			<td class="small">Мобильный</td>
+			<td class="small">Россия</td>
+		</tr>#}
+		
+		<tr>
+			<td class="minimal center" rowspan="2">
+				<a href="http://hoppenia.ru/reg.html" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/9.png') }}" alt="" class="offer-logo" />
+					<div>Браузерная игра &laquo;Хоппения&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Достижение второго уровня</td>
+			<td class="cost-cell">21.00 руб.</td>
+			
+			<td class="small" rowspan="2">
+				Бесплатная браузерная игра. Не нужно ничего скачивать. Играй с тысячами игроков онлайн
+				прямо сейчас, найди себе новых друзей.
+			</td>
+			<td class="small" rowspan="2">Браузерные игры</td>
+			<td class="small" rowspan="2">Россия, Украина, Белоруссия, СНГ</td>
+		</tr>
+		<tr class="noborder">
+			<td class="action-cell">Процент с потраченных игроком средств</td>
+			<td class="cost-cell">28.00 %</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://drako.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/44.png') }}" alt="" class="offer-logo" />
+					<div>Браузерная онлайн-игра &laquo;Драконы&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">14.00 руб.</td>
+			
+			<td class="small">
+				&laquo;Драконы&raquo; &mdash; это новая браузерная игра для всех любителей фэнтезийных MMORPG.
+				Игра удивляет своим сюжетом и красотой графики любого, даже самого требовательного РПГ-шника.
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">Россия</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center" rowspan="3">
+				<a href="http://www.siegeonline.ru/ru/start/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/38.gif') }}" alt="" class="offer-logo" />
+					<div>Клиентская стратегия &laquo;Осада онлайн&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Создание учетной записи</td>
+			<td class="cost-cell">3.50 руб.</td>
+			
+			<td class="small" rowspan="3">
+				&laquo;Осада Онлайн&raquo; &mdash; это бесплатная онлайн стратегия с увлекательными тактическими
+				сражениями в причудливом средневековом мире. Развивай персонажа, строй замок, обучай армию,
+				путешествуй, торгуй, сражайся за контроль над игровыми территориями и найди новых друзей.
+			</td>
+			<td class="small" rowspan="3">Клиентские игры</td>
+			<td class="small" rowspan="3">все</td>
+		</tr>
+		<tr class="noborder">
+			<td class="action-cell">Достижение 3-го уровня</td>
+			<td class="cost-cell">3.50 руб.</td>
+		</tr>
+		<tr class="noborder">
+			<td class="action-cell">Достижение 5-го уровня</td>
+			<td class="cost-cell">21.00 руб.</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://mycultures.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/8.png') }}" alt="" class="offer-logo" />
+					<div>Браузерная игра &laquo;Cultures Онлайн&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">14.00 руб.</td>
+			
+			<td class="small">
+				&laquo;Cultures Онлайн&raquo; &mdash; это бесплатная браузерная MMORPG. Зарегистрируйтесь в игре
+				&mdash; и сможете мериться силами с другими викингами и общаться с другими игроками на форуме.
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">все</td>
+		</tr>
+		
+		<tr>
+			<td class="minimal center">
+				<a href="http://zovdrakona.ru/" target="_blank">
+					<img src="{{ url_for('static', filename='./img/catalog/9a.png') }}" alt="" class="offer-logo" />
+					<div>Браузерная онлайн-игра &laquo;Зов Дракона&raquo;</div>
+				</a>
+			</td>
+			
+			<td class="action-cell">Регистрация в игре</td>
+			<td class="cost-cell">14.00 руб.</td>
+			
+			<td class="small">
+				&laquo;Зов Дракона&raquo; &mdash; браузерная MMORPG, не требующая установки на компьютер.
+				Выберите один из трех классов персонажей и сразитесь с коварными монстрами начиная от
+				хищных Белых кроликов и заканчивая коварными древними драконами.
+			</td>
+			<td class="small">Браузерные игры</td>
+			<td class="small">все</td>
+		</tr>
+	</tbody>
+</table>
+
+{% if not g.user %}
+<div class="row">
+	<div class="span12">
+		<p>
+			На данный момент вы видите только наиболее популярные рекламные предложения.
+			Для того, чтобы получить доступ ко всем рекламным предложениям, вам необходимо нажать
+			на кнопку &laquo;Зарегистрироваться&raquo; и заполнить несложную форму регистрации.
+		</p>
+	</div>
+	<div class="span" style="margin-top: 8px;">
+		<a href="{{ url_for('.register_affiliate') }}" class="btn moose large">Зарегистрироваться</a>
+	</div>
+</div>
+{% endif %}
+
+{#
+<p class="center" style="font-size: 16px;">
+	На данный момент вы видите только ТОП-10 наиболее популярных рекламных предложений.
+	После регистрации в&nbsp;{{ heymoose(false) }} вам будут доступны все рекламные предложения.
+</p>
+#}
+
+{% endblock %}

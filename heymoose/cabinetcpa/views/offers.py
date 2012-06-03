@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, request, flash, g, redirect, url_for, abort
+from flask import render_template, request, flash, g, redirect, url_for, abort, jsonify
 from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import Offer, OfferGrant, SubOffer, Banner
@@ -198,6 +198,24 @@ def offers_info_materials_update(id, bid):
 		rc.offers.update_banner(id, banner)
 		flash(u'Баннер успешно изменен', 'success')
 	return redirect(url_for('.offers_info_materials', id=id))
+
+@bp.route('/offers/<int:id>/materials/up/', methods=['GET', 'POST'])
+@advertiser_only
+def offers_info_materials_upload(id):
+	offer = rc.offers.get_by_id(id)
+	if not offer.owned_by(g.user): abort(403)
+	if request.method == 'POST':
+		form = forms.OfferBannerForm(request.form)
+		if form.validate():
+			banner = Banner()
+			form.populate_obj(banner)
+			f = request.files['image']
+			image_base64 = base64.encodestring(f.stream.read())
+			rc.offers.add_banner(offer.id, banner, image_base64)
+			return jsonify(name=f.name)
+		else:
+			return jsonify(error=form.image.errors[0])
+	return render_template('cabinetcpa/offers/info/materials-upload.html', offer=offer)
 
 @bp.route('/offers/<int:id>/requests', methods=['GET', 'POST'])
 @advertiser_only

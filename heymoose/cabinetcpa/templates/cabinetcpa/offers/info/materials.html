@@ -22,12 +22,14 @@
 			<legend>Загрузка баннера</legend>
 			{% call forms.singlefield_desc(form.image) %}
 			<span class="help-block">
-				Принимаются изображения в формате JPG (JPEG), GIF, PNG. Максимальный
-				размер загружаемого изображения &mdash; 1Мб.
+				Принимаются изображения в формате JPG (JPEG), GIF, PNG, SWF (Flash), SVG.
+				Максимальный размер загружаемого изображения &mdash; 1Мб.
 			</span>
 			{% endcall %}
 			<div class="actions">
-				<input class="btn primary" type="submit" value="Загрузить" />
+				<input class="btn primary" type="submit" value="Загрузить" style="margin-right: 30px;" />
+				<a href="{{ url_for('.offers_info_materials_upload', id=offer.id) }}"
+				 >загрузить большое количество изображений</a>
 			</div>
 		</fieldset>
 	</form>
@@ -126,6 +128,7 @@
 			{% endif %}
 			{% if affiliate_is_granted %}
 			<td>
+				{% if banner.has_code %}
 				<a href="#" data-controls-modal="modal-code-{{ banner.id -}}"
 		 		 data-backdrop="true" data-keyboard="true">получить&nbsp;код</a>
 				<div id="modal-code-{{ banner.id -}}" class="modal" style="display: none;">
@@ -147,6 +150,9 @@
 						</div>
 					</form>
 				</div>
+				{% else %}
+				&mdash;
+				{% endif %}
 			</td>
 			{% endif %}
 		{% endif %}

@@ -22,7 +22,9 @@
 		</tr>
 		<tr>
 			<td colspan="{{ colspan }}">
-				<img src="{{ banner.image_url }}" alt="баннер" style="max-width: 860px;" />
+				{#<img src="{{ banner.image_url }}" alt="баннер" style="max-width: 860px;" />#}
+				<object width="{{ banner.width }}" height="{{ banner.height }}"
+					type="{{ banner.mime_type }}" data="{{ banner.image_url }}" style="max-width: 860px;"></object>
 			</td>
 		</tr>
 		{% endfor %}

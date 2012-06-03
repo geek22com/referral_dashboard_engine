@@ -326,7 +326,9 @@ class Banner(IdentifiableModel):
 	_mime_to_formats = {
 		u'image/png': u'PNG',
 		u'image/gif': u'GIF',
-		u'image/jpeg': u'JPEG'
+		u'image/jpeg': u'JPEG',
+		u'application/x-shockwave-flash': u'Flash',
+		u'application/svg+xml': u'SVG'
 	}
 	
 	_banners_path = app.config.get('BACKEND_BANNERS_PATH')
@@ -339,6 +341,9 @@ class Banner(IdentifiableModel):
 	
 	@property
 	def image_url(self): return os.path.join(self._banners_path, str(self.id))
+	
+	@property
+	def has_code(self): return 'image' in self.mime_type
 
 
 class Category(IdentifiableModel):

@@ -705,9 +705,10 @@ class OfferGrantForm(Form):
 
 
 class OfferBannerForm(Form):
-	image = myfields.ImageField(u'Выберите изображение', [
+	image = myfields.BannerField(u'Выберите изображение', [
 		validators.FileRequired(message=u'Выберите файл на диске'),
-		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
+		validators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf', 'svg'),
+			message=u'Выберите изображение в формате JPG, GIF или PNG')
 	])
 	
 	def populate_image(self, obj, name):

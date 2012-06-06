@@ -2,13 +2,14 @@
 {% import 'common/materials.html' as materials_macros %}
 
 {% set activetab = 'materials' %}
+{% set host = 'http://partner.heymoose.com' %}
 
 {% macro pixel_code(offer, banner=none) -%}
-<img src="{{ offer.tracking_url(request.host_url, g.user.id, banner.id if banner else none) }}" alt="" style="width: 0; height: 0; position: absolute;" />
+<img src="{{ offer.tracking_url(host, g.user.id, banner.id if banner else none) }}" alt="" style="width: 0; height: 0; position: absolute;" />
 {% endmacro -%}
 
 {% macro banner_code(offer_id, banner) %}
-<a href="{{ offer.click_url(request.host_url, g.user.id, banner.id) }}"><img src="{{ banner.image_url }}" alt="" width="{{ banner.width }}" height="{{ banner.height }}" /></a>{{ pixel_code(offer_id, banner) -}}
+<a href="{{ offer.click_url(host, g.user.id, banner.id) }}"><img src="{{ banner.image_url }}" alt="" width="{{ banner.width }}" height="{{ banner.height }}" /></a>{{ pixel_code(offer_id, banner) -}}
 {% endmacro %}
 
 {% block tabcontent %}
@@ -60,7 +61,7 @@
 							<div class="input">
 								<input type="text" id="tracking-url" class="span6 copybox"
 								 style="background-color: #FFF;" readonly="readonly"
-								 value="{{ offer.click_url(request.host_url, g.user.id) -}}" />
+								 value="{{ offer.click_url(host, g.user.id) -}}" />
 							</div>
 						</div>
 						<div class="clearfix" style="margin-bottom: 0;">

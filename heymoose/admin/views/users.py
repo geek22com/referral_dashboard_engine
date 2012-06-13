@@ -6,12 +6,10 @@ from heymoose.utils import pagination
 from heymoose.utils.pagination import current_page, page_limits, paginate as paginate2
 from heymoose.utils.shortcuts import paginate
 from heymoose.utils.convert import to_unixtime
-from heymoose.utils.times import relativedelta
 from heymoose.forms import forms
 from heymoose.data.enums import Roles
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
-from datetime import datetime
 
 @bp.route('/users/')
 def users_list():
@@ -31,8 +29,7 @@ def users_list():
 
 @bp.route('/users/stats')
 def users_stats():
-	now = datetime.now()
-	form = forms.DateTimeRangeForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
+	form = forms.DateTimeRangeForm(request.args)
 	if form.validate():
 		page = current_page()
 		per_page = app.config.get('OFFERS_PER_PAGE', 10)
@@ -65,8 +62,7 @@ def users_info(id):
 @bp.route('/users/<int:id>/stats')
 def users_info_stats(id):
 	user = rc.users.get_by_id(id)
-	now = datetime.now()
-	form = forms.DateTimeRangeForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
+	form = forms.DateTimeRangeForm(request.args)
 	if form.validate():
 		page = current_page()
 		per_page = app.config.get('OFFERS_PER_PAGE', 10)

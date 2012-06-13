@@ -7,6 +7,7 @@ from heymoose import app, resource as rc
 from heymoose.core import actions
 from heymoose.data import enums
 from heymoose.filters import currency, currency_sign
+from heymoose.utils.times import begin_of_day, end_of_day, relativedelta
 from heymoose.utils.gen import generate_unique_filename, generate_uid
 from flask import g
 from datetime import datetime
@@ -747,10 +748,10 @@ class TrafficAnalyzeForm(Form):
 class DateTimeRangeForm(Form):
 	dt_from = DateTimeField(u'с', format='%d.%m.%Y %H:%M', validators=[
 		validators.Required(message=u'Введите время')
-	])
+	], default=lambda: begin_of_day(datetime.now()) + relativedelta(months=-1, days=+1))
 	dt_to = DateTimeField(u'по', format='%d.%m.%Y %H:%M', validators=[
 		validators.Required(message=u'Введите время')
-	])
+	], default=lambda: end_of_day(datetime.now()))
 
 class OfferStatsFilterForm(DateTimeRangeForm):
 	requested = BooleanField(u'с заявками', default=True)	

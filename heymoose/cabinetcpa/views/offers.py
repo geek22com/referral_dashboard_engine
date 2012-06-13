@@ -9,8 +9,6 @@ from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.utils.convert import to_unixtime
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
 import base64
 
 
@@ -66,8 +64,7 @@ def offers_new():
 
 @bp.route('/offers/stats')
 def offers_stats():
-	now = datetime.now()
-	form = forms.DateTimeRangeForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
+	form = forms.DateTimeRangeForm(request.args)
 	if form.validate():
 		page = current_page()
 		per_page = app.config.get('OFFERS_PER_PAGE', 10)

@@ -69,8 +69,7 @@ def offers_requests():
 
 @bp.route('/offers/stats')
 def offers_stats():
-	now = datetime.now()
-	form = forms.OfferStatsFilterForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
+	form = forms.OfferStatsFilterForm(request.args)
 	if form.validate():
 		page = current_page()
 		per_page = app.config.get('OFFERS_PER_PAGE', 10)
@@ -231,8 +230,7 @@ def offers_info_operations(id):
 @bp.route('/offers/<int:id>/stats')
 def offers_info_stats(id):
 	offer = rc.offers.get_by_id(id)
-	now = datetime.now()
-	form = forms.DateTimeRangeForm(request.args, dt_from=now + relativedelta(months=-1), dt_to=now)
+	form = forms.DateTimeRangeForm(request.args)
 	if form.validate():
 		page = current_page()
 		per_page = app.config.get('OFFERS_PER_PAGE', 10)

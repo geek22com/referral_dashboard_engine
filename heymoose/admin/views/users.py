@@ -59,6 +59,19 @@ def users_info(id):
 			return redirect(url_for('.users_info', id=user.id))
 	return render_template('admin/users-info.html', user=user, form=form)
 
+@bp.route('/users/<int:id>/offers')
+def users_info_offers(id):
+	user = rc.users.get_by_id(id)
+	page = current_page()
+	per_page = app.config.get('OFFERS_PER_PAGE', 10)
+	offset, limit = page_limits(page, per_page)
+	if user.is_advertiser:
+		offers, count = rc.offers.list(offset=offset, limit=limit, advertiser_id=user.id)
+	else:
+		offers, count = rc.offers.list_requested(user.id, offset=offset, limit=limit)
+	pages = paginate2(page, count, per_page)
+	return render_template('admin/users-info-offers.html', user=user, offers=offers, pages=pages)
+
 @bp.route('/users/<int:id>/stats')
 def users_info_stats(id):
 	user = rc.users.get_by_id(id)

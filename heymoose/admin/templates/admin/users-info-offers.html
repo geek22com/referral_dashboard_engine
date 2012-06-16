@@ -1,0 +1,27 @@
+{% extends "admin/users-info-layout.html" %}
+{% import 'common/offers.html' as offer_macros %}
+
+{% set content_fluid = true %}
+{% set activetab = 'offers' %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Офферы', url_for('.users_info_offers', id=user.id)) }}
+{% endblock %}
+
+{% block extrahead %}
+	{{ super() }}
+{% endblock %}
+
+{% block tabcontent %}
+
+{% if offers %}
+	{{ offer_macros.table(offers, status=user.is_advertiser, grant_status=user.is_affiliate, user=user) }}
+	{{ macros.paginate(pages, '.users_info_offers', id=user.id) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Пользователь еще не добавил ни одного оффера.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

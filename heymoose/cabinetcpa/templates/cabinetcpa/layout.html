@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/redmond/jquery-ui-1.8.20.custom.css') }}" media="all" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/timepicker-addon.css') }}" media="all" />
 <style type="text/css">
-	#manager-modal { width: 400px; }}
+	#manager-modal { width: 400px; }
 </style>
 
 <script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-ui.min.js') }}"></script>
@@ -70,8 +70,10 @@
 	{% if g.user.is_advertiser %}
 	<li id="menu-item-offers"><a href="{{ url_for('.offers_list') }}">Офферы</a></li>
 	{% endif %}
-	
 	<li id="menu-item-info"><a href="{{ url_for('.profile') }}">Профиль</a></li>
+	{% if g.user.is_affiliate %}
+	<li id="menu-item-contest"><a href="{{ url_for('site.affiliates_contest') }}" class="unread">Конкурс вебмастеров!</a></li>
+	{% endif %}
 </ul>
 
 <ul class="nav secondary-nav">

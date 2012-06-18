@@ -25,5 +25,10 @@ class OfferStatResource(BackendResource):
 	def list_affiliate(self, **kwargs):
 		return self.path('affiliates').path('all').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
 	
+	def list_affiliate_top(self, **kwargs):
+		return self.path('affiliates').path('top').get(**kwargs).as_objlist(OverallOfferStat)
+	
 	def list_affiliate_by_offer(self, **kwargs):
 		return self.path('affiliates').path('offer').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
+	
+	

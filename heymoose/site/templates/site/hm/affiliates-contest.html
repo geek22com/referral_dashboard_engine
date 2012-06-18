@@ -1,0 +1,157 @@
+{% extends "site/hm/affiliates-layout.html" %}
+
+{% block title %}Состязание вебмастеров{% endblock %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		.place-cell {
+			min-width: 40px;
+		}
+		
+		.id-cell {
+			min-width: 40px;
+		}
+		
+		.name-cell {
+			min-width: 200px;
+		}
+		
+		.revenue-cell {
+			min-width: 100px;
+		}
+		
+		.gold {
+			background-color: #FDF5D9;
+		}
+		
+		.silver {
+			background-color: #D1EED1;
+		}
+		
+		.bronze {
+			background-color: #DDF4FB;
+		}
+		
+		.contest-icon {
+			width: 60px;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+<h1 class="hm-roundbox-header">Состязание вебмастеров {{ heymoose() }}</h1>
+<div class="article">
+	<h2>Это лето будет <i>жарким</i>!</h2>
+	<p>
+		Объявляем о начале состязания веб-мастеров «Горячее лето с HeyMoose!». Состязание проводится среди
+		вебмастеров &mdash; партнеров сети &laquo;HeyMoose!&raquo;
+	</p>
+	<p>Сроки проведения &mdash; с <b>18.06.2012</b> по <b>31.08.2012</b>.</p>
+	<p>
+		Для того чтобы принять участие в состязании, необходимо быть
+		<a href="{{ url_for('.register_affiliate') }}">зарегистрированным</a>
+		в сети &laquo;HeyMoose!&raquo; в качестве вебмастера и получать доход с партнерских
+		программ из каталога компании. Вебмастер, получивший наибольший доход за отчетный
+		период получает бонус в виде процента от суммы своего дохода.
+	</p>
+	<p>
+		Вы можете следить за своим местом в турнирной таблице рейтинга топ-вебмастеров.
+	</p>
+	<p>Призов хватит на всех:</p>
+	<table style="font-size: 14px;">
+		<tbody>
+			<tr class="noborder">
+				<td>
+					<img src="{{ url_for('static', filename='img/contest/gold.jpg') }}" alt="" class="contest-icon" />
+				</td>
+				<td>
+					<p style="margin-top: 15px;">
+						Вебмастера, занявшие <b>1-3 место</b>, получат бонусную выплату в виде
+						<b>7% от заработка</b> за время состязания.
+					</p>
+				</td>
+			</tr>
+			<tr class="noborder">
+				<td>
+					<img src="{{ url_for('static', filename='img/contest/silver.jpg') }}" alt="" class="contest-icon" />
+				</td>
+				<td>
+					<p style="margin-top: 8px;">
+						Вебмастера, занявшие <b>4-10 места</b> в таблице рейтинга, получат бонус в виде
+						<b>5% от суммы заработка</b> за время состязания.
+					</p>
+				</td>
+			</tr>
+			<tr class="noborder">
+				<td>
+					<img src="{{ url_for('static', filename='img/contest/bronze.jpg') }}" alt="" class="contest-icon" />
+				</td>
+				<td>
+					<p style="margin-top: 15px;">
+						Вебмастера, занявшие <b>11-20 места</b> в рейтинге, получат бонус в виде <b>3% от суммы заработка</b>
+						за время состязания;
+					</p>
+				</td>
+			</tr>
+			<tr class="noborder">
+				<td>
+					<img src="{{ url_for('static', filename='img/contest/shirt.png') }}" alt="" class="contest-icon" />
+				</td>
+				<td>
+					<p style="margin-top: 15px;">
+						Вебмастера, занявшие <b>21-50 места</b>, получат фирменную <b>летнюю футболку</b>
+						от компании &laquo;HeyMoose!&raquo;
+					</p>
+				</td>
+			</tr>
+			<tr class="noborder">
+				<td>
+					<img src="{{ url_for('static', filename='img/contest/cert.png') }}" alt="" class="contest-icon" />
+				</td>
+				<td>
+					<p style="margin-top: 25px;">
+						Все вебмастера, попавшие в Топ-50, получат <b>сертификат партнёра</b>
+						от компании &laquo;HeyMoose!&raquo;
+					</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<p>
+		Правило состязания одно &mdash; неприемлемы накрутки в любом виде. Нарушитель будет исключен
+		из состязания.
+	</p>
+	
+	{#
+	{% if stats %}
+	<div class="center">
+		<table class="bordered-table nosort" style="width: auto; margin: 30px auto;">
+			<thead>
+				<th class="right">#</th>
+				<th class="right">ИД</th>
+				<th>Имя</th>
+				<th class="right">Доход</th>
+			</thead>
+			<tbody>
+				{% for stat in stats %}
+				{% set first_name, last_name = stat.name.split()[:2] %}
+				<tr class="{{ 'gold' if 1 <= loop.index <= 3 else
+							'silver' if 4 <= loop.index <= 10 else
+							'bronze' if 11 <= loop.index <= 20 else
+							'' }}">
+					<td class="right place-cell">{{ loop.index }}</td>
+					<td class="right id-cell">{{ stat.id }}</td>
+					<td class="name-cell">{{ first_name }} {{ last_name[0] -}}.</td>
+					<td class="right revenue-cell">{{ stat.confirmed_revenue }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% endif %}
+	#}
+</div>
+{{ super() }}
+{% endblock %}

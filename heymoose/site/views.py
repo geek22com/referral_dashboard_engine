@@ -4,6 +4,7 @@ from heymoose import app
 from heymoose.site import blueprint as bp
 from heymoose.forms import forms
 from heymoose.utils.gen import check_password_hash
+from heymoose.utils.convert import to_unixtime
 from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.db.models import Contact, NewsItem
 from heymoose.mail import marketing as mmail, transactional as tmail
@@ -32,6 +33,17 @@ def advertisers():
 @bp.route('/affiliates')
 def affiliates():
 	return render_template('site/hm/affiliates.html')
+
+@bp.route('/affiliates/contest')
+def affiliates_contest():
+	kwargs = {
+		'from': to_unixtime(datetime(2012, 6, 18), msec=True),
+		'to': to_unixtime(datetime(2012, 8, 31), msec=True),
+		'offset': 0,
+		'limit' : 50
+	}
+	stats = rc.offer_stats.list_affiliate_top(**kwargs)
+	return render_template('site/hm/affiliates-contest.html', stats=stats)
 
 @bp.route('/contacts', methods=['GET', 'POST'])
 def contacts():

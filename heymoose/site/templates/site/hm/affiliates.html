@@ -2,6 +2,14 @@
 
 {% block title %}Партнёрам{% endblock %}
 
+{% block precontent %}
+<div class="center" style="margin-top: 30px;">
+	<a href="{{ url_for('.affiliates_contest') }}">
+		<img src="{{ url_for('static', filename='img/contest/contest.gif') }}" alt="Конкурс" />
+	</a>
+</div>
+{% endblock %}
+
 {% block content %}
 <h1 class="hm-roundbox-header">Партнёрам {{ heymoose() }}</h1>
 <div class="article">

@@ -15,7 +15,7 @@
 {{ datetime_range.html(form, 'Показать статистику за время:') }}
 
 {% if stats %}
-	{{ stat_macros.table(stats, affiliate=true) }}
+	{{ stat_macros.table_by_affiliate(stats) }}
 	{{ macros.paginate(pages, '.offers_info_stats', id=offer.id, dt_from=form.dt_from.data|datetime_nosec, dt_to=form.dt_to.data|datetime_nosec) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">

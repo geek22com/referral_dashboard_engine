@@ -1,9 +1,9 @@
-{% extends "cabinetcpa/offers/layout.html" %}
+{% extends "cabinetcpa/stats/layout.html" %}
 {% import 'common/stats.html' as stat_macros %}
 {% import 'common/forms/datetime-range.html' as datetime_range %}
 
 {% set content_fluid = true %}
-{% set activetab = 'stats' %}
+{% set activetab = 'offer' %}
 
 {% block extrahead %}
 	{{ super() }}
@@ -16,7 +16,7 @@
 
 {% if stats %}
 	{{ stat_macros.table_by_offer(stats) }}
-	{{ macros.paginate(pages, '.offers_stats', dt_from=form.dt_from.data|datetime_nosec, dt_to=form.dt_to.data|datetime_nosec) }}
+	{{ macros.paginate(pages, '.stats_offer', dt_from=form.dt_from.data|datetime_nosec, dt_to=form.dt_to.data|datetime_nosec) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p>Нет данных для получения статистики.</p>

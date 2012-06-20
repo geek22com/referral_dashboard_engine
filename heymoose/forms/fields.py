@@ -174,4 +174,19 @@ class CategoriesField(CategorizedCheckboxListField):
 	
 	def populate_obj(self, obj, name):
 		setattr(obj, name, self.selected_categories)
-		
+
+
+class OfferField(SelectField):
+	def set_offers(self, offers, empty=(0, u'(все)')):
+		choices = [(offer.id, offer.name) for offer in offers]
+		if empty: choices.insert(0, empty)
+		self.choices = choices
+	'''
+	def process_formdata(self, valuelist):
+		super(OfferField, self).process_formdata(valuelist)
+		self.data = int(self.data) if self.data else None
+	
+	def pre_validate(self, form):
+		print 'DADADAD', self.data
+		if not self.data: self.data = u''
+		super(OfferField, self).pre_validate(form)'''

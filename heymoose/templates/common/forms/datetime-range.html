@@ -9,45 +9,86 @@
 {% endmacro %}
 
 {% macro html(form, title) %}
-	<div class="row">
-		<div class="span16">
-			<div class="well">
-				<form method="get" action="" class="validate2">
-					<div class="clearfix" style="margin-bottom: 0;">
-						<div class="row">
-							<div class="span4" style="line-height: 28px;">
-								<label class="simple required">{{ title }}</label>
-							</div>
-							<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.dt_from) }}">
-								<label class="simple required">с</label>
-								{{ forms.field(form.dt_from, class='datetimepicker', style='width: 130px;') }}
-								{{ forms.errors(form.dt_from) }}
-							</div>
-							<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.dt_to) }}">
-								<label class="simple required">по</label>
-								{{ forms.field(form.dt_to, class='datetimepicker', style='width: 130px;') }}
-								{{ forms.errors(form.dt_to) }}
-							</div>
-							{% if form.requested %}
-							<div class="span2 formfield clearfix inner-field {{ forms.css_errors(form.requested) }}">
-								<ul class="inputs-list">
-									<li>
-										<label class="required">
-											{{ forms.field(form.requested) }}
-											<span>с заявками</span>
-										</label>
-									</li>
-								</ul>
-								{{ forms.errors(form.requested) }}
-							</div>
-							{% endif %}
-							<div class="span3" style="float: right;">
-								<input type="submit" class="btn primary span3" value="Показать" />
-							</div>
-						</div>
+	<div class="well">
+		<form method="get" action="" class="validate2">
+			<div class="clearfix" style="margin-bottom: 0;">
+				<div class="row">
+					<div class="span4" style="line-height: 28px;">
+						<label class="simple required">{{ title }}</label>
 					</div>
-				</form>
+					<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.dt_from) }}">
+						<label class="simple required">с</label>
+						{{ forms.field(form.dt_from, class='datetimepicker', style='width: 130px;') }}
+						{{ forms.errors(form.dt_from) }}
+					</div>
+					<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.dt_to) }}">
+						<label class="simple required">по</label>
+						{{ forms.field(form.dt_to, class='datetimepicker', style='width: 130px;') }}
+						{{ forms.errors(form.dt_to) }}
+					</div>
+					{% if form.requested %}
+					<div class="span2 formfield clearfix inner-field {{ forms.css_errors(form.requested) }}">
+						<ul class="inputs-list">
+							<li>
+								<label class="required">
+									{{ forms.field(form.requested) }}
+									<span>только с заявками</span>
+								</label>
+							</li>
+						</ul>
+						{{ forms.errors(form.requested) }}
+					</div>
+					{% endif %}
+					{% if form.offer %}
+					<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.offer) }}">
+						<label class="simple required">для оффера</label>
+						{{ forms.field(form.offer, style='width: 130px;') }}
+						{{ forms.errors(form.offer) }}
+					</div>
+					{% endif %}
+					<div class="span3" style="margin-left: 40px;">
+						<input type="submit" class="btn primary span3" value="Показать" />
+					</div>
+				</div>
+				{% if form.sub_id %}
+				<div class="row" style="margin-top: 20px;">
+					<div class="span" style="width: 180px;">
+						<label class="required simple">SubID</label>
+						{{ forms.field(form.g_sub_id, style='margin: 0 5px;') }}
+						{{ forms.field(form.sub_id, class='span2')}}
+						{{ forms.errors(form.sub_id) }}
+					</div>
+					<div class="span" style="width: 180px;">
+						<label class="required simple">SubID1</label>
+						{{ forms.field(form.g_sub_id1, style='margin: 0 5px;') }}
+						{{ forms.field(form.sub_id1, class='span2')}}
+						{{ forms.errors(form.sub_id1) }}
+					</div>
+					<div class="span" style="width: 180px;">
+						<label class="required simple">SubID2</label>
+						{{ forms.field(form.g_sub_id2, style='margin: 0 5px;') }}
+						{{ forms.field(form.sub_id2, class='span2')}}
+						{{ forms.errors(form.sub_id2) }}
+					</div>
+					<div class="span" style="width: 180px;">
+						<label class="required simple">SubID3</label>
+						{{ forms.field(form.g_sub_id3, style='margin: 0 5px;') }}
+						{{ forms.field(form.sub_id3, class='span2')}}
+						{{ forms.errors(form.sub_id3) }}
+					</div>
+					<div class="span" style="width: 180px;">
+						<label class="required simple">SubID4</label>
+						{{ forms.field(form.g_sub_id4, style='margin: 0 5px;') }}
+						{{ forms.field(form.sub_id4, class='span2')}}
+						{{ forms.errors(form.sub_id4) }}
+					</div>
+				</div>
+				<p style="margin-top: 10px; margin-bottom: 0;">
+					* Поставьте флажки на те SubID, по которым хотите сгруппировать.
+					Введите значения в те SubID, по которым хотите отфильтровать.
+				</p>
+				{% endif %}
 			</div>
-		</div>
+		</form>
 	</div>
 {% endmacro %}

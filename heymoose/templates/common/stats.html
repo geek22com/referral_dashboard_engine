@@ -1,8 +1,8 @@
-{% macro table(stats, affiliate=false) %}
+{% macro table_base(stats, affiliate=false) %}
 	<table class="bordered-table zebra-striped nosort stats-table">
 		<thead>
 			<tr>
-				<th class="header" rowspan="2">{{ 'Партнер' if affiliate else 'Оффер' }}</th>
+				{{ caller(true, none) }}
 				<th class="header right" rowspan="2">Показы</th>
 				<th class="header right" rowspan="2">Клики</th>
 				<th class="header center" colspan="2">Выполненные действия</th>
@@ -24,11 +24,8 @@
 		<tbody>
 			{% for stat in stats %}
 			<tr>
-				{% if affiliate %}
-				<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
-				{% else %}
-				<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
-				{% endif %}
+				{{ caller(false, stat) }}
+				
 				<td class="right">{{ stat.shows }}</td>
 				<td class="right">{{ stat.clicks }}</td>
 				
@@ -47,4 +44,64 @@
 			{% endfor %}
 		</tbody>
 	</table>
+{% endmacro %}
+
+{% macro table_by_offer(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th class="header" rowspan="2">Оффер</th>
+		{% else %}
+		<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
+{% macro table_by_affiliate(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th class="header" rowspan="2">Партнёр</th>
+		{% else %}
+		<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
+{% macro table_by_sub_id(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th class="header" rowspan="2">SubID</th>
+		{% else %}
+		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
+{% macro table_by_source_id(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th class="header" rowspan="2">SourceID</th>
+		{% else %}
+		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
+{% macro table_by_referer(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th class="header" rowspan="2">Реферер</th>
+		{% else %}
+		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
+{% macro table_by_keywords(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th class="header" rowspan="2">Ключевое слово</th>
+		{% else %}
+		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+		{% endif %}
+	{% endcall %}
 {% endmacro %}

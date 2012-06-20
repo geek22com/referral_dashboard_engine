@@ -70,7 +70,7 @@ def offers_stats():
 		per_page = app.config.get('OFFERS_PER_PAGE', 10)
 		offset, limit = page_limits(page, per_page)
 		stats, count = rc.offer_stats.list_user(g.user, offset=offset, limit=limit,
-			**{'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)})
+		**{'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)})
 		pages = paginate(page, count, per_page)
 	else:
 		stats, pages = [], None

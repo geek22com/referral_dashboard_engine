@@ -754,7 +754,32 @@ class DateTimeRangeForm(Form):
 	], default=lambda: end_of_day(datetime.now()))
 
 class OfferStatsFilterForm(DateTimeRangeForm):
-	requested = BooleanField(u'с заявками', default=True)	
+	requested = BooleanField(u'с заявками', default=True)
+
+class AffiliateCabinetStatsForm(DateTimeRangeForm):
+	offer = myfields.OfferField(u'Оффер', coerce=int, default=0)
+
+class AffiliateCabinetSubIdStatsForm(AffiliateCabinetStatsForm):
+	sub_id = TextField(u'SubID')
+	sub_id1 = TextField(u'SubID')
+	sub_id2 = TextField(u'SubID')
+	sub_id3 = TextField(u'SubID')
+	sub_id4 = TextField(u'SubID')
+	g_sub_id = BooleanField(u'Группировать по SubID')
+	g_sub_id1 = BooleanField(u'Группировать по SubID1')
+	g_sub_id2 = BooleanField(u'Группировать по SubID2')
+	g_sub_id3 = BooleanField(u'Группировать по SubID3')
+	g_sub_id4 = BooleanField(u'Группировать по SubID4')
+	
+	def query_sub_ids(self):
+		query = dict(sub_id=self.sub_id.data, sub_id1=self.sub_id1.data, 
+			sub_id2=self.sub_id2.data, sub_id3=self.sub_id3.data, sub_id4=self.sub_id4.data)
+		if self.g_sub_id.data: query.update(g_sub_id=u'y')
+		if self.g_sub_id1.data: query.update(g_sub_id1=u'y')
+		if self.g_sub_id2.data: query.update(g_sub_id2=u'y')
+		if self.g_sub_id3.data: query.update(g_sub_id3=u'y')
+		if self.g_sub_id4.data: query.update(g_sub_id4=u'y')
+		return query
 	
 class GamakAppForm(Form):
 	name = TextField(u'Название приложения', [

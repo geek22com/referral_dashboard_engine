@@ -6,7 +6,6 @@ from heymoose.data.models import Offer, OfferGrant, SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
 from heymoose.mail import transactional as mail
 from heymoose.utils.pagination import current_page, page_limits, paginate
-from heymoose.utils.convert import to_unixtime
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
 import base64
@@ -61,20 +60,6 @@ def offers_new():
 		flash(u'Оффер успешно создан', 'success')
 		return redirect(url_for('.offers_info', id=id))
 	return render_template('cabinetcpa/offers/new.html', form=form, tmpl=tmpl)
-
-@bp.route('/offers/stats')
-def offers_stats():
-	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 10)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_user(g.user, offset=offset, limit=limit,
-		**{'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)})
-		pages = paginate(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('cabinetcpa/offers/stats.html', stats=stats, pages=pages, form=form)
 
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 def offers_info(id):

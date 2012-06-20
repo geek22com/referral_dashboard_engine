@@ -25,10 +25,12 @@
 
 <ul class="tabs">
 	<li id="tab-offer"><a href="{{ url_for('.stats_offer') }}">По офферам</a></li>
+	{% if g.user.is_affiliate %}
 	<li id="tab-sub-id"><a href="{{ url_for('.stats_sub_id') }}">По SubID</a></li>
 	<li id="tab-source-id"><a href="{{ url_for('.stats_source_id') }}">По SourceID</a></li>
 	<li id="tab-referer"><a href="{{ url_for('.stats_referer') }}">По реферерам</a></li>
 	<li id="tab-keywords"><a href="{{ url_for('.stats_keywords') }}">По поисковым запросам</a></li>
+	{% endif %}
 </ul>
 
 {% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}

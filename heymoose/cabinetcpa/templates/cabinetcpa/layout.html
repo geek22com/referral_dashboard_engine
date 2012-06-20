@@ -66,11 +66,11 @@
 	{% if g.user.is_affiliate %}
 	{#<li id="menu-item-sites"><a href="{{ url_for('.sites_list') }}">Площадки</a></li>#}
 	<li id="menu-item-offers"><a href="{{ url_for('.offers_requested') }}">Офферы</a></li>
-	{#<li id="menu-item-stats"><a href="{{ url_for('.stats_referer') }}">Статистика</a></li>#}
 	{% endif %}
 	{% if g.user.is_advertiser %}
 	<li id="menu-item-offers"><a href="{{ url_for('.offers_list') }}">Офферы</a></li>
 	{% endif %}
+	<li id="menu-item-stats"><a href="{{ url_for('.stats_offer') }}">Статистика</a></li>
 	<li id="menu-item-info"><a href="{{ url_for('.profile') }}">Профиль</a></li>
 	{% if g.user.is_affiliate %}
 	<li id="menu-item-contest"><a href="{{ url_for('site.affiliates_contest') }}" class="unread">Конкурс вебмастеров!</a></li>

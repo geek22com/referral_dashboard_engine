@@ -171,3 +171,96 @@ def users_info_delete_withdrawal(id, wid):
 	else:
 		flash(u'При выплате разработчику произошла ошибка', 'error')
 	return redirect(url_for('.users_info_balance', id=user.id))
+
+@bp.route('/users/<int:id>/stats/offer')
+def users_info_stats_offer(id):
+	user = rc.users.get_by_id(id)
+	form = forms.DateTimeRangeForm(request.args)
+	if form.validate():
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 20)
+		offset, limit = page_limits(page, per_page)
+		stats, count = rc.offer_stats.list_user(user, offset=offset, limit=limit, **form.range_args())
+		pages = paginate2(page, count, per_page)
+	else:
+		stats, pages = [], None
+	return render_template('admin/users-info-stats-offer.html', user=user, stats=stats, pages=pages, form=form)
+
+@bp.route('/users/<int:id>/stats/subid')
+def users_info_stats_sub_id(id):
+	user = rc.users.get_by_id(id)
+	offers, _ = rc.offers.list_requested(user.id, offset=0, limit=100000)
+	form = forms.AffiliateCabinetSubIdStatsForm(request.args)
+	form.offer.set_offers(offers)
+	if form.validate():
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 20)
+		offset, limit = page_limits(page, per_page)
+		query_params = dict(aff_id=user.id, offset=offset, limit=limit,
+			g_sub_id=form.g_sub_id.data, g_sub_id1=form.g_sub_id1.data, g_sub_id2=form.g_sub_id2.data, 
+			g_sub_id3=form.g_sub_id3.data, g_sub_id4=form.g_sub_id4.data, **form.range_args())
+		if form.sub_id.data: query_params.update(sub_id=form.sub_id.data)
+		if form.sub_id1.data: query_params.update(sub_id1=form.sub_id1.data)
+		if form.sub_id2.data: query_params.update(sub_id2=form.sub_id2.data)
+		if form.sub_id3.data: query_params.update(sub_id3=form.sub_id3.data)
+		if form.sub_id4.data: query_params.update(sub_id4=form.sub_id4.data)
+		if form.offer.data: query_params.update(offer_id=form.offer.data)
+		stats, count = rc.offer_stats.list_by_sub_id(**query_params)
+		pages = paginate2(page, count, per_page)
+	else:
+		stats, pages = [], None
+	return render_template('admin/users-info-stats-sub-id.html', user=user, stats=stats, pages=pages, form=form)
+
+@bp.route('/users/<int:id>/stats/sourceid')
+def users_info_stats_source_id(id):
+	user = rc.users.get_by_id(id)
+	offers, _ = rc.offers.list_requested(user.id, offset=0, limit=100000)
+	form = forms.AffiliateCabinetStatsForm(request.args)
+	form.offer.set_offers(offers)
+	if form.validate():
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 20)
+		offset, limit = page_limits(page, per_page)
+		query_params = dict(aff_id=user.id, offset=offset, limit=limit, **form.range_args())
+		if form.offer.data: query_params.update(offer_id=form.offer.data)
+		stats, count = rc.offer_stats.list_by_source_id(**query_params)
+		pages = paginate2(page, count, per_page)
+	else:
+		stats, pages = [], None
+	return render_template('admin/users-info-stats-source-id.html', user=user, stats=stats, pages=pages, form=form)
+
+@bp.route('/users/<int:id>/stats/referer')
+def users_info_stats_referer(id):
+	user = rc.users.get_by_id(id)
+	offers, _ = rc.offers.list_requested(user.id, offset=0, limit=100000)
+	form = forms.AffiliateCabinetStatsForm(request.args)
+	form.offer.set_offers(offers)
+	if form.validate():
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 20)
+		offset, limit = page_limits(page, per_page)
+		query_params = dict(aff_id=user.id, offset=offset, limit=limit, **form.range_args())
+		if form.offer.data: query_params.update(offer_id=form.offer.data)
+		stats, count = rc.offer_stats.list_by_referer(**query_params)
+		pages = paginate2(page, count, per_page)
+	else:
+		stats, pages = [], None
+	return render_template('admin/users-info-stats-referer.html', user=user, stats=stats, pages=pages, form=form)
+
+@bp.route('/users/<int:id>/stats/keywords')
+def users_info_stats_keywords(id):
+	user = rc.users.get_by_id(id)
+	offers, _ = rc.offers.list_requested(user.id, offset=0, limit=100000)
+	form = forms.AffiliateCabinetStatsForm(request.args)
+	form.offer.set_offers(offers)
+	if form.validate():
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 20)
+		offset, limit = page_limits(page, per_page)
+		query_params = dict(aff_id=user.id, offset=offset, limit=limit, **form.range_args())
+		if form.offer.data: query_params.update(offer_id=form.offer.data)
+		stats, count = rc.offer_stats.list_by_keywords(**query_params)
+		pages = paginate2(page, count, per_page)
+	else:
+		stats, pages = [], None
+	return render_template('admin/users-info-stats-keywords.html', user=user, stats=stats, pages=pages, form=form)

@@ -9,6 +9,7 @@ from heymoose.data import enums
 from heymoose.filters import currency, currency_sign
 from heymoose.utils.times import begin_of_day, end_of_day, relativedelta
 from heymoose.utils.gen import generate_unique_filename, generate_uid
+from heymoose.utils.convert import to_unixtime
 from flask import g
 from datetime import datetime
 import validators
@@ -752,6 +753,9 @@ class DateTimeRangeForm(Form):
 	dt_to = DateTimeField(u'по', format='%d.%m.%Y %H:%M', validators=[
 		validators.Required(message=u'Введите время')
 	], default=lambda: end_of_day(datetime.now()))
+	
+	def range_args(self):
+		return {'from' : to_unixtime(self.dt_from.data, True), 'to' : to_unixtime(self.dt_to.data, True)}
 
 class OfferStatsFilterForm(DateTimeRangeForm):
 	requested = BooleanField(u'с заявками', default=True)

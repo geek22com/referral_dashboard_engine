@@ -3,12 +3,8 @@ from flask import render_template, request, g
 from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.utils.pagination import current_page, page_limits, paginate
-from heymoose.utils.convert import to_unixtime
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import affiliate_only
-
-def datetime_range(form):
-	return {'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)}
 
 @bp.route('/stats/offer')
 def stats_offer():
@@ -17,7 +13,7 @@ def stats_offer():
 		page = current_page()
 		per_page = app.config.get('OFFERS_PER_PAGE', 20)
 		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_user(g.user, offset=offset, limit=limit, **datetime_range(form))
+		stats, count = rc.offer_stats.list_user(g.user, offset=offset, limit=limit, **form.range_args())
 		pages = paginate(page, count, per_page)
 	else:
 		stats, pages = [], None
@@ -35,7 +31,7 @@ def stats_sub_id():
 		offset, limit = page_limits(page, per_page)
 		query_params = dict(aff_id=g.user.id, offset=offset, limit=limit,
 			g_sub_id=form.g_sub_id.data, g_sub_id1=form.g_sub_id1.data, g_sub_id2=form.g_sub_id2.data, 
-			g_sub_id3=form.g_sub_id3.data, g_sub_id4=form.g_sub_id4.data, **datetime_range(form))
+			g_sub_id3=form.g_sub_id3.data, g_sub_id4=form.g_sub_id4.data, **form.range_args())
 		if form.sub_id.data: query_params.update(sub_id=form.sub_id.data)
 		if form.sub_id1.data: query_params.update(sub_id1=form.sub_id1.data)
 		if form.sub_id2.data: query_params.update(sub_id2=form.sub_id2.data)
@@ -58,7 +54,7 @@ def stats_source_id():
 		page = current_page()
 		per_page = app.config.get('OFFERS_PER_PAGE', 20)
 		offset, limit = page_limits(page, per_page)
-		query_params = dict(aff_id=g.user.id, offset=offset, limit=limit, **datetime_range(form))
+		query_params = dict(aff_id=g.user.id, offset=offset, limit=limit, **form.range_args())
 		if form.offer.data: query_params.update(offer_id=form.offer.data)
 		stats, count = rc.offer_stats.list_by_source_id(**query_params)
 		pages = paginate(page, count, per_page)
@@ -76,7 +72,7 @@ def stats_referer():
 		page = current_page()
 		per_page = app.config.get('OFFERS_PER_PAGE', 20)
 		offset, limit = page_limits(page, per_page)
-		query_params = dict(aff_id=g.user.id, offset=offset, limit=limit, **datetime_range(form))
+		query_params = dict(aff_id=g.user.id, offset=offset, limit=limit, **form.range_args())
 		if form.offer.data: query_params.update(offer_id=form.offer.data)
 		stats, count = rc.offer_stats.list_by_referer(**query_params)
 		pages = paginate(page, count, per_page)
@@ -94,7 +90,7 @@ def stats_keywords():
 		page = current_page()
 		per_page = app.config.get('OFFERS_PER_PAGE', 20)
 		offset, limit = page_limits(page, per_page)
-		query_params = dict(aff_id=g.user.id, offset=offset, limit=limit, **datetime_range(form))
+		query_params = dict(aff_id=g.user.id, offset=offset, limit=limit, **form.range_args())
 		if form.offer.data: query_params.update(offer_id=form.offer.data)
 		stats, count = rc.offer_stats.list_by_keywords(**query_params)
 		pages = paginate(page, count, per_page)

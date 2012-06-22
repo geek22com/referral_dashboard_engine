@@ -3,6 +3,7 @@ encoding//heymoose/__init__.py=utf-8
 encoding//heymoose/admin/views/base.py=utf-8
 encoding//heymoose/admin/views/offers.py=utf-8
 encoding//heymoose/admin/views/site.py=utf-8
+encoding//heymoose/admin/views/stats.py=utf-8
 encoding//heymoose/admin/views/users.py=utf-8
 encoding//heymoose/cabinetcpa/views/base.py=utf-8
 encoding//heymoose/cabinetcpa/views/offers.py=utf-8

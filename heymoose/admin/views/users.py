@@ -27,20 +27,6 @@ def users_list():
 	users = rc.users.list(offset=offset, limit=limit, full=True, **filter_args)
 	return render_template('admin/users.html', users=users, pages=pages, count=count)
 
-@bp.route('/users/stats')
-def users_stats():
-	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 10)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_affiliate(offset=offset, limit=limit,
-			**{'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)})
-		pages = paginate2(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/users-stats.html', stats=stats, pages=pages, form=form)
-
 @bp.route('/users/<int:id>', methods=['GET', 'POST'])
 def users_info(id):
 	user = rc.users.get_by_id(id)

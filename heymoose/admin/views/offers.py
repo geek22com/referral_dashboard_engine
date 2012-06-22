@@ -6,10 +6,8 @@ from heymoose.data.models import Offer, OfferGrant, SubOffer
 from heymoose.data.enums import OfferGrantState
 from heymoose.mail import transactional as mail
 from heymoose.utils.pagination import current_page, page_limits, paginate
-from heymoose.utils.times import relativedelta
 from heymoose.utils.convert import to_unixtime
 from heymoose.admin import blueprint as bp
-from datetime import datetime
 
 
 @bp.route('/offers/')
@@ -66,20 +64,6 @@ def offers_requests():
 			flash(u'Заявка отклонена', 'success')
 		return redirect(request.url)
 	return render_template('admin/offers/requests.html', grants=grants, pages=pages, form=form)
-
-@bp.route('/offers/stats')
-def offers_stats():
-	form = forms.OfferStatsFilterForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 10)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_all(offset=offset, limit=limit, granted=form.requested.data,
-			**{'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)})
-		pages = paginate(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/offers/stats.html', stats=stats, pages=pages, form=form)
 
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 def offers_info(id):

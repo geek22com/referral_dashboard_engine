@@ -1,0 +1,38 @@
+{% extends "admin/layout.html" %}
+{% import 'common/stats.html' as stat_macros %}
+{% import 'common/forms/datetime-range.html' as datetime_range %}
+
+{% block title %}Статистика{% endblock %}
+
+{% set activemenu = "stats" %}
+{% set content_fluid = true %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ datetime_range.head() }}
+	{% set activetab = activetab|default('offer') %}
+	<script type="text/javascript">
+		$(function() { 
+			$('li#tab-{{ activetab }}').addClass('active');
+		})
+	</script>
+{% endblock %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb(self.title(), url_for('.stats_offer')) }}
+{% endblock %}
+
+{% block pageheader %}
+<h1>{{ self.title() }}</h1>
+{% endblock %}
+
+{% block content %}
+<ul class="tabs">
+	<li id="tab-offer"><a href="{{ url_for('.stats_offer') }}">По офферам</a></li>
+	<li id="tab-affiliate"><a href="{{ url_for('.stats_affiliate') }}">По партнёрам</a></li>
+	<li id="tab-advertiser"><a href="{{ url_for('.stats_advertiser') }}">По рекламодателям</a></li>
+</ul>
+
+{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+{% endblock %}

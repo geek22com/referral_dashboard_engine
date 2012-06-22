@@ -9,7 +9,7 @@ from heymoose.data import enums
 from heymoose.filters import currency, currency_sign
 from heymoose.utils.times import begin_of_day, end_of_day, relativedelta
 from heymoose.utils.gen import generate_unique_filename, generate_uid
-from heymoose.utils.convert import to_unixtime
+from heymoose.utils.convert import to_unixtime, datetime_nosec_format
 from flask import g
 from datetime import datetime
 import validators
@@ -756,9 +756,19 @@ class DateTimeRangeForm(Form):
 	
 	def range_args(self):
 		return {'from' : to_unixtime(self.dt_from.data, True), 'to' : to_unixtime(self.dt_to.data, True)}
+	
+	def query_args(self):
+		return dict(dt_from=self.dt_from.data.strftime(datetime_nosec_format),
+			dt_to=self.dt_to.data.strftime(datetime_nosec_format))
 
 class OfferStatsFilterForm(DateTimeRangeForm):
 	requested = BooleanField(u'с заявками', default=True)
+	
+	def query_args(self):
+		args = DateTimeRangeForm.query_args(self)
+		if self.requested.data:	args.update(requested=u'y')
+		return args
+			
 
 class AffiliateCabinetStatsForm(DateTimeRangeForm):
 	offer = myfields.OfferField(u'Оффер', coerce=int, default=0)

@@ -202,7 +202,7 @@ def offers_info_operations(id):
 	if request.method == 'POST':
 		type = request.form.get('type', '')
 		if type == 'approve':
-			count = rc.actions.approve_expired(offer.id)
+			count = rc.actions.approve_expired(offer_id=offer.id)
 			flash(u'{0} действий подтверждено'.format(count), 'success')
 		elif type == 'cancel' and 'csv' in request.files:
 			transactions = [t.strip() for t in request.files['csv'].read().split(',')]

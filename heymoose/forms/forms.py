@@ -757,18 +757,34 @@ class DateTimeRangeForm(Form):
 	def range_args(self):
 		return {'from' : to_unixtime(self.dt_from.data, True), 'to' : to_unixtime(self.dt_to.data, True)}
 	
+	def backend_args(self):
+		return self.range_args()
+	
 	def query_args(self):
 		return dict(dt_from=self.dt_from.data.strftime(datetime_nosec_format),
 			dt_to=self.dt_to.data.strftime(datetime_nosec_format))
 
 class OfferStatsFilterForm(DateTimeRangeForm):
-	requested = BooleanField(u'с заявками', default=True)
+	requested = BooleanField(u'только с заявками', default=True)
 	
 	def query_args(self):
 		args = DateTimeRangeForm.query_args(self)
 		if self.requested.data:	args.update(requested=u'y')
 		return args
-			
+	
+class AdvertiserStatsForm(DateTimeRangeForm):
+	expired = BooleanField(u'только просроченные действия', default=False)
+	
+	def query_args(self):
+		args = DateTimeRangeForm.query_args(self)
+		if self.expired.data: args.update(expired=u'y')
+		return args
+	
+	def backend_args(self):
+		args = DateTimeRangeForm.backend_args(self)
+		args.update(expired=self.expired.data)
+		return args
+
 
 class AffiliateCabinetStatsForm(DateTimeRangeForm):
 	offer = myfields.OfferField(u'Оффер', coerce=int, default=0)

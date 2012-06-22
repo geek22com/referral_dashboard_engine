@@ -35,4 +35,13 @@ def stats_affiliate():
 
 @bp.route('/stats/advertiser')
 def stats_advertiser():
-	return render_template('admin/stats/advertiser.html')
+	form = forms.AdvertiserStatsForm(request.args)
+	if form.validate():
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 20)
+		offset, limit = page_limits(page, per_page)
+		stats, count = rc.offer_stats.list_advertiser(offset=offset, limit=limit, **form.backend_args())
+		pages = paginate(page, count, per_page)
+	else:
+		stats, pages = [], None
+	return render_template('admin/stats/advertiser.html', stats=stats, pages=pages, form=form)

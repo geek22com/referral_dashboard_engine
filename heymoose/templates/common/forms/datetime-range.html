@@ -39,6 +39,19 @@
 						{{ forms.errors(form.requested) }}
 					</div>
 					{% endif %}
+					{% if form.expired %}
+					<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.expired) }}">
+						<ul class="inputs-list">
+							<li>
+								<label class="required">
+									{{ forms.field(form.expired) }}
+									<span>только просроченные действия</span>
+								</label>
+							</li>
+						</ul>
+						{{ forms.errors(form.expired) }}
+					</div>
+					{% endif %}
 					{% if form.offer %}
 					<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.offer) }}">
 						<label class="simple required">для оффера</label>

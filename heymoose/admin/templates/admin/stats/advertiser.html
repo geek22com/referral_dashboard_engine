@@ -1,3 +1,18 @@
 {% extends "admin/stats/layout.html" %}
 
 {% set activetab = 'advertiser' %}
+
+{% block tabcontent %}
+
+{{ datetime_range.html(form, 'Показать статистику за время:') }}
+
+{% if stats %}
+	{{ stat_macros.table_by_advertiser(stats) }}
+	{{ macros.paginate(pages, '.stats_advertiser', **form.query_args()) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>Нет данных для получения статистики.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

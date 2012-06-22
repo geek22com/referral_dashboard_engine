@@ -66,6 +66,16 @@
 	{% endcall %}
 {% endmacro %}
 
+{% macro table_by_advertiser(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th class="header" rowspan="2">Рекламодатель</th>
+		{% else %}
+		<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
 {% macro table_by_sub_id(stats) %}
 	{% call(head, stat) table_base(stats) %}
 		{% if head %}

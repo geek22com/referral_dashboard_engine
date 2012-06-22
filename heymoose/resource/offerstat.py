@@ -22,6 +22,9 @@ class OfferStatResource(BackendResource):
 		else:
 			return [], 0
 	
+	def list_advertiser(self, **kwargs):
+		return self.path('advertisers').path('all').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
+	
 	def list_affiliate(self, **kwargs):
 		return self.path('affiliates').path('all').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
 	

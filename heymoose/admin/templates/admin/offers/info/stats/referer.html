@@ -1,0 +1,17 @@
+{% extends "admin/offers/info/stats/layout.html" %}
+
+{% set activesubtab = 'referer' %}
+
+{% block subtabcontent %}
+
+{% if stats %}
+	{{ stat_macros.table_by_referer(stats) }}
+	{{ macros.paginate(pages, '.offers_info_stats_referer', id=offer.id,
+		dt_from=form.dt_from.data|datetime_nosec, dt_to=form.dt_to.data|datetime_nosec) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>Нет данных для получения статистики.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

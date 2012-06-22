@@ -241,3 +241,48 @@ def offers_info_stats(id):
 	else:
 		stats, pages = [], None
 	return render_template('admin/offers/info/stats.html', offer=offer, stats=stats, pages=pages, form=form)
+
+@bp.route('/offers/<int:id>/stats/affiliate')
+def offers_info_stats_affiliate(id):
+	offer = rc.offers.get_by_id(id)
+	form = forms.DateTimeRangeForm(request.args)
+	if form.validate():
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 20)
+		offset, limit = page_limits(page, per_page)
+		stats, count = rc.offer_stats.list_affiliate_by_offer(offer_id=offer.id,
+			offset=offset, limit=limit, **form.range_args())
+		pages = paginate(page, count, per_page)
+	else:
+		stats, pages = [], None
+	return render_template('admin/offers/info/stats/affiliate.html', offer=offer, stats=stats, pages=pages, form=form)
+
+@bp.route('/offers/<int:id>/stats/referer')
+def offers_info_stats_referer(id):
+	offer = rc.offers.get_by_id(id)
+	form = forms.DateTimeRangeForm(request.args)
+	if form.validate():
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 20)
+		offset, limit = page_limits(page, per_page)
+		stats, count = rc.offer_stats.list_by_referer(offer_id=offer.id,
+			offset=offset, limit=limit, **form.range_args())
+		pages = paginate(page, count, per_page)
+	else:
+		stats, pages = [], None
+	return render_template('admin/offers/info/stats/referer.html', offer=offer, stats=stats, pages=pages, form=form)
+
+@bp.route('/offers/<int:id>/stats/keywords')
+def offers_info_stats_keywords(id):
+	offer = rc.offers.get_by_id(id)
+	form = forms.DateTimeRangeForm(request.args)
+	if form.validate():
+		page = current_page()
+		per_page = app.config.get('OFFERS_PER_PAGE', 20)
+		offset, limit = page_limits(page, per_page)
+		stats, count = rc.offer_stats.list_by_keywords(offer_id=offer.id,
+			offset=offset, limit=limit, **form.range_args())
+		pages = paginate(page, count, per_page)
+	else:
+		stats, pages = [], None
+	return render_template('admin/offers/info/stats/keywords.html', offer=offer, stats=stats, pages=pages, form=form)

@@ -1,0 +1,31 @@
+{% extends "admin/offers/info/layout.html" %}
+{% import 'common/stats.html' as stat_macros %}
+{% import 'common/forms/datetime-range.html' as datetime_range %}
+
+{% set content_fluid = true %}
+{% set activetab = 'stats' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ datetime_range.head() }}
+	{% set activesubtab = activesubtab|default('affiliate') %}
+	<script type="text/javascript">
+		$(function() { 
+			$('li#subtab-{{ activesubtab }}').addClass('active');
+		})
+	</script>
+{% endblock %}
+
+{% block tabcontent %}
+
+<ul class="tabs">
+	<li id="subtab-affiliate"><a href="{{ url_for('.offers_info_stats_affiliate', id=offer.id) }}">По партнерам</a></li>
+	<li id="subtab-referer"><a href="{{ url_for('.offers_info_stats_referer', id=offer.id) }}">По реферерам</a></li>
+	<li id="subtab-keywords"><a href="{{ url_for('.offers_info_stats_keywords', id=offer.id) }}">По поисковым запросам</a></li>
+</ul>
+
+{{ datetime_range.html(form, 'Показать статистику за время:') }}
+
+{% block subtabcontent %}Раздел находится в разработке{% endblock %}
+
+{% endblock %}

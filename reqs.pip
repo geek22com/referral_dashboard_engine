@@ -1,7 +1,7 @@
 flask==0.8
 wtforms==0.6.3
 flask-mongoalchemy==0.5.3
-uwsgi
+uwsgi==1.1.2
 lxml==2.3.2
 restkit==3.3.2
 amqplib==1.0.2

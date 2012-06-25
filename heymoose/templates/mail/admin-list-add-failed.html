@@ -1,16 +1,16 @@
 {% extends "mail/layout-admin.html" %}
 
 {% block subject %}
-Не удалось добавить пользователя {{ user.full_name() }} в списки
+Не удалось добавить пользователя {{ user.full_name or user.email }} в списки
 {% endblock %}
 
 {% block html %}
 Произошла ошибка при добавлении пользователя
-<a href="{{ root + url_for('admin.users_info', id=user.id) }}">{{ user.full_name() }} ({{ user.email }})</a>
+<a href="{{ root + url_for('admin.users_info', id=user.id) }}">{{ user.full_name }} ({{ user.email }})</a>
 в один или несколько списков рассылки. Для получения подробной информации см. лог.
 {% endblock %}
 
 {% block plain %}
-Произошла ошибка при добавлении пользователя {{ user.full_name() }} ({{ user.email }}) в один или несколько
+Произошла ошибка при добавлении пользователя {{ user.full_name }} ({{ user.email }}) в один или несколько
 списков рассылки. Для получения подробной информации см. лог.
 {% endblock %}

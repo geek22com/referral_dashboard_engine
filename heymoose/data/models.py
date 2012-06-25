@@ -60,7 +60,15 @@ class User(IdentifiableModel):
 	def active(self): return self.confirmed and not self.blocked
 	
 	@property
-	def full_name(self): return u'{0} {1}'.format(self.first_name, self.last_name)
+	def full_name(self):
+		if self.first_name and self.last_name:
+			return u'{0} {1}'.format(self.first_name, self.last_name)
+		elif self.first_name:
+			return self.first_name
+		elif self.last_name:
+			return self.last_name
+		else:
+			return None
 	
 	@property
 	def is_affiliate(self): return enums.Roles.AFFILIATE in self.roles

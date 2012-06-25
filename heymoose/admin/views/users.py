@@ -76,7 +76,7 @@ def users_info_stats(id):
 @bp.route('/users/<int:id>/edit', methods=['GET', 'POST'])
 def users_info_edit(id):
 	user = rc.users.get_by_id(id)
-	FormClass = forms.AdminAdvertiserEditForm if g.user.is_advertiser else forms.AdminAffiliateEditForm
+	FormClass = forms.AdminAdvertiserEditForm if user.is_advertiser else forms.AdminAffiliateEditForm
 	form = FormClass(request.form, obj=user)	
 	if request.method == 'POST' and form.validate():
 		form.populate_obj(user)

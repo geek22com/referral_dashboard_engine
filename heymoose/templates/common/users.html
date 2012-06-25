@@ -7,9 +7,9 @@
 		<thead>
 			<tr>
 				<th class="header right">ИД</th>
-				<th class="header">Имя</th>
 				<th class="header">E-mail</th>
 				<th class="header">Организация</th>
+				<th class="header">Имя</th>
 				{% if config.get('stat-payments', false) %}<th class="header right">Вклад, {{ currency_sign }}</th>{% endif %}
 				{% if config.get('role', false) %}<th class="header center">Роль</th>{% endif %}
 				<th class="header center">Зарегистрирован</th>
@@ -23,10 +23,10 @@
 				<td class="right">{{ user.id }}</td>
 				<td>
 					<a href="{{ url_for('.users_info', id=user.id) }}"
-					 {% if user.blocked %}class="danger"{% endif %}>{{ user.full_name }}</a></td>
-				<td>{{ user.email }}</td>
-				<td>{{ user.organization|default('--', true) }}</td>
-								
+					 {% if user.blocked %}class="danger"{% endif %}>{{ user.email }}</a></td>
+				<td>{{ user.organization|default('—', true) }}</td>
+				<td>{{ user.full_name|default('—', true) }}</td>
+				
 				{% if config.get('stat-payments', false) %}
 				<td class="right">
 					{% if user.stats %}{{ user.stats.payments|currency(False) }}{% else %}&mdash;{% endif %}

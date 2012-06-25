@@ -132,7 +132,7 @@
 					<dt>Имя</dt>
 					<dd>
 						<a href="{{ url_for('.users_info', id=offer.advertiser.id) }}"
-						 >{{ offer.advertiser.full_name }}</a>
+						 >{{ offer.advertiser.full_name or offer.advertiser.email }}</a>
 					</dd>
 					<dt>E-mail</dt>
 					<dd><a href="mailto:{{ offer.advertiser.email -}}">{{ offer.advertiser.email }}</a></dd>

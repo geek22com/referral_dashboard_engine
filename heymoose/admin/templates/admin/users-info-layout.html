@@ -1,6 +1,6 @@
 {% extends "admin/layout.html" %}
 
-{% block title %}Пользователь {{ user.full_name }}{% endblock %}
+{% block title %}Пользователь {{ user.full_name or user.email }}{% endblock %}
 
 {% set activemenu = "users" %}
 
@@ -21,7 +21,7 @@
 {% endblock %}
 
 {% block pageheader %}
-<h1>{{ self.title() }} <small>{{ user.email }}</small></h1>
+<h1>{{ self.title() }}</h1>
 {% endblock %}
 
 {% block content %}

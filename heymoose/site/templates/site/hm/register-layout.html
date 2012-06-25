@@ -2,33 +2,16 @@
 
 {% block title %}Регистрация{% endblock %}
 
-{% set activemenu = "register" %}
-
 {% block extrahead %}
 	{{ super() }}
 	<style type="text/css">
-		.span280 {
-			width: 280px;
-		}
-		
-		.span260 {
-			width: 260px;
-		}
-		
-		.fieldset-help {
-			min-height: {{ '120px;' if affiliate else '90px;' }}
-		}
-		
-		.inline-first {
-			width: 120px;
-		}
-		
-		.inline-second {
-			width: 120px;
-			margin-left: 14px;
+		.span360 {
+			width: 360px;
 		}
 	</style>
 {% endblock %}
+
+{% set activemenu = "register" %}
 
 {% block top_unit_content %}
 	{{ support() }}
@@ -40,96 +23,8 @@
 	</div>
 {% endblock %}
 
-{% set affiliate = affiliate|default(false) %}
-
 {% block content %}
 <h1 class="hm-roundbox-header">Регистрация в {{ heymoose() }}</h1>
-{% block role_title %}{% endblock %}
 
-<form id="form-register" method="post" action="" class="validate2">
-	<div class="row">
-		<div class="span280">
-			<fieldset>
-				<h4 class="hey">Личные данные</h4>
-				<div class="fieldset-help span260">
-					<p class="help-text">
-						Пожалуйста, введите ваши имя и фамилию, чтобы наши менеджеры
-						смогли обращаться к вам в случае возникновения вопросов или
-						проблем. Если вы являетесь представителем организации,
-						заполните также ее название.
-						{% if affiliate %}
-						Заполните номер вашего WMR-кошелька в системе WebMoney для
-						получения выплат.
-						{% endif %}
-					</p>
-				</div>
-				{{ forms.singlefield_stacked(form.first_name, class='span260') }}
-				{{ forms.singlefield_stacked(form.last_name, class='span260') }}
-				{{ forms.singlefield_stacked(form.organization, class='span260') }}
-				{% if affiliate %}
-				{{ forms.singlefield_stacked(form.wmr, class='span260') }}
-				{% endif %}
-			</fieldset>
-		</div>
-		<div class="span280">
-			<fieldset>
-				<h4 class="hey">Контакты</h4>
-				<div class="fieldset-help span260">
-					<p class="help-text">
-						Здесь вам необходимо ввести адрес своей электронной почты и номер
-						телефона. На ваш e-mail будет послано письмо с подтверждением
-						электронного адреса. Вы также можете указать один из своих 
-						мессенджеров для связи с вами.
-					</p>
-				</div>
-				{{ forms.singlefield_stacked(form.email, class='span260', type='email') }}
-				{{ forms.singlefield_stacked(form.phone, class='span260') }}
-				
-				{% if affiliate %}
-				{{ forms.singlefield_stacked(form.messenger_type, class='messenger-type span260') }}
-				{{ forms.singlefield_stacked(form.messenger_uid, class='messenger-uid span260') }}
-				{% else %}
-				<div class="formfield clearfix {{ forms.css_errors(form.messenger_uid) }}">
-					{{ forms.label(form.messenger_type) }}
-					<div>
-						{{ forms.field(form.messenger_type, class='messenger-type inline-first') }}
-						{{ forms.field(form.messenger_uid, class='messenger-uid inline-second') }}
-						{{ forms.errors(form.messenger_uid) }}
-					</div>
-				</div>
-				{% endif %}
-			</fieldset>
-		</div>
-		<div class="span280">
-			<fieldset>
-				<h4 class="hey">Регистрационные данные</h4>
-				<div class="fieldset-help span260">
-					<p class="help-text">
-						Придумайте пароль для вашего аккаунта. Пароль должен иметь длину
-						от 4 до 16 символов. Повторите ввод пароля для нажежности.
-					</p>
-					<p class="help-text">
-						Ответьте на вопрос, чтобы мы поняли, что вы не робот.
-					</p>
-				</div>
-				{{ forms.singlefield_stacked(form.password, class='span260') }}
-				{{ forms.singlefield_stacked(form.password2, class='span260') }}
-				{{ forms.singlefield_stacked(form.captcha, class='span260') }}
-				{{ form.ch() }}
-			</fieldset>
-		</div>
-	</div>
-	<div class="row">
-		<div class="span12">
-			<p>
-				Пожалуйста, удостоверьтесь, что указанные данные введены верно,
-				и в них отсутствуют опечатки. В противном случае есть вероятность,
-				что мы не сможем связаться с вами!
-			</p>
-		</div>
-		<div class="span3 right">
-			<input class="btn moose" type="submit" value="Зарегистрироваться"/>
-		</div>
-	</div>
-</form>
+{% block register_content %}{% endblock %}
 {% endblock %}

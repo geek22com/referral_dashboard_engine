@@ -12,8 +12,8 @@ def before_request():
 	if not g.user.is_affiliate and not g.user.is_advertiser:
 		return redirect(url_for('site.gateway'))
 	
-	# Do not allow blocked or unconfirmed users to create and manage orders or apps 
-	if (g.user.blocked or not g.user.confirmed) and 'cabinet/profile' not in request.url:
+	# Do not allow blocked users to create and manage orders or apps 
+	if g.user.blocked and 'cabinet/profile' not in request.url:
 		return redirect(url_for('.profile'))
 	
 	# For form validation

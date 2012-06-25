@@ -24,12 +24,11 @@
 </div>
 
 <table class="key-value">
-	<thead></thead>
 	<tbody>
 		{% if user.is_admin %}
 		<tr><th></th><td><span class="label important">Администратор</span></td></tr>
 		{% endif %}
-		<tr><th>Имя</th><td>{{ user.full_name }}</td></tr>
+		<tr><th>Имя</th><td>{{ user.full_name|default('(не указано)', true) }}</td></tr>
 		<tr><th>Организация</th><td>{{ user.organization|default('(не указана)', true) }}</td></tr>
 		{% if user.is_affiliate %}
 		<tr><th>WMR-кошелёк</th><td>{{ user.wmr|default('(не указан)', true) }}</td></tr>

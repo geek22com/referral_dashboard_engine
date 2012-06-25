@@ -2,8 +2,22 @@
 
 {% block title %}Регистрация партнёра{% endblock %}
 
-{% block role_title %}
-<h2>Регистрация партнёра</h2>
-{% endblock %}
+{% block register_content %}
 
-{% set affiliate = true %}
+<h2 class="center">Регистрация партнёра</h2>
+<div style="margin-top: 30px;">
+	<div style="width: 360px; margin: 0 auto;">
+		<form id="form-register" method="post" action="" class="validate2">
+			{{ forms.singlefield_stacked(form.email, class='span360', type='email') }}
+			{{ forms.singlefield_stacked(form.password, class='span360') }}
+			{{ forms.singlefield_stacked(form.password2, class='span360') }}
+			{{ forms.singlefield_stacked(form.captcha, class='span360') }}
+			{{ form.ch() }}
+			<div class="center" style="margin-top: 20px;">
+				<input class="btn moose" type="submit" value="Зарегистрироваться"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+{% endblock %}

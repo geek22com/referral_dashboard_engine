@@ -4,14 +4,7 @@ from heymoose.data.models import User
 class UserResource(BackendResource):
 	base_path = '/users'
 	
-	extractor = extractor().alias(
-		firstName='first_name',
-		lastName='last_name',
-		sourceUrl='source_url',
-		messengerType='messenger_type',
-		messengerUid='messenger_uid',
-		passwordHash='password_hash'
-	)
+	extractor = extractor()
 	
 	def get_by_id(self, id, **kwargs):
 		return self.path(id).get(**kwargs).as_obj(User)
@@ -36,15 +29,15 @@ class UserResource(BackendResource):
 	
 	def add(self, user):
 		params = self.extractor.extract(user,
-			required='email passwordHash firstName lastName'.split(),
-			optional='organization phone sourceUrl messengerType messengerUid wmr referrer'.split()
+			required='email password_hash'.split(),
+			optional='organization phone'.split()
 		)
 		self.post(**params)
 	
 	def update(self, user):
 		params = self.extractor.extract(user,
-			updated='''email passwordHash firstName lastName organization phone
-				sourceUrl messengerType messengerUid wmr confirmed blocked'''.split()
+			updated='''email password_hash first_name last_name organization phone
+				source_url messenger_type messenger_uid wmr confirmed blocked'''.split()
 		)
 		self.path(user.id).put(**params)
 	

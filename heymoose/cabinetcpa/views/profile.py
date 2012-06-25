@@ -9,12 +9,15 @@ from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.mail import transactional as mail
 
 
-@bp.route('/profile', methods=['GET', 'POST'])
+@bp.route('/profile')
 def profile():
-	if request.method == 'POST':
-		mail.user_confirm_email(g.user)
-		flash(u'Письмо выслано повторно', 'success')
 	return render_template('cabinetcpa/profile/info.html')
+
+@bp.route('/profile/sendmail', methods=['POST'])
+def profile_sendmail():
+	mail.user_confirm_email(g.user)
+	flash(u'Письмо выслано повторно', 'success')
+	return redirect(url_for('.profile'))
 
 @bp.route('/profile/edit', methods=['GET', 'POST'])
 def profile_edit():

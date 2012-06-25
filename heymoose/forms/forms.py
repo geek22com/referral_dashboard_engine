@@ -81,58 +81,7 @@ class ForgottenPasswordForm(CaptchaForm):
 	email = TextField(u'E-mail', [validators.Required(message = u'Введите электронный адрес')])
 
 
-class UserFormMixin:
-	first_name = TextField(u'Ваше имя', [
-		validators.Length(min=2, max=200, message = u'Имя может иметь длину от 2 до 200 символов'),
-		validators.Required(message = u'Введите ваше имя')
-	])
-	last_name = TextField(u'Ваша фамилия', [
-		validators.Length(min=2, max=200, message = u'Фамилия может иметь длину от 2 до 200 символов'),
-		validators.Required(message = u'Введите вашу фамилию')
-	])
-	organization = myfields.NullableTextField(u'Организация', [
-		validators.Length(max=200, message = u'Название организации не может быть длиннее 200 символов'),
-	])
-	
-class CustomerFormMixin:
-	phone = TextField(u'Телефон', [
-		validators.Length(min=5, max=30, message = u'Телефон может иметь длину от 5 до 30 исмволов'),
-		validators.Required(message = u'Введите ваш телефон')
-	])
-	messenger_type = myfields.NullableSelectField(u'Мессенджер', choices=[
-		('', u'(не указывать)'),
-		('SKYPE', u'Skype'),
-		('JABBER', u'Jabber'),
-		('ICQ', u'ICQ')
-	])
-	messenger_uid = myfields.NullableTextField(u'UID в мессенджере')
-	
-	def validate_messenger_uid(self, field):
-		if not self.messenger_type.data: return
-		if not field.data:
-			raise ValueError(u'Введите UID в выбранном вами мессенджере')
-		elif not (2 <= len(field.data) <= 30):
-			raise ValueError(u'UID может иметь длину от 2 до 30 символов')
-		
-class DeveloperFormMixin:
-	phone = myfields.NullableTextField(u'Телефон')
-	messenger_type = SelectField(u'Мессенджер', choices=[
-		('SKYPE', u'Skype'),
-		('JABBER', u'Jabber'),
-		('ICQ', u'ICQ')
-	], validators = [validators.Required(message = u'Запоните тип мессенджера')])
-	messenger_uid = TextField(u'UID в мессенджере', [
-		validators.Length(min=2, max=30, message = u'UID может иметь длину от 2 до 30 символов'),
-		validators.Required(message = u'Введите UID в выбранном мессенджере')
-	])
-
-class AdvertiserFormMixin(CustomerFormMixin):
-	pass
-
-class AffiliateFormMixin(DeveloperFormMixin):
-	wmr = myfields.NullableTextField(u'Ваш WMR-кошелёк')
-
-class RegisterFormMixin:
+class UserRegisterFormMixin:
 	password = PasswordField(u'Пароль', [
 		validators.Length(min=4, max=16, message = u'Длина пароля должна быть от 4 до 16 символов'),
 		validators.Required(message = u'Введите пароль')
@@ -150,32 +99,69 @@ class RegisterFormMixin:
 	
 	def populate_password(self, obj, name):
 		obj.change_password(self.password.data)
-	
-class DeveloperRegisterForm(Form, UserFormMixin, RegisterFormMixin, DeveloperFormMixin):
-	invite = TextAreaField(u'Код приглашения', [
-		validators.Required(message=u'Скопируйте сюда полученный код приглашения'),
-		validators.check_invite
+
+class UserEditFormMixin:
+	first_name = TextField(u'Ваше имя', [
+		validators.Length(min=2, max=200, message = u'Имя может иметь длину от 2 до 200 символов'),
+		validators.Optional()
 	])
+	last_name = TextField(u'Ваша фамилия', [
+		validators.Length(min=2, max=200, message = u'Фамилия может иметь длину от 2 до 200 символов'),
+		validators.Optional()
+	])
+	messenger_type = myfields.SelectField(u'Мессенджер', choices=[
+		('', u'(не указывать)'),
+		('SKYPE', u'Skype'),
+		('JABBER', u'Jabber'),
+		('ICQ', u'ICQ')
+	], validators=[validators.Optional()])
+	messenger_uid = myfields.TextField(u'UID в мессенджере')
 	
-class CustomerRegisterForm(Form, UserFormMixin, RegisterFormMixin, CustomerFormMixin):
+	def validate_messenger_uid(self, field):
+		if not self.messenger_type.data: return
+		if not field.data:
+			raise ValueError(u'Введите UID в выбранном вами мессенджере')
+		elif not (2 <= len(field.data) <= 30):
+			raise ValueError(u'UID может иметь длину от 2 до 30 символов')
+	
+class AdvertiserFormMixin:
+	organization = myfields.TextField(u'Название организации', [
+		validators.Length(max=200, message=u'Название организации не может быть длиннее 200 символов'),
+		validators.Required(message=u'Введите название организации')
+	])
+	phone = TextField(u'Телефон', [
+		validators.Length(min=5, max=30, message=u'Телефон может иметь длину от 5 до 30 исмволов'),
+		validators.Required(message=u'Введите ваш телефон')
+	])
+
+class AdvertiserEditFormMixin(AdvertiserFormMixin):
 	pass
 
-class AffiliateRegisterForm(CaptchaForm, UserFormMixin, RegisterFormMixin, AffiliateFormMixin):
+class AffiliateFormMixin:
+	organization = myfields.TextField(u'Название организации', [
+		validators.Length(max=200, message=u'Название организации не может быть длиннее 200 символов'),
+		validators.Optional()
+	])
+	phone = TextField(u'Телефон', [
+		validators.Length(min=5, max=30, message=u'Телефон может иметь длину от 5 до 30 исмволов'),
+		validators.Optional()
+	])
+
+class AffiliateEditFormMixin(AffiliateFormMixin):
+	wmr = myfields.TextField(u'Ваш WMR-кошелёк', [
+		validators.Required(message=u'Введите номер вашего WMR-кошелька')
+	])
+
+class AffiliateRegisterForm(CaptchaForm, UserRegisterFormMixin):
 	pass
 
-class AdvertiserRegisterForm(CaptchaForm, UserFormMixin, RegisterFormMixin, AdvertiserFormMixin):
+class AdvertiserRegisterForm(CaptchaForm, UserRegisterFormMixin, AdvertiserFormMixin):
 	pass
 
-class DeveloperEditForm(Form, UserFormMixin, DeveloperFormMixin):
+class AffiliateEditForm(Form, UserEditFormMixin, AffiliateEditFormMixin):
 	pass
 
-class CustomerEditForm(Form, UserFormMixin, CustomerFormMixin):
-	pass
-
-class AffiliateEditForm(Form, UserFormMixin, AffiliateFormMixin):
-	pass
-
-class AdvertiserEditForm(Form, UserFormMixin, AdvertiserFormMixin):
+class AdvertiserEditForm(Form, UserEditFormMixin, AdvertiserEditFormMixin):
 	pass
 
 class AdminUserFormMixin:
@@ -188,17 +174,11 @@ class AdminUserFormMixin:
 	def validate_email(self, field):
 		if hasattr(self, 'user') and self.user.email != self.email.data:
 			validators.check_email_not_registered(self, self.email)
-	
-class AdminDeveloperEditForm(Form, UserFormMixin, DeveloperFormMixin, AdminUserFormMixin):
+
+class AdminAffiliateEditForm(AffiliateEditForm, AdminUserFormMixin):
 	pass
 
-class AdminCustomerEditForm(Form, UserFormMixin, CustomerFormMixin, AdminUserFormMixin):
-	pass
-
-class AdminAffiliateEditForm(Form, UserFormMixin, AffiliateFormMixin, AdminUserFormMixin):
-	pass
-
-class AdminAdvertiserEditForm(Form, UserFormMixin, AdvertiserFormMixin, AdminUserFormMixin):
+class AdminAdvertiserEditForm(AdvertiserEditForm, AdminUserFormMixin):
 	pass
 
 
@@ -225,6 +205,11 @@ class PasswordChangeForm(AdminPasswordChangeForm):
 	oldpassword = PasswordField(u'Текущий пароль', [
 		validators.Required(message=u'Введите текущий пароль'),
 		validators.check_password
+	])
+
+class WMRForm(Form):
+	wmr = myfields.TextField(u'Ваш WMR-кошелёк', [
+		validators.Required(message=u'Введите номер вашего WMR-кошелька')
 	])
 
 class EmailNotifyForm(Form):

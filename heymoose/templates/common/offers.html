@@ -77,7 +77,7 @@
 					{% if admin %}
 					<div class="well small offer-advertiser">
 						<div><a href="{{ url_for('.users_info', id=offer.advertiser.id) }}"
-						 ">{{ offer.advertiser.full_name }}</a></div>
+						 >{{ offer.advertiser.full_name or offer.advertiser.email }}</a></div>
 						{#<div><a href="mailto:{{ offer.advertiser.email -}}">{{ offer.advertiser.email }}</a></div>#}
 						{% if offer.advertiser.organization %}<div>{{ offer.advertiser.organization }}</div>{% endif %}
 					</div>
@@ -145,7 +145,7 @@
 				{% if admin %}
 				<td>
 					<a href="{{ url_for('.users_info', id=request.affiliate.id) }}"
-					 >{{ request.affiliate.full_name }}</a>
+					 >{{ request.affiliate.full_name or request.affiliate.email }}</a>
 				</td>
 				{% endif %}
 				

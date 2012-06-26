@@ -34,6 +34,13 @@
 		<tr><th>WMR-кошелёк</th><td>{{ user.wmr|default('(не указан)', true) }}</td></tr>
 		{% endif %}
 		<tr><th>Зарегистрирован</th><td>{{ user.register_time|datetimeformat }}</td></tr>
+		
+		{% if user.is_advertiser %}
+		<tr><th>Баланс</th><td>{{ user.customer_account.balance|currency }}</td></tr>
+		{% else %}
+		<tr><th>Неподтвержденные средства</th><td>{{ user.developer_account_not_confirmed.balance|currency }}</td></tr>
+		<tr><th>Подтвержденные средства</th><td>{{ user.developer_account.balance|currency }}</td></tr>
+		{% endif %}
 	</tbody>
 </table>
 

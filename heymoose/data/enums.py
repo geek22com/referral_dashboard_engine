@@ -31,6 +31,8 @@ class AccountingEvents(Enum):
 	OFFER_ACCOUNT_ADD = e('OFFER_ACCOUNT_ADD', name=u'пополнение счета оффера')
 	ROBOKASSA_ADD = e('ROBOKASSA_ADD', name=u'пополнение счета с помощью системы "RoboKassa"')
 	OFFER_ACCOUNT_REMOVE = e('OFFER_ACCOUNT_REMOVE', name=u'снятие средств со счета оффера')
+	MLM = e('MLM', name=u'реферальная программа')
+	CANCELLED = e('CANCELLED', name=u'отмена транзакции')
 
 class OrderTypes(Enum):
 	REGULAR = e('REGULAR', name=u'обычный')

@@ -97,9 +97,14 @@
 		{% if g.user.is_advertiser %}
 		<span class="divider">/</span>
 		Ваш ID: {{ g.user.id }}
-		{% endif %}
 		<span class="divider">/</span>
-		Ваш баланс: {{ g.user.account.balance|currency }}
+		Ваш баланс: {{ g.user.customer_account.balance|currency }}
+		{% else %}
+		<span class="divider">/</span>
+		Неподтв.: {{ g.user.developer_account_not_confirmed.balance|currency }}
+		<span class="divider">/</span>
+		Подтв.: {{ g.user.developer_account.balance|currency }}
+		{% endif %}
 	</span>
 </ul>
 {% endblock %}

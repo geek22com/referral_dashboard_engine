@@ -375,4 +375,12 @@ class OverallOfferStat(models.ModelBase):
 	ecpm = Field(types.Decimal, 'ecpm', quantize='1.00')
 
 
+class ApiError(IdentifiableModel):
+	description = Field(types.String, 'description')
+	uri = Field(types.String, 'uri')
+	last_occurred = Field(types.DateTime, 'last-occurred')
+	occurrence_count = Field(types.Integer, 'occurrence-count')
+	stack_trace = Field(types.String, 'stack-trace')
+
+
 registry.register_models_from_module(__name__)

@@ -1,0 +1,61 @@
+{% extends "admin/logs/layout.html" %}
+{% import 'common/forms/datetime-range.html' as datetime_range %}
+
+{% set activetab = 'api' %}
+{% set content_fluid = true %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ datetime_range.head() }}
+	<script type="text/javascript">
+		$(function() {
+			$('.stacktrace-link').click(function() {
+				$(this).closest('tr').next().toggle('fast');
+				return false;
+			})
+		})
+	</script>
+{% endblock %}
+
+{% block tabcontent %}
+
+{{ datetime_range.html(form, 'Показать ошибки за время:') }}
+
+{% if errors %}
+	<table class="bordered-table nosort">
+		<thead>
+			<tr>
+				<th class="header">Описание</th>
+				<th class="header">URI</th>
+				<th class="header center">Последний случай</th>
+				<th class="header right">Всего</th>
+				<th class="header center" style="width: 1%;"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for error in errors %}
+			<tr>
+				<td>{{ error.description }}</td>
+				<td>{{ error.uri }}</td>
+				<td class="center">{{ error.last_occurred|datetimeformat }}</td>
+				<td class="right">{{ error.occurrence_count }}</td>
+				<td class="center">
+					<a href="#" class="stacktrace-link">подробно</a>
+				</td>
+			</tr>
+			<tr style="display: none;">
+				<td colspan="5">
+					<pre>{{ error.stack_trace }}</pre>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{{ macros.paginate(pages, '.logs_api', **form.query_args()) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>Еще не возникло ни одной ошибки.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

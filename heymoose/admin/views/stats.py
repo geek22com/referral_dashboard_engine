@@ -35,7 +35,7 @@ def stats_affiliate():
 
 @bp.route('/stats/advertiser')
 def stats_advertiser():
-	form = forms.AdvertiserStatsForm(request.args)
+	form = forms.DateTimeRangeForm(request.args)
 	if form.validate():
 		page = current_page()
 		per_page = app.config.get('OFFERS_PER_PAGE', 20)

@@ -756,7 +756,8 @@ class OfferStatsFilterForm(DateTimeRangeForm):
 		args = DateTimeRangeForm.query_args(self)
 		if self.requested.data:	args.update(requested=u'y')
 		return args
-	
+
+# Deprecated: 'expired' option is invalid on backend	
 class AdvertiserStatsForm(DateTimeRangeForm):
 	expired = BooleanField(u'только просроченные действия', default=False)
 	

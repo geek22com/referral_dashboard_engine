@@ -26,7 +26,13 @@ case "$1" in
 	chown -R uwsgi /var/log/uwsgi || true
 	/usr/sbin/update-rc.d -f uwsgi defaults || true
 	
-	#install python frontend package. (If you know how install dependencies from setup.py with deb, then refact deb)
+	# Create dirs for uploaded images (see config.py in frontend) 
+	mkdir -p /usr/share/nginx/uwsgi_upload/offer-logos || true
+	mkdir -p /usr/share/nginx/uwsgi_upload/news || true
+	chown -R uwsgi /usr/share/nginx/uwsgi_upload/ || true
+	
+	# Install python frontend package.
+	# (If you know how install dependencies from setup.py with deb, then refact deb)
 	cd /tmp/frontend && ARCH=`ls frontend-*.tar.gz`; tar -xzvf ${ARCH} && cd ${ARCH%.tar.gz}
 	python setup.py install
 	rm -rf /tmp/frontend

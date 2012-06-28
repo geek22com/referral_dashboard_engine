@@ -1,0 +1,6 @@
+{% macro sort_header(value, css='') %}
+	{% set dir = 'asc' if request.args.get('ord', none) != value or request.args.get('dir', 'desc') == 'desc' else 'desc' -%}
+	{% set css_dir = '' if request.args.get('ord', none) != value else 'headerSortUp' if request.args.get('dir', 'desc') == 'desc' else 'headerSortDown' -%}
+	class="header center {{ css }} {{ css_dir }}"
+	onclick="document.location = '{{ url_for(request.url_rule.endpoint, ord=value, dir=dir, **kwargs) }}';"
+{% endmacro %}

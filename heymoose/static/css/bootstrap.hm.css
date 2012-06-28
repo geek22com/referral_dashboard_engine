@@ -206,9 +206,13 @@ span.transaction-minus {
 	color: red;
 }
 
-table.nosort .header:hover:after, table.nosort .header:after {
+table.nosort .header:hover:after,
+table.nosort .header:after,
+table .header.nosort:hover:after,
+table .header.nosort:after {
     visibility: hidden;
     display: none;
+    cursor: default;
 }
 
 .deleted {

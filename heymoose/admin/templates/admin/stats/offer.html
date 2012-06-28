@@ -8,7 +8,7 @@
 {{ datetime_range.html(form, 'Показать статистику за время:') }}
 
 {% if stats %}
-	{{ stat_macros.table_by_offer(stats) }}
+	{{ stat_macros.table_sort_by_offer(stats, page=pages.current, **form.query_args()) }}
 	{{ macros.paginate(pages, '.stats_offer', **form.query_args()) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">

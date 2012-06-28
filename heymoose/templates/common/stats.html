@@ -115,3 +115,66 @@
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
+
+
+
+
+{% import 'common/sorting.html' as sorting with context %}
+
+{% macro table_sort_base(stats, affiliate=false) %}
+	<table class="bordered-table zebra-striped stats-table">
+		<thead>
+			<tr>
+				{{ caller(true, none, **kwargs) }}
+				<th rowspan="2" {{ sorting.sort_header('shows', **kwargs) }}>Показы</th>
+				<th rowspan="2" {{ sorting.sort_header('clicks', **kwargs) }}>Клики</th>
+				<th class="header center nosort" colspan="2">Выполненные действия</th>
+				<th rowspan="2" {{ sorting.sort_header('ctr', **kwargs) }}>CTR</th>
+				<th rowspan="2" {{ sorting.sort_header('cr', **kwargs) }}>CR</th>
+				<th rowspan="2" {{ sorting.sort_header('ecpc', **kwargs) }}>eCPC,&nbsp;{{ currency_sign -}}</th>
+				<th rowspan="2" {{ sorting.sort_header('ecpm', **kwargs) }}>eCPM,&nbsp;{{ currency_sign -}}</th>
+				<th class="header center nosort" colspan="3">Доход,&nbsp;{{ currency_sign -}}</th>
+			</tr>
+			<tr class="subrow">				
+				<th {{ sorting.sort_header('leads', **kwargs) }}>Лиды</th>
+				<th {{ sorting.sort_header('sales', **kwargs) }}>Продажи</th>
+				
+				<th {{ sorting.sort_header('canceled', 'red', **kwargs) }}>Откл.</th>
+				<th {{ sorting.sort_header('not_confirmed', 'blue', **kwargs) }}>Неподтв.</th>
+				<th {{ sorting.sort_header('confirmed', 'green', **kwargs) }}>Подтв.</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for stat in stats %}
+			<tr>
+				{{ caller(false, stat) }}
+				
+				<td class="right">{{ stat.shows }}</td>
+				<td class="right">{{ stat.clicks }}</td>
+				
+				<td class="right">{{ stat.leads }}</td>
+				<td class="right">{{ stat.sales }}</td>
+				
+				<td class="right">{% if stat.ctr %}{{ stat.ctr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
+				<td class="right">{% if stat.cr %}{{ stat.cr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
+				<td class="right">{{ stat.ecpc|default('&mdash;', true)|safe }}</td>
+				<td class="right">{{ stat.ecpm|default('&mdash;', true)|safe }}</td>
+				
+				<td class="right red">{{ stat.cancelled_revenue }}</td>
+				<td class="right blue">{{ stat.not_confirmed_revenue }}</td>
+				<td class="right green">{{ stat.confirmed_revenue }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endmacro %}
+
+{% macro table_sort_by_offer(stats) %}
+	{% call(head, stat) table_sort_base(stats, **kwargs) %}
+		{% if head %}
+		<th rowspan="2" {{ sorting.sort_header('offer', 'header', **kwargs) }}>Оффер</th>
+		{% else %}
+		<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}

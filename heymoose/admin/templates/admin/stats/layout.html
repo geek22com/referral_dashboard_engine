@@ -5,7 +5,6 @@
 {% block title %}Статистика{% endblock %}
 
 {% set activemenu = "stats" %}
-{% set content_fluid = true %}
 
 {% block extrahead %}
 	{{ super() }}
@@ -32,6 +31,7 @@
 	<li id="tab-offer"><a href="{{ url_for('.stats_offer') }}">По офферам</a></li>
 	<li id="tab-affiliate"><a href="{{ url_for('.stats_affiliate') }}">По партнёрам</a></li>
 	<li id="tab-advertiser"><a href="{{ url_for('.stats_advertiser') }}">По рекламодателям</a></li>
+	<li id="tab-total"><a href="{{ url_for('.stats_total') }}">Суммарная</a></li>
 </ul>
 
 {% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}

@@ -45,3 +45,12 @@ def stats_advertiser():
 	else:
 		stats, pages = [], None
 	return render_template('admin/stats/advertiser.html', stats=stats, pages=pages, form=form)
+
+@bp.route('/stats/total')
+def stats_total():
+	form = forms.DateTimeRangeForm(request.args)
+	if form.validate():
+		stats = rc.offer_stats.total(**form.backend_args())
+	else:
+		stats = None
+	return render_template('admin/stats/total.html', stats=stats, form=form)

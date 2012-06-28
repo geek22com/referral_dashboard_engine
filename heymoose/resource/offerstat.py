@@ -1,5 +1,5 @@
 from backend import BackendResource
-from heymoose.data.models import OverallOfferStat
+from heymoose.data.models import OverallOfferStat, TotalStat
 
 
 class OfferStatResource(BackendResource):
@@ -46,4 +46,5 @@ class OfferStatResource(BackendResource):
 	def list_by_keywords(self, **kwargs):
 		return self.path('keywords').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
 	
-	
+	def total(self, **kwargs):
+		return self.path('total').get(**kwargs).as_obj(TotalStat)

@@ -375,6 +375,17 @@ class OverallOfferStat(models.ModelBase):
 	ecpm = Field(types.Decimal, 'ecpm', quantize='1.00')
 
 
+class TotalStatPart(models.ModelBase):
+	affiliate = Field(types.Decimal, 'affiliate')
+	fee = Field(types.Decimal, 'fee')
+	sum = Field(types.Decimal, 'sum')
+
+class TotalStat(models.ModelBase):
+	confirmed = Field('TotalStatPart', 'confirmed')
+	not_confirmed = Field('TotalStatPart', 'not-confirmed')
+	canceled = Field('TotalStatPart', 'canceled')
+
+
 class ApiError(IdentifiableModel):
 	description = Field(types.String, 'description')
 	uri = Field(types.String, 'uri')

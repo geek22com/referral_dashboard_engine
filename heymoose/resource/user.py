@@ -30,7 +30,7 @@ class UserResource(BackendResource):
 	def add(self, user):
 		params = self.extractor.extract(user,
 			required='email password_hash'.split(),
-			optional='organization phone'.split()
+			optional='organization phone referrer'.split()
 		)
 		self.post(**params)
 	

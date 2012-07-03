@@ -72,6 +72,11 @@ def replace_if_contains(value, contains, newvalue):
 		return newvalue
 	return value
 
+def updated(dictionary, **kwargs):
+	result = dictionary.copy()
+	for key, value in kwargs.iteritems():
+		result[key] = value
+	return result
 
 def nocache():
 	return random.randrange(1000000)
@@ -93,6 +98,7 @@ app.jinja_env.filters['delta'] = times.delta
 app.jinja_env.filters['currency'] = currency
 app.jinja_env.filters['percent'] = percent
 app.jinja_env.filters['replace_if_contains'] = replace_if_contains
+app.jinja_env.filters['updated'] = updated
 app.jinja_env.filters['unicode'] = unicode
 
 app.jinja_env.globals['now'] = datetime.now

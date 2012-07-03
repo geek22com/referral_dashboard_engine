@@ -1,56 +1,49 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, request
+from flask import request
 from heymoose import app, resource as rc
-from heymoose.admin import blueprint as bp
-from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.forms import forms
+from heymoose.admin import blueprint as bp
+from heymoose.views.decorators import template, sorted, paginated
+
+
+OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 2)
+AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
+ADVERTISER_STATS_PER_PAGE = app.config.get('ADVERTISER_STATS_PER_PAGE', 20)
 
 
 @bp.route('/stats/offer')
-def stats_offer():
+@template('admin/stats/offer.html')
+@sorted('clicks', 'desc')
+@paginated(OFFER_STATS_PER_PAGE)
+def stats_offer(**kwargs):
 	form = forms.OfferStatsFilterForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 20)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_all(offset=offset, limit=limit,
-			granted=form.requested.data, **form.range_args())
-		pages = paginate(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/stats/offer.html', stats=stats, pages=pages, form=form)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_all(**kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count, form=form)
 
 @bp.route('/stats/affiliate')
-def stats_affiliate():
+@template('admin/stats/affiliate.html')
+@sorted('clicks', 'desc')
+@paginated(AFFILIATE_STATS_PER_PAGE)
+def stats_affiliate(**kwargs):
 	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 20)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_affiliate(offset=offset, limit=limit, **form.range_args())
-		pages = paginate(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/stats/affiliate.html', stats=stats, pages=pages, form=form)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_affiliate(**kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count, form=form)
 
 @bp.route('/stats/advertiser')
-def stats_advertiser():
+@template('admin/stats/advertiser.html')
+@sorted('clicks', 'desc')
+@paginated(ADVERTISER_STATS_PER_PAGE)
+def stats_advertiser(**kwargs):
 	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 20)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_advertiser(offset=offset, limit=limit, **form.backend_args())
-		pages = paginate(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/stats/advertiser.html', stats=stats, pages=pages, form=form)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_advertiser(**kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count, form=form)
 
 @bp.route('/stats/total')
+@template('admin/stats/total.html')
 def stats_total():
 	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		stats = rc.offer_stats.total(**form.backend_args())
-	else:
-		stats = None
-	return render_template('admin/stats/total.html', stats=stats, form=form)
+	stats = rc.offer_stats.total(**form.backend_args()) if form.validate() else []
+	return dict(stats=stats, form=form)

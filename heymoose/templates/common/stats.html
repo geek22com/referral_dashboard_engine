@@ -12,7 +12,7 @@
 				<th class="header right" rowspan="2">eCPM,&nbsp;{{ currency_sign -}}</th>
 				<th class="header center" colspan="3">Финансы,&nbsp;{{ currency_sign -}}</th>
 			</tr>
-			<tr class="subrow">				
+			<tr class="subrow">
 				<th class="header right">Лиды</th>
 				<th class="header right">Продажи</th>
 				
@@ -119,29 +119,30 @@
 
 
 
-{% import 'common/sorting.html' as sorting with context %}
+{% import 'common/macros/lists.html' as lists with context %}
 
-{% macro table_sort_base(stats, affiliate=false) %}
+{% macro table_sort_base(stats, empty='Нет данных для получения статистики.') %}
+{% if stats %}
 	<table class="bordered-table zebra-striped stats-table">
 		<thead>
 			<tr>
 				{{ caller(true, none, **kwargs) }}
-				<th rowspan="2" {{ sorting.sort_header('shows', **kwargs) }}>Показы</th>
-				<th rowspan="2" {{ sorting.sort_header('clicks', **kwargs) }}>Клики</th>
+				<th rowspan="2" {{ lists.sort_header('shows', **kwargs) }}>Показы</th>
+				<th rowspan="2" {{ lists.sort_header('clicks', **kwargs) }}>Клики</th>
 				<th class="header center nosort" colspan="2">Выполненные действия</th>
-				<th rowspan="2" {{ sorting.sort_header('ctr', **kwargs) }}>CTR</th>
-				<th rowspan="2" {{ sorting.sort_header('cr', **kwargs) }}>CR</th>
-				<th rowspan="2" {{ sorting.sort_header('ecpc', **kwargs) }}>eCPC,&nbsp;{{ currency_sign -}}</th>
-				<th rowspan="2" {{ sorting.sort_header('ecpm', **kwargs) }}>eCPM,&nbsp;{{ currency_sign -}}</th>
+				<th rowspan="2" {{ lists.sort_header('ctr', **kwargs) }}>CTR</th>
+				<th rowspan="2" {{ lists.sort_header('cr', **kwargs) }}>CR</th>
+				<th rowspan="2" {{ lists.sort_header('ecpc', **kwargs) }}>eCPC,&nbsp;{{ currency_sign -}}</th>
+				<th rowspan="2" {{ lists.sort_header('ecpm', **kwargs) }}>eCPM,&nbsp;{{ currency_sign -}}</th>
 				<th class="header center nosort" colspan="3">Доход,&nbsp;{{ currency_sign -}}</th>
 			</tr>
-			<tr class="subrow">				
-				<th {{ sorting.sort_header('leads', **kwargs) }}>Лиды</th>
-				<th {{ sorting.sort_header('sales', **kwargs) }}>Продажи</th>
+			<tr class="subrow">
+				<th {{ lists.sort_header('leads', **kwargs) }}>Лиды</th>
+				<th {{ lists.sort_header('sales', **kwargs) }}>Продажи</th>
 				
-				<th {{ sorting.sort_header('canceled', 'red', **kwargs) }}>Откл.</th>
-				<th {{ sorting.sort_header('not_confirmed', 'blue', **kwargs) }}>Неподтв.</th>
-				<th {{ sorting.sort_header('confirmed', 'green', **kwargs) }}>Подтв.</th>
+				<th {{ lists.sort_header('canceled', 'red', **kwargs) }}>Откл.</th>
+				<th {{ lists.sort_header('not_confirmed', 'blue', **kwargs) }}>Неподтв.</th>
+				<th {{ lists.sort_header('confirmed', 'green', **kwargs) }}>Подтв.</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -167,12 +168,18 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	{{ lists.paginate(pages, **kwargs) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>{{ empty }}</p>
+	</div>
+{% endif %}
 {% endmacro %}
 
 {% macro table_sort_by_offer(stats) %}
 	{% call(head, stat) table_sort_base(stats, **kwargs) %}
 		{% if head %}
-		<th rowspan="2" {{ sorting.sort_header('offer', 'header', **kwargs) }}>Оффер</th>
+		<th rowspan="2" {{ lists.sort_header('offer', **kwargs) }}>Оффер</th>
 		{% else %}
 		<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
 		{% endif %}

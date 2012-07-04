@@ -13,6 +13,7 @@
 			<tr>
 				<th class="header"></th>
 				<th class="header right">Неподтвержденные, руб.</th>
+				<th class="header right">Неподтвержденные<br />по&nbsp;истекшим&nbsp;действиям, руб.</th>
 				<th class="header right">Подтвержденные, руб.</th>
 				<th class="header right">Отклоненные, руб.</th>
 			</tr>
@@ -20,21 +21,24 @@
 		<tbody>
 			<tr>
 				<th>Комиссия</th>
-				<td class="right">{{ stats.not_confirmed.fee|currency }}</td>
-				<td class="right">{{ stats.confirmed.fee|currency }}</td>
+				<td class="right">{{ stats.not_confirmed.fee|currency(false) }}</td>
+				<td class="right">{{ stats.expired.fee|currency(false) }}</td>
+				<td class="right">{{ stats.confirmed.fee|currency(false) }}</td>
 				<td class="right">&mdash;</td>
 			</tr>
 			<tr>
 				<th>Партнеру</th>
-				<td class="right">{{ stats.not_confirmed.affiliate|currency }}</td>
-				<td class="right">{{ stats.confirmed.affiliate|currency }}</td>
+				<td class="right">{{ stats.not_confirmed.affiliate|currency(false) }}</td>
+				<td class="right">{{ stats.expired.affiliate|currency(false) }}</td>
+				<td class="right">{{ stats.confirmed.affiliate|currency(false) }}</td>
 				<td class="right">&mdash;</td>
 			</tr>
 			<tr>
 				<th>Сумма</th>
-				<td class="right">{{ stats.not_confirmed.sum|currency }}</td>
-				<td class="right">{{ stats.confirmed.sum|currency }}</td>
-				<td class="right">{{ stats.canceled.sum|currency }}</td>
+				<td class="right">{{ stats.not_confirmed.sum|currency(false) }}</td>
+				<td class="right">{{ stats.expired.sum|currency(false) }}</td>
+				<td class="right">{{ stats.confirmed.sum|currency(false) }}</td>
+				<td class="right">{{ stats.canceled.sum|currency(false) }}</td>
 			</tr>
 		</tbody>
 	</table>

@@ -383,6 +383,7 @@ class TotalStatPart(models.ModelBase):
 class TotalStat(models.ModelBase):
 	confirmed = Field('TotalStatPart', 'confirmed')
 	not_confirmed = Field('TotalStatPart', 'not-confirmed')
+	expired = Field('TotalStatPart', 'expired')
 	canceled = Field('TotalStatPart', 'canceled')
 
 

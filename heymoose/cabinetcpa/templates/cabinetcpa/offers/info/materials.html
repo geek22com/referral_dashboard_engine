@@ -84,11 +84,10 @@
 {% endif %}
 
 {% if offer.banners %}
-	{% set colspan = 6 if advertiser_is_owner else 5 if affiliate_is_granted else 4 %}
+	{% set colspan = 5 if advertiser_is_owner else 5 if affiliate_is_granted else 4 %}
 	{% call(head, banner) materials_macros.table(offer.banners, colspan=colspan) %}
 		{% if head %}
 			{% if advertiser_is_owner %}
-			<th class="header minimal-width"></th>
 			<th class="header minimal-width"></th>
 			{% endif %}
 			{% if affiliate_is_granted %}
@@ -96,32 +95,6 @@
 			{% endif %}
 		{% else %}
 			{% if advertiser_is_owner %}
-			<td>
-				<a href="#" data-controls-modal="modal-url-{{ banner.id -}}"
-		 		 data-backdrop="true" data-keyboard="true">изменить&nbsp;ссылку</a>
-		 		<div id="modal-url-{{ banner.id -}}" class="modal" style="display: none;">
-					<form method="post" class="validate2"
-					 action="{{ url_for('.offers_info_materials_update', id=offer.id, bid=banner.id) }}">
-						<div class="modal-header">
-							<a href="#" class="close">×</a>
-							<h3>Изменение ссылки</h3>
-						</div>
-						<div class="modal-body">
-							<fieldset>
-								{% call forms.singlefield_desc(banner.form.url, class='span6') %}
-								<span class="help-block">
-									Используйте это поле, если хотите назначить этому баннеру свою партнерскую
-									ссылку. Если поле пустое, будет использоваться партнерская ссылка оффера.
-								</span>
-								{% endcall %}
-							</fieldset>
-						</div>
-						<div class="modal-footer">
-							<input type="submit" class="btn primary" value="Сохранить" />
-						</div>
-					</form>
-				</div>
-			</td>
 			<td>
 				<a href="{{ url_for('.offers_info_materials_delete', id=offer.id, bid=banner.id)}}"
 				 class="danger" onclick="return confirm('Удалить баннер?');">удалить</a>

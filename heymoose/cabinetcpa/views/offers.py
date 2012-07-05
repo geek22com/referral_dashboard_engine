@@ -168,7 +168,8 @@ def offers_info_materials_delete(id, bid):
 	flash(u'Баннер удален', 'success')
 	return redirect(url_for('.offers_info_materials', id=id))
 
-@bp.route('/offers/<int:id>/materials/<int:bid>', methods=['POST'])
+# Deprecated: using Deeplinks instead
+#@bp.route('/offers/<int:id>/materials/<int:bid>', methods=['POST'])
 @advertiser_only
 def offers_info_materials_update(id, bid):
 	offer = rc.offers.get_by_id(id)

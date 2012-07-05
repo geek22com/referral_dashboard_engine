@@ -110,7 +110,7 @@
 			</td>
 			{% endif %}
 			<td class="small" {{ rowspan }}>
-				{{ offer.regions_ordered|attrlist('name')|join(', ')|default('&mdash;', true)|safe }}
+				{{ offer.regions_full|attrlist('country_name')|join(', ')|default('&mdash;', true)|safe }}
 			</td>
 			<td class="categories-cell small" {{ rowspan }}>
 				{% if offer.categories %}

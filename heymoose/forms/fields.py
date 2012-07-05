@@ -3,7 +3,7 @@ from wtforms.fields import TextField, IntegerField, DecimalField, FileField, Sel
 from PIL import Image
 from heymoose import resource as rc
 from heymoose.utils import swfheader, svgheader
-from heymoose.data import enums
+from heymoose.data.repos import regions_repo
 import widgets
 
 
@@ -143,8 +143,23 @@ class CategorizedCheckboxListField(CheckboxListField):
 
 
 class RegionsField(CheckboxListField):
-	def __init__(self, label=None, validators=None, **kwargs):
-		super(RegionsField, self).__init__(label, validators, choices=enums.Regions.tuples('name'), **kwargs)
+	exclude_by_code = ('A2',)
+	exclude_by_name = ('None', 'none')
+	
+	def __init__(self, label=None, validators=None, predefined=[], **kwargs):
+		regions = regions_repo.as_list()
+		regions_dict = regions_repo.as_dict()
+		choices = [(code, regions_dict.get(code).country_name) for code in predefined]
+		choices += [(region.country_code, region.country_name)
+					for region in sorted(regions, key=lambda r: r.country_name)
+					if region.country_code not in predefined]
+		super(RegionsField, self).__init__(label, validators, choices=choices, **kwargs)
+		
+	def process_data(self, value):
+		try:
+			self.data = list(value)
+		except:
+			self.data = None
 	
 	def populate_obj(self, obj, name):
 		setattr(obj, name, set(self.data))

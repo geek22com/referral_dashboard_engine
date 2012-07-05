@@ -617,7 +617,9 @@ class OfferFormBase(Form):
 		validators.NumberRange(min=0, message=u'Время жизни должно быть больше нуля')
 	], default=30)
 	categories = myfields.CategoriesField(u'Категории', default=True)
-	regions = myfields.RegionsField(u'Регионы', default=(enums.Regions.RUSSIA,))
+	regions = myfields.RegionsField(u'Регионы',
+		predefined=('RU', 'UA', 'BY', 'KZ', 'AM', 'AZ', 'KG', 'MD', 'TJ', 'TM', 'UZ')
+	)
 	targeting = BooleanField(u'включить геотаргетинг', default=False)
 	traffic = myfields.CheckboxListField(u'Типы трафика', choices=[
 		(0, u'Cashback'),

@@ -19,6 +19,16 @@
 
 {% macro head() %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/redactor/css/redactor.css') }}" media="all" />
+	<style type="text/css">
+		li.important-region label {
+			font-weight: bold;
+		}
+		
+		li.csi-region label {
+			color: #404080;
+		}
+	</style>
+	
 	<script type="text/javascript" src="{{ url_for('static', filename='./js/redactor/redactor.js') }}"></script>
 	{{ suboffer_head() }}
 	<script type="text/javascript">
@@ -54,6 +64,22 @@
 				});
 				return false;
 			});
+			
+			var csi = ['RU', 'UA', 'BY', 'KZ', 'AM', 'AZ', 'KG', 'MD', 'TJ', 'TM', 'UZ'];
+			$('.regions-list input[value=RU]').closest('li').addClass('important-region');
+			$('.regions-list input').each(function() {
+				if ($.inArray($(this).val(), csi) >= 0) $(this).closest('li').addClass('csi-region');
+			});
+			$('.regions-select-csi').click(function() {
+				$('.regions-list input').each(function() {
+					if ($.inArray($(this).val(), csi) >= 0) $(this).attr('checked', true);
+				});
+				return false;
+			});
+			$('.regions-clear').click(function() {
+				$('.regions-list input').attr('checked', false);
+				return false;
+			})
 		})
 	</script>
 {% endmacro %}
@@ -246,9 +272,13 @@
 							{{ forms.errors(form.categories) }}
 						</div>
 						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.regions) }}">
+							<span style="float: right;">
+								<a class="dotted-link regions-clear" href="#">очистить</a>,
+								<a class="dotted-link regions-select-csi" href="#">выбрать СНГ</a>
+							</span>
 							{{ forms.label(form.regions, class='simple') }}
 							<div class="checklist" style="height: 200px;">
-								{{ forms.field(form.regions, class='inputs-list') }}
+								{{ forms.field(form.regions, class='inputs-list regions-list') }}
 							</div>
 							{{ forms.errors(form.regions) }}
 						</div>

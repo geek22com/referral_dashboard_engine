@@ -4,6 +4,7 @@ from base.fields import Field, FieldList, FieldSet
 from heymoose import app
 from heymoose.utils.gen import generate_password_hash, aes_base16_encrypt, aes_base16_decrypt
 from decimal import Decimal
+from repos import regions_repo
 import enums
 import os, hashlib, uuid
 
@@ -241,7 +242,7 @@ class Offer(SubOffer):
 	site_url = Field(types.String, 'site-url')
 	advertiser = Field('User', 'advertiser')
 	account = Field('Account', 'account')
-	regions = FieldSet(enums.Regions, 'regions/region')
+	regions = FieldSet(types.String, 'regions/region')
 	categories = FieldSet('Category', 'categories/category')
 	banners = FieldList('Banner', 'banners/banner')
 	approved = Field(types.Boolean, 'approved')
@@ -285,8 +286,10 @@ class Offer(SubOffer):
 		return self.approved and self.active
 	
 	@property
-	def regions_ordered(self):
-		return [r for r in enums.Regions.values() if r in self.regions]
+	def regions_full(self):
+		regions_dict = regions_repo.as_dict()
+		regions = [regions_dict.get(code) for code in self.regions if code in regions_dict] 
+		return sorted(regions, key=lambda r: r.country_name)
 	
 	def tracking_url(self, host_url, aff_id, banner_id=None):
 		return u'{0}?method=track&offer_id={1}&aff_id={2}{3}'.format(
@@ -357,6 +360,11 @@ class Banner(IdentifiableModel):
 class Category(IdentifiableModel):
 	name = Field(types.String, 'name')
 	grouping = Field(types.String, 'grouping')
+
+
+class Region(models.ModelBase):
+	country_code = Field(types.String, 'country-code')
+	country_name = Field(types.String, 'country-name')
 
 
 class OverallOfferStat(models.ModelBase):

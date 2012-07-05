@@ -24,14 +24,14 @@
 				<td class="right">{{ stats.not_confirmed.fee|currency(false) }}</td>
 				<td class="right">{{ stats.expired.fee|currency(false) }}</td>
 				<td class="right">{{ stats.confirmed.fee|currency(false) }}</td>
-				<td class="right">&mdash;</td>
+				<td class="right">{{ stats.canceled.fee|currency(false) }}</td>
 			</tr>
 			<tr>
 				<th>Партнеру</th>
 				<td class="right">{{ stats.not_confirmed.affiliate|currency(false) }}</td>
 				<td class="right">{{ stats.expired.affiliate|currency(false) }}</td>
 				<td class="right">{{ stats.confirmed.affiliate|currency(false) }}</td>
-				<td class="right">&mdash;</td>
+				<td class="right">{{ stats.canceled.affiliate|currency(false) }}</td>
 			</tr>
 			<tr>
 				<th>Сумма</th>

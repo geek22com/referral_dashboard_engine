@@ -6,14 +6,14 @@ from heymoose.admin import blueprint as bp
 from heymoose.views.decorators import template, sorted, paginated
 
 
-OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 2)
+OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
 AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 ADVERTISER_STATS_PER_PAGE = app.config.get('ADVERTISER_STATS_PER_PAGE', 20)
 
 
 @bp.route('/stats/offer')
 @template('admin/stats/offer.html')
-@sorted('clicks', 'desc')
+@sorted('clicks_count', 'desc')
 @paginated(OFFER_STATS_PER_PAGE)
 def stats_offer(**kwargs):
 	form = forms.OfferStatsFilterForm(request.args)
@@ -23,7 +23,7 @@ def stats_offer(**kwargs):
 
 @bp.route('/stats/affiliate')
 @template('admin/stats/affiliate.html')
-@sorted('clicks', 'desc')
+@sorted('clicks_count', 'desc')
 @paginated(AFFILIATE_STATS_PER_PAGE)
 def stats_affiliate(**kwargs):
 	form = forms.DateTimeRangeForm(request.args)
@@ -33,7 +33,7 @@ def stats_affiliate(**kwargs):
 
 @bp.route('/stats/advertiser')
 @template('admin/stats/advertiser.html')
-@sorted('clicks', 'desc')
+@sorted('clicks_count', 'desc')
 @paginated(ADVERTISER_STATS_PER_PAGE)
 def stats_advertiser(**kwargs):
 	form = forms.DateTimeRangeForm(request.args)

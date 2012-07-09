@@ -5,19 +5,21 @@ from heymoose.forms import forms
 from heymoose.data.models import Offer, OfferGrant, SubOffer
 from heymoose.data.enums import OfferGrantState
 from heymoose.mail import transactional as mail
+from heymoose.views.decorators import template, sorted, paginated
 from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.utils.convert import to_unixtime
 from heymoose.admin import blueprint as bp
 
+OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
+OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
+AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 
 @bp.route('/offers/')
-def offers_list():
-	page = current_page()
-	per_page = app.config.get('OFFERS_PER_PAGE', 10)
-	offset, limit = page_limits(page, per_page)
-	offers, count = rc.offers.list(offset=offset, limit=limit)
-	pages = paginate(page, count, per_page)
-	return render_template('admin/offers/list.html', offers=offers, pages=pages)
+@template('admin/offers/list.html')
+@paginated(OFFERS_PER_PAGE)
+def offers_list(**kwargs):
+	offers, count = rc.offers.list(**kwargs)
+	return dict(offers=offers, count=count)
 
 @bp.route('/offers/requests', methods=['GET', 'POST'])
 def offers_requests():	
@@ -212,19 +214,15 @@ def offers_info_operations(id):
 	return render_template('admin/offers/info/operations.html', offer=offer)
 
 @bp.route('/offers/<int:id>/stats')
-def offers_info_stats(id):
+@template('admin/offers/info/stats.html')
+@sorted('clicks_count', 'desc')
+@paginated(AFFILIATE_STATS_PER_PAGE)
+def offers_info_stats(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
 	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 10)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_affiliate_by_offer(offset=offset, limit=limit, offer_id=offer.id,
-			**{'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)})
-		pages = paginate(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/offers/info/stats.html', offer=offer, stats=stats, pages=pages, form=form)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_affiliate_by_offer(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count, form=form)
 
 @bp.route('/offers/<int:id>/stats/affiliate')
 def offers_info_stats_affiliate(id):

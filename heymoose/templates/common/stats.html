@@ -1,134 +1,13 @@
-{% macro table_base(stats, affiliate=false) %}
-	<table class="bordered-table zebra-striped nosort stats-table">
-		<thead>
-			<tr>
-				{{ caller(true, none) }}
-				<th class="header right" rowspan="2">Показы</th>
-				<th class="header right" rowspan="2">Клики</th>
-				<th class="header center" colspan="2">Выполненные действия</th>
-				<th class="header right" rowspan="2">CTR</th>
-				<th class="header right" rowspan="2">CR</th>
-				<th class="header right" rowspan="2">eCPC,&nbsp;{{ currency_sign -}}</th>
-				<th class="header right" rowspan="2">eCPM,&nbsp;{{ currency_sign -}}</th>
-				<th class="header center" colspan="3">Финансы,&nbsp;{{ currency_sign -}}</th>
-			</tr>
-			<tr class="subrow">
-				<th class="header right">Лиды</th>
-				<th class="header right">Продажи</th>
-				
-				<th class="header right">Отклон.</th>
-				<th class="header right">Неподтв.</th>
-				<th class="header right">Подтв.</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for stat in stats %}
-			<tr>
-				{{ caller(false, stat) }}
-				
-				<td class="right">{{ stat.shows }}</td>
-				<td class="right">{{ stat.clicks }}</td>
-				
-				<td class="right">{{ stat.leads }}</td>
-				<td class="right">{{ stat.sales }}</td>
-				
-				<td class="right">{% if stat.ctr %}{{ stat.ctr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
-				<td class="right">{% if stat.cr %}{{ stat.cr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
-				<td class="right">{{ stat.ecpc|default('&mdash;', true)|safe }}</td>
-				<td class="right">{{ stat.ecpm|default('&mdash;', true)|safe }}</td>
-				
-				<td class="right">{{ stat.cancelled_revenue }}</td>
-				<td class="right">{{ stat.not_confirmed_revenue }}</td>
-				<td class="right">{{ stat.confirmed_revenue }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-{% endmacro %}
-
-{% macro table_by_offer(stats) %}
-	{% call(head, stat) table_base(stats) %}
-		{% if head %}
-		<th class="header" rowspan="2">Оффер</th>
-		{% else %}
-		<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
-		{% endif %}
-	{% endcall %}
-{% endmacro %}
-
-{% macro table_by_affiliate(stats) %}
-	{% call(head, stat) table_base(stats) %}
-		{% if head %}
-		<th class="header" rowspan="2">Партнёр</th>
-		{% else %}
-		<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
-		{% endif %}
-	{% endcall %}
-{% endmacro %}
-
-{% macro table_by_advertiser(stats) %}
-	{% call(head, stat) table_base(stats) %}
-		{% if head %}
-		<th class="header" rowspan="2">Рекламодатель</th>
-		{% else %}
-		<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
-		{% endif %}
-	{% endcall %}
-{% endmacro %}
-
-{% macro table_by_sub_id(stats) %}
-	{% call(head, stat) table_base(stats) %}
-		{% if head %}
-		<th class="header" rowspan="2">SubID</th>
-		{% else %}
-		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
-		{% endif %}
-	{% endcall %}
-{% endmacro %}
-
-{% macro table_by_source_id(stats) %}
-	{% call(head, stat) table_base(stats) %}
-		{% if head %}
-		<th class="header" rowspan="2">SourceID</th>
-		{% else %}
-		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
-		{% endif %}
-	{% endcall %}
-{% endmacro %}
-
-{% macro table_by_referer(stats) %}
-	{% call(head, stat) table_base(stats) %}
-		{% if head %}
-		<th class="header" rowspan="2">Реферер</th>
-		{% else %}
-		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
-		{% endif %}
-	{% endcall %}
-{% endmacro %}
-
-{% macro table_by_keywords(stats) %}
-	{% call(head, stat) table_base(stats) %}
-		{% if head %}
-		<th class="header" rowspan="2">Поисковый запрос</th>
-		{% else %}
-		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
-		{% endif %}
-	{% endcall %}
-{% endmacro %}
-
-
-
-
 {% import 'common/macros/lists.html' as lists with context %}
 
-{% macro table_sort_base(stats, empty='Нет данных для получения статистики.') %}
+{% macro table_base(stats, empty='Нет данных для получения статистики.') %}
 {% if stats %}
 	<table class="bordered-table zebra-striped stats-table">
 		<thead>
 			<tr>
 				{{ caller(true, none, **kwargs) }}
-				<th rowspan="2" {{ lists.sort_header('shows', **kwargs) }}>Показы</th>
-				<th rowspan="2" {{ lists.sort_header('clicks', **kwargs) }}>Клики</th>
+				<th rowspan="2" {{ lists.sort_header('shows_count', **kwargs) }}>Показы</th>
+				<th rowspan="2" {{ lists.sort_header('clicks_count', **kwargs) }}>Клики</th>
 				<th class="header center nosort" colspan="2">Выполненные действия</th>
 				<th rowspan="2" {{ lists.sort_header('ctr', **kwargs) }}>CTR</th>
 				<th rowspan="2" {{ lists.sort_header('cr', **kwargs) }}>CR</th>
@@ -137,12 +16,12 @@
 				<th class="header center nosort" colspan="3">Доход,&nbsp;{{ currency_sign -}}</th>
 			</tr>
 			<tr class="subrow">
-				<th {{ lists.sort_header('leads', **kwargs) }}>Лиды</th>
-				<th {{ lists.sort_header('sales', **kwargs) }}>Продажи</th>
+				<th {{ lists.sort_header('leads_count', **kwargs) }}>Лиды</th>
+				<th {{ lists.sort_header('sales_count', **kwargs) }}>Продажи</th>
 				
-				<th {{ lists.sort_header('canceled', 'red', **kwargs) }}>Откл.</th>
-				<th {{ lists.sort_header('not_confirmed', 'blue', **kwargs) }}>Неподтв.</th>
-				<th {{ lists.sort_header('confirmed', 'green', **kwargs) }}>Подтв.</th>
+				<th {{ lists.sort_header('canceled_revenue', 'red', **kwargs) }}>Откл.</th>
+				<th {{ lists.sort_header('not_confirmed_revenue', 'blue', **kwargs) }}>Неподтв.</th>
+				<th {{ lists.sort_header('confirmed_revenue', 'green', **kwargs) }}>Подтв.</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -176,12 +55,72 @@
 {% endif %}
 {% endmacro %}
 
-{% macro table_sort_by_offer(stats) %}
-	{% call(head, stat) table_sort_base(stats, **kwargs) %}
+{% macro table_by_offer(stats) %}
+	{% call(head, stat) table_base(stats, **kwargs) %}
 		{% if head %}
-		<th rowspan="2" {{ lists.sort_header('offer', **kwargs) }}>Оффер</th>
+		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Оффер</th>
 		{% else %}
 		<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
+{% macro table_by_affiliate(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Партнёр</th>
+		{% else %}
+		<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
+{% macro table_by_advertiser(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Рекламодатель</th>
+		{% else %}
+		<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
+{% macro table_by_sub_id(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>SubID</th>
+		{% else %}
+		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
+{% macro table_by_source_id(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>SourceID</th>
+		{% else %}
+		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
+{% macro table_by_referer(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Реферер</th>
+		{% else %}
+		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
+{% macro table_by_keywords(stats) %}
+	{% call(head, stat) table_base(stats) %}
+		{% if head %}
+		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Поисковый запрос</th>
+		{% else %}
+		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
 		{% endif %}
 	{% endcall %}
 {% endmacro %}

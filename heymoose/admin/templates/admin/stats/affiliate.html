@@ -6,14 +6,6 @@
 {% block tabcontent %}
 
 {{ datetime_range.html(form, 'Показать статистику за время:') }}
-
-{% if stats %}
-	{{ stat_macros.table_by_affiliate(stats) }}
-	{{ macros.paginate(pages, '.stats_affiliate', **form.query_args()) }}
-{% else %}
-	<div class="clearfix alert-message block-message info">
-		<p>Нет данных для получения статистики.</p>
-	</div>
-{% endif %}
+{{ stat_macros.table_by_affiliate(stats, **form.query_args()) }}
 
 {% endblock %}

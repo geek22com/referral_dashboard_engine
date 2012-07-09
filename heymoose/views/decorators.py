@@ -18,7 +18,7 @@ def sorted(default_order=None, default_direction=None, order_arg='ord', directio
 			order = request.args.get(order_arg, default_order)
 			direction = request.args.get(direction_arg, default_direction) if order else None
 			if order and direction:
-				kwargs.update(ord=order, dir=direction)
+				kwargs.update(ordering=order.upper(), direction=direction.upper())
 			context = f(*args, **kwargs)
 			if isinstance(context, dict):
 				context.update(order=order, direction=direction)

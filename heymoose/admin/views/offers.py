@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, request, flash, g, redirect, url_for, abort
+from flask import request, flash, redirect, url_for, abort
 from heymoose import app, resource as rc
 from heymoose.forms import forms
-from heymoose.data.models import Offer, OfferGrant, SubOffer
+from heymoose.data.models import SubOffer
 from heymoose.data.enums import OfferGrantState
 from heymoose.mail import transactional as mail
 from heymoose.views.decorators import template, sorted, paginated
-from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.admin import blueprint as bp
 
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
+OFFER_REQUESTS_PER_PAGE = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
 AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
@@ -24,7 +24,9 @@ def offers_list(**kwargs):
 	return dict(offers=offers, count=count)
 
 @bp.route('/offers/requests', methods=['GET', 'POST'])
-def offers_requests():	
+@template('admin/offers/requests.html')
+@paginated(OFFER_REQUESTS_PER_PAGE)
+def offers_requests(**kwargs):	
 	filter_args = {
 		None: dict(),
 		'new': dict(blocked=True, moderation=True),
@@ -34,12 +36,8 @@ def offers_requests():
 		'approved': dict(state=OfferGrantState.APPROVED, blocked=False),
 		'rejected': dict(state=OfferGrantState.REJECTED, blocked=False),
 	}.get(request.args.get('filter', None), dict())
-	
-	page = current_page()
-	per_page = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
-	offset, limit = page_limits(page, per_page)
-	grants, count = rc.offer_grants.list(offset=offset, limit=limit, full=True, **filter_args)
-	pages = paginate(page, count, per_page)
+	kwargs.update(filter_args)
+	grants, count = rc.offer_grants.list(full=True, **kwargs)
 	
 	form = forms.AdminOfferRequestDecisionForm(request.form)
 	if request.method == 'POST' and form.validate():
@@ -67,9 +65,10 @@ def offers_requests():
 				mail.user_grant_rejected(grant.offer, grant.affiliate, form.reason.data)
 			flash(u'Заявка отклонена', 'success')
 		return redirect(request.url)
-	return render_template('admin/offers/requests.html', grants=grants, pages=pages, form=form)
+	return dict(grants=grants, count=count, form=form)
 
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
+@template('admin/offers/info/info.html')
 def offers_info(id):
 	offer = rc.offers.get_by_id(id)
 	form = forms.OfferBlockForm(request.form)
@@ -82,9 +81,10 @@ def offers_info(id):
 			rc.offers.unblock(offer.id)
 			flash(u'Оффер разблокирован', 'success')
 		return redirect(request.url)
-	return render_template('admin/offers/info/info.html', offer=offer, form=form)
+	return dict(offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/edit', methods=['GET', 'POST'])
+@template('admin/offers/info/edit.html')
 def offers_info_edit(id):
 	offer = rc.offers.get_by_id(id)
 	form = forms.AdminOfferEditForm(request.form, obj=offer)
@@ -96,9 +96,10 @@ def offers_info_edit(id):
 			return redirect(url_for('.offers_info', id=offer.id))
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
-	return render_template('admin/offers/info/edit.html', offer=offer, form=form)
+	return dict(offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/actions/', methods=['GET', 'POST'])
+@template('admin/offers/info/actions.html')
 def offers_info_actions(id):
 	offer = rc.offers.get_by_id(id)	
 	form = forms.SubOfferForm(request.form)
@@ -108,9 +109,10 @@ def offers_info_actions(id):
 		rc.offers.add_suboffer(id, suboffer)
 		flash(u'Действие успешно добавлено', 'success')
 		return redirect(request.url)
-	return render_template('admin/offers/info/actions.html', offer=offer, form=form)
+	return dict(offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/actions/edit', methods=['GET', 'POST'])
+@template('admin/offers/info/actions-edit.html')
 def offers_info_actions_main_edit(id):
 	offer = rc.offers.get_by_id(id)
 	suboffer = offer
@@ -124,9 +126,10 @@ def offers_info_actions_main_edit(id):
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.offers_info_actions', id=offer.id))
-	return render_template('admin/offers/info/actions-edit.html', **locals())
+	return dict(offer=offer, suboffer=suboffer, form=form)
 
 @bp.route('/offers/<int:id>/actions/<int:sid>/edit', methods=['GET', 'POST'])
+@template('admin/offers/info/actions-edit.html')
 def offers_info_actions_edit(id, sid):
 	offer = rc.offers.get_by_id(id)
 	suboffer = None
@@ -143,18 +146,21 @@ def offers_info_actions_edit(id, sid):
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.offers_info_actions', id=offer.id))
-	return render_template('admin/offers/info/actions-edit.html', **locals())
+	return dict(offer=offer, suboffer=suboffer, form=form)
 
 
 @bp.route('/offers/<int:id>/materials')
+@template('admin/offers/info/materials.html')
 def offers_info_materials(id):
 	offer = rc.offers.get_by_id(id)
-	return render_template('admin/offers/info/materials.html', offer=offer)
+	return dict(offer=offer)
 
 @bp.route('/offers/<int:id>/requests', methods=['GET', 'POST'])
-def offers_info_requests(id):
+@template('admin/offers/info/requests.html')
+@paginated(OFFER_REQUESTS_PER_PAGE)
+def offers_info_requests(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
-	
+		
 	filter_args = {
 		None: dict(),
 		'new': dict(blocked=True, moderation=True),
@@ -164,12 +170,8 @@ def offers_info_requests(id):
 		'approved': dict(state=OfferGrantState.APPROVED, blocked=False),
 		'rejected': dict(state=OfferGrantState.REJECTED, blocked=False),
 	}.get(request.args.get('filter', None), dict())
-	
-	page = current_page()
-	per_page = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
-	offset, limit = page_limits(page, per_page)
-	grants, count = rc.offer_grants.list(offer_id=offer.id, offset=offset, limit=limit, full=True, **filter_args)
-	pages = paginate(page, count, per_page)
+	kwargs.update(filter_args)
+	grants, count = rc.offer_grants.list(offer_id=offer.id, full=True, **kwargs)
 	
 	form = forms.AdminOfferRequestDecisionForm(request.form)
 	if request.method == 'POST' and form.validate():
@@ -198,9 +200,10 @@ def offers_info_requests(id):
 					mail.user_grant_rejected(grant.offer, grant.affiliate, form.reason.data)
 				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
-	return render_template('admin/offers/info/requests.html', offer=offer, grants=grants, pages=pages, form=form)
+	return dict(offer=offer, grants=grants, count=count, form=form)
 
 @bp.route('/offers/<int:id>/operations', methods=['GET', 'POST'])
+@template('admin/offers/info/operations.html')
 def offers_info_operations(id):
 	offer = rc.offers.get_by_id(id)
 	if request.method == 'POST':
@@ -213,7 +216,7 @@ def offers_info_operations(id):
 			count = rc.actions.cancel_by_transactions(offer.id, transactions)
 			flash(u'{0} действий отменено'.format(count), 'success')
 		return redirect(request.url)
-	return render_template('admin/offers/info/operations.html', offer=offer)
+	return dict(offer=offer)
 
 @bp.route('/offers/<int:id>/stats/affiliate')
 @template('admin/offers/info/stats/affiliate.html')

@@ -758,11 +758,6 @@ class OfferStatsFilterForm(DateTimeRangeForm):
 		args = DateTimeRangeForm.query_args(self)
 		if self.requested.data:	args.update(requested=u'y')
 		return args
-	
-	def backend_args(self):
-		args = DateTimeRangeForm.backend_args(self)
-		args.update(granted=self.requested.data)
-		return args
 
 # Deprecated: 'expired' option is invalid on backend	
 class AdvertiserStatsForm(DateTimeRangeForm):
@@ -781,6 +776,17 @@ class AdvertiserStatsForm(DateTimeRangeForm):
 
 class AffiliateCabinetStatsForm(DateTimeRangeForm):
 	offer = myfields.OfferField(u'Оффер', coerce=int, default=0)
+	
+	def query_args(self):
+		args = super(AffiliateCabinetStatsForm, self).query_args()
+		args.update(offer=self.offer.data)
+		return args
+	
+	def backend_args(self):
+		args = super(AffiliateCabinetStatsForm, self).backend_args()
+		if self.offer.data: args.update(offer_id=self.offer.data)
+		return args
+
 
 class AffiliateCabinetSubIdStatsForm(AffiliateCabinetStatsForm):
 	sub_id = TextField(u'SubID')
@@ -793,16 +799,30 @@ class AffiliateCabinetSubIdStatsForm(AffiliateCabinetStatsForm):
 	g_sub_id2 = BooleanField(u'Группировать по SubID2')
 	g_sub_id3 = BooleanField(u'Группировать по SubID3')
 	g_sub_id4 = BooleanField(u'Группировать по SubID4')
-	
-	def query_sub_ids(self):
-		query = dict(sub_id=self.sub_id.data, sub_id1=self.sub_id1.data, 
+		
+	def query_args(self):
+		args = super(AffiliateCabinetSubIdStatsForm, self).query_args()
+		args.update(sub_id=self.sub_id.data, sub_id1=self.sub_id1.data, 
 			sub_id2=self.sub_id2.data, sub_id3=self.sub_id3.data, sub_id4=self.sub_id4.data)
-		if self.g_sub_id.data: query.update(g_sub_id=u'y')
-		if self.g_sub_id1.data: query.update(g_sub_id1=u'y')
-		if self.g_sub_id2.data: query.update(g_sub_id2=u'y')
-		if self.g_sub_id3.data: query.update(g_sub_id3=u'y')
-		if self.g_sub_id4.data: query.update(g_sub_id4=u'y')
-		return query
+		if self.g_sub_id.data: args.update(g_sub_id=u'y')
+		if self.g_sub_id1.data: args.update(g_sub_id1=u'y')
+		if self.g_sub_id2.data: args.update(g_sub_id2=u'y')
+		if self.g_sub_id3.data: args.update(g_sub_id3=u'y')
+		if self.g_sub_id4.data: args.update(g_sub_id4=u'y')
+		return args
+	
+	def backend_args(self):
+		args = super(AffiliateCabinetSubIdStatsForm, self).backend_args()
+		args.update(g_sub_id=self.g_sub_id.data, g_sub_id1=self.g_sub_id1.data,
+			g_sub_id2=self.g_sub_id2.data, g_sub_id3=self.g_sub_id3.data,
+			g_sub_id4=self.g_sub_id4.data)
+		if self.sub_id.data: args.update(sub_id=self.sub_id.data)
+		if self.sub_id1.data: args.update(sub_id1=self.sub_id1.data)
+		if self.sub_id2.data: args.update(sub_id2=self.sub_id2.data)
+		if self.sub_id3.data: args.update(sub_id3=self.sub_id3.data)
+		if self.sub_id4.data: args.update(sub_id4=self.sub_id4.data)
+		return args
+		
 	
 class GamakAppForm(Form):
 	name = TextField(u'Название приложения', [

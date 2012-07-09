@@ -2,6 +2,7 @@
 from flask import render_template, g, request, redirect, flash, url_for
 from heymoose import app, resource as rc
 from heymoose.admin import blueprint as bp
+from heymoose.views.decorators import template, sorted, paginated
 from heymoose.utils import pagination
 from heymoose.utils.pagination import current_page, page_limits, paginate as paginate2
 from heymoose.utils.shortcuts import paginate
@@ -10,6 +11,13 @@ from heymoose.forms import forms
 from heymoose.data.enums import Roles
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
+
+OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
+SUB_ID_STATS_PER_PAGE = app.config.get('SUB_ID_STATS_PER_PAGE', 20)
+SOURCE_ID_STATS_PER_PAGE = app.config.get('SOURCE_ID_STATS_PER_PAGE', 20)
+REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
+KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
+
 
 @bp.route('/users/')
 def users_list():
@@ -159,94 +167,64 @@ def users_info_delete_withdrawal(id, wid):
 	return redirect(url_for('.users_info_balance', id=user.id))
 
 @bp.route('/users/<int:id>/stats/offer')
-def users_info_stats_offer(id):
+@template('admin/users-info-stats-offer.html')
+@sorted('clicks_count', 'desc')
+@paginated(OFFER_STATS_PER_PAGE)
+def users_info_stats_offer(id, **kwargs):
 	user = rc.users.get_by_id(id)
 	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 20)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_user(user, offset=offset, limit=limit, **form.range_args())
-		pages = paginate2(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/users-info-stats-offer.html', user=user, stats=stats, pages=pages, form=form)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_user(user, **kwargs) if form.validate() else ([], 0)
+	return dict(user=user, stats=stats, count=count, form=form)
 
 @bp.route('/users/<int:id>/stats/subid')
-def users_info_stats_sub_id(id):
+@template('admin/users-info-stats-sub-id.html')
+@sorted('clicks_count', 'desc')
+@paginated(SUB_ID_STATS_PER_PAGE)
+def users_info_stats_sub_id(id, **kwargs):
 	user = rc.users.get_by_id(id)
 	offers, _ = rc.offers.list_requested(user.id, offset=0, limit=100000)
 	form = forms.AffiliateCabinetSubIdStatsForm(request.args)
 	form.offer.set_offers(offers)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 20)
-		offset, limit = page_limits(page, per_page)
-		query_params = dict(aff_id=user.id, offset=offset, limit=limit,
-			g_sub_id=form.g_sub_id.data, g_sub_id1=form.g_sub_id1.data, g_sub_id2=form.g_sub_id2.data, 
-			g_sub_id3=form.g_sub_id3.data, g_sub_id4=form.g_sub_id4.data, **form.range_args())
-		if form.sub_id.data: query_params.update(sub_id=form.sub_id.data)
-		if form.sub_id1.data: query_params.update(sub_id1=form.sub_id1.data)
-		if form.sub_id2.data: query_params.update(sub_id2=form.sub_id2.data)
-		if form.sub_id3.data: query_params.update(sub_id3=form.sub_id3.data)
-		if form.sub_id4.data: query_params.update(sub_id4=form.sub_id4.data)
-		if form.offer.data: query_params.update(offer_id=form.offer.data)
-		stats, count = rc.offer_stats.list_by_sub_id(**query_params)
-		pages = paginate2(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/users-info-stats-sub-id.html', user=user, stats=stats, pages=pages, form=form)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_by_sub_id(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
+	return dict(user=user, stats=stats, count=count, form=form)
 
 @bp.route('/users/<int:id>/stats/sourceid')
-def users_info_stats_source_id(id):
+@template('admin/users-info-stats-source-id.html')
+@sorted('clicks_count', 'desc')
+@paginated(SOURCE_ID_STATS_PER_PAGE)
+def users_info_stats_source_id(id, **kwargs):
 	user = rc.users.get_by_id(id)
 	offers, _ = rc.offers.list_requested(user.id, offset=0, limit=100000)
 	form = forms.AffiliateCabinetStatsForm(request.args)
 	form.offer.set_offers(offers)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 20)
-		offset, limit = page_limits(page, per_page)
-		query_params = dict(aff_id=user.id, offset=offset, limit=limit, **form.range_args())
-		if form.offer.data: query_params.update(offer_id=form.offer.data)
-		stats, count = rc.offer_stats.list_by_source_id(**query_params)
-		pages = paginate2(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/users-info-stats-source-id.html', user=user, stats=stats, pages=pages, form=form)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_by_source_id(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
+	return dict(user=user, stats=stats, count=count, form=form)
 
 @bp.route('/users/<int:id>/stats/referer')
-def users_info_stats_referer(id):
+@template('admin/users-info-stats-referer.html')
+@sorted('clicks_count', 'desc')
+@paginated(REFERER_STATS_PER_PAGE)
+def users_info_stats_referer(id, **kwargs):
 	user = rc.users.get_by_id(id)
 	offers, _ = rc.offers.list_requested(user.id, offset=0, limit=100000)
 	form = forms.AffiliateCabinetStatsForm(request.args)
 	form.offer.set_offers(offers)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 20)
-		offset, limit = page_limits(page, per_page)
-		query_params = dict(aff_id=user.id, offset=offset, limit=limit, **form.range_args())
-		if form.offer.data: query_params.update(offer_id=form.offer.data)
-		stats, count = rc.offer_stats.list_by_referer(**query_params)
-		pages = paginate2(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/users-info-stats-referer.html', user=user, stats=stats, pages=pages, form=form)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_by_referer(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
+	return dict(user=user, stats=stats, count=count, form=form)
 
 @bp.route('/users/<int:id>/stats/keywords')
-def users_info_stats_keywords(id):
+@template('admin/users-info-stats-keywords.html')
+@sorted('clicks_count', 'desc')
+@paginated(KEYWORDS_STATS_PER_PAGE)
+def users_info_stats_keywords(id, **kwargs):
 	user = rc.users.get_by_id(id)
 	offers, _ = rc.offers.list_requested(user.id, offset=0, limit=100000)
 	form = forms.AffiliateCabinetStatsForm(request.args)
 	form.offer.set_offers(offers)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 20)
-		offset, limit = page_limits(page, per_page)
-		query_params = dict(aff_id=user.id, offset=offset, limit=limit, **form.range_args())
-		if form.offer.data: query_params.update(offer_id=form.offer.data)
-		stats, count = rc.offer_stats.list_by_keywords(**query_params)
-		pages = paginate2(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/users-info-stats-keywords.html', user=user, stats=stats, pages=pages, form=form)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_by_keywords(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
+	return dict(user=user, stats=stats, count=count, form=form)

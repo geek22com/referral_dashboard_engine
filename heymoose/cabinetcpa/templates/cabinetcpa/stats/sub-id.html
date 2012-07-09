@@ -1,6 +1,4 @@
 {% extends "cabinetcpa/stats/layout.html" %}
-{% import 'common/stats.html' as stat_macros %}
-{% import 'common/forms/datetime-range.html' as datetime_range %}
 
 {% set content_fluid = true %}
 {% set activetab = 'sub-id' %}
@@ -13,16 +11,6 @@
 {% block tabcontent %}
 
 {{ datetime_range.html(form, 'Показать статистику за время:') }}
-
-{% if stats %}
-	{{ stat_macros.table_by_sub_id(stats) }}
-	{{ macros.paginate(pages, '.stats_sub_id', offer=form.offer.data,
-		dt_from=form.dt_from.data|datetime_nosec, dt_to=form.dt_to.data|datetime_nosec,
-		**form.query_sub_ids()) }}
-{% else %}
-	<div class="clearfix alert-message block-message info">
-		<p>Нет данных для получения статистики.</p>
-	</div>
-{% endif %}
+{{ stat_macros.table_by_sub_id(stats, **form.query_args()) }}
 
 {% endblock %}

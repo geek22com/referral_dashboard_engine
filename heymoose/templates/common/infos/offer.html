@@ -114,6 +114,7 @@
 					{% if admin %}<dt>Дата создания</dt><dd>{{ offer.creation_time|dateformat }}</dd>{% endif %}
 					{% if offer.launch_time %}<dt>Дата запуска</dt><dd>{{ offer.launch_time|dateformat }}</dd>{% endif %}
 					{% if admin %}<dt>Отображать в витрине</dt><dd>{{ macros.to_icon(offer.showcase) }}</dd>{% endif %}
+					<dt>Deeplink разрешен</dt><dd>{{ macros.to_icon(offer.allow_deeplink) }}</dd>
 					<dt>Время жизни cookie</dt><dd>{{ offer.cookie_ttl }} дней</dd>
 				</dl>
 				<div>

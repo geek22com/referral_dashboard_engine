@@ -250,6 +250,7 @@ class Offer(SubOffer):
 	cookie_ttl = Field(types.Integer, 'cookie-ttl')
 	token_param_name = Field(types.String, 'token-param-name')
 	launch_time = Field(types.DateTime, 'launch-time')
+	allow_deeplink = Field(types.Boolean, 'allow-deeplink')
 	
 	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
 	grant = Field('OfferGrant', 'grant')

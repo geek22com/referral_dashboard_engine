@@ -311,6 +311,17 @@
 				</div>
 		</div> #}
 		</fieldset>
+		
+		<fieldset>
+			<legend>Дополнительные инструменты</legend>
+			<div class="input">
+				<div class="formfield clearfix {{ forms.css_errors(form.allow_deeplink) }}">
+					{{ forms.field(form.allow_deeplink) }} {{ forms.label(form.allow_deeplink, class='simple') }}
+					{{ forms.errors(form.allow_deeplink) }}
+				</div>
+			</div>
+		</fieldset>
+		
 		<fieldset>
 			<legend>Описание кампании</legend>
 			{% call forms.singlefield_desc(form.short_description, class='span10', rows='4') %}

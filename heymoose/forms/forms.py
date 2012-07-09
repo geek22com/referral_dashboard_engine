@@ -612,6 +612,7 @@ class OfferFormBase(Form):
 	launch_time = DateTimeField(u'Дата запуска', format='%d.%m.%Y', validators=[
 		validators.Required(message=u'Введите дату запуска оффера')
 	], default=datetime.now)
+	allow_deeplink = BooleanField(u'Разрешить deeplink', default=False)
 	cookie_ttl = IntegerField(u'Время жизни Cookie', [
 		validators.Required(message=u'Введите время жизни cookie'),
 		validators.NumberRange(min=0, message=u'Время жизни должно быть больше нуля')

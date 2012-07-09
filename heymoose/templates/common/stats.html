@@ -41,7 +41,7 @@
 				<td class="right">{{ stat.ecpm|default('&mdash;', true)|safe }}</td>
 				
 				<td class="right red">{{ stat.cancelled_revenue }}</td>
-				<td class="right blue">{{ stat.not_confirmed_revenue }}</td>
+				<td class="right">{{ stat.not_confirmed_revenue }}</td>
 				<td class="right green">{{ stat.confirmed_revenue }}</td>
 			</tr>
 			{% endfor %}
@@ -66,7 +66,7 @@
 {% endmacro %}
 
 {% macro table_by_affiliate(stats) %}
-	{% call(head, stat) table_base(stats) %}
+	{% call(head, stat) table_base(stats, **kwargs) %}
 		{% if head %}
 		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Партнёр</th>
 		{% else %}
@@ -76,7 +76,7 @@
 {% endmacro %}
 
 {% macro table_by_advertiser(stats) %}
-	{% call(head, stat) table_base(stats) %}
+	{% call(head, stat) table_base(stats, **kwargs) %}
 		{% if head %}
 		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Рекламодатель</th>
 		{% else %}
@@ -86,7 +86,7 @@
 {% endmacro %}
 
 {% macro table_by_sub_id(stats) %}
-	{% call(head, stat) table_base(stats) %}
+	{% call(head, stat) table_base(stats, **kwargs) %}
 		{% if head %}
 		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>SubID</th>
 		{% else %}
@@ -96,7 +96,7 @@
 {% endmacro %}
 
 {% macro table_by_source_id(stats) %}
-	{% call(head, stat) table_base(stats) %}
+	{% call(head, stat) table_base(stats, **kwargs) %}
 		{% if head %}
 		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>SourceID</th>
 		{% else %}
@@ -106,7 +106,7 @@
 {% endmacro %}
 
 {% macro table_by_referer(stats) %}
-	{% call(head, stat) table_base(stats) %}
+	{% call(head, stat) table_base(stats, **kwargs) %}
 		{% if head %}
 		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Реферер</th>
 		{% else %}
@@ -116,7 +116,7 @@
 {% endmacro %}
 
 {% macro table_by_keywords(stats) %}
-	{% call(head, stat) table_base(stats) %}
+	{% call(head, stat) table_base(stats, **kwargs) %}
 		{% if head %}
 		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Поисковый запрос</th>
 		{% else %}

@@ -7,12 +7,14 @@ from heymoose.data.enums import OfferGrantState
 from heymoose.mail import transactional as mail
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.utils.pagination import current_page, page_limits, paginate
-from heymoose.utils.convert import to_unixtime
 from heymoose.admin import blueprint as bp
 
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
 AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
+REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
+KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
+
 
 @bp.route('/offers/')
 @template('admin/offers/list.html')
@@ -213,58 +215,35 @@ def offers_info_operations(id):
 		return redirect(request.url)
 	return render_template('admin/offers/info/operations.html', offer=offer)
 
-@bp.route('/offers/<int:id>/stats')
-@template('admin/offers/info/stats.html')
+@bp.route('/offers/<int:id>/stats/affiliate')
+@template('admin/offers/info/stats/affiliate.html')
 @sorted('clicks_count', 'desc')
 @paginated(AFFILIATE_STATS_PER_PAGE)
-def offers_info_stats(id, **kwargs):
+def offers_info_stats_affiliate(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
 	form = forms.DateTimeRangeForm(request.args)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_affiliate_by_offer(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
-	return dict(stats=stats, count=count, form=form)
-
-@bp.route('/offers/<int:id>/stats/affiliate')
-def offers_info_stats_affiliate(id):
-	offer = rc.offers.get_by_id(id)
-	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 20)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_affiliate_by_offer(offer_id=offer.id,
-			offset=offset, limit=limit, **form.range_args())
-		pages = paginate(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/offers/info/stats/affiliate.html', offer=offer, stats=stats, pages=pages, form=form)
+	return dict(offer=offer, stats=stats, count=count, form=form)
 
 @bp.route('/offers/<int:id>/stats/referer')
-def offers_info_stats_referer(id):
+@template('admin/offers/info/stats/referer.html')
+@sorted('clicks_count', 'desc')
+@paginated(REFERER_STATS_PER_PAGE)
+def offers_info_stats_referer(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
 	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 20)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_by_referer(offer_id=offer.id,
-			offset=offset, limit=limit, **form.range_args())
-		pages = paginate(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/offers/info/stats/referer.html', offer=offer, stats=stats, pages=pages, form=form)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_by_referer(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
+	return dict(offer=offer, stats=stats, count=count, form=form)
 
 @bp.route('/offers/<int:id>/stats/keywords')
-def offers_info_stats_keywords(id):
+@template('admin/offers/info/stats/keywords.html')
+@sorted('clicks_count', 'desc')
+@paginated(KEYWORDS_STATS_PER_PAGE)
+def offers_info_stats_keywords(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
 	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 20)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_by_keywords(offer_id=offer.id,
-			offset=offset, limit=limit, **form.range_args())
-		pages = paginate(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/offers/info/stats/keywords.html', offer=offer, stats=stats, pages=pages, form=form)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_by_keywords(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
+	return dict(offer=offer, stats=stats, count=count, form=form)

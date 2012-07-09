@@ -72,11 +72,16 @@ def replace_if_contains(value, contains, newvalue):
 		return newvalue
 	return value
 
-def updated(dictionary, **kwargs):
+'''def updated(dictionary, **kwargs):
 	result = dictionary.copy()
 	for key, value in kwargs.iteritems():
 		result[key] = value
-	return result
+	return result'''
+
+def updated(dictionary, **kwargs):
+	d = dict(dictionary.items())
+	d.update(kwargs)
+	return d
 
 def nocache():
 	return random.randrange(1000000)

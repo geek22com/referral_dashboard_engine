@@ -6,22 +6,23 @@
 	.collapse-container {
 		overflow: hidden;
 	}
-	
-	.collapse-container.collapsed {
-		height: 100px;
-	}
 </style>
 
 <script type="text/javascript">
 	$(function() {
+		var collapseHeight = 100;
 		$('.collapse-container').each(function() {
-			if ($(this).height() > 100) {
+			if ($(this).height() > collapseHeight) {
+				$(this).data('origHeight', $(this).height());
+				$(this).height(collapseHeight);
 				$(this).addClass('collapsed');
 				$(this).siblings('.collapse-link').show();
 			}
 		});
 		$('.collapse-link').click(function() {
-			$(this).siblings('.collapse-container').toggleClass('collapsed');
+			var container = $(this).siblings('.collapse-container');
+			var animHeight = container.hasClass('collapsed') ? container.data('origHeight') : collapseHeight; 
+			container.animate({ height : animHeight }, 'fast').toggleClass('collapsed');
 			return false;
 		});
 	})

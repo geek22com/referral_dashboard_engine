@@ -6,22 +6,22 @@
 		<thead>
 			<tr>
 				{{ caller(true, none, **kwargs) }}
-				<th rowspan="2" {{ lists.sort_header('shows_count', **kwargs) }}>Показы</th>
-				<th rowspan="2" {{ lists.sort_header('clicks_count', **kwargs) }}>Клики</th>
+				<th rowspan="2" style="min-width: 70px;" {{ lists.sort_header('shows_count', **kwargs) }}>Показы</th>
+				<th rowspan="2" style="min-width: 70px;" {{ lists.sort_header('clicks_count', **kwargs) }}>Клики</th>
 				<th class="header center nosort" colspan="2">Выполненные действия</th>
-				<th rowspan="2" {{ lists.sort_header('ctr', **kwargs) }}>CTR</th>
-				<th rowspan="2" {{ lists.sort_header('cr', **kwargs) }}>CR</th>
-				<th rowspan="2" {{ lists.sort_header('ecpc', **kwargs) }}>eCPC,&nbsp;{{ currency_sign -}}</th>
-				<th rowspan="2" {{ lists.sort_header('ecpm', **kwargs) }}>eCPM,&nbsp;{{ currency_sign -}}</th>
+				<th rowspan="2" style="min-width: 70px;" {{ lists.sort_header('ctr', **kwargs) }}>CTR</th>
+				<th rowspan="2" style="min-width: 70px;" {{ lists.sort_header('cr', **kwargs) }}>CR</th>
+				<th rowspan="2" style="min-width: 80px;" {{ lists.sort_header('ecpc', **kwargs) }}>eCPC,&nbsp;{{ currency_sign -}}</th>
+				<th rowspan="2" style="min-width: 80px;" {{ lists.sort_header('ecpm', **kwargs) }}>eCPM,&nbsp;{{ currency_sign -}}</th>
 				<th class="header center nosort" colspan="3">Доход,&nbsp;{{ currency_sign -}}</th>
 			</tr>
 			<tr class="subrow">
-				<th {{ lists.sort_header('leads_count', **kwargs) }}>Лиды</th>
-				<th {{ lists.sort_header('sales_count', **kwargs) }}>Продажи</th>
+				<th style="min-width: 70px;" {{ lists.sort_header('leads_count', **kwargs) }}>Лиды</th>
+				<th style="min-width: 70px;" {{ lists.sort_header('sales_count', **kwargs) }}>Продажи</th>
 				
-				<th {{ lists.sort_header('canceled_revenue', 'red', **kwargs) }}>Откл.</th>
-				<th {{ lists.sort_header('not_confirmed_revenue', 'blue', **kwargs) }}>Неподтв.</th>
-				<th {{ lists.sort_header('confirmed_revenue', 'green', **kwargs) }}>Подтв.</th>
+				<th style="min-width: 70px;" {{ lists.sort_header('canceled_revenue', 'red', **kwargs) }}>Откл.</th>
+				<th style="min-width: 70px;" {{ lists.sort_header('not_confirmed_revenue', **kwargs) }}>Неподтв.</th>
+				<th style="min-width: 70px;" {{ lists.sort_header('confirmed_revenue', 'green', **kwargs) }}>Подтв.</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -35,8 +35,8 @@
 				<td class="right">{{ stat.leads }}</td>
 				<td class="right">{{ stat.sales }}</td>
 				
-				<td class="right">{% if stat.ctr %}{{ stat.ctr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
-				<td class="right">{% if stat.cr %}{{ stat.cr -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
+				<td class="right">{% if stat.ctr %}{{ stat.ctr if stat.ctr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
+				<td class="right">{% if stat.cr %}{{ stat.cr if stat.cr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
 				<td class="right">{{ stat.ecpc|default('&mdash;', true)|safe }}</td>
 				<td class="right">{{ stat.ecpm|default('&mdash;', true)|safe }}</td>
 				

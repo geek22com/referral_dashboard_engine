@@ -617,7 +617,7 @@ class OfferFormBase(Form):
 		validators.Required(message=u'Введите время жизни cookie'),
 		validators.NumberRange(min=0, message=u'Время жизни должно быть больше нуля')
 	], default=30)
-	categories = myfields.CategoriesField(u'Категории', default=True)
+	categories = myfields.CategoriesField(u'Категории', default=False)
 	regions = myfields.RegionsField(u'Регионы',
 		predefined=('RU', 'UA', 'BY', 'KZ', 'AM', 'AZ', 'KG', 'MD', 'TJ', 'TM', 'UZ')
 	)

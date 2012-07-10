@@ -828,8 +828,19 @@ class AffiliateCabinetSubIdStatsForm(AffiliateCabinetStatsForm):
 		if self.sub_id3.data: args.update(sub_id3=self.sub_id3.data)
 		if self.sub_id4.data: args.update(sub_id4=self.sub_id4.data)
 		return args
-		
+
+
+class CategoryForm(Form):
+	group = myfields.CategoryGroupField(u'Родительская категория')
+	name = TextField(u'Название категории', [
+		validators.Required(message=u'Введите название категории'),
+		validators.Length(min=3, max=250, message=u'Название категории должно иметь длину от 3 до 250 символов')
+	])
 	
+class CategoryEditForm(CategoryForm):
+	group = myfields.CategoryGroupField(u'Родительская категория', empty=None)
+
+
 class GamakAppForm(Form):
 	name = TextField(u'Название приложения', [
 		validators.Required(message = (u'Введите название приложения'))

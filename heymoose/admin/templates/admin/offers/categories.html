@@ -1,0 +1,95 @@
+{% extends "admin/offers/layout.html" %}
+
+{% set activetab = 'categories' %}
+
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function() {
+			$('.categories-list li').hover(
+				function() { $(this).children('.category-actions').show(); },
+				function() { $(this).children('.category-actions').hide(); }
+			)
+		})
+	</script>
+{% endblock %}
+
+{% block tabcontent %}
+
+<div class="row">
+	<div class="span6" style="border-right: 1px solid #DDD;">
+		<h3>Список категорий</h3>
+		<ul class="toplevel-list categories-list">
+			{% for group in groups %}
+			<li>
+				{{ group.name }}
+				<span class="category-actions" style="display: none;">
+					<a href="#" data-controls-modal="group-modal-{{ group.id -}}" data-backdrop="true" data-keyboard="true">
+						<img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="" />
+					</a>
+				</span>
+				<div class="modal fade" id="group-modal-{{ group.id -}}">
+					<form method="post" class="widelabels validate2"
+					 action="{{ url_for('.offers_categories_update_group', id=group.id) }}">
+						<div class="modal-header">
+							<a href="#" class="close">×</a>
+							<h3>Изменение категории</h3>
+						</div>
+						<div class="modal-body">
+							<div style="display: none;">
+							{{ forms.singlefield(group.form.group, class='span4') }}
+							</div>
+							{{ forms.singlefield(group.form.name, class='span4') }}
+						</div>
+						<div class="modal-footer">
+							<input type="submit" class="btn primary" value="Сохранить" />
+						</div>
+					</form>
+				</div>
+				<ul class="dashed-list">
+					{% for category in group.categories %}
+					<li>
+						{{ category.name }}
+						<span class="category-actions" style="display: none;">
+							<a href="#" data-controls-modal="category-modal-{{ category.id -}}" data-backdrop="true" data-keyboard="true">
+								<img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="" />
+							</a>
+						</span>
+						<div class="modal fade" id="category-modal-{{ category.id -}}">
+							<form method="post" class="widelabels validate2"
+							 action="{{ url_for('.offers_categories_update', id=category.id) }}">
+								<div class="modal-header">
+									<a href="#" class="close">×</a>
+									<h3>Изменение категории</h3>
+								</div>
+								<div class="modal-body">
+									{{ forms.singlefield(category.form.group, class='span4') }}
+									{{ forms.singlefield(category.form.name, class='span4') }}
+								</div>
+								<div class="modal-footer">
+									<input type="submit" class="btn primary" value="Сохранить" />
+								</div>
+							</form>
+						</div>
+					</li>
+					{% endfor %}
+				</ul>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="span8">
+		<h3 class="center">Добавление категории</h3>
+		<form method="post" action="" class="widelabels validate2">
+			<fieldset>
+				{{ forms.singlefield(form.group, class='span4') }}
+				{{ forms.singlefield(form.name, class='span4') }}
+				<div class="input">
+					<input type="submit" value="Добавить" class="btn primary" />
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+
+{% endblock %}

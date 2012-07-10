@@ -1,6 +1,33 @@
 {% import 'common/macros.html' as macros %}
 {% import 'common/forms.html' as forms %}
 
+{% macro head() %}
+<style type="text/css">
+	.collapse-container {
+		overflow: hidden;
+	}
+	
+	.collapse-container.collapsed {
+		height: 100px;
+	}
+</style>
+
+<script type="text/javascript">
+	$(function() {
+		$('.collapse-container').each(function() {
+			if ($(this).height() > 100) {
+				$(this).addClass('collapsed');
+				$(this).siblings('.collapse-link').show();
+			}
+		});
+		$('.collapse-link').click(function() {
+			$(this).siblings('.collapse-container').toggleClass('collapsed');
+			return false;
+		});
+	})
+</script>
+{% endmacro %}
+
 {% macro table(offers, status=false, grant_status=false, user=none, admin=false) %}
 
 {% set affiliate = user.is_affiliate %}
@@ -92,21 +119,29 @@
 					{% if offer.cr is not none %}{{ offer.cr|percent }}{% else %}(нет&nbsp;данных){% endif %}
 				</td>
 				
-				<td {{ rowspan }}>{{ offer.regions_full|attrlist('country_name')|join(', ')|default('(не&nbsp;указаны)', true)|safe }}</td>
+				<td {{ rowspan }}>
+					<div class="collapse-container">
+					{{ offer.regions_full|attrlist('country_name')|join(', ')|default('(не&nbsp;указаны)', true)|safe }}
+					</div>
+					<a href="#" class="dotted-link collapse-link" style="display: none;">(ещё)</a>
+				</td>
 				<td {{ rowspan }}>
 					{% if offer.categories %}
-					<ul class="toplevel-list toplevel-list--no-bottom-margin">
-						{% for group in offer.categories|groupby('grouping') %}
-						<li>
-							{{ group.grouper }}
-							<ul class="dashed-list">
-								{% for category in group.list %}
-								<li>{{ category.name }}</li>
-								{% endfor %}
-							</ul>
-						</li>
-						{% endfor %}
-					</ul>
+					<div class="collapse-container">
+						<ul class="toplevel-list toplevel-list--no-bottom-margin">
+							{% for group in offer.categories|groupby('grouping') %}
+							<li>
+								{{ group.grouper }}
+								<ul class="dashed-list">
+									{% for category in group.list %}
+									<li>{{ category.name }}</li>
+									{% endfor %}
+								</ul>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+					<a href="#" class="dotted-link collapse-link" style="display: none;">(ещё)</a>
 					{% else %}
 					(не&nbsp;указаны)
 					{% endif %}

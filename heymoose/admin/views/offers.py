@@ -105,6 +105,18 @@ def offers_categories_update_group(id):
 		flash(u'Ошибка изменения категории', 'danger')
 	return redirect(url_for('.offers_categories'))
 
+@bp.route('/offers/categories/<int:id>/delete', methods=['POST'])
+def offers_categories_delete(id):
+	rc.categories.remove(id)
+	flash(u'Категория удалена', 'success')
+	return redirect(url_for('.offers_categories'))
+
+@bp.route('/offers/categories/groups/<int:id>/delete', methods=['POST'])
+def offers_categories_delete_group(id):
+	rc.categories.remove_group(id)
+	flash(u'Категория удалена', 'success')
+	return redirect(url_for('.offers_categories'))
+
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 @template('admin/offers/info/info.html')
 def offers_info(id):

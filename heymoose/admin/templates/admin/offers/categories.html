@@ -9,7 +9,11 @@
 			$('.categories-list li').hover(
 				function() { $(this).children('.category-actions').show(); },
 				function() { $(this).children('.category-actions').hide(); }
-			)
+			);
+			$('.categories-list > li').hover(
+				function() { $(this).css('background-color', '#F5F5F5'); },
+				function() { $(this).css('background-color', 'inherit'); }
+			);
 		})
 	</script>
 {% endblock %}
@@ -26,6 +30,9 @@
 				<span class="category-actions" style="display: none;">
 					<a href="#" data-controls-modal="group-modal-{{ group.id -}}" data-backdrop="true" data-keyboard="true">
 						<img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="" />
+					</a>
+					<a href="#" data-controls-modal="group-delete-modal-{{ group.id -}}" data-backdrop="true" data-keyboard="true">
+						<img src="{{ url_for('static', filename='img/icon_deletelink.gif') }}" alt="" />
 					</a>
 				</span>
 				<div class="modal fade" id="group-modal-{{ group.id -}}">
@@ -46,6 +53,20 @@
 						</div>
 					</form>
 				</div>
+				<div class="modal fade" id="group-delete-modal-{{ group.id -}}">
+					<form method="post" action="{{ url_for('.offers_categories_delete_group', id=group.id) }}">
+						<div class="modal-header">
+							<a href="#" class="close">×</a>
+							<h3>Удаление категории</h3>
+						</div>
+						<div class="modal-body">
+							Удалить категорию &laquo;{{ group.name }}&raquo;? Будут удалены все подкатегории.
+						</div>
+						<div class="modal-footer">
+							<input type="submit" class="btn danger" value="Удалить" />
+						</div>
+					</form>
+				</div>
 				<ul class="dashed-list">
 					{% for category in group.categories %}
 					<li>
@@ -53,6 +74,9 @@
 						<span class="category-actions" style="display: none;">
 							<a href="#" data-controls-modal="category-modal-{{ category.id -}}" data-backdrop="true" data-keyboard="true">
 								<img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="" />
+							</a>
+							<a href="#" data-controls-modal="category-delete-modal-{{ category.id -}}" data-backdrop="true" data-keyboard="true">
+								<img src="{{ url_for('static', filename='img/icon_deletelink.gif') }}" alt="" />
 							</a>
 						</span>
 						<div class="modal fade" id="category-modal-{{ category.id -}}">
@@ -68,6 +92,20 @@
 								</div>
 								<div class="modal-footer">
 									<input type="submit" class="btn primary" value="Сохранить" />
+								</div>
+							</form>
+						</div>
+						<div class="modal fade" id="category-delete-modal-{{ category.id -}}">
+							<form method="post" action="{{ url_for('.offers_categories_delete', id=category.id) }}">
+								<div class="modal-header">
+									<a href="#" class="close">×</a>
+									<h3>Удаление категории</h3>
+								</div>
+								<div class="modal-body">
+									Удалить категорию &laquo;{{ category.name }}&raquo;?
+								</div>
+								<div class="modal-footer">
+									<input type="submit" class="btn danger" value="Удалить" />
 								</div>
 							</form>
 						</div>

@@ -29,9 +29,6 @@
 	{% if g.user.is_advertiser %}
 	<li id="tab-balance"><a href="{{ url_for('.profile_balance') }}">Операции со счетом</a></li>
 	{% endif %}
-	{% if g.user.is_affiliate %}
-	<li id="tab-withdrawals"><a href="{{ url_for('.profile_withdrawals') }}">Выплаты</a></li>
-	{% endif %}
 	<li id="tab-password"><a href="{{ url_for('.profile_password_change') }}">Изменить пароль</a></li>
 </ul>
 

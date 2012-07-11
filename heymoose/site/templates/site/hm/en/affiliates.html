@@ -1,0 +1,79 @@
+{% extends "site/hm/en/layout.html" %}
+
+{% set activemenu = "affiliates" %}
+
+{% block title %}For Affiliates{% endblock %}
+
+{% block content %}
+<h1 class="hm-roundbox-header">{{ heymoose(False) }} Affiliates</h1>
+<div class="article">
+	<p>
+		What are usually developers and partners looking for from the affiliate program?
+		They are looking for additional income with minimal labor effort applied. As usual,
+		it looks like a placing advertisement on sites with high traffic, portals, and social
+		networks. But now, the mobile market comes into play, which strengthens its’ positions
+		more and more. Mobile applications can generate more revenue than others, because
+		their users focus on the fastest outcome – they have no time to select and compare
+		one site to another, one offer with the others. They see what they want and take it
+		where they have already seen it.
+	</p>
+	
+	<h3>How does {{ heymoose(false) }} work?</h3>
+	<p>
+		You register on our website, add your advertising platform and choose the most tailored
+		offer for you. The advertiser’s promotional materials, banners and textual links will
+		be available for you, and you can place it in any suitable form for you. Statistics
+		on conversions from advertising and performed actions, also funds credited to your
+		account will be mentioned in your personal account.
+	</p>
+	
+	<h3>Advantages of Affilite Network {{ heymoose(false) }}</h3>
+	<p>
+		We are interested in webmaster’s good earning and quality of advertising campaigns,
+		so first of all network “HeyMoose” suggests offers with adequate pay. We constantly monitor
+		each actions’ costs in a particular area, and offer prices to our clients, which are
+		higher than average.
+	</p>
+	
+	<h3>{{ heymoose(false) }} promotional offers</h3>
+	<div class="row">
+		<div class="span13">
+			<p>
+				Click this button, if you want to see the examples of our offers (in Russian language).
+				You will get access to full information about offers, and also a lot of offers from
+				other advertisers. 
+			</p>
+		</div>
+		<div class="span" style="margin-top: 8px;">
+			<a href="{{ url_for('.catalog') }}" class="btn hey large" target="_blank">Our Offers</a>
+		</div>
+	</div>
+	
+	<h3>{{ heymoose(false) }} affiliate program</h3>
+	<p>
+		If either you are highly respected in the webmaster’s world, or you have a promoted blog or
+		forum of appropriate subjects and you want to earn money on the basis of its popularity – we
+		will offer you to take part in attracting webmasters to our affiliate network “HeyMoose”!
+		If you participate in our affiliate program, you will get a 5% commission.
+	</p>
+	<p>
+		“HeyMoose” affiliate program is an additional opportunity to generate income by inviting active
+		people to work in the network. The more they earn, the more your income have! Affiliate program
+		makes:
+	</p>
+	<ul class="dashed-list">
+		<li>5% commission permanently.</li>
+		<li>Convenient withdrawal system – separately or together with the payments by offers.</li>
+		<li>
+			You can place a referral link where you want – in the article, topic or forum’s signature,
+			banners, comments, social networks, letters to your friends.
+		</li>
+		<li>
+			Detailed statistics by number of referrals and earned money in real time.
+		</li>
+		<li>
+			The most comfortable form of consultation for you: by phone, ICQ, e-mail, Skype.
+		</li>
+	</ul>
+</div>
+{% endblock %}

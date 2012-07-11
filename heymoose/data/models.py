@@ -370,6 +370,11 @@ class Category(IdentifiableModel):
 	grouping = Field(types.String, 'grouping')
 
 
+class CategoryGroup(IdentifiableModel):
+	name = Field(types.String, '@name')
+	categories = FieldList('Category', 'category')
+
+
 class Region(models.ModelBase):
 	country_code = Field(types.String, 'country-code')
 	country_name = Field(types.String, 'country-name')

@@ -4,6 +4,11 @@
 {% set content_fluid = true %}
 {% set activetab = 'all' %}
 
+{% block extrahead %}
+	{{ super() }}
+	{{ offer_macros.head() }}
+{% endblock %}
+
 {% block tabcontent %}
 
 {% if offers %}

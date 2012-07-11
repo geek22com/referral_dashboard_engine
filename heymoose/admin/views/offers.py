@@ -67,6 +67,56 @@ def offers_requests(**kwargs):
 		return redirect(request.url)
 	return dict(grants=grants, count=count, form=form)
 
+@bp.route('/offers/categories/', methods=['GET', 'POST'])
+@template('admin/offers/categories.html')
+def offers_categories():
+	form = forms.CategoryForm(request.form)
+	groups = form.group.groups
+	for group in groups:
+		group.form = forms.CategoryForm(group=0, name=group.name)
+		for category in group.categories:
+			category.form = forms.CategoryEditForm(group=group.id, name=category.name)
+	if request.method == 'POST' and form.validate():
+		if form.group.data:
+			rc.categories.add(form.name.data, form.group.data)
+		else:
+			rc.categories.add_group(form.name.data)
+		flash(u'Категория успешно добавлена', 'success')
+		return redirect(request.url)
+	return dict(form=form, groups=groups)
+
+@bp.route('/offers/categories/<int:id>/', methods=['POST'])
+def offers_categories_update(id):
+	form = forms.CategoryEditForm(request.form)
+	if form.validate():
+		rc.categories.update(id, form.name.data, form.group.data)
+		flash(u'Категория успешно изменена', 'success')
+	else:
+		flash(u'Ошибка изменения категории', 'danger')
+	return redirect(url_for('.offers_categories'))
+
+@bp.route('/offers/categories/groups/<int:id>/', methods=['POST'])
+def offers_categories_update_group(id):
+	form = forms.CategoryForm(request.form)
+	if form.validate():
+		rc.categories.update_group(id, form.name.data)
+		flash(u'Категория успешно изменена', 'success')
+	else:
+		flash(u'Ошибка изменения категории', 'danger')
+	return redirect(url_for('.offers_categories'))
+
+@bp.route('/offers/categories/<int:id>/delete', methods=['POST'])
+def offers_categories_delete(id):
+	rc.categories.remove(id)
+	flash(u'Категория удалена', 'success')
+	return redirect(url_for('.offers_categories'))
+
+@bp.route('/offers/categories/groups/<int:id>/delete', methods=['POST'])
+def offers_categories_delete_group(id):
+	rc.categories.remove_group(id)
+	flash(u'Категория удалена', 'success')
+	return redirect(url_for('.offers_categories'))
+
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 @template('admin/offers/info/info.html')
 def offers_info(id):

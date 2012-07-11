@@ -196,12 +196,11 @@ class OfferField(SelectField):
 		choices = [(offer.id, offer.name) for offer in offers]
 		if empty: choices.insert(0, empty)
 		self.choices = choices
-	'''
-	def process_formdata(self, valuelist):
-		super(OfferField, self).process_formdata(valuelist)
-		self.data = int(self.data) if self.data else None
-	
-	def pre_validate(self, form):
-		print 'DADADAD', self.data
-		if not self.data: self.data = u''
-		super(OfferField, self).pre_validate(form)'''
+
+class CategoryGroupField(SelectField):
+	def __init__(self, label=None, validators=None, empty=(0, u'(верхний уровень)'), **kwargs):
+		self.groups = rc.categories.list_groups()
+		choices = [(group.id, group.name) for group in self.groups]
+		if empty: choices.insert(0, empty)
+		super(CategoryGroupField, self).__init__(label, validators, int, choices, **kwargs)
+

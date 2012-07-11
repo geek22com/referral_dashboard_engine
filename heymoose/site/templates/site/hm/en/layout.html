@@ -1,0 +1,27 @@
+{% extends 'site/hm/layout.html' %}
+
+{% block nav %}
+<ul class="nav">
+	<li id="menu-item-index"><a href="{{ url_for('.en_index') }}">Main</a></li>
+	<li id="menu-item-advertisers"><a href="{{ url_for('.en_advertisers') }}">Advertisers</a></li>
+	<li id="menu-item-affiliates"><a href="{{ url_for('.en_affiliates') }}">Affiliates</a></li>
+	<li id="menu-item-ru"><a href="{{ url_for('.index') }}">Русский</a></li>
+</ul>
+{% endblock %}
+
+{% block secondary_nav %}
+{% endblock %}
+
+{% block top_unit_content %}
+	{{ support('Contacts:') }}
+	<div class="top-unit-text">
+		<p>
+			Affiliate Network {{ heymoose(false) }} is a system of interacting between advertisers
+			and webmasters. Payments for advertising are performed using CPA model after concrete
+			actions of website visitors.
+		</p>
+	</div>
+{% endblock %}
+
+{% block events_feed %}
+{% endblock %}

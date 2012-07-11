@@ -6,6 +6,7 @@ from heymoose.forms import forms
 from heymoose.utils.gen import check_password_hash
 from heymoose.utils.convert import to_unixtime
 from heymoose.utils.pagination import current_page, page_limits, paginate
+from heymoose.views.decorators import template
 from heymoose.db.models import Contact, NewsItem
 from heymoose.mail import marketing as mmail, transactional as tmail
 from heymoose.data.models import User
@@ -33,6 +34,18 @@ def advertisers():
 @bp.route('/affiliates')
 def affiliates():
 	return render_template('site/hm/affiliates.html')
+
+@bp.route('/en/')
+@template('site/hm/en/index.html')
+def en_index(): return {}
+
+@bp.route('/en/advertisers/')
+@template('site/hm/en/advertisers.html')
+def en_advertisers(): return {}
+
+@bp.route('/en/affiliates/')
+@template('site/hm/en/affiliates.html')
+def en_affiliates(): return {}
 
 @bp.route('/affiliates/contest')
 def affiliates_contest():

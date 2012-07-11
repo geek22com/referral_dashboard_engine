@@ -1,5 +1,5 @@
 from backend import BackendResource
-from heymoose.data.models import Transaction, AccountingEntry, Withdrawal
+from heymoose.data.models import Transaction, AccountingEntry, Withdrawal, WithdrawalList
 
 class AccountResource(BackendResource):
 	base_path = '/account'
@@ -16,15 +16,21 @@ class AccountResource(BackendResource):
 	def entries_list(self, id, **kwargs):
 		return self.path(id).path('entries').get(**kwargs).as_objlist(AccountingEntry, with_count=True)
 	
-	def withdrawals_list(self, id, **kwargs):
+	def withdrawals_list(self, **kwargs):
+		return self.path('withdraws').get(**kwargs).as_obj(WithdrawalList)
+	
+	def withdrawals_list_by_account(self, id, **kwargs):
 		return self.path(id).path('withdraws').get(**kwargs).as_objlist(Withdrawal)
 	
-	def make_withdrawal(self, id, amount):
-		return self.path(id).path('withdraws').post(amount=amount).as_int()
+	def withdrawals_list_by_affiliate(self, id, **kwargs):
+		return self.path('aff').path(id).path('withdraws').get(**kwargs).as_objlist(Withdrawal)
 	
-	def approve_withdrawal(self, id, withdrawal_id):
-		self.path(id).path('withdraws').path(withdrawal_id).put()
+	def create_withdrawal(self, id):
+		return self.path(id).path('withdraws').post().as_int()
 	
-	def delete_withdrawal(self, id, withdrawal_id, comment):
-		self.path(id).path('withdraws').path(withdrawal_id).delete(comment=comment)
+	def approve_withdrawal(self, id):
+		self.path('withdraws').path(id).put()
+	
+	def delete_withdrawal(self, id, comment):
+		self.path('withdraws').path(id).delete(comment=comment)
 		

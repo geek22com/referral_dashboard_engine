@@ -1,0 +1,69 @@
+{% extends "cabinetcpa/layout.html" %}
+
+{% block title %}Выплаты{% endblock %}
+
+{% set activemenu = 'withdrawals' %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Выплаты', url_for('.withdrawals')) }}
+{% endblock %}
+
+{% block pageheader %}<h1>{{ self.title() }}</h1>{% endblock %}
+
+{% block content %}
+
+<h2>Заказ выплаты</h2>
+{% if g.user.account.balance > 1.00 %}
+	<div class="row">
+		<div class="span6">
+			<div style="margin-top: 20px;">
+				<form method="post" action="{{ url_for('.withdrawals_create') }}">
+					<input type="submit" class="btn success" onclick="return confirm('Заказать выплату?');"
+					 value="Заказать выплату на сумму {{ g.user.account.balance|currency }}" />
+				</form>
+			</div>
+		</div>
+		<div class="span8">
+			<p>
+				При нажатии этой кнопки будет заказана выплата на сумму, находящуюся на вашем счету
+				подтвержденных средств. При этом сумма выплаты будет списана со счета. При фактическом
+				совершении выплаты, она становится подтвержденной.
+			</p>
+		</div>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>Суммы на вашем счету подтвержденных средств недостаточно для заказа выплаты.</p>
+	</div>
+{% endif %}
+
+<h2>История выплат</h2>
+{% if withdrawals %}
+	<table class="bordered-table zebra-striped nosort">
+		<thead>
+			<tr>
+				<th class="header right minimal-width">#</th>
+				<th class="header right">Сумма, руб.</th>
+				<th class="header center">Заказана</th>
+				<th class="header center minimal-width">Подтв.</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for withdrawal in withdrawals %}
+			<tr>
+				<td class="right">{{ withdrawal.id }}</td>
+				<td class="right">{{ withdrawal.amount|currency(False) }}</td>
+				<td class="center">{{ withdrawal.timestamp|datetimeformat }}</td>
+				<td class="center">{{ macros.to_icon(withdrawal.done) }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Не было заказано ни одной выплаты.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, request, redirect, flash, url_for
+from flask import render_template, g, request, redirect, flash, url_for, abort
 from heymoose import app, resource as rc
 from heymoose.admin import blueprint as bp
 from heymoose.views.decorators import template, sorted, paginated
-from heymoose.utils import pagination
 from heymoose.utils.pagination import current_page, page_limits, paginate as paginate2
 from heymoose.utils.shortcuts import paginate
 from heymoose.utils.convert import to_unixtime
@@ -12,6 +11,7 @@ from heymoose.data.enums import Roles
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
 
+ACCOUNTING_ENTRIES_PER_PAGE = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
 SUB_ID_STATS_PER_PAGE = app.config.get('SUB_ID_STATS_PER_PAGE', 20)
 SOURCE_ID_STATS_PER_PAGE = app.config.get('SOURCE_ID_STATS_PER_PAGE', 20)
@@ -116,55 +116,26 @@ def users_info_lists_add(id):
 		flash(u'Ошибка при добавлении пользователя в списки рассылки', 'error')
 	return redirect(url_for('.users_info', id=user.id))
 
-@bp.route('/users/<int:id>/balance', methods=['GET', 'POST'])
-def users_info_balance(id):
+@bp.route('/users/<int:id>/balance/', methods=['GET', 'POST'])
+@template('admin/users-info-balance.html')
+@paginated(ACCOUNTING_ENTRIES_PER_PAGE)
+def users_info_balance(id, **kwargs):
 	user = rc.users.get_by_id(id)
-	delete_form = forms.WithdrawalDeleteForm()
-	
-	if user.is_advertiser:
-		withdrawals = None
-		form = forms.BalanceForm(request.form)
-		if request.method == 'POST' and form.validate():
-			rc.users.add_to_customer_account(user.id, round(form.amount.data, 2))
-			flash(u'Баланс успешно пополнен', 'success')
-			return redirect(request.url)
-	elif user.is_affiliate:
-		withdrawals = rc.accounts.withdrawals_list(user.account.id)
-		form = forms.BalanceForm(request.form, amount=user.account.balance)
-		if request.method == 'POST' and form.validate():
-			rc.accounts.make_withdrawal(user.account.id, round(form.amount.data, 2))
-			flash(u'Выплата успешно создана', 'success')
-			return redirect(request.url)
-	else:
-		flash(u'Пользователь не имеет счета', 'error')
-		return redirect(url_for('.users_info', id=user.id))
-	
-	page = pagination.current_page()
-	per_page = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
-	offset, limit = pagination.page_limits(page, per_page)
-	entries, count = rc.accounts.entries_list(user.account.id, offset=offset, limit=limit)
-	pages = pagination.paginate(page, count, per_page)
-	
-	return render_template('admin/users-info-balance.html', entries=entries,
-		withdrawals=withdrawals, pages=pages, user=user, form=form, delete_form=delete_form)
-	
-@bp.route('/users/<int:id>/balance/withdrawals/<int:wid>/approve', methods=['POST'])
-def users_info_approve_withdrawal(id, wid):
-	user = rc.users.get_by_id(id)
-	rc.accounts.approve_withdrawal(user.account.id, wid)
-	flash(u'Выплата подтверждена', 'success')
-	return redirect(url_for('.users_info_balance', id=user.id))
+	form = forms.BalanceForm(request.form)
+	entries, count = rc.accounts.entries_list(user.account.id, **kwargs)
+	if user.is_advertiser and request.method == 'POST' and form.validate():
+		rc.users.add_to_customer_account(user.id, round(form.amount.data, 2))
+		flash(u'Баланс успешно пополнен', 'success')
+		return redirect(request.url)
+	return dict(user=user, entries=entries, count=count, form=form)
 
-@bp.route('/users/<int:id>/balance/withdrawals/<int:wid>/delete', methods=['POST'])
-def users_info_delete_withdrawal(id, wid):
+@bp.route('/users/<int:id>/withdrawals/')
+@template('admin/users-info-withdrawals.html')
+def users_info_withdrawals(id):
 	user = rc.users.get_by_id(id)
-	form = forms.WithdrawalDeleteForm(request.form)
-	if form.validate():
-		rc.accounts.delete_withdrawal(user.account.id, wid, form.reason.data)
-		flash(u'Выплата разработчику отменена', 'success')
-	else:
-		flash(u'При выплате разработчику произошла ошибка', 'error')
-	return redirect(url_for('.users_info_balance', id=user.id))
+	if not user.is_affiliate: abort(404)
+	withdrawals = rc.accounts.withdrawals_list_by_affiliate(user.id)
+	return dict(user=user, withdrawals=withdrawals)
 
 @bp.route('/users/<int:id>/stats/offer')
 @template('admin/users-info-stats-offer.html')

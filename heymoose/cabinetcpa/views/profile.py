@@ -2,16 +2,19 @@
 from flask import render_template, g, redirect, url_for, abort, request, flash
 from heymoose import app, resource
 from heymoose.cabinetcpa import blueprint as bp
-from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
+from heymoose.cabinetcpa.decorators import advertiser_only
 from heymoose.forms import forms
 from heymoose.utils import robokassa
-from heymoose.utils.pagination import current_page, page_limits, paginate
+from heymoose.views.decorators import template, paginated
 from heymoose.mail import transactional as mail
+
+ACCOUNTING_ENTRIES_PER_PAGE = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
 
 
 @bp.route('/profile')
+@template('cabinetcpa/profile/info.html')
 def profile():
-	return render_template('cabinetcpa/profile/info.html')
+	return dict()
 
 @bp.route('/profile/sendmail', methods=['POST'])
 def profile_sendmail():
@@ -43,16 +46,11 @@ def profile_password_change():
 		return redirect(url_for('.profile'))
 	return render_template('cabinetcpa/profile/password-change.html', form=form)
 
-@bp.route('/profile/withdrawals')
-@affiliate_only
-def profile_withdrawals():
-	withdrawals = resource.accounts.withdrawals_list(g.user.account.id)
-	withdrawals = [w for w in withdrawals if w.done]
-	return render_template('cabinetcpa/profile/withdrawals.html', withdrawals=withdrawals)
-
 @bp.route('/profile/balance', methods=['GET', 'POST'])
 @advertiser_only
-def profile_balance():
+@template('cabinetcpa/profile/balance.html')
+@paginated(ACCOUNTING_ENTRIES_PER_PAGE)
+def profile_balance(**kwargs):
 	form = forms.BalanceForm(request.form)
 	if request.method == 'POST' and form.validate():
 		url = robokassa.account_pay_url(
@@ -60,12 +58,8 @@ def profile_balance():
 			sum=round(form.amount.data, 2),
 			email=g.user.email)
 		return redirect(url)
-	page = current_page()
-	per_page = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
-	offset, limit = page_limits(page, per_page)
-	entries, count = resource.accounts.entries_list(g.user.account.id, offset=offset, limit=limit)
-	pages = paginate(page, count, per_page)
-	return render_template('cabinetcpa/profile/balance.html', entries=entries, pages=pages, form=form)
+	entries, count = resource.accounts.entries_list(g.user.account.id, **kwargs)
+	return dict(entries=entries, count=count, form=form)
 
 @bp.route('/profile/balance/success', methods=['POST'])
 @advertiser_only

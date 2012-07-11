@@ -6,7 +6,7 @@
 
 {% block extrahead %}
 {{ super() }}
-{% set activetab = activetab|default('approve') %}
+{% set activetab = activetab|default('withdrawals') %}
 <script type="text/javascript">
 	$(function() { 
 		$('li#tab-{{ activetab }}').addClass('active');
@@ -16,7 +16,7 @@
 
 {% block breadcrumbs %}
 	{{ super() }}
-	{{ macros.breadcrumb(self.title(), url_for('.operations_approve')) }}
+	{{ macros.breadcrumb(self.title(), url_for('.operations_withdrawals')) }}
 {% endblock %}
 
 {% block pageheader %}
@@ -25,6 +25,7 @@
 
 {% block content %}
 <ul class="tabs">
+	<li id="tab-withdrawals"><a href="{{ url_for('.operations_withdrawals') }}">Выплаты</a></li>
 	<li id="tab-approve"><a href="{{ url_for('.operations_approve') }}">Подтверждение</a></li>
 </ul>
 

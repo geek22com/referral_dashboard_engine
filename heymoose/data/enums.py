@@ -33,7 +33,7 @@ class AccountingEvents(Enum):
 	OFFER_ACCOUNT_REMOVE = e('OFFER_ACCOUNT_REMOVE', name=u'снятие средств со счета оффера')
 	MLM = e('MLM', name=u'реферальная программа')
 	CANCELLED = e('CANCELLED', name=u'отмена транзакции')
-	WITHDRAW = e('WITHDRAW', name=u'выплата партнёру')
+	WITHDRAW = e('WITHDRAW', name=u'заказ выплаты партнёру')
 
 class OrderTypes(Enum):
 	REGULAR = e('REGULAR', name=u'обычный')

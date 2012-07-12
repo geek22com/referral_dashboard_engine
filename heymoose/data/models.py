@@ -223,7 +223,7 @@ class SubOffer(IdentifiableModel):
 		return u'неизвестно'
 	
 	def taxed(self, value, tax):
-		return (value * Decimal(1.0 - float(tax) / 100.0)).quantize(Decimal('1.00'))
+		return (value / Decimal(1.0 + float(tax) / 100.0)).quantize(Decimal('1.00'))
 	
 	@property
 	def payment_type(self):

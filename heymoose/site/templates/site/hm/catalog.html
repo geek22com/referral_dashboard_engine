@@ -40,7 +40,31 @@
 			width: auto;
 			max-width: 1300px;
 		}
+		
+		.collapse-container {
+			overflow: hidden;
+		}
 	</style>
+	
+	<script type="text/javascript">
+		$(function() {
+			var collapseHeight = 110;
+			$('.collapse-container').each(function() {
+				if ($(this).height() > collapseHeight) {
+					$(this).data('origHeight', $(this).height());
+					$(this).height(collapseHeight);
+					$(this).addClass('collapsed');
+					$(this).siblings('.collapse-link').show();
+				}
+			});
+			$('.collapse-link').click(function() {
+				var container = $(this).siblings('.collapse-container');
+				var animHeight = container.hasClass('collapsed') ? container.data('origHeight') : collapseHeight; 
+				container.animate({ height : animHeight }, 'fast').toggleClass('collapsed');
+				return false;
+			});
+		})
+	</script>
 {% endblock %}
 
 {% block top_unit_container %}{% endblock %}
@@ -110,22 +134,28 @@
 			</td>
 			{% endif %}
 			<td class="small" {{ rowspan }}>
-				{{ offer.regions_full|attrlist('country_name')|join(', ')|default('&mdash;', true)|safe }}
+				<div class="collapse-container">
+					{{ offer.regions_full|attrlist('country_name')|join(', ')|default('&mdash;', true)|safe }}
+				</div>
+				<a href="#" class="dotted-link collapse-link" style="display: none;">(ещё)</a>
 			</td>
 			<td class="categories-cell small" {{ rowspan }}>
 				{% if offer.categories %}
-				<ul class="toplevel-list toplevel-list--no-bottom-margin">
-					{% for group in offer.categories|groupby('grouping') %}
-					<li>
-						{{ group.grouper }}
-						<ul class="dashed-list">
-							{% for category in group.list %}
-							<li>{{ category.name }}</li>
-							{% endfor %}
-						</ul>
-					</li>
-					{% endfor %}
-				</ul>
+				<div class="collapse-container">
+					<ul class="toplevel-list toplevel-list--no-bottom-margin">
+						{% for group in offer.categories|groupby('grouping') %}
+						<li>
+							{{ group.grouper }}
+							<ul class="dashed-list">
+								{% for category in group.list %}
+								<li>{{ category.name }}</li>
+								{% endfor %}
+							</ul>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+				<a href="#" class="dotted-link collapse-link" style="display: none;">(ещё)</a>
 				{% else %}
 				&mdash;
 				{% endif %}

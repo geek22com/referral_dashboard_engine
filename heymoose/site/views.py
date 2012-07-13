@@ -6,13 +6,15 @@ from heymoose.forms import forms
 from heymoose.utils.gen import check_password_hash
 from heymoose.utils.convert import to_unixtime
 from heymoose.utils.pagination import current_page, page_limits, paginate
-from heymoose.views.decorators import template
+from heymoose.views.decorators import template, paginated
 from heymoose.db.models import Contact, NewsItem
 from heymoose.mail import marketing as mmail, transactional as tmail
 from heymoose.data.models import User
 from heymoose.data.enums import Roles
 from heymoose import resource as rc
 from datetime import datetime
+
+OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 
 
 @bp.route('/')
@@ -226,13 +228,13 @@ def advertisers_cpa():
 	return render_template('site/hm/advertisers-cpa.html')
 
 @bp.route('/catalog/')
-def catalog():
-	page = current_page()
-	per_page = app.config.get('OFFERS_PER_PAGE', 10)
-	offset, limit = page_limits(page, per_page)
-	offers, count = rc.offers.list(offset=offset, limit=limit, approved=True, active=True, launched=True, showcase=True)
-	pages = paginate(page, count, per_page)
-	return render_template('site/hm/catalog.html', offers=offers, pages=pages)
+@template('site/hm/catalog.html')
+@paginated(OFFERS_PER_PAGE)
+def catalog(**kwargs):
+	form = forms.OfferFilterForm(request.args)
+	kwargs.update(form.backend_args())
+	offers, count = rc.offers.list(approved=True, active=True, launched=True, showcase=True, **kwargs)
+	return dict(offers=offers, count=count, form=form)
 
 @bp.route('/catalog/old')
 def catalog_old():

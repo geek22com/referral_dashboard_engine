@@ -870,6 +870,9 @@ class OfferFilterForm(Form):
 			cpa_policy=UNSET if self.payment_type.data in (0, 1) else
 				enums.CpaPolicies.FIXED if self.payment_type.data == 2 else enums.CpaPolicies.PERCENT
 		)
+	
+	def has_filled_fields(self):
+		return self.region.data or self.category.data or self.payment_type.data > 0
 
 
 class GamakAppForm(Form):

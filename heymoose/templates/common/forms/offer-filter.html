@@ -19,6 +19,8 @@
 				});
 				return false;
 			});
+			if ($('.offer-filter-body').data('filled'))
+				$('.offer-filter-trigger').click();
 		})
 	</script>
 {% endmacro %}
@@ -29,7 +31,7 @@
 			<b>Фильтр</b>
 			<a href="#" class="offer-filter-trigger dotted-link">[показать]</a>
 		</div>
-		<div class="offer-filter-body" style="display: none;">
+		<div class="offer-filter-body" style="display: none;" {% if form.has_filled_fields() %}data-filled="1"{% endif %}>
 			<form method="get" action="" class="validate2">
 				<div class="clearfix" style="margin-bottom: 0;">
 					<div class="row">

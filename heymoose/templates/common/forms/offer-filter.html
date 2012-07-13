@@ -1,0 +1,63 @@
+{% import 'common/forms.html' as forms %}
+
+{% macro head() %}
+	<style type="text/css">
+		li.important-region label {
+			font-weight: bold;
+		}
+		
+		.offer-filter-body {
+			margin-top: 10px;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function() {
+			$('.regions-list input[value=RU]').closest('li').addClass('important-region');
+			$('.offer-filter-trigger').click(function() {
+				$('.offer-filter-body').slideToggle('fast', function() {
+					$('.offer-filter-trigger').text($(this).is(':visible') ? '[скрыть]' : '[показать]');					
+				});
+				return false;
+			});
+		})
+	</script>
+{% endmacro %}
+
+{% macro html(form, title) %}
+	<div class="well span14">
+		<div class="offer-filter-head">
+			<b>Фильтр</b>
+			<a href="#" class="offer-filter-trigger dotted-link">[показать]</a>
+		</div>
+		<div class="offer-filter-body" style="display: none;">
+			<form method="get" action="" class="validate2">
+				<div class="clearfix" style="margin-bottom: 0;">
+					<div class="row">
+						<div class="span6 formfield clearfix inner-field {{ forms.css_errors(form.category) }}">
+							{{ forms.label(form.category, class='simple required') }}
+							<div class="checklist" style="height: 200px; background-color: #FFF;">
+								{{ forms.field(form.category, class='inputs-list categorized') }}
+							</div>
+							{{ forms.errors(form.category) }}
+						</div>
+						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.region) }}">
+							{{ forms.label(form.region, class='simple required') }}
+							<div class="checklist" style="height: 200px; background-color: #FFF;">
+								{{ forms.field(form.region, class='inputs-list regions-list') }}
+							</div>
+							{{ forms.errors(form.region) }}
+						</div>
+						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.payment_type) }}">
+							{{ forms.label(form.payment_type, class='simple required') }}
+							{{ forms.field(form.payment_type, class='span4') }}
+							{{ forms.errors(form.payment_type) }}
+						</div>
+					</div>
+					<div class="right" style="margin-top: -30px;">
+						<input type="submit" value="Применить" class="btn primary" />
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+{% endmacro %}

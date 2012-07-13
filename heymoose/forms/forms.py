@@ -10,6 +10,7 @@ from heymoose.filters import currency, currency_sign
 from heymoose.utils.times import begin_of_day, end_of_day, relativedelta
 from heymoose.utils.gen import generate_unique_filename, generate_uid
 from heymoose.utils.convert import to_unixtime, datetime_nosec_format
+from heymoose.utils.dicts import UNSET, create_dict
 from flask import g
 from datetime import datetime
 import validators
@@ -839,6 +840,36 @@ class CategoryForm(Form):
 	
 class CategoryEditForm(CategoryForm):
 	group = myfields.CategoryGroupField(u'Родительская категория', empty=None)
+
+
+class OfferFilterForm(Form):
+	payment_type = SelectField(u'Тип оплаты', choices=[
+		(0, u'(любой)'),
+		(1, u'Фиксированная за клик'),
+		(2, u'Фиксированная за действие'),
+		(3, u'Процент с заказа или покупки')
+	], coerce=int, default=0)
+	category = myfields.CategoriesField(u'Категории', default=False)
+	region = myfields.RegionsField(u'Регионы',
+		predefined=('RU', 'UA', 'BY', 'KZ', 'AM', 'AZ', 'KG', 'MD', 'TJ', 'TM', 'UZ')
+	)
+	
+	def query_args(self):
+		return dict(
+			payment_type=self.payment_type.data,
+			category=self.category.data,
+			region=self.region.data
+		)
+	
+	def backend_args(self):
+		return create_dict(
+			category=self.category.data,
+			region=self.region.data,
+			pay_method=UNSET if self.payment_type.data == 0 else
+				enums.PayMethods.CPC if self.payment_type.data == 1 else enums.PayMethods.CPA,
+			cpa_policy=UNSET if self.payment_type.data in (0, 1) else
+				enums.CpaPolicies.FIXED if self.payment_type.data == 2 else enums.CpaPolicies.PERCENT
+		)
 
 
 class GamakAppForm(Form):

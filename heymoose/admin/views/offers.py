@@ -20,8 +20,10 @@ KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
 @template('admin/offers/list.html')
 @paginated(OFFERS_PER_PAGE)
 def offers_list(**kwargs):
-	offers, count = rc.offers.list(**kwargs)
-	return dict(offers=offers, count=count)
+	form = forms.OfferFilterForm(request.args)
+	kwargs.update(form.backend_args())
+	offers, count = rc.offers.list(**kwargs) if form.validate() else ([], 0)
+	return dict(offers=offers, count=count, form=form)
 
 @bp.route('/offers/requests', methods=['GET', 'POST'])
 @template('admin/offers/requests.html')

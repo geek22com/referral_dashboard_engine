@@ -159,7 +159,11 @@ class RegionsField(CheckboxListField):
 		try:
 			self.data = list(value)
 		except:
-			self.data = None
+			self.data = []
+	
+	def process_formdata(self, valuelist):
+		super(RegionsField, self).process_formdata(valuelist)
+		self.data = self.data or []
 	
 	def populate_obj(self, obj, name):
 		setattr(obj, name, set(self.data))
@@ -173,6 +177,7 @@ class CategoriesField(CategorizedCheckboxListField):
 	
 	def process_formdata(self, valuelist):
 		super(CategoriesField, self).process_formdata(valuelist)
+		self.data = self.data or []
 		categories_dict = {category.id : category for category in self.categories}
 		self.selected_categories = []
 		if self.data:
@@ -185,7 +190,7 @@ class CategoriesField(CategorizedCheckboxListField):
 		try:
 			self.data = [category.id for category in value]
 		except (ValueError, TypeError):
-			self.data = None
+			self.data = []
 	
 	def populate_obj(self, obj, name):
 		setattr(obj, name, self.selected_categories)

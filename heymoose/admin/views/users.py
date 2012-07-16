@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, request, redirect, flash, url_for, abort
+from flask import render_template, g, request, redirect, flash, url_for, abort, session
 from heymoose import app, resource as rc
 from heymoose.admin import blueprint as bp
 from heymoose.views.decorators import template, sorted, paginated
@@ -52,6 +52,12 @@ def users_info(id):
 			flash(u'Учетная запись разблокирована', 'success')
 			return redirect(url_for('.users_info', id=user.id))
 	return render_template('admin/users-info.html', user=user, form=form)
+
+@bp.route('/users/<int:id>/login')
+def users_info_login(id):
+	session['user_id'] = id
+	session.permanent = False
+	return redirect(url_for('site.gateway'))
 
 @bp.route('/users/<int:id>/offers')
 def users_info_offers(id):

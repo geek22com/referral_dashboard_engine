@@ -5,6 +5,7 @@ from heymoose import app
 from heymoose.utils.gen import generate_password_hash, aes_base16_encrypt, aes_base16_decrypt
 from decimal import Decimal
 from repos import regions_repo
+from datetime import datetime
 import enums
 import os, hashlib, uuid
 
@@ -290,8 +291,12 @@ class Offer(SubOffer):
 		return None
 	
 	@property
+	def launched(self):
+		return datetime.now() >= self.launch_time
+	
+	@property
 	def visible(self):
-		return self.approved and self.active
+		return self.approved and self.active and self.launched
 	
 	@property
 	def regions_full(self):

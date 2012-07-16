@@ -19,15 +19,36 @@ def existing_offer(id):
 def requested_offer(id):
 	return rc.offers.get_requested(id, g.user.id)
 
-def requested_or_existing_offer(id):
-	return rc.offers.get_try_requested(id, g.user.id) if g.user.is_affiliate else rc.offers.get_by_id(id) 
+def visible_offer(id):
+	'''
+	For both advertisers and affiliates. For advertiser returns offer only if it is his offer
+	or if this offer is visible (approved, active, launched). For affiliate returns offer only
+	if offer is granted for this affiliate or if it is visible. Otherwise returns 404.
+	'''
+	if g.user.is_advertiser:
+		offer = rc.offers.get_by_id(id)
+		if offer.owned_by(g.user) or offer.visible:
+			return offer
+	else:
+		offer = rc.offers.get_try_requested(id, g.user.id)
+		if offer.grant or offer.visible:
+			return offer
+	abort(404)
 
 def my_offer(id):
+	'''
+	For advertisers only. Returns offer if it is owned by current advetiser.
+	Otherwise returns 404.
+	'''
 	offer = existing_offer(id)
 	if not offer.owned_by(g.user): abort(404)
 	return offer
 
 def approved_requested_offer(id):
+	'''
+	For affiliates only. Returns offer if it has approved grant for current affiliate.
+	Otherwise returns 404.
+	'''
 	offer = requested_offer(id)
 	if not offer.grant or not offer.grant.approved: abort(404)
 	return offer
@@ -80,7 +101,7 @@ def offers_new():
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 @template('cabinetcpa/offers/info/info.html')
 def offers_info(id):
-	offer = requested_or_existing_offer(id)
+	offer = visible_offer(id)
 	form = forms.OfferRequestForm(request.form)
 	if g.user.is_affiliate and not offer.grant and request.method == 'POST' and form.validate():
 		offer_grant = OfferGrant(offer=offer, affiliate=g.user, message=form.message.data)
@@ -108,7 +129,7 @@ def offers_info_edit(id):
 @bp.route('/offers/<int:id>/actions/', methods=['GET', 'POST'])
 @template('cabinetcpa/offers/info/actions.html')
 def offers_info_actions(id):
-	offer = requested_or_existing_offer(id)
+	offer = visible_offer(id)
 	for suboffer in offer.suboffers:
 		suboffer.form = forms.SubOfferForm(request.form, obj=suboffer)
 	form = forms.SubOfferForm(request.form)
@@ -162,7 +183,7 @@ def offers_info_actions_edit(id, sid):
 @bp.route('/offers/<int:id>/materials', methods=['GET', 'POST'])
 @template('cabinetcpa/offers/info/materials.html')
 def offers_info_materials(id):
-	offer = requested_or_existing_offer(id)
+	offer = visible_offer(id)
 	for banner in offer.banners:
 		banner.form = forms.OfferBannerUrlForm(obj=banner)
 	form = forms.OfferBannerForm(request.form)
@@ -293,6 +314,6 @@ def offers_info_balance(id):
 @bp.route('/offers/<int:id>/stats')
 @template('cabinetcpa/offers/info/stats.html')
 def offers_info_stats(id):
-	offer = requested_or_existing_offer(id)
+	offer = visible_offer(id)
 	return dict(offer=offer)
 

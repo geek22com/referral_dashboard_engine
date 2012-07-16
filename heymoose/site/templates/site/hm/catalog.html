@@ -1,4 +1,6 @@
 {% extends "site/hm/layout.html" %}
+{% import "common/macros/lists.html" as lists with context %}
+{% import "common/forms/offer-filter.html" as offer_filter_macros %}
 
 {% block title %}Каталог офферов{% endblock %}
 
@@ -6,6 +8,8 @@
 
 {% block extrahead %}
 	{{ super() }}
+	<script type="text/javascript" src="{{ url_for('static', filename='./js/categorized.list.js') }}"></script>
+	{{ offer_filter_macros.head() }}
 	<style type="text/css">
 		img.offer-logo {
 			max-width: 150px;
@@ -48,6 +52,8 @@
 	
 	<script type="text/javascript">
 		$(function() {
+			$('ul.categorized').categorizedList();
+			
 			var collapseHeight = 110;
 			$('.collapse-container').each(function() {
 				if ($(this).height() > collapseHeight) {
@@ -87,6 +93,10 @@
 	</div>
 </div>
 {% endif %}
+
+<div class="span14" style="margin: 0 auto;">
+	{{ offer_filter_macros.html(form) }}
+</div>
 
 {% if offers %}
 <table>
@@ -170,9 +180,9 @@
 		{% endfor %}
 	</tbody>
 </table>
-{{ macros.paginate(pages, '.catalog') }}
+{{ lists.paginate(pages, **form.query_args()) }}
 {% else %}
-Программ пока нет.
+Ни одной программы не найдено.
 {% endif %}
 
 {% endblock %}

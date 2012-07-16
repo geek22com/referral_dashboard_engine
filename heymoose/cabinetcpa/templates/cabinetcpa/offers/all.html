@@ -1,22 +1,27 @@
 {% extends "cabinetcpa/offers/layout.html" %}
+{% import "common/macros/lists.html" as lists with context %}
 {% import 'common/offers.html' as offer_macros %}
+{% import "common/forms/offer-filter.html" as offer_filter_macros %}
 
 {% set content_fluid = true %}
 {% set activetab = 'all' %}
 
 {% block extrahead %}
 	{{ super() }}
+	{{ offer_filter_macros.head() }}
 	{{ offer_macros.head() }}
 {% endblock %}
 
 {% block tabcontent %}
 
+{{ offer_filter_macros.html(form) }}
+
 {% if offers %}
 	{{ offer_macros.table(offers, grant_status=g.user.is_affiliate, user=g.user) }}
-	{{ macros.paginate(pages, '.offers_all') }}
+	{{ lists.paginate(pages, **form.query_args()) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
-		<p><strong>Список пуст.</strong> Не найдено ни одного активного оффера.</p>
+		<p><strong>Список пуст.</strong> Не найдено ни одного оффера.</p>
 	</div>
 {% endif %}
 

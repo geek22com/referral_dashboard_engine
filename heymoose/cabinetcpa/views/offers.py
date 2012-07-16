@@ -6,40 +6,38 @@ from heymoose.data.models import Offer, OfferGrant, SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
 from heymoose.mail import transactional as mail
 from heymoose.utils.pagination import current_page, page_limits, paginate
+from heymoose.views.decorators import template, paginated
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
 import base64
 
+OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 
 @bp.route('/offers/')
-def offers_all():
-	page = current_page()
-	per_page = app.config.get('OFFERS_PER_PAGE', 10)
-	offset, limit = page_limits(page, per_page)
-	aff_id_arg = dict(aff_id=g.user.id) if g.user.is_affiliate else dict()
-	offers, count = rc.offers.list(offset=offset, limit=limit, approved=True, active=True, launched=True, **aff_id_arg)
-	pages = paginate(page, count, per_page)
-	return render_template('cabinetcpa/offers/all.html', offers=offers, pages=pages)
+@template('cabinetcpa/offers/all.html')
+@paginated(OFFERS_PER_PAGE)
+def offers_all(**kwargs):
+	form = forms.OfferFilterForm(request.args)
+	kwargs.update(form.backend_args())
+	if g.user.is_affiliate: kwargs.update(aff_id=g.user.id)
+	offers, count = rc.offers.list(approved=True, active=True, launched=True, **kwargs) if form.validate() else ([], 0)
+	return dict(offers=offers, count=count, form=form)
 
 @bp.route('/offers/my')
 @advertiser_only
-def offers_list():
-	page = current_page()
-	per_page = app.config.get('OFFERS_PER_PAGE', 10)
-	offset, limit = page_limits(page, per_page)
-	offers, count = rc.offers.list(offset=offset, limit=limit, advertiser_id=g.user.id)
-	pages = paginate(page, count, per_page)
-	return render_template('cabinetcpa/offers/list.html', offers=offers, pages=pages)
+@template('cabinetcpa/offers/list.html')
+@paginated(OFFERS_PER_PAGE)
+def offers_list(**kwargs):
+	offers, count = rc.offers.list(advertiser_id=g.user.id, **kwargs)
+	return dict(offers=offers, count=count)
 
 @bp.route('/offers/requested')
 @affiliate_only
-def offers_requested():
-	page = current_page()
-	per_page = app.config.get('OFFERS_PER_PAGE', 10)
-	offset, limit = page_limits(page, per_page)
-	offers, count = rc.offers.list_requested(g.user.id, offset=offset, limit=limit)
-	pages = paginate(page, count, per_page)
-	return render_template('cabinetcpa/offers/requested.html', offers=offers, pages=pages)
+@template('cabinetcpa/offers/requested.html')
+@paginated(OFFERS_PER_PAGE)
+def offers_requested(**kwargs):
+	offers, count = rc.offers.list_requested(g.user.id, **kwargs)
+	return dict(offers=offers, count=count)
 
 @bp.route('/offers/new', methods=['GET', 'POST'])
 @advertiser_only

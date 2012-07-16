@@ -30,6 +30,15 @@
 {% endif %}
 
 {% if affiliate and offer.grant %}
+	{% if not offer.approved %}
+		<div class="clearfix alert-message block-message error">
+			<p>Оффер заблокирован администрацией.</p>
+		</div>
+	{% elif not offer.active %}
+		<div class="clearfix alert-message block-message warning">
+			<p>Оффер отключен рекламодателем.</p>
+		</div>
+	{% endif %}
 	{% if offer.grant.blocked %}
 		{% if offer.grant.block_reason %}
 		<div class="clearfix alert-message block-message error">

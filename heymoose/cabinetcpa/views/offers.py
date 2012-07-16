@@ -1,17 +1,57 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, request, flash, g, redirect, url_for, abort, jsonify
+from flask import request, flash, g, redirect, url_for, abort, jsonify
 from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import Offer, OfferGrant, SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
 from heymoose.mail import transactional as mail
-from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.views.decorators import template, paginated
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
 import base64
 
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
+OFFER_REQUESTS_PER_PAGE = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
+
+def existing_offer(id):
+	return rc.offers.get_by_id(id)
+
+def requested_offer(id):
+	return rc.offers.get_requested(id, g.user.id)
+
+def visible_offer(id):
+	'''
+	For both advertisers and affiliates. For advertiser returns offer only if it is his offer
+	or if this offer is visible (approved, active, launched). For affiliate returns offer only
+	if offer is granted for this affiliate or if it is visible. Otherwise returns 404.
+	'''
+	if g.user.is_advertiser:
+		offer = rc.offers.get_by_id(id)
+		if offer.owned_by(g.user) or offer.visible:
+			return offer
+	else:
+		offer = rc.offers.get_try_requested(id, g.user.id)
+		if offer.grant or offer.visible:
+			return offer
+	abort(404)
+
+def my_offer(id):
+	'''
+	For advertisers only. Returns offer if it is owned by current advetiser.
+	Otherwise returns 404.
+	'''
+	offer = existing_offer(id)
+	if not offer.owned_by(g.user): abort(404)
+	return offer
+
+def approved_requested_offer(id):
+	'''
+	For affiliates only. Returns offer if it has approved grant for current affiliate.
+	Otherwise returns 404.
+	'''
+	offer = requested_offer(id)
+	if not offer.grant or not offer.grant.approved: abort(404)
+	return offer
 
 @bp.route('/offers/')
 @template('cabinetcpa/offers/all.html')
@@ -41,6 +81,7 @@ def offers_requested(**kwargs):
 
 @bp.route('/offers/new', methods=['GET', 'POST'])
 @advertiser_only
+@template('cabinetcpa/offers/new.html')
 def offers_new():
 	tmpl = forms.SubOfferForm(prefix='suboffers-0-')
 	form = forms.OfferForm(request.form)
@@ -57,24 +98,25 @@ def offers_new():
 			rc.offers.add_suboffer(id, suboffer)
 		flash(u'Оффер успешно создан', 'success')
 		return redirect(url_for('.offers_info', id=id))
-	return render_template('cabinetcpa/offers/new.html', form=form, tmpl=tmpl)
+	return dict(form=form, tmpl=tmpl)
 
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
+@template('cabinetcpa/offers/info/info.html')
 def offers_info(id):
-	offer = rc.offers.get_try_requested(id, g.user.id) if g.user.is_affiliate else rc.offers.get_by_id(id)
+	offer = visible_offer(id)
 	form = forms.OfferRequestForm(request.form)
 	if g.user.is_affiliate and not offer.grant and request.method == 'POST' and form.validate():
 		offer_grant = OfferGrant(offer=offer, affiliate=g.user, message=form.message.data)
 		rc.offer_grants.add(offer_grant)
 		flash(u'Заявка на сотрудничество успешно отправлена', 'success')
 		return redirect(url_for('.offers_requested'))
-	return render_template('cabinetcpa/offers/info/info.html', offer=offer, form=form)
+	return dict(offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/edit', methods=['GET', 'POST'])
 @advertiser_only
+@template('cabinetcpa/offers/info/edit.html')
 def offers_info_edit(id):
-	offer = rc.offers.get_by_id(id)
-	if not offer.owned_by(g.user): abort(403)
+	offer = my_offer(id)
 	form = forms.OfferEditForm(request.form, obj=offer)
 	if request.method == 'POST' and form.validate():
 		form.populate_obj(offer)
@@ -84,14 +126,14 @@ def offers_info_edit(id):
 			return redirect(url_for('.offers_info', id=offer.id))
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
-	return render_template('cabinetcpa/offers/info/edit.html', offer=offer, form=form)
+	return dict(offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/actions/', methods=['GET', 'POST'])
+@template('cabinetcpa/offers/info/actions.html')
 def offers_info_actions(id):
-	offer = rc.offers.get_try_requested(id, g.user.id) if g.user.is_affiliate else rc.offers.get_by_id(id)
+	offer = visible_offer(id)
 	for suboffer in offer.suboffers:
 		suboffer.form = forms.SubOfferForm(request.form, obj=suboffer)
-	
 	form = forms.SubOfferForm(request.form)
 	if offer.owned_by(g.user) and request.method == 'POST' and form.validate():
 		suboffer = SubOffer()
@@ -99,13 +141,13 @@ def offers_info_actions(id):
 		rc.offers.add_suboffer(id, suboffer)
 		flash(u'Действие успешно добавлено', 'success')
 		return redirect(request.url)
-	return render_template('cabinetcpa/offers/info/actions.html', offer=offer, form=form)
+	return dict(offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/actions/edit', methods=['GET', 'POST'])
 @advertiser_only
+@template('cabinetcpa/offers/info/actions-edit.html')
 def offers_info_actions_main_edit(id):
-	offer = rc.offers.get_by_id(id)
-	if not offer.owned_by(g.user): abort(403)
+	offer = my_offer(id)
 	suboffer = offer
 	form = forms.MainSubOfferForm(request.form, obj=offer)
 	form.offer_id = offer.id
@@ -117,13 +159,13 @@ def offers_info_actions_main_edit(id):
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.offers_info_actions', id=offer.id))
-	return render_template('cabinetcpa/offers/info/actions-edit.html', **locals())
+	return locals()
 
 @bp.route('/offers/<int:id>/actions/<int:sid>/edit', methods=['GET', 'POST'])
 @advertiser_only
+@template('cabinetcpa/offers/info/actions-edit.html')
 def offers_info_actions_edit(id, sid):
-	offer = rc.offers.get_by_id(id)
-	if not offer.owned_by(g.user): abort(403)
+	offer = my_offer(id)
 	suboffer = None
 	for sub in offer.all_suboffers:
 		if sub.id == sid: suboffer = sub
@@ -133,17 +175,17 @@ def offers_info_actions_edit(id, sid):
 	if request.method == 'POST' and form.validate():
 		form.populate_obj(suboffer)
 		if suboffer.updated():
-			print suboffer.updated_values()
 			rc.offers.update_suboffer(offer.id, suboffer)
 			flash(u'Действие успешно изменено', 'success')
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.offers_info_actions', id=offer.id))
-	return render_template('cabinetcpa/offers/info/actions-edit.html', **locals())
+	return locals()
 
 @bp.route('/offers/<int:id>/materials', methods=['GET', 'POST'])
+@template('cabinetcpa/offers/info/materials.html')
 def offers_info_materials(id):
-	offer = rc.offers.get_try_requested(id, g.user.id) if g.user.is_affiliate else rc.offers.get_by_id(id)
+	offer = visible_offer(id)
 	for banner in offer.banners:
 		banner.form = forms.OfferBannerUrlForm(obj=banner)
 	form = forms.OfferBannerForm(request.form)
@@ -154,13 +196,12 @@ def offers_info_materials(id):
 		rc.offers.add_banner(offer.id, banner, image_base64)
 		flash(u'Баннер успешно загружен', 'success')
 		return redirect(request.url)
-	return render_template('cabinetcpa/offers/info/materials.html', offer=offer, form=form)
+	return dict(offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/materials/<int:bid>/delete')
 @advertiser_only
 def offers_info_materials_delete(id, bid):
-	offer = rc.offers.get_by_id(id)
-	if not offer.owned_by(g.user): abort(403)
+	offer = my_offer(id)
 	if not offer.banner_by_id(bid): abort(404)
 	rc.offers.delete_banner(id, bid)
 	flash(u'Баннер удален', 'success')
@@ -170,8 +211,7 @@ def offers_info_materials_delete(id, bid):
 #@bp.route('/offers/<int:id>/materials/<int:bid>', methods=['POST'])
 @advertiser_only
 def offers_info_materials_update(id, bid):
-	offer = rc.offers.get_by_id(id)
-	if not offer.owned_by(g.user): abort(403)
+	offer = my_offer(id)
 	banner = offer.banner_by_id(bid) or abort(404)
 	form = forms.OfferBannerUrlForm(request.form, obj=banner)
 	if request.method == 'POST' and form.validate():
@@ -182,9 +222,9 @@ def offers_info_materials_update(id, bid):
 
 @bp.route('/offers/<int:id>/materials/up/', methods=['GET', 'POST'])
 @advertiser_only
+@template('cabinetcpa/offers/info/materials-upload.html')
 def offers_info_materials_upload(id):
-	offer = rc.offers.get_by_id(id)
-	if not offer.owned_by(g.user): abort(403)
+	offer = my_offer(id)
 	if request.method == 'POST':
 		form = forms.OfferBannerForm(request.form)
 		if form.validate():
@@ -196,14 +236,14 @@ def offers_info_materials_upload(id):
 			return jsonify(name=f.name)
 		else:
 			return jsonify(error=form.image.errors[0])
-	return render_template('cabinetcpa/offers/info/materials-upload.html', offer=offer)
+	return dict(offer=offer)
 
 @bp.route('/offers/<int:id>/requests', methods=['GET', 'POST'])
 @advertiser_only
-def offers_info_requests(id):
-	offer = rc.offers.get_by_id(id)
-	if not offer.owned_by(g.user): abort(403)
-	
+@template('cabinetcpa/offers/info/requests.html')
+@paginated(OFFER_REQUESTS_PER_PAGE)
+def offers_info_requests(id, **kwargs):
+	offer = my_offer(id)
 	filter_args = {
 		None: dict(),
 		'moderation': dict(state=OfferGrantState.MODERATION, blocked=False),
@@ -211,12 +251,8 @@ def offers_info_requests(id):
 		'rejected': dict(state=OfferGrantState.REJECTED, blocked=False),
 		'blocked': dict(blocked=True)
 	}.get(request.args.get('filter', None), dict())
-	
-	page = current_page()
-	per_page = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
-	offset, limit = page_limits(page, per_page)
-	grants, count = rc.offer_grants.list(offer_id=offer.id, offset=offset, limit=limit, full=False, **filter_args)
-	pages = paginate(page, count, per_page)
+	kwargs.update(filter_args)
+	grants, count = rc.offer_grants.list(offer_id=offer.id, full=False, **kwargs)
 	
 	form = forms.OfferRequestDecisionForm(request.form)
 	if request.method == 'POST' and form.validate():
@@ -232,14 +268,14 @@ def offers_info_requests(id):
 				mail.user_grant_rejected(grant.offer, grant.affiliate, form.reason.data)
 				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
-	return render_template('cabinetcpa/offers/info/requests.html', offer=offer, grants=grants, pages=pages, form=form)
+	return dict(offer=offer, grants=grants, count=count, form=form)
 
 @bp.route('/offers/<int:id>/settings', methods=['GET', 'POST'])
 @affiliate_only
+@template('cabinetcpa/offers/info/settings.html')
 def offers_info_settings(id):
-	offer = rc.offers.get_try_requested(id, g.user.id)
+	offer = approved_requested_offer(id)
 	grant = offer.grant
-	if not grant or not grant.approved: abort(403)
 	form = forms.OfferGrantForm(request.form, obj=grant)
 	if request.method == 'POST' and form.validate():
 		form.populate_obj(grant)
@@ -249,13 +285,13 @@ def offers_info_settings(id):
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(request.url)
-	return render_template('cabinetcpa/offers/info/settings.html', offer=offer, form=form)
+	return dict(offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/balance', methods=['GET', 'POST'])
 @advertiser_only
+@template('cabinetcpa/offers/info/balance.html')
 def offers_info_balance(id):
-	offer = rc.offers.get_by_id(id)
-	if not offer.owned_by(g.user): abort(403)
+	offer = my_offer(id)
 	form_in = forms.BalanceForm()
 	form_out = forms.BalanceForm()
 	if request.method == 'POST':
@@ -275,10 +311,11 @@ def offers_info_balance(id):
 		else:
 			flash(u'Ошибка операции со счетом', 'error')
 			return redirect(url_for('.offers_info', id=offer.id))	
-	return render_template('cabinetcpa/offers/info/balance.html', offer=offer, form_in=form_in, form_out=form_out)
+	return dict(offer=offer, form_in=form_in, form_out=form_out)
 
 @bp.route('/offers/<int:id>/stats')
+@template('cabinetcpa/offers/info/stats.html')
 def offers_info_stats(id):
-	offer = rc.offers.get_try_requested(id, g.user.id) if g.user.is_affiliate else rc.offers.get_by_id(id)
-	return render_template('cabinetcpa/offers/info/stats.html', offer=offer)
+	offer = visible_offer(id)
+	return dict(offer=offer)
 

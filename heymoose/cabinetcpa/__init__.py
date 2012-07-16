@@ -8,7 +8,6 @@ blueprint = Blueprint('cabinetcpa', __name__, url_prefix='/cabinet',
 def before_request():
 	if not g.user:
 		return redirect(url_for('site.login', back=request.url))
-	g.user = users.get_by_id(g.user.id)
 	if not g.user.is_affiliate and not g.user.is_advertiser:
 		return redirect(url_for('site.gateway'))
 	

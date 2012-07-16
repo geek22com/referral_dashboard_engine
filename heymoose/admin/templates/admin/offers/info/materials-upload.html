@@ -1,0 +1,79 @@
+{% extends "admin/offers/info/layout.html" %}
+{% import 'common/materials.html' as materials_macros %}
+
+{% set activetab = 'materials' %}
+
+{% block tabcontent %}
+
+<div class="well">
+	<div class="row">
+		<div class="span5">
+			<input id="fileupload" type="file" name="image" multiple style="margin-top: 20px;">
+		</div>
+		<div class="span9">
+			<p>На этой странице вы можете загрузить сразу несколько изображений, выбрав их
+			в диалоге либо перетащив нужные файлы на страницу.</p>
+			<a href="{{ url_for('.offers_info_materials', id=offer.id) }}">вернуться к просмотру материалов</a>
+		</div>
+	</div>
+</div>
+<div id="modal-progress" class="modal fade" style="display: none;">
+	<div class="modal-header">
+		<h3>Загрузка баннеров</h3>
+	</div>
+	<div class="modal-body">
+		<p class="upload-status" style="font-weight: bold;">Идет загрузка...</p>
+		<p class="upload-progress"></p>
+		<div class="alert-message block-message error upload-log" style="display: none;">
+			<ul class="dashed-list"></ul>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="{{ url_for('.offers_info_materials', id=offer.id)}}" class="btn primary upload-finish">
+			Вернуться к рекламным материалам
+		</a>
+	</div>
+</div>
+
+<script src="{{ url_for('static', filename='js/fileupload/vendor/jquery.ui.widget.js') }}"></script>
+<script src="{{ url_for('static', filename='js/fileupload/vendor/js/jquery.iframe-transport.js') }}"></script>
+<script src="{{ url_for('static', filename='js/fileupload/jquery.fileupload.js') }}"></script>
+<script>
+$(function () {
+	var count = 0;
+	var success = 0;
+	var failed = 0;
+	
+	function updateStats() {
+		var text = '';
+		if (success) text += 'Успешно загружено ' + success + ' файлов. ';
+		if (failed)  text += 'Не загружено ' + failed + ' файлов.';
+		$('.upload-progress').text(text);
+		if (success + failed >= count)
+			$('.upload-status').text('Загрузка завершена!');
+	}
+	
+	$('#modal-progress').modal({ backdrop : 'static' });
+    $('#fileupload').fileupload({
+        dataType: 'json',
+        add: function(e, data) {
+        	if (count == 0) $('#modal-progress').modal('show');
+        	count += data.files.length;
+        	data.submit();
+        },
+        done: function (e, data) {
+        	if (!data.result.error) {
+        		success++;
+        	}
+        	else {
+        		failed++;
+        		$('.upload-log').show();
+        		$('<li>').text(data.result.error).appendTo($('.upload-log ul'));
+        	}
+        	updateStats();
+        }
+    });
+});
+</script>
+
+{% endblock %}

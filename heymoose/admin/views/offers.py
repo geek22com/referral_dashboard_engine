@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from flask import request, flash, redirect, url_for, abort
+from flask import request, flash, redirect, url_for, abort, jsonify
 from heymoose import app, resource as rc
 from heymoose.forms import forms
-from heymoose.data.models import SubOffer
+from heymoose.data.models import SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
 from heymoose.mail import transactional as mail
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.admin import blueprint as bp
+import base64
 
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 OFFER_REQUESTS_PER_PAGE = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
@@ -201,11 +202,45 @@ def offers_info_actions_edit(id, sid):
 	return dict(offer=offer, suboffer=suboffer, form=form)
 
 
-@bp.route('/offers/<int:id>/materials')
+@bp.route('/offers/<int:id>/materials', methods=['GET', 'POST'])
 @template('admin/offers/info/materials.html')
 def offers_info_materials(id):
 	offer = rc.offers.get_by_id(id)
+	form = forms.OfferBannerForm(request.form)
+	if request.method == 'POST' and form.validate():
+		banner = Banner()
+		form.populate_obj(banner)
+		image_base64 = base64.encodestring(request.files['image'].stream.read())
+		rc.offers.add_banner(offer.id, banner, image_base64)
+		flash(u'Баннер успешно загружен', 'success')
+		return redirect(request.url)
+	return dict(offer=offer, form=form)
+
+@bp.route('/offers/<int:id>/materials/<int:bid>/delete')
+def offers_info_materials_delete(id, bid):
+	offer = rc.offers.get_by_id(id)
+	if not offer.banner_by_id(bid): abort(404)
+	rc.offers.delete_banner(id, bid)
+	flash(u'Баннер удален', 'success')
+	return redirect(url_for('.offers_info_materials', id=id))
+
+@bp.route('/offers/<int:id>/materials/up/', methods=['GET', 'POST'])
+@template('admin/offers/info/materials-upload.html')
+def offers_info_materials_upload(id):
+	offer = rc.offers.get_by_id(id)
+	if request.method == 'POST':
+		form = forms.OfferBannerForm(request.form)
+		if form.validate():
+			banner = Banner()
+			form.populate_obj(banner)
+			f = request.files['image']
+			image_base64 = base64.encodestring(f.stream.read())
+			rc.offers.add_banner(offer.id, banner, image_base64)
+			return jsonify(name=f.name)
+		else:
+			return jsonify(error=form.image.errors[0])
 	return dict(offer=offer)
+
 
 @bp.route('/offers/<int:id>/requests', methods=['GET', 'POST'])
 @template('admin/offers/info/requests.html')

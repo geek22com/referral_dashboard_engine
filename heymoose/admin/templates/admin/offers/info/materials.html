@@ -5,8 +5,34 @@
 
 {% block tabcontent %}
 
+<form method="post" action="" class="widelabels validate2" enctype="multipart/form-data">
+	<fieldset>
+		<legend>Загрузка баннера</legend>
+		{% call forms.singlefield_desc(form.image) %}
+		<span class="help-block">
+			Принимаются изображения в формате JPG (JPEG), GIF, PNG, SWF (Flash), SVG.
+			Максимальный размер загружаемого изображения &mdash; 1Мб.
+		</span>
+		{% endcall %}
+		<div class="actions">
+			<input class="btn primary" type="submit" value="Загрузить" style="margin-right: 30px;" />
+			<a href="{{ url_for('.offers_info_materials_upload', id=offer.id) }}"
+			 >загрузить большое количество изображений</a>
+		</div>
+	</fieldset>
+</form>
+
 {% if offer.banners %}
-	{% call(head, banner) materials_macros.table(offer.banners) %}{% endcall %}
+	{% call(head, banner) materials_macros.table(offer.banners) %}
+		{% if head %}
+		<th class="header minimal-width"></th>
+		{% else %}
+		<td>
+			<a href="{{ url_for('.offers_info_materials_delete', id=offer.id, bid=banner.id)}}"
+			 class="danger" onclick="return confirm('Удалить баннер?');">удалить</a>
+		</td>
+		{% endif %}
+	{% endcall %}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Еще не было добавлено никаких материалов.</p>

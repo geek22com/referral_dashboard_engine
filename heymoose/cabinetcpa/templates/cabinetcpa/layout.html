@@ -68,11 +68,18 @@
 	<li id="menu-item-info"><a href="{{ url_for('.profile') }}">Профиль</a></li>
 	{% if g.user.is_affiliate %}
 	<li id="menu-item-withdrawals"><a href="{{ url_for('.withdrawals') }}">Выплаты</a></li>
-	<li id="menu-item-contest"><a href="{{ url_for('site.affiliates_contest') }}" class="unread">Конкурс вебмастеров!</a></li>
 	{% endif %}
+	<li id="menu-item-notifications">
+		<a href="{{ url_for('.notifications') }}" {% if g.notifications_unread > 0 %}class="unread"{% endif %}>
+			Уведомления {{ '({0})'.format(g.notifications_unread) if g.notifications_unread > 0 }}
+		</a>
+	</li>
 </ul>
 
 <ul class="nav secondary-nav">
+	{% if g.user.is_affiliate %}
+	<li id="menu-item-contest"><a href="{{ url_for('site.affiliates_contest') }}" class="unread">Конкурс вебмастеров!</a></li>
+	{% endif %}
 	<li class="dropdown">
 		<a class="dropdown-toggle" href="#">{{ g.user.full_name or g.user.email }}</a>
 		<ul class="dropdown-menu">

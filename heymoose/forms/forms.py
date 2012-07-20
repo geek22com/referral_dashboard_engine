@@ -226,7 +226,8 @@ class OrderBlockForm(EmailNotifyForm):
 		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
 	], default=u'Заказ не соответствует правилам размещения рекламы в сети ВКонтакте.')
 
-class OfferBlockForm(EmailNotifyForm):
+class OfferBlockForm(Form):
+	notify = BooleanField(u'Уведомить рекламодателя и партнеров', default=True)
 	reason = TextAreaField(u'Причина', [
 		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
 	])
@@ -683,7 +684,7 @@ class AdminOfferRequestDecisionForm(OfferRequestDecisionForm):
 	reason = TextAreaField(u'Причина', [
 		validators.Length(max=500, message=u'Причина должна быть длиной не более 500 символов')
 	], default=u'Ваш способ продвижения не подходит для данной рекламной кампании')
-	mail = BooleanField(u'уведомить пользователя по почте', default=True)
+	notify = BooleanField(u'уведомить партнёра', default=True)
 
 
 class OfferGrantForm(Form):

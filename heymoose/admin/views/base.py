@@ -1,32 +1,31 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, request, g
-from heymoose import app, resource as rc
+from flask import request, redirect
+from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.db.models import Contact
-from heymoose.utils import convert
-from heymoose.utils.shortcuts import paginate
+from heymoose.views.decorators import template, paginated
+
+CONTACTS_PER_PAGE = app.config.get('CONTACTS_PER_PAGE', 10)
 
 @bp.route('/')
+@template('admin/index.html')
 def index():
-	return render_template('admin/index.html')
+	return dict()
 
 @bp.route('/feedback/', methods=['GET', 'POST'])
-def feedback():
+@template('admin/feedback.html')
+@paginated(CONTACTS_PER_PAGE)
+def feedback(offset, limit, **kwargs):
 	filters = {
 		'contacts': (~(Contact.partner == True), ),
 		'partners': (Contact.partner == True, )
 	}.get(request.args.get('filter', ''), (()) )
+	contacts_query = Contact.query.filter(*filters)
 	
 	if request.method == 'POST':
-		contacts = Contact.query.filter(Contact.read == False, *filters)
-		for contact in contacts: # For some reason set/execute query not working
-			contact.read = True
-			contact.save()
-		g.feedback_unread = Contact.query.filter(Contact.read == False).count()
+		contacts_query.filter(Contact.read == False).set(read=True).multi().execute()
+		return redirect(request.url)
 	
-	page = convert.to_int(request.args.get('page'), 1)
-	count = Contact.query.filter(*filters).count()
-	per_page = app.config.get('ADMIN_CONTACTS_PER_PAGE', 10)
-	offset, limit, pages = paginate(page, count, per_page)
-	contacts = Contact.query.filter(*filters).descending(Contact.date).skip(offset).limit(limit)
-	return render_template('admin/feedback.html', contacts=contacts.all(), pages=pages)
+	count = contacts_query.count()
+	contacts = contacts_query.descending(Contact.date).skip(offset).limit(limit).all()
+	return dict(contacts=contacts, count=count)

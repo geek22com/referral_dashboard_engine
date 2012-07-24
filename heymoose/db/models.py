@@ -119,3 +119,11 @@ class NewsItem(mongo.Document):
 	@property
 	def image_url(self):
 		return os.path.join(self._images_dir, self.image or 'heymoose.png')
+
+
+class Notification(mongo.Document):
+	user_id = mongo.IntField()
+	body = mongo.StringField()
+	date = mongo.DateTimeField()
+	read = mongo.BoolField(default=False)
+	notified = mongo.BoolField(default=False)

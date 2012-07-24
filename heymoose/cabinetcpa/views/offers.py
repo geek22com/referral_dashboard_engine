@@ -4,7 +4,7 @@ from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import Offer, OfferGrant, SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
-from heymoose.mail import transactional as mail
+from heymoose.notifications import notify
 from heymoose.views.decorators import template, paginated
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
@@ -261,11 +261,11 @@ def offers_info_requests(id, **kwargs):
 			action = form.action.data
 			if action == 'approve' and not grant.approved:
 				rc.offer_grants.approve(grant.id)
-				mail.user_grant_approved(grant.offer, grant.affiliate)
+				notify.grant_approved(grant)
 				flash(u'Заявка утверждена', 'success')
 			elif action == 'reject' and not grant.rejected:
 				rc.offer_grants.reject(grant.id, form.reason.data)
-				mail.user_grant_rejected(grant.offer, grant.affiliate, form.reason.data)
+				notify.grant_rejected(grant, form.reason.data)
 				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
 	return dict(offer=offer, grants=grants, count=count, form=form)

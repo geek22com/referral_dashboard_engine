@@ -4,7 +4,7 @@ from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
-from heymoose.mail import transactional as mail
+from heymoose.notifications import notify
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.admin import blueprint as bp
 import base64
@@ -49,23 +49,19 @@ def offers_requests(**kwargs):
 		if action == 'unblock':
 			rc.offer_grants.unblock(grant.id)
 			grant.blocked = False
-			if form.mail.data and grant.approved:
-				mail.user_grant_approved(grant.offer, grant.affiliate)
+			if form.notify.data and grant.approved: notify.grant_approved(grant)
 			flash(u'Заявка разблокирована', 'success')
 		elif action == 'block':
 			rc.offer_grants.block(grant.id, form.reason.data)
-			if form.mail.data:
-				mail.user_grant_blocked(grant.offer, grant.affiliate, form.reason.data)
+			if form.notify.data: notify.grant_blocked(grant, form.reason.data)
 			flash(u'Заявка заблокирована', 'success')
 		elif action == 'approve' and not grant.approved:
 			rc.offer_grants.approve(grant.id)
-			if form.mail.data and not grant.blocked:
-				mail.user_grant_approved(grant.offer, grant.affiliate)
+			if form.notify.data and not grant.blocked: notify.grant_approved(grant)
 			flash(u'Заявка утверждена', 'success')
 		elif action == 'reject' and not grant.rejected:
 			rc.offer_grants.reject(grant.id, form.reason.data)
-			if form.mail.data:
-				mail.user_grant_rejected(grant.offer, grant.affiliate, form.reason.data)
+			if form.notify.data: notify.grant_rejected(grant, form.reason.data)
 			flash(u'Заявка отклонена', 'success')
 		return redirect(request.url)
 	return dict(grants=grants, count=count, form=form)
@@ -129,9 +125,11 @@ def offers_info(id):
 		action = request.form.get('action')
 		if action == 'block':
 			rc.offers.block(offer.id, form.reason.data)
+			if form.notify.data: notify.offer_blocked(offer, form.reason.data)
 			flash(u'Оффер заблокирован', 'success')
 		elif action == 'unblock':
 			rc.offers.unblock(offer.id)
+			if form.notify.data: notify.offer_unblocked(offer)
 			flash(u'Оффер разблокирован', 'success')
 		return redirect(request.url)
 	return dict(offer=offer, form=form)
@@ -268,23 +266,19 @@ def offers_info_requests(id, **kwargs):
 			if action == 'unblock':
 				rc.offer_grants.unblock(grant.id)
 				grant.blocked = False
-				if form.mail.data and grant.approved:
-					mail.user_grant_approved(grant.offer, grant.affiliate)
+				if form.notify.data and grant.approved: notify.grant_approved(grant)
 				flash(u'Заявка разблокирована', 'success')
 			elif action == 'block':
 				rc.offer_grants.block(grant.id, form.reason.data)
-				if form.mail.data:
-					mail.user_grant_blocked(grant.offer, grant.affiliate, form.reason.data)
+				if form.notify.data: notify.grant_blocked(grant, form.reason.data)
 				flash(u'Заявка заблокирована', 'success')
 			elif action == 'approve' and not grant.approved:
 				rc.offer_grants.approve(grant.id)
-				if form.mail.data and not grant.blocked:
-					mail.user_grant_approved(grant.offer, grant.affiliate)
+				if form.notify.data and not grant.blocked: notify.grant_approved(grant)
 				flash(u'Заявка утверждена', 'success')
 			elif action == 'reject' and not grant.rejected:
 				rc.offer_grants.reject(grant.id, form.reason.data)
-				if form.mail.data:
-					mail.user_grant_rejected(grant.offer, grant.affiliate, form.reason.data)
+				if form.notify.data: notify.grant_rejected(grant, form.reason.data)
 				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
 	return dict(offer=offer, grants=grants, count=count, form=form)

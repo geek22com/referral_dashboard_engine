@@ -244,7 +244,7 @@
 					<input type="hidden" name="action" value="block" />
 					{{ forms.singlefield(form.reason, class='span6', rows=6) }}
 					<div class="input">
-						{{ form.mail() }} уведомить пользователя по почте
+						{{ form.notify() }} уведомить рекламодателя и партнеров
 					</div>
 				</fieldset>
 			</div>
@@ -263,7 +263,7 @@
 			<div class="modal-body">
 				<p>Разблокировать оффер?</p>
 				<input type="hidden" name="action" value="unblock" />
-				{{ form.mail() }} уведомить пользователя по почте
+				{{ form.notify() }} уведомить рекламодателя и партнеров
 			</div>
 			<div class="modal-footer">
 				<input type="submit" class="btn primary" value="Разблокировать" />

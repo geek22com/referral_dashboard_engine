@@ -1,5 +1,5 @@
 from flask import Blueprint, g, abort, request, redirect, url_for
-from heymoose.resource import users
+from heymoose.db.models import Notification
 
 blueprint = Blueprint('cabinetcpa', __name__, url_prefix='/cabinet', 
 					static_folder='static', template_folder='templates')
@@ -19,7 +19,10 @@ def before_request():
 	if request.method == 'POST' and request.files:
 		request.form = request.form.copy()
 		request.form.update(request.files)
+	
+	# Get count of unread notifications for displaying in top bar
+	g.notifications_unread = Notification.query.filter(Notification.user_id == g.user.id, Notification.read == False).count()
 
 
 # Import all views in blueprint for registering in app's url map
-from views import base, offers, stats, profile, withdrawals
+from views import base, offers, stats, profile, withdrawals, notifications

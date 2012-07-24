@@ -226,7 +226,7 @@
 									{{ form.grant_id(value=request.id) }}
 									{{ form.action(value='approve') }}
 									{% if admin %}
-									{{ form.mail() }} уведомить пользователя по почте
+									{{ form.notify() }} уведомить партнёра
 									{% endif %}
 								</div>
 								<div class="modal-footer">
@@ -253,7 +253,7 @@
 										{{ forms.singlefield(form.reason, class='span6', rows=6) }}
 										{% if admin %}
 										<div class="input">
-										{{ form.mail() }} уведомить пользователя по почте
+										{{ form.notify() }} уведомить партнёра
 										</div>
 										{% endif %}
 									</fieldset>
@@ -284,7 +284,7 @@
 									{{ form.grant_id(value=request.id) }}
 									{{ form.action(value='unblock') }}
 									{% if request.state == 'APPROVED' %}
-									{{ form.mail() }} уведомить пользователя по почте
+									{{ form.notify() }} уведомить партнёра
 									{% endif %}
 								</div>
 								<div class="modal-footer">
@@ -309,7 +309,7 @@
 										{{ form.action(value='block') }}
 										{{ forms.singlefield(form.reason, class='span6', rows=6) }}
 										<div class="input">
-										{{ form.mail() }} уведомить пользователя по почте
+										{{ form.notify() }} уведомить партнёра
 										</div>
 									</fieldset>
 								</div>

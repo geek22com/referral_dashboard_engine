@@ -520,7 +520,6 @@ class SubOfferForm(Form):
 		validators.Length(max=10, message=u'Код может быть длиной от 1 до 10 символов')
 	])
 	manual_code = BooleanField(u'указать код вручную', default=False)
-	active = BooleanField(u'Активно', default=True)
 	
 	def validate_code(self, field):
 		if self.manual_code.data and not self.code.data:
@@ -584,9 +583,10 @@ class SubOfferForm(Form):
 class MainSubOfferForm(SubOfferForm):
 	def __init__(self, *args, **kwargs):
 		super(MainSubOfferForm, self).__init__(*args, **kwargs)
-		del self.active
 		self.payment_type.choices = [(0, u'Фиксированная за клик')] + self.payment_type.choices
 
+class AdminSubOfferEditForm(SubOfferForm):
+	active = BooleanField(u'Активно', default=True)
 
 class OfferFormBase(Form):
 	name = TextField(u'Название оффера', [

@@ -284,6 +284,12 @@ class Offer(SubOffer):
 	def owned_by(self, user):
 		return self.advertiser.id == user.id
 	
+	def suboffer_by_id(self, suboffer_id):
+		for suboffer in self.all_suboffers:
+			if suboffer.id == suboffer_id:
+				return suboffer
+		return None
+	
 	def banner_by_id(self, banner_id):
 		for banner in self.banners:
 			if banner.id == banner_id:

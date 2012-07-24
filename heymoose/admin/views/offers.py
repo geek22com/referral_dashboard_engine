@@ -166,7 +166,6 @@ def offers_info_actions(id):
 @template('admin/offers/info/actions-edit.html')
 def offers_info_actions_main_edit(id):
 	offer = rc.offers.get_by_id(id)
-	suboffer = offer
 	form = forms.MainSubOfferForm(request.form, obj=offer)
 	form.offer_id = offer.id
 	if request.method == 'POST' and form.validate():
@@ -177,17 +176,15 @@ def offers_info_actions_main_edit(id):
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.offers_info_actions', id=offer.id))
-	return dict(offer=offer, suboffer=suboffer, form=form)
+	return dict(offer=offer, suboffer=offer, form=form)
 
 @bp.route('/offers/<int:id>/actions/<int:sid>/edit', methods=['GET', 'POST'])
 @template('admin/offers/info/actions-edit.html')
 def offers_info_actions_edit(id, sid):
 	offer = rc.offers.get_by_id(id)
-	suboffer = None
-	for sub in offer.all_suboffers:
-		if sub.id == sid: suboffer = sub
+	suboffer = offer.suboffer_by_id(sid)
 	if not suboffer: abort(404)
-	form = forms.SubOfferForm(request.form, obj=suboffer)
+	form = forms.AdminSubOfferEditForm(request.form, obj=suboffer)
 	form.offer_id = suboffer.id
 	if request.method == 'POST' and form.validate():
 		form.populate_obj(suboffer)

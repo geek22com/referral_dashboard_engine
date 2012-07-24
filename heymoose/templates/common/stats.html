@@ -132,6 +132,18 @@
 	{% endcall %}
 {% endmacro %}
 
+{% macro table_by_affiliate_for_advertiser(stats, suboffer_stats_rule=none) %}
+	{% call(place, stat) table_base(stats, **kwargs) %}
+		{% if place == 'first-header' %}
+			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Партнёр</th>
+		{% elif place == 'first' %}
+			<td>{{ stat.name }}</td>
+		{% elif place == 'suboffer-stats-url' %}
+			{{ url_for(suboffer_stats_rule, aff_id=stat.id, **kwargs) -}}
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
 {% macro table_by_advertiser(stats, suboffer_stats_rule=none) %}
 	{% call(place, stat) table_base(stats, **kwargs) %}
 		{% if place == 'first-header' %}

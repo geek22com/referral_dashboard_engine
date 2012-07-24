@@ -4,9 +4,10 @@ from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.cabinetcpa import blueprint as bp
-from heymoose.cabinetcpa.decorators import affiliate_only
+from heymoose.cabinetcpa.decorators import affiliate_only, advertiser_only
 
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
+AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 SUB_ID_STATS_PER_PAGE = app.config.get('SUB_ID_STATS_PER_PAGE', 20)
 SOURCE_ID_STATS_PER_PAGE = app.config.get('SOURCE_ID_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
@@ -24,6 +25,19 @@ def stats_offer(**kwargs):
 	stats, count = rc.offer_stats.list_user(g.user, **kwargs) if form.validate() else ([], 0)
 	return dict(stats=stats, count=count, form=form)
 
+@bp.route('/stats/affiliate')
+@advertiser_only
+@template('cabinetcpa/stats/affiliate.html')
+@sorted('clicks_count', 'desc')
+@paginated(AFFILIATE_STATS_PER_PAGE)
+def stats_affiliate(**kwargs):
+	offers, _ = rc.offers.list(advertiser_id=g.user.id, offset=0, limit=100000)
+	form = forms.CabinetStatsForm(request.args)
+	form.offer.set_offers(offers, empty=None)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_affiliate(**kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count, form=form)
+
 @bp.route('/stats/subid')
 @affiliate_only
 @template('cabinetcpa/stats/sub-id.html')
@@ -31,7 +45,7 @@ def stats_offer(**kwargs):
 @paginated(SUB_ID_STATS_PER_PAGE)
 def stats_sub_id(**kwargs):
 	offers, _ = rc.offers.list_requested(g.user.id, offset=0, limit=100000)
-	form = forms.AffiliateCabinetSubIdStatsForm(request.args)
+	form = forms.CabinetSubIdStatsForm(request.args)
 	form.offer.set_offers(offers)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_by_sub_id(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
@@ -44,7 +58,7 @@ def stats_sub_id(**kwargs):
 @paginated(SOURCE_ID_STATS_PER_PAGE)
 def stats_source_id(**kwargs):
 	offers, _ = rc.offers.list_requested(g.user.id, offset=0, limit=100000)
-	form = forms.AffiliateCabinetStatsForm(request.args)
+	form = forms.CabinetStatsForm(request.args)
 	form.offer.set_offers(offers)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_by_source_id(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
@@ -57,7 +71,7 @@ def stats_source_id(**kwargs):
 @paginated(REFERER_STATS_PER_PAGE)
 def stats_referer(**kwargs):
 	offers, _ = rc.offers.list_requested(g.user.id, offset=0, limit=100000)
-	form = forms.AffiliateCabinetStatsForm(request.args)
+	form = forms.CabinetStatsForm(request.args)
 	form.offer.set_offers(offers)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_by_referer(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
@@ -70,7 +84,7 @@ def stats_referer(**kwargs):
 @paginated(KEYWORDS_STATS_PER_PAGE)
 def stats_keywords(**kwargs):
 	offers, _ = rc.offers.list_requested(g.user.id, offset=0, limit=100000)
-	form = forms.AffiliateCabinetStatsForm(request.args)
+	form = forms.CabinetStatsForm(request.args)
 	form.offer.set_offers(offers)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_by_keywords(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)

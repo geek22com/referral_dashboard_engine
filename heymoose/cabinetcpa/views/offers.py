@@ -148,7 +148,6 @@ def offers_info_actions(id):
 @template('cabinetcpa/offers/info/actions-edit.html')
 def offers_info_actions_main_edit(id):
 	offer = my_offer(id)
-	suboffer = offer
 	form = forms.MainSubOfferForm(request.form, obj=offer)
 	form.offer_id = offer.id
 	if request.method == 'POST' and form.validate():
@@ -159,16 +158,14 @@ def offers_info_actions_main_edit(id):
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.offers_info_actions', id=offer.id))
-	return locals()
+	return dict(offer=offer, suboffer=offer, form=form)
 
 @bp.route('/offers/<int:id>/actions/<int:sid>/edit', methods=['GET', 'POST'])
 @advertiser_only
 @template('cabinetcpa/offers/info/actions-edit.html')
 def offers_info_actions_edit(id, sid):
 	offer = my_offer(id)
-	suboffer = None
-	for sub in offer.all_suboffers:
-		if sub.id == sid: suboffer = sub
+	suboffer = offer.suboffer_by_id(sid)
 	if not suboffer: abort(404)
 	form = forms.SubOfferForm(request.form, obj=suboffer)
 	form.offer_id = suboffer.id
@@ -180,7 +177,7 @@ def offers_info_actions_edit(id, sid):
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.offers_info_actions', id=offer.id))
-	return locals()
+	return dict(offer=offer, suboffer=suboffer, form=form)
 
 @bp.route('/offers/<int:id>/materials', methods=['GET', 'POST'])
 @template('cabinetcpa/offers/info/materials.html')

@@ -27,6 +27,9 @@
 
 <ul class="tabs">
 	<li id="tab-offer"><a href="{{ url_for('.stats_offer') }}">По офферам</a></li>
+	{% if g.user.is_advertiser %}
+	<li id="tab-affiliate"><a href="{{ url_for('.stats_affiliate') }}">По партнёрам</a></li>
+	{% endif %}
 	{% if g.user.is_affiliate %}
 	<li id="tab-sub-id"><a href="{{ url_for('.stats_sub_id') }}">По SubID</a></li>
 	<li id="tab-source-id"><a href="{{ url_for('.stats_source_id') }}">По SourceID</a></li>

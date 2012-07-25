@@ -2,10 +2,20 @@
 
 {% block nav %}
 <ul class="nav">
-	<li id="menu-item-index"><a href="{{ url_for('.en_index') }}">Main</a></li>
-	<li id="menu-item-advertisers"><a href="{{ url_for('.en_advertisers') }}">Advertisers</a></li>
-	<li id="menu-item-affiliates"><a href="{{ url_for('.en_affiliates') }}">Affiliates</a></li>
-	<li id="menu-item-ru"><a href="{{ url_for('.index') }}">Русский</a></li>
+	<li id="menu-item-index"><a href="{{ url_for('.lang_index', lang=lang) }}">Main</a></li>
+	<li id="menu-item-advertisers"><a href="{{ url_for('.lang_advertisers', lang=lang) }}">Advertisers</a></li>
+	<li id="menu-item-affiliates"><a href="{{ url_for('.lang_affiliates', lang=lang) }}">Affiliates</a></li>
+	
+	<li class="dropdown">
+		<a class="dropdown-toggle" href="#">Language</a>
+		<ul class="dropdown-menu">
+			<li id="menu-item-lang-ru"><a href="{{ url_for('.index') }}">Русский</a></li>
+			<li id="menu-item-lang-en" class="active"><a href="{{ url_for('.lang_index', lang='en') }}">English</a></li>
+			<li id="menu-item-lang-de"><a href="{{ url_for('.lang_index', lang='de') }}">Deutsch</a></li>
+			<li id="menu-item-lang-fr"><a href="{{ url_for('.lang_index', lang='fr') }}">Français</a></li>
+			<li id="menu-item-lang-it"><a href="{{ url_for('.lang_index', lang='it') }}">Italiano</a></li>
+		</ul>
+	</li>
 </ul>
 {% endblock %}
 

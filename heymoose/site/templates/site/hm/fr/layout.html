@@ -1,0 +1,37 @@
+{% extends 'site/hm/layout.html' %}
+
+{% block nav %}
+<ul class="nav">
+	<li id="menu-item-index"><a href="{{ url_for('.lang_index', lang=lang) }}">Accueil</a></li>
+	<li id="menu-item-advertisers"><a href="{{ url_for('.lang_advertisers', lang=lang) }}">Aux publicitaires</a></li>
+	<li id="menu-item-affiliates"><a href="{{ url_for('.lang_affiliates', lang=lang) }}">Aux partenaires</a></li>
+	
+	<li class="dropdown">
+		<a class="dropdown-toggle" href="#">Language</a>
+		<ul class="dropdown-menu">
+			<li id="menu-item-lang-ru"><a href="{{ url_for('.index') }}">Русский</a></li>
+			<li id="menu-item-lang-en"><a href="{{ url_for('.lang_index', lang='en') }}">English</a></li>
+			<li id="menu-item-lang-de"><a href="{{ url_for('.lang_index', lang='de') }}">Deutsch</a></li>
+			<li id="menu-item-lang-fr" class="active"><a href="{{ url_for('.lang_index', lang='fr') }}">Français</a></li>
+			<li id="menu-item-lang-it"><a href="{{ url_for('.lang_index', lang='it') }}">Italiano</a></li>
+		</ul>
+	</li>
+</ul>
+{% endblock %}
+
+{% block secondary_nav %}
+{% endblock %}
+
+{% block top_unit_content %}
+	{{ support('Contacts:') }}
+	<div class="top-unit-text">
+		<p>
+			Le réseau d’affiliation {{ heymoose(false) }} est un système d’interaction entre les publicitaires
+			et les affiliés (webmasters). Une fois certaines actions (achats) accomplies par les visiteurs du
+			site, les paiements effectués pour les annonces publicitaires sont traités à partir du modèle CPA.
+		</p>
+	</div>
+{% endblock %}
+
+{% block events_feed %}
+{% endblock %}

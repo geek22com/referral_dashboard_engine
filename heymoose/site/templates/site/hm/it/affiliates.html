@@ -1,0 +1,79 @@
+{% extends "site/hm/it/layout.html" %}
+
+{% set activemenu = "affiliates" %}
+
+{% block title %}Per i partner{% endblock %}
+
+{% block content %}
+<h1 class="hm-roundbox-header">{{ heymoose(False) }} partner</h1>
+<div class="article">
+	<p>
+		Cosa di solito sviluppatori e partner cercano di ottenere dal programma di affiliazione?
+		Cercano delle entrate supplementari con uno sforzo minimo del lavoro. Come al solito,
+		sembra una immissione di pubblicità in siti con alto traffico, portali e social network.
+		Ma ora il mercato della telefonia mobile entra in gioco, e rafforza le sue posizioni di più.
+		Le applicazioni mobile possono generare maggiori entrate di altri, perché gli loro utenti
+		si concentrano nel risultato il più veloce - non hanno tempo per selezionare e confrontare
+		un sito all'altro, una offerta con gli altri. Vedono quello che vogliono e lo prendono
+		dove lo hanno già visto.
+	</p>
+	
+	<h3>Come funziona {{ heymoose(false) }}?</h3>
+	<p>
+		Registrate sul nostro sito, aggiungete la vostra piattaforma pubblicitaria e scegliete l'offerta
+		più adatta per voi. Il materiale promozionale pubblicitario, banner e link testuali saranno
+		disponibili per voi, e lo potete collocare in qualsiasi forma adatta per voi. Le statistiche
+		sulle conversioni da pubblicità e le azioni fatte, anche i fondi accreditati sul vostro account
+		saranno menzionati nel vostro conto personale.
+	</p>
+	
+	<h3>Vantaggi del Affilaite Network {{ heymoose(false) }}</h3>
+	<p>
+		Siamo interessati a guadagnare bene e alla qualità delle campagne pubblicitarie, quindi prima
+		di tutto rete "HeyMoose" suggerisce offerte con una retribuzione adeguata. Teniamo costantemente
+		sotto controllo i costi di ogni azione in un particolare settore, e offriamo ai nostri clienti
+		prezzi che sono superiori alla media.
+	</p>
+	
+	<h3>{{ heymoose(false) }} offerte promozionali</h3>
+	<div class="row">
+		<div class="span12">
+			<p>
+				Fate clic su questo pulsante, se volete vedere gli esempi della nostra offerta. Dopo
+				la registrazione avete accesso a tutte le informazioni sulle offerte, e anche ad un
+				sacco di offerte da altri inserzionisti.
+			</p>
+		</div>
+		<div class="span" style="margin-top: 8px;">
+			<a href="{{ url_for('.catalog') }}" class="btn hey large" target="_blank">HeyMoose Offerte</a>
+		</div>
+	</div>
+	
+	<h3>Programma di affiliazione {{ heymoose(false) }}</h3>
+	<p>
+		Se siete molto rispettati nel mondo di webmaster, o avete un blog promosso o forum di soggetti
+		appropriati e volete guadagnare sulla base della sua popolarità &mdash; vi offriamo a prendere parte
+		ad attirare i webmaster al nostro network di affiliazione "HeyMoose"! Se partecipate al nostro 
+		programma di affiliazione, avrete una commissione del 5%.
+	</p>
+	<p>
+		"HeyMoose" programma di affiliazione è un'altra opportunità di generare reddito invitando le
+		persone attive a lavorare in rete. Più guadagnano, più il vostro reddito è! Programma di
+		affiliazione fa:
+	</p>
+	<ul class="dashed-list">
+		<li>5% di commissione in modo permanente.</li>
+		<li>Comodo sistema di ritiro &mdash; separatamente o insieme con i pagamenti di offerte.</li>
+		<li>
+			È possibile inserire un link di riferimento dove volete &mdash; in un articolo, argomento o firma
+			del forum, il banner, commenti, social network, lettere ai vostri amici.
+		</li>
+		<li>
+			Statistiche dettagliate riguardo al numero di raccomandazioni e soldi guadagnati in tempo reale;
+		</li>
+		<li>
+			La forma più comoda di consultazione per voi: per telefono, ICQ, e-mail, Skype.
+		</li>
+	</ul>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "site/hm/fr/layout.html" %}
+
+{% block fulltitle %}HeyMoose! &mdash; Le réseau d’affiliation{% endblock %}
+
+{% set activemenu = "index" %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		.more-container {
+			margin-top: 20px;
+			margin-bottom: 20px;
+		}
+	
+		span.more {
+			font-size: 18px;
+		}
+		
+		.allnews {
+			position: absolute;
+			right: -1px;
+			bottom: -1px;
+			padding: 3px 10px;
+			background-color: #0093DD;
+			color: #fff;
+			border-top-left-radius: 8px;
+		}
+		
+		.allnews a, .allnews a:hover, .allnews a:visited {
+			color: #fff;
+			text-decoration: underline;
+		}
+	</style>
+{% endblock %}
+
+{% block precontent %}
+<div class="hm-roundbox">
+	<div class="hm-roundbox-content hm-roundbox-content--dark">
+		<div class="row">
+			<div class="span" style="width: 438px;">
+				<h2 class="bigger mrg-15b">
+					<a href="{{ url_for('.lang_advertisers', lang=lang) }}" class="hm-dashed-link sky">Aux publicitaires</a>
+				</h2>
+				<h3>Voulez-vous payer pour un résultat mesurable?</h3>
+				<p>
+					Avez-vous une boutique, ou publiez-vous des annonces publicitaires
+					sur Internet? Voulez-vous attirer de nombreux nouveaux clients en économisant votre argent,
+					votre temps et votre énergie?
+				</p>
+				<h3>Rêvez-vous d’un retour de 100% sur vos annonces publicitaires?</h3>
+				<p>
+					Mais comment persuadez-vous les internautes de faire des achats auprès de
+					votre entreprise ? Le marketing affilié sans risque “HeyMoose!” vous permettra de résoudre
+					ces problèmes.
+				</p>
+				<div class="more-container">
+					<span class="more">
+						<a href="{{ url_for('.lang_advertisers', lang=lang) }}" class="hm-dashed-link white">Plus</a> &raquo;
+					</span>
+				</div>
+			</div>
+			<div class="span" style="width: 438px;">
+				<h2 class="bigger mrg-15b">
+					<a href="{{ url_for('.lang_affiliates', lang=lang) }}" class="hm-dashed-link sky">Aux partenaires</a>
+				</h2>
+				<h3>Voulez-vous gagner plus?</h3>
+				<p>
+					Avez-vous un site Web connu ou un réseau de sites? Etes-vous un professionnel dans les choix
+					du trafic? Le programme affilié “HeyMoose!” est une source supplémentaire de monétisation
+					pour vous!
+				</p>
+				<h3>Service fantastique!</h3>
+				<p>
+					Nous sommes à l’écoute des publicitaires. Nous fournissons une plate-forme technique pour
+					surveiller les statistiques. Tous les problèmes rencontrés concernant les règlements sont
+					immédiatement résolus par le personnel de “HeyMoose!”
+				</p>
+				<div class="more-container">
+					<span class="more">
+						<a href="{{ url_for('.lang_affiliates', lang=lang) }}" class="hm-dashed-link white">Plus</a> &raquo;
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block content_container %}
+{% endblock %}

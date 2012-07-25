@@ -37,17 +37,18 @@ def advertisers():
 def affiliates():
 	return render_template('site/hm/affiliates.html')
 
-@bp.route('/en/')
-@template('site/hm/en/index.html')
-def en_index(): return {}
+@bp.route('/<any(en,de,fr,it):lang>/')
+def lang_index(lang):
+	return render_template('site/hm/{0}/index.html'.format(lang), lang=lang)
 
-@bp.route('/en/advertisers/')
-@template('site/hm/en/advertisers.html')
-def en_advertisers(): return {}
+@bp.route('/<any(en,de,fr,it):lang>/advertisers/')
+def lang_advertisers(lang):
+	return render_template('site/hm/{0}/advertisers.html'.format(lang), lang=lang)
 
-@bp.route('/en/affiliates/')
-@template('site/hm/en/affiliates.html')
-def en_affiliates(): return {}
+@bp.route('/<any(en,de,fr,it):lang>/affiliates/')
+def lang_affiliates(lang):
+	return render_template('site/hm/{0}/affiliates.html'.format(lang), lang=lang)
+
 
 @bp.route('/affiliates/contest')
 def affiliates_contest():

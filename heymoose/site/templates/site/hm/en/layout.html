@@ -2,9 +2,9 @@
 
 {% block nav %}
 <ul class="nav">
-	<li id="menu-item-index"><a href="{{ url_for('.en_index') }}">Main</a></li>
-	<li id="menu-item-advertisers"><a href="{{ url_for('.en_advertisers') }}">Advertisers</a></li>
-	<li id="menu-item-affiliates"><a href="{{ url_for('.en_affiliates') }}">Affiliates</a></li>
+	<li id="menu-item-index"><a href="{{ url_for('.lang_index', lang=lang) }}">Main</a></li>
+	<li id="menu-item-advertisers"><a href="{{ url_for('.lang_advertisers', lang=lang) }}">Advertisers</a></li>
+	<li id="menu-item-affiliates"><a href="{{ url_for('.lang_affiliates', lang=lang) }}">Affiliates</a></li>
 	<li id="menu-item-ru"><a href="{{ url_for('.index') }}">Русский</a></li>
 </ul>
 {% endblock %}

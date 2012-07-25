@@ -1,0 +1,37 @@
+{% extends 'site/hm/layout.html' %}
+
+{% block nav %}
+<ul class="nav">
+	<li id="menu-item-index"><a href="{{ url_for('.lang_index', lang=lang) }}">Pagina principale</a></li>
+	<li id="menu-item-advertisers"><a href="{{ url_for('.lang_advertisers', lang=lang) }}">Per gli inserzionisti</a></li>
+	<li id="menu-item-affiliates"><a href="{{ url_for('.lang_affiliates', lang=lang) }}">Per i partner</a></li>
+	
+	<li class="dropdown">
+		<a class="dropdown-toggle" href="#">Language</a>
+		<ul class="dropdown-menu">
+			<li id="menu-item-lang-ru"><a href="{{ url_for('.index') }}">Русский</a></li>
+			<li id="menu-item-lang-en"><a href="{{ url_for('.lang_index', lang='en') }}">English</a></li>
+			<li id="menu-item-lang-de"><a href="{{ url_for('.lang_index', lang='de') }}">Deutsch</a></li>
+			<li id="menu-item-lang-fr"><a href="{{ url_for('.lang_index', lang='fr') }}">Français</a></li>
+			<li id="menu-item-lang-it" class="active"><a href="{{ url_for('.lang_index', lang='it') }}">Italiano</a></li>
+		</ul>
+	</li>
+</ul>
+{% endblock %}
+
+{% block secondary_nav %}
+{% endblock %}
+
+{% block top_unit_content %}
+	{{ support('Contatti:') }}
+	<div class="top-unit-text">
+		<p>
+			{{ heymoose(false) }} Affiliate Network è un sistema d’interazione tra gli inserzionisti
+			e webmaster (affiliati). I pagamenti per pubblicità sono eseguiti utilizzando il modello
+			CPA dopo i visitatori del sito intraprendono determinate azioni.
+		</p>
+	</div>
+{% endblock %}
+
+{% block events_feed %}
+{% endblock %}

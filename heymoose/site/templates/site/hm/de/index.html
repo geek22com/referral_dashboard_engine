@@ -1,0 +1,94 @@
+{% extends "site/hm/de/layout.html" %}
+
+{% block fulltitle %}HeyMoose! &mdash; Das Affiliate-Netzwerk{% endblock %}
+
+{% set activemenu = "index" %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		.more-container {
+			margin-top: 20px;
+			margin-bottom: 20px;
+		}
+	
+		span.more {
+			font-size: 18px;
+		}
+		
+		.allnews {
+			position: absolute;
+			right: -1px;
+			bottom: -1px;
+			padding: 3px 10px;
+			background-color: #0093DD;
+			color: #fff;
+			border-top-left-radius: 8px;
+		}
+		
+		.allnews a, .allnews a:hover, .allnews a:visited {
+			color: #fff;
+			text-decoration: underline;
+		}
+		
+		.hm-roundbox-content--dark h3 {
+			font-size: 16px;
+		}
+	</style>
+{% endblock %}
+
+{% block precontent %}
+<div class="hm-roundbox">
+	<div class="hm-roundbox-content hm-roundbox-content--dark">
+		<div class="row">
+			<div class="span" style="width: 438px;">
+				<h2 class="bigger mrg-15b">
+					<a href="{{ url_for('.lang_advertisers', lang=lang) }}" class="hm-dashed-link sky">Für Werbungtreibende</a>
+				</h2>
+				<h3>Wollen Sie für ein bestimmtes Ergebnis hinzubezahlen?</h3>
+				<p>
+					Haben Sie einen Online-Shop, oder haben Sie mit Internet-Werbung
+					professionell zu tun? Wollen Sie viele neue Kunden hinzugewinnen, während
+					die Ausgaben ein Minimum an Aufwand, Zeit und Geld erfordern?
+				</p>
+				<h3>Träumen Sie von einer 100% Rendite durch Ihre Werbung?</h3>
+				<p>
+					Wie gewinnt man Internet-Nutzer, um Einkäufe in Ihrem Unternehmen zu machen?
+					Das risikofreie Affiliate-Marketing "HeyMoose!" kann Ihnen helfen, diese
+					Probleme zu lösen.
+				</p>
+				<div class="more-container">
+					<span class="more">
+						<a href="{{ url_for('.lang_advertisers', lang=lang) }}" class="hm-dashed-link white">Mehr</a> &raquo;
+					</span>
+				</div>
+			</div>
+			<div class="span" style="width: 438px;">
+				<h2 class="bigger mrg-15b">
+					<a href="{{ url_for('.lang_affiliates', lang=lang) }}" class="hm-dashed-link sky">Für Partner</a>
+				</h2>
+				<h3>Wollen Sie Geld verdienen?</h3>
+				<p>
+					Haben Sie eine populäre Website oder ein Websites-Netztwerk? Sind Sie Profi im Verkehr
+					mit Arbitrage?  Das Affiliate Programm "HeyMoose!" ist eine zusätzliche Geldeinnahmequelle
+					für Sie!
+				</p>
+				<h3>Phantastischer Service</h3>
+				<p>
+					Wir kümmern uns um Werbekunden, bieten die technische Plattform für die Überwachung der
+					Statistik. Die Beilegung von Streitigkeiten und die Kontrolle der Zahlungen werden durch
+					“HeyMoose!” vorgenommen.
+				</p>
+				<div class="more-container">
+					<span class="more">
+						<a href="{{ url_for('.lang_affiliates', lang=lang) }}" class="hm-dashed-link white">Mehr</a> &raquo;
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block content_container %}
+{% endblock %}

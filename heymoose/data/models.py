@@ -210,6 +210,7 @@ class SubOffer(IdentifiableModel):
 	code = Field(types.String, 'code')
 	hold_days = Field(types.Integer, 'hold-days')
 	active = Field(types.Boolean, 'active')
+	exclusive = Field(types.Boolean, 'exclusive')
 	
 	def value(self, tax=0):
 		if self.pay_method == enums.PayMethods.CPC:

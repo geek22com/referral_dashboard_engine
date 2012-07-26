@@ -152,7 +152,8 @@ def offers_info_edit(id):
 @bp.route('/offers/<int:id>/actions/', methods=['GET', 'POST'])
 @template('admin/offers/info/actions.html')
 def offers_info_actions(id):
-	offer = rc.offers.get_by_id(id)	
+	offer = rc.offers.get_by_id(id)
+	if offer.exclusive: abort(403)
 	form = forms.SubOfferForm(request.form)
 	if request.method == 'POST' and form.validate():
 		suboffer = SubOffer()
@@ -166,6 +167,7 @@ def offers_info_actions(id):
 @template('admin/offers/info/actions-edit.html')
 def offers_info_actions_main_edit(id):
 	offer = rc.offers.get_by_id(id)
+	if offer.exclusive: abort(403)
 	form = forms.MainSubOfferForm(request.form, obj=offer)
 	form.offer_id = offer.id
 	if request.method == 'POST' and form.validate():
@@ -182,6 +184,7 @@ def offers_info_actions_main_edit(id):
 @template('admin/offers/info/actions-edit.html')
 def offers_info_actions_edit(id, sid):
 	offer = rc.offers.get_by_id(id)
+	if offer.exclusive: abort(403)
 	suboffer = offer.suboffer_by_id(sid)
 	if not suboffer: abort(404)
 	form = forms.AdminSubOfferEditForm(request.form, obj=suboffer)

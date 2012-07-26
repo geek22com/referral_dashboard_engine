@@ -6,6 +6,10 @@
 	.collapse-container {
 		overflow: hidden;
 	}
+	
+	tr.exclusive td {
+		background-color: #DDFFDD;
+	}
 </style>
 
 <script type="text/javascript">
@@ -50,8 +54,8 @@
 		</thead>
 		<tbody>
 			{% for offer in offers %}
-			{% set rowspan = 'rowspan="{0}"'.format(offer.active_suboffers|length + 1)|safe %}
-			<tr>
+			{% set rowspan = 'rowspan="{0}"'.format((offer.active_suboffers|length if not offer.exclusive else 0) + 1)|safe %}
+			<tr {% if offer.exclusive %}class="exclusive"{% endif %}>
 				<td class="center" style="position: relative;" {{ rowspan }}>
 					<div style="position: absolute;">#{{ offer.id }}</div>
 					{% if status %}
@@ -112,8 +116,13 @@
 					{% endif %}
 				</td>
 				
+				{% if not offer.exclusive %}
 				<td>{{ offer.title }}</td>
 				<td>{{ offer.value(tax=user.fee if affiliate else 0) }}</td>
+				{% else %}
+				<td>Покупка товаров на эксклюзивных условиях</td>
+				<td><a href="{{ url_for('.offers_info', id=offer.id) }}">см. полное описание</a></td>
+				{% endif %}
 				
 				<td {{ rowspan }}>{{ offer.short_description|default('&mdash;', true)|safe }}</td>
 				<td class="right" {{ rowspan }}>
@@ -148,12 +157,15 @@
 					{% endif %}
 				</td>
 			</tr>
+			{% if not offer.exclusive %}
 			{% for suboffer in offer.active_suboffers %}
 			<tr class="subrow">
 				<td>{{ suboffer.title }}</td>
 				<td>{{ suboffer.value(tax=user.fee if affiliate else 0) }}</td>
 			</tr>
 			{% endfor %}
+			{% endif %}
+			
 			{% endfor %}
 		</tbody>
 	</table>

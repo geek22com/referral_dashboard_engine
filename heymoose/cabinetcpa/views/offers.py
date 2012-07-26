@@ -132,8 +132,7 @@ def offers_info_edit(id):
 @template('cabinetcpa/offers/info/actions.html')
 def offers_info_actions(id):
 	offer = visible_offer(id)
-	for suboffer in offer.suboffers:
-		suboffer.form = forms.SubOfferForm(request.form, obj=suboffer)
+	if offer.exclusive: abort(403)
 	form = forms.SubOfferForm(request.form)
 	if offer.owned_by(g.user) and request.method == 'POST' and form.validate():
 		suboffer = SubOffer()
@@ -148,6 +147,7 @@ def offers_info_actions(id):
 @template('cabinetcpa/offers/info/actions-edit.html')
 def offers_info_actions_main_edit(id):
 	offer = my_offer(id)
+	if offer.exclusive: abort(403)
 	form = forms.MainSubOfferForm(request.form, obj=offer)
 	form.offer_id = offer.id
 	if request.method == 'POST' and form.validate():
@@ -165,6 +165,7 @@ def offers_info_actions_main_edit(id):
 @template('cabinetcpa/offers/info/actions-edit.html')
 def offers_info_actions_edit(id, sid):
 	offer = my_offer(id)
+	if offer.exclusive: abort(403)
 	suboffer = offer.suboffer_by_id(sid)
 	if not suboffer: abort(404)
 	form = forms.SubOfferForm(request.form, obj=suboffer)

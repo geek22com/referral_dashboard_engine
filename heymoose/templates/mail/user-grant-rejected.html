@@ -7,7 +7,7 @@
 {% block html %}
 <p>
 	Ваша заявка на сотрудничество с рекламной кампанией
-	<a href="{{ root + url_for('cabinetcpa.offers_info', id=offer.id) }}">{{ offer.name }}</a>
+	<a href="{{ url_for('cabinetcpa.offers_info', id=offer.id, _external=true) }}">{{ offer.name }}</a>
 	отклонена рекламодателем.
 </p>
 {% if reason %}

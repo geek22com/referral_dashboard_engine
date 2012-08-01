@@ -1,5 +1,6 @@
 {% extends "admin/logs/layout.html" %}
 {% import 'common/forms/datetime-range.html' as datetime_range %}
+{% import 'common/macros/lists.html' as lists with context %}
 
 {% set activetab = 'api' %}
 {% set content_fluid = true %}
@@ -51,7 +52,7 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	{{ macros.paginate(pages, '.logs_api', **form.query_args()) }}
+	{{ lists.paginate(pages, **form.query_args()) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p>Еще не возникло ни одной ошибки.</p>

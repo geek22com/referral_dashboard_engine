@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from flask import request, redirect
-from heymoose import app
 from heymoose.admin import blueprint as bp
+from heymoose.utils.config import config_accessor
 from heymoose.db.models import Contact
 from heymoose.views.decorators import template, paginated
 
-CONTACTS_PER_PAGE = app.config.get('CONTACTS_PER_PAGE', 10)
+CONTACTS_PER_PAGE = config_accessor('CONTACTS_PER_PAGE', 10)
 
 @bp.route('/')
 @template('admin/index.html')

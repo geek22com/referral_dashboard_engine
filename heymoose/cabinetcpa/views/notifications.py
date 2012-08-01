@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from flask import g, request, redirect
-from heymoose import app
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.db.models import Notification
+from heymoose.utils.config import config_accessor
 from heymoose.views.decorators import template, paginated
 
-NOTIFICATIONS_PER_PAGE = app.config.get('NOTIFICATIONS_PER_PAGE', 10)
+NOTIFICATIONS_PER_PAGE = config_accessor('NOTIFICATIONS_PER_PAGE', 10)
 
 @bp.route('/notifications/', methods=['GET', 'POST'])
 @template('cabinetcpa/notifications.html')

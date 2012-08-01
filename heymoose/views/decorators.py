@@ -30,6 +30,10 @@ def paginated(per_page=20, page_arg='page'):
 	def decorator(f):
 		@wraps(f)
 		def wrapped(*args, **kwargs):
+			try:
+				per_page = per_page()
+			except TypeError:
+				pass
 			page = current_page(page_arg)
 			offset, limit = page_limits(page, per_page)
 			context = f(*args, offset=offset, limit=limit, **kwargs)

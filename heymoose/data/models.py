@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from base import models, types, registry
 from base.fields import Field, FieldList, FieldSet
-from heymoose import app
 from heymoose.utils.gen import generate_password_hash, aes_base16_encrypt, aes_base16_decrypt
+from heymoose.utils.config import ConfigAttribute
 from decimal import Decimal
 from repos import regions_repo
 from datetime import datetime
@@ -53,7 +53,7 @@ class User(IdentifiableModel):
 	
 	stats = Field('UserStat', 'stats')
 	
-	_ref_crypt_key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
+	_ref_crypt_key = ConfigAttribute('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
 	
 	@property
 	def account(self): return self.developer_account or self.customer_account
@@ -88,11 +88,10 @@ class User(IdentifiableModel):
 		return code == self.get_confirm_code()
 	
 	def get_refcode(self):
-		key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
 		salt = 'hmrefsalt'
 		data = '{0}${1}'.format(self.id, salt)
 		data = '{0:X<16}'.format(data)
-		return aes_base16_encrypt(key, data).lower()
+		return aes_base16_encrypt(self._ref_crypt_key, data).lower()
 	
 	@staticmethod
 	def get_referrer_id(ref):
@@ -263,7 +262,7 @@ class Offer(SubOffer):
 	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
 	grant = Field('OfferGrant', 'grant')
 	
-	_logos_dir = app.config.get('OFFER_LOGOS_DIR')
+	_logos_dir = ConfigAttribute('OFFER_LOGOS_DIR')
 	
 	@property
 	def all_suboffers(self):
@@ -361,7 +360,7 @@ class Banner(IdentifiableModel):
 		u'application/svg+xml': u'SVG'
 	}
 	
-	_banners_path = app.config.get('BACKEND_BANNERS_PATH')
+	_banners_path = ConfigAttribute('BACKEND_BANNERS_PATH')
 	
 	@property
 	def size(self): return u'{0} x {1}'.format(self.width, self.height)

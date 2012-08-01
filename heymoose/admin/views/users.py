@@ -6,17 +6,18 @@ from heymoose.views.decorators import template, sorted, paginated
 from heymoose.utils.pagination import current_page, page_limits, paginate as paginate2
 from heymoose.utils.shortcuts import paginate
 from heymoose.utils.convert import to_unixtime
+from heymoose.utils.config import config_accessor
 from heymoose.forms import forms
 from heymoose.data.enums import Roles
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
 
-ACCOUNTING_ENTRIES_PER_PAGE = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
-OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
-SUB_ID_STATS_PER_PAGE = app.config.get('SUB_ID_STATS_PER_PAGE', 20)
-SOURCE_ID_STATS_PER_PAGE = app.config.get('SOURCE_ID_STATS_PER_PAGE', 20)
-REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
-KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
+ACCOUNTING_ENTRIES_PER_PAGE = config_accessor('ACCOUNTING_ENTRIES_PER_PAGE', 20)
+OFFER_STATS_PER_PAGE = config_accessor('OFFER_STATS_PER_PAGE', 20)
+SUB_ID_STATS_PER_PAGE = config_accessor('SUB_ID_STATS_PER_PAGE', 20)
+SOURCE_ID_STATS_PER_PAGE = config_accessor('SOURCE_ID_STATS_PER_PAGE', 20)
+REFERER_STATS_PER_PAGE = config_accessor('REFERER_STATS_PER_PAGE', 20)
+KEYWORDS_STATS_PER_PAGE = config_accessor('KEYWORDS_STATS_PER_PAGE', 20)
 
 
 @bp.route('/users/')

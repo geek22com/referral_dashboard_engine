@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, request
-from heymoose import app, resource as rc
+from flask import request
+from heymoose import resource as rc
 from heymoose.admin import blueprint as bp
-from heymoose.utils.pagination import current_page, page_limits, paginate
+from heymoose.views.decorators import template, paginated
+from heymoose.utils.config import config_accessor
 from heymoose.forms import forms
 
+API_ERRORS_PER_PAGE = config_accessor('API_ERRORS_PER_PAGE', 20)
 
 @bp.route('/logs/errors')
-def logs_api():
+@template('admin/logs/api.html')
+@paginated(API_ERRORS_PER_PAGE)
+def logs_api(**kwargs):
 	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('API_ERRORS_PER_PAGE', 20)
-		offset, limit = page_limits(page, per_page)
-		errors, count = rc.errors.list(offset=offset, limit=limit, **form.range_args())
-		pages = paginate(page, count, per_page)
-	else:
-		errors, pages = [], None
-	return render_template('admin/logs/api.html', errors=errors, pages=pages, form=form)
+	kwargs.update(form.backend_args())
+	errors, count = rc.errors.list(**kwargs) if form.validate() else ([], 0)
+	return dict(errors=errors, count=count, form=form)

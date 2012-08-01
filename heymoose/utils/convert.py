@@ -1,10 +1,7 @@
 from datetime import datetime
-from heymoose import app
+from heymoose.utils.config import config_value
 import time
 import calendar
-
-datetime_format = app.config.get('DATETIME_FORMAT', '%d.%m.%Y %H:%M:%S')
-datetime_nosec_format = app.config.get('DATETIME_NOSEC_FORMAT', '%d.%m.%Y %H:%M')
 
 def datetime_from_api(dt):
 	if dt is None: return None
@@ -16,7 +13,8 @@ def datetime_from_unixtime(dt, msec=False):
 	return datetime.fromtimestamp(dt / 1000 if msec else dt)
 
 def to_datetime(value):
-	return datetime.strptime(str(value), datetime_format)
+	format = config_value('DATETIME_FORMAT', '%d.%m.%Y %H:%M:%S')
+	return datetime.strptime(str(value), format)
 
 def to_unixtime(value, msec=False):
 	result = int(time.mktime(value.timetuple()))

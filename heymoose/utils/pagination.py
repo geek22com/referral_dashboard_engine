@@ -1,4 +1,4 @@
-from heymoose import app
+from heymoose.utils.config import config_value
 from flask import request
 from math import ceil
 
@@ -17,7 +17,7 @@ def paginate(page, count, per_page):
 	if pcount == 0: pcount = 1
 	
 	# Calculate pages range
-	zone = app.config.get('PAGES_RANGE', 7)
+	zone = config_value('PAGES_RANGE', 7)
 	pfirst = page - zone
 	plast = page + zone
 	

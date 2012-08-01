@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
 from flask import request, flash, redirect, url_for, abort, jsonify
-from heymoose import app, resource as rc
+from heymoose import resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
 from heymoose.notifications import notify
+from heymoose.utils.config import config_accessor
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.admin import blueprint as bp
 import base64
 
-OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
-OFFER_REQUESTS_PER_PAGE = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
-OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
-AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
-REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
-KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
+OFFERS_PER_PAGE = config_accessor('OFFERS_PER_PAGE', 10)
+OFFER_REQUESTS_PER_PAGE = config_accessor('OFFER_REQUESTS_PER_PAGE', 20)
+OFFER_STATS_PER_PAGE = config_accessor('OFFER_STATS_PER_PAGE', 20)
+AFFILIATE_STATS_PER_PAGE = config_accessor('AFFILIATE_STATS_PER_PAGE', 20)
+REFERER_STATS_PER_PAGE = config_accessor('REFERER_STATS_PER_PAGE', 20)
+KEYWORDS_STATS_PER_PAGE = config_accessor('KEYWORDS_STATS_PER_PAGE', 20)
 
 
 @bp.route('/offers/')

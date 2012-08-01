@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from heymoose import app
-from heymoose.utils import times, convert
+from heymoose.utils import times
+from heymoose.utils.config import config_value
 from datetime import datetime
 import base64, time, random
 
-currency_sign = app.config.get('CURRENCY_SIGN')
-site_root = app.config.get('SITE_ROOT', 'http://www.heymoose.com')
+currency_sign = u'руб.'
 
 def error_type(value, type):
 	return filter(lambda x: x[0] == type, value) if value else None
@@ -16,11 +16,13 @@ def safecall(value):
 	except TypeError:
 		return value
 
-def datetimeformat(value, format=convert.datetime_format):
+def datetimeformat(value, format=None):
+	format = format or config_value('DATETIME_FORMAT', '%d.%m.%Y %H:%M:%S')
 	return value.strftime(format) if value else None
 
 
-def datetime_nosec(value, format=convert.datetime_nosec_format):
+def datetime_nosec(value, format=None):
+	format = format or config_value('DATETIME_NOSEC_FORMAT', '%d.%m.%Y %H:%M')
 	return value.strftime(format) if value else None
 
 
@@ -109,5 +111,4 @@ app.jinja_env.filters['unicode'] = unicode
 app.jinja_env.globals['now'] = datetime.now
 app.jinja_env.globals['time'] = time.time
 app.jinja_env.globals['currency_sign'] = currency_sign
-app.jinja_env.globals['root'] = site_root
 app.jinja_env.globals['nocache'] = nocache

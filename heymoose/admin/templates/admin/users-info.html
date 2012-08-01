@@ -73,7 +73,7 @@
 <h3>Реферальная программа</h3>
 <table class="key-value">
 	<tbody>
-		{% with ref = root + url_for('site.register_affiliate', ref=user.get_refcode()) %}
+		{% with ref = url_for('site.register_affiliate', ref=user.get_refcode(), _external=true) %}
 		<tr><th>Реферальная ссылка</th><td><a href="{{ ref }}">{{ ref }}</a></td></tr>
 		{% endwith %}
 		<tr>

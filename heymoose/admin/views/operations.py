@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from flask import request, flash, redirect, url_for
-from heymoose import app, resource as rc
+from heymoose import resource as rc
 from heymoose.admin import blueprint as bp
 from heymoose.views.decorators import template, paginated
+from heymoose.utils.config import config_accessor
 
-WITHDRAWALS_PER_PAGE = app.config.get('WITHDRAWALS_PER_PAGE', 20)
+WITHDRAWALS_PER_PAGE = config_accessor('WITHDRAWALS_PER_PAGE', 20)
 
 
 @bp.route('/operations/withdrawals/', methods=['GET', 'POST'])

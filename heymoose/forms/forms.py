@@ -3,13 +3,13 @@ from wtforms import Form as WTForm
 from wtforms import FieldList, FormField, BooleanField, TextField, PasswordField, \
 	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField, DateTimeField
 from wtforms.fields import Label
-from heymoose import app, resource as rc
-from heymoose.core import actions
+from heymoose import resource as rc
 from heymoose.data import enums
-from heymoose.filters import currency, currency_sign
+from heymoose.filters import currency_sign
 from heymoose.utils.times import begin_of_day, end_of_day, relativedelta
 from heymoose.utils.gen import generate_unique_filename, generate_uid
-from heymoose.utils.convert import to_unixtime, datetime_nosec_format
+from heymoose.utils.convert import to_unixtime
+from heymoose.utils.config import ConfigAttribute, config_value
 from heymoose.utils.dicts import UNSET, create_dict
 from flask import g
 from datetime import datetime
@@ -336,60 +336,6 @@ class RegularOrderEditForm(RegularOrderEditFormBase):
 		
 class AdminRegularOrderEditForm(RegularOrderEditFormBase, AdminOrderFormMixin):
 	pass
-
-
-class BannerOrderForm(OrderForm):
-	ordercpa = DecimalField(u'Стоимость клика', [
-		validators.Required(message=u'Введите стоимость клика')
-	])
-	orderbannersize = SelectField(u'Размер баннера', coerce=int)
-	orderimage = myfields.BannerField(u'Выберите файл', [
-		validators.FileRequired(message=u'Выберите файл на диске'),
-		validators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf', 'svg'),
-			message=u'Выберите файл в формате JPG, GIF, PNG, SVG или SWF')
-	])
-	
-	def __init__(self, *args, **kwargs):
-		c_min = kwargs.pop('c_min', 0.01)
-		c_rec = kwargs.pop('c_rec', None)
-		if c_rec:
-			kwargs.setdefault('ordercpa', c_rec)
-		super(BannerOrderForm, self).__init__(*args, **kwargs)
-		
-		min_validator = validators.NumberRange(min=c_min,
-			message=u'Стоимость клика не может быть меньше {0}'.format(currency(c_min)))
-		if c_rec is not None:
-			description = u'Минимальная {0}, рекомендуемая {1}'.format(currency(c_min), currency(c_rec))
-		else:
-			description = u'Минимальная {0}'.format(currency(c_min))
-			
-		self.ordercpa.validators = self.ordercpa.validators + [min_validator]
-		self.ordercpa.description = description
-			
-	def validate_orderimage(self, field):
-		if field.data is None: return
-		size = actions.bannersizes.get_banner_size(self.orderbannersize.data)
-		if field.width != size.width or field.height != size.height:
-			raise ValueError(u'Размер баннера должен совпадать с указанным')
-		
-class BannerOrderEditFormBase(BannerOrderForm):
-	def __init__(self, *args, **kwargs):
-		super(BannerOrderEditFormBase, self).__init__(*args, **kwargs)
-		del self.orderbalance
-		del self.orderbannersize
-		del self.orderimage
-		
-class BannerOrderEditForm(BannerOrderEditFormBase):
-	def __init__(self, *args, **kwargs):
-		super(BannerOrderEditForm, self).__init__(*args, **kwargs)
-		del self.orderurl
-		
-class AdminBannerOrderEditForm(BannerOrderEditFormBase, AdminOrderFormMixin):
-	ordercpa = DecimalField(u'Стоимость клика', [
-		validators.NumberRange(min=0.1, message=u'Стоимость клика не может быть меньше 0.1'),
-		validators.Required(message=u'Введите стоимость клика')
-	])
-	
 		
 class VideoOrderForm(OrderForm):
 	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message=u'Введите CPA')])
@@ -635,7 +581,8 @@ class OfferFormBase(Form):
 	], coerce=int)
 
 	logo_max_size = (150, 100)
-	logos_path = os.path.join(app.config.get('UPLOAD_PATH'), app.config.get('OFFER_LOGOS_DIR'))
+	logos_path = ConfigAttribute('OFFER_LOGOS_PATH')
+	
 	def populate_logo(self, obj, name):
 		if not self.logo.data: return
 		obj.logo_filename = '{0}.{1}'.format(generate_unique_filename(), self.logo.format)
@@ -751,8 +698,8 @@ class DateTimeRangeForm(Form):
 		return self.range_args()
 	
 	def query_args(self):
-		return dict(dt_from=self.dt_from.data.strftime(datetime_nosec_format),
-			dt_to=self.dt_to.data.strftime(datetime_nosec_format))
+		format = config_value('DATETIME_NOSEC_FORMAT', '%d.%m.%Y %H:%M')
+		return dict(dt_from=self.dt_from.data.strftime(format), dt_to=self.dt_to.data.strftime(format))
 
 class OfferStatsFilterForm(DateTimeRangeForm):
 	requested = BooleanField(u'только с заявками', default=True)
@@ -924,7 +871,7 @@ class NewsItemForm(Form):
 	active = BooleanField(u'Активна', default=True)
 	
 	image_max_size = (100, 100)
-	images_path = os.path.join(app.config.get('UPLOAD_PATH'), app.config.get('NEWS_IMAGES_DIR'))
+	images_path = ConfigAttribute('NEWS_IMAGES_PATH')
 	def populate_image(self, obj, name):
 		if not self.image.data: return
 		obj.image = '{0}.{1}'.format(generate_unique_filename(), self.image.format)

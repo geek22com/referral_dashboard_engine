@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 from flask import request, g
-from heymoose import app, resource as rc
+from heymoose import resource as rc
 from heymoose.forms import forms
+from heymoose.utils.config import config_accessor
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import affiliate_only
 
-OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
-SUB_ID_STATS_PER_PAGE = app.config.get('SUB_ID_STATS_PER_PAGE', 20)
-SOURCE_ID_STATS_PER_PAGE = app.config.get('SOURCE_ID_STATS_PER_PAGE', 20)
-REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
-KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
+OFFER_STATS_PER_PAGE = config_accessor('OFFER_STATS_PER_PAGE', 20)
+SUB_ID_STATS_PER_PAGE = config_accessor('SUB_ID_STATS_PER_PAGE', 20)
+SOURCE_ID_STATS_PER_PAGE = config_accessor('SOURCE_ID_STATS_PER_PAGE', 20)
+REFERER_STATS_PER_PAGE = config_accessor('REFERER_STATS_PER_PAGE', 20)
+KEYWORDS_STATS_PER_PAGE = config_accessor('KEYWORDS_STATS_PER_PAGE', 20)
 
 
 @bp.route('/stats/offer')

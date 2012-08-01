@@ -17,6 +17,8 @@ PYTHONBREW_PATH = ~/.pythonbrew
 # Path to Pythonbrew executable
 PYTHONBREW = $(PYTHONBREW_PATH)/bin/pythonbrew
 
+FRONTEND_SETTINGS_PATH = $(CURDIR)/config_debug.py
+export FRONTEND_SETTINGS_PATH
 
 ### TARGETS ###
 
@@ -41,8 +43,8 @@ dev-undeploy:
 	rm -rf $(ENV_PATH)
 
 # Runs development server using Python interpreter in virtual environment
-dev-run:
-	$(ENV_PY) runserver.py
+run:
+	$(ENV_PY) manage.py run
 	
 dev-debug:
 	$(ENV_PY) -m pdb runserver.py

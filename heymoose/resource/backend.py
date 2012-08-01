@@ -104,6 +104,8 @@ class BackendResource(Resource):
 	base_path = None
 	
 	def __init__(self, **kwargs):
+		print self.base_url
+		
 		timeout = kwargs.pop('timeout', None) or self.timeout
 		max_tries = kwargs.pop('max_tries', None) or self.max_tries
 		base_path = kwargs.pop('base_path', None) or self.base_path

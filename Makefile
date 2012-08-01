@@ -46,18 +46,12 @@ dev-undeploy:
 run:
 	$(ENV_PY) manage.py run
 	
-dev-debug:
-	$(ENV_PY) -m pdb runserver.py
+debug:
+	$(ENV_PY) -m pdb manage.py run
 
-dev-reset:
+resetdb:
 	sudo -u postgres psql -c "drop database heymoose;"
 	sudo -u postgres psql -c "create database heymoose;"
-
-dev-db:
-	$(ENV_PY) dbfill.py
-	
-dev-py:
-	$(ENV_PY) $(arg)
 
 deb:
 	debuild -uc -us -b

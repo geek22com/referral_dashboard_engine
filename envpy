@@ -1,0 +1,3 @@
+FRONTEND_SETTINGS_PATH=$(pwd)/config_debug.py
+export FRONTEND_SETTINGS_PATH
+~/.virtualenv/heymoose-frontend/bin/python $@

@@ -17,6 +17,8 @@ PYTHONBREW_PATH = ~/.pythonbrew
 # Path to Pythonbrew executable
 PYTHONBREW = $(PYTHONBREW_PATH)/bin/pythonbrew
 
+FRONTEND_SETTINGS_PATH = $(CURDIR)/config_development.py
+export FRONTEND_SETTINGS_PATH
 
 ### TARGETS ###
 
@@ -41,21 +43,15 @@ dev-undeploy:
 	rm -rf $(ENV_PATH)
 
 # Runs development server using Python interpreter in virtual environment
-dev-run:
-	$(ENV_PY) runserver.py
+run:
+	$(ENV_PY) manage.py run
 	
-dev-debug:
-	$(ENV_PY) -m pdb runserver.py
+debug:
+	$(ENV_PY) -m pdb manage.py run
 
-dev-reset:
+resetdb:
 	sudo -u postgres psql -c "drop database heymoose;"
 	sudo -u postgres psql -c "create database heymoose;"
-
-dev-db:
-	$(ENV_PY) dbfill.py
-	
-dev-py:
-	$(ENV_PY) $(arg)
 
 deb:
 	debuild -uc -us -b
@@ -63,6 +59,8 @@ deb:
 
 all:
 	$(ENV_PY) setup.py -q sdist
+	cp config_production.py dist/config.py
+	cp manage.py dist/heymoose_manage
 
 clean:
 	rm -rf frontend_deb*

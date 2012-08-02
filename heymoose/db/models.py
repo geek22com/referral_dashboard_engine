@@ -12,11 +12,12 @@
 #	3. При чтении из базы модель САМА делает данные.decode()
 #
 from heymoose import app
-from heymoose import mg as mongo
 from mongoalchemy.document import Index
-from flaskext.mongoalchemy import BaseQuery
+from flaskext.mongoalchemy import MongoAlchemy, BaseQuery
 from datetime import datetime
 import os, mimetypes
+
+mongo = MongoAlchemy(app)
 
 class HeyMooseQuery(BaseQuery):
 	def get_or_create(self, **kwargs):

@@ -37,5 +37,3 @@ encoding//heymoose/utils/robokassa.py=utf-8
 encoding//heymoose/views/common.py=utf-8
 encoding//misc/mkrugparse.py=utf-8
 encoding//misc/yacaparse.py=utf-8
-encoding/config.py=utf-8
-encoding/config_debug.py=utf-8

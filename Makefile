@@ -17,7 +17,7 @@ PYTHONBREW_PATH = ~/.pythonbrew
 # Path to Pythonbrew executable
 PYTHONBREW = $(PYTHONBREW_PATH)/bin/pythonbrew
 
-FRONTEND_SETTINGS_PATH = $(CURDIR)/config_debug.py
+FRONTEND_SETTINGS_PATH = $(CURDIR)/config_development.py
 export FRONTEND_SETTINGS_PATH
 
 ### TARGETS ###

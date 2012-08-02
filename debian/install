@@ -1,4 +1,5 @@
 dist/frontend-*.tar.gz tmp/frontend/
+dist/heymoose_manage.py usr/bin
 frontend_nginx.conf etc/nginx/conf.d
 heymoose_production.py usr/share/nginx/www/frontend_production
 uwsgi etc/init.d

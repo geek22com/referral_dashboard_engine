@@ -59,6 +59,7 @@ deb:
 
 all:
 	$(ENV_PY) setup.py -q sdist
+	cp manage.py dist/heymoose_manage.py
 
 clean:
 	rm -rf frontend_deb*

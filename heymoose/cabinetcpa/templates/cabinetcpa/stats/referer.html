@@ -11,6 +11,6 @@
 {% block tabcontent %}
 
 {{ datetime_range.html(form, 'Показать статистику за время:') }}
-{{ stat_macros.table_by_referer(stats, **form.query_args()) }}
+{{ stat_macros.table_by_referer(stats, suboffer_stats=true, **form.query_args()) }}
 
 {% endblock %}

@@ -11,6 +11,7 @@ SUB_ID_STATS_PER_PAGE = app.config.get('SUB_ID_STATS_PER_PAGE', 20)
 SOURCE_ID_STATS_PER_PAGE = app.config.get('SOURCE_ID_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
+SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 
 
 @bp.route('/stats/offer')
@@ -74,3 +75,69 @@ def stats_keywords(**kwargs):
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_by_keywords(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
 	return dict(stats=stats, count=count, form=form)
+
+@bp.route('/stats/suboffer')
+@affiliate_only
+@template('cabinetcpa/stats/suboffer.html')
+@sorted('leads_count', 'desc')
+@paginated(SUBOFFER_STATS_PER_PAGE)
+def stats_suboffer(**kwargs):
+	offers, _ = rc.offers.list_requested(g.user.id, offset=0, limit=100000)
+	form = forms.AffiliateCabinetStatsForm(request.args)
+	form.offer.set_offers(offers)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_suboffer(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count)
+
+@bp.route('/stats/suboffer/sub_id')
+@affiliate_only
+@template('cabinetcpa/stats/suboffer.html')
+@sorted('leads_count', 'desc')
+@paginated(SUBOFFER_STATS_PER_PAGE)
+def stats_suboffer_sub_id(**kwargs):
+	offers, _ = rc.offers.list_requested(g.user.id, offset=0, limit=100000)
+	form = forms.AffiliateCabinetSubIdStatsForm(request.args)
+	form.offer.set_offers(offers)
+	kwargs.update(form.backend_args())
+	kwargs.update(form.sub_ids_from_string(request.args.get('sub_ids')))
+	stats, count = rc.offer_stats.list_suboffer_by_sub_id(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count)
+
+@bp.route('/stats/suboffer/source_id')
+@affiliate_only
+@template('cabinetcpa/stats/suboffer.html')
+@sorted('leads_count', 'desc')
+@paginated(SUBOFFER_STATS_PER_PAGE)
+def stats_suboffer_source_id(**kwargs):
+	offers, _ = rc.offers.list_requested(g.user.id, offset=0, limit=100000)
+	form = forms.AffiliateCabinetStatsForm(request.args)
+	form.offer.set_offers(offers)
+	kwargs.update(source_id=request.args.get('source_id'), **form.backend_args())
+	stats, count = rc.offer_stats.list_suboffer_by_source_id(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count)
+
+@bp.route('/stats/suboffer/referer')
+@affiliate_only
+@template('cabinetcpa/stats/suboffer.html')
+@sorted('leads_count', 'desc')
+@paginated(SUBOFFER_STATS_PER_PAGE)
+def stats_suboffer_referer(**kwargs):
+	offers, _ = rc.offers.list_requested(g.user.id, offset=0, limit=100000)
+	form = forms.AffiliateCabinetStatsForm(request.args)
+	form.offer.set_offers(offers)
+	kwargs.update(referer=request.args.get('referer'), **form.backend_args())
+	stats, count = rc.offer_stats.list_suboffer_by_referer(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count)
+
+@bp.route('/stats/suboffer/keywords')
+@affiliate_only
+@template('cabinetcpa/stats/suboffer.html')
+@sorted('leads_count', 'desc')
+@paginated(SUBOFFER_STATS_PER_PAGE)
+def stats_suboffer_keywords(**kwargs):
+	offers, _ = rc.offers.list_requested(g.user.id, offset=0, limit=100000)
+	form = forms.AffiliateCabinetStatsForm(request.args)
+	form.offer.set_offers(offers)
+	kwargs.update(keywords=request.args.get('keywords'), **form.backend_args())
+	stats, count = rc.offer_stats.list_suboffer_by_keywords(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count)

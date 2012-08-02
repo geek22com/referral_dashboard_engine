@@ -32,6 +32,9 @@
 	<li id="tab-source-id"><a href="{{ url_for('.stats_source_id') }}">По SourceID</a></li>
 	<li id="tab-referer"><a href="{{ url_for('.stats_referer') }}">По реферерам</a></li>
 	<li id="tab-keywords"><a href="{{ url_for('.stats_keywords') }}">По поисковым запросам</a></li>
+	{% if '.stats_suboffer' in request.url_rule.endpoint %}
+	<li id="tab-suboffer"><a href="{{ url_for('.stats_suboffer') }}">По действиям</a></li>
+	{% endif %}
 	{% endif %}
 </ul>
 

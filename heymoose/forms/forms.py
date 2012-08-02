@@ -830,6 +830,21 @@ class AffiliateCabinetSubIdStatsForm(AffiliateCabinetStatsForm):
 		if self.sub_id3.data: args.update(sub_id3=self.sub_id3.data)
 		if self.sub_id4.data: args.update(sub_id4=self.sub_id4.data)
 		return args
+	
+	@property
+	def groupings(self):
+		return [self.g_sub_id.data, self.g_sub_id1.data, self.g_sub_id2.data, self.g_sub_id3.data, self.g_sub_id4.data]
+	
+	def sub_ids_from_string(self, string, delimeter='/'):
+		rv = dict()
+		if not string: return rv
+		sub_ids = [sub_id.strip() for sub_id in string.split('/')]
+		index = 0
+		for i, grouping in enumerate(self.groupings):
+			if grouping:
+				rv.update({'sub_id{0}'.format(i or '') : sub_ids[index]})
+				index += 1
+		return rv
 
 
 class CategoryForm(Form):

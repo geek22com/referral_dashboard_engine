@@ -198,9 +198,17 @@ class CategoriesField(CategorizedCheckboxListField):
 
 class OfferField(SelectField):
 	def set_offers(self, offers, empty=(0, u'(все)')):
+		self.offers = offers
 		choices = [(offer.id, offer.name) for offer in offers]
 		if empty: choices.insert(0, empty)
 		self.choices = choices
+	
+	@property
+	def selected(self):
+		for offer in self.offers:
+			if self.data == offer.id:
+				return offer
+		return None
 
 class CategoryGroupField(SelectField):
 	def __init__(self, label=None, validators=None, empty=(0, u'(верхний уровень)'), **kwargs):

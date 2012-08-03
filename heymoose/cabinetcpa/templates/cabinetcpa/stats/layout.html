@@ -14,6 +14,7 @@
 		$('li#tab-{{ activetab }}').addClass('active');
 	})
 </script>
+{{ stat_macros.head() }}
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -33,7 +34,7 @@
 	<li id="tab-referer"><a href="{{ url_for('.stats_referer') }}">По реферерам</a></li>
 	<li id="tab-keywords"><a href="{{ url_for('.stats_keywords') }}">По поисковым запросам</a></li>
 	{% if '.stats_suboffer' in request.url_rule.endpoint %}
-	<li id="tab-suboffer"><a href="{{ url_for('.stats_suboffer') }}">По действиям</a></li>
+	<li id="tab-suboffer"><a href="#">По действиям</a></li>
 	{% endif %}
 	{% endif %}
 </ul>

@@ -1,5 +1,37 @@
 {% import 'common/macros/lists.html' as lists with context %}
 
+{% macro head() %}
+	<style type="text/css">
+		td.suboffer-stats {
+			cursor: pointer;
+			color: #0069D6;
+			font-weight: bold;
+			text-decoration: underline;
+		}
+		
+		td.suboffer-stats div.relative-container {
+			position: relative;
+		}
+		
+		td.suboffer-stats img.icon-zoom {
+			opacity: 0.3;
+			position: absolute;
+			left: 0;
+		}
+		
+		td.suboffer-stats:hover img.icon-zoom {
+			opacity: 1;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function() {
+			$('td.suboffer-stats').click(function() {
+				document.location = $(this).find('.suboffer-stats-link').attr('href');
+			});
+		})
+	</script>
+{% endmacro %}
+
 {% macro table_base(stats, suboffer_stats=false, empty='Нет данных для получения статистики.') %}
 {% if stats %}
 	<table class="bordered-table zebra-striped stats-table">
@@ -32,20 +64,29 @@
 				<td class="right">{{ stat.shows }}</td>
 				<td class="right">{{ stat.clicks }}</td>
 				
-				<td class="right">
-					{% if suboffer_stats and stat.leads %}
-						<a href="{{ caller('suboffer-stats-url', stat, **kwargs) }}">{{ stat.leads }}</a>
-					{% else %}
-						{{ stat.leads }}
-					{% endif %}
+				{% if suboffer_stats and stat.leads %}
+				<td class="right suboffer-stats">
+					<div class="relative-container">
+						<img src="{{ url_for('static', filename='img/selector-search.gif') }}" alt="" class="icon-zoom" />
+						<a href="{{ caller('suboffer-stats-url', stat, **kwargs) -}}"
+						 class="suboffer-stats-link">{{ stat.leads }}</a>
+					</div>
 				</td>
-				<td class="right">
-					{% if suboffer_stats and stat.sales %}
-						<a href="{{ caller('suboffer-stats-url', stat, **kwargs) }}">{{ stat.sales }}</a>
-					{% else %}
-						{{ stat.sales }}
-					{% endif %}
+				{% else %}
+				<td class="right">{{ stat.leads }}</td>
+				{% endif %}
+				
+				{% if suboffer_stats and stat.sales %}
+				<td class="right suboffer-stats">
+					<div class="relative-container">
+						<img src="{{ url_for('static', filename='img/selector-search.gif') }}" alt="" class="icon-zoom" />
+						<a href="{{ caller('suboffer-stats-url', stat, **kwargs) -}}"
+						 class="suboffer-stats-link">{{ stat.sales }}</a>
+					</div>
 				</td>
+				{% else %}
+				<td class="right">{{ stat.sales }}</td>
+				{% endif %}
 				
 				<td class="right">{% if stat.ctr %}{{ stat.ctr if stat.ctr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
 				<td class="right">{% if stat.cr %}{{ stat.cr if stat.cr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
@@ -74,7 +115,7 @@
 		{% elif place == 'first' %}
 			<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
 		{% elif place == 'suboffer-stats-url' %}
-			{{ url_for('.stats_suboffer', offer=stat.id, **kwargs) }}
+			{{ url_for('.stats_suboffer', offer=stat.id, **kwargs) -}}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}

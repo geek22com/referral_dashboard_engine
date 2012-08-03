@@ -32,9 +32,7 @@
 		<tbody>
 			{% for stat in stats %}
 			<tr>
-				<td {% if stat.exclusive %}class="exclusive"{% endif %}>
-					{{ stat.name }}
-				</td>
+				<td {% if stat.exclusive %}class="exclusive"{% endif %}>{{ stat.name }}</td>
 				<td class="right">{{ stat.leads }}</td>
 				<td class="right">{{ stat.sales }}</td>
 				<td class="right red">{{ stat.cancelled_revenue }}</td>

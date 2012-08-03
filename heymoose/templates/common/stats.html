@@ -26,7 +26,7 @@
 	<script type="text/javascript">
 		$(function() {
 			$('td.suboffer-stats').click(function() {
-				document.location = $(this).find('.suboffer-stats-link').attr('href');
+				document.location = $.trim($(this).find('.suboffer-stats-link').attr('href'));
 			});
 		})
 	</script>

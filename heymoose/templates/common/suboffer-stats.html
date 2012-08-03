@@ -1,5 +1,16 @@
 {% import 'common/macros/lists.html' as lists with context %}
 
+{% macro head() %}
+<style type="text/css">
+	td.exclusive {
+		background-image: url('{{ url_for('static', filename='img/icon-star.png') }}');
+		background-repeat: no-repeat;
+		background-position: 10px center;
+		padding-left: 30px;
+	}
+</style>
+{% endmacro %}
+
 {% macro table(stats, empty='Нет данных для получения статистики.') %}
 {% if stats %}
 	<table class="bordered-table zebra-striped stats-table">
@@ -21,7 +32,9 @@
 		<tbody>
 			{% for stat in stats %}
 			<tr>
-				<td>{{ stat.name }}</td>				
+				<td {% if stat.exclusive %}class="exclusive"{% endif %}>
+					{{ stat.name }}
+				</td>
 				<td class="right">{{ stat.leads }}</td>
 				<td class="right">{{ stat.sales }}</td>
 				<td class="right red">{{ stat.cancelled_revenue }}</td>

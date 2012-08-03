@@ -4,6 +4,11 @@
 {% set content_fluid = false %}
 {% set activetab = 'suboffer' %}
 
+{% block extrahead %}
+	{{ super() }}
+	{{ suboffer_stat_macros.head() }}
+{% endblock %}
+
 {% block tabcontent %}
 
 {% with args = request.args %}

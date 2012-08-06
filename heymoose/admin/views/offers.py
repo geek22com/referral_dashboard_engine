@@ -15,6 +15,7 @@ OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
 AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
+SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 
 
 @bp.route('/offers/')
@@ -328,3 +329,48 @@ def offers_info_stats_keywords(id, **kwargs):
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_by_keywords(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
 	return dict(offer=offer, stats=stats, count=count, form=form)
+
+@bp.route('/offers/<int:id>/stats/suboffer')
+@template('admin/offers/info/stats/suboffer.html')
+@sorted('leads_count', 'desc')
+@paginated(SUBOFFER_STATS_PER_PAGE)
+def offers_info_stats_suboffer(id, **kwargs):
+	offer = rc.offers.get_by_id(id)
+	form = forms.DateTimeRangeForm(request.args)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_suboffer(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
+	return dict(offer=offer, stats=stats, count=count, form=form)
+
+@bp.route('/offers/<int:id>/stats/suboffer/affiliate')
+@template('admin/offers/info/stats/suboffer.html')
+@sorted('leads_count', 'desc')
+@paginated(SUBOFFER_STATS_PER_PAGE)
+def offers_info_stats_suboffer_affiliate(id, **kwargs):
+	offer = rc.offers.get_by_id(id)
+	affiliate = rc.users.get_by_id(request.args.get('aff_id'))
+	form = forms.DateTimeRangeForm(request.args)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_suboffer(offer_id=offer.id, aff_id=affiliate.id, **kwargs) if form.validate() else ([], 0)
+	return dict(offer=offer, stats=stats, count=count, affiliate=affiliate)
+
+@bp.route('/offers/<int:id>/stats/suboffer/referer')
+@template('admin/offers/info/stats/suboffer.html')
+@sorted('leads_count', 'desc')
+@paginated(SUBOFFER_STATS_PER_PAGE)
+def offers_info_stats_suboffer_referer(id, **kwargs):
+	offer = rc.offers.get_by_id(id)
+	form = forms.DateTimeRangeForm(request.args)
+	kwargs.update(referer=request.args.get('referer'), **form.backend_args())
+	stats, count = rc.offer_stats.list_suboffer_by_referer(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
+	return dict(offer=offer, stats=stats, count=count)
+
+@bp.route('/offers/<int:id>/stats/suboffer/keywords')
+@template('admin/offers/info/stats/suboffer.html')
+@sorted('leads_count', 'desc')
+@paginated(SUBOFFER_STATS_PER_PAGE)
+def offers_info_stats_suboffer_keywords(id, **kwargs):
+	offer = rc.offers.get_by_id(id)
+	form = forms.DateTimeRangeForm(request.args)
+	kwargs.update(keywords=request.args.get('keywords'), **form.backend_args())
+	stats, count = rc.offer_stats.list_suboffer_by_keywords(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
+	return dict(offer=offer, stats=stats, count=count)

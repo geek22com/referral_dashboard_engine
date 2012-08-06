@@ -127,7 +127,7 @@
 		{% elif place == 'first' %}
 			<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
 		{% elif place == 'suboffer-stats-url' %}
-			#
+			{{ url_for(suboffer_stats_rule, aff_id=stat.id, **kwargs) -}}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
@@ -139,7 +139,7 @@
 		{% elif place == 'first' %}
 			<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
 		{% elif place == 'suboffer-stats-url' %}
-			#
+			{{ url_for(suboffer_stats_rule, adv_id=stat.id, **kwargs) -}}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}

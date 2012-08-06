@@ -1,7 +1,19 @@
 {% extends "admin/users-info-stats-layout.html" %}
+{% import 'common/forms/datetime-range.html' as datetime_range %}
 
+{% set content_fluid = true %}
 {% set activesubtab = 'sub-id' %}
 
+{% block extrahead %}
+	{{ super() }}
+	{{ datetime_range.head() }}
+{% endblock %}
+
 {% block subtabcontent %}
-{{ stat_macros.table_by_sub_id(stats, id=user.id, **form.query_args()) }}
+{{ datetime_range.html(form, 'Показать статистику за время:') }}
+{{ stat_macros.table_by_sub_id(stats, id=user.id,
+	suboffer_stats=true,
+	suboffer_stats_rule='.users_info_stats_suboffer_sub_id',
+	**form.query_args())
+}}
 {% endblock %}

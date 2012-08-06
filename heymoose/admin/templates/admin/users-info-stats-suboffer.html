@@ -1,0 +1,28 @@
+{% extends "admin/users-info-stats-layout.html" %}
+{% import 'common/suboffer-stats.html' as suboffer_stat_macros with context %}
+
+{% set content_fluid = false %}
+{% set activesubtab = 'suboffer' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ suboffer_stat_macros.head() }}
+{% endblock %}
+
+{% block subtabcontent %}
+
+{% with args = request.args %}
+{% if args.sub_id or args.source_id or args.referer or args.keywords %}
+	<div class="alert-message block-message info">
+		Показана статистика
+		{% if args.sub_id %}для SubID &laquo;{{ args.sub_id }}&raquo;.{% endif %}
+		{% if args.source_id %}для SourceID &laquo;{{ args.source_id }}&raquo;.{% endif %}
+		{% if args.referer %}для реферера &laquo;{{ args.referer }}&raquo;.{% endif %}
+		{% if args.keywords %}для поискового запроса &laquo;{{ args.keywords }}&raquo;.{% endif %}
+	</div>
+{% endif %}
+{% endwith %}
+
+{{ suboffer_stat_macros.table(stats, id=user.id) }}
+
+{% endblock %}

@@ -108,19 +108,19 @@
 {% endif %}
 {% endmacro %}
 
-{% macro table_by_offer(stats) %}
+{% macro table_by_offer(stats, suboffer_stats_rule=none) %}
 	{% call(place, stat) table_base(stats, **kwargs) %}
 		{% if place == 'first-header' %}
 			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Оффер</th>
 		{% elif place == 'first' %}
 			<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
 		{% elif place == 'suboffer-stats-url' %}
-			{{ url_for('.stats_suboffer', offer=stat.id, **kwargs) -}}
+			{{ url_for(suboffer_stats_rule, offer=stat.id, **kwargs) -}}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
 
-{% macro table_by_affiliate(stats) %}
+{% macro table_by_affiliate(stats, suboffer_stats_rule=none) %}
 	{% call(place, stat) table_base(stats, **kwargs) %}
 		{% if place == 'first-header' %}
 			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Партнёр</th>
@@ -132,7 +132,7 @@
 	{% endcall %}
 {% endmacro %}
 
-{% macro table_by_advertiser(stats) %}
+{% macro table_by_advertiser(stats, suboffer_stats_rule=none) %}
 	{% call(place, stat) table_base(stats, **kwargs) %}
 		{% if place == 'first-header' %}
 			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Рекламодатель</th>
@@ -144,50 +144,50 @@
 	{% endcall %}
 {% endmacro %}
 
-{% macro table_by_sub_id(stats) %}
+{% macro table_by_sub_id(stats, suboffer_stats_rule=none) %}
 	{% call(place, stat) table_base(stats, **kwargs) %}
 		{% if place == 'first-header' %}
 			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>SubID</th>
 		{% elif place == 'first' %}
 			<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
 		{% elif place == 'suboffer-stats-url' %}
-			{{ url_for('.stats_suboffer_sub_id', sub_ids=stat.name, **kwargs) }}
+			{{ url_for(suboffer_stats_rule, sub_ids=stat.name, **kwargs) }}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
 
-{% macro table_by_source_id(stats) %}
+{% macro table_by_source_id(stats, suboffer_stats_rule=none) %}
 	{% call(place, stat) table_base(stats, **kwargs) %}
 		{% if place == 'first-header' %}
 			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>SourceID</th>
 		{% elif place == 'first' %}
 			<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
 		{% elif place == 'suboffer-stats-url' %}
-			{{ url_for('.stats_suboffer_source_id', source_id=stat.name, **kwargs) }}
+			{{ url_for(suboffer_stats_rule, source_id=stat.name, **kwargs) }}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
 
-{% macro table_by_referer(stats) %}
+{% macro table_by_referer(stats, suboffer_stats_rule=none) %}
 	{% call(place, stat) table_base(stats, **kwargs) %}
 		{% if place == 'first-header' %}
 			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Реферер</th>
 		{% elif place == 'first' %}
 			<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
 		{% elif place == 'suboffer-stats-url' %}
-			{{ url_for('.stats_suboffer_referer', referer=stat.name, **kwargs) }}
+			{{ url_for(suboffer_stats_rule, referer=stat.name, **kwargs) }}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
 
-{% macro table_by_keywords(stats) %}
+{% macro table_by_keywords(stats, suboffer_stats_rule=none) %}
 	{% call(place, stat) table_base(stats, **kwargs) %}
 		{% if place == 'first-header' %}
 			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Поисковый запрос</th>
 		{% elif place == 'first' %}
 			<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
 		{% elif place == 'suboffer-stats-url' %}
-			{{ url_for('.stats_suboffer_keywords', keywords=stat.name, **kwargs) }}
+			{{ url_for(suboffer_stats_rule, keywords=stat.name, **kwargs) }}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}

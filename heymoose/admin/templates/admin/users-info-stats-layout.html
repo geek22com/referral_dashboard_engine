@@ -1,19 +1,17 @@
 {% extends "admin/users-info-layout.html" %}
 {% import 'common/stats.html' as stat_macros with context %}
-{% import 'common/forms/datetime-range.html' as datetime_range %}
 
-{% set content_fluid = true %}
 {% set activetab = 'stats' %}
 
 {% block extrahead %}
 	{{ super() }}
-	{{ datetime_range.head() }}
 	{% set activesubtab = activesubtab|default('offer') %}
 	<script type="text/javascript">
 		$(function() { 
 			$('li#subtab-{{ activesubtab }}').addClass('active');
 		})
 	</script>
+	{{ stat_macros.head() }}
 {% endblock %}
 
 {% block tabcontent %}
@@ -25,10 +23,11 @@
 	<li id="subtab-source-id"><a href="{{ url_for('.users_info_stats_source_id', id=user.id) }}">По SourceID</a></li>
 	<li id="subtab-referer"><a href="{{ url_for('.users_info_stats_referer', id=user.id) }}">По реферерам</a></li>
 	<li id="subtab-keywords"><a href="{{ url_for('.users_info_stats_keywords', id=user.id) }}">По поисковым запросам</a></li>
+	{% if '.users_info_stats_suboffer' in request.url_rule.endpoint %}
+	<li id="subtab-suboffer"><a href="#">По действиям</a></li>
+	{% endif %}
 	{% endif %}
 </ul>
-
-{{ datetime_range.html(form, 'Показать статистику за время:') }}
 
 {% block subtabcontent %}Раздел находится в разработке{% endblock %}
 

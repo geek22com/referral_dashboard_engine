@@ -11,6 +11,10 @@
 {% block tabcontent %}
 
 {{ datetime_range.html(form, 'Показать статистику за время:') }}
-{{ stat_macros.table_by_offer(stats, suboffer_stats=g.user.is_affiliate, **form.query_args()) }}
+{{ stat_macros.table_by_offer(stats,
+	suboffer_stats=g.user.is_affiliate,
+	suboffer_stats_rule='.stats_suboffer',
+	**form.query_args())
+}}
 
 {% endblock %}

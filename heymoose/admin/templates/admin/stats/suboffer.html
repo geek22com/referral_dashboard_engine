@@ -19,7 +19,7 @@
 		для партнёра <a href="{{ url_for('.users_info', id=affiliate.id) }}">{{ affiliate.email }}</a>
 	{% elif advertiser %}
 		для рекламодателя <a href="{{ url_for('.users_info', id=advertiser.id) }}">
-			{{ advertiser.email }} ({{ advertiser.organization }})</a>
+			{{ advertiser.email }} ({{ advertiser.organization|default('—', true) }})</a>
 	{% endif %}
 	с <b>{{ args.dt_from }}</b> по <b>{{ args.dt_to }}</b>.
 </div>

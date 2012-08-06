@@ -87,7 +87,7 @@ def stats_suboffer(**kwargs):
 	form.offer.set_offers(offers)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
-	return dict(stats=stats, count=count)
+	return dict(stats=stats, count=count, offer=form.offer.selected)
 
 @bp.route('/stats/suboffer/sub_id')
 @affiliate_only
@@ -101,7 +101,7 @@ def stats_suboffer_sub_id(**kwargs):
 	kwargs.update(form.backend_args())
 	kwargs.update(form.sub_ids_from_string(request.args.get('sub_ids')))
 	stats, count = rc.offer_stats.list_suboffer_by_sub_id(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
-	return dict(stats=stats, count=count)
+	return dict(stats=stats, count=count, offer=form.offer.selected)
 
 @bp.route('/stats/suboffer/source_id')
 @affiliate_only
@@ -114,7 +114,7 @@ def stats_suboffer_source_id(**kwargs):
 	form.offer.set_offers(offers)
 	kwargs.update(source_id=request.args.get('source_id'), **form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer_by_source_id(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
-	return dict(stats=stats, count=count)
+	return dict(stats=stats, count=count, offer=form.offer.selected)
 
 @bp.route('/stats/suboffer/referer')
 @affiliate_only
@@ -127,7 +127,7 @@ def stats_suboffer_referer(**kwargs):
 	form.offer.set_offers(offers)
 	kwargs.update(referer=request.args.get('referer'), **form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer_by_referer(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
-	return dict(stats=stats, count=count)
+	return dict(stats=stats, count=count, offer=form.offer.selected)
 
 @bp.route('/stats/suboffer/keywords')
 @affiliate_only
@@ -140,4 +140,4 @@ def stats_suboffer_keywords(**kwargs):
 	form.offer.set_offers(offers)
 	kwargs.update(keywords=request.args.get('keywords'), **form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer_by_keywords(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
-	return dict(stats=stats, count=count)
+	return dict(stats=stats, count=count, offer=form.offer.selected)

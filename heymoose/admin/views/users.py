@@ -218,7 +218,7 @@ def users_info_stats_suboffer(id, **kwargs):
 	form.offer.set_offers(offers)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
-	return dict(user=user, stats=stats, count=count)
+	return dict(user=user, stats=stats, count=count, offer=form.offer.selected)
 
 @bp.route('/users/<int:id>/stats/suboffer/sub_id')
 @template('admin/users-info-stats-suboffer.html')
@@ -232,7 +232,7 @@ def users_info_stats_suboffer_sub_id(id, **kwargs):
 	kwargs.update(form.backend_args())
 	kwargs.update(form.sub_ids_from_string(request.args.get('sub_ids')))
 	stats, count = rc.offer_stats.list_suboffer_by_sub_id(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
-	return dict(user=user, stats=stats, count=count)
+	return dict(user=user, stats=stats, count=count, offer=form.offer.selected)
 
 @bp.route('/users/<int:id>/stats/suboffer/source_id')
 @template('admin/users-info-stats-suboffer.html')
@@ -245,7 +245,7 @@ def users_info_stats_suboffer_source_id(id, **kwargs):
 	form.offer.set_offers(offers)
 	kwargs.update(source_id=request.args.get('source_id'), **form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer_by_source_id(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
-	return dict(user=user, stats=stats, count=count)
+	return dict(user=user, stats=stats, count=count, offer=form.offer.selected)
 
 @bp.route('/users/<int:id>/stats/suboffer/referer')
 @template('admin/users-info-stats-suboffer.html')
@@ -258,7 +258,7 @@ def users_info_stats_suboffer_referer(id, **kwargs):
 	form.offer.set_offers(offers)
 	kwargs.update(referer=request.args.get('referer'), **form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer_by_referer(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
-	return dict(user=user, stats=stats, count=count)
+	return dict(user=user, stats=stats, count=count, offer=form.offer.selected)
 
 @bp.route('/users/<int:id>/stats/suboffer/keywords')
 @template('admin/users-info-stats-suboffer.html')
@@ -271,4 +271,4 @@ def users_info_stats_suboffer_keywords(id, **kwargs):
 	form.offer.set_offers(offers)
 	kwargs.update(keywords=request.args.get('keywords'), **form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer_by_keywords(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
-	return dict(user=user, stats=stats, count=count)
+	return dict(user=user, stats=stats, count=count, offer=form.offer.selected)

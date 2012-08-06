@@ -12,15 +12,15 @@
 {% block tabcontent %}
 
 {% with args = request.args %}
-{% if args.sub_id or args.source_id or args.referer or args.keywords %}
-	<div class="alert-message block-message info">
-		Показана статистика
-		{% if args.sub_id %}для SubID &laquo;{{ args.sub_id }}&raquo;.{% endif %}
-		{% if args.source_id %}для SourceID &laquo;{{ args.source_id }}&raquo;.{% endif %}
-		{% if args.referer %}для реферера &laquo;{{ args.referer }}&raquo;.{% endif %}
-		{% if args.keywords %}для поискового запроса &laquo;{{ args.keywords }}&raquo;.{% endif %}
-	</div>
-{% endif %}
+<div class="alert-message block-message info">
+	Показана статистика
+	{% if offer %}для оффера <a href="{{ url_for('.offers_info', id=offer.id) }}">{{ offer.name }}</a>{% endif %}
+	{% if args.sub_id %}для SubID <b>{{ args.sub_id }}</b>{% endif %}
+	{% if args.source_id %}для SourceID <b>{{ args.source_id }}</b>{% endif %}
+	{% if args.referer %}для реферера <b>{{ args.referer }}</b>{% endif %}
+	{% if args.keywords %}для поискового запроса <b>{{ args.keywords }}</b>{% endif %}
+	с <b>{{ args.dt_from }}</b> по <b>{{ args.dt_to }}</b>.
+</div>
 {% endwith %}
 
 {{ suboffer_stat_macros.table(stats) }}

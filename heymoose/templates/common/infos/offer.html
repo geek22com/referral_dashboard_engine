@@ -153,20 +153,8 @@
 			</div>
 		</div>
 		{% endif %}
-		{#<div class="roundbox roundbox--primary roundbox--shadowed">
-			<div class="roundbox-header">
-				<a href="{{ url_for('.offers_info_stats', id=offer.id) }}"
-				 class="roundbox-header-link">статистика &raquo;</a>
-				Показатели
-			</div>
-			<div class="roundbox-content">
-				<dl class="kv kv--inscribed kv--key180">
-					<dt>eCPC</dt><dd>1.43 руб.</dd>
-					<dt>eCPM</dt><dd>15.70 руб.</dd>
-					<dt>CR</dt><dd>1.52 %</dd>
-				</dl>
-			</div>
-		</div>#}
+
+		{% if not offer.exclusive %}
 		<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">
 				<a href="{{ url_for('.offers_info_actions', id=offer.id) }}"
@@ -182,6 +170,7 @@
 				</dl>
 			</div>
 		</div>
+		{% endif %}
 		<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">Категории</div>
 			<div class="roundbox-content">

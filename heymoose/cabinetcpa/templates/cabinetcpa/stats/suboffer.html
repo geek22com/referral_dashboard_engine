@@ -1,0 +1,28 @@
+{% extends "cabinetcpa/stats/layout.html" %}
+{% import 'common/suboffer-stats.html' as suboffer_stat_macros with context %}
+
+{% set content_fluid = false %}
+{% set activetab = 'suboffer' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ suboffer_stat_macros.head() }}
+{% endblock %}
+
+{% block tabcontent %}
+
+{% with args = request.args %}
+<div class="alert-message block-message info">
+	Показана статистика
+	{% if offer %}для оффера <a href="{{ url_for('.offers_info', id=offer.id) }}">{{ offer.name }}</a>{% endif %}
+	{% if args.sub_id %}для SubID <b>{{ args.sub_id }}</b>{% endif %}
+	{% if args.source_id %}для SourceID <b>{{ args.source_id }}</b>{% endif %}
+	{% if args.referer %}для реферера <b>{{ args.referer }}</b>{% endif %}
+	{% if args.keywords %}для поискового запроса <b>{{ args.keywords }}</b>{% endif %}
+	с <b>{{ args.dt_from }}</b> по <b>{{ args.dt_to }}</b>.
+</div>
+{% endwith %}
+
+{{ suboffer_stat_macros.table(stats) }}
+
+{% endblock %}

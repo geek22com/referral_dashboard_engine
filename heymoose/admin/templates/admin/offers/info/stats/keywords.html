@@ -1,7 +1,13 @@
 {% extends "admin/offers/info/stats/layout.html" %}
 
+{% set content_fluid = true %}
 {% set activesubtab = 'keywords' %}
 
 {% block subtabcontent %}
-{{ stat_macros.table_by_keywords(stats, id=offer.id, **form.query_args()) }}
+{{ datetime_range.html(form, 'Показать статистику за время:') }}
+{{ stat_macros.table_by_keywords(stats, id=offer.id,
+	suboffer_stats=true,
+	suboffer_stats_rule='.offers_info_stats_suboffer_keywords',
+	**form.query_args())
+}}
 {% endblock %}

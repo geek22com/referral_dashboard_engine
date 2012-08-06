@@ -1,0 +1,31 @@
+{% extends "admin/offers/info/stats/layout.html" %}
+{% import 'common/suboffer-stats.html' as suboffer_stat_macros with context %}
+
+{% set activesubtab = 'suboffer' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ suboffer_stat_macros.head() }}
+{% endblock %}
+
+{% block subtabcontent %}
+
+{% with args = request.args %}
+	{% if form %}
+		{{ datetime_range.html(form, 'Показать статистику за время:') }}
+	{% else %}
+		<div class="alert-message block-message info">
+			Показана статистика
+			{% if affiliate %}
+				для партнёра <a href="{{ url_for('.users_info', id=affiliate.id) }}">{{ affiliate.email }}</a>
+			{% endif %}
+			{% if args.referer %}для реферера <b>{{ args.referer }}</b>{% endif %}
+			{% if args.keywords %}для поискового запроса <b>{{ args.keywords }}</b>{% endif %}
+			с <b>{{ args.dt_from }}</b> по <b>{{ args.dt_to }}</b>.
+		</div>
+	{% endif %}
+{% endwith %}
+
+{{ suboffer_stat_macros.table(stats, id=offer.id) }}
+
+{% endblock %}

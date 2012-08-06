@@ -1,11 +1,43 @@
 {% import 'common/macros/lists.html' as lists with context %}
 
-{% macro table_base(stats, empty='Нет данных для получения статистики.') %}
+{% macro head() %}
+	<style type="text/css">
+		td.suboffer-stats {
+			cursor: pointer;
+			color: #0069D6;
+			font-weight: bold;
+			text-decoration: underline;
+		}
+		
+		td.suboffer-stats div.relative-container {
+			position: relative;
+		}
+		
+		td.suboffer-stats img.icon-zoom {
+			opacity: 0.3;
+			position: absolute;
+			left: 0;
+		}
+		
+		td.suboffer-stats:hover img.icon-zoom {
+			opacity: 1;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function() {
+			$('td.suboffer-stats').click(function() {
+				document.location = $.trim($(this).find('.suboffer-stats-link').attr('href'));
+			});
+		})
+	</script>
+{% endmacro %}
+
+{% macro table_base(stats, suboffer_stats=false, empty='Нет данных для получения статистики.') %}
 {% if stats %}
 	<table class="bordered-table zebra-striped stats-table">
 		<thead>
 			<tr>
-				{{ caller(true, none, **kwargs) }}
+				{{ caller('first-header', none, **kwargs) }}
 				<th rowspan="2" style="min-width: 70px;" {{ lists.sort_header('shows_count', **kwargs) }}>Показы</th>
 				<th rowspan="2" style="min-width: 70px;" {{ lists.sort_header('clicks_count', **kwargs) }}>Клики</th>
 				<th class="header center nosort" colspan="2">Выполненные действия</th>
@@ -27,13 +59,34 @@
 		<tbody>
 			{% for stat in stats %}
 			<tr>
-				{{ caller(false, stat) }}
+				{{ caller('first', stat, **kwargs) }}
 				
 				<td class="right">{{ stat.shows }}</td>
 				<td class="right">{{ stat.clicks }}</td>
 				
+				{% if suboffer_stats and stat.leads %}
+				<td class="right suboffer-stats">
+					<div class="relative-container">
+						<img src="{{ url_for('static', filename='img/selector-search.gif') }}" alt="" class="icon-zoom" />
+						<a href="{{ caller('suboffer-stats-url', stat, **kwargs) -}}"
+						 class="suboffer-stats-link">{{ stat.leads }}</a>
+					</div>
+				</td>
+				{% else %}
 				<td class="right">{{ stat.leads }}</td>
+				{% endif %}
+				
+				{% if suboffer_stats and stat.sales %}
+				<td class="right suboffer-stats">
+					<div class="relative-container">
+						<img src="{{ url_for('static', filename='img/selector-search.gif') }}" alt="" class="icon-zoom" />
+						<a href="{{ caller('suboffer-stats-url', stat, **kwargs) -}}"
+						 class="suboffer-stats-link">{{ stat.sales }}</a>
+					</div>
+				</td>
+				{% else %}
 				<td class="right">{{ stat.sales }}</td>
+				{% endif %}
 				
 				<td class="right">{% if stat.ctr %}{{ stat.ctr if stat.ctr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
 				<td class="right">{% if stat.cr %}{{ stat.cr if stat.cr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
@@ -55,72 +108,86 @@
 {% endif %}
 {% endmacro %}
 
-{% macro table_by_offer(stats) %}
-	{% call(head, stat) table_base(stats, **kwargs) %}
-		{% if head %}
-		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Оффер</th>
-		{% else %}
-		<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
+{% macro table_by_offer(stats, suboffer_stats_rule=none) %}
+	{% call(place, stat) table_base(stats, **kwargs) %}
+		{% if place == 'first-header' %}
+			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Оффер</th>
+		{% elif place == 'first' %}
+			<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
+		{% elif place == 'suboffer-stats-url' %}
+			{{ url_for(suboffer_stats_rule, offer=stat.id, **kwargs) -}}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
 
-{% macro table_by_affiliate(stats) %}
-	{% call(head, stat) table_base(stats, **kwargs) %}
-		{% if head %}
-		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Партнёр</th>
-		{% else %}
-		<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
+{% macro table_by_affiliate(stats, suboffer_stats_rule=none) %}
+	{% call(place, stat) table_base(stats, **kwargs) %}
+		{% if place == 'first-header' %}
+			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Партнёр</th>
+		{% elif place == 'first' %}
+			<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
+		{% elif place == 'suboffer-stats-url' %}
+			{{ url_for(suboffer_stats_rule, aff_id=stat.id, **kwargs) -}}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
 
-{% macro table_by_advertiser(stats) %}
-	{% call(head, stat) table_base(stats, **kwargs) %}
-		{% if head %}
-		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Рекламодатель</th>
-		{% else %}
-		<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
+{% macro table_by_advertiser(stats, suboffer_stats_rule=none) %}
+	{% call(place, stat) table_base(stats, **kwargs) %}
+		{% if place == 'first-header' %}
+			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Рекламодатель</th>
+		{% elif place == 'first' %}
+			<td><a href="{{ url_for('.users_info', id=stat.id) }}">{{ stat.name }}</a></td>
+		{% elif place == 'suboffer-stats-url' %}
+			{{ url_for(suboffer_stats_rule, adv_id=stat.id, **kwargs) -}}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
 
-{% macro table_by_sub_id(stats) %}
-	{% call(head, stat) table_base(stats, **kwargs) %}
-		{% if head %}
-		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>SubID</th>
-		{% else %}
-		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+{% macro table_by_sub_id(stats, suboffer_stats_rule=none) %}
+	{% call(place, stat) table_base(stats, **kwargs) %}
+		{% if place == 'first-header' %}
+			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>SubID</th>
+		{% elif place == 'first' %}
+			<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+		{% elif place == 'suboffer-stats-url' %}
+			{{ url_for(suboffer_stats_rule, sub_ids=stat.name, **kwargs) }}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
 
-{% macro table_by_source_id(stats) %}
-	{% call(head, stat) table_base(stats, **kwargs) %}
-		{% if head %}
-		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>SourceID</th>
-		{% else %}
-		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+{% macro table_by_source_id(stats, suboffer_stats_rule=none) %}
+	{% call(place, stat) table_base(stats, **kwargs) %}
+		{% if place == 'first-header' %}
+			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>SourceID</th>
+		{% elif place == 'first' %}
+			<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+		{% elif place == 'suboffer-stats-url' %}
+			{{ url_for(suboffer_stats_rule, source_id=stat.name, **kwargs) }}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
 
-{% macro table_by_referer(stats) %}
-	{% call(head, stat) table_base(stats, **kwargs) %}
-		{% if head %}
-		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Реферер</th>
-		{% else %}
-		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+{% macro table_by_referer(stats, suboffer_stats_rule=none) %}
+	{% call(place, stat) table_base(stats, **kwargs) %}
+		{% if place == 'first-header' %}
+			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Реферер</th>
+		{% elif place == 'first' %}
+			<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+		{% elif place == 'suboffer-stats-url' %}
+			{{ url_for(suboffer_stats_rule, referer=stat.name, **kwargs) }}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
 
-{% macro table_by_keywords(stats) %}
-	{% call(head, stat) table_base(stats, **kwargs) %}
-		{% if head %}
-		<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Поисковый запрос</th>
-		{% else %}
-		<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+{% macro table_by_keywords(stats, suboffer_stats_rule=none) %}
+	{% call(place, stat) table_base(stats, **kwargs) %}
+		{% if place == 'first-header' %}
+			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Поисковый запрос</th>
+		{% elif place == 'first' %}
+			<td>{{ stat.name|default('&mdash;', true)|safe }}</td>
+		{% elif place == 'suboffer-stats-url' %}
+			{{ url_for(suboffer_stats_rule, keywords=stat.name, **kwargs) }}
 		{% endif %}
 	{% endcall %}
 {% endmacro %}

@@ -394,6 +394,7 @@ class Region(models.ModelBase):
 class OverallOfferStat(models.ModelBase):
 	id = Field(types.Integer, 'id')
 	name = Field(types.String, 'name')
+	exclusive = Field(types.Boolean, 'exclusive')
 	shows = Field(types.Integer, 'shows')
 	clicks = Field(types.Integer, 'clicks')
 	leads = Field(types.Integer, 'leads')

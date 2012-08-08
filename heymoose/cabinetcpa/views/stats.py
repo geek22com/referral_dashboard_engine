@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import request, g
+from flask import request, g, redirect, url_for
 from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.views.decorators import template, sorted, paginated
@@ -32,10 +32,11 @@ def stats_offer(**kwargs):
 @paginated(AFFILIATE_STATS_PER_PAGE)
 def stats_affiliate(**kwargs):
 	offers, _ = rc.offers.list(advertiser_id=g.user.id, offset=0, limit=100000)
-	form = forms.CabinetStatsForm(request.args)
+	if not offers: return redirect(url_for('.stats_offer'))
+	form = forms.CabinetStatsForm(request.args, offer=offers[0].id)
 	form.offer.set_offers(offers, empty=None)
 	kwargs.update(form.backend_args())
-	stats, count = rc.offer_stats.list_affiliate(**kwargs) if form.validate() else ([], 0)
+	stats, count = rc.offer_stats.list_affiliate_by_offer(for_advertiser=True, **kwargs) if form.validate() else ([], 0)
 	return dict(stats=stats, count=count, form=form)
 
 @bp.route('/stats/subid')

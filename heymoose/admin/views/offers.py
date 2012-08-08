@@ -12,6 +12,7 @@ import base64
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 OFFER_REQUESTS_PER_PAGE = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
+OFFER_ACTIONS_PER_PAGE = app.config.get('OFFER_ACTIONS_PER_PAGE', 20)
 AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
@@ -283,6 +284,14 @@ def offers_info_requests(id, **kwargs):
 				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
 	return dict(offer=offer, grants=grants, count=count, form=form)
+
+@bp.route('/offers/<int:id>/sales/')
+@template('admin/offers/info/sales.html')
+@sorted('creation_time', 'desc')
+@paginated(OFFER_ACTIONS_PER_PAGE)
+def offers_info_sales(id, **kwargs):
+	offer = rc.offers.get_by_id(id)
+	return 'OK'
 
 @bp.route('/offers/<int:id>/operations', methods=['GET', 'POST'])
 @template('admin/offers/info/operations.html')

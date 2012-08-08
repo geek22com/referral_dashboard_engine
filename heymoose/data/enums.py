@@ -69,3 +69,8 @@ class OfferGrantState(Enum):
 	APPROVED = e('APPROVED', name=u'подтверждена')
 	REJECTED = e('REJECTED', name=u'отклонена рекламодателем')
 
+class OfferActionStates(Enum):
+	NOT_APPROVED = e('NOT_APPROVED', name=u'не подтверждено')
+	APPROVED = e('APPROVED', name=u'подтверждено')
+	CANCELED = e('CANCELED', name=u'отменено')
+

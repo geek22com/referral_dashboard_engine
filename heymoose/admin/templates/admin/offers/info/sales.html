@@ -1,0 +1,12 @@
+{% extends "admin/offers/info/layout.html" %}
+{% import 'common/forms/datetime-range.html' as datetime_range %}
+{% import 'common/actions.html' as action_macros with context %}
+
+{% set activetab = 'sales' %}
+
+{% block tabcontent %}
+
+{{ datetime_range.html(form, 'Показать продажи за время:') }}
+{{ action_macros.table(actions, **form.query_args()) }}
+
+{% endblock %}

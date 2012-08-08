@@ -782,21 +782,21 @@ class AdvertiserStatsForm(DateTimeRangeForm):
 		return args
 
 
-class AffiliateCabinetStatsForm(DateTimeRangeForm):
+class CabinetStatsForm(DateTimeRangeForm):
 	offer = myfields.OfferField(u'Оффер', coerce=int, default=0)
 	
 	def query_args(self):
-		args = super(AffiliateCabinetStatsForm, self).query_args()
+		args = super(CabinetStatsForm, self).query_args()
 		args.update(offer=self.offer.data)
 		return args
 	
 	def backend_args(self):
-		args = super(AffiliateCabinetStatsForm, self).backend_args()
+		args = super(CabinetStatsForm, self).backend_args()
 		if self.offer.data: args.update(offer_id=self.offer.data)
 		return args
 
 
-class AffiliateCabinetSubIdStatsForm(AffiliateCabinetStatsForm):
+class CabinetSubIdStatsForm(CabinetStatsForm):
 	sub_id = TextField(u'SubID')
 	sub_id1 = TextField(u'SubID')
 	sub_id2 = TextField(u'SubID')
@@ -809,7 +809,7 @@ class AffiliateCabinetSubIdStatsForm(AffiliateCabinetStatsForm):
 	g_sub_id4 = BooleanField(u'Группировать по SubID4')
 		
 	def query_args(self):
-		args = super(AffiliateCabinetSubIdStatsForm, self).query_args()
+		args = super(CabinetSubIdStatsForm, self).query_args()
 		args.update(sub_id=self.sub_id.data, sub_id1=self.sub_id1.data, 
 			sub_id2=self.sub_id2.data, sub_id3=self.sub_id3.data, sub_id4=self.sub_id4.data)
 		if self.g_sub_id.data: args.update(g_sub_id=u'y')
@@ -820,7 +820,7 @@ class AffiliateCabinetSubIdStatsForm(AffiliateCabinetStatsForm):
 		return args
 	
 	def backend_args(self):
-		args = super(AffiliateCabinetSubIdStatsForm, self).backend_args()
+		args = super(CabinetSubIdStatsForm, self).backend_args()
 		args.update(g_sub_id=self.g_sub_id.data, g_sub_id1=self.g_sub_id1.data,
 			g_sub_id2=self.g_sub_id2.data, g_sub_id3=self.g_sub_id3.data,
 			g_sub_id4=self.g_sub_id4.data)

@@ -783,7 +783,7 @@ class AdvertiserStatsForm(DateTimeRangeForm):
 
 
 class CabinetStatsForm(DateTimeRangeForm):
-	offer = myfields.OfferField(u'Оффер', coerce=int)
+	offer = myfields.OfferField(u'Оффер', coerce=int, default=0)
 	
 	def query_args(self):
 		args = super(CabinetStatsForm, self).query_args()

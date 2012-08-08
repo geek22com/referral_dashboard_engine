@@ -4,7 +4,7 @@ from heymoose.commands import manager
 import pymongo
 
 NOTIFICATION_TEMPLATE = u'''
-	<p>У вас имеется {{ count }} непрочитанных увеодмлений в системе HeyMoose!</p>
+	<p>У вас имеется {{ count }} непрочитанных уведомлений в системе HeyMoose!</p>
 	<p>Вот некоторые из них:</p>
 	<ul>
 		{% for notification in notifications %}
@@ -20,8 +20,12 @@ def notify():
 	from pymongo import Connection
 	from jinja2 import Template
 	from collections import defaultdict
+	from datetime import datetime
 	from heymoose import resource as rc
 	from heymoose.mail.flaskext import Mail
+	from heymoose.utils.convert import datetime_format
+	
+	app.logger.info('Started at {0}'.format(datetime.now().strftime(datetime_format)))
 	
 	database = app.config.get('MONGOALCHEMY_DATABASE')
 	connection = Connection()
@@ -35,9 +39,13 @@ def notify():
 		unread_by_user[user_id].append(n.get('body'))
 		if not n.get('notified'): unnotified_user_ids.add(user_id)
 	
+	if not unnotified_user_ids:
+		app.logger.info('Nothing to send.')
+		return
+	
 	template = Template(NOTIFICATION_TEMPLATE)
 	mail = Mail(app)
-	with mail.connect() as conn:	
+	with mail.connect() as conn:
 		for user_id, unread in unread_by_user.iteritems():
 			if user_id in unnotified_user_ids:
 				user = rc.users.get_by_id(user_id)
@@ -48,4 +56,4 @@ def notify():
 				)
 				notifications.update({'user_id': user_id}, {'$set': {'notified': True}}, multi=True)
 	
-	app.logger.info('All done!')
+	app.logger.info('All done! {0} emails sent'.format(len(unnotified_user_ids)))

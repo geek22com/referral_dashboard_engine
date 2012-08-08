@@ -14,6 +14,7 @@
     * blinker and signals removed
     * logging added when sending is suppressed
     * encoding MIMEText to utf-8
+    * added MAIL_TIMEOUT config parameter
 """
 from __future__ import with_statement
 
@@ -59,9 +60,9 @@ class Connection(object):
 
         try:
             if self.mail.use_ssl:
-                host = smtplib.SMTP_SSL(self.mail.server, self.mail.port)
+                host = smtplib.SMTP_SSL(self.mail.server, self.mail.port, timeout=self.mail.timeout)
             else:
-                host = smtplib.SMTP(self.mail.server, self.mail.port)
+                host = smtplib.SMTP(self.mail.server, self.mail.port, timeout=self.mail.timeout)
         except socket.error:
             if self.fail_silently:
                 return
@@ -333,6 +334,7 @@ class Mail(object):
         self.use_ssl = app.config.get('MAIL_USE_SSL', False)
         self.debug = int(app.config.get('MAIL_DEBUG', app.debug))
         self.max_emails = app.config.get('DEFAULT_MAX_EMAILS')
+        self.timeout = app.config.get('MAIL_TIMEOUT')
         self.suppress = app.config.get('MAIL_SUPPRESS_SEND', False)
         self.fail_silently = app.config.get('MAIL_FAIL_SILENTLY', True)
 

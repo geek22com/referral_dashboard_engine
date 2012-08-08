@@ -38,7 +38,7 @@ case "$1" in
 	rm -rf /tmp/frontend
 	
 	# Email notification cron job
-	echo "00 16 * * * heymoose_manage notify >> /var/log/uwsgi/notify.log" > /tmp/uwsgi_crontab
+	echo "00 02 * * * heymoose_manage notify 2>> /var/log/uwsgi/notify.log" > /tmp/uwsgi_crontab
 	crontab -u uwsgi /tmp/uwsgi_crontab
     ;;
 

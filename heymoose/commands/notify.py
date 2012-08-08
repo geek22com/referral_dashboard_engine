@@ -57,3 +57,4 @@ def notify():
 				notifications.update({'user_id': user_id}, {'$set': {'notified': True}}, multi=True)
 	
 	app.logger.info('All done! {0} emails sent'.format(len(unnotified_user_ids)))
+	app.logger.info('Finished at {0}'.format(datetime.now().strftime(datetime_format)))

@@ -36,6 +36,10 @@ case "$1" in
 	cd /tmp/frontend && ARCH=`ls frontend-*.tar.gz`; tar -xzvf ${ARCH} && cd ${ARCH%.tar.gz}
 	python setup.py install
 	rm -rf /tmp/frontend
+	
+	# Email notification cron job
+	echo "00 02 * * * heymoose_manage notify 2>> /var/log/uwsgi/notify.log" > /tmp/uwsgi_crontab
+	crontab -u uwsgi /tmp/uwsgi_crontab
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from heymoose.db.models import Notification
+from heymoose.data.enums import OfferGrantState
 from heymoose import resource as rc
 from flask import render_template_string
 from datetime import datetime
@@ -20,6 +21,7 @@ def notify_admin(template, **kwargs):
 	create_notification(0, text)
 
 def notify_offer_affiliates(offer, template, **kwargs):
-	grants, _ = rc.offer_grants.list(offer_id=offer.id, offset=0, limit=999999)
+	grants, _ = rc.offer_grants.list(offer_id=offer.id,
+		state=OfferGrantState.APPROVED, blocked=False, offset=0, limit=999999)
 	affiliates = [grant.affiliate for grant in grants]
 	notify_users(affiliates, template, offer=offer, **kwargs)

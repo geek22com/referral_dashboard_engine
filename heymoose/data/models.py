@@ -399,6 +399,10 @@ class OfferAction(IdentifiableModel):
 	state = Field(enums.OfferActionStates, 'state')
 	creation_time = Field(types.DateTime, 'creation-time')
 	amount = Field(types.Decimal, 'amount', quantize='1.00')
+	
+	@property
+	def is_not_approved(self):
+		return self.state == enums.OfferActionStates.NOT_APPROVED
 
 
 class OverallOfferStat(models.ModelBase):

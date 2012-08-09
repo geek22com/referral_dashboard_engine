@@ -847,6 +847,20 @@ class CabinetSubIdStatsForm(CabinetStatsForm):
 		return rv
 
 
+class OfferActionsFilterForm(DateTimeRangeForm):
+	state = SelectField(u'Состояние', choices=[(u'', u'(все)')] + enums.OfferActionStates.tuples('name'), default=u'')
+	
+	def query_args(self):
+		args = DateTimeRangeForm.query_args(self)
+		args.update(state=self.state.data)
+		return args
+	
+	def backend_args(self):
+		args = DateTimeRangeForm.backend_args(self)
+		if self.state.data: args.update(state=self.state.data)
+		return args
+
+
 class CategoryForm(Form):
 	group = myfields.CategoryGroupField(u'Родительская категория')
 	name = TextField(u'Название категории', [

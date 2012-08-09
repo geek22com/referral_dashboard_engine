@@ -291,7 +291,10 @@ def offers_info_requests(id, **kwargs):
 @paginated(OFFER_ACTIONS_PER_PAGE)
 def offers_info_sales(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
-	return 'OK'
+	form = forms.OfferActionsFilterForm(request.args)
+	kwargs.update(form.backend_args())
+	actions, count = ([], 0) #rc.actions.list(offer.id, **kwargs) if form.validate() else ([], 0)
+	return dict(offer=offer, actions=actions, count=count, form=form)
 
 @bp.route('/offers/<int:id>/operations', methods=['GET', 'POST'])
 @template('admin/offers/info/operations.html')

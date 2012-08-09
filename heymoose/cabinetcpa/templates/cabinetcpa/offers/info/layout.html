@@ -36,6 +36,7 @@
 	<li id="tab-materials"><a href="{{ url_for('.offers_info_materials', id=offer.id) }}">Рекламные материалы</a></li>
 	{% if g.user.is_advertiser and offer.owned_by(g.user) %}
 	<li id="tab-requests"><a href="{{ url_for('.offers_info_requests', id=offer.id) }}">Заявки</a></li>
+	<li id="tab-sales"><a href="{{ url_for('.offers_info_sales', id=offer.id) }}">Продажи</a></li>
 	<li id="tab-balance"><a href="{{ url_for('.offers_info_balance', id=offer.id) }}">Операции со счетом</a></li>
 	{% endif %}
 	{% if g.user.is_affiliate and offer.grant and offer.grant.approved %}

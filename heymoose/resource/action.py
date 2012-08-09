@@ -10,6 +10,9 @@ class ActionResource(BackendResource):
 	def cancel_by_transactions(self, offer_id, transactions):
 		return self.delete(offer_id=offer_id, transactions=transactions).as_int()
 	
+	def cancel_by_ids(self, offer_id, ids):
+		self.path('by_id').delete(offer_id=offer_id, id=ids)
+	
 	def list(self, offer_id, **kwargs):
 		return self.get(offer_id=offer_id, **kwargs).as_objlist(OfferAction, with_count=True)
 		

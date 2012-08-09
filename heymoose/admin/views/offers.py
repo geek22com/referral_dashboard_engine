@@ -285,15 +285,27 @@ def offers_info_requests(id, **kwargs):
 			return redirect(request.url)
 	return dict(offer=offer, grants=grants, count=count, form=form)
 
-@bp.route('/offers/<int:id>/sales/')
+@bp.route('/offers/<int:id>/sales/', methods=['GET', 'POST'])
 @template('admin/offers/info/sales.html')
 @sorted('creation_time', 'desc')
 @paginated(OFFER_ACTIONS_PER_PAGE)
 def offers_info_sales(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
+	if request.method == 'POST':
+		rc.actions.cancel_by_ids(offer.id, request.form.getlist('id'))
+		flash(u'Действия отменены', 'success')
+		return redirect(request.url)
 	form = forms.OfferActionsFilterForm(request.args)
 	kwargs.update(form.backend_args())
-	actions, count = ([], 0) #rc.actions.list(offer.id, **kwargs) if form.validate() else ([], 0)
+	if request.args.get('format', '') == 'xls':
+		actions, _ = rc.actions.list(offer.id, **form.backend_args()) if form.validate() else ([], 0)
+		if actions:
+			pass
+		else:
+			flash(u'Не найдено ни одного действия', 'danger')
+			return redirect(request.url)
+	else:
+		actions, count = rc.actions.list(offer.id, **kwargs) if form.validate() else ([], 0)
 	return dict(offer=offer, actions=actions, count=count, form=form)
 
 @bp.route('/offers/<int:id>/operations', methods=['GET', 'POST'])

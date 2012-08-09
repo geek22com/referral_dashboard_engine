@@ -37,6 +37,7 @@ encoding//heymoose/tests/test_data.py=utf-8
 encoding//heymoose/tests/test_resource.py=utf-8
 encoding//heymoose/utils/robokassa.py=utf-8
 encoding//heymoose/views/common.py=utf-8
+encoding//heymoose/views/xls.py=utf-8
 encoding//misc/mkrugparse.py=utf-8
 encoding//misc/yacaparse.py=utf-8
 encoding/config_development.py=utf-8

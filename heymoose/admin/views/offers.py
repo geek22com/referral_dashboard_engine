@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from flask import request, flash, redirect, url_for, abort, jsonify
+from flask import request, flash, redirect, url_for, abort, jsonify, send_file
 from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
 from heymoose.notifications import notify
 from heymoose.views.decorators import template, sorted, paginated
+from heymoose.views import xls
 from heymoose.admin import blueprint as bp
 import base64
 
@@ -298,9 +299,9 @@ def offers_info_sales(id, **kwargs):
 	form = forms.OfferActionsFilterForm(request.args)
 	kwargs.update(form.backend_args())
 	if request.args.get('format', '') == 'xls':
-		actions, _ = rc.actions.list(offer.id, **form.backend_args()) if form.validate() else ([], 0)
+		actions, _ = rc.actions.list(offer.id, offset=0, limit=999999, **form.backend_args()) if form.validate() else ([], 0)
 		if actions:
-			pass
+			return send_file(xls.offer_actions_to_xls(actions), as_attachment=True, attachment_filename='actions.xls')
 		else:
 			flash(u'Не найдено ни одного действия', 'danger')
 			return redirect(request.url)

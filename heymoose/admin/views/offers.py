@@ -6,7 +6,7 @@ from heymoose.data.models import SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
 from heymoose.notifications import notify
 from heymoose.views.decorators import template, sorted, paginated
-from heymoose.views import xls
+from heymoose.views import excel
 from heymoose.admin import blueprint as bp
 import base64
 
@@ -301,7 +301,7 @@ def offers_info_sales(id, **kwargs):
 	if request.args.get('format', '') == 'xls':
 		actions, _ = rc.actions.list(offer.id, offset=0, limit=999999, **form.backend_args()) if form.validate() else ([], 0)
 		if actions:
-			return send_file(xls.offer_actions_to_xls(actions), as_attachment=True, attachment_filename='actions.xls')
+			return send_file(excel.offer_actions_to_xls(actions), as_attachment=True, attachment_filename='actions.xls')
 		else:
 			flash(u'Не найдено ни одного действия', 'danger')
 			return redirect(request.url)

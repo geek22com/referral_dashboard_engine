@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from flask import request, flash, redirect, url_for, abort, jsonify
+from flask import request, flash, redirect, url_for, abort, jsonify, send_file
 from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
 from heymoose.notifications import notify
+from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.admin import blueprint as bp
 import base64
@@ -12,6 +13,7 @@ import base64
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 OFFER_REQUESTS_PER_PAGE = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
+OFFER_ACTIONS_PER_PAGE = app.config.get('OFFER_ACTIONS_PER_PAGE', 20)
 AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
@@ -283,6 +285,29 @@ def offers_info_requests(id, **kwargs):
 				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
 	return dict(offer=offer, grants=grants, count=count, form=form)
+
+@bp.route('/offers/<int:id>/sales/', methods=['GET', 'POST'])
+@template('admin/offers/info/sales.html')
+@sorted('creation_time', 'desc')
+@paginated(OFFER_ACTIONS_PER_PAGE)
+def offers_info_sales(id, **kwargs):
+	offer = rc.offers.get_by_id(id)
+	if request.method == 'POST':
+		rc.actions.cancel_by_ids(offer.id, request.form.getlist('id'))
+		flash(u'Действия отменены', 'success')
+		return redirect(request.url)
+	form = forms.OfferActionsFilterForm(request.args)
+	kwargs.update(form.backend_args())
+	if request.args.get('format', '') == 'xls':
+		actions, _ = rc.actions.list(offer.id, offset=0, limit=999999, **form.backend_args()) if form.validate() else ([], 0)
+		if actions:
+			return send_file(excel.offer_actions_to_xls(actions), as_attachment=True, attachment_filename='actions.xls')
+		else:
+			flash(u'Не найдено ни одного действия', 'danger')
+			return redirect(request.url)
+	else:
+		actions, count = rc.actions.list(offer.id, **kwargs) if form.validate() else ([], 0)
+	return dict(offer=offer, actions=actions, count=count, form=form)
 
 @bp.route('/offers/<int:id>/operations', methods=['GET', 'POST'])
 @template('admin/offers/info/operations.html')

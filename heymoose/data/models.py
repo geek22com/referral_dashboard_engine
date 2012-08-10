@@ -392,6 +392,19 @@ class Region(models.ModelBase):
 	country_name = Field(types.String, 'country-name')
 
 
+class OfferAction(IdentifiableModel):
+	affiliate = Field('User', 'affiliate')
+	offer = Field('Offer', 'offer')
+	transaction_id = Field(types.String, 'transaction-id')
+	state = Field(enums.OfferActionStates, 'state')
+	creation_time = Field(types.DateTime, 'creation-time')
+	amount = Field(types.Decimal, 'amount', quantize='1.00')
+	
+	@property
+	def is_not_approved(self):
+		return self.state == enums.OfferActionStates.NOT_APPROVED
+
+
 class OverallOfferStat(models.ModelBase):
 	id = Field(types.Integer, 'id')
 	name = Field(types.String, 'name')

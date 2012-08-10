@@ -59,6 +59,13 @@
 						{{ forms.errors(form.offer) }}
 					</div>
 					{% endif %}
+					{% if form.state %}
+					<div class="span5 formfield clearfix inner-field {{ forms.css_errors(form.state) }}">
+						<label class="simple required">с состоянием</label>
+						{{ forms.field(form.state, style='width: 150px;') }}
+						{{ forms.errors(form.state) }}
+					</div>
+					{% endif %}
 					<div class="span3" style="margin-left: 40px;">
 						<input type="submit" class="btn primary span3" value="Показать" />
 					</div>

@@ -1,39 +1,72 @@
-{% import 'common/macros.html' as macros %}
+{% import 'common/macros/lists.html' as lists with context %}
 
-{% macro table(actions, show_performer=True, show_order=True, show_app=True) %}
-<div class="autoscroll-area-x">
-	<table class="bordered-table zebra-striped condensed-table nosort">
+{% macro head() %}
+<script type="text/javascript">
+	$(function() {
+		$('.actions-toggle').change(function() {
+			$('.action-checkbox').attr('checked', $(this).is(':checked'));
+			$('.actions-cancel-btn').attr('disabled', $('.action-checkbox:checked').length == 0);
+		});
+		$('.action-checkbox').change(function() {
+			$('.actions-toggle').attr('checked', false);
+			$('.actions-cancel-btn').attr('disabled', $('.action-checkbox:checked').length == 0);
+		});
+	})
+</script>
+{% endmacro %}
+
+{% macro table(actions, admin=false, empty='Не найдено ни одного действия.') %}
+{% if actions %}
+<form method="post" action="">
+	<div class="well right">
+		<a href="{{ url_for(request.url_rule.endpoint, format='xls', **kwargs) }}"
+		 class="btn success">Выгрузить список в Excel</a>
+		<input type="submit" class="btn danger actions-cancel-btn" value="Отменить выбранные действия"
+		 disabled="true" onclick="return confirm('Отменить действия?');" />
+	</div>
+	<table class="bordered-table zebra-striped">
 		<thead>
 			<tr>
-				<th class="header right minimal-width">ИД</th>
-				{% if show_performer %}<th class="header">Исполнитель</th>{% endif %}
-				{% if show_order %}<th class="header">Заказ</th>{% endif %}
-				{% if show_app %}<th class="header">Приложение</th>{% endif %}
-				<th class="header center">Создано</th>
-				<th class="header center minimal-width">Подтв.</th>
-				<th class="header center minimal-width">Оконч.</th>
-				{# <th class="header right">Попытки</th> #}
-				{# <th class="header center">Уд.</th> #}
+				<th {{ lists.sort_header('transaction_id', **kwargs) }}>Транзакция</th>
+				<th {{ lists.sort_header('offer_code', **kwargs) }}>Код</th>
+				<th {{ lists.sort_header('offer_title', **kwargs) }}>Название</th>
+				<th {{ lists.sort_header('affiliate_email' if admin else 'affiliate_id', **kwargs) }}>Партнёр</th>
+				<th {{ lists.sort_header('amount', **kwargs) }}>Сумма, {{ currency_sign }}</th>
+				<th {{ lists.sort_header('creation_time', **kwargs) }}>Время</th>
+				<th {{ lists.sort_header('state', **kwargs) }}>Состояние</th>
+				<th class="header center nosort"><input type="checkbox" class="actions-toggle" /></th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for action in actions %}
 			<tr>
-				<td class="right">
-					{% if action.deleted %}(-){% endif %}
-					<a href="{{ url_for('.actions_info', id=action.id) }}">{{ action.id }}</a>
+				<td class="center">{{ action.transaction_id }}</td>
+				<td class="center">{{ action.offer.code }}</td>
+				<td>{{ action.offer.title }}</td>
+				<td>
+					{% if admin %}
+					<a href="{{ url_for('.users_info', id=action.affiliate.id) }}">{{ action.affiliate.email }}</a>
+					{% else %}
+					{{ action.affiliate.id }}
+					{% endif %}
 				</td>
-				{% if show_performer %}<td>{{ macros.performer_href(action.performer, False) }}</td>{% endif %}
-				{% if show_order %}<td>{{ macros.order_href(action.order) }}</td>{% endif %}
-				{% if show_app %}<td>{{ macros.app_href(action.app) }}</td>{% endif %}
+				<td class="right">{{ action.amount|currency(false) }}</td>
 				<td class="center">{{ action.creation_time|datetimeformat }}</td>
-				<td class="center">{{ macros.to_icon(action.approve_time) }}</td>
-				<td class="center">{{ macros.to_icon(action.done) }}</td>
-				{# <td class="right">{{ action.attempts }}</td> #}
-				{# <td class="center">{{ macros.deleted(action.deleted) }}</td> #}
+				<td class="center"><span class="{{ action.state.css_class }}">{{ action.state.name }}</span></td>
+				<td class="center">
+					{% if action.is_not_approved %}
+					<input type="checkbox" name="id" value="{{ action.id }}" class="action-checkbox" />
+					{% endif %}
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
-</div>
+</form>
+{{ lists.paginate(pages, **kwargs) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>{{ empty }}</p>
+	</div>
+{% endif %}
 {% endmacro %}

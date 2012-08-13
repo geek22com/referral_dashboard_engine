@@ -57,7 +57,7 @@
 			{% set rowspan = 'rowspan="{0}"'.format((offer.active_suboffers|length if not offer.exclusive else 0) + 1)|safe %}
 			<tr {% if offer.exclusive %}class="exclusive"{% endif %}>
 				<td class="center" style="position: relative;" {{ rowspan }}>
-					<div style="position: absolute;">#{{ offer.id }}</div>
+					{% if admin %}<div style="position: absolute;">#{{ offer.id }}</div>{% endif %}
 					{% if status %}
 					<div class="offer-status" style="padding-bottom: 5px;">
 						{% if not offer.approved %}
@@ -75,7 +75,11 @@
 					{% endif %}
 					{% if grant_status and offer.grant %}
 					<div class="offer-grant-status" style="padding-bottom: 5px;">
-						{% if offer.grant.blocked %}
+						{% if not offer.approved %}
+							<span class="label important">оффер отключен администрацией</span>
+						{% elif not offer.active %}
+							<span class="label important">оффер отключен рекламодателем</span>
+						{% elif offer.grant.blocked %}
 							{% if offer.grant.block_reason %}
 							<span class="label important">заявка заблокирована администрацией</span>
 							{% else %}

@@ -175,7 +175,7 @@
 	<table class="bordered-table nosort offer-grants-table">
 		<thead>
 			<tr>
-				{% if admin %}<th class="header">Партнер</th>{% endif %}
+				<th class="header">Партнер</th>
 				{% if offer %}<th class="header center">Оффер</th>{% endif %}
 				<th class="header">Заявка</th>
 				<th class="header">Состояние</th>
@@ -190,12 +190,14 @@
 		<tbody>
 			{% for request in requests %}
 			<tr>
-				{% if admin %}
 				<td>
+					{% if admin %}
 					<a href="{{ url_for('.users_info', id=request.affiliate.id) }}"
 					 >{{ request.affiliate.full_name or request.affiliate.email }}</a>
+					{% else %}
+					{{ request.affiliate.id }}
+					{% endif %}
 				</td>
-				{% endif %}
 				
 				{% if offer %}
 				<td>

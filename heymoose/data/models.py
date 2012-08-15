@@ -213,19 +213,21 @@ class SubOffer(IdentifiableModel):
 	active = Field(types.Boolean, 'active')
 	exclusive = Field(types.Boolean, 'exclusive')
 	
-	def value(self, affiliate=False):
+	def value(self, affiliate=False, short=False):
 		if affiliate:
 			cost, cost2, percent = self.affiliate_cost, self.affiliate_cost2, self.affiliate_percent
 		else:
 			cost, cost2, percent = self.cost, self.cost2, self.percent
 		if self.pay_method == enums.PayMethods.CPC:
-			return u'{0} руб. за клик'.format(cost)
+			return u'{0} руб.{1}'.format(cost, u' за клик' if not short else u'')
 		elif self.cpa_policy == enums.CpaPolicies.FIXED:
-			return u'{0} руб. за действие'.format(cost)
+			return u'{0} руб.{1}'.format(cost, u' за действие' if not short else u'')
 		elif self.cpa_policy == enums.CpaPolicies.DOUBLE_FIXED:
-			return u'{0} руб. за первое действие и {1} руб. за последующие'.format(cost, cost2)
+			return u'{0} руб.{1} и {2} руб.{3}'.format(
+				cost, u' за первое действие' if not short else u'',
+				cost2, u' за последующие' if not short else u'')
 		elif self.cpa_policy == enums.CpaPolicies.PERCENT:
-			return u'{0}% с заказа или покупки'.format(percent)
+			return u'{0}%{1}'.format(percent, u' с заказа или покупки' if not short else u'')
 		return u'неизвестно'
 	
 	@property

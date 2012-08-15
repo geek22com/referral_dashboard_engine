@@ -17,7 +17,7 @@
 			<tr>
 				<td>{{ suboffer.title }}</td>
 				<td>{{ suboffer.value(user.is_affiliate) }}</td>
-				{% if not user.is_affiliate %}<td>{{ suboffer.value(true) }}</td>{% endif %}
+				{% if not user.is_affiliate %}<td>{{ suboffer.value(true, short=true) }}</td>{% endif %}
 				<td class="center">{{ macros.to_icon(suboffer.reentrant) }}</td>
 				<td class="right">{{ suboffer.hold_days -}}&nbsp;дней</td>
 				{{ caller(false, suboffer) }}

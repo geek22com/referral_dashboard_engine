@@ -130,7 +130,7 @@
 				<td>
 					{{ offer.value(affiliate) }}
 					{% if not affiliate %}
-						<br /><span class="affiliate-value">(из них партнёру {{ offer.value(true) -}})</span>
+						<br /><span class="affiliate-value">(из них партнёру {{ offer.value(true, short=true) -}})</span>
 					{% endif %}
 				</td>
 				{% else %}
@@ -178,7 +178,7 @@
 				<td>
 					{{ suboffer.value(affiliate) }}
 					{% if not affiliate %}
-						<br /><span class="affiliate-value">(из них партнёру {{ suboffer.value(true) -}})</span>
+						<br /><span class="affiliate-value">(из них партнёру {{ suboffer.value(true, short=true) -}})</span>
 					{% endif %}
 				</td>
 			</tr>

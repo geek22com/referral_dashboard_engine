@@ -167,7 +167,7 @@
 					<dt>{{ suboffer.title }}</dt>
 					<dd>
 						{{ suboffer.value(affiliate) }}
-						{% if not affiliate %}<br />(из них партнёру {{ suboffer.value(true) -}}){% endif %}
+						{% if not affiliate %}<br />(из них партнёру {{ suboffer.value(true, short=true) -}}){% endif %}
 					</dd>
 					{% endfor %}
 				</dl>

@@ -165,7 +165,10 @@
 				<dl class="stacked inscribed">
 					{% for suboffer in offer.all_suboffers if suboffer.active %}
 					<dt>{{ suboffer.title }}</dt>
-					<dd>{{ suboffer.value(tax=user.fee if affiliate else 0) }}</dd>
+					<dd>
+						{{ suboffer.value(affiliate) }}
+						{% if not affiliate %}<br />(из них партнёру {{ suboffer.value(true) -}}){% endif %}
+					</dd>
 					{% endfor %}
 				</dl>
 			</div>

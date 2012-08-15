@@ -10,6 +10,11 @@
 	tr.exclusive td {
 		background-color: #DDFFDD;
 	}
+	
+	span.affiliate-value {
+		color: #BBB;
+		font-size: 80%;
+	}
 </style>
 
 <script type="text/javascript">
@@ -122,7 +127,12 @@
 				
 				{% if not offer.exclusive %}
 				<td>{{ offer.title }}</td>
-				<td>{{ offer.value(tax=user.fee if affiliate else 0) }}</td>
+				<td>
+					{{ offer.value(affiliate) }}
+					{% if not affiliate %}
+						<br /><span class="affiliate-value">(из них партнёру {{ offer.value(true) -}})</span>
+					{% endif %}
+				</td>
 				{% else %}
 				<td>Покупка товаров на эксклюзивных условиях</td>
 				<td><a href="{{ url_for('.offers_info', id=offer.id) }}">см. полное описание</a></td>
@@ -165,7 +175,12 @@
 			{% for suboffer in offer.active_suboffers %}
 			<tr class="subrow">
 				<td>{{ suboffer.title }}</td>
-				<td>{{ suboffer.value(tax=user.fee if affiliate else 0) }}</td>
+				<td>
+					{{ suboffer.value(affiliate) }}
+					{% if not affiliate %}
+						<br /><span class="affiliate-value">(из них партнёру {{ suboffer.value(true) -}})</span>
+					{% endif %}
+				</td>
 			</tr>
 			{% endfor %}
 			{% endif %}

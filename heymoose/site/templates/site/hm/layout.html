@@ -61,12 +61,40 @@
 	.support-item > img {
 		vertical-align: middle;
 	}
+	
+	.countdown-container {
+		background-color: #6A6A6A; /*#222222;*/
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 -1px 0 rgba(0, 0, 0, 0.1) inset;
+		border-radius: 20px 20px 20px 20px;
+		padding: 20px;
+		margin-top: 20px;
+		
+		color: #FFF;
+		font-weight: bold;
+	}
+	
+	.countdown-container p {
+		margin-bottom: 0;
+	}
+	
+	.countdown-container a {
+		color: #F8C300;
+		font-weight: bold;
+		text-decoration: underline;
+	}
+	
+	.countdown-container a:hover {
+		text-decoration: none;
+		color: #F8C300;
+	}
 </style>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.countdown.js') }}"></script>
 <script type="text/javascript">
 	$(function() {
 		$('#login-modal').bind('shown', function() {
 			$('#username').focus();
 		});
+		$('.countdown').countdown(new Date(2012, 08, 01, 23, 59, 59), { prefix: '' });
 	})
 </script>
 {% endblock %}
@@ -160,6 +188,60 @@
 	<div class="hm-content">
 		{% block flash_messages %}
 			{{ super() }}
+		{% endblock %}
+		
+		{% block countdown %}
+		<div class="clearfix countdown-container">
+			<p>
+				<strong>До запуска осталось <span class="countdown"></span>!</strong>
+				<span style="float: right;">
+					<a href="#" data-controls-modal="modal-countdown" data-backdrop="true"
+					 data-keyboard="true">Что это?</a>
+				</span>
+			</p>
+			<div id="modal-countdown" class="modal fade" style="display: none;">
+				<div class="modal-header">
+					<a href="#" class="close">×</a>
+					<h3>Скоро запуск!</h3>
+				</div>
+				<div class="modal-body center">
+					<div class="center">
+					<p>
+						Совсем скоро наша партнерская сеть изменится как по форме,
+						так и по содержанию. Новый каталог офферов будет наполнен самыми лучшими
+						рекламными предложениями от топовых рекламодателей Рунета по невероятным ценам!
+					</p>
+					<p><strong>Готовьте трафик!</strong></p>
+					<p>До запуска осталось <span class="countdown"></span>.</p>
+					</div>
+					<hr />
+					<p>
+						<small>
+							Если вы  еще не зарегистрированы в нашей системе, вы можете оставить здесь свой
+							электронный адрес, чтобы из первых рук получить информацию обо всех новшествах,
+							которые мы вам приготовили. Поверьте, такого в Рунете еще не было!
+						</small>
+					</p>
+					<form id="countdown-form" action="{{ url_for('.countdown_email') }}" method="post" class="validate2">
+						<fieldset>
+							<input type="email" name="email" value="" />
+							<input type="submit" class="btn primary" value="Оставить электронный адрес" />
+						</fieldset>
+					</form>
+					<p>
+						<small>Следите за нами в социальных сетях:</small>
+					</p>
+					<p>
+						<a href="http://vk.com/hey_moose" target="_blank">
+							<img src="{{ url_for('static', filename='img/icons/social/vk.png') }}" alt="" style="width: 24px;" />
+						</a>
+						<a href="http://www.facebook.com/heymoosepartners" target="_blank">
+							<img src="{{ url_for('static', filename='img/icons/social/facebook.png') }}" alt="" style="width: 24px;" />
+						</a>
+					</p>
+				</div>
+			</div>
+		</div>
 		{% endblock %}
 		
 		{% block top_unit_container %}

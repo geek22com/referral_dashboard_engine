@@ -29,6 +29,16 @@ def index():
 def cpa_index():
 	return redirect(url_for('.index'))
 
+@bp.route('/countdown/email', methods=['POST'])
+def countdown_email():
+	form = forms.CountdownForm(request.form)
+	if form.validate():
+		mmail.lists_add_countdown(form.email.data)
+		flash(u'Адрес успешно добавлен', 'success')
+	else:
+		flash(u'Неверный адрес электронной почты', 'danger')
+	return redirect(url_for('.index'))
+
 @bp.route('/advertisers')
 def advertisers():
 	return render_template('site/hm/advertisers.html')

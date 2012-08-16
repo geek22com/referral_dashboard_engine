@@ -74,6 +74,12 @@
 			Уведомления {{ '({0})'.format(g.notifications_unread) if g.notifications_unread > 0 }}
 		</a>
 	</li>
+	<li class="dropdown">
+		<a class="dropdown-toggle" href="#">Справка</a>
+		<ul class="dropdown-menu">
+			<li id="menu-item-help-first-steps"><a href="{{ url_for('.help', template='first-steps') }}">Первые шаги</a></li>
+		</ul>
+	</li>
 </ul>
 
 <ul class="nav secondary-nav">

@@ -1,0 +1,15 @@
+{% extends "cabinetcpa/layout.html" %}
+
+{% block title %}
+	{% block helptitle %}В разработке{% endblock %} :: Справка
+{% endblock %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Справка', request.url) }}
+	{{ macros.breadcrumb(self.helptitle(), request.url) }}
+{% endblock %}
+
+{% block pageheader %}<h1>{{ self.helptitle() }}</h1>{% endblock %}
+
+{% block content %}Раздел находится в разработке.{% endblock %}

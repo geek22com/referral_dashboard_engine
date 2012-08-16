@@ -106,6 +106,7 @@ def stats_suboffer(**kwargs):
 		if not offers: return redirect(url_for('.stats_offer'))
 		form = forms.CabinetStatsForm(request.args, offer=offers[0].id)
 		form.offer.set_offers(offers, empty=None)
+		kwargs.update(for_advertiser=True)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer(**kwargs) if form.validate() else ([], 0)
 	return dict(stats=stats, count=count, offer=form.offer.selected)
@@ -121,8 +122,8 @@ def stats_suboffer_affiliate(**kwargs):
 	if not offers: return redirect(url_for('.stats_offer'))
 	form = forms.CabinetStatsForm(request.args, offer=offers[0].id)
 	form.offer.set_offers(offers, empty=None)
-	kwargs.update(form.backend_args())
-	stats, count = rc.offer_stats.list_suboffer(aff_id=affiliate.id, **kwargs) if form.validate() else ([], 0)
+	kwargs.update(aff_id=affiliate.id, for_advertiser=True, **form.backend_args())
+	stats, count = rc.offer_stats.list_suboffer(**kwargs) if form.validate() else ([], 0)
 	return dict(stats=stats, count=count, affiliate=affiliate, offer=form.offer.selected)
 
 @bp.route('/stats/suboffer/sub_id')

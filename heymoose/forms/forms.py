@@ -520,16 +520,18 @@ class SubOfferForm(Form):
 		validators.Length(max=10, message=u'Код может быть длиной от 1 до 10 символов')
 	])
 	manual_code = BooleanField(u'указать код вручную', default=False)
-	
+
 	def validate_code(self, field):
 		if self.manual_code.data and not self.code.data:
 			raise ValueError(u'Введите код вручную')
-		if self.code.data and not rc.offers.check_code(g.user.id, self.code.data, offer_id=getattr(self, 'offer_id', None)):
+		offer_id = getattr(self, 'offer_id', None)
+		kwargs = dict(offer_id=offer_id) if offer_id else dict()
+		if self.code.data and not rc.offers.check_code(g.user.id, self.code.data, **kwargs):
 			raise ValueError(u'У вас уже имеется оффер с таким кодом')
-		
+
 	def generate_code(self):
 		return u'{0}{1}'.format(g.user.id, generate_uid(5))
-	
+
 	def populate_code(self, obj, name):
 		if self.code.data:
 			code = self.code.data
@@ -960,4 +962,8 @@ class NewsItemForm(Form):
 		self.image.data.thumbnail(self.image_max_size, 1) # 1 == Image.ANTIALIAS
 		self.image.data.save(os.path.join(self.images_path, obj.image))
 
-
+class CountdownForm(Form):
+	email = TextField(u'E-mail', [
+		validators.Email(message = u'Некорректный адрес электронной почты'),
+		validators.Required(message = u'Введите адрес электронной почты'),
+	])

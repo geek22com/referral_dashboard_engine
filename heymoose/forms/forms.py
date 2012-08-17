@@ -967,3 +967,20 @@ class CountdownForm(Form):
 		validators.Email(message = u'Некорректный адрес электронной почты'),
 		validators.Required(message = u'Введите адрес электронной почты'),
 	])
+
+poll_city_choices = [
+	(u'Москва (МО)', u'Москва (МО)'),
+	(u'Санкт-Петербург', u'Санкт-Петербург'),
+	(u'Новосибирск', u'Новосибирск'),
+	(u'', u'Другой...')
+]
+
+class PollCityForm(Form):
+	city_select = SelectField(u'Город', choices=poll_city_choices)
+	city_input = TextField(u'Город', [
+		validators.Length(max=100, message=u'Название города должно иметь длину до 100 символов')
+	])
+	
+	def validate_city_input(self, field):
+		if not self.city_select.data and not self.city_input.data:
+			raise ValueError(u'Введите название города')

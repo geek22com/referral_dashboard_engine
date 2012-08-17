@@ -10,6 +10,7 @@ encoding//heymoose/admin/views/users.py=utf-8
 encoding//heymoose/cabinetcpa/views/base.py=utf-8
 encoding//heymoose/cabinetcpa/views/notifications.py=utf-8
 encoding//heymoose/cabinetcpa/views/offers.py=utf-8
+encoding//heymoose/cabinetcpa/views/polls.py=utf-8
 encoding//heymoose/cabinetcpa/views/profile.py=utf-8
 encoding//heymoose/cabinetcpa/views/sites.py=utf-8
 encoding//heymoose/cabinetcpa/views/stats.py=utf-8

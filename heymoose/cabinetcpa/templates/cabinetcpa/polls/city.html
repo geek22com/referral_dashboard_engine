@@ -1,0 +1,54 @@
+{% extends 'cabinetcpa/polls/layout.html' %}
+
+{% block polltitle %}Ваш город{% endblock %}
+
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript">
+		$(function () {
+			$('.city-select').change(function () {
+				$('.city-input-container').toggle($(this).val().length == 0);
+			}).change();
+		})
+	</script>
+{% endblock %}
+
+{% block content %}
+
+<p>
+	Мы хотим стать к вам еще ближе и планируем провести ряд оффлайновых мероприятий по знакомству
+	с нашей компанией: это будут веселые встречи, где вы сможете узнать все о нашей системе,
+	способах работы с ней и задать любые вопросы.
+</p>
+<p>
+	Чтобы запланировать эти мероприятия, мы хотим знать, в каком городе вы живете и сможете ли
+	приехать на такую встречу в Москву.
+</p>
+<p>
+	Пожалуйста, выберите название вашего города в форме ниже и нажмите кнопку &laquo;Отправить&raquo;.
+</p>
+
+<form method="post" action="" class="validate2">
+	<fieldset>
+		<div class="clearfix">
+			<label class="required">Город</label>
+			<div class="input">
+				<div class="row">
+					<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.city_select) }}">
+						{{ forms.field(form.city_select, class='span4 city-select') }}
+						{{ forms.errors(form.city_select) }}
+					</div>
+					<div class="span4 formfield clearfix inner-field city-input-container {{ forms.css_errors(form.city_input) }}">
+						{{ forms.field(form.city_input, class='span4') }}
+						{{ forms.errors(form.city_input) }}
+					</div>
+					<div class="span4 clearfix">
+						<input type="submit" class="btn primary" value="Отправить" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+</form>
+
+{% endblock %}

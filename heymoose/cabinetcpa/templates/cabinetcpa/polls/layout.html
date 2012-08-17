@@ -1,0 +1,15 @@
+{% extends "cabinetcpa/layout.html" %}
+
+{% block title %}
+	{% block polltitle %}В разработке{% endblock %} :: Опросы
+{% endblock %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Опросы', request.url) }}
+	{{ macros.breadcrumb(self.polltitle(), request.url) }}
+{% endblock %}
+
+{% block pageheader %}<h1>{{ self.polltitle() }}</h1>{% endblock %}
+
+{% block content %}Раздел находится в разработке.{% endblock %}

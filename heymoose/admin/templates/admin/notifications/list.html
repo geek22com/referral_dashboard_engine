@@ -1,0 +1,13 @@
+{% extends "admin/notifications/layout.html" %}
+{% import 'common/notifications.html' as notification_macros with context %}
+
+{% set activetab = 'list' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ notification_macros.head() }}
+{% endblock %}
+
+{% block tabcontent %}
+	{{ notification_macros.table(notifications) }}
+{% endblock %}

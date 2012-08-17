@@ -2,6 +2,7 @@ eclipse.preferences.version=1
 encoding//heymoose/__init__.py=utf-8
 encoding//heymoose/admin/views/base.py=utf-8
 encoding//heymoose/admin/views/logs.py=utf-8
+encoding//heymoose/admin/views/notifications.py=utf-8
 encoding//heymoose/admin/views/offers.py=utf-8
 encoding//heymoose/admin/views/operations.py=utf-8
 encoding//heymoose/admin/views/site.py=utf-8

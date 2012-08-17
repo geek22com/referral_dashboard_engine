@@ -8,6 +8,11 @@ from datetime import datetime
 def create_notification(id, text):
 	Notification(user_id=id, body=text, date=datetime.now()).save()
 
+def notify_all(text, **kwargs):
+	users = rc.users.list(offset=0, limit=999999, **kwargs)
+	for user in users:
+		create_notification(user.id, text)
+
 def notify_users(users, template, **kwargs):
 	text = render_template_string(template, **kwargs)
 	for user in users:

@@ -1,4 +1,4 @@
-from base import notify_user, notify_offer_affiliates
+from base import notify_user, notify_offer_affiliates, notify_all
 import templates
 
 def offer_blocked(offer, reason):
@@ -17,3 +17,6 @@ def grant_rejected(grant, reason):
 
 def grant_blocked(grant, reason):
 	notify_user(grant.affiliate, templates.GRANT_BLOCKED, grant=grant, reason=reason)
+
+def custom(text, **kwargs):
+	notify_all(text, **kwargs)

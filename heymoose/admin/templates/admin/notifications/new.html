@@ -1,0 +1,21 @@
+{% extends "admin/notifications/layout.html" %}
+
+{% set activetab = 'new' %}
+
+{% block extrahead %}
+	{{ super() }}
+{% endblock %}
+
+{% block tabcontent %}
+
+<form method="post" action="" class="widelabels validate2">
+	<fieldset>
+		{{ forms.singlefield(form.role, class='span4') }}
+		{{ forms.singlefield(form.text, rows=10, class='span10') }}
+		<div class="input">
+			<input type="submit" class="btn primary" value="Отправить" />
+		</div>
+	</fieldset>
+</form>
+
+{% endblock %}

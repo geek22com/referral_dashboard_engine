@@ -962,6 +962,14 @@ class NewsItemForm(Form):
 		self.image.data.thumbnail(self.image_max_size, 1) # 1 == Image.ANTIALIAS
 		self.image.data.save(os.path.join(self.images_path, obj.image))
 
+
+class NotificationForm(Form):
+	text = TextAreaField(u'Текст уведомления', [validators.Required(message=u'Введите текст уведомления')])
+	role = SelectField(u'Для пользователей', choices=[(u'', u'(все)')] + enums.Roles.tuples('name'))
+	
+	def backend_args(self):
+		return dict(role=self.role.data) if self.role.data else dict()
+
 class CountdownForm(Form):
 	email = TextField(u'E-mail', [
 		validators.Email(message = u'Некорректный адрес электронной почты'),

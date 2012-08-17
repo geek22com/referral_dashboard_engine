@@ -1,0 +1,63 @@
+{% import 'common/macros/lists.html' as lists with context %}
+
+{% macro head() %}
+<style type="text/css">
+	.notification-date {
+		font-weight: bold;
+	}
+	
+	tr.read td {
+		background-color: #EEE;
+	}
+</style>
+<script type="text/javascript">
+	$(function() {
+		$('.notifications-trigger').change(function() {
+			$('.notification-checkbox').attr('checked', $(this).is(':checked'));
+			$('.notifications-read').attr('disabled', $('.notification-checkbox:checked').length == 0);
+		});
+		$('.notification-checkbox').change(function() {
+			$('.notifications-trigger').attr('checked', false);
+			$('.notifications-read').attr('disabled', $('.notification-checkbox:checked').length == 0);
+		});
+	})
+</script>
+{% endmacro %}
+
+{% macro table(notifications) %}
+{% if notifications %}
+	<form method="post" action="">
+		<div class="well">
+			<input type="submit" class="btn primary notifications-read" value="Отметить как прочитанное" disabled="true" />
+			<input type="submit" class="btn success notifications-read-all" name="all" value="Отметить всё как прочитанное" />
+		</div>
+		<table class="bordered-table nosort notifications-table">
+			<thead>
+				<tr>
+					<th class="header minimal-width"><input type="checkbox" class="notifications-trigger" /></th>
+					<th class="header center" style="width: 130px;">Время</th>
+					<th class="header">Уведомление</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for notification in notifications %}
+				<tr {% if notification.read %}class="read"{% endif %}>
+					<td>
+						{% if not notification.read %}
+						<input type="checkbox" name="id" value="{{ notification.mongo_id }}" class="notification-checkbox" />
+						{% endif %}
+					</td>
+					<td class="center">{{ notification.date|datetimeformat }}</td>
+					<td>{{ notification.body|safe }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</form>
+	{{ lists.paginate(pages) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Вам еще не поступило ни одного уведомления.</p>
+	</div>
+{% endif %}
+{% endmacro %}

@@ -35,3 +35,37 @@ def offer_actions_to_xls(actions):
 	wb.save(f)
 	f.seek(0)
 	return f
+
+
+def users_to_xls(users):
+	wb = xlwt.Workbook()
+	ws = wb.add_sheet(u'Пользователи')
+	ws.write(0, 0, u'ID', bold_style)
+	ws.write(0, 1, u'E-mail', bold_style)
+	ws.write(0, 2, u'Организация', bold_style)
+	ws.write(0, 3, u'Фамилия', bold_style)
+	ws.write(0, 4, u'Имя', bold_style)
+	ws.write(0, 5, u'Роли', bold_style)
+	ws.write(0, 6, u'Зарегистрирован', bold_style)
+	ws.write(0, 7, u'WMR', bold_style)
+	ws.write(0, 8, u'Мессенджер', bold_style)
+	ws.write(0, 9, u'Город', bold_style)
+	for i, user in enumerate(users):
+		row = i + 1
+		ws.write(row, 0, user.id)
+		ws.write(row, 1, user.email)
+		ws.write(row, 2, user.organization)
+		ws.write(row, 3, user.last_name)
+		ws.write(row, 4, user.first_name)
+		ws.write(row, 5, u', '.join([role.name for role in user.roles]))
+		ws.write(row, 6, user.register_time, datetime_style)
+		ws.write(row, 7, user.wmr)
+		ws.write(row, 8, u'{0} ({1})'.format(user.messenger_uid, user.messenger_type) if user.messenger_type else None)
+		if getattr(user, 'info', None):
+			ws.write(row, 9, user.info.city)
+	for i in range(10):
+		ws.col(i).width = 5000
+	f = cStringIO.StringIO()
+	wb.save(f)
+	f.seek(0)
+	return f

@@ -12,15 +12,21 @@
 {% block tabcontent %}
 
 {% set filter = request.args.get('filter', none) %}
-{{ macros.filter(filter,
-	(
-		(none, 'все'),
-		('advertisers', 'рекламодатели'),
-		('affiliates', 'партнёры'),
-		('admins', 'администраторы')
-	),
-	'.users_list')
-}}
+<div>
+	{{ macros.filter(filter,
+		(
+			(none, 'все'),
+			('advertisers', 'рекламодатели'),
+			('affiliates', 'партнёры'),
+			('admins', 'администраторы')
+		),
+		'.users_list')
+	}}
+	<div style="float: right">
+		<a href="{{ url_for(request.url_rule.endpoint, format='xls', **request.args) }}"
+		 class="btn success">Выгрузить список в Excel</a>
+	</div>
+</div>
 
 {% if users %}
 	<div style="clear: both;">

@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, request, redirect, flash, url_for, abort, session
+from flask import render_template, g, request, redirect, flash, url_for, abort, session, send_file
 from heymoose import app, resource as rc
 from heymoose.admin import blueprint as bp
+from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.utils.pagination import current_page, page_limits, paginate as paginate2
 from heymoose.utils.shortcuts import paginate
 from heymoose.utils.convert import to_unixtime
 from heymoose.forms import forms
+from heymoose.db.models import UserInfo
 from heymoose.data.enums import Roles
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
 
+USERS_PER_PAGE = app.config.get('USERS_PER_PAGE', 20)
 ACCOUNTING_ENTRIES_PER_PAGE = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
 SUB_ID_STATS_PER_PAGE = app.config.get('SUB_ID_STATS_PER_PAGE', 20)
@@ -21,20 +24,25 @@ SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 
 
 @bp.route('/users/')
-def users_list():
+@template('admin/users.html')
+@paginated(USERS_PER_PAGE)
+def users_list(**kwargs):
 	filter_args = {
 		None: dict(),
 		'advertisers': dict(role=Roles.ADVERTISER),
 		'affiliates': dict(role=Roles.AFFILIATE),
 		'admins': dict(role=Roles.ADMIN)
 	}.get(request.args.get('filter', None), dict())
-	
-	page = current_page()
-	count = rc.users.count(**filter_args)
-	per_page = app.config.get('USERS_PER_PAGE', 20)
-	offset, limit, pages = paginate(page, count, per_page)
-	users = rc.users.list(offset=offset, limit=limit, full=True, **filter_args)
-	return render_template('admin/users.html', users=users, pages=pages, count=count)
+	if request.args.get('format', '') == 'xls':
+		users = rc.users.list(offset=0, limit=9999999, **filter_args)
+		users.reverse()
+		user_infos = { user_info.user_id : user_info for user_info in  UserInfo.query.all() }
+		for user in users: user.info = user_infos.get(user.id, None)
+		return send_file(excel.users_to_xls(users), as_attachment=True, attachment_filename='users.xls')
+	kwargs.update(filter_args)
+	users = rc.users.list(full=True, **kwargs)
+	count = rc.users.count(**kwargs)
+	return dict(users=users, count=count)
 
 @bp.route('/users/<int:id>', methods=['GET', 'POST'])
 def users_info(id):

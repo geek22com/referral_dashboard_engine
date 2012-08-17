@@ -6,6 +6,7 @@
 			<tr>
 				<th class="header">Название</th>
 				<th class="header">Оплата</th>
+				{% if not user.is_affiliate %}<th class="header">Из них партнёру</th>{% endif %}
 				<th class="header center">Многократное<br />прохождение</th>
 				<th class="header right">Время<br />холда</th>
 				{{ caller(true, none) }}
@@ -15,7 +16,8 @@
 			{% for suboffer in suboffers if show_all or suboffer.active %}
 			<tr>
 				<td>{{ suboffer.title }}</td>
-				<td>{{ suboffer.value(tax=user.fee if user.is_affiliate else 0) }}</td>
+				<td>{{ suboffer.value(user.is_affiliate) }}</td>
+				{% if not user.is_affiliate %}<td>{{ suboffer.value(true, short=true) }}</td>{% endif %}
 				<td class="center">{{ macros.to_icon(suboffer.reentrant) }}</td>
 				<td class="right">{{ suboffer.hold_days -}}&nbsp;дней</td>
 				{{ caller(false, suboffer) }}

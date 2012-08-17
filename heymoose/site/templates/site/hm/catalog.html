@@ -127,7 +127,7 @@
 			</td>
 			
 			<td class="action-cell">{{ offer.title }}</td>
-			<td class="cost-cell">{{ offer.value(tax=30.0) }}</td>
+			<td class="cost-cell">{{ offer.value(true) }}</td>
 			
 			<td class="small" {{ rowspan }}>{{ offer.short_description|default('&mdash;', true)|safe }}</td>
 			
@@ -174,7 +174,7 @@
 		{% for suboffer in offer.active_suboffers %}
 		<tr class="noborder">
 			<td class="action-cell">{{ suboffer.title }}</td>
-			<td class="cost-cell">{{ suboffer.value(tax=30.0) }}</td>
+			<td class="cost-cell">{{ suboffer.value(true) }}</td>
 		</tr>
 		{% endfor %}
 		{% endfor %}

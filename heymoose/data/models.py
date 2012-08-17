@@ -49,8 +49,6 @@ class User(IdentifiableModel):
 	referrer = Field(types.Integer, 'referrer')
 	referrals = FieldList(types.String, 'referrals/referral')
 	revenue = Field(types.Decimal, 'revenue')
-	fee = Field(types.Integer, 'fee')
-	
 	stats = Field('UserStat', 'stats')
 	
 	_ref_crypt_key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
@@ -207,25 +205,30 @@ class SubOffer(IdentifiableModel):
 	cost = Field(types.Decimal, 'cost')
 	cost2 = Field(types.Decimal, 'cost2')
 	percent = Field(types.Decimal, 'percent')
+	affiliate_cost = Field(types.Decimal, 'affiliate-cost')
+	affiliate_cost2 = Field(types.Decimal, 'affiliate-cost2')
+	affiliate_percent = Field(types.Decimal, 'affiliate-percent')
 	code = Field(types.String, 'code')
 	hold_days = Field(types.Integer, 'hold-days')
 	active = Field(types.Boolean, 'active')
 	exclusive = Field(types.Boolean, 'exclusive')
 	
-	def value(self, tax=0):
+	def value(self, affiliate=False, short=False):
+		if affiliate:
+			cost, cost2, percent = self.affiliate_cost, self.affiliate_cost2, self.affiliate_percent
+		else:
+			cost, cost2, percent = self.cost, self.cost2, self.percent
 		if self.pay_method == enums.PayMethods.CPC:
-			return u'{0} руб. за клик'.format(self.taxed(self.cost, tax))
+			return u'{0} руб.{1}'.format(cost, u' за клик' if not short else u'')
 		elif self.cpa_policy == enums.CpaPolicies.FIXED:
-			return u'{0} руб. за действие'.format(self.taxed(self.cost, tax))
+			return u'{0} руб.{1}'.format(cost, u' за действие' if not short else u'')
 		elif self.cpa_policy == enums.CpaPolicies.DOUBLE_FIXED:
-			return u'{0} руб. за первое действие и {1} руб. за последующие'.format(
-				self.taxed(self.cost, tax), self.taxed(self.cost2, tax))
+			return u'{0} руб.{1} и {2} руб.{3}'.format(
+				cost, u' за первое действие' if not short else u'',
+				cost2, u' за последующие' if not short else u'')
 		elif self.cpa_policy == enums.CpaPolicies.PERCENT:
-			return u'{0}% с заказа или покупки'.format(self.taxed(self.percent, tax))
+			return u'{0}%{1}'.format(percent, u' с заказа или покупки' if not short else u'')
 		return u'неизвестно'
-	
-	def taxed(self, value, tax):
-		return (value / Decimal(1.0 + float(tax) / 100.0)).quantize(Decimal('1.00'))
 	
 	@property
 	def payment_type(self):

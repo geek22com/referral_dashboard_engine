@@ -17,6 +17,3 @@ def grant_rejected(grant, reason):
 
 def grant_blocked(grant, reason):
 	notify_user(grant.affiliate, templates.GRANT_BLOCKED, grant=grant, reason=reason)
-
-def custom(text, **kwargs):
-	notify_all(text, **kwargs)

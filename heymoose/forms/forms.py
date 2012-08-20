@@ -963,12 +963,19 @@ class NewsItemForm(Form):
 		self.image.data.save(os.path.join(self.images_path, obj.image))
 
 
+notification_users_choices = [
+	(0, u'(всем)'),
+	(1, u'партнёрам'),
+	(2, u'рекламодателям')
+]
+
 class NotificationForm(Form):
 	text = TextAreaField(u'Текст уведомления', [validators.Required(message=u'Введите текст уведомления')])
-	role = SelectField(u'Для пользователей', choices=[(u'', u'(все)')] + enums.Roles.tuples('name'))
+	role = SelectField(u'Кому', choices=notification_users_choices, coerce=int)
 	
 	def backend_args(self):
 		return dict(role=self.role.data) if self.role.data else dict()
+
 
 class CountdownForm(Form):
 	email = TextField(u'E-mail', [

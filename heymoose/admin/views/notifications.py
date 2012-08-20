@@ -4,7 +4,7 @@ from heymoose import app
 from heymoose.admin import blueprint as bp
 from heymoose.db.models import Notification
 from heymoose.forms import forms
-from heymoose.notifications import notify
+from heymoose.notifications.base import notify_all, notify_all_affiliates, notify_all_advertisers
 from heymoose.views.decorators import template, paginated
 
 NOTIFICATIONS_PER_PAGE = app.config.get('NOTIFICATIONS_PER_PAGE', 10)
@@ -31,7 +31,9 @@ def notifications_list(offset, limit, **kwargs):
 def notifications_new():
 	form = forms.NotificationForm(request.form)
 	if request.method == 'POST' and form.validate():
-		notify.custom(form.text.data, **form.backend_args())
+		if form.role.data == 0: notify_all(form.text.data)
+		elif form.role.data == 1: notify_all_affiliates(form.text.data)
+		elif form.role.data == 2: notify_all_advertisers(form.text.data)			
 		flash(u'Уведомление успешно отправлено', 'success')
 		return redirect(url_for('.notifications_list'))
 	return dict(form=form)

@@ -1,5 +1,20 @@
 {% extends "cabinetcpa/layout.html" %}
 
+{% macro help_navigation(prev_template=none, prev_title=none, next_template=none, next_title=none) %}
+	<div class="well">
+		{% if prev_template %}
+		<span style="float: left;">
+			<a href="{{ url_for('.help', template=prev_template)}}">&laquo; Назад: {{ prev_title }}</a>
+		</span>
+		{% endif %}
+		{% if next_template %}
+		<span style="float: right;">
+			<a href="{{ url_for('.help', template=next_template)}}">Далее: {{ next_title }} &raquo;</a>
+		</span>
+		{% endif %}
+	</div>
+{% endmacro %}
+
 {% block title %}
 	{% block helptitle %}В разработке{% endblock %} :: Справка
 {% endblock %}

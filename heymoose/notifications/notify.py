@@ -1,4 +1,4 @@
-from base import notify_user, notify_offer_affiliates, notify_all
+from base import notify_user, notify_offer_affiliates
 import templates
 
 def offer_blocked(offer, reason):

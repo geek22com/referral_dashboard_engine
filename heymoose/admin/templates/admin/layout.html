@@ -41,6 +41,7 @@
 	<li id="menu-item-offers"><a href="{{ url_for('.offers_list') }}">Офферы</a></li>
 	<li id="menu-item-stats"><a href="{{ url_for('.stats_offer') }}">Статистика</a></li>
 	<li id="menu-item-operations"><a href="{{ url_for('.operations_withdrawals') }}">Операции</a></li>
+	<li id="menu-item-notifications"><a href="{{ url_for('.notifications_list') }}">Уведомления</a></li>
 	<li id="menu-item-logs"><a href="{{ url_for('.logs_api') }}">Журналы</a></li>
 	<li id="menu-item-feedback">
 		<a href="{{ url_for('.feedback') }}" {% if g.feedback_unread > 0 %}class="unread"{% endif %}>

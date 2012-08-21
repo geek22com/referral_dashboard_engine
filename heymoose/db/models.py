@@ -70,8 +70,7 @@ class UserInfo(mongo.Document):
 	query_class = HeyMooseQuery
 	
 	user_id = mongo.IntField()
-	block_date = mongo.DateTimeField()
-	block_reason = mongo.StringField()
+	city = mongo.StringField()
 
 class OrderInfo(mongo.Document):
 	query_class = HeyMooseQuery

@@ -962,8 +962,40 @@ class NewsItemForm(Form):
 		self.image.data.thumbnail(self.image_max_size, 1) # 1 == Image.ANTIALIAS
 		self.image.data.save(os.path.join(self.images_path, obj.image))
 
+
+notification_users_choices = [
+	(0, u'(всем)'),
+	(1, u'партнёрам'),
+	(2, u'рекламодателям')
+]
+
+class NotificationForm(Form):
+	text = TextAreaField(u'Текст уведомления', [validators.Required(message=u'Введите текст уведомления')])
+	role = SelectField(u'Кому', choices=notification_users_choices, coerce=int)
+	
+	def backend_args(self):
+		return dict(role=self.role.data) if self.role.data else dict()
+
+
 class CountdownForm(Form):
 	email = TextField(u'E-mail', [
 		validators.Email(message = u'Некорректный адрес электронной почты'),
 		validators.Required(message = u'Введите адрес электронной почты'),
 	])
+
+poll_city_choices = [
+	(u'Москва (МО)', u'Москва (МО)'),
+	(u'Санкт-Петербург', u'Санкт-Петербург'),
+	(u'Новосибирск', u'Новосибирск'),
+	(u'', u'Другой...')
+]
+
+class PollCityForm(Form):
+	city_select = SelectField(u'Город', choices=poll_city_choices)
+	city_input = TextField(u'Город', [
+		validators.Length(max=100, message=u'Название города должно иметь длину до 100 символов')
+	])
+	
+	def validate_city_input(self, field):
+		if not self.city_select.data and not self.city_input.data:
+			raise ValueError(u'Введите название города')

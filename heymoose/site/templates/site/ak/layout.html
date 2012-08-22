@@ -1,6 +1,13 @@
-{% import 'site/ak/macros/forms.html' as forms %}
 <!DOCTYPE html>
 <html>
+	{% import 'site/ak/macros/forms.html' as forms %}
+	{% set letsgo_link = '#register' if not g.user else url_for('.gateway') %}
+	
+	{% macro menu_item(rule, title, class=none) %}
+	<li class="b-menu__item {{ class }} {{ 'b-menu__item_active' if request.url_rule.endpoint.endswith(rule) }}">
+		<a href="{{ url_for(rule, **kwargs) }}">{{ title }}</a>
+	</li>
+	{% endmacro %}
 	<head>
 
 		<title>HeyMoose</title>	
@@ -29,7 +36,7 @@
 		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.jcarousel.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/common.js') }}"></script>
 	</head>
-	<body class="b-page_home">
+	<body {% block body_attrs %}{% endblock %}>
 		<div class="b-top-box"> <!-- .b-top -->
 			<div class="b-top">
 				<div class="b-top__content">
@@ -40,21 +47,11 @@
 					</div>
 					<ul class="b-menu">
 						{% block menu_items %}
-						<li class="b-menu__item b-menu__item_active">
-							<a href="{{ url_for('.index') }}">Главная</a>
-						</li>
-						<li class="b-menu__item">
-							<a href="{{ url_for('.affiliates') }}">Партнёрам</a>
-						</li>
-						<li class="b-menu__item">
-							<a href="{{ url_for('.advertisers') }}">Рекламодателям</a>
-						</li>
-						<li class="b-menu__item">
-							<a href="{{ url_for('.contacts') }}">Связь с нами</a>
-						</li>
-						<li class="b-menu__item b-menu__item_cat">
-							<a href="{{ url_for('.catalog') }}">Каталог</a>
-						</li>
+							{{ menu_item('.index', 'Главная') }}
+							{{ menu_item('.affiliates', 'Партнёрам') }}
+							{{ menu_item('.advertisers', 'Рекламодателям') }}
+							{{ menu_item('.contacts', 'Связь с нами') }}
+							{{ menu_item('.catalog', 'Каталог', class='b-menu__item_cat') }}
 						{% endblock %}
 					</ul>
 					
@@ -75,8 +72,8 @@
 		
 		{% block container %}{% endblock %}
 		
-		<div class="b-footer"> <!-- .b-footer -->	
-			<div class="b-footer__line"></div>
+		<div class="b-footer"> <!-- .b-footer -->
+			{% block footer_line %}{% endblock %}	
 			
 			<div class="b-footer__in">
 				{% block footer_precontent %}{% endblock %}
@@ -181,7 +178,6 @@
 			</div>
 		</div>#}
 		
-		
 		<div style="display: none;">
 			<div class="b-popup" id="login">
 				<div class="b-popup__title">Вход в систему</div>
@@ -192,6 +188,30 @@
 							{{ forms.field(g.login_form.password, type='password', label='Введите свой пароль:') }}
 							<li class="b-fields-list__item">
 								<input type="submit" class="b-btn-sudmit" value="Войти"/>
+							</li>
+						</ul>
+					</form>
+					<div class="b-cancel-box">
+						или <br />
+						<a href="javascript:$.fancybox.close();" class="b-close-popup">отменить и закрыть</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div style="display: none;">
+			<div class="b-popup b-popup_register" id="register">
+				<div class="b-popup__title">Регистрация партнёра</div>
+				<div class="b-popup__content">
+					<form class="b-form b-form-register" action="{{ url_for('.register_affiliate') }}" method="post">
+						<ul class="b-fields-list b-fields-list_lines">
+							{{ forms.field(form.email, type='email') }}
+							{{ forms.field(form.password) }}
+							{{ forms.field(form.password2) }}
+							{{ forms.field(form.captcha) }}
+							{{ form.ch() }}
+							<li class="b-fields-list__item">
+								<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"/>
 							</li>
 						</ul>
 					</form>

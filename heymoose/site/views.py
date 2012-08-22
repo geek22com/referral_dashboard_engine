@@ -38,8 +38,10 @@ def advertisers():
 	return render_template('site/hm/advertisers.html')
 
 @bp.route('/affiliates/')
+@template('site/ak/affiliates.html')
 def affiliates():
-	return render_template('site/hm/affiliates.html')
+	form = forms.AffiliateRegisterForm()
+	return dict(form=form)
 
 @bp.route('/<any(en,de,fr,it):lang>/')
 def lang_index(lang):

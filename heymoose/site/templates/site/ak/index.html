@@ -1,6 +1,6 @@
 {% extends 'site/ak/layout.html' %}
 
-{% set letsgo_link = '#register' if not g.user else url_for('.gateway') %}
+{% block body_attrs %}class="b-page_home"{% endblock %}
 
 {% block container %}
 	<div class="b-slider-wrap">
@@ -353,37 +353,14 @@
 	</div> <!-- /.b-wrap -->
 {% endblock %}
 
+{% block footer_line %}
+<div class="b-footer__line"></div>
+{% endblock %}
+
 {% block footer_precontent %}
 <div class="b-start-now_triangle">
 	<a href="{{ letsgo_link }}" class="b-start-now__text {{ 'b-show-popup' if not g.user }}">
 		Начни прямо сейчас
 	</a>
 </div>
-{% endblock %}
-
-{% block postbody %}
-	{{ super() }}
-	<div style="display: none;">
-		<div class="b-popup b-popup_register" id="register">
-			<div class="b-popup__title">Регистрация партнёра</div>
-			<div class="b-popup__content">
-				<form class="b-form b-form-register" action="{{ url_for('.register_affiliate') }}" method="post">
-					<ul class="b-fields-list b-fields-list_lines">
-						{{ forms.field(form.email, type='email') }}
-						{{ forms.field(form.password) }}
-						{{ forms.field(form.password2) }}
-						{{ forms.field(form.captcha) }}
-						{{ form.ch() }}
-						<li class="b-fields-list__item">
-							<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"/>
-						</li>
-					</ul>
-				</form>
-				<div class="b-cancel-box">
-					или <br />
-					<a href="javascript:$.fancybox.close();" class="b-close-popup">отменить и закрыть</a>
-				</div>
-			</div>
-		</div>
-	</div>
 {% endblock %}

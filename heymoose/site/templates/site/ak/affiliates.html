@@ -1,0 +1,168 @@
+{% extends 'site/ak/layout-inner.html' %}
+
+{% block inner_container %}
+	<div class="b-main b-main_partners"> <!-- .b-main -->
+		<div class="b-partners"> <!-- .b-partners -->
+			<h2 class="b-partners-title">
+				<span class="b-partners-title__text">Типы партнеров</span>
+			</h2>
+			<ul class="b-partner-types">
+				<li class="b-partner-type-box">
+					<h3 class="b-partners-type-title">Content</h3>
+					<i class="b-ico b-ico_partner1"></i>
+					<span class="b-partners-type-desc">Блоггеры и владельцы сайтов</span>
+				</li>
+				<li class="b-partner-type-box">
+					<h3 class="b-partners-type-title">Search</h3>
+					<i class="b-ico b-ico_partner2"></i>
+					<span class="b-partners-type-desc">Участники Яндекс.Директ или Google AdWords</span>
+				</li>
+				<li class="b-partner-type-box">
+					<h3 class="b-partners-type-title">display</h3>
+					<i class="b-ico b-ico_partner3"></i>
+					<span class="b-partners-type-desc">Баннерные и тизерные партнёры</span>
+				</li>
+				<li class="b-partner-type-box">
+					<h3 class="b-partners-type-title">Email</h3>
+					<i class="b-ico b-ico_partner4"></i>
+					<span class="b-partners-type-desc">Специалисты по почтовым расылкам</span>
+				</li>
+				<li class="b-partner-type-box">
+					<h3 class="b-partners-type-title b-disabled-text">Mobile</h3>
+					<i class="b-ico b-ico_partner5"></i>
+					<i class="b-ico b-ico-soon"></i>
+					<span class="b-partners-type-desc b-disabled-text">Мастера мобильных платформ</span>
+				</li>
+			</ul>
+		</div> <!-- /.b-partners -->
+
+		<div class="b-columns b-columns_partners"> <!-- .b-columns_partners -->
+			<div class="b-column_offers">
+				<div class="b-pure-content">
+					<h1>Выбор предложений</h1>
+					<h4>Только самые престижные и топовые партнёры и магазины</h4>
+					<p>А это значит, что ваша женская аудитория будет довольна не только большим выбором,
+						но и высоким качеством.</p>
+					<h4>Только эксклюзивные предложения</h4>
+					<p>Предложения, предложенные нашим партнёрам эксклюзивны и размещаются только у нас, 
+						поэтому таких же выгодных предложений вы не найдёте больше нигде.</p>
+					<h4>Категории предложений</h4>
+					<p>Наши предложения разбиты на несколько целевых групп:	</p>
+
+				</div>
+				<ul class="b-offers-cats">
+					<li class="b-offers-cats__item">
+						<a href="#" class="b-link-icon">
+							<i class="b-ico b-ico_wedding"></i>
+							Для свадьбы
+						</a>
+					</li>
+					<li class="b-offers-cats__item">
+						<a href="#" class="b-link-icon">
+							<i class="b-ico b-ico_pregnant"></i>
+							Для беременных
+						</a>
+					</li>
+					<li class="b-offers-cats__item">
+						<a href="#" class="b-link-icon">
+							<i class="b-ico b-ico_one_year"></i>
+							Дети до&nbsp;года
+						</a>
+					</li>
+					<li class="b-offers-cats__item">
+						<a href="#" class="b-link-icon">
+							<i class="b-ico b-ico_children"></i>
+							Дети 2&mdash;6&nbsp;лет
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="b-column_teasers">
+				<div class="b-red-arrow">
+					<div class="b-red-arrow__top">
+						<i class="b-ico b-ico_money"></i>
+					</div>
+					<div class="b-red-arrow__content">
+						<ul class="b-teasers-list">
+							<li class="b-teasers-list__item">
+								<h4>Реферралы</h4>
+								5% комиссии пожизненно
+							</li>
+							<li class="b-teasers-list__item">
+								<h4>Бонусы</h4>
+								Добавляют вам денег
+							</li>
+							<li class="b-teasers-list__item">
+								<h4>Выплаты</h4>
+								Происходят быстро и&nbsp;с&nbsp;гарантией
+							</li>
+							<li class="b-teasers-list__item">
+								<h4>Конкурсы</h4>
+								Не дают расслабляться
+							</li>
+						</ul>
+					</div>
+					<div class="b-red-arrow__bottom"></div>
+					<a href="{{ letsgo_link }}" class="b-start-now b-start-now_gr {{ 'b-show-popup' if not g.user }}"
+					 title="Начни прямо сейчас!">Начни прямо сейчас!</a>
+				</div>
+			</div>
+			<div class="b-column_analitics">
+				<div class="b-pure-content">
+					<h1>Аналитика</h1>
+					<h4>Наш трекер — это наше ноу-хау и наша гордость.</h4>
+					<p>Трекер HeyMoose — это уникальная и эксклюзивная разработка, отвечающая всем современным 
+						потребностям лучших веб-мастеров.</p>
+					<h4>Возможности системы</h4>
+					<p>Наш трекер действительно умеет делать то, что нужно веб-мастеру, чтобы
+						заработать! Конечно же, это мощная аналитика, deeplink, sub_id, 
+						source_id, а также, отслеживание ключевых слов.</p>
+					<h4>Скриншоты</h4>
+				</div>
+				<div class="b-carousel b-carousel_screens">
+					<div class="b-carousel__content">
+						<ul class="b-screens-list">
+							<li class="b-screens-list__item">
+								<a href="images/content/screen1_large.jpg"><img src="images/content/screen1.jpg" alt="Screen" title="Screen" /></a>
+							</li>
+							<li class="b-screens-list__item">
+								<a href="images/content/screen2_large.jpg"><img src="images/content/screen2.jpg" alt="Screen" title="Screen" /></a>
+							</li>
+							<li class="b-screens-list__item">
+								<a href="images/content/screen3_large.jpg"><img src="images/content/screen3_large.jpg" alt="Screen" title="Screen" /></a>
+							</li>
+						</ul>
+					</div>	
+				</div>	
+
+			</div>
+		</div> <!-- /.b-columns_partners -->
+		<div class="b-landings">
+			<h2 class="b-partners-title"><span class="b-partners-title__text">Лэндинги<small>От LPgenerator</small></span></h2>
+			<div class="b-carousel b-carousel_landings">
+				<div class="b-carousel__content">
+					<ul class="b-screens-list">
+						<li class="b-screens-list__item">
+							<a href="images/content/screen1_large.jpg"><img src="images/content/screen1.jpg" alt="Screen" title="Screen" /></a>
+						</li>
+						<li class="b-screens-list__item">
+							<a href="images/content/screen2_large.jpg"><img src="images/content/screen2.jpg" alt="Screen" title="Screen" /></a>
+						</li>
+						<li class="b-screens-list__item">
+							<a href="images/content/screen3_large.jpg"><img src="images/content/screen3.jpg" alt="Screen" title="Screen" /></a>
+						</li>
+						<li class="b-screens-list__item">
+							<a href="images/content/screen4_large.jpg"><img src="images/content/screen4.jpg" alt="Screen" title="Screen" /></a>
+						</li>
+						<li class="b-screens-list__item">
+							<a href="images/content/screen5_large.jpg"><img src="images/content/screen5.jpg" alt="Screen" title="Screen" /></a>
+						</li>
+						<li class="b-screens-list__item">
+							<a href="images/content/screen6_large.jpg"><img src="images/content/screen6.jpg" alt="Screen" title="Screen" /></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>		
+	</div> <!-- /.b-main -->
+{% endblock %}

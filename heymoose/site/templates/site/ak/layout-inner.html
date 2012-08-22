@@ -1,0 +1,13 @@
+{% extends 'site/ak/layout.html' %}
+
+{% block body_attrs %}class="b-page_inner"{% endblock %}
+
+{% block container %}
+	<div class="b-page-line1"></div>	
+	<div class="b-wrap"> <!-- .b-wrap -->	
+		<div class="b-page-line2"></div>
+		{% block inner_container %}{% endblock %}
+	</div> <!-- /.b-wrap -->
+{% endblock %}
+
+

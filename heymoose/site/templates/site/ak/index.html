@@ -1,0 +1,389 @@
+{% extends 'site/ak/layout.html' %}
+
+{% set letsgo_link = '#register' if not g.user else url_for('.gateway') %}
+
+{% block container %}
+	<div class="b-slider-wrap">
+		<div class="b-slider" id="slides"> <!-- .b-slider -->				
+			<ul class="b-slides-list slides_container">
+				<li class="b-slides-list__item">
+					
+					<div class="b-slide1">
+						<h1 class="b-slide-title">
+							Как заработать
+							<span>на женской аудитории</span>
+						</h1>
+						простых шага
+					</div>
+				</li>
+				<li class="b-slides-list__item">
+					<div class="b-slide2">
+						
+						<h1 class="b-slide-title_standard">
+							Шаг 1
+						</h1>
+						<p class="b-slide-text">
+							Вы регистрируетесь в нашей системе<br />
+							и получаете доступ к сотням эксклюзивных<br />
+							предложений от наших партнёров
+						</p>								
+					</div>
+				</li>
+				<li class="b-slides-list__item">
+					
+					<div class="b-slide3">
+						<h1 class="b-slide-title_standard">
+							Шаг 2
+						</h1>
+						<p class="b-slide-text">
+							Вы рассказываете о выбранных предложениях<br />
+							своей аудитории любым удобным<br />
+							для вас способом
+						</p>								
+					</div>
+				</li>
+				<li class="b-slides-list__item">
+					
+					<div class="b-slide4">
+						<h1 class="b-slide-title_standard">
+							Шаг 3
+						</h1>
+						<p class="b-slide-text">
+							Пока ваша аудитория делает покупки<br />
+							вы отслеживаете всю активность<br />
+							в нашем супер-трекере
+						</p>								
+					</div>
+				</li>
+				<li class="b-slides-list__item">
+					
+					<div class="b-slide5">
+						<h1 class="b-slide-title_standard">
+							Шаг 4
+						</h1>
+						<p class="b-slide-text">
+							В итоге, вы богаты,<br />
+							а ваша женская аудитория<br />
+							чертовски довольна!
+						</p>								
+					</div>
+				</li>
+				<li class="b-slides-list__item">							
+					
+					<div class="b-slide6">
+						<h1 class="b-slide-title_standard">
+							Начните зарабатывать
+							прямо сейчас!
+						</h1>
+						<a href="{{ letsgo_link }}" class="b-start-now_slides {{ 'b-show-popup' if not g.user }}"
+						 title="Поехали!"></a>
+						<p class="b-slide-text">
+							Либо, вы можете
+							<a href="#1" class="b-link_pseudo link">посмотреть всё с начала</a>
+						</p>								
+					</div>
+				</li>
+			</ul>
+				
+		</div> <!-- /.b-slider -->
+	</div>
+	
+	<div class="b-wrap"> <!-- .b-wrap -->			
+		<div class="b-main"> <!-- .b-main -->
+			<div class="b-promo">
+				<a href="{{ letsgo_link }}" class="b-start-now {{ 'b-show-popup' if not g.user }}"
+				 title="Начни прямо сейчас!">Начни прямо сейчас!</a>
+			<ul class="b-brands-list">
+				<li class="b-brands-list__item">
+					<a href="#"><img src="images/brands/merc.png" alt="Merc" title="Merc" /></a>
+				</li>
+				<li class="b-brands-list__item">
+					<a href="#"><img src="images/brands/givenchy.png" alt="givenchy" title="givenchy" /></a>
+				</li>
+				<li class="b-brands-list__item">
+					<a href="#"><img src="images/brands/patta.png" alt="Patta" title="Patta" /></a>
+				</li>
+				<li class="b-brands-list__item">
+					<a href="#"><img src="images/brands/ck.png" alt="Calvin Klein" title="Calvin Klein" /></a>
+				</li>
+				<li class="b-brands-list__item">
+					<a href="#"><img src="images/brands/allegra.png" alt="Allegra Hicks" title="Allegra Hicks" /></a>
+				</li>
+				<li class="b-brands-list__item">
+					<a href="#"><img src="images/brands/bob.png" alt="Hale Bob" title="Hale Bob" /></a>
+				</li>
+				<li class="b-brands-list__item">
+					<a href="#"><img src="images/brands/al.png" alt="Alexander Berardi" title="Alexander Berardi" /></a>
+				</li>
+			</ul>
+			
+			</div>
+			<div class="b-main-columns">
+				<div class="b-column_side b-column_side_left">
+					<div class="b-column_side_left__in">
+					<h2>Конкурсы:</h2>
+					<ul class="b-contest-accordion">
+						<li class="b-contest-accordion__item">							
+							<a href="#" class="b-link-icon b-contest-accordion-head">
+								<i class="b-ico b-ico_web-master"></i>
+								<span class="b-contest-accordion-head__text">Соревнование веб-мастеров</span>
+								<i class="b-ico b-ico-rarr"></i>
+							</a>
+							<div class="b-contest-accordion-content">
+								<table class="b-leader-table">
+									<tbody>
+										<tr>
+											<th class="b-leader-table_col1">ID#</th>
+											<th class="b-leader-table_col2">Лидер</th>
+											<th class="b-leader-table_col3">Доход</th>
+										</tr>
+										<tr>
+											<td>4333546</td>
+											<td>HelloWorld</td>
+											<td>1 231 231р.</td>
+										</tr>
+										<tr>
+											<td>4112546</td>
+											<td>Oxixixi</td>
+											<td>531 231р.</td>
+										</tr>
+										<tr>
+											<td>8946</td>
+											<td>AnnyHoll</td>
+											<td>231 261р.</td>
+										</tr>
+										<tr>
+											<td>8955546</td>
+											<td>Anny----Holl</td>
+											<td>231 261р.</td>
+										</tr>
+										<tr>
+											<td>80846</td>
+											<td>Sonne</td>
+											<td>1 231 231р.</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</li>
+						<li class="b-contest-accordion__item">							
+							<a href="#" class="b-link-icon b-contest-accordion-head">
+								<i class="b-ico b-ico_ref-top"></i>
+								<span class="b-contest-accordion-head__text">Борьба за топ реферралов</span>
+								<i class="b-ico b-ico-rarr"></i>
+							</a>
+							<div class="b-contest-accordion-content">
+								<table class="b-leader-table">
+									<tbody>
+										<tr>
+											<th class="b-leader-table_col1">ID#</th>
+											<th class="b-leader-table_col2">Лидер</th>
+											<th class="b-leader-table_col3">Доход</th>
+										</tr>
+										<tr>
+											<td>4333546</td>
+											<td>HelloWorld</td>
+											<td>1 231 231р.</td>
+										</tr>
+										<tr>
+											<td>4112546</td>
+											<td>Oxixixi</td>
+											<td>531 231р.</td>
+										</tr>
+										<tr>
+											<td>8946</td>
+											<td>AnnyHoll</td>
+											<td>231 261р.</td>
+										</tr>
+										<tr>
+											<td>8955546</td>
+											<td>Anny----Holl</td>
+											<td>231 261р.</td>
+										</tr>
+										<tr>
+											<td>80846</td>
+											<td>Sonne</td>
+											<td>1 231 231р.</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</li>
+						<li class="b-contest-accordion__item">							
+							<a href="#" class="b-link-icon b-contest-accordion-head">
+								<i class="b-ico b-ico_bloggers"></i>
+								<span class="b-contest-accordion-head__text">Гонка мастистых блоггеров</span>
+								<i class="b-ico b-ico-rarr"></i>
+							</a>
+							<div class="b-contest-accordion-content">
+								<table class="b-leader-table">
+									<tbody>
+										<tr>
+											<th class="b-leader-table_col1">ID#</th>
+											<th class="b-leader-table_col2">Лидер</th>
+											<th class="b-leader-table_col3">Доход</th>
+										</tr>
+										<tr>
+											<td>4333546</td>
+											<td>HelloWorld</td>
+											<td>1 231 231р.</td>
+										</tr>
+										<tr>
+											<td>4112546</td>
+											<td>Oxixixi</td>
+											<td>531 231р.</td>
+										</tr>
+										<tr>
+											<td>8946</td>
+											<td>AnnyHoll</td>
+											<td>231 261р.</td>
+										</tr>
+										<tr>
+											<td>8955546</td>
+											<td>Anny----Holl</td>
+											<td>231 261р.</td>
+										</tr>
+										<tr>
+											<td>80846</td>
+											<td>Sonne</td>
+											<td>1 231 231р.</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</li>
+					</ul>
+					</div>
+				</div>
+				<div class="b-column_main">
+					<div class="b-column_main__in">
+						{% with affiliates_link = url_for('.affiliates') %}
+						<h2 class="b-section-title">Предложения И ВЫПЛАТЫ</h2>
+						<ul class="b-sections">
+							<li class="b-section__item">
+								<a href="{{ affiliates_link }}" class="b-link-icon">
+									<i class="b-ico b-ico_partners"></i>
+									<span class="b-section-text">Топовые и престижные партнёры</span>
+								</a>
+							</li>
+							<li class="b-section__item">
+								<a href="{{ affiliates_link }}" class="b-link-icon">
+									<i class="b-ico b-ico_offers"></i>
+									<span class="b-section-text">Только эксклюзивные предложения</span>
+								</a>
+							</li>
+							<li class="b-section__item">
+								<a href="{{ affiliates_link }}" class="b-link-icon">
+									<i class="b-ico b-ico_payments"></i>
+									<span class="b-section-text">Быстрые выплаты и&nbsp;гарантии</span>
+								</a>
+							</li>
+						</ul>
+						
+						<h2 class="b-section-title">Аналитика и инструментарий</h2>
+						<ul class="b-sections">
+							<li class="b-section__item">
+								<a href="{{ affiliates_link }}" class="b-link-icon">
+									<i class="b-ico b-ico_audience"></i>
+									<span class="b-section-text">Удобство работы с&nbsp;аудиторией</span>
+								</a>
+							</li>
+							<li class="b-section__item">
+								<a href="{{ affiliates_link }}" class="b-link-icon">
+									<i class="b-ico b-ico_tracker"></i>
+									<span class="b-section-text">Уникальный трекер</span>
+								</a>
+							</li>
+							<li class="b-section__item">
+								<a href="{{ affiliates_link }}" class="b-link-icon">
+									<i class="b-ico b-ico_landing"></i>
+									<span class="b-section-text">Лендинги от <br/>LPgenerator</span>
+								</a>
+							</li>
+						</ul>
+						{% endwith %}
+					</div>
+				</div>
+				<div class="b-column_side b-column_side_right">
+					<div class="b-column_side_right__in">
+						<div class="b-more-offers-box">
+							<a class="b-link-icon b-more-offers" href="{{ url_for('.catalog') }}">
+								<strong>И ещё 903</strong> эксклюзивных
+								предложения от топовых
+								магазинов-партнёров
+								<i class="b-ico b-ico-rarr"></i>
+							</a>
+						</div>		
+						
+						<ul class="b-side-menu">
+							<li class="b-side-menu__item">
+								<a href="{{ url_for('.affiliates') }}">ПАРТНЁРАМ</a>
+								<ul class="b-side-menu_sub">
+									<li class="b-side-menu__item">
+										<a href="{{ url_for('.catalog') }}">Витрина предложений</a>
+									</li>
+									<li class="b-side-menu__item">
+										<a href="{{ url_for('.register_affiliate') }}">Регистрация</a>
+									</li>
+								</ul>
+							</li>
+							<li class="b-side-menu__item">
+								<a href="{{ url_for('.advertisers') }}">Рекламодателям</a>
+								<ul class="b-side-menu_sub">
+									<li class="b-side-menu__item">
+										<a href="{{ url_for('.register_advertiser') }}">Регистрация</a>
+									</li>
+								</ul>
+							</li>
+							<li class="b-side-menu__item">
+								<a href="{{ url_for('.contacts') }}">Связь с нами</a>
+							</li>
+						</ul>
+						
+						<a href="#" class="b-banner-link">
+							<img src="{{ url_for('static', filename='ak/images/content/banner.png') }}"
+							 alt="Banner" title="Banner" />
+						</a>
+					</div>
+				</div>
+			</div>
+			
+		</div> <!-- /.b-main -->
+		
+	</div> <!-- /.b-wrap -->
+{% endblock %}
+
+{% block footer_precontent %}
+<div class="b-start-now_triangle">
+	<a href="{{ letsgo_link }}" class="b-start-now__text {{ 'b-show-popup' if not g.user }}">
+		Начни прямо сейчас
+	</a>
+</div>
+{% endblock %}
+
+{% block postbody %}
+	{{ super() }}
+	<div style="display: none;">
+		<div class="b-popup b-popup_register" id="register">
+			<div class="b-popup__title">Регистрация партнёра</div>
+			<div class="b-popup__content">
+				<form class="b-form b-form-register" action="{{ url_for('.register_affiliate') }}" method="post">
+					<ul class="b-fields-list b-fields-list_lines">
+						{{ forms.field(form.email, type='email') }}
+						{{ forms.field(form.password) }}
+						{{ forms.field(form.password2) }}
+						{{ forms.field(form.captcha) }}
+						{{ form.ch() }}
+						<li class="b-fields-list__item">
+							<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"/>
+						</li>
+					</ul>
+				</form>
+				<div class="b-cancel-box">
+					или <br />
+					<a href="javascript:$.fancybox.close();" class="b-close-popup">отменить и закрыть</a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

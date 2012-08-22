@@ -1,0 +1,300 @@
+.b-ico {
+    background: transparent url('../images/bg/icons.png') no-repeat -9999px -9999px;
+    display:inline-block;
+    vertical-align: top;
+}
+.b-ico-tw {
+	background-position: 0 -16px;
+	height: 15px;
+	width: 12px;
+	margin-top: 10px;
+}
+.b-ico-fb {
+	background-position: 0 0;
+	height: 15px;
+	width: 9px;
+	margin-top: 10px;
+}
+.b-ico-vk {
+	background-position: 0 -32px;
+	height: 12px;
+	width: 11px;
+	margin-top: 11px;
+}
+
+.b-logo-arrow {
+	background: transparent url('../images/bg/icons.png') 0 -68px;
+	height: 13px;
+	display: block;
+	position: absolute;
+	bottom:13px;
+	left:50%;
+	margin-left: -6px;
+	width: 11px;
+}
+
+.b-logo-box_expanded .b-logo-arrow {
+	background: transparent url('../images/bg/icons.png') 0 -85px;
+}
+
+.b-logo-submenu .b-ico_1 {
+	background-position: -15px -179px;
+	height: 33px;
+	width: 33px;
+}
+.b-logo-submenu a:hover .b-ico_1 {
+	background-position: -15px -219px;
+}
+
+.b-logo-submenu .b-ico_2 {
+	background-position: -15px -294px;
+	height: 33px;
+	width: 33px;
+}
+
+.b-logo-submenu .b-ico_3 {
+	background-position: -15px -340px;
+	height: 25px;
+	width: 33px;
+}
+
+.b-logo-submenu a:hover .b-ico_3 {
+	background-position: -15px -374px;
+}
+
+.b-logo-submenu .b-ico_4 {
+	background-position: -15px -409px;
+	height: 29px;
+	width: 33px;
+}
+
+.b-logo-submenu a:hover .b-ico_4 {
+	background-position: -15px -440px;
+}
+
+.b-logo-submenu .b-ico_5 {
+	background-position: -15px -476px;
+	height: 33px;
+	width: 33px;
+}
+
+.b-logo-submenu a:hover .b-ico_5 {
+	background-position: -15px -520px;
+}
+
+.b-ico_login {
+	background-position: 0 -48px;
+	height: 16px;
+	width: 12px;
+	margin-right: 15px;
+}
+
+.b-ico-rarr {
+	background-position: -15px -560px;
+	height: 33px;
+	width: 17px;
+}
+
+.b-ico-larr {
+	background-position: -15px -600px;
+	height: 33px;
+	width: 17px;
+}
+
+.b-ico_partners {
+	background-position: -118px 0;
+	height: 88px;
+	width: 63px;
+}
+.b-ico_offers {
+	background-position: -118px -91px;
+	height: 85px;
+	width: 60px;
+}
+.b-ico_payments {
+	background-position: -118px -178px;
+	height: 88px;
+	width: 67px;
+}
+.b-ico_audience {
+	background-position: -118px -267px;
+	height: 88px;
+	width: 95px;
+}
+
+.b-ico_tracker {
+	background-position: -118px -356px;
+	height: 85px;
+	width: 105px;
+}
+.b-ico_landing {
+	background-position: -118px -427px;
+	height: 93px;
+	width: 58px;
+}
+.b-ico_web-master {
+	background-position: -51px 0;
+	height: 64px;
+	width: 64px;
+}
+.b-ico_ref-top {
+	background-position: -51px -66px;
+	height: 64px;
+	width: 64px;
+}
+.b-ico_bloggers {
+	background-position: -51px -132px;
+	height: 64px;
+	width: 64px;
+}
+
+.b-ico_google_auth {
+	background-position: -329px 0;
+	height: 24px;
+	width: 24px;
+}
+.b-ico_fb_auth {
+	background-position: -329px -26px;
+	height: 24px;
+	width: 24px;
+}
+.b-ico_tw_auth {
+	background-position: -329px -52px;
+	height: 24px;
+	width: 24px;
+}
+.b-ico_mailru_auth {
+	background-position: -329px -78px;
+	height: 24px;
+	width: 24px;
+}
+
+.b-ico_partner1 {
+	background-position: -223px -100px;
+	height: 100px;
+	width: 100px;
+}
+.b-ico_partner2 {
+	background-position: -223px -204px;
+	height: 100px;
+	width: 100px;
+}
+.b-ico_partner3 {
+	background-position: -223px -309px;
+	height: 100px;
+	width: 100px;
+}
+.b-ico_partner4 {
+	background-position: -223px -411px;
+	height: 100px;
+	width: 100px;
+}
+.b-ico_partner5 {
+	background-position: -223px -516px;
+	height: 100px;
+	width: 100px;
+}
+
+.b-ico-soon {
+	background-position: -119px -525px;
+    height: 95px;
+    position: absolute;
+    right: 0;
+    top: 21px;
+    width: 95px;
+}
+.b-ico_money {
+	background-position: -223px 0;
+    height: 100px;
+    left: -49px;
+    position: absolute;
+    top: -70px;
+    width: 100px;
+    z-index: 10;
+}
+
+.b-ico_wedding {
+	background-position: -56px -200px;
+	height: 50px;
+	width: 50px;
+}
+.b-ico_pregnant {
+	background-position: -56px -263px;
+	height: 46px;
+	width: 37px;
+}
+.b-ico_one_year {
+	background-position: -56px -331px;
+	height: 42px;
+	width: 30px;
+}
+.b-ico_children {
+	background-position: -56px -392px;
+	height: 43px;
+	width: 50px;
+}
+.b-ico_cat_wedding {
+	background-position: -360px 0;
+	height: 30px;
+	width: 28px;
+	margin-right:3px;
+}
+.b-ico_cat_pregnant {
+	background-position: -360px -32px;
+	height: 30px;
+	width: 22px;
+	margin-right:8px;
+}
+.b-ico_cat_one_year {
+	background-position: -360px -64px;
+	height: 30px;
+	width: 19px;
+	margin-right:4px;
+}
+.b-ico_cat_children {
+	background-position: -360px -97px;
+	height: 30px;
+	width: 29px;
+	 margin-left: -3px;
+    margin-right: 7px;
+}
+.b-ico_cat_woman {
+	background-position: -360px -127px;
+	height: 30px;
+	width: 25px;
+	 margin-left: 10px;
+    margin-right: 10px;
+}
+
+.b-ico_cat_action {
+	background-position: -360px -194px;
+	height: 24px;
+	width: 27px;
+	margin-right: 6px;
+    margin-top: 4px;
+}
+.b-ico_cat_click {
+	background-position: -360px -161px;
+	height: 25px;
+	width: 23px;
+	margin-right: 9px;
+    margin-top: 2px;
+}
+.b-ico_cat_percent {	
+	background-position: -360px -225px;
+	height: 22px;
+	width: 26px;
+	margin-left: 11px;
+    margin-right: 6px;
+    margin-top: 3px;
+}
+.b-ico_delete {
+	background-position: 0 -103px;
+	height: 8px;
+	width: 8px;
+}
+.b-ico_plus{
+	background-position: 0 -117px;
+	height: 9px;
+	width: 9px;
+}

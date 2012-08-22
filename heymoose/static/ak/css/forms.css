@@ -1,0 +1,135 @@
+.b-form {
+	position: relative;
+}
+.b-form .b-fields-list {
+	margin: 0;
+	padding: 0;
+}
+.b-form .b-fields-list .b-fields-list__item {
+	display: block;
+	list-style: none outside;
+	margin: 0 0 10px 0;
+	padding: 0;
+	position: relative;
+	background: none;
+}
+input, textarea, select {
+	color: #1d1c1c;;
+	font-size: 14px;
+	font-family: 'PFSquareSansProRegular','Arial', Helvetica;
+}
+
+textarea {
+	resize: none;
+}
+
+label {
+	color: #1d1c1c;
+    display: block;
+    font-size: 14px;
+	font-family: 'PFSquareSansProRegular','Arial', Helvetica;
+    text-align: left;   
+}
+
+.b-field-text, 
+.b-field-textarea, 
+.b-field-select {
+	background: #fff;
+	border:1px solid #cecece;
+	height: 16px;
+	padding: 3px;
+	width: 250px;
+}
+.b-field-textarea {
+	height: 160px;
+}
+
+
+.b-field-error {
+	border:1px solid #ad0000;
+}
+.b-field-success {
+	border:1px solid #21ad00;
+}
+
+.b-popup .b-fields-list__item {
+	margin-bottom: 16px;
+}
+.b-popup .b-field-text {
+	padding: 5px;
+	text-align: center;
+	height: 20px;
+	font-size: 16px;
+	width: 180px;
+}
+.b-popup label {
+	display: block;
+	margin-bottom: 12px;
+	text-align: center;
+}
+
+
+.b-btn-sudmit {
+	background: #f8c300;
+	color: #131211;
+	font-size: 14px;
+	line-height: 18px;
+	height: 32px;
+	padding: 7px 10px;
+	display: inline-block;
+	vertical-align: top;
+	cursor: pointer;	
+}
+a.b-btn-sudmit {
+	text-decoration: none;
+	padding-top: 0;
+	padding-bottom: 0;
+	min-width: 60px;
+	text-align: center;
+	line-height: 32px;
+}
+.b-btn-cancel {
+	background: #ad0000;
+	color: #fff;
+	font-size: 14px;
+	line-height: 18px;
+	height: 32px;
+	padding: 7px 13px;
+	display: inline-block;
+	vertical-align: top;
+	cursor: pointer;	
+}
+
+
+.b-form-login .b-field-text-login {
+	font-family: 'PFSquareSansProBold';
+}
+.b-form-login .b-btn-sudmit {
+	min-width: 100px;
+}
+
+.b-fields-list_lines {
+	margin-top: 12px;
+}
+.b-fields-list_lines label {
+	display: block;
+	float: left;
+	line-height: 20px;
+	width: 240px;
+	text-align: right;
+	margin-right: 16px;
+}
+
+.b-fields-list_lines .b-field-text,
+.b-fields-list_lines .b-field-textarea,
+.b-fields-list_lines .b-field-select {
+	width: 248px;
+}
+
+.b-fields-list_lines .b-btn-set {
+	text-align: right;
+	padding-top: 12px;
+}
+.b-fields-list_lines .b-btn-set input {
+	margin-left:15px; 
+}

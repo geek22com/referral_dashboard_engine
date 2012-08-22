@@ -18,16 +18,10 @@ OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 
 
 @bp.route('/')
+@template('site/ak/index.html')
 def index():
-	news = NewsItem.query.filter(
-		NewsItem.active == True,
-		NewsItem.on_main == True
-	).descending(NewsItem.date).limit(6)
-	return render_template('site/hm/index.html', news=news)
-
-@bp.route('/cpa/')
-def cpa_index():
-	return redirect(url_for('.index'))
+	form = forms.AffiliateRegisterForm()
+	return dict(form=form)
 
 @bp.route('/countdown/email', methods=['POST'])
 def countdown_email():
@@ -39,11 +33,11 @@ def countdown_email():
 		flash(u'Неверный адрес электронной почты', 'danger')
 	return redirect(url_for('.index'))
 
-@bp.route('/advertisers')
+@bp.route('/advertisers/')
 def advertisers():
 	return render_template('site/hm/advertisers.html')
 
-@bp.route('/affiliates')
+@bp.route('/affiliates/')
 def affiliates():
 	return render_template('site/hm/affiliates.html')
 
@@ -123,7 +117,7 @@ def register_advertiser():
 	return render_template('site/hm/register-advertiser.html', form=form)
 			
 
-@bp.route('/register/affiliate', methods=['GET', 'POST'])
+@bp.route('/register/affiliate/', methods=['GET', 'POST'])
 def register_affiliate():
 	if g.user:
 		flash(u'Вы уже зарегистрированы', 'warning')

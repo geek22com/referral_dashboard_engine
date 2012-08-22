@@ -1,0 +1,18 @@
+{% macro field(fld, required_sign=true, label=none) %}
+	{% set css_class = ' '.join([
+		(kwargs.pop('class', '') or kwargs.pop('class_', '')),
+		'b-field-input',
+		'b-field-error' if fld.errors else ''
+	]) %}
+
+	<li class="b-fields-list__item">
+		<label for="{{ fld.id }}">
+			{{ label or fld.label.text }}
+			{% if required_sign and fld.flags.required %}<span class="b-field-required">*</span>{% endif %}
+		</label>
+		{{ fld|formfield(class=css_class, **kwargs) }}
+		{% for error in fld.errors %}
+		<div class="b-field-error-text">{{ error }}</div>
+		{% endfor %}
+	</li>
+{% endmacro %}

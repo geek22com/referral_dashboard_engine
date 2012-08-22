@@ -1,0 +1,56 @@
+.b-logo-box {
+	cursor: default;
+}
+
+.b-bottom .b-menu__item_active a {
+	background: none;
+	color: #F9F1D3;
+}
+
+/* forms.css overrides */
+
+.b-field-error-text {
+	color: #AD0000;
+}
+
+.b-field-required {
+	color: #AD0000;
+}
+
+.b-field-input {
+	background: #fff;
+	border:1px solid #cecece;
+	height: 16px;
+	padding: 3px;
+	width: 250px;
+}
+
+.b-popup .b-field-input {
+	padding: 5px;
+	text-align: center;
+	height: 20px;
+	font-size: 16px;
+	width: 180px;
+}
+
+.b-popup .b-fields-list_lines .b-field-input {
+	text-align: left;
+}
+
+.b-popup .b-fields-list_lines label {
+	width: 120px;
+	margin-bottom: 0;
+	line-height: 30px;
+}
+
+.b-popup.b-popup_register {
+	width: 440px;
+}
+
+.b-fields-list_lines .b-field-input {
+	width: 248px;
+}
+
+.b-fields-list_lines .b-field-error-text {
+	margin-left: 256px;
+}

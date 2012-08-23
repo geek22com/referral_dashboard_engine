@@ -176,6 +176,7 @@ def logout():
 	return redirect(url_for('.index'))
 
 @bp.route('/password/', methods=['GET', 'POST'])
+@template('site/ak/password.html')
 def password():
 	if g.user:
 		return redirect(url_for('.index'))
@@ -188,10 +189,10 @@ def password():
 			rc.users.update(user)
 			tmail.user_restore_password(user, new_password)
 			flash(u'Новый пароль выслан на указанный электронный адрес', 'success')
-			return redirect(url_for('.login'))
+			return redirect(url_for('.index'))
 		else:
 			flash(u'Неверный e-mail', 'error')
-	return render_template('site/hm/password.html', form=form)
+	return dict(form=form)
 
 
 @bp.route('/confirm/<int:id>/<code>')

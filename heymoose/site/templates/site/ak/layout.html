@@ -235,6 +235,7 @@
 						<ul class="b-fields-list">
 							{{ forms.field(g.restore_form.email, type='email', label='Ваш электронный адрес:', required_sign=false) }}
 							{{ forms.field(g.restore_form.captcha, required_sign=false) }}
+							{{ g.restore_form.ch() }}
 							<li class="b-fields-list__item">
 								<input type="submit" class="b-btn-sudmit" value="Выслать новый пароль"/>
 							</li>

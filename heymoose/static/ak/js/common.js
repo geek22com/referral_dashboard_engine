@@ -2,6 +2,11 @@
 // scripts obfuscated by the free online version may call back home.
 //
 $(document).ready(function () {
+	
+	$('.validate2').validateForm2({
+		error: showFieldError,
+		clear: clearFieldError
+	});
 
 	$('.b-carousel_screens').jcarousel({
 		scroll: 1,
@@ -55,11 +60,11 @@ $(document).ready(function () {
 	$('.b-show-popup').fancybox({
 		padding: 0,
 		margin: 0,
-		helpers: {
-			title: null
+		helpers: { title: null },
+		afterShow: function () {
+			this.content.find('input:first').focus();
 		}
 	});
-
 
 	CheckSlideStep('slides');
 
@@ -203,5 +208,19 @@ function CheckSlideStep(slidesAreaId) {
 			prevBtn.show();
 			nextBtn.show();
 		}
+	}
+}
+
+function clearFieldError(field) {
+	field.removeClass('b-field-error');
+	field.closest('.b-field').find('.b-field-error-text').remove();
+}
+
+function showFieldError(field, message) {
+	field.addClass('b-field-error');
+	var fieldWrap = field.closest('.b-field');
+	fieldWrap.find('.b-field-error-text').remove();
+	if (message) {
+		$('<div>').addClass('b-field-error-text').text(message).appendTo(fieldWrap);
 	}
 }

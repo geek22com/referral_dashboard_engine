@@ -9,12 +9,24 @@
 
 /* forms.css overrides */
 
+input[type=checkbox] {
+	vertical-align: middle;
+}
+
 .b-field-error-text {
 	color: #AD0000;
 }
 
 .b-field-required {
 	color: #AD0000;
+}
+
+.b-fields-list_lines .b-field-label-after {
+	display: inline;
+	float: none;
+	text-align: left;
+	margin-right: 0;
+	margin-left: 6px;
 }
 
 .b-field-input {
@@ -33,6 +45,13 @@
 	width: 180px;
 }
 
+.b-field-error {
+    border: 1px solid #AD0000;
+}
+.b-field-success {
+    border: 1px solid #21AD00;
+}
+
 .b-popup .b-fields-list_lines .b-field-input {
 	text-align: left;
 }
@@ -43,7 +62,11 @@
 	line-height: 30px;
 }
 
-.b-popup.b-popup_register {
+.b-popup__content .b-fields-list_lines {
+	text-align: left;
+}
+
+.b-popup.b-popup_login, .b-popup.b-popup_register {
 	width: 440px;
 }
 
@@ -53,4 +76,47 @@
 
 .b-fields-list_lines .b-field-error-text {
 	margin-left: 256px;
+	width: 260px;
+}
+
+.b-popup .b-fields-list_lines .b-field-error-text {
+	margin-left: 136px;
+	width: 260px;
+}
+
+.b-fields-list_lines .b-fields-list__item-nolabel {
+	padding-left: 256px;
+	width: 260px;
+}
+
+.b-popup .b-fields-list_lines .b-fields-list__item-nolabel {
+	padding-left: 136px;
+	width: 260px;
+}
+
+.b-btn-link {
+    display: inline-block;
+    font-size: 14px;
+    height: 32px;
+    line-height: 18px;
+    padding: 7px 10px;
+    vertical-align: top;
+}
+
+.b-login-form-actions {
+	font-size: 12px;
+}
+
+.b-login-form-actions label {
+	font-size: 12px;
+	display: inline;
+}
+
+.b-link-password-restore {
+	margin-left: 40px;
+}
+
+.b-password-restore-help {
+	font-size: 12px;
+	margin-bottom: 16px;
 }

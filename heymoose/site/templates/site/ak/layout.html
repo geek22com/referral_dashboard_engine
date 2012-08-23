@@ -34,7 +34,8 @@
 		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/slides.min.jquery.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.fancybox.pack.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.jcarousel.min.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/common.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/wtvalidate2.js', nocache=nocache()) }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/common.js', nocache=nocache()) }}"></script>
 	</head>
 	<body {% block body_attrs %}{% endblock %}>
 		<div class="b-top-box"> <!-- .b-top -->
@@ -182,12 +183,42 @@
 			<div class="b-popup" id="login">
 				<div class="b-popup__title">Вход в систему</div>
 				<div class="b-popup__content">				
-					<form class="b-form b-form-login" action="{{ url_for('.login') }}" method="post">
+					<form class="b-form" action="{{ url_for('.login') }}" method="post">
 						<ul class="b-fields-list">
-							{{ forms.field(g.login_form.username, type='email', label='По электронной почте:', class='b-field-text-login') }}
-							{{ forms.field(g.login_form.password, type='password', label='Введите свой пароль:') }}
+							{{ forms.field(g.login_form.username, type='email', label='По электронной почте:', required_sign=false) }}
+							{{ forms.field(g.login_form.password, type='password', label='Введите свой пароль:', required_sign=false) }}
+							<li class="b-fields-list__item b-login-form-actions">
+								{{ g.login_form.remember() }}
+								<label for="{{ g.login_form.remember.id }}">запомнить</label>
+								<a href="#restore" class="b-link-password-restore b-show-popup">Забыли пароль?</a>
+							</li>
 							<li class="b-fields-list__item">
 								<input type="submit" class="b-btn-sudmit" value="Войти"/>
+							</li>
+						</ul>
+					</form>
+					<div class="b-cancel-box">
+						или <br />
+						<a href="javascript:$.fancybox.close();" class="b-close-popup">отменить и закрыть</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div style="display: none;">
+			<div class="b-popup" id="restore">
+				<div class="b-popup__title">Новый пароль</div>
+				<div class="b-popup__content">
+					<p class="b-password-restore-help">
+						Пожалуйста, введите адрес электронной почты, с которым вы зарегистрировались.
+						На него будет выслан новый пароль.
+					</p>
+					<form class="b-form validate2" action="{{ url_for('.password') }}" method="post">
+						<ul class="b-fields-list">
+							{{ forms.field(g.restore_form.email, type='email', label='Ваш электронный адрес:', required_sign=false) }}
+							{{ forms.field(g.restore_form.captcha, required_sign=false) }}
+							<li class="b-fields-list__item">
+								<input type="submit" class="b-btn-sudmit" value="Выслать новый пароль"/>
 							</li>
 						</ul>
 					</form>
@@ -203,14 +234,15 @@
 			<div class="b-popup b-popup_register" id="register">
 				<div class="b-popup__title">Регистрация партнёра</div>
 				<div class="b-popup__content">
-					<form class="b-form b-form-register" action="{{ url_for('.register_affiliate') }}" method="post">
+					<form class="b-form b-form-register validate2" method="post"
+					 action="{{ url_for('.register_affiliate') }}">
 						<ul class="b-fields-list b-fields-list_lines">
 							{{ forms.field(form.email, type='email') }}
 							{{ forms.field(form.password) }}
 							{{ forms.field(form.password2) }}
 							{{ forms.field(form.captcha) }}
 							{{ form.ch() }}
-							<li class="b-fields-list__item">
+							<li class="b-fields-list__item b-fields-list__item-nolabel">
 								<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"/>
 							</li>
 						</ul>

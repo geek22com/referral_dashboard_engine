@@ -332,13 +332,13 @@
 		<div class="modal-body">
 			<div class="span4" style="margin-left: 100px;">
 			<fieldset>
-				{{ forms.singlefield_stacked(g.params.loginform.username, class='span4', type='email') }}
-				{{ forms.singlefield_stacked(g.params.loginform.password, class='span4', type='password') }}
+				{{ forms.singlefield_stacked(g.login_form.username, class='span4', type='email') }}
+				{{ forms.singlefield_stacked(g.login_form.password, class='span4', type='password') }}
 				<div class="right">
 					<a href="{{ url_for('.password') }}">Забыли пароль?</a>
 				</div>
 				<div style="margin-top: 20px;">
-					{{ g.params.loginform.remember() }} запомнить меня
+					{{ g.login_form.remember() }} запомнить меня
 					<div class="float-right">
 						<input type="submit" class="btn hey" value="Войти" />
 					</div>

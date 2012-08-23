@@ -83,7 +83,7 @@ def contacts():
 def job():
 	return render_template('site/hm/job.html')
 
-@bp.route('/gateway')
+@bp.route('/gateway/')
 def gateway():
 	if not g.user:
 		return redirect(url_for('.index'))
@@ -95,7 +95,7 @@ def gateway():
 		app.logger.error('Shit happened: registered user has unknown role')
 		return redirect(url_for('.index'))
 
-@bp.route('/register/advertiser', methods=['GET', 'POST'])
+@bp.route('/register/advertiser/', methods=['GET', 'POST'])
 def register_advertiser():
 	if g.user:
 		flash(u'Вы уже зарегистрированы', 'warning')
@@ -148,7 +148,7 @@ def register_affiliate():
 		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
 	return render_template('site/hm/register-affiliate.html', form=form)
 
-@bp.route('/login', methods=['GET', 'POST'])
+@bp.route('/login/', methods=['GET', 'POST'])
 def login():
 	if g.user:
 		return redirect(url_for('.index'))
@@ -165,7 +165,7 @@ def login():
 	return render_template('site/hm/login.html', form=form)
 
 
-@bp.route('/logout')
+@bp.route('/logout/')
 def logout():
 	if g.user:
 		flash(u'Вы вышли из системы', 'info')
@@ -173,7 +173,7 @@ def logout():
 		session.permanent = False
 	return redirect(url_for('.index'))
 
-@bp.route('/password', methods=['GET', 'POST'])
+@bp.route('/password/', methods=['GET', 'POST'])
 def password():
 	if g.user:
 		return redirect(url_for('.index'))

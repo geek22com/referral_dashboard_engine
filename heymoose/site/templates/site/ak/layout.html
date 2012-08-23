@@ -23,6 +23,7 @@
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/components.css') }}" media="screen" />
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/forms.css') }}" media="screen" />
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/jquery.fancybox.css') }}" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/ui.notify.css') }}" media="screen" />
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/override.css') }}" media="screen" />
 		
 		<!--[if lt IE 8 ]>
@@ -31,11 +32,12 @@
 		
 		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery-ui-1.8.22.custom.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.notify.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/slides.min.jquery.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.fancybox.pack.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.jcarousel.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='js/wtvalidate2.js', nocache=nocache()) }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/common.js', nocache=nocache()) }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/common.js', nocache=nocache()) }}"></script>		
 	</head>
 	<body {% block body_attrs %}{% endblock %}>
 		<div class="b-top-box"> <!-- .b-top -->
@@ -133,6 +135,22 @@
 		</div> <!-- /.b-footer -->	
 
 		{% block postbody %}
+		
+		<div id="notify-container" style="display: none;">
+			<div id="notify-basic-template">
+				<a class="ui-notify-cross ui-notify-close" href="#">x</a>
+				<h1>#{title}</h1>
+				<p>#{text}</p>
+			</div>
+		</div>
+		<ul id="notify-messages" style="display: none;">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+			{% for category, message in messages %}
+			<li data-category="{{ category }}">{{ message }}</li>
+			{% endfor %}
+			{% endwith %}
+		</ul>
+				
 		{#<div style="display: none;">
 			<div class="b-popup" id="register">
 				<div class="b-popup__title">Регистрация/вход</div>
@@ -237,11 +255,11 @@
 					<form class="b-form b-form-register validate2" method="post"
 					 action="{{ url_for('.register_affiliate') }}">
 						<ul class="b-fields-list b-fields-list_lines">
-							{{ forms.field(form.email, type='email') }}
-							{{ forms.field(form.password) }}
-							{{ forms.field(form.password2) }}
-							{{ forms.field(form.captcha) }}
-							{{ form.ch() }}
+							{{ forms.field(g.affiliate_form.email, type='email') }}
+							{{ forms.field(g.affiliate_form.password) }}
+							{{ forms.field(g.affiliate_form.password2) }}
+							{{ forms.field(g.affiliate_form.captcha) }}
+							{{ g.affiliate_form.ch() }}
 							<li class="b-fields-list__item b-fields-list__item-nolabel">
 								<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"/>
 							</li>

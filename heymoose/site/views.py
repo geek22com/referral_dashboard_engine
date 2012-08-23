@@ -79,7 +79,7 @@ def contacts():
 		return redirect(url_for('.contacts'))
 	return render_template('site/hm/contacts.html', form=form)
 
-@bp.route('/job')
+@bp.route('/job/')
 def job():
 	return render_template('site/hm/job.html')
 
@@ -120,6 +120,7 @@ def register_advertiser():
 			
 
 @bp.route('/register/affiliate/', methods=['GET', 'POST'])
+@template('site/ak/register-affiliate.html')
 def register_affiliate():
 	if g.user:
 		flash(u'Вы уже зарегистрированы', 'warning')
@@ -146,9 +147,10 @@ def register_affiliate():
 				u' было выслано письмо с подтверждением.', 'success')
 			return redirect(url_for('.gateway'))
 		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
-	return render_template('site/hm/register-affiliate.html', form=form)
+	return dict(form=form)
 
 @bp.route('/login/', methods=['GET', 'POST'])
+@template('site/ak/login.html')
 def login():
 	if g.user:
 		return redirect(url_for('.index'))
@@ -162,7 +164,7 @@ def login():
 			session['user_id'] = user.id
 			session.permanent = form.remember.data
 			return redirect(request.args.get('back', None) or url_for('.gateway'))
-	return render_template('site/hm/login.html', form=form)
+	return dict(form=form)
 
 
 @bp.route('/logout/')

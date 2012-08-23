@@ -84,7 +84,7 @@ input[type=checkbox] {
 	width: 260px;
 }
 
-.b-fields-list_lines .b-fields-list__item-nolabel {
+.b-form .b-fields-list_lines .b-fields-list__item-nolabel {
 	padding-left: 256px;
 	width: 260px;
 }
@@ -92,6 +92,10 @@ input[type=checkbox] {
 .b-popup .b-fields-list_lines .b-fields-list__item-nolabel {
 	padding-left: 136px;
 	width: 260px;
+}
+
+.b-fields-list__item-submit {
+	text-align: center;
 }
 
 .b-btn-link {
@@ -119,4 +123,29 @@ input[type=checkbox] {
 .b-password-restore-help {
 	font-size: 12px;
 	margin-bottom: 16px;
+}
+
+.b-column_arrow {
+	float: left;
+	width: 192px;
+}
+
+.b-column_form {
+    float: left;
+    width: 250px;
+    margin: 0 163px;
+}
+
+.b-partners.b-partners-register {
+	background: none;
+	padding-bottom: 0;
+}
+
+.ui-notify {
+	top: auto;
+	right: auto;
+	bottom: 0;
+	left: 0;
+	margin: 0 0 10px 10px;
+	z-index: 100;
 }

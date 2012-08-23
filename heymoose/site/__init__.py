@@ -8,6 +8,7 @@ blueprint = Blueprint('site', __name__, url_prefix='', static_folder='static', t
 def before_request():
 	g.login_form = forms.LoginForm()
 	g.restore_form = forms.ForgottenPasswordForm()
+	g.affiliate_form = forms.AffiliateRegisterForm()
 
 
 # Import all views in blueprint for registering in app's url map

@@ -1,0 +1,69 @@
+{% extends 'site/ak/layout-inner.html' %}
+
+{% block inner_container %}
+<div class="b-main b-main_partners">
+	<div class="b-partners b-partners-register">
+		<h2 class="b-partners-title">
+			<span class="b-partners-title__text">Регистрация партнёра</span>
+		</h2>
+	</div>
+	<div class="b-columns">
+		<div class="b-column_arrow">
+			<div class="b-red-arrow">
+				<div class="b-red-arrow__top">
+					<i class="b-ico b-ico_money"></i>
+				</div>
+				<div class="b-red-arrow__content">
+					<ul class="b-teasers-list">
+						<li class="b-teasers-list__item">
+							<h4>Реферралы</h4>
+							5% комиссии пожизненно
+						</li>
+						<li class="b-teasers-list__item">
+							<h4>Бонусы</h4>
+							Добавляют вам денег
+						</li>
+					</ul>
+				</div>
+				<div class="b-red-arrow__bottom"></div>
+			</div>
+		</div>
+		<div class="b-column_form">
+			<div class="b-form-register-wrap">
+				<form class="b-form b-form-register validate2" method="post" action="">
+					<ul class="b-fields-list">
+						{{ forms.field(form.email, type='email', required_sign=false) }}
+						{{ forms.field(form.password, required_sign=false) }}
+						{{ forms.field(form.password2, required_sign=false) }}
+						{{ forms.field(form.captcha, required_sign=false) }}
+						{{ form.ch() }}
+						<li class="b-fields-list__item b-fields-list__item-submit">
+							<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"/>
+						</li>
+					</ul>
+				</form>
+			</div>
+		</div>
+		<div class="b-column_arrow">
+			<div class="b-red-arrow">
+				<div class="b-red-arrow__top">
+					<i class="b-ico b-ico_money"></i>
+				</div>
+				<div class="b-red-arrow__content">
+					<ul class="b-teasers-list">
+						<li class="b-teasers-list__item">
+							<h4>Выплаты</h4>
+							Происходят быстро
+						</li>
+						<li class="b-teasers-list__item">
+							<h4>Конкурсы</h4>
+							Не дают расслабляться
+						</li>
+					</ul>
+				</div>
+				<div class="b-red-arrow__bottom"></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

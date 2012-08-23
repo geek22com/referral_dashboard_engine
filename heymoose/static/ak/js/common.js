@@ -1,7 +1,12 @@
-// Unpacker warning: be careful when using myobfuscate.com for your projects:
-// scripts obfuscated by the free online version may call back home.
-//
 $(document).ready(function () {
+	var notifier = $('#notify-container').notify();
+	$('#notify-messages li').each(function() {
+		var category = $(this).data('category');
+		notifier.notify('create', {
+			title: (category == 'danger' || category == 'error' ? 'Ошибка' : 'Информация'),
+			text: $(this).html()
+		});
+	});
 	
 	$('.validate2').validateForm2({
 		error: showFieldError,

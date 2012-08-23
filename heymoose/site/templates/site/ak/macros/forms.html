@@ -1,4 +1,4 @@
-{% macro field(fld, required_sign=true, label=none) %}
+{% macro field(fld, required_sign=false, label=none) %}
 	{% if fld|classname not in ('BooleanField', ) %}
 		{% set css_class = ' '.join([
 			(kwargs.pop('class', '') or kwargs.pop('class_', '')),

@@ -364,3 +364,35 @@
 	</a>
 </div>
 {% endblock %}
+
+{% block postbody %}
+	{{ super() }}
+	{% set confirmed = request.args.get('confirmed') %}
+	{% if confirmed is not none %}
+		{% if confirmed == '1' %}
+			<div style="display: none;">
+				<div class="b-popup b-popup_confirm" id="confirm">
+					<div class="b-popup__title">Подтверждение регистрации в HeyMoose</div>
+					<div class="b-popup__content">
+						<p>
+							Адрес электронной почты подтвержден. Спасибо!
+						</p>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<div style="display: none;">
+				<div class="b-popup b-popup_confirm" id="confirm">
+					<div class="b-popup__title">Подтверждение регистрации в HeyMoose</div>
+					<div class="b-popup__content">
+						<p style="margin-bottom: 20px;">
+							Неверный код подтверждения.
+							Попробуйте выслать письмо с подтверждением повторно из вашего личного кабинета.
+							Если проблема будет повторяться, обратитесь к администрации.
+						</p>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	{% endif %}
+{% endblock %}

@@ -66,8 +66,12 @@ input[type=checkbox] {
 	text-align: left;
 }
 
-.b-popup.b-popup_login, .b-popup.b-popup_register {
+.b-popup.b-popup_login, .b-popup.b-popup_register, .b-popup.b-popup_confirm {
 	width: 440px;
+}
+
+.b-popup.b-popup_confirm .b-cancel-box {
+	margin-top: 20px;
 }
 
 .b-fields-list_lines .b-field-input {

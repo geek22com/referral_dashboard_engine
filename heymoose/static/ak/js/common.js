@@ -8,6 +8,12 @@ $(document).ready(function () {
 		});
 	});
 	
+	$('#confirm').fancybox({
+		padding: 0,
+		margin: 0,
+		helpers: { title: null }
+	}).trigger('click');
+	
 	$('.validate2').validateForm2({
 		error: showFieldError,
 		clear: clearFieldError

@@ -199,12 +199,11 @@ def password():
 @bp.route('/confirm/<int:id>/<code>')
 def confirm(id, code):
 	user = rc.users.get_by_id(id)
-	success = False
 	if user.check_confirm_code(code):
 		rc.users.confirm(user.id)
 		mmail.lists_add_user(user)
-		success = True
-	return render_template('site/hm/confirm.html', success=success)
+		return redirect(url_for('.index', confirmed=1))
+	return redirect(url_for('.index', confirmed=0))
 
 @bp.route('/news/')
 def news_list():	

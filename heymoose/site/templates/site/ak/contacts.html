@@ -1,0 +1,89 @@
+{% extends 'site/ak/layout-inner.html' %}
+
+{% block inner_container %}
+<div class="b-main">
+	<div class="b-partners b-partners-register">
+		<h2 class="b-partners-title">
+			<span class="b-partners-title__text">Связь с нами</span>
+		</h2>
+	</div>
+	<div class="b-pure-content">
+		<div class="b-columns">
+			<div class="b-column_contacts-form">
+				<h1>Напишите нам!</h1>
+				<small>
+					Напишите нам, и в самое ближайшее время наши менеджеры свяжутся с вами.
+					Поля, отмеченные звездочкой (<span class="required">*</span>),
+					обязательны для заполнения.
+				</small>
+				<div class="b-form-contacts-wrap" style="margin-top: 20px;">
+					<form class="b-form b-form-contacts validate2" method="post" action="">
+						<ul class="b-fields-list">
+							{{ forms.field(form.name, required_sign=true) }}
+							{{ forms.field(form.email, type='email', required_sign=true) }}
+							{{ forms.field(form.phone, required_sign=true) }}
+							{{ forms.field(form.desc, rows=4, required_sign=true) }}
+							{{ forms.field(form.captcha, required_sign=true) }}
+							{{ form.ch() }}
+							<li class="b-fields-list__item b-fields-list__item-submit">
+								<input type="submit" class="b-btn-sudmit" value="Отправить"/>
+							</li>
+						</ul>
+					</form>
+				</div>
+			</div>
+			<div class="b-column_contacts-addr">
+				<h1>Служба поддержки</h1>
+				<div class="b-contact-box">
+					<div class="b-contact-box_contact">
+						<a href="mailto:sales@heymoose.com">sales@heymoose.com</a>
+					</div>
+					отдел по работе с рекламодателями
+				</div>
+				<div class="b-contact-box">
+					<div class="b-contact-box_contact">
+						<a href="mailto:affiliate@heymoose.com">affiliate@heymoose.com</a>
+					</div>
+					отдел по работе с партнёрами
+				</div>
+				<div class="b-contact-box">
+					<div class="b-contact-box_contact">
+						<a href="mailto:pr@heymoose.com">pr@heymoose.com</a>
+					</div>
+					по вопросам сотрудничества
+				</div>
+				<div class="b-contact-box">
+					<div class="b-contact-box_contact">
+						<a href="mailto:info@heymoose.com">info@heymoose.com</a>
+					</div>
+					по общим вопросам
+				</div>
+				<div class="b-contact-box b-contact-box__dark">
+					<div class="b-contact-box_contact">
+						+7 (905) 710-19-92
+					</div>
+					телефон для справок
+				</div>
+			</div>
+			<div class="b-column_contacts-addr">
+				<h1>Где мы находимся</h1>
+				<p>
+					С 2011 года компания &laquo;HeyMoose!&raquo; является резидентом
+					<a href="http://inc.hse.ru/" target="_blank">HSE{Inc}</a>, 
+					бизнес-инкубатора НИУ Высшей Школы Экономики.
+				</p>
+				<p>
+					Офис расположен по адресу:
+				</p>
+				<ul>
+					<li>105187, г. Москва, ул. Кирпичная, 33.</li>
+				</ul>
+				<div id="ymaps-map-id_134581628933062253086" style="width: 300px; height: 280px;"></div>
+				<div style="width: 300px; text-align: right;"><a href="http://api.yandex.ru/maps/tools/constructor/?lang=ru-RU" target="_blank" style="color: #1A3DC1; font: 13px Arial,Helvetica,sans-serif;">Создано с помощью инструментов Яндекс.Карт</a></div>
+				<script type="text/javascript">function fid_134581628933062253086(ymaps) {var map = new ymaps.Map("ymaps-map-id_134581628933062253086", {center: [37.7328192609484, 55.77864407950982], zoom: 16, type: "yandex#map"});map.controls.add("zoomControl").add("mapTools").add(new ymaps.control.TypeSelector(["yandex#map", "yandex#satellite", "yandex#hybrid", "yandex#publicMap"]));map.geoObjects.add(new ymaps.Placemark([37.733177, 55.778704], {balloonContent: "HSE{Inc}"}, {preset: "twirl#redDotIcon"}));};</script>
+				<script type="text/javascript" src="http://api-maps.yandex.ru/2.0/?coordorder=longlat&load=package.full&wizard=constructor&lang=ru-RU&onload=fid_134581628933062253086"></script>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

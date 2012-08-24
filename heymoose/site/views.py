@@ -67,7 +67,8 @@ def affiliates_contest():
 	stats = rc.offer_stats.list_affiliate_top(**kwargs)
 	return render_template('site/hm/affiliates-contest.html', stats=stats)
 
-@bp.route('/contacts', methods=['GET', 'POST'])
+@bp.route('/contacts/', methods=['GET', 'POST'])
+@template('site/ak/contacts.html')
 def contacts():
 	form = forms.ContactForm(request.form)
 	if request.method == 'POST' and form.validate():
@@ -77,7 +78,7 @@ def contacts():
 		tmail.admin_feedback_added(contact)
 		flash(u'Спасибо, мы обязательно с вами свяжемся!', 'success')
 		return redirect(url_for('.contacts'))
-	return render_template('site/hm/contacts.html', form=form)
+	return dict(form=form)
 
 @bp.route('/job/')
 def job():
@@ -206,7 +207,7 @@ def confirm(id, code):
 	return redirect(url_for('.index', confirmed=0))
 
 @bp.route('/news/')
-def news_list():	
+def news_list():
 	page = current_page()
 	per_page = 10
 	offset, limit = page_limits(page, per_page)

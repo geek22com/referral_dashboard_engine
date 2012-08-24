@@ -239,7 +239,7 @@ def advertisers_cpa():
 	return render_template('site/hm/advertisers-cpa.html')
 
 @bp.route('/catalog/')
-@template('site/hm/catalog.html')
+@template('site/ak/catalog.html')
 @paginated(OFFERS_PER_PAGE)
 def catalog(**kwargs):
 	form = forms.OfferFilterForm(request.args)

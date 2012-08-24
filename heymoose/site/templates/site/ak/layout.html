@@ -49,13 +49,11 @@
 						</a>					
 					</div>
 					<ul class="b-menu">
-						{% block menu_items %}
-							{{ menu_item('.index', 'Главная') }}
-							{{ menu_item('.affiliates', 'Партнёрам') }}
-							{{ menu_item('.advertisers', 'Рекламодателям') }}
-							{{ menu_item('.contacts', 'Связь с нами') }}
-							{{ menu_item('.catalog', 'Каталог', class='b-menu__item_cat') }}
-						{% endblock %}
+						{{ menu_item('.index', 'Главная') }}
+						{{ menu_item('.affiliates', 'Партнёрам') }}
+						{{ menu_item('.advertisers', 'Рекламодателям') }}
+						{{ menu_item('.contacts', 'Связь с нами') }}
+						{{ menu_item('.catalog', 'Каталог', class='b-menu__item_cat') }}
 					</ul>
 					
 					<div class="b-auth">
@@ -127,7 +125,11 @@
 				<div class="b-bottom__in">
 					<a href="http://artkadabra.ru/" target="_blank" class="b-logo-artkadabra">Artkadabra</a>
 					<ul class="b-menu b-menu_double">
-						{{ self.menu_items() }}
+						{{ menu_item('.index', 'Главная') }}
+						{{ menu_item('.affiliates', 'Партнёрам') }}
+						{{ menu_item('.advertisers', 'Рекламодателям') }}
+						{{ menu_item('.contacts', 'Связь с нами') }}
+						{{ menu_item('.catalog', 'Каталог') }}
 					</ul>
 					<a href="{{ url_for('.index') }}" class="b-link-icon b-logo-bottom">HeyMoose</a>
 				</div>

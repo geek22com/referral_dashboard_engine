@@ -1,0 +1,536 @@
+{% extends 'site/ak/layout-inner.html' %}
+
+{% block inner_container %}
+<div class="b-main b-main_partners"> <!-- .b-main -->
+	<div class="b-filter"> <!-- .b-filter -->
+		<div class="b-filter__in">
+			<div class="b-filter-bg"></div>
+			<ul class="b-filter-list">
+				<li class="b-filter-list__item">
+					<a href="#">Сегмент</a>
+					<div class="b-filter-dropdown b-filter-segment"> <!-- b-filter-segment -->
+						<ul class="b-categories-list"> 
+							<li class="b-categories-list__item">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_wedding"></i><span class="b-link-icon__text">Для<br /> свадьбы</span>
+								</a>
+							</li>
+							<li class="b-categories-list__item">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_pregnant"></i><span class="b-link-icon__text">Для<br /> беременных</span>
+								</a>
+							</li>
+							<li class="b-categories-list__item">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_one_year"></i><span class="b-link-icon__text">Дети<br /> до года</span>
+								</a>
+							</li>						
+							<li class="b-categories-list__item">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_children"></i><span class="b-link-icon__text">Дети<br /> 2&mdash;6 лет</span>
+								</a>
+							</li>
+							<li class="b-categories-list__item">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_woman"></i><span class="b-link-icon__text">Другие товары<br />для женщин</span>
+								</a>
+							</li>
+						</ul>
+					</div> <!-- /.b-filter-segment -->
+				</li>
+				<li class="b-filter-list__item">
+					<a href="#">Категории</a>
+					<div class="b-filter-dropdown b-filter-category"> <!-- .b-filter-category -->
+						<div class="b-category-column">
+							<h2 class="b-category_title"><a href="#">Интернет-магазины</a></h2>
+							<ul class="b-categories-list"> 								
+								<li class="b-categories-list__item"><a href="#">Детские товары</a></li>
+								<li class="b-categories-list__item"><a href="#">Клубы коллективных покупок</a></li>
+								<li class="b-categories-list__item"><a href="#">Книги, электронные книги</a></li>
+								<li class="b-categories-list__item"><a href="#">Красота и здоровье</a></li>
+								<li class="b-categories-list__item"><a href="#">Мебель</a></li>
+								<li class="b-categories-list__item"><a href="#">Мода и аксессуары</a></li>
+								<li class="b-categories-list__item"><a href="#">Нижнее белье</a></li>
+								<li class="b-categories-list__item"><a href="#">Обувь</a></li>
+								<li class="b-categories-list__item"><a href="#">Подарки</a></li>
+								<li class="b-categories-list__item"><a href="#">Продукты питания</a></li>
+								<li class="b-categories-list__item"><a href="#">Спорт и отдых</a></li>
+								<li class="b-categories-list__item"><a href="#">Товары для дома</a></li>
+							</ul>
+						</div>
+						<div class="b-category-column">
+							<h2 class="b-category_title"><a href="#">Cтрахование и финансы</a></h2>
+							<ul class="b-categories-list"> 								
+								<li class="b-categories-list__item"><a href="#">Автострахование</a></li>
+								<li class="b-categories-list__item"><a href="#">Вклады</a></li>
+								<li class="b-categories-list__item"><a href="#">Кредитные карты</a></li>
+								<li class="b-categories-list__item"><a href="#">Потребительские кредиты</a></li>
+							</ul>
+
+							<h2 class="b-category_title"><a href="#">Инфопродукты</a></h2>
+							<ul class="b-categories-list"> 								
+								<li class="b-categories-list__item"><a href="#">курсы, тренинги</a></li>
+								<li class="b-categories-list__item"><a href="#">семинары</a></li>
+
+							</ul>
+						</div>
+						<div class="b-category-column">
+							<h2 class="b-category_title"><a href="#">Компьютеры и электроника</a></h2>
+							<ul class="b-categories-list"> 								
+								<li class="b-categories-list__item"><a href="#">TV и видео</a></li>
+								<li class="b-categories-list__item"><a href="#">Игровые приставки</a></li>
+								<li class="b-categories-list__item"><a href="#">Компьютеры и ноутбуки</a></li>
+								<li class="b-categories-list__item"><a href="#">Мобильные и портативные устройства</a></li>
+								<li class="b-categories-list__item"><a href="#">Фототехника</a></li>								
+							</ul>	
+							<h2 class="b-category_title"><a href="#">Онлайн игры</a></h2>
+							<ul class="b-categories-list"> 								
+								<li class="b-categories-list__item"><a href="#">Браузерные</a></li>
+								<li class="b-categories-list__item"><a href="#">Клиентские</a></li>								
+							</ul>	
+						</div>
+						<div class="b-category-column">
+							<h2 class="b-category_title"><a href="#">Софт</a></h2>
+							<ul class="b-categories-list"> 								
+								<li class="b-categories-list__item"><a href="#">Антивирусное ПО</a></li>
+								<li class="b-categories-list__item"><a href="#">Безопасность</a></li>
+								<li class="b-categories-list__item"><a href="#">Программное обеспечение</a></li>
+								<li class="b-categories-list__item"><a href="#">Файлы и диски</a></li>
+							</ul>	
+							<h2 class="b-category_title"><a href="#">Туризм, путешествия</a></h2>
+							<ul class="b-categories-list"> 								
+								<li class="b-categories-list__item"><a href="#">Бронирование отелей</a></li>
+								<li class="b-categories-list__item"><a href="#">Заказ билетов</a></li>	
+								<li class="b-categories-list__item"><a href="#">Подбор тура</a></li>
+							</ul>	
+						</div>					
+					</div>	<!-- /.b-filter-category -->
+
+				</li>
+				<li class="b-filter-list__item">
+					<a href="#">Регионы</a>
+					<div class="b-filter-dropdown b-filter-region"> <!-- .b-filter-region -->
+
+						<ul class="b-categories-list"> 								
+							<li class="b-categories-list__item">
+								<a href="#" class="b-link-icon"><i class="b-ico b-ico_delete"></i>Россия</a>
+							</li>
+							<li class="b-categories-list__item">
+								<a href="#" class="b-link-icon"><i class="b-ico b-ico_delete"></i>Украина</a>
+							</li>
+							<li class="b-categories-list__item">
+								<a href="#" class="b-link-icon"><i class="b-ico b-ico_delete"></i>Таджикистан</a>
+							</li>
+						</ul>	
+
+						<div class="b-add-region">
+							<a href="#" class="b-link-icon b-show-field"><i class="b-ico b-ico_plus"></i>
+								<span class="b-link-icon__text">Добавить регион</span>
+							</a>
+
+							<div class="b-region-field">
+								<input type="text" name="region" id="regions" placeholder="Поиск"/>										
+								<a href="#" class="b-link-icon b-region-cancel"><i class="b-ico b-ico_delete"></i>Отмена</a>
+							</div>	
+						</div>
+
+					</div> <!-- /.b-filter-region -->	
+				</li>
+				<li class="b-filter-list__item">
+					<a href="#">Оплата</a>
+					<div class="b-filter-dropdown b-filter-pay"> <!-- .b-filter-pay -->
+						<ul class="b-categories-list"> 
+							<li class="b-categories-list__item">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_click"></i><span class="b-link-icon__text">Фиксированная<br /> за клик</span>
+								</a>
+							</li>
+							<li class="b-categories-list__item">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_action"></i><span class="b-link-icon__text">Фиксированная<br /> за действие</span>
+								</a>
+							</li>
+							<li class="b-categories-list__item">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_percent"></i><span class="b-link-icon__text">Процент с заказа<br /> или покупки</span>
+								</a>
+							</li>							
+						</ul>
+					</div> <!-- /.b-filter-pay -->
+				</li>
+				<li class="b-filter-list__item">
+					<a href="#">Сортировка</a>
+					<div class="b-filter-dropdown b-filter-sort"> <!-- .-filter-sort -->
+						<ul class="b-categories-list"> 
+							<li class="b-categories-list__item">
+								<a href="javascript://" class="b-link-icon">
+									По дате добавления
+								</a>
+							</li>
+							<li class="b-categories-list__item">
+								<a href="javascript://" class="b-link-icon">
+									По размеру выплат
+								</a>
+							</li>
+							<li class="b-categories-list__item">
+								<a href="javascript://" class="b-link-icon">
+									По еще какому-то параметру
+								</a>
+							</li>							
+						</ul>
+						<a class="b-filter-exclusive" href="javascript://">Только эксклюзивные</a>
+					</div> <!-- /.b-filter-sort -->
+				</li>
+			</ul>
+			<a class="b-clear-filter" href="javascript://">Сбросить все</a>
+		</div>
+	</div> <!-- .b-filter -->
+
+	<ul class="b-offers-list">
+		<li class="b-offers-list__item b-offers-list__item_exclusive">
+			<ul class="b-categories-list">
+				<li class="b-categories-list__item b-categories-list__item_exclusive"><a href="#">Эксклюзивный оффер!</a></li>
+				<li class="b-categories-list__item">
+					<a href="#">Софт</a>
+					<ul class="b-categories-list b-categories-list_sub"> 								
+						<li class="b-categories-list__item"><a href="#">Антивирусное ПО</a></li>
+						<li class="b-categories-list__item"><a href="#">Безопасность</a></li>
+						<li class="b-categories-list__item"><a href="#">Программное обеспечение</a></li>
+						<li class="b-categories-list__item"><a href="#">Файлы и диски</a></li>
+					</ul>
+				</li>
+
+				<li class="b-categories-list__item">
+					<a href="#">Компьютеры и электроника</a>
+					<ul class="b-categories-list b-categories-list_sub"> 								
+						<li class="b-categories-list__item"><a href="#">TV и видео</a></li>
+						<li class="b-categories-list__item"><a href="#">Игровые приставки</a></li>
+						<li class="b-categories-list__item"><a href="#">Компьютеры и ноутбуки</a></li>
+						<li class="b-categories-list__item"><a href="#">Мобильные и портативные устройства</a></li>
+						<li class="b-categories-list__item"><a href="#">Фототехника</a></li>								
+					</ul>
+				</li>
+			</ul>
+			<a href="#" class="b-offer">
+				<img class="b-offer__img" src="images/content/offer1.png" alt="offer" title="offer" />
+				<span class="b-offer__content">
+					<strong class="b-offer-title">ShopTime - Интернет-магазин одежды и обуви - стильная и модная одежда и обувь</strong>
+					<i class="b-offer-text">Теперь оформить машину в кредит можно быстрее, чем найти место для парковки.
+						Кредит — до 500 000 рублей. Ставка — 18,9%. Срок — до 4 лет. 
+						Позвольте себе автомобиль, которым можно гордиться!</i>
+					<span class="b-offer-regions">
+						<strong>Регион:</strong>
+						Россия
+					</span>
+				</span>
+				<span class="b-offer-pay">
+					<strong class="b-offer-label">6.12%</strong>
+
+					<span class="b-payment-type">
+						<strong>Оплата за:</strong>
+						процент от заказа
+						или покупки
+					</span>
+				</span>
+				<i class="b-offer-hover-corner"></i>
+			</a>
+		</li>
+
+		<li class="b-offers-list__item b-offers-list__item_stock">
+			<ul class="b-categories-list">
+				<li class="b-categories-list__item b-categories-list__item_stock"><a href="#">Действует акция!</a></li>
+
+
+				<li class="b-categories-list__item">
+					<a href="#">Инфопродукты</a>
+					<ul class="b-categories-list b-categories-list_sub"> 
+						<li class="b-categories-list__item"><a href="#">курсы, тренинги</a></li>
+						<li class="b-categories-list__item"><a href="#">семинары</a></li>
+					</ul>
+				</li>
+
+				<li class="b-categories-list__item">
+					<a href="#"> Cтрахование и финансы </a>
+					<ul class="b-categories-list b-categories-list_sub"> 								
+						<li class="b-categories-list__item"><a href="#">Автострахование</a></li>
+						<li class="b-categories-list__item"><a href="#">Вклады</a></li>
+						<li class="b-categories-list__item"><a href="#">Кредитные карты</a></li>
+						<li class="b-categories-list__item"><a href="#">Потребительские кредиты</a></li>
+					</ul>
+				<li class="b-categories-list__item">
+					<a href="#"> Интернет-магазины </a>
+					<ul class="b-categories-list b-categories-list_sub"> 								
+						<li class="b-categories-list__item"><a href="#">Детские товары</a></li>
+						<li class="b-categories-list__item"><a href="#">Клубы коллективных покупок</a></li>
+						<li class="b-categories-list__item"><a href="#">Книги, электронные книги</a></li>
+						<li class="b-categories-list__item"><a href="#">Красота и здоровье</a></li>
+						<li class="b-categories-list__item"><a href="#">Мебель</a></li>
+						<li class="b-categories-list__item"><a href="#">Мода и аксессуары</a></li>
+						<li class="b-categories-list__item"><a href="#">Нижнее белье</a></li>
+						<li class="b-categories-list__item"><a href="#">Обувь</a></li>
+						<li class="b-categories-list__item"><a href="#">Подарки</a></li>
+						<li class="b-categories-list__item"><a href="#">Продукты питания</a></li>
+						<li class="b-categories-list__item"><a href="#">Спорт и отдых</a></li>
+						<li class="b-categories-list__item"><a href="#">Товары для дома</a></li>
+					</ul>
+				</li>
+			</ul>
+			<a href="#" class="b-offer">
+				<img class="b-offer__img" src="images/content/screen1.jpg" alt="offer" title="offer" />
+				<span class="b-offer__content">
+					<strong class="b-offer-title">AppleShop.ru - интернет-магазин продукции Apple </strong>
+					<i class="b-offer-text">Привлечение покупателей, любителей продукции Apple. А таких огромное количество в нашей стране.
+						Наши цены конкурентоспособные и в эти цены уже вложены ваши заработки.</i>
+					<span class="b-offer-regions">
+						<strong>Регион:</strong>
+						Азербайджан, Армения, Белоруссия, Казахстан, 
+						Киргизия, Молдавия, Россия, Таджикистан, Туркмения, Узбекистан, Украина
+					</span>
+				</span>
+				<span class="b-offer-pay">
+					<strong class="b-offer-label">203.19 р.</strong>
+
+					<span class="b-payment-type">
+						<strong>Оплата за:</strong>
+						привлечение клиента,
+						заключившего Договор
+					</span>
+				</span>
+				<i class="b-offer-hover-corner"></i>
+			</a>
+		</li>
+
+
+		<li class="b-offers-list__item">
+			<ul class="b-categories-list">
+
+
+
+				<li class="b-categories-list__item">
+					<a href="#">Инфопродукты</a>
+					<ul class="b-categories-list b-categories-list_sub"> 
+						<li class="b-categories-list__item"><a href="#">курсы, тренинги</a></li>
+						<li class="b-categories-list__item"><a href="#">семинары</a></li>
+					</ul>
+				</li>
+
+				<li class="b-categories-list__item">
+					<a href="#"> Cтрахование и финансы </a>
+					<ul class="b-categories-list b-categories-list_sub"> 								
+						<li class="b-categories-list__item"><a href="#">Автострахование</a></li>
+						<li class="b-categories-list__item"><a href="#">Вклады</a></li>
+						<li class="b-categories-list__item"><a href="#">Кредитные карты</a></li>
+						<li class="b-categories-list__item"><a href="#">Потребительские кредиты</a></li>
+					</ul>
+				<li class="b-categories-list__item">
+					<a href="#"> Интернет-магазины </a>
+					<ul class="b-categories-list b-categories-list_sub"> 								
+						<li class="b-categories-list__item"><a href="#">Детские товары</a></li>
+						<li class="b-categories-list__item"><a href="#">Клубы коллективных покупок</a></li>
+						<li class="b-categories-list__item"><a href="#">Книги, электронные книги</a></li>
+						<li class="b-categories-list__item"><a href="#">Красота и здоровье</a></li>
+						<li class="b-categories-list__item"><a href="#">Мебель</a></li>
+						<li class="b-categories-list__item"><a href="#">Мода и аксессуары</a></li>
+						<li class="b-categories-list__item"><a href="#">Нижнее белье</a></li>
+						<li class="b-categories-list__item"><a href="#">Обувь</a></li>
+						<li class="b-categories-list__item"><a href="#">Подарки</a></li>
+						<li class="b-categories-list__item"><a href="#">Продукты питания</a></li>
+						<li class="b-categories-list__item"><a href="#">Спорт и отдых</a></li>
+						<li class="b-categories-list__item"><a href="#">Товары для дома</a></li>
+					</ul>
+				</li>
+			</ul>
+			<a href="#" class="b-offer">
+				<img class="b-offer__img" src="images/content/screen1.jpg" alt="offer" title="offer" />
+				<span class="b-offer__content">
+					<strong class="b-offer-title">Страница курса аудиокоррекции "Антидепрессант" </strong>
+					<i class="b-offer-text">Хорошие конверсии на женском (здоровье, психология) трафике. Рекомендуется использовать с лендингом.</i>
+					<span class="b-offer-regions">
+						<strong>Регион:</strong>
+						Россия, Таджикистан, Туркмения, Узбекистан, Украина
+					</span>
+				</span>
+				<span class="b-offer-pay">
+					<strong class="b-offer-label">900.19 р.</strong>
+
+					<span class="b-payment-type">
+						<strong>Оплата за:</strong>
+						каждую продажу
+					</span>
+				</span>
+				<i class="b-offer-hover-corner"></i>
+			</a>
+		</li>
+		<li class="b-offers-list__item">
+			<ul class="b-categories-list">
+
+
+
+				<li class="b-categories-list__item">
+					<a href="#">Инфопродукты</a>
+					<ul class="b-categories-list b-categories-list_sub"> 
+						<li class="b-categories-list__item"><a href="#">курсы, тренинги</a></li>
+						<li class="b-categories-list__item"><a href="#">семинары</a></li>
+					</ul>
+				</li>
+
+				<li class="b-categories-list__item">
+					<a href="#"> Cтрахование и финансы </a>
+					<ul class="b-categories-list b-categories-list_sub"> 								
+						<li class="b-categories-list__item"><a href="#">Автострахование</a></li>
+						<li class="b-categories-list__item"><a href="#">Вклады</a></li>
+						<li class="b-categories-list__item"><a href="#">Кредитные карты</a></li>
+						<li class="b-categories-list__item"><a href="#">Потребительские кредиты</a></li>
+					</ul>
+				<li class="b-categories-list__item">
+					<a href="#"> Интернет-магазины </a>
+					<ul class="b-categories-list b-categories-list_sub"> 								
+						<li class="b-categories-list__item"><a href="#">Детские товары</a></li>
+						<li class="b-categories-list__item"><a href="#">Клубы коллективных покупок</a></li>
+						<li class="b-categories-list__item"><a href="#">Книги, электронные книги</a></li>
+						<li class="b-categories-list__item"><a href="#">Красота и здоровье</a></li>
+						<li class="b-categories-list__item"><a href="#">Мебель</a></li>
+						<li class="b-categories-list__item"><a href="#">Мода и аксессуары</a></li>
+						<li class="b-categories-list__item"><a href="#">Нижнее белье</a></li>
+						<li class="b-categories-list__item"><a href="#">Обувь</a></li>
+						<li class="b-categories-list__item"><a href="#">Подарки</a></li>
+						<li class="b-categories-list__item"><a href="#">Продукты питания</a></li>
+						<li class="b-categories-list__item"><a href="#">Спорт и отдых</a></li>
+						<li class="b-categories-list__item"><a href="#">Товары для дома</a></li>
+					</ul>
+				</li>
+			</ul>
+			<a href="#" class="b-offer">
+				<img class="b-offer__img" src="images/content/screen1.jpg" alt="offer" title="offer" />
+				<span class="b-offer__content">
+					<strong class="b-offer-title">Страница курса аудиокоррекции "Антидепрессант" </strong>
+					<i class="b-offer-text">Хорошие конверсии на женском (здоровье, психология) трафике. Рекомендуется использовать с лендингом.</i>
+					<span class="b-offer-regions">
+						<strong>Регион:</strong>
+						Россия, Таджикистан, Туркмения, Узбекистан, Украина
+					</span>
+				</span>
+				<span class="b-offer-pay">
+					<strong class="b-offer-label">900.19 р.</strong>
+
+					<span class="b-payment-type">
+						<strong>Оплата за:</strong>
+						каждую продажу
+					</span>
+				</span>
+				<i class="b-offer-hover-corner"></i>
+			</a>
+		</li>
+		<li class="b-offers-list__item">
+			<ul class="b-categories-list">
+
+
+
+				<li class="b-categories-list__item">
+					<a href="#">Инфопродукты</a>
+					<ul class="b-categories-list b-categories-list_sub"> 
+						<li class="b-categories-list__item"><a href="#">курсы, тренинги</a></li>
+						<li class="b-categories-list__item"><a href="#">семинары</a></li>
+					</ul>
+				</li>
+
+				<li class="b-categories-list__item">
+					<a href="#"> Cтрахование и финансы </a>
+					<ul class="b-categories-list b-categories-list_sub"> 								
+						<li class="b-categories-list__item"><a href="#">Автострахование</a></li>
+						<li class="b-categories-list__item"><a href="#">Вклады</a></li>
+						<li class="b-categories-list__item"><a href="#">Кредитные карты</a></li>
+						<li class="b-categories-list__item"><a href="#">Потребительские кредиты</a></li>
+					</ul>
+				<li class="b-categories-list__item">
+					<a href="#"> Интернет-магазины </a>
+					<ul class="b-categories-list b-categories-list_sub"> 								
+						<li class="b-categories-list__item"><a href="#">Детские товары</a></li>
+						<li class="b-categories-list__item"><a href="#">Клубы коллективных покупок</a></li>
+						<li class="b-categories-list__item"><a href="#">Книги, электронные книги</a></li>
+						<li class="b-categories-list__item"><a href="#">Красота и здоровье</a></li>
+						<li class="b-categories-list__item"><a href="#">Мебель</a></li>
+						<li class="b-categories-list__item"><a href="#">Мода и аксессуары</a></li>
+						<li class="b-categories-list__item"><a href="#">Нижнее белье</a></li>
+						<li class="b-categories-list__item"><a href="#">Обувь</a></li>
+						<li class="b-categories-list__item"><a href="#">Подарки</a></li>
+						<li class="b-categories-list__item"><a href="#">Продукты питания</a></li>
+						<li class="b-categories-list__item"><a href="#">Спорт и отдых</a></li>
+						<li class="b-categories-list__item"><a href="#">Товары для дома</a></li>
+					</ul>
+				</li>
+			</ul>
+			<a href="#" class="b-offer">
+				<img class="b-offer__img" src="images/content/screen1.jpg" alt="offer" title="offer" />
+				<span class="b-offer__content">
+					<strong class="b-offer-title">Страница курса аудиокоррекции "Антидепрессант" </strong>
+					<i class="b-offer-text">Хорошие конверсии на женском (здоровье, психология) трафике. Рекомендуется использовать с лендингом.</i>
+					<span class="b-offer-regions">
+						<strong>Регион:</strong>
+						Россия, Таджикистан, Туркмения, Узбекистан, Украина
+					</span>
+				</span>
+				<span class="b-offer-pay">
+					<strong class="b-offer-label">900.19 р.</strong>
+
+					<span class="b-payment-type">
+						<strong>Оплата за:</strong>
+						каждую продажу
+					</span>
+				</span>
+				<i class="b-offer-hover-corner"></i>
+			</a>
+		</li>
+
+	</ul> 
+	<div  class="b-view-more-offers">
+		<a href="javascript://" class="b-btn-sudmit">Еще</a>
+		<a href="javascript://" class="b-link_pseudo b-link-toggle">Показать страницы</a>					
+	</div>
+	<div class="b-pagination">				
+		<ul class="b-pages">
+			<li class="b-pages__item"><span class="b-arrow-pages">></span></li>
+			<li class="b-pages__item"><a href="#">1</a></li>
+			<li class="b-pages__item"><a href="#">2</a></li>
+			<li class="b-pages__item"><a href="#">3</a></li>
+			<li class="b-pages__item b-pages__item_active"><a href="#">4</a></li>
+			<li class="b-pages__item"><a href="#">5</a></li>
+			<li class="b-pages__item"><a href="#">6</a></li>
+			<li class="b-pages__item"><a href="#">7</a></li>
+			<li class="b-pages__item"><a href="#">8</a></li>
+			<li class="b-pages__item"><a href="#">9</a></li>
+			<li class="b-pages__item"><a href="#">10</a></li>
+			<li class="b-pages__item"><a href="#">11</a></li>
+			<li class="b-pages__item"><a href="#">12</a></li>
+			<li class="b-pages__item"><a href="#">13</a></li>
+			<li class="b-pages__item"><a href="#">14</a></li>
+			<li class="b-pages__item"><a href="#">15</a></li>
+			<li class="b-pages__item"><a href="#">16</a></li>
+			<li class="b-pages__item"><a href="#">17</a></li>
+			<li class="b-pages__item"><a href="#">18</a></li>
+			<li class="b-pages__item"><a href="#">19</a></li>
+			<li class="b-pages__item"><a href="#">20</a></li>
+			<li class="b-pages__item"><a href="#">21</a></li>
+			<li class="b-pages__item"><a href="#">22</a></li>
+			<li class="b-pages__item"><a href="#">23</a></li>
+			<li class="b-pages__item"><a href="#">24</a></li>
+			<li class="b-pages__item"><a href="#">25</a></li>
+			<li class="b-pages__item"><a href="#">26</a></li>
+			<li class="b-pages__item"><a href="#">27</a></li>
+			<li class="b-pages__item"><a href="#">28</a></li>
+			<li class="b-pages__item"><a href="#">29</a></li>
+			<li class="b-pages__item"><a href="#">30</a></li>
+			<li class="b-pages__item"><a href="#">31</a></li>
+			<li class="b-pages__item"><a href="#">32</a></li>
+			<li class="b-pages__item"><a href="#">33</a></li>
+			<li class="b-pages__item"><a href="#">34</a></li>
+			<li class="b-pages__item"><a href="#">35</a></li>
+			<li class="b-pages__item"><a href="#">36</a></li>
+			<li class="b-pages__item"><a href="#">37</a></li>		
+			<li class="b-pages__item"><a href="javascript://" class="b-link_pseudo b-link-toggle">Уберите эти цифры!</a></li>
+		</ul>
+
+	</div>
+
+</div> <!-- /.b-main -->
+{% endblock %}

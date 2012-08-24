@@ -1,0 +1,53 @@
+{% extends 'site/ak/layout-inner.html' %}
+
+{% block inner_container %}
+<div class="b-main">
+	<div class="b-partners b-partners-register">
+		<h2 class="b-partners-title">
+			<span class="b-partners-title__text">Регистрация рекламодателя</span>
+		</h2>
+	</div>
+	<div class="b-columns">
+		<div class="b-column_arrow">
+			<div class="b-red-arrow">
+				<div class="b-red-arrow__top">
+					<i class="b-ico b-ico_money"></i>
+				</div>
+				<div class="b-red-arrow__content">
+					&nbsp;
+				</div>
+				<div class="b-red-arrow__bottom"></div>
+			</div>
+		</div>
+		<div class="b-column_form">
+			<div class="b-form-register-wrap">
+				<form class="b-form b-form-register validate2" method="post" action="">
+					<ul class="b-fields-list">
+						{{ forms.field(form.organization) }}
+						{{ forms.field(form.phone) }}
+						{{ forms.field(form.email, type='email') }}
+						{{ forms.field(form.password) }}
+						{{ forms.field(form.password2) }}
+						{{ forms.field(form.captcha) }}
+						{{ form.ch() }}
+						<li class="b-fields-list__item b-fields-list__item-submit">
+							<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"/>
+						</li>
+					</ul>
+				</form>
+			</div>
+		</div>
+		<div class="b-column_arrow">
+			<div class="b-red-arrow">
+				<div class="b-red-arrow__top">
+					<i class="b-ico b-ico_money"></i>
+				</div>
+				<div class="b-red-arrow__content">
+					&nbsp;
+				</div>
+				<div class="b-red-arrow__bottom"></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

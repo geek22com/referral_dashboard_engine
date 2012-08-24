@@ -96,6 +96,7 @@ def gateway():
 		return redirect(url_for('.index'))
 
 @bp.route('/register/advertiser/', methods=['GET', 'POST'])
+@template('site/ak/register-advertiser.html')
 def register_advertiser():
 	if g.user:
 		flash(u'Вы уже зарегистрированы', 'warning')
@@ -116,7 +117,7 @@ def register_advertiser():
 				u' было выслано письмо с подтверждением.', 'success')
 			return redirect(url_for('.gateway'))
 		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
-	return render_template('site/hm/register-advertiser.html', form=form)
+	return dict(form=form)
 			
 
 @bp.route('/register/affiliate/', methods=['GET', 'POST'])

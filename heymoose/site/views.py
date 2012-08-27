@@ -242,10 +242,11 @@ def advertisers_cpa():
 @template('site/ak/catalog.html')
 @paginated(OFFERS_PER_PAGE)
 def catalog(**kwargs):
-	form = forms.OfferFilterForm(request.args)
+	'''form = forms.OfferFilterForm(request.args)
 	kwargs.update(form.backend_args())
-	offers, count = rc.offers.list(approved=True, active=True, launched=True, showcase=True, **kwargs)
-	return dict(offers=offers, count=count, form=form)
+	offers, count = rc.offers.list(approved=True, active=True, launched=True, showcase=True, **kwargs)'''
+	regions = rc.regions.list()
+	return dict(regions=regions)
 
 @bp.route('/catalog/old')
 def catalog_old():

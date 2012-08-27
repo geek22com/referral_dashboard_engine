@@ -1,5 +1,10 @@
 {% extends 'site/ak/layout-inner.html' %}
 
+{% block extrahead %}
+	{{ super() }}
+	<script type="text/javascript" src="{{ url_for('static', filename='ak/js/catalog.js', nocache=nocache()) }}"></script>
+{% endblock %}
+
 {% block inner_container %}
 <div class="b-main b-main_partners"> <!-- .b-main -->
 	<div class="b-filter"> <!-- .b-filter -->
@@ -115,12 +120,6 @@
 							<li class="b-categories-list__item">
 								<a href="#" class="b-link-icon"><i class="b-ico b-ico_delete"></i>Россия</a>
 							</li>
-							<li class="b-categories-list__item">
-								<a href="#" class="b-link-icon"><i class="b-ico b-ico_delete"></i>Украина</a>
-							</li>
-							<li class="b-categories-list__item">
-								<a href="#" class="b-link-icon"><i class="b-ico b-ico_delete"></i>Таджикистан</a>
-							</li>
 						</ul>	
 
 						<div class="b-add-region">
@@ -131,7 +130,17 @@
 							<div class="b-region-field">
 								<input type="text" name="region" id="regions" placeholder="Поиск"/>										
 								<a href="#" class="b-link-icon b-region-cancel"><i class="b-ico b-ico_delete"></i>Отмена</a>
-							</div>	
+							</div>
+						</div>
+						<div class="b-add-region">
+							<a href="#" class="b-link-icon b-add-csi"><i class="b-ico b-ico_plus"></i>
+								<span class="b-link-icon__text">СНГ</span>
+							</a>
+						</div>
+						<div class="b-add-region">
+							<a href="#" class="b-link-icon b-clear-regions"><i class="b-ico b-ico_delete"></i>
+								<span class="b-link-icon__text">Очистить</span>
+							</a>
 						</div>
 
 					</div> <!-- /.b-filter-region -->	
@@ -533,4 +542,12 @@
 	</div>
 
 </div> <!-- /.b-main -->
+{% endblock %}
+
+{% block postbody %}
+	<ul id="regions-list" style="display: none;">
+		{% for region in regions %}
+		<li data-code="{{ region.country_code }}">{{ region.country_name }}</li>
+		{% endfor %}
+	</ul>
 {% endblock %}

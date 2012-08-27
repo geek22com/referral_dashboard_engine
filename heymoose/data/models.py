@@ -3,7 +3,6 @@ from base import models, types, registry
 from base.fields import Field, FieldList, FieldSet
 from heymoose import app
 from heymoose.utils.gen import generate_password_hash, aes_base16_encrypt, aes_base16_decrypt
-from decimal import Decimal
 from repos import regions_repo
 from datetime import datetime
 import enums

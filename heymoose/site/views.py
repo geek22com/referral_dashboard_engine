@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, redirect, url_for, request, flash, session, abort
-from heymoose import app
+from flask import render_template, g, redirect, url_for, request, flash, session, abort, jsonify
+from heymoose import app, resource as rc
 from heymoose.site import blueprint as bp
 from heymoose.forms import forms
 from heymoose.utils.gen import check_password_hash
 from heymoose.utils.convert import to_unixtime
 from heymoose.utils.pagination import current_page, page_limits, paginate
-from heymoose.views.decorators import template, paginated
+from heymoose.views.decorators import template
 from heymoose.db.models import Contact, NewsItem
 from heymoose.mail import marketing as mmail, transactional as tmail
 from heymoose.data.models import User
 from heymoose.data.enums import Roles
-from heymoose import resource as rc
+from heymoose.data.repos import regions_repo
 from datetime import datetime
 
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
@@ -240,14 +240,36 @@ def advertisers_cpa():
 
 @bp.route('/catalog/')
 @template('site/ak/catalog.html')
-@paginated(OFFERS_PER_PAGE)
 def catalog(**kwargs):
-	'''form = forms.OfferFilterForm(request.args)
-	kwargs.update(form.backend_args())
-	offers, count = rc.offers.list(approved=True, active=True, launched=True, showcase=True, **kwargs)'''
-	regions = rc.regions.list()
+	regions = regions_repo.as_list()
 	return dict(regions=regions)
 
-@bp.route('/catalog/old')
-def catalog_old():
-	return render_template('site/hm/catalog-old.html')
+@bp.route('/catalog/page/')
+def catalog_page():
+	form = forms.CatalogOfferFilterForm(request.args)
+	if form.validate():
+		offers, _ = rc.offers.list(approved=True, active=True, launched=True, showcase=True, **form.backend_args())
+		json_offers = []
+		for offer in offers:
+			json_suboffers = []
+			for suboffer in offer.all_suboffers:
+				json_suboffers.append(dict(
+					title=suboffer.title,
+					value=suboffer.value(affiliate=True, short=True)
+				))
+			json_offers.append(dict(
+				id=offer.id,
+				link=url_for('.catalog_offer', id=offer.id),
+				name=offer.name,
+				short_description=offer.short_description,
+				logo=offer.logo,
+				regions=u', '.join([r.country_name for r in offer.regions_full]),
+				exclusive=offer.exclusive,
+				suboffers=json_suboffers
+			))
+		return jsonify(offers=json_offers)
+	return 'Bad request', 400
+
+@bp.route('/catalog/<int:id>/')
+def catalog_offer(id):
+	return 'OK'

@@ -12,6 +12,61 @@ $(function() {
 		return false;
 	}
 	
+	function UpdateCatalog(page) {
+		$('.b-btn-sudmit').hide();
+		$('.b-wait-indicator').show();
+		
+		var regionCodes = [];
+		$('.b-filter-region .b-categories-list a').each(function() {
+			var region = $(this).text(); 
+			if (region in regionsNameToCodeMap) {
+				regionCodes.push(regionsNameToCodeMap[region])
+			}
+		});
+		
+		var segments = [];
+		$('.b-filter-segment .b-categories-list li.b-active-element').each(function() {
+			segments.push($(this).data('id'));
+		});
+		
+		var paymentTypes = [];
+		$('.b-filter-pay .b-categories-list li.b-active-element').each(function() {
+			paymentTypes.push($(this).data('id'));
+		});
+		
+		$.ajax('/catalog/page/', {
+			type: 'get',
+			dataType: 'json',
+			traditional: true,
+			data: {
+				region: regionCodes,
+				category: segments,
+				payment_type: paymentTypes,
+				offset: (page ? $('.b-offers-list > li').length : 0)
+			}
+		}).success(function(data) {
+			if (!page) {
+				$('.b-offers-list').empty();
+			}
+			if (data.offers.length) {
+				$('#offer-template').tmpl(data.offers).appendTo('.b-offers-list');				
+			} else {
+				$('#notify-container').notify('create', {
+					title: 'Список пуст',
+					text: 'Больше нет офферов, удовлетворяющих запросу'
+				});
+			}
+		}).error(function(jqXHR, textStatus) {
+			$('#notify-container').notify('create', {
+				title: 'Не удается загрузить список',
+				text: 'Ошибка ' + jqXHR.status
+			});
+		}).complete(function() {
+			$('.b-wait-indicator').hide();
+			$('.b-btn-sudmit').show();
+		});
+	}
+	
 	$('#regions-list li').each(function() {
 		var regionCode = $(this).data('code');
 		var regionName = $(this).text();
@@ -69,10 +124,12 @@ $(function() {
 	var csi = ['RU', 'UA', 'BY', 'KZ', 'AM', 'AZ', 'KG', 'MD', 'TJ', 'TM', 'UZ'];
 	$('.b-add-csi').click(function() {
 		$.each(csi, function(i, code) { AddRegion(regionsCodeToNameMap[code]); });
+		UpdateCatalog();
 	});
 	
 	$('.b-clear-regions').click(function() {
 		$('.b-filter-region .b-categories-list').empty();
+		UpdateCatalog();
 	});
 
 	$('.b-region-cancel').click(function () {
@@ -82,6 +139,7 @@ $(function() {
 
 	$('.b-filter-region .b-categories-list__item a').live('click', function () {
 		$(this).parent().remove();
+		UpdateCatalog();
 		return false;
 	});
 
@@ -92,8 +150,19 @@ $(function() {
 			input.val('');
 			$('.b-region-field').hide();
 			$('.b-show-field').show();
+			UpdateCatalog();
 		}
 	});
+	
+	$('.b-categories-list__item a').click(function() {
+		UpdateCatalog();
+	});
+	
+	$('.b-btn-sudmit').click(function() {
+		UpdateCatalog(true);
+	});
+	
+	UpdateCatalog();
 });
 
 $(document).click(function (e) {

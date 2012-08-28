@@ -189,14 +189,4 @@ function CheckFilterItemActive() {
 			$(filter).removeClass('b-active-element');
 		}
 	});
-
-	$('.b-view-more-offers .b-link-toggle').click(function () {
-		$('.b-view-more-offers').hide();
-		$('.b-pagination').show();
-	});
-
-	$('.b-pagination .b-link-toggle').click(function () {
-		$('.b-pagination').hide();
-		$('.b-view-more-offers').show();
-	});
 }

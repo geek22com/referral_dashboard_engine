@@ -34,6 +34,8 @@ $(function() {
 			paymentTypes.push($(this).data('id'));
 		});
 		
+		var exclusive = $('.b-filter-exclusive.b-active-element').length > 0;
+		
 		$.ajax('/catalog/page/', {
 			type: 'get',
 			dataType: 'json',
@@ -42,6 +44,7 @@ $(function() {
 				region: regionCodes,
 				category: segments,
 				payment_type: paymentTypes,
+				exclusive: (exclusive ? 'y' : undefined),
 				offset: (page ? $('.b-offers-list > li').length : 0)
 			}
 		}).success(function(data) {
@@ -63,9 +66,22 @@ $(function() {
 			});
 		}).complete(function() {
 			$('.b-wait-indicator').hide();
-			$('.b-btn-sudmit').show();
+			var hasOffers = $('.b-offers-list > li').length > 0
+			$('.b-btn-sudmit').toggle(hasOffers);
+			$('.b-no-more-offers').toggle(!hasOffers);
 		});
 	}
+	
+	$('.b-filter-list__item').click(function () {
+		if (!$(this).hasClass('b-filter-list__item_active')) {
+			var filterList = $(this).parent();
+			filterList.find('.b-filter-list__item').removeClass('b-filter-list__item_active');
+			$(this).addClass('b-filter-list__item_active');
+			CheckFilterItemActive();
+		}
+	});
+	
+	// REGIONS FILTER STUFF
 	
 	$('#regions-list li').each(function() {
 		var regionCode = $(this).data('code');
@@ -77,45 +93,6 @@ $(function() {
 	
 	$("#regions").autocomplete({ source: regions });
 	
-	$('.b-filter-list__item').click(function () {
-		if (!$(this).hasClass('b-filter-list__item_active')) {
-			var filterList = $(this).parent();
-			filterList.find('.b-filter-list__item').removeClass('b-filter-list__item_active');
-			$(this).addClass('b-filter-list__item_active');
-			CheckFilterItemActive();
-		}
-	});
-
-	$('.b-categories-list__item a').click(function () {
-		$(this).parent().toggleClass('b-active-element');
-		var block = $(this).parents('.b-categories-list');
-		var title = block.prev('.b-category_title');
-
-		if (block.find('.b-categories-list__item').length == block.find('.b-categories-list__item.b-active-element').length) {
-			title.addClass('b-active-element');
-		} else {
-			title.removeClass('b-active-element');
-		}
-	});
-
-	$('.b-filter-exclusive').click(function () {
-		$(this).toggleClass('b-active-element');
-	});
-
-	$('.b-category_title').click(function () {
-		$(this).toggleClass('b-active-element');
-
-		if ($(this).hasClass('b-active-element')) {
-			$(this).next('.b-categories-list').find('.b-categories-list__item').addClass('b-active-element');
-		} else {
-			$(this).next('.b-categories-list').find('.b-categories-list__item').removeClass('b-active-element');
-		}
-	});
-
-	$('.b-clear-filter').click(function () {
-		$('.b-active-element').removeClass('b-active-element');
-	});
-
 	$('.b-show-field').click(function () {
 		$('.b-region-field').show();
 		$(this).hide();
@@ -153,11 +130,41 @@ $(function() {
 			UpdateCatalog();
 		}
 	});
-	
-	$('.b-categories-list__item a').click(function() {
+
+	// SEGMENTS FILTER STUFF
+
+	$('.b-filter-segment a').click(function () {
+		$(this).parent().toggleClass('b-active-element');
 		UpdateCatalog();
 	});
 	
+	// PAY FILTER STUFF
+
+	$('.b-filter-pay a').click(function () {
+		var li = $(this).parent();
+		if (li.hasClass('b-active-element')) {
+			li.removeClass('b-active-element');
+		} else {
+			$(this).closest('.b-categories-list').find('.b-categories-list__item').removeClass('b-active-element');
+			li.addClass('b-active-element');
+		}
+		UpdateCatalog();
+	});
+	
+	$('.b-filter-exclusive').click(function () {
+		$(this).toggleClass('b-active-element');
+		UpdateCatalog();
+	});
+	
+	// OTHER STUFF
+
+	$('.b-clear-filter').click(function () {
+		$('.b-active-element').removeClass('b-active-element');
+		$('.b-filter-region .b-categories-list').empty();
+		AddRegion('Россия');
+		UpdateCatalog();
+	});
+
 	$('.b-btn-sudmit').click(function() {
 		UpdateCatalog(true);
 	});

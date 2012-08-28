@@ -1239,7 +1239,7 @@ body {
     right: 30px;
     top: 8px;
 	text-decoration: none;
-	z-index: 1001;
+	z-index: 1010;
 }
 .b-filter-dropdown {
 	display: none;
@@ -1530,13 +1530,13 @@ body {
 .b-offer__img {
 	float: left;
 	margin-right: 32px;
-	width: 80px;
+	width: 150px;
 }
 .b-offer__content {
 	display: block;
 	float: left;
 	margin-right: 20px;
-	width: 681px;
+	width: 611px;
 }
 .b-offer-title {
 	color:#1c1c1c;

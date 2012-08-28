@@ -11,7 +11,13 @@
 				{{/if}}
 			</ul>
 			<a href="${link}" class="b-offer">
-				<img class="b-offer__img" src="${ logo }" alt="offer" title="offer" />
+				<div class="b-offer__img">
+				{{if logo}}
+					<img src="${logo}" alt="offer" title="offer" />
+				{{else}}
+					&nbsp;
+				{{/if}}
+				</div>
 				<span class="b-offer__content">
 					<strong class="b-offer-title">${name}</strong>
 					<i class="b-offer-text">${short_description}</i>
@@ -19,14 +25,15 @@
 						<strong>Регионы:</strong> ${regions}
 					</span>
 				</span>
-				{{each suboffers}}
 				<span class="b-offer-pay">
 					<strong class="b-offer-label">${value}</strong>
 					<span class="b-payment-type">
 						<strong>Действие:</strong> ${title}
 					</span>
+					{{if more_suboffers}}
+					<span style="display: block;">и другие...</span>
+					{{/if}}
 				</span>
-				{{/each}}
 				<i class="b-offer-hover-corner"></i>
 			</a>
 		</li>
@@ -138,9 +145,11 @@
 
 	<ul class="b-offers-list">
 		
-	</ul> 
-	<div  class="b-view-more-offers">
+	</ul>
+	 
+	<div class="b-view-more-offers">
 		<a href="javascript://" class="b-btn-sudmit">Еще</a>
+		<span class="b-no-more-offers" style="display: none;">Нет офферов, удовлетворяющих запросу.</span>
 		<img src="{{ url_for('static', filename='ak/images/wait-indicator-big.gif') }}"
 		 alt="ожидание" class="b-wait-indicator" style="display: none;" />				
 	</div>

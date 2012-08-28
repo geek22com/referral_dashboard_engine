@@ -909,6 +909,7 @@ class OfferFilterForm(Form):
 
 class CatalogOfferFilterForm(OfferFilterForm):
 	offset = IntegerField(u'', [validators.NumberRange(min=0)], default=0)
+	exclusive = BooleanField(u'')
 	
 	def backend_args(self):
 		args = super(CatalogOfferFilterForm, self).backend_args()

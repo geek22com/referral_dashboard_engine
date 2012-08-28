@@ -251,21 +251,17 @@ def catalog_page():
 		offers, _ = rc.offers.list(approved=True, active=True, launched=True, showcase=True, **form.backend_args())
 		json_offers = []
 		for offer in offers:
-			json_suboffers = []
-			for suboffer in offer.all_suboffers:
-				json_suboffers.append(dict(
-					title=suboffer.title,
-					value=suboffer.value(affiliate=True, short=True)
-				))
 			json_offers.append(dict(
 				id=offer.id,
 				link=url_for('.catalog_offer', id=offer.id),
 				name=offer.name,
 				short_description=offer.short_description,
-				logo=offer.logo,
+				logo=url_for('upload', filename=offer.logo) if offer.logo_filename else None,
+				title=offer.title,
+				value=offer.value(affiliate=True, short=True),
 				regions=u', '.join([r.country_name for r in offer.regions_full]),
 				exclusive=offer.exclusive,
-				suboffers=json_suboffers
+				more_suboffers=bool(offer.active_suboffers)
 			))
 		return jsonify(offers=json_offers)
 	return 'Bad request', 400

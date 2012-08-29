@@ -140,7 +140,7 @@ $(function() {
 	
 	// PAY FILTER STUFF
 
-	$('.b-filter-pay a').click(function () {
+	$('.b-filter-pay .b-categories-list__item a').click(function () {
 		var li = $(this).parent();
 		if (li.hasClass('b-active-element')) {
 			li.removeClass('b-active-element');

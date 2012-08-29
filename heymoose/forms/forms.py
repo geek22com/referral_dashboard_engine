@@ -914,6 +914,7 @@ class CatalogOfferFilterForm(OfferFilterForm):
 	def backend_args(self):
 		args = super(CatalogOfferFilterForm, self).backend_args()
 		args.update(offset=self.offset.data, limit=10)
+		if self.exclusive.data: args.update(exclusive=True)
 		return args
 
 

@@ -298,3 +298,24 @@
 	height: 9px;
 	width: 9px;
 }
+
+.b-ico_best {
+	background-position: -405px 0;
+	height: 72px;
+	width: 57px;
+}
+.b-ico_analyse {
+	background-position: -405px -90px;
+	height: 51px;
+	width: 61px;
+}
+.b-ico_stat {
+	background-position: -405px -167px;
+	height: 59px;
+	width: 82px;
+}
+.b-ico_support {
+	background-position: -405px -243px;
+	height: 68px;
+	width: 75px;
+}

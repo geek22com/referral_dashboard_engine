@@ -38,8 +38,9 @@ def countdown_email():
 	return redirect(url_for('.index'))
 
 @bp.route('/advertisers/')
+@template('site/ak/advertisers.html')
 def advertisers():
-	return render_template('site/hm/advertisers.html')
+	return dict(form=forms.AdvertiserRegisterForm())
 
 @bp.route('/affiliates/')
 @template('site/ak/affiliates.html')
@@ -237,10 +238,6 @@ def special(name):
 		return render_template('site/hm/special-{0}.html'.format(name))
 	except:
 		abort(404)
-
-@bp.route('/advertisers/cpa')
-def advertisers_cpa():
-	return render_template('site/hm/advertisers-cpa.html')
 
 @bp.route('/catalog/')
 @template('site/ak/catalog.html')

@@ -1,0 +1,78 @@
+{% extends 'site/ak/layout-inner.html' %}
+
+{% block title %}Рекламодателям{% endblock %}
+
+{% block inner_container %}
+<div class="b-main b-main_advertisers"> <!-- .b-main -->
+	<div class="b-advertisers"> <!-- .b-advertisers -->
+		<h2 class="b-advertisers-title">
+			<span class="b-advertisers-title__text">Рекламодателям</span>
+		</h2>
+		
+		<div class="b-promo-woman">
+			<h3 class="b-woman-count">
+				> <strong class="b-woman-count__value">3 000 000 000 </strong> женщин
+			</h3>
+			<div class="b-woman-army">
+				<h4 class="b-woman-army__text">во всём мире ежедневно заходит в интернет на наши сайты</h4>
+				<hr class="b-line-first"/>
+				<hr class="b-line-second"/>
+			</div>
+		</div>
+		
+		<div class="b-scheme">
+			<ul class="b-scheme-steps">
+				<li class="b-scheme-steps__item b-step1">
+					<strong>Мы знаем</strong>
+					рынок женских товаров так,
+					как не знают его даже<br /> сами женщины
+				</li>
+				<li class="b-scheme-steps__item b-step2">
+					<strong>У нас есть</strong>
+					инновационная технологическая платформа
+				</li>
+				<li class="b-scheme-steps__item b-step3">
+					<strong>Результат &mdash;</strong>
+					увеличение продаж вашего <br />
+					женского ассортимента<br />
+					товаров или услуг
+				</li>
+			</ul>
+		</div>
+		
+		<hr class="b-line-stripes" />
+		
+		<ul class="b-adv-teasers">
+			<li class="b-adv-teaser-box">
+				<i class="b-ico b-ico_best"></i>
+				<h3 class="b-adv-tease-title">Только лучшее</h3>
+				<span class="b-adv-tease-desc">Только топовые магазины, товары и&nbsp;услуги</span>
+			</li>
+			<li class="b-adv-teaser-box">
+				<i class="b-ico b-ico_analyse"></i>
+				<h3 class="b-adv-tease-title">Аналитика</h3>
+				<span class="b-adv-tease-desc">Углубленный и детальный анализ рынка</span>
+			</li>
+			<li class="b-adv-teaser-box">
+				<i class="b-ico b-ico_stat"></i>
+				<h3 class="b-adv-tease-title">Статистика</h3>
+				<span class="b-adv-tease-desc">Уникальная система отслеживания ваших продаж</span>
+			</li>
+			<li class="b-adv-teaser-box">
+				<i class="b-ico b-ico_support"></i>
+				<h3 class="b-adv-tease-title">Поддержка</h3>
+				<span class="b-adv-tease-desc">Мы предоставим вам личного менеджера</span>
+			</li>
+		</ul>	
+		
+		<a href="{{ url_for('.register_advertiser') }}" class="b-start-now-line">
+			<i class="b-tl-s"></i>
+			<i class="b-tl-b"></i>
+			<span class="b-start-now-line__text">Начните эффективно продавать прямо сейчас!</span>
+			<i class="b-tr-s"></i>
+			<i class="b-tr-b"></i>
+		</a>
+		
+	</div> <!-- /.b-advertisers -->
+</div> <!-- /.b-main -->
+{% endblock %}

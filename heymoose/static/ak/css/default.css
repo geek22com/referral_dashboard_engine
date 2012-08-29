@@ -42,6 +42,28 @@ input, textarea {
 
 }
 
+@font-face {
+    font-family: 'PFSquareSansProThin';
+    src: url('fonts/pfsquaresanspro-thin-webfont.eot');
+    src: url('fonts/pfsquaresanspro-thin-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/pfsquaresanspro-thin-webfont.woff') format('woff'),
+         url('fonts/pfsquaresanspro-thin-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'PFSquareSansProXBlack';
+    src: url('fonts/pfsquaresanspro-xblack-webfont.eot');
+    src: url('fonts/pfsquaresanspro-xblack-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/pfsquaresanspro-xblack-webfont.woff') format('woff'),
+         url('fonts/pfsquaresanspro-xblack-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 /* fonts end*/
 
 

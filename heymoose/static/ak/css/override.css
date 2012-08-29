@@ -1,3 +1,10 @@
+.right { text-align: right; }
+.center { text-align: center; }
+
+.b-leader-table_col2 {
+	width: 100px;
+}
+
 .b-logo-box {
 	cursor: default;
 }

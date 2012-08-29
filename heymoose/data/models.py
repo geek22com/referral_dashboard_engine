@@ -444,4 +444,11 @@ class ApiError(IdentifiableModel):
 	stack_trace = Field(types.String, 'stack-trace')
 
 
+class AffiliateTopEntry(models.ModelBase):
+	id = Field(types.Integer, 'id')
+	email = Field(types.String, 'email')
+	amount = Field(types.Decimal, 'amount')
+	conversion_rate = Field(types.Decimal, 'conversion_rate')
+
+
 registry.register_models_from_module(__name__)

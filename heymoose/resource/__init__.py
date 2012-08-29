@@ -8,6 +8,7 @@ from category import CategoryResource
 from region import RegionResource
 from action import ActionResource
 from error import ErrorResource
+from public import PublicResource
 
 users = UserResource()
 accounts = AccountResource()
@@ -19,3 +20,4 @@ categories = CategoryResource()
 regions = RegionResource()
 actions = ActionResource()
 errors = ErrorResource()
+pub = PublicResource()

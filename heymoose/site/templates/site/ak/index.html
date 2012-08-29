@@ -1,5 +1,7 @@
 {% extends 'site/ak/layout.html' %}
 
+{% block fulltitle %}HeyMoose! &mdash; партнёрская сеть{% endblock %}
+
 {% block body_attrs %}class="b-page_home"{% endblock %}
 
 {% block container %}
@@ -121,133 +123,54 @@
 			<div class="b-main-columns">
 				<div class="b-column_side b-column_side_left">
 					<div class="b-column_side_left__in">
-					<h2>Конкурсы:</h2>
+					<h2>Наши партнёры:</h2>
 					<ul class="b-contest-accordion">
 						<li class="b-contest-accordion__item">							
-							<a href="#" class="b-link-icon b-contest-accordion-head">
+							<a href="{{ url_for('.affiliates') }}" class="b-link-icon b-contest-accordion-head">
 								<i class="b-ico b-ico_web-master"></i>
-								<span class="b-contest-accordion-head__text">Соревнование веб-мастеров</span>
+								<span class="b-contest-accordion-head__text">Лидеры по заработку</span>
 								<i class="b-ico b-ico-rarr"></i>
 							</a>
 							<div class="b-contest-accordion-content">
 								<table class="b-leader-table">
 									<tbody>
 										<tr>
-											<th class="b-leader-table_col1">ID#</th>
-											<th class="b-leader-table_col2">Лидер</th>
-											<th class="b-leader-table_col3">Доход</th>
+											<th class="b-leader-table_col1 center">Место</th>
+											<th class="b-leader-table_col2">ID</th>
+											<th class="b-leader-table_col3 right">Доход</th>
 										</tr>
+										{% for entry in top_withdrawals %}
 										<tr>
-											<td>4333546</td>
-											<td>HelloWorld</td>
-											<td>1 231 231р.</td>
+											<td class="center">{{ loop.index }}</td>
+											<td>{{ entry.id }}</td>
+											<td class="right">{{ entry.amount|currency }}</td>
 										</tr>
-										<tr>
-											<td>4112546</td>
-											<td>Oxixixi</td>
-											<td>531 231р.</td>
-										</tr>
-										<tr>
-											<td>8946</td>
-											<td>AnnyHoll</td>
-											<td>231 261р.</td>
-										</tr>
-										<tr>
-											<td>8955546</td>
-											<td>Anny----Holl</td>
-											<td>231 261р.</td>
-										</tr>
-										<tr>
-											<td>80846</td>
-											<td>Sonne</td>
-											<td>1 231 231р.</td>
-										</tr>
+										{% endfor %}
 									</tbody>
 								</table>
 							</div>
 						</li>
 						<li class="b-contest-accordion__item">							
-							<a href="#" class="b-link-icon b-contest-accordion-head">
+							<a href="{{ url_for('.affiliates') }}" class="b-link-icon b-contest-accordion-head">
 								<i class="b-ico b-ico_ref-top"></i>
-								<span class="b-contest-accordion-head__text">Борьба за топ реферралов</span>
+								<span class="b-contest-accordion-head__text">Лидеры по конверсии</span>
 								<i class="b-ico b-ico-rarr"></i>
 							</a>
 							<div class="b-contest-accordion-content">
 								<table class="b-leader-table">
 									<tbody>
 										<tr>
-											<th class="b-leader-table_col1">ID#</th>
-											<th class="b-leader-table_col2">Лидер</th>
-											<th class="b-leader-table_col3">Доход</th>
+											<th class="b-leader-table_col1 center">Место</th>
+											<th class="b-leader-table_col2">ID</th>
+											<th class="b-leader-table_col3 right">Конверсия</th>
 										</tr>
+										{% for entry in top_conversion %}
 										<tr>
-											<td>4333546</td>
-											<td>HelloWorld</td>
-											<td>1 231 231р.</td>
+											<td class="center">{{ loop.index }}</td>
+											<td>{{ entry.id }}</td>
+											<td class="right">{{ entry.conversion_rate|percent }}</td>
 										</tr>
-										<tr>
-											<td>4112546</td>
-											<td>Oxixixi</td>
-											<td>531 231р.</td>
-										</tr>
-										<tr>
-											<td>8946</td>
-											<td>AnnyHoll</td>
-											<td>231 261р.</td>
-										</tr>
-										<tr>
-											<td>8955546</td>
-											<td>Anny----Holl</td>
-											<td>231 261р.</td>
-										</tr>
-										<tr>
-											<td>80846</td>
-											<td>Sonne</td>
-											<td>1 231 231р.</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</li>
-						<li class="b-contest-accordion__item">							
-							<a href="#" class="b-link-icon b-contest-accordion-head">
-								<i class="b-ico b-ico_bloggers"></i>
-								<span class="b-contest-accordion-head__text">Гонка мастистых блоггеров</span>
-								<i class="b-ico b-ico-rarr"></i>
-							</a>
-							<div class="b-contest-accordion-content">
-								<table class="b-leader-table">
-									<tbody>
-										<tr>
-											<th class="b-leader-table_col1">ID#</th>
-											<th class="b-leader-table_col2">Лидер</th>
-											<th class="b-leader-table_col3">Доход</th>
-										</tr>
-										<tr>
-											<td>4333546</td>
-											<td>HelloWorld</td>
-											<td>1 231 231р.</td>
-										</tr>
-										<tr>
-											<td>4112546</td>
-											<td>Oxixixi</td>
-											<td>531 231р.</td>
-										</tr>
-										<tr>
-											<td>8946</td>
-											<td>AnnyHoll</td>
-											<td>231 261р.</td>
-										</tr>
-										<tr>
-											<td>8955546</td>
-											<td>Anny----Holl</td>
-											<td>231 261р.</td>
-										</tr>
-										<tr>
-											<td>80846</td>
-											<td>Sonne</td>
-											<td>1 231 231р.</td>
-										</tr>
+										{% endfor %}
 									</tbody>
 								</table>
 							</div>
@@ -308,9 +231,8 @@
 					<div class="b-column_side_right__in">
 						<div class="b-more-offers-box">
 							<a class="b-link-icon b-more-offers" href="{{ url_for('.catalog') }}">
-								<strong>И ещё 903</strong> эксклюзивных
-								предложения от топовых
-								магазинов-партнёров
+								<strong>И ещё {{ offer_count }}</strong> эксклюзивных
+								предложений от топовых рекламодателей
 								<i class="b-ico b-ico-rarr"></i>
 							</a>
 						</div>		

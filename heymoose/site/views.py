@@ -20,8 +20,12 @@ OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 @bp.route('/')
 @template('site/ak/index.html')
 def index():
-	form = forms.AffiliateRegisterForm()
-	return dict(form=form)
+	return dict(
+		form=forms.AffiliateRegisterForm(),
+		offer_count=rc.pub.offer_count(),
+		top_withdrawals=rc.pub.top_withdrawals(),
+		top_conversion=rc.pub.top_conversion()
+	)
 
 @bp.route('/countdown/email', methods=['POST'])
 def countdown_email():

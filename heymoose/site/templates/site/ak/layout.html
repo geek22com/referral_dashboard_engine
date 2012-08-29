@@ -10,7 +10,11 @@
 	{% endmacro %}
 	<head>
 
-		<title>HeyMoose</title>	
+		<title>
+			{% block fulltitle %}
+				{% block title %}Партнёрская сеть{% endblock %} &mdash; HeyMoose!
+			{% endblock %}
+		</title>	
 		<meta charset="utf-8" />
 		
 		{% with icon_url = url_for('static', filename='./img/favicon.ico') %}

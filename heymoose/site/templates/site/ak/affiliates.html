@@ -144,36 +144,13 @@
 			<div class="b-carousel b-carousel_landings">
 				<div class="b-carousel__content">
 					<ul class="b-screens-list">
+						{% for i in range(1, 7) %}
 						<li class="b-screens-list__item">
-							<a href="{{ url_for('static', filename='ak/images/landings/01.jpg') }}">
-								<img src="{{ url_for('static', filename='ak/images/landings/01_thumb.jpg') }}" alt="" title="Landing" />
+							<a href="{{ url_for('static', filename='ak/images/landings/0{0}.jpg'.format(i)) }}">
+								<img src="{{ url_for('static', filename='ak/images/landings/0{0}_thumb.jpg'.format(i)) }}" alt="" title="Landing" />
 							</a>
 						</li>
-						<li class="b-screens-list__item">
-							<a href="{{ url_for('static', filename='ak/images/landings/02.jpg') }}">
-								<img src="{{ url_for('static', filename='ak/images/landings/02_thumb.jpg') }}" alt="" title="Landing" />
-							</a>
-						</li>
-						<li class="b-screens-list__item">
-							<a href="{{ url_for('static', filename='ak/images/landings/03.jpg') }}">
-								<img src="{{ url_for('static', filename='ak/images/landings/03_thumb.jpg') }}" alt="" title="Landing" />
-							</a>
-						</li>
-						<li class="b-screens-list__item">
-							<a href="{{ url_for('static', filename='ak/images/landings/04.jpg') }}">
-								<img src="{{ url_for('static', filename='ak/images/landings/04_thumb.jpg') }}" alt="" title="Landing" />
-							</a>
-						</li>
-						<li class="b-screens-list__item">
-							<a href="{{ url_for('static', filename='ak/images/landings/05.jpg') }}">
-								<img src="{{ url_for('static', filename='ak/images/landings/05_thumb.jpg') }}" alt="" title="Landing" />
-							</a>
-						</li>
-						<li class="b-screens-list__item">
-							<a href="{{ url_for('static', filename='ak/images/landings/06.jpg') }}">
-								<img src="{{ url_for('static', filename='ak/images/landings/06_thumb.jpg') }}" alt="" title="Landing" />
-							</a>
-						</li>
+						{% endfor %}
 					</ul>
 				</div>
 			</div>

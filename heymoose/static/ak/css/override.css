@@ -195,3 +195,7 @@ textarea.b-field-input {
 	font-weight: 700;
 	color: #F9F1D3;
 }
+
+.b-offer-label {
+	overflow: hidden;
+}

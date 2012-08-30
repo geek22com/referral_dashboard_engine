@@ -84,6 +84,7 @@ MONGOALCHEMY_DATABASE = 'heymoose'
 
 # Business logic parameters
 CURRENCY_SIGN = u'руб.'
+WOMEN_CATEGORIES = (43, 44, 45, 46, 47)
 
 # Robokassa parameters
 ROBOKASSA_REQUEST_URL = 'https://merchant.roboxchange.com/Index.aspx' #'http://test.robokassa.ru/Index.aspx'

@@ -267,6 +267,8 @@ class Offer(SubOffer):
 	grant = Field('OfferGrant', 'grant')
 	
 	_logos_dir = app.config.get('OFFER_LOGOS_DIR')
+	_women_categories_ids = app.config.get('WOMEN_CATEGORIES')
+	_women_categories_css = ['wedding', 'pregnant', 'one_year', 'children', 'woman']
 	
 	@property
 	def all_suboffers(self):
@@ -280,6 +282,19 @@ class Offer(SubOffer):
 	def categories_ids(self):
 		return [category.id for category in self.categories]
 	
+	@property
+	def women_categories(self):
+		result = []
+		for category in self.categories:
+			if category.id in self._women_categories_ids:
+				category.css_class = self._women_categories_css[self._women_categories_ids.index(category.id)]
+				result.append(category)
+		return result
+	
+	@property
+	def not_women_categories(self):
+		return [category for category in self.categories if category not in self.women_categories]
+
 	@property
 	def logo(self):
 		return os.path.join(self._logos_dir, self.logo_filename) if self.logo_filename else None
@@ -381,6 +396,7 @@ class Banner(IdentifiableModel):
 
 class Category(IdentifiableModel):
 	name = Field(types.String, 'name')
+	grouping_id = Field(types.Integer, 'grouping/@id')
 	grouping = Field(types.String, 'grouping')
 
 

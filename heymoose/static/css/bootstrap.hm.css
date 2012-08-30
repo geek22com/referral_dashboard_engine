@@ -264,3 +264,12 @@ form.validate2 .clearfix.error .errors .help-block {
 	margin-bottom: 0;
 	margin-top: 5px;
 }
+
+.segments {
+	background-color: #46A546; /* #5B5B5B; */
+	border-radius: 5px;
+	padding: 5px;
+	margin-bottom: 5px;
+	text-align: center;
+	color: #FFF;
+}

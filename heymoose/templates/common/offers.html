@@ -152,8 +152,21 @@
 				<td {{ rowspan }}>
 					{% if offer.categories %}
 					<div class="collapse-container">
+						{% with women_categories = offer.women_categories %}
+						{% if women_categories %}
+						<div class="segments">
+							<div class="segments-title">
+								<strong>Товары для женщин</strong>
+							</div>
+							{% for category in women_categories %}							
+							<i class="b-ico b-ico_cat_{{ category.css_class -}}"
+							 title="{{ category.name }}"></i>
+							{% endfor %}
+						</div>
+						{% endif %}
+						{% endwith %}
 						<ul class="toplevel-list toplevel-list--no-bottom-margin">
-							{% for group in offer.categories|groupby('grouping') %}
+							{% for group in offer.not_women_categories|groupby('grouping') %}
 							<li>
 								{{ group.grouper }}
 								<ul class="dashed-list">

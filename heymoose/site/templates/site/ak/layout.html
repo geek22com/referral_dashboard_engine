@@ -44,6 +44,67 @@
 		<script type="text/javascript" src="{{ url_for('static', filename='js/wtvalidate2.js', nocache=nocache()) }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/common.js', nocache=nocache()) }}"></script>
 		
+		{# Google Analytics #}
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-26051749-1']);
+			_gaq.push(['_setDomainName', 'heymoose.com']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script');
+				ga.type = 'text/javascript';
+				ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+		<script type="text/javascript">
+			// record the event
+			function record_ga(link, category, action, label) {
+				try {
+					_gaq.push(['_trackEvent', category, action, label]);
+					setTimeout('document.location = "' + link + '"', 100);
+
+				} catch(err) {
+				}
+			}
+
+			// add google analytics to all links with http
+			function add_ga() {
+				$("a[href^='http']").each(function() {
+					var href = $(this).attr('href');
+					var exp = /:\/\/(.[^\/]+)/;
+					// make sure not to record links to same domain if they contain http unless data-ga attr is there
+					if (!href.match(document.domain) || (href.match(document.domain) && $(this).attr('data-ga'))) {
+
+						if ( matches = exp.exec(href)) {
+							var domain = matches[1];
+
+							if ($(this).attr('data-aud')) {
+								$(this).click(function() {
+									record_ga(href, "Outbound Traffic - " + $(this).attr('data-aud'), domain, href);
+
+									return false;
+								});
+							} else {
+								$(this).click(function() {
+									record_ga(href, "Outbound Traffic", domain, href);
+									return false;
+								});
+							}
+						}
+					}
+				});
+			}
+
+			// add google analytics event tracking to outbound links when document is ready
+			$(document).ready(function() {
+				add_ga();
+			});
+		</script>
+		
 		{% block extrahead %}{% endblock %}		
 	</head>
 	<body {% block body_attrs %}{% endblock %}>
@@ -159,52 +220,6 @@
 			{% endfor %}
 			{% endwith %}
 		</ul>
-				
-		{#<div style="display: none;">
-			<div class="b-popup" id="register">
-				<div class="b-popup__title">Регистрация/вход</div>
-				<div class="b-popup__content">
-					Через социальную сеть:
-					<ul class="b-social-auth">
-						<li class="b-social-auth__item">
-							<a href="#" class="b-link-icon" title="Авторизоваться через Google">
-								<i class="b-ico b-ico_google_auth"></i>
-							</a>
-						</li>
-						<li class="b-social-auth__item">
-							<a href="#" class="b-link-icon" title="Авторизоваться через Facebook">
-								<i class="b-ico b-ico_fb_auth"></i>
-							</a>
-						</li>
-						<li class="b-social-auth__item">
-							<a href="#" class="b-link-icon" title="Авторизоваться через Twitter">
-								<i class="b-ico b-ico_tw_auth"></i>
-							</a>
-						</li>
-						<li class="b-social-auth__item">
-							<a href="#" class="b-link-icon" title="Авторизоваться через Mail.ru">
-								<i class="b-ico b-ico_mailru_auth"></i>
-							</a>
-						</li>
-					</ul>
-					<form class="b-form" action="#" method="post">
-						<ul class="b-fields-list">
-							<li class="b-fields-list__item">
-								<label for="fEmail">или по электронной почте</label>
-								<input type="text" class="b-field-text" id="fEmail" name="fEmail" />
-							</li>
-							<li class="b-fields-list__item">
-								<input type="submit" class="b-btn-sudmit" value="Продолжить"/>
-							</li>
-						</ul>
-					</form>
-					<div class="b-cancel-box">
-						или <br />
-						<a href="javascript:$.fancybox.close();" class="b-close-popup">отменить и закрыть</a>
-					</div>
-				</div>
-			</div>
-		</div>#}
 		
 		<div style="display: none;">
 			<div class="b-popup" id="login">
@@ -271,7 +286,8 @@
 							{{ forms.field(g.affiliate_form.captcha) }}
 							{{ g.affiliate_form.ch() }}
 							<li class="b-fields-list__item b-fields-list__item-nolabel">
-								<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"/>
+								<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"
+								 onClick="_gaq.push(['_trackEvent', 'aff_reg', 'site', 'cabinet',, false]);"/>
 							</li>
 						</ul>
 					</form>
@@ -283,5 +299,21 @@
 			</div>
 		</div>
 		{% endblock %}
+		
+		{# Google Remarketing #}
+		<script type="text/javascript">
+			/* <![CDATA[ */
+			var google_conversion_id = 1007747337;
+			var google_conversion_label = "T5hWCPevowQQiYLE4AM";
+			var google_custom_params = window.google_tag_params;
+			var google_remarketing_only = true;
+			/* ]]> */
+		</script>
+		<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>
+		<noscript>
+			<div style="display:inline;">
+				<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1007747337/?value=0&amp;label=T5hWCPevowQQiYLE4AM&amp;guid=ON&amp;script=0"/>
+			</div>
+		</noscript>
 	</body>
 </html>

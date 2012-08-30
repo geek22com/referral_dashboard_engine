@@ -40,7 +40,8 @@
 						{{ forms.field(form.captcha, required_sign=false) }}
 						{{ form.ch() }}
 						<li class="b-fields-list__item b-fields-list__item-submit">
-							<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"/>
+							<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"
+							 onClick="_gaq.push(['_trackEvent', 'aff_reg', 'site', 'cabinet',, false]);" />
 						</li>
 					</ul>
 				</form>

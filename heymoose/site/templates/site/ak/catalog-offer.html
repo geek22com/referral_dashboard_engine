@@ -42,6 +42,7 @@
 			</div>
 			<div class="b-shop-categories">
 				<h3>Категории</h3>
+				{% if offer.not_women_categories %}
 				{% for group in offer.not_women_categories|groupby('grouping') %}
 				<div class="b-category-column">
 					<h2 class="b-category_title">{{ group.grouper }}</h2>
@@ -52,6 +53,9 @@
 					</ul>
 				</div>
 				{% endfor %}
+				{% else %}
+				(не указаны)
+				{% endif %}
 			</div>
 			
 		</div> <!-- /.b-column_shop_left -->

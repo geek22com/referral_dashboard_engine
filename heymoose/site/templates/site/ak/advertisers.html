@@ -65,13 +65,17 @@
 			</li>
 		</ul>	
 		
-		<a href="{{ url_for('.register_advertiser') }}" class="b-start-now-line">
+		{% if not g.user or g.user.is_advertiser %}
+		{% with link = url_for('.register_advertiser') if not g.user else url_for('.gateway') %}
+		<a href="{{ link }}" class="b-start-now-line">
 			<i class="b-tl-s"></i>
 			<i class="b-tl-b"></i>
 			<span class="b-start-now-line__text">Начните эффективно продавать прямо сейчас!</span>
 			<i class="b-tr-s"></i>
 			<i class="b-tr-b"></i>
 		</a>
+		{% endwith %}
+		{% endif %}
 		
 	</div> <!-- /.b-advertisers -->
 </div> <!-- /.b-main -->

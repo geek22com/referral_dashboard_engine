@@ -198,7 +198,7 @@ def catalog_page():
 				short_description=offer.short_description,
 				logo=url_for('upload', filename=offer.logo) if offer.logo_filename else None,
 				title=offer.title,
-				value=offer.value(affiliate=True, short=True),
+				value=offer.value(affiliate=True, short=True).split(u'и')[0],
 				regions=u', '.join([r.country_name for r in offer.regions_full]),
 				exclusive=offer.exclusive,
 				more_suboffers=bool(offer.active_suboffers)

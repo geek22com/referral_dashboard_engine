@@ -199,3 +199,18 @@ textarea.b-field-input {
 .b-offer-label {
 	overflow: hidden;
 }
+
+/* TABLES */
+
+.b-pure-content table {
+	width: 100%;
+}
+
+.b-pure-content table td, .b-pure-content table th {
+	border: 1px solid #342F2B;
+	padding: 5px;
+}
+
+.b-pure-content table th {
+	font-weight: bold;
+}

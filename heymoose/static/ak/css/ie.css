@@ -28,7 +28,13 @@ input {
 .b-filter-dropdown , 
 .b-offers-list__item a, 
 .b-filter-region .b-categories-list , 
-.b-filter-region .b-categories-list__item 
+.b-filter-region .b-categories-list__item , 
+.b-partner, 
+.b-products-list, 
+.b-product, 
+.b-stat-positions, 
+.b-offer-banner, 
+.b-offer-banner__in 
 {
 	*zoom:1;
 }
@@ -44,7 +50,10 @@ input {
 .b-pages,
 .b-pages__item,
 .b-pagination .b-link-toggle , 
-.b-pages__item a {
+.b-pages__item a, 
+.b-partner__slogan, 
+.b-partner__logo, 
+.b-shop-categories .b-category-column {
 	*display: inline;
 	*zoom:1;
 }

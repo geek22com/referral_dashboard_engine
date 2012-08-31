@@ -94,9 +94,6 @@
 </ul>
 
 <ul class="nav secondary-nav">
-	{% if g.user.is_affiliate %}
-	<li id="menu-item-contest"><a href="{{ url_for('site.affiliates_contest') }}" class="unread">Конкурс вебмастеров!</a></li>
-	{% endif %}
 	<li class="dropdown">
 		<a class="dropdown-toggle" href="#">{{ g.user.full_name or g.user.email }}</a>
 		<ul class="dropdown-menu">

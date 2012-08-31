@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, redirect, url_for, request, flash, session, jsonify
+from flask import render_template, g, redirect, url_for, request, flash, session, jsonify, abort
 from heymoose import app, resource as rc
 from heymoose.site import blueprint as bp
 from heymoose.forms import forms
@@ -207,5 +207,8 @@ def catalog_page():
 	return 'Bad request', 400
 
 @bp.route('/catalog/<int:id>/')
+@template('site/ak/catalog-offer.html')
 def catalog_offer(id):
-	return 'OK'
+	offer = rc.offers.get_by_id(id)
+	if not offer.visible: abort(404)
+	return dict(offer=offer)

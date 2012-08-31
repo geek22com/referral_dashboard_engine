@@ -319,3 +319,18 @@
 	height: 68px;
 	width: 75px;
 }
+.b-ico-check {
+	background-position: -359px -258px;
+	height: 15px;
+	width: 15px;
+}
+.b-ico_hand {
+	background-position: -57px -450px;
+	height: 31px;
+	width: 31px;
+}
+.b-ico_round-money {
+	background-position: -57px -492px;
+    height: 32px;
+    width: 32px;
+}

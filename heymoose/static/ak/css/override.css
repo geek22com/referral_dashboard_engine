@@ -200,6 +200,11 @@ textarea.b-field-input {
 	overflow: hidden;
 }
 
+.b-shop-content .b-offer-label {
+	overflow: auto;
+	height: auto;
+}
+
 /* TABLES */
 
 .b-pure-content table {

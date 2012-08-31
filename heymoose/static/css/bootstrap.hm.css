@@ -273,3 +273,7 @@ form.validate2 .clearfix.error .errors .help-block {
 	text-align: center;
 	color: #FFF;
 }
+
+table td, table th {
+	background-color: #FFFFFF;
+}

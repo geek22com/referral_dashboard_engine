@@ -32,7 +32,8 @@
 				<th {{ lists.sort_header('offer_title', **kwargs) }}>Название</th>
 				<th {{ lists.sort_header('affiliate_email' if admin else 'affiliate_id', **kwargs) }}>Партнёр</th>
 				<th {{ lists.sort_header('amount', **kwargs) }}>Сумма, {{ currency_sign }}</th>
-				<th {{ lists.sort_header('creation_time', **kwargs) }}>Время</th>
+				<th {{ lists.sort_header('creation_time', **kwargs) }}>Время создания</th>
+				<th {{ lists.sort_header('last_change_time', **kwargs) }}>Время изменения</th>
 				<th {{ lists.sort_header('state', **kwargs) }}>Состояние</th>
 				<th class="header center nosort"><input type="checkbox" class="actions-toggle" /></th>
 			</tr>
@@ -52,6 +53,7 @@
 				</td>
 				<td class="right">{{ action.amount|currency(false) }}</td>
 				<td class="center">{{ action.creation_time|datetimeformat }}</td>
+				<td class="center">{{ action.last_change_time|datetimeformat if action.last_change_time else '&mdash;'|safe }}</td>
 				<td class="center"><span class="{{ action.state.css_class }}">{{ action.state.name }}</span></td>
 				<td class="center">
 					{% if action.is_not_approved %}

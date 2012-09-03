@@ -1,0 +1,168 @@
+{% extends 'site/ak/layout-inner.html' %}
+
+{% block title %}Каталог рекламных предложений{% endblock %}
+
+{% block extrahead %}
+	{{ super() }}
+	{% raw %}
+	<script type="text/x-jquery-tmpl" id="offer-template">
+		<li class="b-offers-list__item {{if exclusive}}b-offers-list__item_exclusive{{/if}}">
+			<ul class="b-categories-list">
+				{{if exclusive}}
+				<li class="b-categories-list__item b-categories-list__item_exclusive"><a href="#">Эксклюзивные условия!</a></li>
+				{{/if}}
+			</ul>
+			<a href="${link}" target="_blank" class="b-offer">
+				<div class="b-offer__img">
+				{{if logo}}
+					<img src="${logo}" alt="offer" title="offer" />
+				{{else}}
+					&nbsp;
+				{{/if}}
+				</div>
+				<span class="b-offer__content">
+					<strong class="b-offer-title">${name}</strong>
+					<i class="b-offer-text">${short_description}</i>
+					<span class="b-offer-regions">
+						<strong>Регионы:</strong> ${regions}
+					</span>
+				</span>
+				<span class="b-offer-pay">
+					<strong class="b-offer-label">${value}</strong>
+					<span class="b-payment-type">
+						<strong>Действие:</strong> ${title}
+					</span>
+					{{if more_suboffers}}
+					<span style="display: block;">и другие...</span>
+					{{/if}}
+				</span>
+				<i class="b-offer-hover-corner"></i>
+			</a>
+		</li>
+	</script>
+	{% endraw %}
+	<script type="text/javascript" src="{{ url_for('static', filename='ak/js/catalog.js', nocache=nocache()) }}"></script>
+{% endblock %}
+
+{% block inner_container %}
+<div class="b-main b-main_partners"> <!-- .b-main -->
+	<div class="b-filter"> <!-- .b-filter -->
+		<div class="b-filter__in">
+			<div class="b-filter-bg"></div>
+			<ul class="b-filter-list">
+				<li class="b-filter-list__item">
+					<a href="#">Сегмент</a>
+					<div class="b-filter-dropdown b-filter-segment"> <!-- b-filter-segment -->
+						{% with categs = g.config.get('WOMEN_CATEGORIES') %}
+						<ul class="b-categories-list">
+							<li class="b-categories-list__item" data-id="{{ categs[0] -}}">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_wedding"></i><span class="b-link-icon__text">Для<br /> свадьбы</span>
+								</a>
+							</li>
+							<li class="b-categories-list__item" data-id="{{ categs[1] -}}">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_pregnant"></i><span class="b-link-icon__text">Для<br /> беременных</span>
+								</a>
+							</li>
+							<li class="b-categories-list__item" data-id="{{ categs[2] -}}">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_one_year"></i><span class="b-link-icon__text">Дети<br /> до года</span>
+								</a>
+							</li>
+							<li class="b-categories-list__item" data-id="{{ categs[3] -}}">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_children"></i><span class="b-link-icon__text">Дети<br /> 2&mdash;6 лет</span>
+								</a>
+							</li>
+							<li class="b-categories-list__item" data-id="{{ categs[4] -}}">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_woman"></i><span class="b-link-icon__text">Другие товары<br />для женщин</span>
+								</a>
+							</li>
+						</ul>
+						{% endwith %}
+					</div> <!-- /.b-filter-segment -->
+				</li>
+				<li class="b-filter-list__item">
+					<a href="#">Оплата</a>
+					<div class="b-filter-dropdown b-filter-pay"> <!-- .b-filter-pay -->
+						<ul class="b-categories-list"> 
+							<li class="b-categories-list__item" data-id="1">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_click"></i><span class="b-link-icon__text">Фиксированная<br /> за клик</span>
+								</a>
+							</li>
+							<li class="b-categories-list__item" data-id="2">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_action"></i><span class="b-link-icon__text">Фиксированная<br /> за действие</span>
+								</a>
+							</li>
+							<li class="b-categories-list__item" data-id="3">
+								<a href="javascript://" class="b-link-icon">
+									<i class="b-ico b-ico_cat_percent"></i><span class="b-link-icon__text">Процент с заказа<br /> или покупки</span>
+								</a>
+							</li>							
+						</ul>
+						<a class="b-filter-exclusive" href="javascript://">Только эксклюзивные</a>
+					</div> <!-- /.b-filter-pay -->
+				</li>
+				<li class="b-filter-list__item">
+					<a href="#">Регионы</a>
+					<div class="b-filter-dropdown b-filter-region"> <!-- .b-filter-region -->
+
+						<ul class="b-categories-list"> 								
+							<li class="b-categories-list__item">
+								<a href="#" class="b-link-icon"><i class="b-ico b-ico_delete"></i>Россия</a>
+							</li>
+						</ul>	
+
+						<div class="b-add-region">
+							<a href="#" class="b-link-icon b-show-field"><i class="b-ico b-ico_plus"></i>
+								<span class="b-link-icon__text">Добавить регион</span>
+							</a>
+
+							<div class="b-region-field">
+								<input type="text" name="region" id="regions" placeholder="Поиск"/>										
+								<a href="#" class="b-link-icon b-region-cancel"><i class="b-ico b-ico_delete"></i>Отмена</a>
+							</div>
+						</div>
+						<div class="b-add-region">
+							<a href="#" class="b-link-icon b-add-csi"><i class="b-ico b-ico_plus"></i>
+								<span class="b-link-icon__text">СНГ</span>
+							</a>
+						</div>
+						<div class="b-add-region">
+							<a href="#" class="b-link-icon b-clear-regions"><i class="b-ico b-ico_delete"></i>
+								<span class="b-link-icon__text">Очистить</span>
+							</a>
+						</div>
+
+					</div> <!-- /.b-filter-region -->	
+				</li>
+			</ul>
+			<a class="b-clear-filter" href="javascript://">Сбросить все</a>
+		</div>
+	</div> <!-- .b-filter -->
+
+	<ul class="b-offers-list">
+		
+	</ul>
+	 
+	<div class="b-view-more-offers">
+		<a href="javascript://" class="b-btn-sudmit">Еще</a>
+		<span class="b-no-more-offers" style="display: none;">Нет офферов, удовлетворяющих запросу.</span>
+		<img src="{{ url_for('static', filename='ak/images/wait-indicator-big.gif') }}"
+		 alt="ожидание" class="b-wait-indicator" style="display: none;" />				
+	</div>
+</div> <!-- /.b-main -->
+{% endblock %}
+
+{% block postbody %}
+	{{ super() }}
+	<ul id="regions-list" style="display: none;">
+		{% for region in regions %}
+		<li data-code="{{ region.country_code }}">{{ region.country_name }}</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

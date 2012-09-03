@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+	{% import 'site/ak/macros/forms.html' as forms %}
+	{% set letsgo_link = '#register' if not g.user else url_for('.gateway') %}
+	
+	{% macro menu_item(rule, title, class=none) %}
+	<li class="b-menu__item {{ class }} {{ 'b-menu__item_active' if request.url_rule.endpoint.endswith(rule) }}">
+		<a href="{{ url_for(rule, **kwargs) }}">{{ title }}</a>
+	</li>
+	{% endmacro %}
+	<head>
+
+		<title>
+			{% block fulltitle %}
+				{% block title %}Партнёрская сеть{% endblock %} &mdash; HeyMoose!
+			{% endblock %}
+		</title>	
+		<meta charset="utf-8" />
+		
+		{% with icon_url = url_for('static', filename='./img/favicon.ico') %}
+		<link rel="shortcut icon" href="{{ icon_url }}" type="image/x-icon" />
+		<link rel="icon" href="{{ icon_url }}" type="image/x-icon" />
+		{% endwith %}
+		
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/default.css') }}" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/icons.css') }}" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/components.css') }}" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/forms.css') }}" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/jquery.fancybox.css') }}" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/ui.notify.css') }}" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/override.css') }}" media="screen" />
+		
+		<!--[if lt IE 8 ]>
+			<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/ie.css') }}" media="screen" />
+		<![endif]-->
+		
+		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery-ui-1.8.22.custom.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.notify.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/slides.min.jquery.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.fancybox.pack.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.jcarousel.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.tmpl.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/wtvalidate2.js', nocache=nocache()) }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/common.js', nocache=nocache()) }}"></script>
+		
+		{# Google Analytics #}
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-26051749-1']);
+			_gaq.push(['_setDomainName', 'heymoose.com']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script');
+				ga.type = 'text/javascript';
+				ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+		<script type="text/javascript">
+			// record the event
+			function record_ga(link, category, action, label) {
+				try {
+					_gaq.push(['_trackEvent', category, action, label]);
+					setTimeout('document.location = "' + link + '"', 100);
+
+				} catch(err) {
+				}
+			}
+
+			// add google analytics to all links with http
+			function add_ga() {
+				$("a[href^='http']").each(function() {
+					var href = $(this).attr('href');
+					var exp = /:\/\/(.[^\/]+)/;
+					// make sure not to record links to same domain if they contain http unless data-ga attr is there
+					if (!href.match(document.domain) || (href.match(document.domain) && $(this).attr('data-ga'))) {
+
+						if ( matches = exp.exec(href)) {
+							var domain = matches[1];
+
+							if ($(this).attr('data-aud')) {
+								$(this).click(function() {
+									record_ga(href, "Outbound Traffic - " + $(this).attr('data-aud'), domain, href);
+
+									return false;
+								});
+							} else {
+								$(this).click(function() {
+									record_ga(href, "Outbound Traffic", domain, href);
+									return false;
+								});
+							}
+						}
+					}
+				});
+			}
+
+			// add google analytics event tracking to outbound links when document is ready
+			$(document).ready(function() {
+				add_ga();
+			});
+		</script>
+		
+		{% block extrahead %}{% endblock %}		
+	</head>
+	<body {% block body_attrs %}{% endblock %}>
+		<div class="b-top-box"> <!-- .b-top -->
+			<div class="b-top">
+				<div class="b-top__content">
+					<div class="b-logo-box">
+						<a href="{{ url_for('.index') }}">
+							<h1 class="b-logo" title="HeyMoose">HeyMoose</h1>
+						</a>					
+					</div>
+					<ul class="b-menu">
+						{{ menu_item('.index', 'Главная') }}
+						{{ menu_item('.affiliates', 'Партнёрам') }}
+						{{ menu_item('.advertisers', 'Рекламодателям') }}
+						{{ menu_item('.contacts', 'Связь с нами') }}
+						{{ menu_item('.catalog', 'Каталог', class='b-menu__item_cat') }}
+					</ul>
+					
+					<div class="b-auth">
+						{% if not g.user %}
+						<a href="#login" class="b-auth_link b-link-icon b-show-popup">
+							<i class="b-ico b-ico_login"></i>Вход в систему
+						</a>
+						{% else %}
+						<a href="{{ url_for('.gateway') }}" class="b-auth_link b-link-icon">
+							<i class="b-ico b-ico_login"></i>Личный кабинет
+						</a>
+						{% endif %}
+					</div>	
+				</div>	
+			</div>
+		</div>  <!-- /.b-top -->
+		
+		{% block container %}{% endblock %}
+		
+		<div class="b-footer"> <!-- .b-footer -->
+			{% block footer_line %}{% endblock %}	
+			
+			<div class="b-footer__in">
+				{% block footer_precontent %}{% endblock %}
+			
+				<ul class="b-menu-sub">
+					<li class="b-menu-sub__item">
+						<a href="http://forum.heymoose.com" target="_blank">Форум</a>
+					</li>
+					<li class="b-menu-sub__item">
+						<a href="{{ url_for('.contacts') }}">Контакты</a>
+					</li>
+					<li class="b-menu-sub__item">
+						<a href="http://trac.heymoose.com/wiki/affiliate_network" target="_blank">Документация</a>
+					</li>
+					
+					{#<li class="b-menu-sub__item">
+						<a href="#">Форум</a>
+						<a href="#">Блог</a>
+					</li>
+					<li class="b-menu-sub__item">
+						<a href="#">Контакты</a>
+						<a href="#">Вакансии</a>
+					</li>
+					<li class="b-menu-sub__item">
+						<a href="#">Документация</a>
+						<a href="#">Вопросы и ответы</a>
+					</li>
+					<li class="b-menu-sub__item">
+						<a href="#">О нас</a>
+						<a href="#">Terms of use</a>
+					</li>#}					
+				</ul>
+				
+				<div class="b-social-networks">
+					<span class="b-social-networks__text">Мы в социальных сетях:</span>
+					<ul class="b-social-networks-list">
+						<li class="b-social-networks-list__item">
+							<a href="http://www.facebook.com/heymoosepartners" target="_blank"><i class="b-ico b-ico-fb"></i></a>
+						</li>
+						{#<li class="b-social-networks-list__item"><a href="#"><i class="b-ico b-ico-tw"></i></a></li>#}
+						<li class="b-social-networks-list__item">
+							<a href="http://vk.com/hey_moose" target="_blank"><i class="b-ico b-ico-vk"></i></a>
+						</li>
+					</ul>
+				</div>	
+			</div>	
+			<div class="b-bottom">
+				<div class="b-bottom__in">
+					<a href="http://artkadabra.ru/" target="_blank" class="b-logo-artkadabra">Artkadabra</a>
+					<ul class="b-menu b-menu_double">
+						{{ menu_item('.index', 'Главная') }}
+						{{ menu_item('.affiliates', 'Партнёрам') }}
+						{{ menu_item('.advertisers', 'Рекламодателям') }}
+						{{ menu_item('.contacts', 'Связь с нами') }}
+						{{ menu_item('.catalog', 'Каталог') }}
+					</ul>
+					<a href="{{ url_for('.index') }}" class="b-link-icon b-logo-bottom">HeyMoose</a>
+				</div>
+			</div>
+		</div> <!-- /.b-footer -->	
+
+		{% block postbody %}
+		
+		<div id="notify-container" style="display: none;">
+			<div id="notify-basic-template">
+				<a class="ui-notify-cross ui-notify-close" href="#">x</a>
+				<h1>#{title}</h1>
+				<p>#{text}</p>
+			</div>
+		</div>
+		<ul id="notify-messages" style="display: none;">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+			{% for category, message in messages %}
+			<li data-category="{{ category }}">{{ message }}</li>
+			{% endfor %}
+			{% endwith %}
+		</ul>
+		
+		<div style="display: none;">
+			<div class="b-popup" id="login">
+				<div class="b-popup__title">Вход в систему</div>
+				<div class="b-popup__content">				
+					<form class="b-form" action="{{ url_for('.login') }}" method="post">
+						<ul class="b-fields-list">
+							{{ forms.field(g.login_form.username, type='email', label='По электронной почте:', required_sign=false) }}
+							{{ forms.field(g.login_form.password, type='password', label='Введите свой пароль:', required_sign=false) }}
+							<li class="b-fields-list__item b-login-form-actions">
+								{{ g.login_form.remember() }}
+								<label for="{{ g.login_form.remember.id }}">запомнить</label>
+								<a href="#restore" class="b-link-password-restore b-show-popup">Забыли пароль?</a>
+							</li>
+							<li class="b-fields-list__item">
+								<input type="submit" class="b-btn-sudmit" value="Войти"/>
+							</li>
+						</ul>
+					</form>
+					<div class="b-cancel-box">
+						или <br />
+						<a href="javascript:$.fancybox.close();" class="b-close-popup">отменить и закрыть</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div style="display: none;">
+			<div class="b-popup" id="restore">
+				<div class="b-popup__title">Новый пароль</div>
+				<div class="b-popup__content">
+					<p class="b-password-restore-help">
+						Пожалуйста, введите адрес электронной почты, с которым вы зарегистрировались.
+						На него будет выслан новый пароль.
+					</p>
+					<form class="b-form validate2" action="{{ url_for('.password') }}" method="post">
+						<ul class="b-fields-list">
+							{{ forms.field(g.restore_form.email, type='email', label='Ваш электронный адрес:', required_sign=false) }}
+							{{ forms.field(g.restore_form.captcha, required_sign=false) }}
+							{{ g.restore_form.ch() }}
+							<li class="b-fields-list__item">
+								<input type="submit" class="b-btn-sudmit" value="Выслать новый пароль"/>
+							</li>
+						</ul>
+					</form>
+					<div class="b-cancel-box">
+						или <br />
+						<a href="javascript:$.fancybox.close();" class="b-close-popup">отменить и закрыть</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div style="display: none;">
+			<div class="b-popup b-popup_register" id="register">
+				<div class="b-popup__title">Регистрация партнёра</div>
+				<div class="b-popup__content">
+					<form class="b-form b-form-register validate2" method="post"
+					 action="{{ url_for('.register_affiliate') }}">
+						<ul class="b-fields-list b-fields-list_lines">
+							{{ forms.field(g.affiliate_form.email, type='email') }}
+							{{ forms.field(g.affiliate_form.password) }}
+							{{ forms.field(g.affiliate_form.password2) }}
+							{{ forms.field(g.affiliate_form.captcha) }}
+							{{ g.affiliate_form.ch() }}
+							<li class="b-fields-list__item b-fields-list__item-nolabel">
+								<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"
+								 onClick="_gaq.push(['_trackEvent', 'aff_reg', 'site', 'cabinet',, false]);"/>
+							</li>
+						</ul>
+					</form>
+					<div class="b-cancel-box">
+						или <br />
+						<a href="javascript:$.fancybox.close();" class="b-close-popup">отменить и закрыть</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endblock %}
+		
+		{# Google Remarketing #}
+		<script type="text/javascript">
+			/* <![CDATA[ */
+			var google_conversion_id = 1007747337;
+			var google_conversion_label = "T5hWCPevowQQiYLE4AM";
+			var google_custom_params = window.google_tag_params;
+			var google_remarketing_only = true;
+			/* ]]> */
+		</script>
+		<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>
+		<noscript>
+			<div style="display:inline;">
+				<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1007747337/?value=0&amp;label=T5hWCPevowQQiYLE4AM&amp;guid=ON&amp;script=0"/>
+			</div>
+		</noscript>
+	</body>
+</html>

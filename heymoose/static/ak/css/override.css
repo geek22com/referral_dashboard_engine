@@ -1,0 +1,221 @@
+.right { text-align: right; }
+.center { text-align: center; }
+
+.b-leader-table_col2 {
+	width: 100px;
+}
+
+.b-logo-box {
+	cursor: default;
+}
+
+.b-bottom .b-menu__item_active a {
+	background: none;
+	color: #F9F1D3;
+}
+
+/* forms.css overrides */
+
+input[type=checkbox] {
+	vertical-align: middle;
+}
+
+.b-field-error-text {
+	color: #AD0000;
+}
+
+.b-field-required {
+	color: #AD0000;
+}
+
+.b-fields-list_lines .b-field-label-after {
+	display: inline;
+	float: none;
+	text-align: left;
+	margin-right: 0;
+	margin-left: 6px;
+}
+
+.b-field-input {
+	background: #fff;
+	border:1px solid #cecece;
+	height: 16px;
+	padding: 3px;
+	width: 250px;
+}
+
+textarea.b-field-input {
+	height: auto;
+}
+
+.b-popup .b-field-input {
+	padding: 5px;
+	text-align: center;
+	height: 20px;
+	font-size: 16px;
+	width: 180px;
+}
+
+.b-field-error {
+    border: 1px solid #AD0000;
+}
+.b-field-success {
+    border: 1px solid #21AD00;
+}
+
+.b-popup .b-fields-list_lines .b-field-input {
+	text-align: left;
+}
+
+.b-popup .b-fields-list_lines label {
+	width: 120px;
+	margin-bottom: 0;
+	line-height: 30px;
+}
+
+.b-popup__content .b-fields-list_lines {
+	text-align: left;
+}
+
+.b-popup.b-popup_login, .b-popup.b-popup_register, .b-popup.b-popup_confirm {
+	width: 440px;
+}
+
+.b-popup.b-popup_confirm .b-cancel-box {
+	margin-top: 20px;
+}
+
+.b-fields-list_lines .b-field-input {
+	width: 248px;
+}
+
+.b-fields-list_lines .b-field-error-text {
+	margin-left: 256px;
+	width: 260px;
+}
+
+.b-popup .b-fields-list_lines .b-field-error-text {
+	margin-left: 136px;
+	width: 260px;
+}
+
+.b-form .b-fields-list_lines .b-fields-list__item-nolabel {
+	padding-left: 256px;
+	width: 260px;
+}
+
+.b-popup .b-fields-list_lines .b-fields-list__item-nolabel {
+	padding-left: 136px;
+	width: 260px;
+}
+
+.b-fields-list__item-submit {
+	text-align: center;
+}
+
+.b-btn-link {
+    display: inline-block;
+    font-size: 14px;
+    height: 32px;
+    line-height: 18px;
+    padding: 7px 10px;
+    vertical-align: top;
+}
+
+.b-login-form-actions {
+	font-size: 12px;
+}
+
+.b-login-form-actions label {
+	font-size: 12px;
+	display: inline;
+}
+
+.b-link-password-restore {
+	margin-left: 40px;
+}
+
+.b-password-restore-help {
+	font-size: 12px;
+	margin-bottom: 16px;
+}
+
+.b-column_arrow {
+	float: left;
+	width: 192px;
+}
+
+.b-column_form {
+    float: left;
+    width: 250px;
+    margin: 0 163px;
+}
+
+.b-column_contacts-form {
+	float: left;
+    width: 256px;
+}
+
+.b-column_contacts-addr {
+	float: left;
+    width: 300px;
+    margin-left: 50px;
+}
+
+.b-partners.b-partners-register {
+	background: none;
+	padding-bottom: 0;
+}
+
+.ui-notify {
+	top: auto;
+	right: auto;
+	bottom: 0;
+	left: 0;
+	margin: 0 0 10px 10px;
+	z-index: 100;
+}
+
+
+.b-contact-box {
+	color: #F9F1D3;
+	background-color: #AD0000;
+	text-align: center;
+	padding: 20px;
+	margin-bottom: 10px;
+}
+
+.b-contact-box.b-contact-box__dark {
+	background-color: #332E2B;
+}
+
+.b-contact-box_contact, .b-contact-box_contact a {
+	font-family: 'PFSquareSansProBold','Trebuchet MS','Arial','Helvetica','Geneva';
+	font-size: 18px;
+	font-weight: 700;
+	color: #F9F1D3;
+}
+
+.b-offer-label {
+	overflow: hidden;
+}
+
+.b-shop-content .b-offer-label {
+	overflow: auto;
+	height: auto;
+}
+
+/* TABLES */
+
+.b-pure-content table {
+	width: 100%;
+}
+
+.b-pure-content table td, .b-pure-content table th {
+	border: 1px solid #342F2B;
+	padding: 5px;
+}
+
+.b-pure-content table th {
+	font-weight: bold;
+}

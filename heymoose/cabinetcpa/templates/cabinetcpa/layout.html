@@ -28,6 +28,23 @@
 		$('ul.categorized').categorizedList();
 	});
 </script>
+
+{# Google Analytics #}
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-26051749-1']);
+	_gaq.push(['_setDomainName', 'heymoose.com']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script');
+		ga.type = 'text/javascript';
+		ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(ga, s);
+	})();
+</script>
 {% endblock %}
 
 {% block prebody %}
@@ -77,9 +94,6 @@
 </ul>
 
 <ul class="nav secondary-nav">
-	{% if g.user.is_affiliate %}
-	<li id="menu-item-contest"><a href="{{ url_for('site.affiliates_contest') }}" class="unread">Конкурс вебмастеров!</a></li>
-	{% endif %}
 	<li class="dropdown">
 		<a class="dropdown-toggle" href="#">{{ g.user.full_name or g.user.email }}</a>
 		<ul class="dropdown-menu">
@@ -185,4 +199,20 @@
 		{% endif %}
 	</div>
 </div>
+
+{# Google Remarketing #}
+<script type="text/javascript">
+	/* <![CDATA[ */
+	var google_conversion_id = 1007747337;
+	var google_conversion_label = "T5hWCPevowQQiYLE4AM";
+	var google_custom_params = window.google_tag_params;
+	var google_remarketing_only = true;
+	/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>
+<noscript>
+	<div style="display:inline;">
+		<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1007747337/?value=0&amp;label=T5hWCPevowQQiYLE4AM&amp;guid=ON&amp;script=0"/>
+	</div>
+</noscript>
 {% endblock %}

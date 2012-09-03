@@ -78,7 +78,7 @@
 		var valid = true;
 		this.each(function() {
 			var field1 = $(this);
-			var field2 = $('#' + field1.data('equalOther'));
+			var field2 = $(this).closest('form').find('#' + field1.data('equalOther'));
 			if (field1.val() != field2.val()) {
 				error(field1, field1.data('equalMessage'));
 				error(field2, field2.data('equalMessage'));

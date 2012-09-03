@@ -1,0 +1,140 @@
+{% extends 'site/ak/layout-inner.html' %}
+
+{% block title %}Оффер &laquo;{{ offer.name -}}&raquo;{% endblock %}
+
+{% block inner_container %}
+<div class="b-main b-main_offer"> <!-- .b-main -->
+	<div class="b-filter"> <!-- .b-filter -->
+		<div class="b-filter__in">
+			<div class="b-filter-bg"></div>				
+		</div>
+	</div> <!-- .b-filter -->
+	<div class="b-partner">
+		<div class="b-partner__logo">
+			{% if offer.logo_filename %}
+			<img src="{{ url_for('upload', filename=offer.logo) }}" alt="логотип" title="{{ offer.name }}" />
+			{% endif %}
+		</div>
+		<p class="b-partner__slogan">{{ offer.name }}</p>
+	</div>
+	<div class="b-columns b-shop-content"> <!-- .b-shop-content -->
+		<div class="b-column_shop_left"> <!-- .b-column_shop_left -->
+			<div class="b-block-stripes">
+				<div class="b-shop-descr">
+					{{ offer.short_description }} 
+				</div>
+			</div>
+			<div class="b-block-stripes">
+				<ul class="b-shop-listinfo">
+					{% if offer.launch_time %}
+					<li class="b-shop-listinfo__item">
+						<strong>Дата запуска: </strong> {{ offer.launch_time|dateformat }}
+					</li>
+					{% endif %}
+					<li class="b-shop-listinfo__item">
+						<strong>Время жизни cookie: </strong> {{ offer.cookie_ttl }} дней
+					</li>
+					<li class="b-shop-listinfo__item">
+						<strong>Регионы: </strong>
+						{{ offer.regions_full|attrlist('country_name')|join(', ')|default('(не указаны)', true) }}
+					</li>
+				</ul>
+			</div>
+			<div class="b-shop-categories">
+				<h3>Категории</h3>
+				{% if offer.not_women_categories %}
+				{% for group in offer.not_women_categories|groupby('grouping') %}
+				<div class="b-category-column">
+					<h2 class="b-category_title">{{ group.grouper }}</h2>
+					<ul class="b-categories-list">
+						{% for category in group.list %} 								
+						<li class="b-categories-list__item">{{ category.name }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+				{% endfor %}
+				{% else %}
+				(не указаны)
+				{% endif %}
+			</div>
+			
+		</div> <!-- /.b-column_shop_left -->
+		<div class="b-column_shop_center">
+			<div class="b-red-arrow"> <!-- .b-red-arrow -->							
+				<div class="b-red-arrow__content">
+					<ul class="b-offers-pay-list">
+						{% for suboffer in offer.all_suboffers if suboffer.active %}
+						<li class="b-offers-pay-list__item">
+							<span class="b-offer-pay b-offer-pay_exclusive">
+								<strong class="b-offer-label">{{ suboffer.value(affiliate=true, short=true) }}</strong>
+								<span class="b-payment-type">
+									<strong>Действие:</strong>
+									{{ suboffer.title }}
+								</span>
+							</span>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="b-red-arrow__bottom"></div>
+			</div>
+			
+			{% with women_categories = offer.women_categories %}
+			{% if women_categories %}
+			<div class="b-gray-arrow"> <!-- .b-gray-arrow -->
+				<div class="b-gray-arrow__content">
+					<ul class="b-categories-list">
+						{% for category in women_categories %}
+						<li class="b-categories-list__item">
+							<a class="b-link-icon" href="javascript://">
+								<i class="b-ico b-ico_cat_{{ category.css_class -}}"></i>
+								<span class="b-link-icon__text b-ico_cat_{{ category.css_class -}}__text">{{ category.name }}</span>
+							</a>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="b-gray-arrow__bottom"></div>
+			</div> <!-- /.b-gray-arrow -->
+			{% endif %}
+			{% endwith %}
+	
+			{% if not g.user or g.user.is_affiliate %}
+			{% with link = '#register' if not g.user else url_for('cabinetcpa.offers_info', id=offer.id) %}
+			<a href="{{ link -}}" class="b-start-now b-start-now_gr {{ 'b-show-popup' if not g.user }}"
+			 title="Начни прямо сейчас!">Начни прямо сейчас!</a>
+			{% endwith %}
+			{% endif %}
+		</div>
+			
+		<div class="b-column_shop_right">
+			{% if offer.exclusive %}
+			<a class="b-offer-banner b-exclusive-banner">
+				<i class="b-exclusive-flag">Эксклюзивные условия!</i>
+				<span class="b-offer-banner__in">
+					<i class="b-ico b-ico_hand"></i>
+					<strong class="b-offer-banner__title">Специальные условия есть только у нас.</strong>
+					Повышенные вознаграждения для партнёров &laquo;HeyMoose!&raquo;
+				</span>
+			</a>
+			{% endif %}
+			
+			{#
+			<a href="#" class="b-offer-banner b-stock-banner">
+				<i class="b-stock-flag">Действует акция</i>
+				<span class="b-offer-banner__in">
+					<i class="b-ico b-ico_round-money"></i>
+					<strong class="b-offer-banner__title">Получай +10% к каждому проданному товару.</strong>
+					<span class="b-link_pseudo">Узнать подробнее</span>
+				</span>
+			</a>
+			#}
+				
+			<h3 class="b-block-stripes">Описание</h3>
+			<div class="b-pure-content">
+				{{ offer.description|safe }}
+			</div>
+		</div>
+	</div> <!-- /.b-shop-content -->
+</div> <!-- /.b-main -->
+{% endblock %}

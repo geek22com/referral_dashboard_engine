@@ -2,7 +2,7 @@
 from wtforms import Form as WTForm
 from wtforms import FieldList, FormField, BooleanField, TextField, PasswordField, \
 	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField, DateTimeField
-from wtforms.fields import Label
+from wtforms.fields import Label, SelectMultipleField
 from heymoose import app, resource as rc
 from heymoose.core import actions
 from heymoose.data import enums
@@ -905,6 +905,17 @@ class OfferFilterForm(Form):
 	
 	def has_filled_fields(self):
 		return self.region.data or self.category.data or self.payment_type.data > 0
+
+
+class CatalogOfferFilterForm(OfferFilterForm):
+	offset = IntegerField(u'', [validators.NumberRange(min=0)], default=0)
+	exclusive = BooleanField(u'')
+	
+	def backend_args(self):
+		args = super(CatalogOfferFilterForm, self).backend_args()
+		args.update(offset=self.offset.data, limit=10)
+		if self.exclusive.data: args.update(exclusive=True)
+		return args
 
 
 class GamakAppForm(Form):

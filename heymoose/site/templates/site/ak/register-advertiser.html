@@ -1,0 +1,74 @@
+{% extends 'site/ak/layout-inner.html' %}
+
+{% block title %}Регистрация рекламодателя{% endblock %}
+
+{% block inner_container %}
+<div class="b-main b-main_advertisers">
+	<div class="b-advertisers">
+		<h2 class="b-advertisers-title">
+			<span class="b-advertisers-title__text">Регистрация рекламодателя</span>
+		</h2>
+	</div>
+	<div class="b-columns">
+		<div class="b-column_arrow">
+			<div class="b-red-arrow">
+				<div class="b-red-arrow__top">
+					<i class="b-ico b-ico_money"></i>
+				</div>
+				<div class="b-red-arrow__content">
+					<ul class="b-teasers-list">
+						<li class="b-teasers-list__item">
+							<h4>Только лучшее</h4>
+							Только топовые магазины, товары и&nbsp;услуги
+						</li>
+						<li class="b-teasers-list__item">
+							<h4>Аналитика</h4>
+							Углубленный и детальный анализ рынка
+						</li>
+					</ul>
+				</div>
+				<div class="b-red-arrow__bottom"></div>
+			</div>
+		</div>
+		<div class="b-column_form">
+			<div class="b-form-register-wrap">
+				<form class="b-form b-form-register validate2" method="post" action="">
+					<ul class="b-fields-list">
+						{{ forms.field(form.organization) }}
+						{{ forms.field(form.phone) }}
+						{{ forms.field(form.email, type='email') }}
+						{{ forms.field(form.password) }}
+						{{ forms.field(form.password2) }}
+						{{ forms.field(form.captcha) }}
+						{{ form.ch() }}
+						<li class="b-fields-list__item b-fields-list__item-submit">
+							<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"
+							 onClick="_gaq.push(['_trackEvent', 'adv_reg', 'site', 'cabinet',, false]);" />
+						</li>
+					</ul>
+				</form>
+			</div>
+		</div>
+		<div class="b-column_arrow">
+			<div class="b-red-arrow">
+				<div class="b-red-arrow__top">
+					<i class="b-ico b-ico_money"></i>
+				</div>
+				<div class="b-red-arrow__content">
+					<ul class="b-teasers-list">
+						<li class="b-teasers-list__item">
+							<h4>Статистика</h4>
+							Уникальная система отслеживания ваших продаж
+						</li>
+						<li class="b-teasers-list__item">
+							<h4>Поддержка</h4>
+							Мы предоставим вам личного менеджера
+						</li>
+					</ul>
+				</div>
+				<div class="b-red-arrow__bottom"></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

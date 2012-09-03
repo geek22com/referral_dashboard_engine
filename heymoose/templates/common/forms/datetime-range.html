@@ -16,6 +16,13 @@
 					<div class="span4" style="line-height: 28px;">
 						<label class="simple required">{{ title }}</label>
 					</div>
+					{% if form.date_kind %}
+					<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.date_kind) }}"
+					 style="width: 120px;">
+						{{ forms.field(form.date_kind, style="width: 120px;") }}
+						{{ forms.errors(form.date_kind) }}
+					</div>
+					{% endif %}
 					<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.dt_from) }}">
 						<label class="simple required">с</label>
 						{{ forms.field(form.dt_from, class='datetimepicker', style='width: 130px;') }}
@@ -66,7 +73,7 @@
 						{{ forms.errors(form.state) }}
 					</div>
 					{% endif %}
-					<div class="span3" style="margin-left: 40px;">
+					<div class="span3">
 						<input type="submit" class="btn primary span3" value="Показать" />
 					</div>
 				</div>

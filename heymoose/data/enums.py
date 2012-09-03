@@ -74,3 +74,6 @@ class OfferActionStates(Enum):
 	APPROVED = e('APPROVED', name=u'подтверждено', css_class=u'green')
 	CANCELED = e('CANCELED', name=u'отменено', css_class=u'red')
 
+class OfferActionDateKinds(Enum):
+	CREATION = e('CREATION', name=u'время создания')
+	CHANGE = e('CHANGE', name=u'время изменения')

@@ -416,6 +416,7 @@ class OfferAction(IdentifiableModel):
 	transaction_id = Field(types.String, 'transaction-id')
 	state = Field(enums.OfferActionStates, 'state')
 	creation_time = Field(types.DateTime, 'creation-time')
+	last_change_time = Field(types.DateTime, 'last-change-time')
 	amount = Field(types.Decimal, 'amount', quantize='1.00')
 	
 	@property

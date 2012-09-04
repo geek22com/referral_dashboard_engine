@@ -850,15 +850,18 @@ class CabinetSubIdStatsForm(CabinetStatsForm):
 
 
 class OfferActionsFilterForm(DateTimeRangeForm):
+	date_kind = SelectField(u'Время', choices=enums.OfferActionDateKinds.tuples('name'),
+		default=enums.OfferActionDateKinds.CREATION)
 	state = SelectField(u'Состояние', choices=[(u'', u'(все)')] + enums.OfferActionStates.tuples('name'), default=u'')
 	
 	def query_args(self):
 		args = DateTimeRangeForm.query_args(self)
-		args.update(state=self.state.data)
+		args.update(state=self.state.data, date_kind=self.date_kind.data)
 		return args
 	
 	def backend_args(self):
 		args = DateTimeRangeForm.backend_args(self)
+		args.update(date_kind=self.date_kind.data)
 		if self.state.data: args.update(state=self.state.data)
 		return args
 

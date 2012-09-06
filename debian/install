@@ -6,4 +6,5 @@ heymoose_production.py usr/share/nginx/www/frontend_production
 uwsgi etc/init.d
 heymoose/static/* /usr/share/nginx/www/frontend_static/static
 heymoose/admin/static/* /usr/share/nginx/www/frontend_static/admin/static
+doc/*.pdf /usr/share/nginx/www/frontend_static/doc
 track/* /usr/share/nginx/www/frontend_static/track

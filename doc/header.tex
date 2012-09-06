@@ -1,0 +1,61 @@
+\usepackage[utf8x]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english, russian]{babel}
+
+% Опционно, требует  apt-get install scalable-cyrfonts.*
+% и удаления одной строчки в cyrtimes.sty
+% Сточку не удалять!
+\usepackage{cyrtimes}
+
+% Картнки и tikz
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{snakes,arrows,shapes}
+
+
+% Некоторая русификация.
+\usepackage{misccorr}
+\usepackage{indentfirst}
+\renewcommand{\labelitemi}{\normalfont\bfseries{--}}
+
+% Увы, поля придётся уменьшить из-за листингов.
+\topmargin -1cm
+\oddsidemargin -0.5cm
+\evensidemargin -0.5cm
+\textwidth 17cm
+\textheight 24cm
+
+\sloppy
+
+% Оглавление в PDF
+\usepackage[
+bookmarks=true,
+colorlinks=true, linkcolor=black, anchorcolor=black, citecolor=black, menucolor=black,filecolor=black, urlcolor=black,
+unicode=true
+]{hyperref}
+
+\usepackage{listings}
+
+% Значения по умолчанию
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  breaklines=true,       % переносить длинные строки
+%  inputencoding=koi8-r,
+  showspaces=false,      % показывать пробелы подчеркиваниями -- идиотизм 70-х годов
+  showstringspaces=false,
+  showtabs=false,        % и табы тоже
+  stepnumber=1,
+  tabsize=4,              % кому нужны табы по 8 символов?
+  frame=single
+}
+
+% Свой язык для задания грамматик в BNF
+\lstdefinelanguage[]{Pixel}[]{}{
+  morekeywords={TRANSACTION_ID,ADVERTISER_ID,OFFER_CODE,OFFER_CODE1,OFFER_CODE2,OFFER_CODE3,COST},
+}[keywords,comments,strings]
+
+% Для исходного кода в тексте
+\newcommand{\Code}[1]{\texttt{#1}}
+
+\newcommand{\heymoose}{<<HeyMoose!>>}

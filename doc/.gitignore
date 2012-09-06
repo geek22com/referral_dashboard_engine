@@ -1,0 +1,6 @@
+*.dvi
+*.aux
+*.log
+*.out
+*.toc
+*.gz

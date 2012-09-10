@@ -79,7 +79,8 @@
 
 {% set topbar_fluid = true %}
 {% block topbar %}
-<ul class="nav">
+<ul class="nav"> 
+	<li id="menu-item-index"><a href="{{ url_for('.index') }}">Главная</a></li>
 	<li id="menu-item-offers"><a href="{{ url_for('.offers_requested' if g.user.is_affiliate else '.offers_list') }}">Офферы</a></li>
 	<li id="menu-item-stats"><a href="{{ url_for('.stats_offer') }}">Статистика</a></li>
 	<li id="menu-item-info"><a href="{{ url_for('.profile') }}">Профиль</a></li>

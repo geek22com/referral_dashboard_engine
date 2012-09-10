@@ -9,36 +9,71 @@
 	{{ macros.breadcrumb('Главная', url_for('.index')) }}
 {% endblock %}
 
-{% block pageheader %}<h1>{{ self.title() }}</h1>{% endblock %}
+{# {% block pageheader %}<h1>{{ self.title() }}</h1>{% endblock %} #}
 
 {% block content %}
 	<div class="row">
 		<div class="span4">
-			<h3>Быстрые ссылки</h3>
-			<ul>
-				<li><strong><a href="{{ url_for('.offers_all') }}">Каталог офферов</a></strong></li>
-				<li><a href="{{ url_for('.offers_requested') }}">Мои офферы</a></li>
-				<li><a href="{{ url_for('.stats_offer') }}">Статистика по офферам</a></li>
-				<li><a href="{{ url_for('.withdrawals') }}">Выплаты</a></li>
-				<li><a href="{{ url_for('.notifications') }}">Уведомления</a></li>
-			</ul>
+			<div class="well">
+				<h5>Быстрые ссылки</h5>
+				<ul>
+					<li><strong><a href="{{ url_for('.offers_all') }}">Каталог офферов</a></strong></li>
+					<li><a href="{{ url_for('.offers_requested') }}">Мои офферы</a></li>
+					<li><a href="{{ url_for('.stats_offer') }}">Статистика по офферам</a></li>
+					<li><a href="{{ url_for('.withdrawals') }}">Выплаты</a></li>
+					<li><a href="{{ url_for('.notifications') }}">Уведомления</a></li>
+				</ul>
+			</div>
 		</div>
-		<div class="span6">
+		<div class="span11">
 			<h3>Лучшие офферы за месяц</h3>
+			{% if stats %}
 			<table class="bordered-table zebra-striped condensed-table">
 				<thead>
 					<tr>
-						<th class="header">Оффер</th>
-						<th class="header">Действия</th>
-						<th class="header">CR</th>
-						<th class="header">Неподтв.</th>
-						<th class="header">Подтв.</th>
+						<th class="header center" rowspan="2">Оффер</th>
+						<th class="header center" rowspan="2">Клики</th>
+						<th class="header center" rowspan="2">Действия</th>
+						<th class="header center" rowspan="2">CR</th>
+						<th class="header center" colspan="2">Финансы</th>
+					</tr>
+					<tr class="subrow">
+						<th class="header center">Неподтв.</th>
+						<th class="header center">Подтв.</th>
 					</tr>
 				</thead>
+				<tbody>
+					{% for stat in stats %}
+					<tr>
+						<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
+						<td class="right">{{ stat.clicks }}</td>
+						<td class="right">{{ stat.leads + stat.sales }}</td>
+						<td class="right">{% if stat.cr %}{{ stat.cr if stat.cr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
+						<td class="right">{{ stat.not_confirmed_revenue }}</td>
+						<td class="right green">{{ stat.confirmed_revenue }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
 			</table>
+			{% else %}
+			<div class="clearfix alert-message block-message info">
+				<p>Нет данных.</p>
+			</div>
+			{% endif %}
 		</div>
-		<div class="span5">
+	</div>
+	<div class="row">
+		<div class="span8">
 			<h3>Последние новости</h3>
+		</div>
+		<div class="span7">
+			<h3>Последние уведомления</h3>
+			{% if notifications %}
+			<dl>
+				<dt></dt>
+				<dd></dd>
+			</dl>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

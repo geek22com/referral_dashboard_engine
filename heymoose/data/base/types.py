@@ -92,7 +92,7 @@ class DateTime(PrimitiveType):
 	
 	def parse_value(self, xmlvalue):
 		without_tz = xmlvalue[:-1] if xmlvalue.endswith('Z') else xmlvalue[:-6]
-		return datetime.strptime(without_tz, '%Y-%m-%dT%H:%M:%S.%f')
+		return datetime.strptime(without_tz, ('%Y-%m-%dT%H:%M:%S.%f' if '.' in without_tz else '%Y-%m-%dT%H:%M:%S'))
 
 
 class ModelType(TypeBase):

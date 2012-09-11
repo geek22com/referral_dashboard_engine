@@ -25,6 +25,11 @@
 		.notes-list dd {
 			margin-bottom: 10px;
 		}
+		
+		.newsitem-wrap {
+			overflow-y: auto;
+			max-height: 400px;
+		}
 	</style>
 {% endblock %}
 
@@ -39,20 +44,19 @@
 			<ul class="hot-links">
 				<li><strong><a href="{{ url_for('.offers_all') }}">Каталог офферов</a></strong></li>
 				<li><a href="{{ url_for('.offers_requested') }}">Мои офферы</a></li>
-				<li><a href="{{ url_for('.stats_offer') }}">Статистика по офферам</a></li>
-				<li><a href="{{ url_for('.withdrawals') }}">Выплаты</a></li>
-				<li><a href="{{ url_for('.notifications') }}">Уведомления</a></li>
+				<li><a href="{{ url_for('.stats_offer') }}">Моя статистика</a></li>
+				<li><a href="{{ url_for('.withdrawals') }}">Мои выплаты</a></li>
+				<li><a href="{{ url_for('.notifications') }}">Мои уведомления</a></li>
+				<li><a href="{{ url_for('.profile') }}">Мой профиль</a></li>
 			</ul>
 		</div>
 		<div class="span11">
-			<div class="page-header">
-				<h5>
-					Лучшие офферы за месяц
-					<a href="{{ url_for('.stats_offer') }}" class="more-link">подробно &raquo;</a>
-				</h5>
-			</div>
+			<h5>
+				Лучшие офферы за месяц
+				<a href="{{ url_for('.stats_offer') }}" class="more-link">подробно &raquo;</a>
+			</h5>
 			{% if stats %}
-			<table class="bordered-table zebra-striped condensed-table">
+			<table class="bordered-table zebra-striped condensed-table nosort">
 				<thead>
 					<tr>
 						<th class="header center" rowspan="2">Оффер</th>
@@ -81,7 +85,19 @@
 			</table>
 			{% else %}
 			<div class="clearfix alert-message block-message info">
-				<p>Нет данных.</p>
+				<p>
+					{% if grants %}
+					<strong>Нет данных.</strong> За месяц не было активности с вашей стороны по
+					рекламным кампаниям. Посетите наш каталог и выберите лучшие предложения
+					для сотрудничества.
+					{% else %}
+					<strong>Нет данных.</strong> Вы еще не подключили ни одной рекламной кампании.
+					Посетите наш каталог и выберите лучшие предложения для сотрудничества.
+					{% endif %}
+				</p>
+				<div class="alert-actions">
+					<a class="btn small" href="{{ url_for('.offers_all') }}">Перейти в каталог рекламных предложений</a>
+				</div>
 			</div>
 			{% endif %}
 		</div>
@@ -104,7 +120,7 @@
 							<h3>{{ newsitem.date|dateformat }} &mdash; {{ newsitem.title }}</h3>
 						</div>
 						<div class="modal-body">
-							<div class="redactor-text">
+							<div class="newsitem-wrap redactor-text">
 								{{ newsitem.text|safe }}
 							</div>
 						</div>

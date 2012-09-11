@@ -20,7 +20,13 @@ def index_affiliate():
 
 @template('cabinetcpa/index-advertiser.html')
 def index_advertiser():
-	return 'OK'
+	form = forms.DateTimeRangeForm()
+	args = dict(offset=0, limit=999999, ordering='NOT_CONFIRMED_REVENUE', direction='DESC', **form.backend_args())
+	stats, _ = rc.offer_stats.list_user(g.user, **args)
+	offers, _ = rc.offers.list(advertiser_id=g.user.id, limit=5)
+	user_notifications_query = Notification.query.filter(Notification.user_id == g.user.id)
+	notifications = user_notifications_query.descending(Notification.date).limit(5).all()
+	return dict(stats=stats, offers=offers, notifications=notifications)
 
 @bp.route('/')
 def index():

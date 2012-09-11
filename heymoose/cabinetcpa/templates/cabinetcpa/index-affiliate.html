@@ -9,24 +9,48 @@
 	{{ macros.breadcrumb('Главная', url_for('.index')) }}
 {% endblock %}
 
-{# {% block pageheader %}<h1>{{ self.title() }}</h1>{% endblock %} #}
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		.hot-links li {
+			line-height: 24px;
+		}
+		
+		.more-link {
+			float: right;
+			font-size: 13px;
+			font-weight: normal;
+		}
+		
+		.notes-list dd {
+			margin-bottom: 10px;
+		}
+	</style>
+{% endblock %}
+
+
 
 {% block content %}
 	<div class="row">
 		<div class="span4">
-			<div class="well">
+			<div class="page-header">
 				<h5>Быстрые ссылки</h5>
-				<ul>
-					<li><strong><a href="{{ url_for('.offers_all') }}">Каталог офферов</a></strong></li>
-					<li><a href="{{ url_for('.offers_requested') }}">Мои офферы</a></li>
-					<li><a href="{{ url_for('.stats_offer') }}">Статистика по офферам</a></li>
-					<li><a href="{{ url_for('.withdrawals') }}">Выплаты</a></li>
-					<li><a href="{{ url_for('.notifications') }}">Уведомления</a></li>
-				</ul>
 			</div>
+			<ul class="hot-links">
+				<li><strong><a href="{{ url_for('.offers_all') }}">Каталог офферов</a></strong></li>
+				<li><a href="{{ url_for('.offers_requested') }}">Мои офферы</a></li>
+				<li><a href="{{ url_for('.stats_offer') }}">Статистика по офферам</a></li>
+				<li><a href="{{ url_for('.withdrawals') }}">Выплаты</a></li>
+				<li><a href="{{ url_for('.notifications') }}">Уведомления</a></li>
+			</ul>
 		</div>
 		<div class="span11">
-			<h3>Лучшие офферы за месяц</h3>
+			<div class="page-header">
+				<h5>
+					Лучшие офферы за месяц
+					<a href="{{ url_for('.stats_offer') }}" class="more-link">подробно &raquo;</a>
+				</h5>
+			</div>
 			{% if stats %}
 			<table class="bordered-table zebra-striped condensed-table">
 				<thead>
@@ -63,16 +87,57 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="span8">
-			<h3>Последние новости</h3>
-		</div>
 		<div class="span7">
-			<h3>Последние уведомления</h3>
-			{% if notifications %}
-			<dl>
-				<dt></dt>
-				<dd></dd>
+			<div class="page-header">
+				<h5>Последние новости</h5>
+			</div>
+			{% if news %}
+			<dl class="notes-list">
+				{% for newsitem in news %}
+				<dt>
+					{{ newsitem.date|dateformat }} &mdash;
+					<a href="#" data-controls-modal="newsitem-{{ newsitem.mongo_id -}}"
+					 data-backdrop="true" data-keyboard="true">{{ newsitem.title }}</a>
+					<div class="modal fade" id="newsitem-{{ newsitem.mongo_id }}" style="display: none;">
+						<div class="modal-header">
+							<a href="#" class="close">×</a>
+							<h3>{{ newsitem.date|dateformat }} &mdash; {{ newsitem.title }}</h3>
+						</div>
+						<div class="modal-body">
+							<div class="redactor-text">
+								{{ newsitem.text|safe }}
+							</div>
+						</div>
+					</div>
+				</dt>
+				<dd>{{ newsitem.summary|safe }}</dd>
+				{% endfor %}
 			</dl>
+			{% else %}
+			<div class="clearfix alert-message block-message info">
+				<p>Новостей нет.</p>
+			</div>
+			{% endif %}
+		</div>
+		<div class="span7" style="margin-left: 80px;">
+			<div class="page-header">
+				<h5>
+					Последние уведомления
+					<a href="{{ url_for('.notifications') }}" class="more-link">подробно &raquo;</a>
+				</h5>
+			</div>
+			
+			{% if notifications %}
+			<dl class="notes-list">
+				{% for notification in notifications %}
+				<dt>{{ notification.date|datetimeformat }}</dt>
+				<dd>{{ notification.body|safe }}</dd>
+				{% endfor %}
+			</dl>
+			{% else %}
+			<div class="clearfix alert-message block-message info">
+				<p>Не было ни одного уведомления.</p>
+			</div>
 			{% endif %}
 		</div>
 	</div>

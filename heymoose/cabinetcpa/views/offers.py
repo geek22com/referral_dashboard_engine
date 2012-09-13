@@ -277,8 +277,12 @@ def offers_info_requests(id, **kwargs):
 def offers_info_sales(id, **kwargs):
 	offer = my_offer(id)
 	if request.method == 'POST':
-		rc.actions.cancel_by_ids(offer.id, request.form.getlist('id'))
-		flash(u'Действия отменены', 'success')
+		if 'approve' in request.form:
+			rc.actions.approve_by_ids(offer.id, request.form.getlist('id'))
+			flash(u'Действия подтверждены', 'success')
+		elif 'cancel' in request.form:
+			rc.actions.cancel_by_ids(offer.id, request.form.getlist('id'))
+			flash(u'Действия отменены', 'success')
 		return redirect(request.url)
 	form = forms.OfferActionsFilterForm(request.args)
 	kwargs.update(form.backend_args())

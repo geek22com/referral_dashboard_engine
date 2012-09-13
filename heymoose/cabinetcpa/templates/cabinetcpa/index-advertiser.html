@@ -1,0 +1,126 @@
+{% extends "cabinetcpa/layout.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% set activemenu = 'index' %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Главная', url_for('.index')) }}
+{% endblock %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		.hot-links li {
+			margin-bottom: 8px;
+		}
+		
+		.more-link {
+			float: right;
+			font-size: 13px;
+			font-weight: normal;
+		}
+		
+		.notes-list dd {
+			margin-bottom: 10px;
+		}
+	</style>
+{% endblock %}
+
+
+
+{% block content %}
+	<div class="row">
+		<div class="span4">
+			<div class="page-header">
+				<h5>Быстрые ссылки</h5>
+			</div>
+			<ul class="hot-links">
+				<li><strong><a href="{{ url_for('.offers_new') }}">Создать оффер</a></strong></li>
+				<li><strong><a href="{{ url_for('.offers_list') }}">Мои офферы</a></strong></li>
+				<li><a href="{{ url_for('.stats_offer') }}">Моя статистика</a></li>
+				<li><a href="{{ url_for('.notifications') }}">Мои уведомления</a></li>
+				<li><a href="{{ url_for('.profile') }}">Мой профиль</a></li>
+			</ul>
+			<div class="page-header">
+				<h5>Документы</h5>
+			</div>
+			<ul class="hot-links">
+				<li>
+					<a href="/doc/manual-pixel.pdf">Руководство по&nbsp;интеграции
+					с&nbsp;использованием подтверждающего пикселя</a>
+				</li>
+				<li>
+					<a href="/doc/manual-xml.pdf">Руководство по&nbsp;интеграции
+					с&nbsp;использованием XML-сервиса</a>
+				</li>
+			</ul>
+		</div>
+		<div class="span11">
+			<h5>
+				Активность по моим рекламным кампаниям за последний месяц
+				<a href="{{ url_for('.stats_offer') }}" class="more-link">подробно &raquo;</a>
+			</h5>
+			{% if stats %}
+			<table class="bordered-table zebra-striped condensed-table nosort">
+				<thead>
+					<tr>
+						<th class="header center" rowspan="2">Оффер</th>
+						<th class="header center" rowspan="2">Клики</th>
+						<th class="header center" rowspan="2">Действия</th>
+						<th class="header center" rowspan="2">CR</th>
+						<th class="header center" colspan="2">Финансы, руб.</th>
+					</tr>
+					<tr class="subrow">
+						<th class="header center">Неподтв.</th>
+						<th class="header center">Подтв.</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for stat in stats %}
+					<tr>
+						<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
+						<td class="right">{{ stat.clicks }}</td>
+						<td class="right">{{ stat.leads + stat.sales }}</td>
+						<td class="right">{% if stat.cr %}{{ stat.cr if stat.cr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
+						<td class="right">{{ stat.not_confirmed_revenue }}</td>
+						<td class="right green">{{ stat.confirmed_revenue }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% else %}
+			<div class="clearfix alert-message block-message info">
+				{% if offers %}
+				<p><strong>Нет данных.</strong> За месяц не было активности по вашим рекламным кампаниям.</p>
+				{% else %}
+				<p><strong>Нет данных.</strong> Вы еще не создали ни одной рекламной кампании.</p>
+				<div class="alert-actions">
+					<a class="btn small" href="{{ url_for('.offers_new') }}">Создать рекламную кампанию</a>
+				</div>
+				{% endif %}
+			</div>
+			{% endif %}
+			
+			<div class="page-header">
+				<h5>
+					Последние уведомления
+					<a href="{{ url_for('.notifications') }}" class="more-link">подробно &raquo;</a>
+				</h5>
+			</div>
+			{% if notifications %}
+			<dl class="notes-list">
+				{% for notification in notifications %}
+				<dt>{{ notification.date|datetimeformat }}</dt>
+				<dd>{{ notification.body|safe }}</dd>
+				{% endfor %}
+			</dl>
+			{% else %}
+			<div class="clearfix alert-message block-message info">
+				<p>Не было ни одного уведомления.</p>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

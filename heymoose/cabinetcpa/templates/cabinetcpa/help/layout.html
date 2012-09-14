@@ -15,6 +15,8 @@
 	</div>
 {% endmacro %}
 
+{% macro hm(excl=true) %}&laquo;HeyMoose{{ '!' if excl -}}&raquo;{% endmacro %}
+
 {% block title %}
 	{% block helptitle %}В разработке{% endblock %} :: Справка
 {% endblock %}
@@ -27,4 +29,8 @@
 
 {% block pageheader %}<h1>{{ self.helptitle() }}</h1>{% endblock %}
 
-{% block content %}Раздел находится в разработке.{% endblock %}
+{% block content %}
+	<div class="redactor-text">
+		{% block helpcontent %}Раздел находится в разработке.{% endblock %}
+	</div>
+{% endblock %}

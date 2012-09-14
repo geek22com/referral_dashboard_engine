@@ -14,6 +14,9 @@ def app_init_basic(app):
 
 def app_init_web(app):
 	configure(app)
+	# Register flask extensions
+	from flaskext.markdown import Markdown
+	Markdown(app)
 	# Import handlers and filters
 	import handlers, filters, forms.filters
 	# Import and register views and blueprints

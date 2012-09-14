@@ -314,32 +314,6 @@ def offers_info_settings(id):
 		return redirect(request.url)
 	return dict(offer=offer, form=form)
 
-@bp.route('/offers/<int:id>/balance', methods=['GET', 'POST'])
-@advertiser_only
-@template('cabinetcpa/offers/info/balance.html')
-def offers_info_balance(id):
-	offer = my_offer(id)
-	form_in = forms.BalanceForm()
-	form_out = forms.BalanceForm()
-	if request.method == 'POST':
-		type = request.form.get('type', '')
-		if type == 'in':
-			form_in = forms.BalanceForm(request.form)
-			if form_in.validate() and g.user.account.balance >= form_in.amount.data:
-				rc.offers.add_to_balance(offer.id, form_in.amount.data)
-				flash(u'Счет оффера успешно пополнен', 'success')
-				return redirect(url_for('.offers_info', id=offer.id))
-		elif type == 'out':
-			form_out = forms.BalanceForm(request.form)
-			if form_out.validate() and offer.account.balance >= form_out.amount.data:
-				rc.offers.remove_from_balance(offer.id, form_out.amount.data)
-				flash(u'Средства успешно выведены со счета оффера', 'success')
-				return redirect(url_for('.offers_info', id=offer.id))
-		else:
-			flash(u'Ошибка операции со счетом', 'error')
-			return redirect(url_for('.offers_info', id=offer.id))	
-	return dict(offer=offer, form_in=form_in, form_out=form_out)
-
 @bp.route('/offers/<int:id>/stats')
 @template('cabinetcpa/offers/info/stats.html')
 def offers_info_stats(id):

@@ -468,4 +468,22 @@ class AffiliateTopEntry(models.ModelBase):
 	conversion_rate = Field(types.Decimal, 'conversion_rate')
 
 
+class Debt(models.ModelBase):
+	user_id = Field(types.Integer, 'user-id')
+	user_email = Field(types.String, 'user-email')
+	basis = Field(enums.WithdrawalBases, 'basis')
+	payed_out_amount = Field(types.Decimal, 'payed-out-amount', quantize='1.00')
+	debt_amount = Field(types.Decimal, 'debt-amount', quantize='1.00')
+	income_amount = Field(types.Decimal, 'income-amount', quantize='1.00')
+	ordered_amount = Field(types.Decimal, 'ordered-amount', quantize='1.00')
+	
+	@property
+	def is_affiliate_revenue(self):
+		return self.basis == enums.WithdrawalBases.AFFILIATE_REVENUE
+	
+	@property
+	def is_fee(self):
+		return self.basis == enums.WithdrawalBases.FEE
+
+
 registry.register_models_from_module(__name__)

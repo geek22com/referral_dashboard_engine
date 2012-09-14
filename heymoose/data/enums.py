@@ -77,3 +77,8 @@ class OfferActionStates(Enum):
 class OfferActionDateKinds(Enum):
 	CREATION = e('CREATION', name=u'время создания')
 	CHANGE = e('CHANGE', name=u'время изменения')
+
+class WithdrawalBases(Enum):
+	AFFILIATE_REVENUE = e('AFFILIATE_REVENUE', name=u'вознаграждение партнёра')
+	FEE = e('FEE', name=u'комиссия системы')
+	

@@ -18,7 +18,7 @@ AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
 SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
-
+DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
 
 @bp.route('/offers/')
 @template('admin/offers/list.html')
@@ -328,6 +328,16 @@ def offers_info_operations(id):
 			flash(u'{0} действий отменено'.format(count), 'success')
 		return redirect(request.url)
 	return dict(offer=offer)
+
+@bp.route('/offers/<int:id>/finances/')
+@template('admin/offers/info/finances.html')
+@paginated(DEBTS_PER_PAGE)
+def offers_info_finances(id, **kwargs):
+	offer = rc.offers.get_by_id(id)
+	form = forms.DateTimeRangeForm(request.args)
+	kwargs.update(form.backend_args())
+	debts, count = rc.accounts.list_debt_by_affiliate(offer.id, **kwargs) if form.validate() else ([], 0)
+	return dict(offer=offer, debts=debts, count=count, form=form)
 
 @bp.route('/offers/<int:id>/stats/affiliate')
 @template('admin/offers/info/stats/affiliate.html')

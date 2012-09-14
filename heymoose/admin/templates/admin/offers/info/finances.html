@@ -11,7 +11,7 @@
 
 {% block tabcontent %}
 
-{{ datetime_range.html(form, 'Показать задолженность за период:') }}
+{{ datetime_range.html(form, 'Показать долг за период:') }}
 
 {% if debts %}
 	<table class="bordered-table zebra-striped nosort">
@@ -29,9 +29,11 @@
 			<tr>
 				<td>
 					{% if debt.is_affiliate_revenue %}
-					Задолженность партнёру <a href="{{ url_for('.users_info', id=debt.user_id) }}">{{ debt.user_email }}</a>
-					{% else %}
+					<a href="{{ url_for('.users_info', id=debt.user_id) }}">{{ debt.user_email }}</a>
+					{% elif debt.is_fee %}
 					Комиссия системы
+					{% else %}
+					Неизвестная статья
 					{% endif %}
 				</td>
 				<td class="right">{{ debt.income_amount|currency(false) }}</td>
@@ -42,7 +44,7 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	{{ lists.paginate(pages, **form.query_args()) }}
+	{{ lists.paginate(pages, id=offer.id, **form.query_args()) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p>За выбранный период не было активности по офферу.</p>

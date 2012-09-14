@@ -35,8 +35,8 @@ class AccountResource(BackendResource):
 		self.path('withdraws').path(id).delete(comment=comment)
 		
 	def list_debt_by_affiliate(self, offer_id, **kwargs):
-		self.path('debt').path('by_affiliate').get(offer_id=offer_id, **kwargs).as_objlist(Debt, with_count=True)
+		return self.path('debt').path('by_affiliate').get(offer_id=offer_id, **kwargs).as_objlist(Debt, with_count=True)
 	
 	def list_debt_by_offer(self, affiliate_id, **kwargs):
-		self.path('debt').path('by_offer').get(affiliate_id=affiliate_id, **kwargs).as_objlist(Debt, with_count=True)
+		return self.path('debt').path('by_offer').get(affiliate_id=affiliate_id, **kwargs).as_objlist(Debt, with_count=True)
 		

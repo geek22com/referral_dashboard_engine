@@ -31,7 +31,11 @@
 				<tr>
 					<td>
 						{% if debt.is_affiliate_revenue %}
-						<a href="{{ url_for('.users_info', id=debt.user_id) }}">{{ debt.user_email }}</a>
+							{% if debt.user_id %}
+							<a href="{{ url_for('.users_info', id=debt.user_id) }}">{{ debt.user_email }}</a>
+							{% elif debt.offer_id %}
+							<a href="{{ url_for('.offers_info', id=debt.offer_id) }}">{{ debt.offer_name }}</a>
+							{% endif %}
 						{% elif debt.is_fee %}
 						Комиссия системы
 						{% else %}
@@ -48,7 +52,7 @@
 				{% endfor %}
 			</tbody>
 		</table>
-		{{ lists.paginate(pages, id=offer.id, **form.query_args()) }}
+		{{ lists.paginate(pages, **kwargs) }}
 	{% else %}
 		<div class="clearfix alert-message block-message info">
 			<p>За выбранный период не было активности по офферу.</p>

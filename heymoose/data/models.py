@@ -459,7 +459,7 @@ class Debt(models.ModelBase):
 	user_id = Field(types.Integer, 'user-id')
 	user_email = Field(types.String, 'user-email')
 	offer_id = Field(types.Integer, 'offer-id')
-	offer_name = Field(types.Integer, 'offer-name')
+	offer_name = Field(types.String, 'offer-name')
 	basis = Field(enums.WithdrawalBases, 'basis')
 	payed_out_amount = Field(types.Decimal, 'payed-out-amount', quantize='1.00')
 	debt_amount = Field(types.Decimal, 'debt-amount', quantize='1.00')

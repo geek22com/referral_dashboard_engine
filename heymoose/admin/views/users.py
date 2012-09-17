@@ -20,6 +20,7 @@ SOURCE_ID_STATS_PER_PAGE = app.config.get('SOURCE_ID_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
 SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
+DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
 
 
 @bp.route('/users/')
@@ -142,6 +143,21 @@ def users_info_balance(id, **kwargs):
 		flash(u'Баланс успешно пополнен', 'success')
 		return redirect(request.url)
 	return dict(user=user, entries=entries, count=count, form=form)
+
+@bp.route('/users/<int:id>/finances/')
+@template('admin/users-info-finances.html')
+@sorted('pending', 'desc')
+@paginated(DEBTS_PER_PAGE)
+def users_info_finances(id, **kwargs):
+	user = rc.users.get_by_id(id)
+	form = forms.DateTimeRangeForm(request.args)
+	if form.validate():
+		kwargs.update(form.backend_args())
+		debts_list = rc.withdrawals.list_debt_by_offer(user.id, **kwargs)
+		count = debts_list.count
+	else:
+		debts_list, count = [], 0
+	return dict(user=user, debts_list=debts_list, count=count, form=form)
 
 @bp.route('/users/<int:id>/stats/offer')
 @template('admin/users-info-stats-offer.html')

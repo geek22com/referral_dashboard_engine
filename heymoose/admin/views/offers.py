@@ -313,22 +313,6 @@ def offers_info_sales(id, **kwargs):
 		actions, count = rc.actions.list(offer.id, **kwargs) if form.validate() else ([], 0)
 	return dict(offer=offer, actions=actions, count=count, form=form)
 
-@bp.route('/offers/<int:id>/operations', methods=['GET', 'POST'])
-@template('admin/offers/info/operations.html')
-def offers_info_operations(id):
-	offer = rc.offers.get_by_id(id)
-	if request.method == 'POST':
-		type = request.form.get('type', '')
-		if type == 'approve':
-			count = rc.actions.approve_expired(offer_id=offer.id)
-			flash(u'{0} действий подтверждено'.format(count), 'success')
-		elif type == 'cancel' and 'csv' in request.files:
-			transactions = [t.strip() for t in request.files['csv'].read().split(',')]
-			count = rc.actions.cancel_by_transactions(offer.id, transactions)
-			flash(u'{0} действий отменено'.format(count), 'success')
-		return redirect(request.url)
-	return dict(offer=offer)
-
 @bp.route('/offers/<int:id>/finances/', methods=['GET', 'POST'])
 @template('admin/offers/info/finances.html')
 @sorted('pending', 'desc')

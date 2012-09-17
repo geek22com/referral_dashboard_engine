@@ -329,17 +329,27 @@ def offers_info_operations(id):
 		return redirect(request.url)
 	return dict(offer=offer)
 
-@bp.route('/offers/<int:id>/finances/')
+@bp.route('/offers/<int:id>/finances/', methods=['GET', 'POST'])
 @template('admin/offers/info/finances.html')
-@sorted('ordered', 'desc')
+@sorted('pending', 'desc')
 @paginated(DEBTS_PER_PAGE)
 def offers_info_finances(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
 	form = forms.DateTimeRangeForm(request.args)
-	kwargs.update(form.backend_args())
 	if form.validate():
-		debts_list = rc.accounts.list_debt_by_affiliate(offer.id, **kwargs)
-		count = debts_list.count
+		if request.method == 'POST':
+			rc.withdrawals.withdraw(
+				offer_id=offer.id,
+				user_id=request.form.getlist('user_id'),
+				amount=request.form.getlist('amount'),
+				**form.backend_args()
+			)
+			flash(u'Выплаты успешно выполнены', 'success')
+			return redirect(request.url)
+		else:
+			kwargs.update(form.backend_args())
+			debts_list = rc.withdrawals.list_debt_by_affiliate(offer.id, **kwargs)
+			count = debts_list.count
 	else:
 		debts_list, count = [], 0
 	return dict(offer=offer, debts_list=debts_list, count=count, form=form)

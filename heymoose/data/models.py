@@ -131,19 +131,6 @@ class Transaction(IdentifiableModel):
 		return desc
 
 
-class Withdrawal(IdentifiableModel):
-	amount = Field(types.Decimal, 'amount')
-	timestamp = Field(types.DateTime, 'timestamp')
-	done = Field(types.Boolean, 'done')
-	aff_id = Field(types.Integer, '@aff-id')
-	aff_email = Field(types.String, 'aff-email')
-
-class WithdrawalList(models.ModelBase):
-	count = Field(types.Integer, '@count')
-	non_approved_count = Field(types.Integer, '@non-approved-count')
-	non_approved_total = Field(types.Decimal, '@non-approved-total')
-	withdrawals = FieldList('Withdrawal', 'withdraw')
-
 class Order(IdentifiableModel):
 	offer_id = Field(types.Integer, 'offer-id')
 	type = Field(enums.OrderTypes, 'type')

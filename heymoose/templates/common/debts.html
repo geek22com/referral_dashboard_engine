@@ -2,13 +2,14 @@
 
 {% macro html(debts_list) %}
 	{% if debts_list.items %}
-		<table class="bordered-table zebra-striped">
+		<table class="bordered-table zebra-striped debts-table">
 			<thead>
 				<tr>
 					<th rowspan="2" {{ lists.sort_header('user_email', **kwargs) }}>Статья</th>
 					<th rowspan="2" {{ lists.sort_header('income', **kwargs) }}>Доход, руб.</th>
-					<th rowspan="2" {{ lists.sort_header('debt', **kwargs) }}>Задолженность, руб.</th>
+					<th rowspan="2" {{ lists.sort_header('debt', **kwargs) }}>Долг, руб.</th>
 					<th class="center" colspan="3">Выплаты, руб.</th>
+					{{ caller('head', none) }}
 				</tr>
 				<tr class="subrow">
 					<th {{ lists.sort_header('ordered', **kwargs) }}>Заказано</th>
@@ -22,10 +23,10 @@
 					<th class="right header nosort">{{ debts_list.ordered_amount|currency(false) }}</th>
 					<th class="right header nosort">{{ debts_list.payed_out_amount|currency(false) }}</th>
 					<th class="right header nosort">{{ debts_list.pending_amount|currency(false) }}</th>
+					{{ caller('overall', none) }}
 				</tr>
 			</thead>
 			<tbody>
-				
 				{% for debt in debts_list.items %}
 				<tr>
 					<td>
@@ -41,7 +42,8 @@
 					<td class="right">{{ debt.debt_amount|currency(false) }}</td>
 					<td class="right">{{ debt.ordered_amount|currency(false) }}</td>
 					<td class="right">{{ debt.payed_out_amount|currency(false) }}</td>
-					<td class="right">{{ debt.pending_amount|currency(false) }}</td>
+					<td class="right pending-amount">{{ debt.pending_amount|currency(false) }}</td>
+					{{ caller('body', debt) }}
 				</tr>
 				{% endfor %}
 			</tbody>

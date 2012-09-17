@@ -1,5 +1,5 @@
 {% extends "admin/offers/info/layout.html" %}
-{% import 'common/macros/lists.html' as lists with context %}
+{% import 'common/debts.html' as debts with context %}
 {% import 'common/forms/datetime-range.html' as datetime_range %}
 
 {% set activetab = 'finances' %}
@@ -15,42 +15,6 @@
 
 <strong>На счету рекламодателя {{ offer.advertiser.account.balance|currency }}</strong>
 
-{% if debts %}
-	<table class="bordered-table zebra-striped nosort">
-		<thead>
-			<tr>
-				<th>Статья</th>
-				<th class="right">Доход, руб.</th>
-				<th class="right">Выплачено, руб.</th>
-				<th class="right">Задолженность, руб.</th>
-				<th class="right">Заказано, руб.</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for debt in debts %}
-			<tr>
-				<td>
-					{% if debt.is_affiliate_revenue %}
-					<a href="{{ url_for('.users_info', id=debt.user_id) }}">{{ debt.user_email }}</a>
-					{% elif debt.is_fee %}
-					Комиссия системы
-					{% else %}
-					Неизвестная статья
-					{% endif %}
-				</td>
-				<td class="right">{{ debt.income_amount|currency(false) }}</td>
-				<td class="right">{{ debt.payed_out_amount|currency(false) }}</td>
-				<td class="right">{{ debt.debt_amount|currency(false) }}</td>
-				<td class="right">{{ debt.ordered_amount|currency(false) }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	{{ lists.paginate(pages, id=offer.id, **form.query_args()) }}
-{% else %}
-	<div class="clearfix alert-message block-message info">
-		<p>За выбранный период не было активности по офферу.</p>
-	</div>
-{% endif %}
+{{ debts.html(debts_list, id=offer.id, **form.query_args()) }}
 
 {% endblock %}

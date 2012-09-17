@@ -471,11 +471,14 @@ class AffiliateTopEntry(models.ModelBase):
 class Debt(models.ModelBase):
 	user_id = Field(types.Integer, 'user-id')
 	user_email = Field(types.String, 'user-email')
+	offer_id = Field(types.Integer, 'offer-id')
+	offer_name = Field(types.Integer, 'offer-name')
 	basis = Field(enums.WithdrawalBases, 'basis')
 	payed_out_amount = Field(types.Decimal, 'payed-out-amount', quantize='1.00')
 	debt_amount = Field(types.Decimal, 'debt-amount', quantize='1.00')
 	income_amount = Field(types.Decimal, 'income-amount', quantize='1.00')
 	ordered_amount = Field(types.Decimal, 'ordered-amount', quantize='1.00')
+	pending_amount = Field(types.Decimal, 'pending-amount', quantize='1.00')
 	
 	@property
 	def is_affiliate_revenue(self):
@@ -484,6 +487,16 @@ class Debt(models.ModelBase):
 	@property
 	def is_fee(self):
 		return self.basis == enums.WithdrawalBases.FEE
+
+
+class DebtsList(models.ModelBase):
+	count = Field(types.Integer, '@count')
+	payed_out_amount = Field(types.Decimal, '@payed-out-amount', quantize='1.00')
+	debt_amount = Field(types.Decimal, '@debt-amount', quantize='1.00')
+	income_amount = Field(types.Decimal, '@income-amount', quantize='1.00')
+	ordered_amount = Field(types.Decimal, '@ordered-amount', quantize='1.00')
+	pending_amount = Field(types.Decimal, '@pending-amount', quantize='1.00')
+	items = FieldList('Debt', 'debt')
 
 
 registry.register_models_from_module(__name__)

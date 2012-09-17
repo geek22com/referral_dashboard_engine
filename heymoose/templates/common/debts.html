@@ -1,0 +1,55 @@
+{% import 'common/macros/lists.html' as lists with context %}
+
+{% macro html(debts_list) %}
+	{% if debts_list.items %}
+		<table class="bordered-table zebra-striped">
+			<thead>
+				<tr>
+					<th rowspan="2" {{ lists.sort_header('user_email', **kwargs) }}>Статья</th>
+					<th rowspan="2" {{ lists.sort_header('income', **kwargs) }}>Доход, руб.</th>
+					<th rowspan="2" {{ lists.sort_header('debt', **kwargs) }}>Задолженность, руб.</th>
+					<th class="center" colspan="3">Выплаты, руб.</th>
+				</tr>
+				<tr class="subrow">
+					<th {{ lists.sort_header('ordered', **kwargs) }}>Заказано</th>
+					<th {{ lists.sort_header('payed_out', **kwargs) }}>Выплачено</th>
+					<th {{ lists.sort_header('pending', **kwargs) }}>К выплате</th>
+				</tr>
+				<tr>
+					<th class="right header nosort">ВСЕГО:</th>
+					<th class="right header nosort">{{ debts_list.income_amount|currency(false) }}</th>
+					<th class="right header nosort">{{ debts_list.debt_amount|currency(false) }}</th>
+					<th class="right header nosort">{{ debts_list.ordered_amount|currency(false) }}</th>
+					<th class="right header nosort">{{ debts_list.payed_out_amount|currency(false) }}</th>
+					<th class="right header nosort">{{ debts_list.pending_amount|currency(false) }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				
+				{% for debt in debts_list.items %}
+				<tr>
+					<td>
+						{% if debt.is_affiliate_revenue %}
+						<a href="{{ url_for('.users_info', id=debt.user_id) }}">{{ debt.user_email }}</a>
+						{% elif debt.is_fee %}
+						Комиссия системы
+						{% else %}
+						Неизвестная статья
+						{% endif %}
+					</td>
+					<td class="right">{{ debt.income_amount|currency(false) }}</td>
+					<td class="right">{{ debt.debt_amount|currency(false) }}</td>
+					<td class="right">{{ debt.ordered_amount|currency(false) }}</td>
+					<td class="right">{{ debt.payed_out_amount|currency(false) }}</td>
+					<td class="right">{{ debt.pending_amount|currency(false) }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{{ lists.paginate(pages, id=offer.id, **form.query_args()) }}
+	{% else %}
+		<div class="clearfix alert-message block-message info">
+			<p>За выбранный период не было активности по офферу.</p>
+		</div>
+	{% endif %}
+{% endmacro %}

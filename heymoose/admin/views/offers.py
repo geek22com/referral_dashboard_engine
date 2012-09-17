@@ -331,13 +331,18 @@ def offers_info_operations(id):
 
 @bp.route('/offers/<int:id>/finances/')
 @template('admin/offers/info/finances.html')
+@sorted('ordered', 'desc')
 @paginated(DEBTS_PER_PAGE)
 def offers_info_finances(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
 	form = forms.DateTimeRangeForm(request.args)
 	kwargs.update(form.backend_args())
-	debts, count = rc.accounts.list_debt_by_affiliate(offer.id, **kwargs) if form.validate() else ([], 0)
-	return dict(offer=offer, debts=debts, count=count, form=form)
+	if form.validate():
+		debts_list = rc.accounts.list_debt_by_affiliate(offer.id, **kwargs)
+		count = debts_list.count
+	else:
+		debts_list, count = [], 0
+	return dict(offer=offer, debts_list=debts_list, count=count, form=form)
 
 @bp.route('/offers/<int:id>/stats/affiliate')
 @template('admin/offers/info/stats/affiliate.html')

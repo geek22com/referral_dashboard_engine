@@ -29,9 +29,6 @@
 	<li id="tab-info"><a href="{{ url_for('.users_info', id=user.id) }}">Общее</a></li>
 	<li id="tab-offers"><a href="{{ url_for('.users_info_offers', id=user.id) }}">Офферы</a></li>
 	<li id="tab-balance"><a href="{{ url_for('.users_info_balance', id=user.id) }}">Операции со счетом</a></li>
-	{% if user.is_affiliate %}
-	<li id="tab-withdrawals"><a href="{{ url_for('.users_info_withdrawals', id=user.id) }}">Выплаты</a></li>
-	{% endif %}
 	<li id="tab-edit"><a href="{{ url_for('.users_info_edit', id=user.id) }}">Редактировать</a></li>
 	<li id="tab-password"><a href="{{ url_for('.users_info_password_change', id=user.id) }}">Изменить пароль</a></li>
 	<li id="tab-stats"><a href="{{ url_for('.users_info_stats_offer', id=user.id) }}">Статистика</a></li>

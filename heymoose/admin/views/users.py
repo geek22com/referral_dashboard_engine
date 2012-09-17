@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, request, redirect, flash, url_for, abort, session, send_file
+from flask import render_template, g, request, redirect, flash, url_for, session, send_file
 from heymoose import app, resource as rc
 from heymoose.admin import blueprint as bp
 from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.utils.pagination import current_page, page_limits, paginate as paginate2
-from heymoose.utils.shortcuts import paginate
 from heymoose.utils.convert import to_unixtime
 from heymoose.forms import forms
 from heymoose.db.models import UserInfo
@@ -143,14 +142,6 @@ def users_info_balance(id, **kwargs):
 		flash(u'Баланс успешно пополнен', 'success')
 		return redirect(request.url)
 	return dict(user=user, entries=entries, count=count, form=form)
-
-@bp.route('/users/<int:id>/withdrawals/')
-@template('admin/users-info-withdrawals.html')
-def users_info_withdrawals(id):
-	user = rc.users.get_by_id(id)
-	if not user.is_affiliate: abort(404)
-	withdrawals = rc.accounts.withdrawals_list_by_affiliate(user.id)
-	return dict(user=user, withdrawals=withdrawals)
 
 @bp.route('/users/<int:id>/stats/offer')
 @template('admin/users-info-stats-offer.html')

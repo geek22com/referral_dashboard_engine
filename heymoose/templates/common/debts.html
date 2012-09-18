@@ -6,15 +6,15 @@
 			<thead>
 				<tr>
 					<th rowspan="2" {{ lists.sort_header('user_email', **kwargs) }}>Статья</th>
-					<th rowspan="2" {{ lists.sort_header('income', **kwargs) }}>Доход, руб.</th>
-					<th rowspan="2" {{ lists.sort_header('debt', **kwargs) }}>Долг, руб.</th>
+					<th rowspan="2" style="min-width: 90px;" {{ lists.sort_header('income', **kwargs) }}>Доход, руб.</th>
+					<th rowspan="2" style="min-width: 90px;" {{ lists.sort_header('debt', **kwargs) }}>Долг, руб.</th>
 					<th class="center" colspan="3">Выплаты, руб.</th>
 					{{ caller('head', none) }}
 				</tr>
 				<tr class="subrow">
-					<th {{ lists.sort_header('ordered', **kwargs) }}>Заказано</th>
-					<th {{ lists.sort_header('payed_out', **kwargs) }}>Выплачено</th>
-					<th {{ lists.sort_header('pending', **kwargs) }}>К выплате</th>
+					<th style="min-width: 90px;" {{ lists.sort_header('ordered', **kwargs) }}>Заказано</th>
+					<th style="min-width: 90px;" {{ lists.sort_header('payed_out', **kwargs) }}>Выплачено</th>
+					<th style="min-width: 90px;" {{ lists.sort_header('pending', **kwargs) }}>К выплате</th>
 				</tr>
 				<tr>
 					<th class="right header nosort">ВСЕГО:</th>

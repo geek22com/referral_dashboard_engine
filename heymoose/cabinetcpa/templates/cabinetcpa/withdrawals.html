@@ -1,4 +1,5 @@
 {% extends "cabinetcpa/layout.html" %}
+{% import 'common/debts.html' as debts with context %}
 
 {% block title %}Выплаты{% endblock %}
 
@@ -18,7 +19,7 @@
 	<div class="row">
 		<div class="span6">
 			<div style="margin-top: 20px;">
-				<form method="post" action="{{ url_for('.withdrawals_create') }}">
+				<form method="post" action="">
 					<input type="submit" class="btn success" onclick="return confirm('Заказать выплату?');"
 					 value="Заказать выплату на сумму {{ g.user.account.balance|currency }}" />
 				</form>
@@ -38,32 +39,8 @@
 	</div>
 {% endif %}
 
-<h2>История выплат</h2>
-{% if withdrawals %}
-	<table class="bordered-table zebra-striped nosort">
-		<thead>
-			<tr>
-				<th class="header right minimal-width">#</th>
-				<th class="header right">Сумма, руб.</th>
-				<th class="header center">Заказана</th>
-				<th class="header center minimal-width">Подтв.</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for withdrawal in withdrawals %}
-			<tr>
-				<td class="right">{{ withdrawal.id }}</td>
-				<td class="right">{{ withdrawal.amount|currency(False) }}</td>
-				<td class="center">{{ withdrawal.timestamp|datetimeformat }}</td>
-				<td class="center">{{ macros.to_icon(withdrawal.done) }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-{% else %}
-	<div class="clearfix alert-message block-message info">
-		<p><strong>Список пуст.</strong> Не было заказано ни одной выплаты.</p>
-	</div>
-{% endif %}
+<h2>Выплаты по офферам</h2>
+
+{% call(place, debt) debts.html(debts_list, id=g.user.id) %}{% endcall %}
 
 {% endblock %}

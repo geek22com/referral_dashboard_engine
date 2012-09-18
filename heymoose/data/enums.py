@@ -28,7 +28,7 @@ class AccountingEvents(Enum):
 	ACTION_CREATED = e('ACTION_CREATED', name=u'совершение действия')
 	ACTION_APPROVED = e('ACTION_APPROVED', name=u'подтверждение действия')
 	ACTION_CANCELED = e('ACTION_CANCELED', name=u'отмена действия')
-	OFFER_ACCOUNT_ADD = e('OFFER_ACCOUNT_ADD', name=u'пополнение счета оффера')
+	OFFER_ACCOUNT_ADD = e('OFFER_ACCOUNT_ADD', name=u'оплата задолженности по офферу')
 	ROBOKASSA_ADD = e('ROBOKASSA_ADD', name=u'пополнение счета с помощью системы "RoboKassa"')
 	OFFER_ACCOUNT_REMOVE = e('OFFER_ACCOUNT_REMOVE', name=u'снятие средств со счета оффера')
 	MLM = e('MLM', name=u'реферальная программа')

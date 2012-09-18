@@ -1,5 +1,5 @@
 {% extends "cabinetcpa/layout.html" %}
-{% import 'common/debts.html' as debts with context %}
+{% import 'common/macros/lists.html' as lists with context %}
 
 {% block title %}Выплаты{% endblock %}
 
@@ -15,13 +15,13 @@
 {% block content %}
 
 <h2>Заказ выплаты</h2>
-{% if g.user.account.balance > 1.00 %}
+{% if debts_list.available_for_order_amount > 1.00 %}
 	<div class="row">
 		<div class="span6">
 			<div style="margin-top: 20px;">
 				<form method="post" action="">
 					<input type="submit" class="btn success" onclick="return confirm('Заказать выплату?');"
-					 value="Заказать выплату на сумму {{ g.user.account.balance|currency }}" />
+					 value="Заказать выплату на сумму {{ debts_list.available_for_order_amount|currency }}" />
 				</form>
 			</div>
 		</div>
@@ -35,12 +35,49 @@
 	</div>
 {% else %}
 	<div class="clearfix alert-message block-message info">
-		<p>Суммы на вашем счету подтвержденных средств недостаточно для заказа выплаты.</p>
+		<p>Нет доступных средств для заказа.</p>
 	</div>
 {% endif %}
 
-<h2>Выплаты по офферам</h2>
+<h2>Выплаты по статьям</h2>
 
-{% call(place, debt) debts.html(debts_list, id=g.user.id) %}{% endcall %}
+{% if debts_list.items %}
+	<table class="bordered-table zebra-striped debts-table">
+		<thead>
+			<tr>
+				<th {{ lists.sort_header('user_email', id=g.user.id) }}>Статья</th>
+				<th {{ lists.sort_header('available', id=g.user.id) }}>Доступно для заказа, руб.</th>
+				<th {{ lists.sort_header('pending', id=g.user.id) }}>К выплате, руб.</th>
+			</tr>
+			<tr>
+				<th class="right header nosort">ВСЕГО:</th>
+				<th class="right header nosort">{{ debts_list.available_for_order_amount|currency(false) }}</th>
+				<th class="right header nosort">{{ debts_list.pending_amount|currency(false) }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for debt in debts_list.items %}
+			<tr>
+				<td>
+					{% if debt.is_affiliate_revenue %}
+					<a href="{{ url_for('.offers_info', id=debt.offer_id) }}">{{ debt.offer_name }}</a>
+					{% elif debt.is_fee %}
+					Комиссия системы
+					{% else %}
+					Неизвестная статья
+					{% endif %}
+				</td>
+				<td class="right">{{ debt.available_for_order_amount|currency(false) }}</td>
+				<td class="right">{{ debt.pending_amount|currency(false) }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{{ lists.paginate(pages, id=g.user.id) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>За выбранный период не было активности по офферу.</p>
+	</div>
+{% endif %}
 
 {% endblock %}

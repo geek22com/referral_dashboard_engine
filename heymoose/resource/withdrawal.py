@@ -11,5 +11,8 @@ class WithdrawalResource(BackendResource):
 	def list_debt_by_offer(self, aff_id, **kwargs):
 		return self.path('debt').path('by_offer').get(aff_id=aff_id, **kwargs).as_obj(DebtsList)
 	
+	def order_withdrawal(self, aff_id):
+		self.path('order').put(aff_id=aff_id)
+	
 	def withdraw(self, **kwargs):
 		self.put(**kwargs)

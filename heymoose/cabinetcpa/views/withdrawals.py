@@ -16,6 +16,7 @@ DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
 @paginated(DEBTS_PER_PAGE)
 def withdrawals(**kwargs):
 	if request.method == 'POST':
+		rc.withdrawals.order_withdrawal(g.user.id)
 		flash(u'Выплата успешно заказана', 'success')
 		return redirect(request.url)
 	kwargs.update({'from' : 0, 'to' : to_unixtime(datetime.now(), True)})

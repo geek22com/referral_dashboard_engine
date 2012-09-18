@@ -464,6 +464,7 @@ class Debt(models.ModelBase):
 	payed_out_amount = Field(types.Decimal, 'payed-out-amount', quantize='1.00')
 	debt_amount = Field(types.Decimal, 'debt-amount', quantize='1.00')
 	income_amount = Field(types.Decimal, 'income-amount', quantize='1.00')
+	available_for_order_amount = Field(types.Decimal, 'available-for-order-amount', quantize='1.00')
 	ordered_amount = Field(types.Decimal, 'ordered-amount', quantize='1.00')
 	pending_amount = Field(types.Decimal, 'pending-amount', quantize='1.00')
 	
@@ -481,6 +482,7 @@ class DebtsList(models.ModelBase):
 	payed_out_amount = Field(types.Decimal, '@payed-out-amount', quantize='1.00')
 	debt_amount = Field(types.Decimal, '@debt-amount', quantize='1.00')
 	income_amount = Field(types.Decimal, '@income-amount', quantize='1.00')
+	available_for_order_amount = Field(types.Decimal, '@available-for-order-amount', quantize='1.00')
 	ordered_amount = Field(types.Decimal, '@ordered-amount', quantize='1.00')
 	pending_amount = Field(types.Decimal, '@pending-amount', quantize='1.00')
 	items = FieldList('Debt', 'debt')

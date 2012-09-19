@@ -757,7 +757,7 @@ class DateTimeRangeForm(Form):
 			dt_to=self.dt_to.data.strftime(datetime_nosec_format))
 
 class OfferStatsFilterForm(DateTimeRangeForm):
-	requested = BooleanField(u'только с заявками', default=True)
+	requested = BooleanField(u'только с заявками', default=False)
 	
 	def query_args(self):
 		args = DateTimeRangeForm.query_args(self)

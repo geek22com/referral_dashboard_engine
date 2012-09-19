@@ -34,6 +34,7 @@ class AccountingEvents(Enum):
 	MLM = e('MLM', name=u'реферальная программа')
 	CANCELLED = e('CANCELLED', name=u'отмена транзакции')
 	WITHDRAW = e('WITHDRAW', name=u'заказ выплаты партнёру')
+	ADVERTISER_ACCOUNT_ADD = e('ADVERTISER_ACCOUNT_ADD', name=u'пополнение счета рекламодателя')
 
 class OrderTypes(Enum):
 	REGULAR = e('REGULAR', name=u'обычный')

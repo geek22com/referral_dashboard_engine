@@ -106,13 +106,12 @@ def offers_new():
 @template('cabinetcpa/offers/info/info.html')
 def offers_info(id):
 	offer = visible_offer(id)
-	form = forms.OfferRequestForm(request.form)
-	if g.user.is_affiliate and not offer.grant and request.method == 'POST' and form.validate():
-		offer_grant = OfferGrant(offer=offer, affiliate=g.user, message=form.message.data)
+	if g.user.is_affiliate and not offer.grant and request.method == 'POST' and 'request' in request.form:
+		offer_grant = OfferGrant(offer=offer, affiliate=g.user)
 		rc.offer_grants.add(offer_grant)
 		flash(u'Заявка на сотрудничество успешно отправлена', 'success')
-		return redirect(url_for('.offers_requested'))
-	return dict(offer=offer, form=form)
+		return redirect(request.url)
+	return dict(offer=offer)
 
 @bp.route('/offers/<int:id>/edit', methods=['GET', 'POST'])
 @advertiser_only
@@ -207,19 +206,6 @@ def offers_info_materials_delete(id, bid):
 	flash(u'Баннер удален', 'success')
 	return redirect(url_for('.offers_info_materials', id=id))
 
-# Deprecated: using Deeplinks instead
-#@bp.route('/offers/<int:id>/materials/<int:bid>', methods=['POST'])
-@advertiser_only
-def offers_info_materials_update(id, bid):
-	offer = my_offer(id)
-	banner = offer.banner_by_id(bid) or abort(404)
-	form = forms.OfferBannerUrlForm(request.form, obj=banner)
-	if request.method == 'POST' and form.validate():
-		form.populate_obj(banner)
-		rc.offers.update_banner(id, banner)
-		flash(u'Баннер успешно изменен', 'success')
-	return redirect(url_for('.offers_info_materials', id=id))
-
 @bp.route('/offers/<int:id>/materials/up/', methods=['GET', 'POST'])
 @advertiser_only
 @template('cabinetcpa/offers/info/materials-upload.html')
@@ -241,6 +227,7 @@ def offers_info_materials_upload(id):
 @bp.route('/offers/<int:id>/requests', methods=['GET', 'POST'])
 @advertiser_only
 @template('cabinetcpa/offers/info/requests.html')
+@sorted('affiliate_id', 'asc')
 @paginated(OFFER_REQUESTS_PER_PAGE)
 def offers_info_requests(id, **kwargs):
 	offer = my_offer(id)

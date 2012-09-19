@@ -77,8 +77,10 @@
 	<div class="span5" style="width: 300px;">
 		{% if affiliate and not offer.grant %}
 		<div class="well center">
-			<a class="btn success" href="#" data-controls-modal="offer-grant-modal"
-			 data-backdrop="true" data-keyboard="true">Сотрудничать с кампанией</a>
+			<form method="post" action="">
+				<input type="submit" class="btn success" name="request" value="Сотрудничать с кампанией"
+				 onclick="return confirm('Начать сотрудничество с рекламной кампанией?');" />
+			</form>
 		</div>
 		{% endif %}
 		{% if admin %}
@@ -210,32 +212,6 @@
 		</div>
 	</div>
 </div>
-
-{% if affiliate and not offer.grant %}
-	<div id="offer-grant-modal" class="modal fade" style="display: none;">
-		<form method="post" action="" class="validate2">
-			<div class="modal-header">
-				<a href="#" class="close">×</a>
-				<h3>Заявка на сотрудничество с рекламной кампанией</h3>
-			</div>
-			<div class="modal-body">
-				<div class="formfield clearfix {{ forms.css_errors(form.message) }}">
-					<div class="span9">
-						<label class="simple">
-							Опишите свою заявку, а также площадки, на которых
-							вы будете показывать рекламные материалы оффера.
-						</label>
-					</div>
-					{{ forms.field(form.message, rows=5, class='span9') }}
-					{{ forms.errors(form.message) }}
-				</div>
-			</div>
-			<div class="modal-footer">
-				<input type="submit" class="btn primary" value="Отправить" />
-			</div>
-		</form>
-	</div>
-{% endif %}
 
 {% if admin %}
 	<div id="modal-block" class="modal" style="display: none;">

@@ -1,7 +1,6 @@
 {% extends "admin/offers/info/layout.html" %}
 {% import 'common/offers.html' as offer_macro %}
 
-{% set content_fluid = true %}
 {% set activetab = 'requests' %}
 
 {% block tabcontent %}
@@ -9,9 +8,9 @@
 	{{ macros.filter(filter,
 		(
 			(none, 'все'),
-			('new', 'не рассмотренные'),
-			('blocked', 'заблокированные'),
-			('unblocked', 'подтвержденные'),
+			('new', 'не рассмотр.'),
+			('blocked', 'заблокир.'),
+			('unblocked', 'подтв.'),
 			('moderation', 'на рассмотрении рекл.'),
 			('approved', 'подтвержденные рекл.'),
 			('rejected', 'отклоненные рекл.')

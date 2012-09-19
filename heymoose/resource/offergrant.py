@@ -26,7 +26,7 @@ class OfferGrantResource(BackendResource):
 		return offers, count
 	
 	def add(self, offer_grant, **kwargs):
-		params = self.extractor.extract(offer_grant, required='offer_id aff_id message'.split())
+		params = self.extractor.extract(offer_grant, required='offer_id aff_id'.split())
 		params.update(kwargs)
 		return self.post(**params).as_int()
 	

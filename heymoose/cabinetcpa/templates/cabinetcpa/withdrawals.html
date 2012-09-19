@@ -46,11 +46,13 @@
 		<thead>
 			<tr>
 				<th {{ lists.sort_header('user_email', id=g.user.id) }}>Статья</th>
-				<th {{ lists.sort_header('available', id=g.user.id) }}>Доступно для заказа, руб.</th>
-				<th {{ lists.sort_header('pending', id=g.user.id) }}>К выплате, руб.</th>
+				<th style="min-width: 150px;" {{ lists.sort_header('payed_out', id=g.user.id) }}>Выплачено, руб.</th>
+				<th style="min-width: 200px;" {{ lists.sort_header('available', id=g.user.id) }}>Доступно для заказа, руб.</th>
+				<th style="min-width: 150px;" {{ lists.sort_header('pending', id=g.user.id) }}>К выплате, руб.</th>
 			</tr>
 			<tr>
 				<th class="right header nosort">ВСЕГО:</th>
+				<th class="right header nosort">{{ overall_debt.payed_out_amount|currency(false) }}</th>
 				<th class="right header nosort">{{ overall_debt.available_for_order_amount|currency(false) }}</th>
 				<th class="right header nosort">{{ overall_debt.pending_amount|currency(false) }}</th>
 			</tr>
@@ -67,6 +69,7 @@
 					Неизвестная статья
 					{% endif %}
 				</td>
+				<td class="right">{{ debt.payed_out_amount|currency(false) }}</td>
 				<td class="right">{{ debt.available_for_order_amount|currency(false) }}</td>
 				<td class="right">{{ debt.pending_amount|currency(false) }}</td>
 			</tr>

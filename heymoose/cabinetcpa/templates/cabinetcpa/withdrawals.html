@@ -15,21 +15,21 @@
 {% block content %}
 
 <h2>Заказ выплаты</h2>
-{% if debts_list.available_for_order_amount > 1.00 %}
+{% if overall_debt.available_for_order_amount > 1.00 %}
 	<div class="row">
 		<div class="span6">
 			<div style="margin-top: 20px;">
 				<form method="post" action="">
 					<input type="submit" class="btn success" onclick="return confirm('Заказать выплату?');"
-					 value="Заказать выплату на сумму {{ debts_list.available_for_order_amount|currency }}" />
+					 value="Заказать выплату на сумму {{ overall_debt.available_for_order_amount|currency }}" />
 				</form>
 			</div>
 		</div>
 		<div class="span8">
 			<p>
-				При нажатии этой кнопки будет заказана выплата на сумму, находящуюся на вашем счету
-				подтвержденных средств. При этом сумма выплаты будет списана со счета. При фактическом
-				совершении выплаты, она становится подтвержденной.
+				При нажатии этой кнопки будет заказана выплата на указанную сумму по всем офферам, у которых
+				имеются доступные для выплаты средства. При фактическом совершении выплаты соответствующие
+				средства перейдут в "выплаченные".
 			</p>
 		</div>
 	</div>
@@ -41,7 +41,7 @@
 
 <h2>Выплаты по статьям</h2>
 
-{% if debts_list.items %}
+{% if debts %}
 	<table class="bordered-table zebra-striped debts-table">
 		<thead>
 			<tr>
@@ -51,12 +51,12 @@
 			</tr>
 			<tr>
 				<th class="right header nosort">ВСЕГО:</th>
-				<th class="right header nosort">{{ debts_list.available_for_order_amount|currency(false) }}</th>
-				<th class="right header nosort">{{ debts_list.pending_amount|currency(false) }}</th>
+				<th class="right header nosort">{{ overall_debt.available_for_order_amount|currency(false) }}</th>
+				<th class="right header nosort">{{ overall_debt.pending_amount|currency(false) }}</th>
 			</tr>
 		</thead>
 		<tbody>
-			{% for debt in debts_list.items %}
+			{% for debt in debts %}
 			<tr>
 				<td>
 					{% if debt.is_affiliate_revenue %}

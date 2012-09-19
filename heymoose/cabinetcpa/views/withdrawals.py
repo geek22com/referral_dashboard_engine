@@ -20,6 +20,6 @@ def withdrawals(**kwargs):
 		flash(u'Выплата успешно заказана', 'success')
 		return redirect(request.url)
 	kwargs.update({'from' : 0, 'to' : to_unixtime(datetime.now(), True)})
-	debts_list = rc.withdrawals.list_debt_by_offer(g.user.id, **kwargs)
-	count = debts_list.count
-	return dict(debts_list=debts_list, count=count)
+	debts, count = rc.withdrawals.list_debt_by_offer(aff_id=g.user.id, **kwargs)
+	overall_debt = rc.withdrawals.overall_debt(aff_id=g.user.id, **kwargs)
+	return dict(debts=debts, count=count, overall_debt=overall_debt)

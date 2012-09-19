@@ -153,11 +153,11 @@ def users_info_finances(id, **kwargs):
 	form = forms.DateTimeRangeForm(request.args)
 	if form.validate():
 		kwargs.update(form.backend_args())
-		debts_list = rc.withdrawals.list_debt_by_offer(user.id, **kwargs)
-		count = debts_list.count
+		debts, count = rc.withdrawals.list_debt_by_offer(aff_id=user.id, **kwargs)
+		overall_debt = rc.withdrawals.overall_debt(aff_id=user.id, **kwargs)
 	else:
-		debts_list, count = [], 0
-	return dict(user=user, debts_list=debts_list, count=count, form=form)
+		debts, count, overall_debt = [], 0, None
+	return dict(user=user, debts=debts, count=count, overall_debt=overall_debt, form=form)
 
 @bp.route('/users/<int:id>/stats/offer')
 @template('admin/users-info-stats-offer.html')

@@ -1,5 +1,5 @@
 {% extends "admin/offers/info/layout.html" %}
-{% import 'common/debts.html' as debts with context %}
+{% import 'common/debts.html' as debts_list with context %}
 {% import 'common/forms/datetime-range.html' as datetime_range %}
 
 {% set activetab = 'finances' %}
@@ -63,7 +63,7 @@
 	<strong>На счету рекламодателя {{ offer.advertiser.account.balance|currency }}</strong>
 </div>
 
-{% call(place, debt) debts.html(debts_list, id=offer.id, **form.query_args()) %}
+{% call(place, debt) debts_list.html(debts, overall_debt, id=offer.id, **form.query_args()) %}
 	{% if place == 'head' %}
 	<th class="header center nosort" rowspan="2">Оплата, руб.</th>
 	{% elif place == 'overall' %}

@@ -320,8 +320,8 @@ def offers_info_sales(id, **kwargs):
 def offers_info_finances(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
 	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		if request.method == 'POST':
+	if request.method == 'POST':
+		if form.validate():
 			rc.withdrawals.withdraw(
 				offer_id=offer.id,
 				user_id=request.form.getlist('user_id'),
@@ -329,14 +329,16 @@ def offers_info_finances(id, **kwargs):
 				**form.backend_args()
 			)
 			flash(u'Выплаты успешно выполнены', 'success')
-			return redirect(request.url)
 		else:
-			kwargs.update(form.backend_args())
-			debts_list = rc.withdrawals.list_debt_by_affiliate(offer.id, **kwargs)
-			count = debts_list.count
+			flash(u'Ошибка при совершении выплат', 'danger')
+		return redirect(request.url)
+	if form.validate():
+		kwargs.update(form.backend_args())
+		debts, count = rc.withdrawals.list_debt_by_affiliate(offer_id=offer.id, **kwargs)
+		overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id, **kwargs)
 	else:
-		debts_list, count = [], 0
-	return dict(offer=offer, debts_list=debts_list, count=count, form=form)
+		debts, count, overall_debt = [], 0, None
+	return dict(offer=offer, debts=debts, count=count, overall_debt=overall_debt, form=form)
 
 @bp.route('/offers/<int:id>/stats/affiliate')
 @template('admin/offers/info/stats/affiliate.html')

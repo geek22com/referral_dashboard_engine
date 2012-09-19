@@ -1,7 +1,7 @@
 {% import 'common/macros/lists.html' as lists with context %}
 
-{% macro html(debts_list) %}
-	{% if debts_list.items %}
+{% macro html(debts, overall_debt=none) %}
+	{% if debts %}
 		<table class="bordered-table zebra-striped debts-table">
 			<thead>
 				<tr>
@@ -16,18 +16,20 @@
 					<th style="min-width: 90px;" {{ lists.sort_header('payed_out', **kwargs) }}>Выплачено</th>
 					<th style="min-width: 90px;" {{ lists.sort_header('pending', **kwargs) }}>К выплате</th>
 				</tr>
+				{% if overall_debt %}
 				<tr>
 					<th class="right header nosort">ВСЕГО:</th>
-					<th class="right header nosort">{{ debts_list.income_amount|currency(false) }}</th>
-					<th class="right header nosort">{{ debts_list.debt_amount|currency(false) }}</th>
-					<th class="right header nosort">{{ debts_list.ordered_amount|currency(false) }}</th>
-					<th class="right header nosort">{{ debts_list.payed_out_amount|currency(false) }}</th>
-					<th class="right header nosort">{{ debts_list.pending_amount|currency(false) }}</th>
+					<th class="right header nosort">{{ overall_debt.income_amount|currency(false) }}</th>
+					<th class="right header nosort">{{ overall_debt.debt_amount|currency(false) }}</th>
+					<th class="right header nosort">{{ overall_debt.ordered_amount|currency(false) }}</th>
+					<th class="right header nosort">{{ overall_debt.payed_out_amount|currency(false) }}</th>
+					<th class="right header nosort">{{ overall_debt.pending_amount|currency(false) }}</th>
 					{{ caller('overall', none) }}
 				</tr>
+				{% endif %}
 			</thead>
 			<tbody>
-				{% for debt in debts_list.items %}
+				{% for debt in debts %}
 				<tr>
 					<td>
 						{% if debt.is_affiliate_revenue %}

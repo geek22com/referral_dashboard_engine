@@ -106,6 +106,7 @@ def offers_new():
 @template('cabinetcpa/offers/info/info.html')
 def offers_info(id):
 	offer = visible_offer(id)
+	offer.overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id)
 	form = forms.OfferRequestForm(request.form)
 	if g.user.is_affiliate and not offer.grant and request.method == 'POST' and form.validate():
 		offer_grant = OfferGrant(offer=offer, affiliate=g.user, message=form.message.data)

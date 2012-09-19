@@ -123,6 +123,7 @@ def offers_categories_delete_group(id):
 @template('admin/offers/info/info.html')
 def offers_info(id):
 	offer = rc.offers.get_by_id(id)
+	offer.overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id)
 	form = forms.OfferBlockForm(request.form)
 	if request.method == 'POST' and form.validate():
 		action = request.form.get('action')

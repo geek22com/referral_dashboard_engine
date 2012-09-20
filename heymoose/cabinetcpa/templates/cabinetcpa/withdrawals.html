@@ -1,4 +1,5 @@
 {% extends "cabinetcpa/layout.html" %}
+{% import 'common/macros/lists.html' as lists with context %}
 
 {% block title %}Выплаты{% endblock %}
 
@@ -14,55 +15,71 @@
 {% block content %}
 
 <h2>Заказ выплаты</h2>
-{% if g.user.account.balance > 1.00 %}
+{% if overall_debt.available_for_order_amount > 1.00 %}
 	<div class="row">
 		<div class="span6">
 			<div style="margin-top: 20px;">
-				<form method="post" action="{{ url_for('.withdrawals_create') }}">
+				<form method="post" action="">
 					<input type="submit" class="btn success" onclick="return confirm('Заказать выплату?');"
-					 value="Заказать выплату на сумму {{ g.user.account.balance|currency }}" />
+					 value="Заказать выплату на сумму {{ overall_debt.available_for_order_amount|currency }}" />
 				</form>
 			</div>
 		</div>
 		<div class="span8">
 			<p>
-				При нажатии этой кнопки будет заказана выплата на сумму, находящуюся на вашем счету
-				подтвержденных средств. При этом сумма выплаты будет списана со счета. При фактическом
-				совершении выплаты, она становится подтвержденной.
+				При нажатии этой кнопки будет заказана выплата на указанную сумму по всем офферам, у которых
+				имеются доступные для выплаты средства. При фактическом совершении выплаты соответствующие
+				средства перейдут в "выплаченные".
 			</p>
 		</div>
 	</div>
 {% else %}
 	<div class="clearfix alert-message block-message info">
-		<p>Суммы на вашем счету подтвержденных средств недостаточно для заказа выплаты.</p>
+		<p>Нет доступных средств для заказа.</p>
 	</div>
 {% endif %}
 
-<h2>История выплат</h2>
-{% if withdrawals %}
-	<table class="bordered-table zebra-striped nosort">
+<h2>Выплаты по статьям</h2>
+
+{% if debts %}
+	<table class="bordered-table zebra-striped debts-table">
 		<thead>
 			<tr>
-				<th class="header right minimal-width">#</th>
-				<th class="header right">Сумма, руб.</th>
-				<th class="header center">Заказана</th>
-				<th class="header center minimal-width">Подтв.</th>
+				<th {{ lists.sort_header('user_email', id=g.user.id) }}>Статья</th>
+				<th style="min-width: 150px;" {{ lists.sort_header('payed_out', id=g.user.id) }}>Выплачено, руб.</th>
+				<th style="min-width: 200px;" {{ lists.sort_header('available', id=g.user.id) }}>Доступно для заказа, руб.</th>
+				<th style="min-width: 150px;" {{ lists.sort_header('pending', id=g.user.id) }}>К выплате, руб.</th>
+			</tr>
+			<tr>
+				<th class="right header nosort">ВСЕГО:</th>
+				<th class="right header nosort">{{ overall_debt.payed_out_amount|currency(false) }}</th>
+				<th class="right header nosort">{{ overall_debt.available_for_order_amount|currency(false) }}</th>
+				<th class="right header nosort">{{ overall_debt.pending_amount|currency(false) }}</th>
 			</tr>
 		</thead>
 		<tbody>
-			{% for withdrawal in withdrawals %}
+			{% for debt in debts %}
 			<tr>
-				<td class="right">{{ withdrawal.id }}</td>
-				<td class="right">{{ withdrawal.amount|currency(False) }}</td>
-				<td class="center">{{ withdrawal.timestamp|datetimeformat }}</td>
-				<td class="center">{{ macros.to_icon(withdrawal.done) }}</td>
+				<td>
+					{% if debt.is_affiliate_revenue %}
+					<a href="{{ url_for('.offers_info', id=debt.offer_id) }}">{{ debt.offer_name }}</a>
+					{% elif debt.is_fee %}
+					Комиссия системы
+					{% else %}
+					Неизвестная статья
+					{% endif %}
+				</td>
+				<td class="right">{{ debt.payed_out_amount|currency(false) }}</td>
+				<td class="right">{{ debt.available_for_order_amount|currency(false) }}</td>
+				<td class="right">{{ debt.pending_amount|currency(false) }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
+	{{ lists.paginate(pages, id=g.user.id) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
-		<p><strong>Список пуст.</strong> Не было заказано ни одной выплаты.</p>
+		<p>За выбранный период не было активности по офферу.</p>
 	</div>
 {% endif %}
 

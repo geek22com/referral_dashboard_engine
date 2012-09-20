@@ -28,12 +28,13 @@ class AccountingEvents(Enum):
 	ACTION_CREATED = e('ACTION_CREATED', name=u'совершение действия')
 	ACTION_APPROVED = e('ACTION_APPROVED', name=u'подтверждение действия')
 	ACTION_CANCELED = e('ACTION_CANCELED', name=u'отмена действия')
-	OFFER_ACCOUNT_ADD = e('OFFER_ACCOUNT_ADD', name=u'пополнение счета оффера')
+	OFFER_ACCOUNT_ADD = e('OFFER_ACCOUNT_ADD', name=u'оплата задолженности по офферу')
 	ROBOKASSA_ADD = e('ROBOKASSA_ADD', name=u'пополнение счета с помощью системы "RoboKassa"')
 	OFFER_ACCOUNT_REMOVE = e('OFFER_ACCOUNT_REMOVE', name=u'снятие средств со счета оффера')
 	MLM = e('MLM', name=u'реферальная программа')
 	CANCELLED = e('CANCELLED', name=u'отмена транзакции')
 	WITHDRAW = e('WITHDRAW', name=u'заказ выплаты партнёру')
+	ADVERTISER_ACCOUNT_ADD = e('ADVERTISER_ACCOUNT_ADD', name=u'пополнение счета рекламодателя')
 
 class OrderTypes(Enum):
 	REGULAR = e('REGULAR', name=u'обычный')
@@ -77,3 +78,8 @@ class OfferActionStates(Enum):
 class OfferActionDateKinds(Enum):
 	CREATION = e('CREATION', name=u'время создания')
 	CHANGE = e('CHANGE', name=u'время изменения')
+
+class WithdrawalBases(Enum):
+	AFFILIATE_REVENUE = e('AFFILIATE_REVENUE', name=u'вознаграждение партнёра')
+	FEE = e('FEE', name=u'комиссия системы')
+	

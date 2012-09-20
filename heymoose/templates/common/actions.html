@@ -5,11 +5,11 @@
 	$(function() {
 		$('.actions-toggle').change(function() {
 			$('.action-checkbox').attr('checked', $(this).is(':checked'));
-			$('.actions-cancel-btn').attr('disabled', $('.action-checkbox:checked').length == 0);
+			$('.actions-btn').attr('disabled', $('.action-checkbox:checked').length == 0);
 		});
 		$('.action-checkbox').change(function() {
 			$('.actions-toggle').attr('checked', false);
-			$('.actions-cancel-btn').attr('disabled', $('.action-checkbox:checked').length == 0);
+			$('.actions-btn').attr('disabled', $('.action-checkbox:checked').length == 0);
 		});
 	})
 </script>
@@ -20,8 +20,10 @@
 <form method="post" action="">
 	<div class="well right">
 		<a href="{{ url_for(request.url_rule.endpoint, format='xls', **kwargs) }}"
-		 class="btn success">Выгрузить список в Excel</a>
-		<input type="submit" class="btn danger actions-cancel-btn" value="Отменить выбранные действия"
+		 class="btn primary" style="float: left;">Выгрузить список в Excel</a>
+		<input type="submit" name="approve" class="btn success actions-btn" value="Подтвердить выбранные действия"
+		 disabled="true" onclick="return confirm('Подтвердить действия?');" />
+		<input type="submit" name="cancel" class="btn danger actions-btn" value="Отменить выбранные действия"
 		 disabled="true" onclick="return confirm('Отменить действия?');" />
 	</div>
 	<table class="bordered-table zebra-striped">

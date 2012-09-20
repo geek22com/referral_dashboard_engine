@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, request, redirect, flash, url_for, abort, session, send_file
+from flask import render_template, g, request, redirect, flash, url_for, session, send_file
 from heymoose import app, resource as rc
 from heymoose.admin import blueprint as bp
 from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.utils.pagination import current_page, page_limits, paginate as paginate2
-from heymoose.utils.shortcuts import paginate
 from heymoose.utils.convert import to_unixtime
 from heymoose.forms import forms
 from heymoose.db.models import UserInfo
@@ -21,6 +20,7 @@ SOURCE_ID_STATS_PER_PAGE = app.config.get('SOURCE_ID_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
 SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
+DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
 
 
 @bp.route('/users/')
@@ -144,13 +144,20 @@ def users_info_balance(id, **kwargs):
 		return redirect(request.url)
 	return dict(user=user, entries=entries, count=count, form=form)
 
-@bp.route('/users/<int:id>/withdrawals/')
-@template('admin/users-info-withdrawals.html')
-def users_info_withdrawals(id):
+@bp.route('/users/<int:id>/finances/')
+@template('admin/users-info-finances.html')
+@sorted('pending', 'desc')
+@paginated(DEBTS_PER_PAGE)
+def users_info_finances(id, **kwargs):
 	user = rc.users.get_by_id(id)
-	if not user.is_affiliate: abort(404)
-	withdrawals = rc.accounts.withdrawals_list_by_affiliate(user.id)
-	return dict(user=user, withdrawals=withdrawals)
+	form = forms.DateTimeRangeForm(request.args)
+	if form.validate():
+		kwargs.update(form.backend_args())
+		debts, count = rc.withdrawals.list_debt_by_offer(aff_id=user.id, **kwargs)
+		overall_debt = rc.withdrawals.overall_debt(aff_id=user.id, **kwargs)
+	else:
+		debts, count, overall_debt = [], 0, None
+	return dict(user=user, debts=debts, count=count, overall_debt=overall_debt, form=form)
 
 @bp.route('/users/<int:id>/stats/offer')
 @template('admin/users-info-stats-offer.html')

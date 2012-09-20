@@ -18,7 +18,7 @@ AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
 SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
-
+DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
 
 @bp.route('/offers/')
 @template('admin/offers/list.html')
@@ -123,6 +123,7 @@ def offers_categories_delete_group(id):
 @template('admin/offers/info/info.html')
 def offers_info(id):
 	offer = rc.offers.get_by_id(id)
+	offer.overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id)
 	form = forms.OfferBlockForm(request.form)
 	if request.method == 'POST' and form.validate():
 		action = request.form.get('action')
@@ -293,8 +294,12 @@ def offers_info_requests(id, **kwargs):
 def offers_info_sales(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
 	if request.method == 'POST':
-		rc.actions.cancel_by_ids(offer.id, request.form.getlist('id'))
-		flash(u'Действия отменены', 'success')
+		if 'approve' in request.form:
+			rc.actions.approve_by_ids(offer.id, request.form.getlist('id'))
+			flash(u'Действия подтверждены', 'success')
+		elif 'cancel' in request.form:
+			rc.actions.cancel_by_ids(offer.id, request.form.getlist('id'))
+			flash(u'Действия отменены', 'success')
 		return redirect(request.url)
 	form = forms.OfferActionsFilterForm(request.args)
 	kwargs.update(form.backend_args())
@@ -309,21 +314,32 @@ def offers_info_sales(id, **kwargs):
 		actions, count = rc.actions.list(offer.id, **kwargs) if form.validate() else ([], 0)
 	return dict(offer=offer, actions=actions, count=count, form=form)
 
-@bp.route('/offers/<int:id>/operations', methods=['GET', 'POST'])
-@template('admin/offers/info/operations.html')
-def offers_info_operations(id):
+@bp.route('/offers/<int:id>/finances/', methods=['GET', 'POST'])
+@template('admin/offers/info/finances.html')
+@sorted('pending', 'desc')
+@paginated(DEBTS_PER_PAGE)
+def offers_info_finances(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
+	form = forms.DateTimeRangeForm(request.args)
 	if request.method == 'POST':
-		type = request.form.get('type', '')
-		if type == 'approve':
-			count = rc.actions.approve_expired(offer_id=offer.id)
-			flash(u'{0} действий подтверждено'.format(count), 'success')
-		elif type == 'cancel' and 'csv' in request.files:
-			transactions = [t.strip() for t in request.files['csv'].read().split(',')]
-			count = rc.actions.cancel_by_transactions(offer.id, transactions)
-			flash(u'{0} действий отменено'.format(count), 'success')
+		if form.validate():
+			rc.withdrawals.withdraw(
+				offer_id=offer.id,
+				user_id=request.form.getlist('user_id'),
+				amount=request.form.getlist('amount'),
+				**form.backend_args()
+			)
+			flash(u'Выплаты успешно выполнены', 'success')
+		else:
+			flash(u'Ошибка при совершении выплат', 'danger')
 		return redirect(request.url)
-	return dict(offer=offer)
+	if form.validate():
+		kwargs.update(form.backend_args())
+		debts, count = rc.withdrawals.list_debt_by_affiliate(offer_id=offer.id, **kwargs)
+		overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id, **kwargs)
+	else:
+		debts, count, overall_debt = [], 0, None
+	return dict(offer=offer, debts=debts, count=count, overall_debt=overall_debt, form=form)
 
 @bp.route('/offers/<int:id>/stats/affiliate')
 @template('admin/offers/info/stats/affiliate.html')

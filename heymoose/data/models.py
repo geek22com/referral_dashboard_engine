@@ -131,19 +131,6 @@ class Transaction(IdentifiableModel):
 		return desc
 
 
-class Withdrawal(IdentifiableModel):
-	amount = Field(types.Decimal, 'amount')
-	timestamp = Field(types.DateTime, 'timestamp')
-	done = Field(types.Boolean, 'done')
-	aff_id = Field(types.Integer, '@aff-id')
-	aff_email = Field(types.String, 'aff-email')
-
-class WithdrawalList(models.ModelBase):
-	count = Field(types.Integer, '@count')
-	non_approved_count = Field(types.Integer, '@non-approved-count')
-	non_approved_total = Field(types.Decimal, '@non-approved-total')
-	withdrawals = FieldList('Withdrawal', 'withdraw')
-
 class Order(IdentifiableModel):
 	offer_id = Field(types.Integer, 'offer-id')
 	type = Field(enums.OrderTypes, 'type')
@@ -466,6 +453,28 @@ class AffiliateTopEntry(models.ModelBase):
 	email = Field(types.String, 'email')
 	amount = Field(types.Decimal, 'amount')
 	conversion_rate = Field(types.Decimal, 'conversion_rate')
+
+
+class Debt(models.ModelBase):
+	user_id = Field(types.Integer, 'user-id')
+	user_email = Field(types.String, 'user-email')
+	offer_id = Field(types.Integer, 'offer-id')
+	offer_name = Field(types.String, 'offer-name')
+	basis = Field(enums.WithdrawalBases, 'basis')
+	payed_out_amount = Field(types.Decimal, 'payed-out-amount', quantize='1.00')
+	debt_amount = Field(types.Decimal, 'debt-amount', quantize='1.00')
+	income_amount = Field(types.Decimal, 'income-amount', quantize='1.00')
+	available_for_order_amount = Field(types.Decimal, 'available-for-order-amount', quantize='1.00')
+	ordered_amount = Field(types.Decimal, 'ordered-amount', quantize='1.00')
+	pending_amount = Field(types.Decimal, 'pending-amount', quantize='1.00')
+	
+	@property
+	def is_affiliate_revenue(self):
+		return self.basis == enums.WithdrawalBases.AFFILIATE_REVENUE
+	
+	@property
+	def is_fee(self):
+		return self.basis == enums.WithdrawalBases.FEE
 
 
 registry.register_models_from_module(__name__)

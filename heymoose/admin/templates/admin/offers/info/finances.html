@@ -1,0 +1,84 @@
+{% extends "admin/offers/info/layout.html" %}
+{% import 'common/debts.html' as debts_list with context %}
+{% import 'common/forms/datetime-range.html' as datetime_range %}
+
+{% set activetab = 'finances' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ datetime_range.head() }}
+	<style type="text/css">
+		.withdrawal-amount {
+			width: 80px;
+		}
+		
+		.invalid-amount {
+			color: #FF0000;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function() {
+			$('.withdrawal-toggle').change(function() {
+				$(this).closest('td').find('.withdrawal-amount').attr('disabled', !$(this).is(':checked'));
+			}).change();
+			
+			$('.withdrawal-amount').change(function() {
+				var thisVal = +$(this).val(); 
+				var maxVal = +$(this).closest('tr').find('.pending-amount').text();
+				$(this).toggleClass('invalid-amount', isNaN(thisVal) || isNaN(maxVal) || thisVal > maxVal);
+			});
+			
+			$('.withdrawal-toggle,.withdrawal-amount').change(function() {
+				$('.overall-amount').text('');
+				if (!$('.debts-table tbody .invalid-amount').length) {				
+					var sum = 0.0;
+					$('.withdrawal-toggle:checked').each(function() {
+						sum += +$(this).closest('td').find('.withdrawal-amount').val();
+					});
+					
+					if (sum) {
+						var balance = +$('.advertiser-balance').data('balance');
+						$('.overall-amount').toggleClass('invalid-amount', sum > balance).text(sum.toFixed(2));				
+					}
+				}
+				var disableBtn = $('.debts-table .invalid-amount').length || !$('.overall-amount').text().length;
+				$('.withdraw-btn').attr('disabled', disableBtn);
+			}).change();
+		})
+	</script>
+{% endblock %}
+
+{% block tabcontent %}
+
+{{ datetime_range.html(form, 'Показать долг за период:') }}
+
+<form method="post" action="">
+
+<div class="well right">
+	<input type="submit" class="btn success withdraw-btn" value="Сделать выплаты"
+	 onclick="return confirm('Сделать выплаты?');" />
+</div>
+
+<div class="advertiser-balance" data-balance="{{ offer.advertiser.account.balance|currency(false) }}">
+	<strong>На счету рекламодателя {{ offer.advertiser.account.balance|currency }}</strong>
+</div>
+
+{% call(place, debt) debts_list.html(debts, overall_debt, id=offer.id, **form.query_args()) %}
+	{% if place == 'head' %}
+	<th class="header center nosort" rowspan="2">Оплата, руб.</th>
+	{% elif place == 'overall' %}
+	<th class="header right nosort overall-amount"></th>
+	{% else %}
+	<td class="center">
+		{% if debt.pending_amount %}
+		<input type="text" name="amount" value="{{ debt.pending_amount|currency(false) }}" class="withdrawal-amount" />
+		<input type="checkbox" name="user_id" value="{{ debt.user_id }}" class="withdrawal-toggle" />
+		{% else %}
+		&mdash;
+		{% endif %}
+	</td>
+	{% endif %}
+{% endcall %}
+</form>
+
+{% endblock %}

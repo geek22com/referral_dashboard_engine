@@ -118,7 +118,6 @@
 			</div>
 			<div class="roundbox-content">
 				<dl class="kv kv--inscribed kv--key180">
-					{% if owner or admin %}<dt>Баланс</dt><dd>{{ offer.account.balance|currency }}</dd>{% endif %}
 					{% if offer.cr is not none %}<dt>Средняя конверсия</dt><dd>{{ offer.cr|percent }}</dd>{% endif %}
 					{% if admin %}<dt>Дата создания</dt><dd>{{ offer.creation_time|dateformat }}</dd>{% endif %}
 					{% if offer.launch_time %}<dt>Дата запуска</dt><dd>{{ offer.launch_time|dateformat }}</dd>{% endif %}
@@ -132,6 +131,21 @@
 				</div>
 			</div>
 		</div>
+		
+		{% if (owner or admin) and offer.overall_debt %}
+		<div class="roundbox roundbox--primary roundbox--shadowed">
+			<div class="roundbox-header">
+				Финансы
+			</div>
+			<div class="roundbox-content">
+				<dl class="kv kv--inscribed kv--key150">
+					<dt>Задолженность</dt><dd>{{ offer.overall_debt.debt_amount|currency }}</dd>
+					<dt>К выплате</dt><dd>{{ offer.overall_debt.pending_amount|currency }}</dd>
+				</dl>
+			</div>
+		</div>
+		{% endif %}
+		
 		{% if admin %}
 		<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">

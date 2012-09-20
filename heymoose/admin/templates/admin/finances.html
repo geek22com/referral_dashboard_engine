@@ -4,6 +4,8 @@
 
 {% block title %}Финансы{% endblock %}
 
+{% set content_fluid = true %}
+
 {% block extrahead %}
 	{{ super() }}
 	{{ datetime_range.head() }}

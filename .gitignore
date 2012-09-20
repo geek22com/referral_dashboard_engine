@@ -1,16 +1,16 @@
+# Aptana Studio
 .project
 .pydevproject
 .settings/*
 
+# Sublime Text 2
+*.sublime-workspace
+.codeintel/*
+
+# Python
 *.pyc
-.idea
+
+# Debian Packaging
 debian
-.pc
 frontend_deb.tar.gz
 frontend_deb.tar.gz.cdbs-config_list
-services
-Chat
-Cities
-Tetris
-vk_mp3
-VkGuiExample.swf

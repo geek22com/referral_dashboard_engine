@@ -209,7 +209,6 @@
 			<tr>
 				<th class="header">Партнер</th>
 				{% if offer %}<th class="header center">Оффер</th>{% endif %}
-				<th class="header">Заявка</th>
 				<th class="header">Состояние</th>
 				{% if not admin %}
 				<th class="header center minimal-width" colspan="2">Действия</th>
@@ -237,7 +236,6 @@
 				</td>
 				{% endif %}
 				
-				<td>{{ request.message }}</td>
 				<td>
 					{% if not request.blocked %}
 						{{ request.state.name }}

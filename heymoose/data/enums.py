@@ -82,4 +82,4 @@ class OfferActionDateKinds(Enum):
 class WithdrawalBases(Enum):
 	AFFILIATE_REVENUE = e('AFFILIATE_REVENUE', name=u'вознаграждение партнёра')
 	FEE = e('FEE', name=u'комиссия системы')
-	
+	MLM = e('MLM', name=u'реферальная программа')

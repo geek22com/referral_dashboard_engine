@@ -63,7 +63,7 @@
 	<strong>На счету рекламодателя {{ offer.advertiser.account.balance|currency }}</strong>
 </div>
 
-{% call(place, debt) debts_list.html(debts, overall_debt, id=offer.id, **form.query_args()) %}
+{% call(place, debt) debts_list.html(debts, overall_debt, show_offer=false, id=offer.id, **form.query_args()) %}
 	{% if place == 'head' %}
 	<th class="header center nosort" rowspan="2">Оплата, руб.</th>
 	{% elif place == 'overall' %}

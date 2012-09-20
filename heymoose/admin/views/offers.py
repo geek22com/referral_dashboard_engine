@@ -335,7 +335,7 @@ def offers_info_finances(id, **kwargs):
 		return redirect(request.url)
 	if form.validate():
 		kwargs.update(form.backend_args())
-		debts, count = rc.withdrawals.list_debt_by_affiliate(offer_id=offer.id, **kwargs)
+		debts, count = rc.withdrawals.list_debts(offer_id=offer.id, **kwargs)
 		overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id, **kwargs)
 	else:
 		debts, count, overall_debt = [], 0, None

@@ -1,23 +1,28 @@
-{% extends "admin/users-info-layout.html" %}
+{% extends "admin/layout.html" %}
 {% import 'common/debts.html' as debts_list with context %}
 {% import 'common/forms/datetime-range.html' as datetime_range %}
 
-{% set activetab = 'finances' %}
+{% block title %}Финансы{% endblock %}
 
 {% block extrahead %}
 	{{ super() }}
 	{{ datetime_range.head() }}
 {% endblock %}
 
+{% set activemenu = 'finances' %}
+
 {% block breadcrumbs %}
 	{{ super() }}
-	{{ macros.breadcrumb('Финансы', url_for('.users_info_finances', id=user.id)) }}
+	{{ macros.breadcrumb(self.title(), url_for('.finances')) }}
 {% endblock %}
 
-{% block tabcontent %}
+{% block pageheader %}
+<h1>{{ self.title() }}</h1>
+{% endblock %}
+
+{% block content %}
 
 {{ datetime_range.html(form, 'Показать долг за период:') }}
-
-{% call(place, debt) debts_list.html(debts, overall_debt, show_affiliate=false, id=user.id, **form.query_args()) %}{% endcall %}
+{% call(place, debt) debts_list.html(debts, overall_debt, **form.query_args()) %}{% endcall %}
 
 {% endblock %}

@@ -153,7 +153,7 @@ def users_info_finances(id, **kwargs):
 	form = forms.DateTimeRangeForm(request.args)
 	if form.validate():
 		kwargs.update(form.backend_args())
-		debts, count = rc.withdrawals.list_debt_by_offer(aff_id=user.id, **kwargs)
+		debts, count = rc.withdrawals.list_debts(aff_id=user.id, **kwargs)
 		overall_debt = rc.withdrawals.overall_debt(aff_id=user.id, **kwargs)
 	else:
 		debts, count, overall_debt = [], 0, None

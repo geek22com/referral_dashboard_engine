@@ -10,7 +10,7 @@ def before_request():
 		return redirect(url_for('site.login', back=request.url))
 	elif not g.user.is_admin:
 		return redirect(url_for('cabinetcpa.index'))
-		
+	
 	# For form validation
 	if request.method == 'POST' and request.files:
 		request.form = request.form.copy()
@@ -19,4 +19,4 @@ def before_request():
 	g.feedback_unread = Contact.query.filter(Contact.read == False).count()
 
 # Import all views in blueprint for registering in app's url map
-from views import base, users, offers, stats, site, logs, notifications
+from views import base, users, offers, stats, site, logs, notifications, finances

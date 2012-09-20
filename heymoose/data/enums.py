@@ -80,6 +80,6 @@ class OfferActionDateKinds(Enum):
 	CHANGE = e('CHANGE', name=u'время изменения')
 
 class WithdrawalBases(Enum):
-	AFFILIATE_REVENUE = e('AFFILIATE_REVENUE', name=u'вознаграждение партнёра')
-	FEE = e('FEE', name=u'комиссия системы')
-	MLM = e('MLM', name=u'реферальная программа')
+	AFFILIATE_REVENUE = e('AFFILIATE_REVENUE', name=u'Вознаграждение партнёра')
+	FEE = e('FEE', name=u'Комиссия системы')
+	MLM = e('MLM', name=u'Реферальная программа')

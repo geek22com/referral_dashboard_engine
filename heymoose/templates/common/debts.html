@@ -49,7 +49,7 @@
 
 					{% if show_affiliate %}
 					<td>
-						{% if debt.is_affiliate_revenue and debt.user_id %}
+						{% if not debt.is_fee and debt.user_id %}
 							<a href="{{ url_for('.users_info', id=debt.user_id) }}">{{ debt.user_email }}</a>
 							{% if debt.user_wmr %}<br />{{ debt.user_wmr|default('&nbsp;', true) }}{% endif %}
 						{% else %}
@@ -71,7 +71,7 @@
 		{{ lists.paginate(pages, **kwargs) }}
 	{% else %}
 		<div class="clearfix alert-message block-message info">
-			<p>За выбранный период не было активности по офферу.</p>
+			<p>За выбранный период не было финансовой активности.</p>
 		</div>
 	{% endif %}
 {% endmacro %}

@@ -458,6 +458,7 @@ class AffiliateTopEntry(models.ModelBase):
 class Debt(models.ModelBase):
 	user_id = Field(types.Integer, 'user-id')
 	user_email = Field(types.String, 'user-email')
+	user_wmr = Field(types.String, 'user-wmr')
 	offer_id = Field(types.Integer, 'offer-id')
 	offer_name = Field(types.String, 'offer-name')
 	basis = Field(enums.WithdrawalBases, 'basis')

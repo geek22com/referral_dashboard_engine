@@ -6,7 +6,7 @@
 			<thead>
 				<tr>
 					<th rowspan="2" {{ lists.sort_header('user_email', **kwargs) }}>Статья</th>
-					<th rowspan="2" style="min-width: 90px;" {{ lists.sort_header('income', **kwargs) }}>Доход, руб.</th>
+					<th rowspan="2" style="min-width: 90px;" {{ lists.sort_header('income', **kwargs) }}>Оборот, руб.</th>
 					<th rowspan="2" style="min-width: 90px;" {{ lists.sort_header('debt', **kwargs) }}>Долг, руб.</th>
 					<th class="center" colspan="3">Выплаты, руб.</th>
 					{{ caller('head', none) }}
@@ -35,6 +35,7 @@
 						{% if debt.is_affiliate_revenue %}
 							{% if debt.user_id %}
 							<a href="{{ url_for('.users_info', id=debt.user_id) }}">{{ debt.user_email }}</a>
+							{% if debt.user_wmr %}<br />{{ debt.user_wmr|default('&nbsp;', true) }}{% endif %}
 							{% elif debt.offer_id %}
 							<a href="{{ url_for('.offers_info', id=debt.offer_id) }}">{{ debt.offer_name }}</a>
 							{% endif %}

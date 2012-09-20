@@ -45,13 +45,14 @@
 	<table class="bordered-table zebra-striped debts-table">
 		<thead>
 			<tr>
-				<th {{ lists.sort_header('user_email', id=g.user.id) }}>Статья</th>
+				<th {{ lists.sort_header('basis', id=g.user.id) }}>Тип</th>
+				<th {{ lists.sort_header('offer_name', id=g.user.id) }}>Оффер</th>
 				<th style="min-width: 150px;" {{ lists.sort_header('payed_out', id=g.user.id) }}>Выплачено, руб.</th>
 				<th style="min-width: 200px;" {{ lists.sort_header('available', id=g.user.id) }}>Доступно для заказа, руб.</th>
 				<th style="min-width: 150px;" {{ lists.sort_header('pending', id=g.user.id) }}>К выплате, руб.</th>
 			</tr>
 			<tr>
-				<th class="right header nosort">ВСЕГО:</th>
+				<th class="right header nosort" colspan="2">ВСЕГО:</th>
 				<th class="right header nosort">{{ overall_debt.payed_out_amount|currency(false) }}</th>
 				<th class="right header nosort">{{ overall_debt.available_for_order_amount|currency(false) }}</th>
 				<th class="right header nosort">{{ overall_debt.pending_amount|currency(false) }}</th>
@@ -60,13 +61,12 @@
 		<tbody>
 			{% for debt in debts %}
 			<tr>
+				<td class="center">{{ debt.basis.name }}</td>
 				<td>
-					{% if debt.is_affiliate_revenue %}
-					<a href="{{ url_for('.offers_info', id=debt.offer_id) }}">{{ debt.offer_name }}</a>
-					{% elif debt.is_fee %}
-					Комиссия системы
+					{% if debt.offer_id %}
+						<a href="{{ url_for('.offers_info', id=debt.offer_id) }}">{{ debt.offer_name }}</a>
 					{% else %}
-					Неизвестная статья
+						&mdash;
 					{% endif %}
 				</td>
 				<td class="right">{{ debt.payed_out_amount|currency(false) }}</td>

@@ -326,6 +326,7 @@ def offers_info_finances(id, **kwargs):
 			rc.withdrawals.withdraw(
 				offer_id=offer.id,
 				user_id=request.form.getlist('user_id'),
+				basis=request.form.getlist('basis'),
 				amount=request.form.getlist('amount'),
 				**form.backend_args()
 			)

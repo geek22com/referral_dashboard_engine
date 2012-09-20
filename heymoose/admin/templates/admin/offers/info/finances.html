@@ -3,6 +3,7 @@
 {% import 'common/forms/datetime-range.html' as datetime_range %}
 
 {% set activetab = 'finances' %}
+{% set content_fluid = true %}
 
 {% block extrahead %}
 	{{ super() }}
@@ -19,7 +20,7 @@
 	<script type="text/javascript">
 		$(function() {
 			$('.withdrawal-toggle').change(function() {
-				$(this).closest('td').find('.withdrawal-amount').attr('disabled', !$(this).is(':checked'));
+				$(this).closest('td').find('.withdrawal-toggled').attr('disabled', !$(this).is(':checked'));
 			}).change();
 			
 			$('.withdrawal-amount').change(function() {
@@ -71,7 +72,8 @@
 	{% else %}
 	<td class="center">
 		{% if debt.pending_amount %}
-		<input type="text" name="amount" value="{{ debt.pending_amount|currency(false) }}" class="withdrawal-amount" />
+		<input type="text" name="amount" value="{{ debt.pending_amount|currency(false) }}" class="withdrawal-amount withdrawal-toggled" />
+		<input type="hidden" name="basis" value="{{ debt.basis }}" class="withdrawal-toggled" />
 		<input type="checkbox" name="user_id" value="{{ debt.user_id }}" class="withdrawal-toggle" />
 		{% else %}
 		&mdash;

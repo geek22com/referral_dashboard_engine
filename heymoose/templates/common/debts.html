@@ -5,8 +5,9 @@
 		<table class="bordered-table zebra-striped debts-table">
 			<thead>
 				<tr>
+					<th rowspan="2" {{ lists.sort_header('basis', **kwargs) }}>Тип</th>
 					{% if show_offer %}<th rowspan="2" {{ lists.sort_header('offer_name', **kwargs) }}>Оффер</th>{% endif %}
-					{% if show_affiliate %}<th rowspan="2" {{ lists.sort_header('user_email', **kwargs) }}>Статья</th>{% endif %}
+					{% if show_affiliate %}<th rowspan="2" {{ lists.sort_header('user_email', **kwargs) }}>Партнёр</th>{% endif %}
 					<th rowspan="2" style="min-width: 90px;" {{ lists.sort_header('income', **kwargs) }}>Оборот, руб.</th>
 					<th rowspan="2" style="min-width: 90px;" {{ lists.sort_header('debt', **kwargs) }}>Долг, руб.</th>
 					<th class="center" colspan="3">Выплаты, руб.</th>
@@ -20,7 +21,7 @@
 				{% if overall_debt %}
 				<tr>
 					{% if show_affiliate or show_offer %}
-					<th colspan="{{ 2 if show_affiliate and show_offer else 1 }}" class="right header nosort">ВСЕГО:</th>
+					<th colspan="{{ 3 if show_affiliate and show_offer else 2 }}" class="header right nosort">ВСЕГО:</th>
 					{% endif %}
 					<th class="right header nosort">{{ overall_debt.income_amount|currency(false) }}</th>
 					<th class="right header nosort">{{ overall_debt.debt_amount|currency(false) }}</th>
@@ -34,25 +35,29 @@
 			<tbody>
 				{% for debt in debts %}
 				<tr>
+					<td class="center">{{ debt.basis.name }}</td>
+
 					{% if show_offer %}
 					<td>
-						<a href="{{ url_for('.offers_info', id=debt.offer_id) }}">{{ debt.offer_name }}</a>
+						{% if debt.offer_id %}
+							<a href="{{ url_for('.offers_info', id=debt.offer_id) }}">{{ debt.offer_name }}</a>
+						{% else %}
+							&mdash;
+						{% endif %}
 					</td>
 					{% endif %}
 
 					{% if show_affiliate %}
 					<td>
-						{% if debt.is_affiliate_revenue %}
+						{% if not debt.is_fee and debt.user_id %}
 							<a href="{{ url_for('.users_info', id=debt.user_id) }}">{{ debt.user_email }}</a>
 							{% if debt.user_wmr %}<br />{{ debt.user_wmr|default('&nbsp;', true) }}{% endif %}
-						{% elif debt.is_fee %}
-							Комиссия системы
 						{% else %}
-							Неизвестная статья
+							&mdash;
 						{% endif %}
 					</td>
 					{% endif %}
-
+					
 					<td class="right">{{ debt.income_amount|currency(false) }}</td>
 					<td class="right">{{ debt.debt_amount|currency(false) }}</td>
 					<td class="right">{{ debt.ordered_amount|currency(false) }}</td>
@@ -66,7 +71,7 @@
 		{{ lists.paginate(pages, **kwargs) }}
 	{% else %}
 		<div class="clearfix alert-message block-message info">
-			<p>За выбранный период не было активности по офферу.</p>
+			<p>За выбранный период не было финансовой активности.</p>
 		</div>
 	{% endif %}
 {% endmacro %}

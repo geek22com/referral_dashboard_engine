@@ -16,6 +16,11 @@ from datetime import datetime
 @bp.route('/')
 @template('site/ak/index.html')
 def index():
+	confirmed = request.args.get('confirmed')
+	if confirmed == '1':
+		flash(u'Ваш адрес электронной почты успешно подтвержден', 'success')
+	elif confirmed == '0':
+		flash(u'Ошибка при подтверждении адреса электронной почты', 'success')
 	return dict(
 		form=forms.AffiliateRegisterForm(),
 		offer_count=rc.pub.offer_count(),

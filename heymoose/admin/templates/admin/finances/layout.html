@@ -1,12 +1,12 @@
 {% extends "admin/layout.html" %}
 
-{% block title %}Уведомления{% endblock %}
+{% block title %}Финансы{% endblock %}
 
-{% set activemenu = "notifications" %}
+{% set activemenu = "finances" %}
 
 {% block extrahead %}
 {{ super() }}
-{% set activetab = activetab|default('list') %}
+{% set activetab = activetab|default('withdrawals') %}
 <script type="text/javascript">
 	$(function() {
 		$('li#tab-{{ activetab }}').addClass('active');
@@ -16,7 +16,7 @@
 
 {% block breadcrumbs %}
 	{{ super() }}
-	{{ macros.breadcrumb(self.title(), url_for('.notifications_list')) }}
+	{{ macros.breadcrumb(self.title(), url_for('.finances')) }}
 {% endblock %}
 
 {% block pageheader %}
@@ -25,8 +25,8 @@
 
 {% block content %}
 <ul class="tabs">
-	<li id="tab-list"><a href="{{ url_for('.notifications_list') }}">Список</a></li>
-	<li id="tab-new"><a href="{{ url_for('.notifications_new') }}">Создать уведомление</a></li>
+	<li id="tab-withdrawals"><a href="{{ url_for('.finances_withdrawals') }}">Выплаты</a></li>
+	<li id="tab-debts"><a href="{{ url_for('.finances_debts') }}">Задолженность</a></li>
 </ul>
 
 {% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}

@@ -1,8 +1,6 @@
-{% extends "admin/layout.html" %}
+{% extends "admin/finances/layout.html" %}
 {% import 'common/debts.html' as debts_list with context %}
 {% import 'common/forms/datetime-range.html' as datetime_range %}
-
-{% block title %}Финансы{% endblock %}
 
 {% set content_fluid = true %}
 
@@ -11,18 +9,9 @@
 	{{ datetime_range.head() }}
 {% endblock %}
 
-{% set activemenu = 'finances' %}
+{% set activetab = 'debts' %}
 
-{% block breadcrumbs %}
-	{{ super() }}
-	{{ macros.breadcrumb(self.title(), url_for('.finances')) }}
-{% endblock %}
-
-{% block pageheader %}
-<h1>{{ self.title() }}</h1>
-{% endblock %}
-
-{% block content %}
+{% block tabcontent %}
 
 {{ datetime_range.html(form, 'Показать долг за период:') }}
 {% call(place, debt) debts_list.html(debts, overall_debt, **form.query_args()) %}{% endcall %}

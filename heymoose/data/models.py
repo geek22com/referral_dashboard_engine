@@ -462,6 +462,7 @@ class Debt(models.ModelBase):
 	offer_id = Field(types.Integer, 'offer-id')
 	offer_name = Field(types.String, 'offer-name')
 	basis = Field(enums.WithdrawalBases, 'basis')
+	order_time = Field(types.DateTime, 'order-time')
 	payed_out_amount = Field(types.Decimal, 'payed-out-amount', quantize='1.00')
 	debt_amount = Field(types.Decimal, 'debt-amount', quantize='1.00')
 	income_amount = Field(types.Decimal, 'income-amount', quantize='1.00')

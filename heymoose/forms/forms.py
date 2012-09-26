@@ -77,6 +77,7 @@ class LoginForm(Form):
 	password = PasswordField(u'Пароль', [validators.Required(message = u'Введите пароль')])
 	remember = BooleanField(u'Запомнить меня', default=False)
 
+
 class ForgottenPasswordForm(CaptchaForm):
 	email = TextField(u'E-mail', [validators.Required(message = u'Введите электронный адрес')])
 
@@ -99,6 +100,7 @@ class UserRegisterFormMixin:
 	
 	def populate_password(self, obj, name):
 		obj.change_password(self.password.data)
+
 
 class UserEditFormMixin:
 	first_name = TextField(u'Ваше имя', [
@@ -124,6 +126,7 @@ class UserEditFormMixin:
 		elif not (2 <= len(field.data) <= 30):
 			raise ValueError(u'UID может иметь длину от 2 до 30 символов')
 	
+
 class AdvertiserFormMixin:
 	organization = myfields.TextField(u'Название организации', [
 		validators.Length(max=200, message=u'Название организации не может быть длиннее 200 символов'),
@@ -134,8 +137,10 @@ class AdvertiserFormMixin:
 		validators.Required(message=u'Введите ваш телефон')
 	])
 
+
 class AdvertiserEditFormMixin(AdvertiserFormMixin):
 	pass
+
 
 class AffiliateFormMixin:
 	organization = myfields.TextField(u'Название организации', [
@@ -146,6 +151,7 @@ class AffiliateFormMixin:
 		validators.Length(min=5, max=30, message=u'Телефон может иметь длину от 5 до 30 исмволов'),
 		validators.Optional()
 	])
+
 
 class AffiliateEditFormMixin(AffiliateFormMixin):
 	wmr = myfields.TextField(u'Ваш WMR-кошелёк', [
@@ -164,6 +170,7 @@ class AffiliateEditForm(Form, UserEditFormMixin, AffiliateEditFormMixin):
 class AdvertiserEditForm(Form, UserEditFormMixin, AdvertiserEditFormMixin):
 	pass
 
+
 class AdminUserFormMixin:
 	email = TextField(u'E-mail', [
 		validators.Email(message = u'Некорректный адрес электронной почты'),
@@ -175,8 +182,10 @@ class AdminUserFormMixin:
 		if hasattr(self, 'user') and self.user.email != self.email.data:
 			validators.check_email_not_registered(self, self.email)
 
+
 class AdminAffiliateEditForm(AffiliateEditForm, AdminUserFormMixin):
 	pass
+
 
 class AdminAdvertiserEditForm(AdvertiserEditForm, AdminUserFormMixin):
 	pass
@@ -212,18 +221,15 @@ class WMRForm(Form):
 		validators.Required(message=u'Введите номер вашего WMR-кошелька')
 	])
 
+
 class EmailNotifyForm(Form):
 	mail = BooleanField(u'Письмо пользователю', default=True)
+
 
 class UserBlockForm(EmailNotifyForm):
 	reason = TextAreaField(u'Причина', [
 		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
 	])
-	
-class OrderBlockForm(EmailNotifyForm):
-	reason = TextAreaField(u'Причина', [
-		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
-	], default=u'Заказ не соответствует правилам размещения рекламы в сети ВКонтакте.')
 
 class OfferBlockForm(Form):
 	notify = BooleanField(u'Уведомить рекламодателя и партнеров', default=True)
@@ -231,18 +237,6 @@ class OfferBlockForm(Form):
 		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
 	])
 
-
-class WithdrawalDeleteForm(Form):
-	reason = TextAreaField(u'Причина', [
-		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов')),
-		validators.Required(message=u'Введите причину отмены')
-	])
-
-class FeedBackForm(Form):
-	feedback_email = TextField('Email Address', [
-					  validators.Email("Некорректный email адресс")])
-	feedback_comment = TextAreaField('Comment', [validators.Required(message = ('Напишите ваше пожелание') )])
-	feedback_captcha_answer = TextField('captcha_answer', [validators.Required(message = ('Введите каптчу'))])
 
 class ContactForm(CaptchaForm):
 	name = TextField(u'Ваше имя', [
@@ -254,212 +248,6 @@ class ContactForm(CaptchaForm):
 	])
 	phone = TextField(u'Ваш телефон')
 	desc = TextAreaField(u'Вопрос или сообщение')
-	
-class PartnerContactForm(ContactForm):
-	desc = TextAreaField(u'Описание вашей площадки')
-
-
-class OrderForm(Form):
-	ordername = TextField(u'Название заказа', [
-		validators.Length(min=1, max=50, message=(u'Название заказа должно быть от 1 до 50 символов')),
-		validators.Required(message = (u'Введите название заказа'))
-	])
-	orderurl = TextField(u'URL', [
-		validators.Required(message = (u'Введите URL')),
-		validators.URI(message = u'Введите URL в формате http://*.*', verify_exists=False)
-	], default=u'http://')
-	orderbalance = DecimalField(u'Баланс', [
-		validators.Decimal(message=u'Введите число'),
-		validators.NumberRange(min=0.0, message=u'Такой баланс недопустим'),
-	], default=0.0)
-	ordermale = SelectField(u'Пол', choices=[(u'True', u'мужской'), (u'False', u'женский'), (u'', u'любой')], default='')
-	orderminage = myfields.NullableIntegerField(u'Минимальный возраст', [
-		validators.NumberRangeOptional(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
-	])
-	ordermaxage = myfields.NullableIntegerField(u'Максимальный возраст', [
-		validators.NumberRangeOptional(min=1, max=170, message=(u'Допустимый возраст: от 1 до 170 лет'))
-	])
-	orderminhour = myfields.NullableIntegerField(u'Время с', [
-		validators.NumberRangeOptional(min=0, max=23, message=(u'Введите час от 0 до 23'))
-	])
-	ordermaxhour = myfields.NullableIntegerField(u'Время до', [
-		validators.NumberRangeOptional(min=0, max=23, message=(u'Введите час от 0 до 23'))
-	])
-	ordercitiesfilter = SelectField(u'Фильтр по городам', default=u'', choices=[
-		(u'', u'не учитывать'),
-		(u'INCLUSIVE', u'только указанные'),
-		(u'EXCLUSIVE', u'все, кроме указанных')
-	])
-	ordercities = TextField(u'Список городов')
-	
-	def validate_orderbalance(self, field):
-		balance = self.orderbalance.data
-		if balance > 0.0 and round(balance, 2) == 0.0:
-			raise ValueError(u'Такой баланс недопустим')
-	
-class AdminOrderFormMixin:
-	orderautoapprove = BooleanField(u'Автоподтверждение', default=True)
-	orderreentrant = BooleanField(u'Многократное прохождение', default=True,
-		description=u'(разрешить одному пользователю проходить оффер много раз)'
-	)
-	orderallownegativebalance = BooleanField(u'Разрешить кредит', default=False, 
-		description=u'(разрешить отрицательный баланс)'
-	)
-	
-	
-class RegularOrderForm(OrderForm):
-	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message=u'Введите CPA')])
-	orderdesc = TextAreaField(u'Описание', [
-		validators.Length(min=1, max=200, message=(u'Описание заказа должно быть от 1 до 200 символов')),
-		validators.Required(message = (u'Введите описание'))
-	])
-	orderimage = myfields.ImageField(u'Выберите изображение', [
-		validators.FileRequired(message=u'Выберите изображение на диске'),
-		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
-	], description=u'Форматы: JPG (JPEG), GIF, PNG')
-	
-class RegularOrderEditFormBase(RegularOrderForm):
-	def __init__(self, *args, **kwargs):
-		super(RegularOrderEditFormBase, self).__init__(*args, **kwargs)
-		del self.orderbalance
-		self.orderimage.validators = self.orderimage.validators[:]
-		for validator in self.orderimage.validators:
-			if isinstance(validator, validators.FileRequired):
-				self.orderimage.validators.remove(validator)
-		self.orderimage.flags.required = False
-		
-class RegularOrderEditForm(RegularOrderEditFormBase):
-	def __init__(self, *args, **kwargs):
-		super(RegularOrderEditForm, self).__init__(*args, **kwargs)
-		del self.orderurl
-		
-class AdminRegularOrderEditForm(RegularOrderEditFormBase, AdminOrderFormMixin):
-	pass
-
-
-class BannerOrderForm(OrderForm):
-	ordercpa = DecimalField(u'Стоимость клика', [
-		validators.Required(message=u'Введите стоимость клика')
-	])
-	orderbannersize = SelectField(u'Размер баннера', coerce=int)
-	orderimage = myfields.BannerField(u'Выберите файл', [
-		validators.FileRequired(message=u'Выберите файл на диске'),
-		validators.FileFormat(formats=('jpg', 'jpeg', 'gif', 'png', 'swf', 'svg'),
-			message=u'Выберите файл в формате JPG, GIF, PNG, SVG или SWF')
-	])
-	
-	def __init__(self, *args, **kwargs):
-		c_min = kwargs.pop('c_min', 0.01)
-		c_rec = kwargs.pop('c_rec', None)
-		if c_rec:
-			kwargs.setdefault('ordercpa', c_rec)
-		super(BannerOrderForm, self).__init__(*args, **kwargs)
-		
-		min_validator = validators.NumberRange(min=c_min,
-			message=u'Стоимость клика не может быть меньше {0}'.format(currency(c_min)))
-		if c_rec is not None:
-			description = u'Минимальная {0}, рекомендуемая {1}'.format(currency(c_min), currency(c_rec))
-		else:
-			description = u'Минимальная {0}'.format(currency(c_min))
-			
-		self.ordercpa.validators = self.ordercpa.validators + [min_validator]
-		self.ordercpa.description = description
-			
-	def validate_orderimage(self, field):
-		if field.data is None: return
-		size = actions.bannersizes.get_banner_size(self.orderbannersize.data)
-		if field.width != size.width or field.height != size.height:
-			raise ValueError(u'Размер баннера должен совпадать с указанным')
-		
-class BannerOrderEditFormBase(BannerOrderForm):
-	def __init__(self, *args, **kwargs):
-		super(BannerOrderEditFormBase, self).__init__(*args, **kwargs)
-		del self.orderbalance
-		del self.orderbannersize
-		del self.orderimage
-		
-class BannerOrderEditForm(BannerOrderEditFormBase):
-	def __init__(self, *args, **kwargs):
-		super(BannerOrderEditForm, self).__init__(*args, **kwargs)
-		del self.orderurl
-		
-class AdminBannerOrderEditForm(BannerOrderEditFormBase, AdminOrderFormMixin):
-	ordercpa = DecimalField(u'Стоимость клика', [
-		validators.NumberRange(min=0.1, message=u'Стоимость клика не может быть меньше 0.1'),
-		validators.Required(message=u'Введите стоимость клика')
-	])
-	
-		
-class VideoOrderForm(OrderForm):
-	ordercpa = DecimalField(u'Стоимость действия (CPA)', [validators.Required(message=u'Введите CPA')])
-	ordervideourl = TextField(u'URL видеозаписи', [
-		validators.Required(message = (u'Введите URL')),
-		validators.URLWithParams(message = u'Введите URL в формате http://*.*')
-	])
-		
-class VideoOrderEditFormBase(VideoOrderForm):
-	def __init__(self, *args, **kwargs):
-		super(VideoOrderEditFormBase, self).__init__(*args, **kwargs)
-		del self.orderbalance
-
-class VideoOrderEditForm(VideoOrderEditFormBase):
-	def __init__(self, *args, **kwargs):
-		super(VideoOrderEditForm, self).__init__(*args, **kwargs)
-		del self.orderurl
-
-class AdminVideoOrderEditForm(VideoOrderEditFormBase, AdminOrderFormMixin):
-	pass
-
-
-class OrderAppsForm(Form):
-	filter = SelectField(u'Тип таргетинга', default=u'', choices=[
-		(u'', u'не учитывать'),
-		(u'INCLUSIVE', u'только указанные'),
-		(u'EXCLUSIVE', u'все, кроме указанных')
-	])
-	apps = HiddenField()
-	
-
-class CityForm(Form):
-	id = HiddenField(default=u'0')
-	name = TextField(u'Название', [
-		validators.Required(message=u'Введите название города'),
-		validators.Length(min=2, max=100, message=(u'Название города должно содержать от 2 до 100 символов'))
-	])
-	
-	
-class AppForm(Form):
-	apptitle = TextField(u'Название', [
-		validators.Length(min=1, max=100, message=(u'Название приложения должно иметь длину от 1 до 100 символов')),
-		validators.Required(message = (u'Введите название приложения'))
-	])
-	'''appcallback = TextField(u'Callback', [
-		validators.Required(message = u'Введите callback для вашего приложения'),
-		myvalidators.URLWithParams(message = u'Введите URL в формате http://*.*')
-	])'''
-	appurl = TextField(u'URL', [
-		validators.Required(message = u'Введите URL для возврата в ваше приложение'),
-		validators.URLWithParams(message = u'Введите URL в формате http://*.*')
-	])
-	appplatform = SelectField(u'Платформа', choices=[
-		('VKONTAKTE', u'ВКонтакте'),
-		('FACEBOOK', u'Facebook'),
-		('ODNOKLASSNIKI', u'Одноклассники')
-	])
-	
-class AppEditForm(AppForm):
-	pass
-
-class AdminAppEditForm(AppEditForm):
-	appd = DecimalField(u'Оплата за клик (D)', [
-		validators.Decimal(message=u'Введите число'),
-		validators.NumberRange(min=0.0, message=u'Такая сумма недопустима')
-	], places=2)
-	appt = DecimalField(u'Коэффициент надбавки (T)', [
-		validators.Decimal(message=u'Введите число'),
-		validators.NumberRange(min=0.0, message=u'Такой коэффициент недопустим')
-	], description=u'K = D + (C - D)*T', places=2)
-	appdeleted = BooleanField(u'Удалено', default=False)
 
 
 class SiteForm(Form):
@@ -667,12 +455,6 @@ class AdminOfferEditForm(OfferEditForm):
 	showcase = BooleanField(u'Отображать в витрине', default=False)
 
 
-class OfferRequestForm(Form):
-	message = TextAreaField(u'Описание площадок', [
-		validators.Required(message=u'Введите описание')
-	])
-
-
 class OfferRequestDecisionForm(Form):
 	action = HiddenField()
 	grant_id = HiddenField()
@@ -709,32 +491,12 @@ class OfferBannerForm(Form):
 		obj.height = self.image.height
 		obj.mime_type = self.image.mime_type
 
-
-class OfferBannerUrlForm(Form):
-	url = myfields.NullableTextField(u'URL', [
-		validators.URI(message = u'Введите URL в формате http://*.*', verify_exists=False)
-	])
-
-
-class AppsShowDeletedForm(Form):
-	show = BooleanField(u'Показывать удаленные приложения', default=False)
-	dummy = HiddenField(default='1')
 	
 class BalanceForm(Form):
 	amount = DecimalField(u'Сумма', [
 		validators.Required(message = u'Укажите сумму в {0}'.format(currency_sign)),
 		validators.NumberRange(min=1, max=60000000, message=u'Такая сумма недопустима')
 	], description=currency_sign, places=2)
-	
-class OrderBalanceTransferForm(BalanceForm):
-	order = SelectField(u'На счет заказа', coerce=int)
-
-
-class TrafficAnalyzeForm(Form):
-	cpc = DecimalField(u'Стоимость клика', [
-		validators.Required(message=u'Введите стоимость клика'),
-		validators.NumberRange(min=0.1, message=u'Такая стоимость недопустима')
-	])
 
 
 class DateTimeRangeForm(Form):
@@ -755,6 +517,7 @@ class DateTimeRangeForm(Form):
 		return dict(dt_from=self.dt_from.data.strftime(datetime_nosec_format),
 			dt_to=self.dt_to.data.strftime(datetime_nosec_format))
 
+
 class OfferStatsFilterForm(DateTimeRangeForm):
 	requested = BooleanField(u'только с заявками', default=False)
 	
@@ -766,20 +529,6 @@ class OfferStatsFilterForm(DateTimeRangeForm):
 	def backend_args(self):
 		args = DateTimeRangeForm.backend_args(self)
 		args.update(granted=self.requested.data)
-		return args
-
-# Deprecated: 'expired' option is invalid on backend	
-class AdvertiserStatsForm(DateTimeRangeForm):
-	expired = BooleanField(u'только просроченные действия', default=False)
-	
-	def query_args(self):
-		args = DateTimeRangeForm.query_args(self)
-		if self.expired.data: args.update(expired=u'y')
-		return args
-	
-	def backend_args(self):
-		args = DateTimeRangeForm.backend_args(self)
-		args.update(expired=self.expired.data)
 		return args
 
 
@@ -920,33 +669,6 @@ class CatalogOfferFilterForm(OfferFilterForm):
 		return args
 
 
-class GamakAppForm(Form):
-	name = TextField(u'Название приложения', [
-		validators.Required(message = (u'Введите название приложения'))
-	])
-	url = TextField(u'URL', [
-		validators.Required(message = u'Введите URL приложения'),
-		validators.URLWithParams(message = u'Введите URL в формате http://*.*')
-	])
-	developer = TextField(u'Разработчик', [
-		validators.Required(message = (u'Введите разработчика приложения'))
-	])
-	desc = TextAreaField(u'Описание приложения', [
-		validators.Required(message = (u'Введите описание приложения')),
-		validators.Length(min=1, max=500, message=(u'Описание должно быть длиной не более 500 символов'))
-	])
-	image = myfields.ImageField(u'Выберите изображение', [
-		validators.FileRequired(message=u'Выберите изображение на диске'),
-		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
-	], description=u'Форматы: JPG (JPEG), GIF, PNG')
-	active = BooleanField(u'Активно', default=True)
-
-class GamakAppEditForm(GamakAppForm):
-	image = myfields.ImageField(u'Выберите изображение', [
-		validators.FileFormat(message=u'Выберите изображение в формате JPG, GIF или PNG')
-	], description=u'Форматы: JPG (JPEG), GIF, PNG')
-
-
 class NewsItemForm(Form):
 	title = TextField(u'Заголовок', [
 		validators.Required(message=u'Введите заголовок новости'),
@@ -989,12 +711,6 @@ class NotificationForm(Form):
 	def backend_args(self):
 		return dict(role=self.role.data) if self.role.data else dict()
 
-
-class CountdownForm(Form):
-	email = TextField(u'E-mail', [
-		validators.Email(message = u'Некорректный адрес электронной почты'),
-		validators.Required(message = u'Введите адрес электронной почты'),
-	])
 
 poll_city_choices = [
 	(u'Москва (МО)', u'Москва (МО)'),

@@ -6,8 +6,8 @@ from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.utils.convert import to_unixtime
 from heymoose.forms import forms
-from heymoose.db.models import UserInfo
 from heymoose.data.enums import Roles
+from heymoose.data.mongo.models import UserInfo
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
 

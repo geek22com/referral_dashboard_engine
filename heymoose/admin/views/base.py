@@ -2,7 +2,7 @@
 from flask import request, redirect
 from heymoose import app
 from heymoose.admin import blueprint as bp
-from heymoose.db.models import Contact
+from heymoose.data.mongo.models import Contact
 from heymoose.views.decorators import template, paginated
 
 CONTACTS_PER_PAGE = app.config.get('CONTACTS_PER_PAGE', 10)

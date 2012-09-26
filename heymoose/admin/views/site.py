@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import render_template, request, flash, redirect, url_for
-from heymoose.db.models import NewsItem
+from heymoose.data.mongo.models import NewsItem
 from heymoose.forms import forms
 from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.admin import blueprint as bp

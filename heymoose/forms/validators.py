@@ -2,7 +2,6 @@
 from wtforms import ValidationError
 from wtforms import validators as wtvalidators
 from heymoose import resource as rc
-from heymoose.db.actions import invites
 from heymoose.utils.gen import check_password_hash
 from heymoose.utils.shortcuts import dict_update_filled_params
 import re, urllib, urllib2
@@ -205,11 +204,6 @@ def check_email_not_registered(form, field):
 		raise ValidationError(u'Пользователь с таким e-mail уже существует')
 	
 	
-def check_invite(form, field):
-	if invites.get_invite(field.data) is None:
-		raise ValidationError(u'Неверный код приглашения')
-
-
 def check_password(form, field):
 	if not form.user or not check_password_hash(form.user.password_hash, field.data):
 		raise ValidationError(u'Неверный пароль')

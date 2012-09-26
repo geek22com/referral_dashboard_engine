@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import g, flash, redirect, url_for, request
-from heymoose.db.models import UserInfo
+from heymoose.data.mongo.models import UserInfo
 from heymoose.forms import forms
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import affiliate_only

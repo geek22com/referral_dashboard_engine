@@ -1,5 +1,5 @@
 from flask import Blueprint, g, abort, request, redirect, url_for
-from heymoose.db.models import Notification
+from heymoose.data.mongo.models import Notification
 
 blueprint = Blueprint('cabinetcpa', __name__, url_prefix='/cabinet', 
 					static_folder='static', template_folder='templates')

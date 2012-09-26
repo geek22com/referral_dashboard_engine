@@ -5,11 +5,11 @@ from heymoose.site import blueprint as bp
 from heymoose.forms import forms
 from heymoose.utils.gen import check_password_hash
 from heymoose.views.decorators import template
-from heymoose.db.models import Contact
 from heymoose.mail import marketing as mmail, transactional as tmail
 from heymoose.data.models import User
 from heymoose.data.enums import Roles
 from heymoose.data.repos import regions_repo
+from heymoose.data.mongo.models import Contact
 from datetime import datetime
 
 

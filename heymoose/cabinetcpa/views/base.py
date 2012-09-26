@@ -4,7 +4,7 @@ from heymoose import resource as rc
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.forms import forms
 from heymoose.views.decorators import template
-from heymoose.db.models import Notification, NewsItem
+from heymoose.data.mongo.models import Notification, NewsItem
 
 
 @template('cabinetcpa/index-affiliate.html')

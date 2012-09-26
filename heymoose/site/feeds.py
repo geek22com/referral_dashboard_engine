@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import make_response, url_for
 from heymoose.site import blueprint as bp
-from heymoose.db.models import NewsItem
+from heymoose.data.mongo.models import NewsItem
 from heymoose.feed import PyRSS2Gen
 from datetime import datetime
 

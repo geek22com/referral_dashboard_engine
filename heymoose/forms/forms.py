@@ -2,7 +2,7 @@
 from wtforms import Form as WTForm
 from wtforms import FieldList, FormField, BooleanField, TextField, PasswordField, \
 	IntegerField, DecimalField, TextAreaField, SelectField, HiddenField, DateTimeField
-from wtforms.fields import Label, SelectMultipleField
+from wtforms.fields import Label
 from heymoose import app, resource as rc
 from heymoose.data import enums
 from heymoose.filters import currency, currency_sign
@@ -15,7 +15,6 @@ from datetime import datetime
 import validators
 import fields as myfields
 import random, hashlib, os
-from heymoose.forms.fields import NullableIntegerField, NullableDecimalField
 
 
 class Form(WTForm):
@@ -297,7 +296,7 @@ class SubOfferForm(Form):
 	payment_value = DecimalField(u'Размер выплаты', [
 		validators.NumberRange(min=0.00, message=u'Введите положительное число'),
 	], default=1.00)
-	cost2 = NullableDecimalField(u'', default=1.0)
+	cost2 = myfields.NullableDecimalField(u'', default=1.0)
 	reentrant = BooleanField(u'многократ. прохождение', default=True)
 	hold_days = IntegerField(u'Время холда', [
 		validators.NumberRange(min=0, max=180, message=u'Время холда должно быть в интервале от 0 до 180 дней'),

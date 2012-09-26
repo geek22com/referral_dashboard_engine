@@ -13,6 +13,7 @@ from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
 
 USERS_PER_PAGE = app.config.get('USERS_PER_PAGE', 20)
+OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 ACCOUNTING_ENTRIES_PER_PAGE = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
 SUB_ID_STATS_PER_PAGE = app.config.get('SUB_ID_STATS_PER_PAGE', 20)
@@ -24,7 +25,7 @@ DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
 
 
 @bp.route('/users/')
-@template('admin/users.html')
+@template('admin/users/list.html')
 @paginated(USERS_PER_PAGE)
 def users_list(**kwargs):
 	filter_args = {
@@ -44,7 +45,9 @@ def users_list(**kwargs):
 	count = rc.users.count(**kwargs)
 	return dict(users=users, count=count)
 
-@bp.route('/users/<int:id>', methods=['GET', 'POST'])
+
+@bp.route('/users/<int:id>/', methods=['GET', 'POST'])
+@template('admin/users/info/info.html')
 def users_info(id):
 	user = rc.users.get_by_id(id)
 	form = forms.UserBlockForm(request.form)
@@ -60,43 +63,30 @@ def users_info(id):
 			rc.users.unblock(user.id)
 			flash(u'Учетная запись разблокирована', 'success')
 			return redirect(url_for('.users_info', id=user.id))
-	return render_template('admin/users-info.html', user=user, form=form)
+	return dict(user=user, form=form)
 
-@bp.route('/users/<int:id>/login')
+
+@bp.route('/users/<int:id>/login/')
 def users_info_login(id):
 	session['user_id'] = id
 	session.permanent = False
 	return redirect(url_for('site.gateway'))
 
-@bp.route('/users/<int:id>/offers')
-def users_info_offers(id):
+
+@bp.route('/users/<int:id>/offers/')
+@template('admin/users/info/offers.html')
+@paginated(OFFERS_PER_PAGE)
+def users_info_offers(id, **kwargs):
 	user = rc.users.get_by_id(id)
-	page = current_page()
-	per_page = app.config.get('OFFERS_PER_PAGE', 10)
-	offset, limit = page_limits(page, per_page)
 	if user.is_advertiser:
-		offers, count = rc.offers.list(offset=offset, limit=limit, advertiser_id=user.id)
+		offers, count = rc.offers.list(advertiser_id=user.id, **kwargs)
 	else:
-		offers, count = rc.offers.list_requested(user.id, offset=offset, limit=limit)
-	pages = paginate2(page, count, per_page)
-	return render_template('admin/users-info-offers.html', user=user, offers=offers, pages=pages)
+		offers, count = rc.offers.list_requested(user.id, **kwargs)
+	return dict(user=user, offers=offers, count=count)
 
-@bp.route('/users/<int:id>/stats')
-def users_info_stats(id):
-	user = rc.users.get_by_id(id)
-	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		page = current_page()
-		per_page = app.config.get('OFFERS_PER_PAGE', 10)
-		offset, limit = page_limits(page, per_page)
-		stats, count = rc.offer_stats.list_user(user, offset=offset, limit=limit,
-			**{'from' : to_unixtime(form.dt_from.data, True), 'to' : to_unixtime(form.dt_to.data, True)})
-		pages = paginate2(page, count, per_page)
-	else:
-		stats, pages = [], None
-	return render_template('admin/users-info-stats.html', user=user, stats=stats, pages=pages, form=form)
 
-@bp.route('/users/<int:id>/edit', methods=['GET', 'POST'])
+@bp.route('/users/<int:id>/edit/', methods=['GET', 'POST'])
+@template('admin/users/info/edit.html')
 def users_info_edit(id):
 	user = rc.users.get_by_id(id)
 	FormClass = forms.AdminAdvertiserEditForm if user.is_advertiser else forms.AdminAffiliateEditForm
@@ -109,9 +99,11 @@ def users_info_edit(id):
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.users_info', id=user.id))
-	return render_template('admin/users-info-edit.html', user=user, form=form)
+	return dict(user=user, form=form)
 
-@bp.route('/users/<int:id>/password', methods=['GET', 'POST'])
+
+@bp.route('/users/<int:id>/password/', methods=['GET', 'POST'])
+@template('admin/users/info/password.html')
 def users_info_password_change(id):
 	user = rc.users.get_by_id(id)
 	form = forms.AdminPasswordChangeForm(request.form)
@@ -120,9 +112,10 @@ def users_info_password_change(id):
 		rc.users.update(user)
 		flash(u'Пароль пользователя успешно изменен', 'success')
 		return redirect(url_for('.users_info', id=user.id))
-	return render_template('admin/users-info-password-change.html', user=user, form=form)
+	return dict(user=user, form=form)
 
-@bp.route('/users/<int:id>/a/lists/add')
+
+@bp.route('/users/<int:id>/a/lists/add/')
 def users_info_lists_add(id):
 	user = rc.users.get_by_id(id)
 	if mmail.lists_add_user(user, mail_if_failed=False):
@@ -131,8 +124,9 @@ def users_info_lists_add(id):
 		flash(u'Ошибка при добавлении пользователя в списки рассылки', 'error')
 	return redirect(url_for('.users_info', id=user.id))
 
+
 @bp.route('/users/<int:id>/balance/', methods=['GET', 'POST'])
-@template('admin/users-info-balance.html')
+@template('admin/users/info/balance.html')
 @paginated(ACCOUNTING_ENTRIES_PER_PAGE)
 def users_info_balance(id, **kwargs):
 	user = rc.users.get_by_id(id)
@@ -144,8 +138,9 @@ def users_info_balance(id, **kwargs):
 		return redirect(request.url)
 	return dict(user=user, entries=entries, count=count, form=form)
 
+
 @bp.route('/users/<int:id>/finances/')
-@template('admin/users-info-finances.html')
+@template('admin/users/info/finances.html')
 @sorted('pending', 'desc')
 @paginated(DEBTS_PER_PAGE)
 def users_info_finances(id, **kwargs):
@@ -159,8 +154,9 @@ def users_info_finances(id, **kwargs):
 		debts, count, overall_debt = [], 0, None
 	return dict(user=user, debts=debts, count=count, overall_debt=overall_debt, form=form)
 
-@bp.route('/users/<int:id>/stats/offer')
-@template('admin/users-info-stats-offer.html')
+
+@bp.route('/users/<int:id>/stats/offer/')
+@template('admin/users/info/stats/offer.html')
 @sorted('clicks_count', 'desc')
 @paginated(OFFER_STATS_PER_PAGE)
 def users_info_stats_offer(id, **kwargs):
@@ -170,8 +166,9 @@ def users_info_stats_offer(id, **kwargs):
 	stats, count = rc.offer_stats.list_user(user, **kwargs) if form.validate() else ([], 0)
 	return dict(user=user, stats=stats, count=count, form=form)
 
-@bp.route('/users/<int:id>/stats/subid')
-@template('admin/users-info-stats-sub-id.html')
+
+@bp.route('/users/<int:id>/stats/subid/')
+@template('admin/users/info/stats/sub-id.html')
 @sorted('clicks_count', 'desc')
 @paginated(SUB_ID_STATS_PER_PAGE)
 def users_info_stats_sub_id(id, **kwargs):
@@ -183,8 +180,9 @@ def users_info_stats_sub_id(id, **kwargs):
 	stats, count = rc.offer_stats.list_by_sub_id(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
 	return dict(user=user, stats=stats, count=count, form=form)
 
-@bp.route('/users/<int:id>/stats/sourceid')
-@template('admin/users-info-stats-source-id.html')
+
+@bp.route('/users/<int:id>/stats/sourceid/')
+@template('admin/users/info/stats/source-id.html')
 @sorted('clicks_count', 'desc')
 @paginated(SOURCE_ID_STATS_PER_PAGE)
 def users_info_stats_source_id(id, **kwargs):
@@ -196,8 +194,9 @@ def users_info_stats_source_id(id, **kwargs):
 	stats, count = rc.offer_stats.list_by_source_id(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
 	return dict(user=user, stats=stats, count=count, form=form)
 
-@bp.route('/users/<int:id>/stats/referer')
-@template('admin/users-info-stats-referer.html')
+
+@bp.route('/users/<int:id>/stats/referer/')
+@template('admin/users/info/stats/referer.html')
 @sorted('clicks_count', 'desc')
 @paginated(REFERER_STATS_PER_PAGE)
 def users_info_stats_referer(id, **kwargs):
@@ -209,8 +208,9 @@ def users_info_stats_referer(id, **kwargs):
 	stats, count = rc.offer_stats.list_by_referer(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
 	return dict(user=user, stats=stats, count=count, form=form)
 
-@bp.route('/users/<int:id>/stats/keywords')
-@template('admin/users-info-stats-keywords.html')
+
+@bp.route('/users/<int:id>/stats/keywords/')
+@template('admin/users/info/stats/keywords.html')
 @sorted('clicks_count', 'desc')
 @paginated(KEYWORDS_STATS_PER_PAGE)
 def users_info_stats_keywords(id, **kwargs):
@@ -222,8 +222,9 @@ def users_info_stats_keywords(id, **kwargs):
 	stats, count = rc.offer_stats.list_by_keywords(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
 	return dict(user=user, stats=stats, count=count, form=form)
 
-@bp.route('/users/<int:id>/stats/suboffer')
-@template('admin/users-info-stats-suboffer.html')
+
+@bp.route('/users/<int:id>/stats/suboffer/')
+@template('admin/users/info/stats/suboffer.html')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
 def users_info_stats_suboffer(id, **kwargs):
@@ -235,8 +236,9 @@ def users_info_stats_suboffer(id, **kwargs):
 	stats, count = rc.offer_stats.list_suboffer(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
 	return dict(user=user, stats=stats, count=count, offer=form.offer.selected)
 
-@bp.route('/users/<int:id>/stats/suboffer/sub_id')
-@template('admin/users-info-stats-suboffer.html')
+
+@bp.route('/users/<int:id>/stats/suboffer/sub_id/')
+@template('admin/users/info/stats/suboffer.html')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
 def users_info_stats_suboffer_sub_id(id, **kwargs):
@@ -249,8 +251,9 @@ def users_info_stats_suboffer_sub_id(id, **kwargs):
 	stats, count = rc.offer_stats.list_suboffer_by_sub_id(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
 	return dict(user=user, stats=stats, count=count, offer=form.offer.selected)
 
-@bp.route('/users/<int:id>/stats/suboffer/source_id')
-@template('admin/users-info-stats-suboffer.html')
+
+@bp.route('/users/<int:id>/stats/suboffer/source_id/')
+@template('admin/users/info/stats/suboffer.html')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
 def users_info_stats_suboffer_source_id(id, **kwargs):
@@ -262,8 +265,9 @@ def users_info_stats_suboffer_source_id(id, **kwargs):
 	stats, count = rc.offer_stats.list_suboffer_by_source_id(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
 	return dict(user=user, stats=stats, count=count, offer=form.offer.selected)
 
-@bp.route('/users/<int:id>/stats/suboffer/referer')
-@template('admin/users-info-stats-suboffer.html')
+
+@bp.route('/users/<int:id>/stats/suboffer/referer/')
+@template('admin/users/info/stats/suboffer.html')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
 def users_info_stats_suboffer_referer(id, **kwargs):
@@ -275,8 +279,9 @@ def users_info_stats_suboffer_referer(id, **kwargs):
 	stats, count = rc.offer_stats.list_suboffer_by_referer(aff_id=user.id, **kwargs) if form.validate() else ([], 0)
 	return dict(user=user, stats=stats, count=count, offer=form.offer.selected)
 
-@bp.route('/users/<int:id>/stats/suboffer/keywords')
-@template('admin/users-info-stats-suboffer.html')
+
+@bp.route('/users/<int:id>/stats/suboffer/keywords/')
+@template('admin/users/info/stats/suboffer.html')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
 def users_info_stats_suboffer_keywords(id, **kwargs):

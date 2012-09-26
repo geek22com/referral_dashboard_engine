@@ -1,8 +1,8 @@
-{% extends "admin/users-info-stats-layout.html" %}
+{% extends "admin/users/info/stats/layout.html" %}
 {% import 'common/forms/datetime-range.html' as datetime_range %}
 
 {% set content_fluid = true %}
-{% set activesubtab = 'referer' %}
+{% set activesubtab = 'source-id' %}
 
 {% block extrahead %}
 	{{ super() }}
@@ -11,9 +11,9 @@
 
 {% block subtabcontent %}
 {{ datetime_range.html(form, 'Показать статистику за время:') }}
-{{ stat_macros.table_by_referer(stats, id=user.id,
+{{ stat_macros.table_by_source_id(stats, id=user.id,
 	suboffer_stats=true,
-	suboffer_stats_rule='.users_info_stats_suboffer_referer',
+	suboffer_stats_rule='.users_info_stats_suboffer_source_id',
 	**form.query_args())
 }}
 {% endblock %}

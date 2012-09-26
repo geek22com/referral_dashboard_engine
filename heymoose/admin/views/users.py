@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, g, request, redirect, flash, url_for, session, send_file
+from flask import g, request, redirect, flash, url_for, session, send_file
 from heymoose import app, resource as rc
 from heymoose.admin import blueprint as bp
 from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
-from heymoose.utils.pagination import current_page, page_limits, paginate as paginate2
 from heymoose.utils.convert import to_unixtime
 from heymoose.forms import forms
 from heymoose.db.models import UserInfo
 from heymoose.data.enums import Roles
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
+
 
 USERS_PER_PAGE = app.config.get('USERS_PER_PAGE', 20)
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)

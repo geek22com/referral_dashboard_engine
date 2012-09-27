@@ -9,7 +9,7 @@ from heymoose.filters import currency, currency_sign
 from heymoose.utils.times import begin_of_day, end_of_day, relativedelta
 from heymoose.utils.gen import generate_unique_filename, generate_uid
 from heymoose.utils.convert import to_unixtime, datetime_nosec_format
-from heymoose.utils.dicts import UNSET, create_dict
+from heymoose.utils.dicts import create_dict
 from flask import g
 from datetime import datetime
 import validators
@@ -647,9 +647,9 @@ class OfferFilterForm(Form):
 		return create_dict(
 			category=self.category.data,
 			region=self.region.data,
-			pay_method=UNSET if self.payment_type.data == 0 else
+			pay_method=None if self.payment_type.data == 0 else
 				enums.PayMethods.CPC if self.payment_type.data == 1 else enums.PayMethods.CPA,
-			cpa_policy=UNSET if self.payment_type.data in (0, 1) else
+			cpa_policy=None if self.payment_type.data in (0, 1) else
 				enums.CpaPolicies.FIXED if self.payment_type.data == 2 else enums.CpaPolicies.PERCENT
 		)
 	

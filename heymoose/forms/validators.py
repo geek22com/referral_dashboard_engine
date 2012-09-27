@@ -3,7 +3,7 @@ from wtforms import ValidationError
 from wtforms import validators as wtvalidators
 from heymoose import resource as rc
 from heymoose.utils.gen import check_password_hash
-from heymoose.utils.shortcuts import dict_update_filled_params
+from heymoose.utils.dicts import create_dict
 import re, urllib, urllib2
 
 
@@ -15,9 +15,7 @@ class Required(wtvalidators.Required):
 	css_class = 'validate-required'
 	
 	def data_attrs(self):
-		return dict_update_filled_params(dict(), **{
-			'data-required-message': self.message,
-		})
+		return create_dict(**{'data-required-message': self.message or None})
 
 
 class FileRequired(Required):
@@ -34,10 +32,10 @@ class NumberRange(wtvalidators.NumberRange):
 	css_class = 'validate-range'
 	
 	def data_attrs(self):
-		return dict_update_filled_params(dict(), **{
-			'data-range-message': self.message,
-			'data-range-min': self.min,
-			'data-range-max': self.max
+		return create_dict(**{
+			'data-range-message': self.message or None,
+			'data-range-min': self.min or None,
+			'data-range-max': self.max or None
 		})
 
 
@@ -53,10 +51,10 @@ class Length(wtvalidators.Length):
 	css_class = 'validate-length'
 	
 	def data_attrs(self):
-		return dict_update_filled_params(dict(), **{
-			'data-length-message': self.message,
-			'data-length-min': self.min,
-			'data-length-max': self.max
+		return create_dict(**{
+			'data-length-message': self.message or None,
+			'data-length-min': self.min or None,
+			'data-length-max': self.max or None
 		})
 
 
@@ -64,9 +62,9 @@ class EqualTo(wtvalidators.EqualTo):
 	css_class = 'validate-equal'
 	
 	def data_attrs(self):
-		return dict_update_filled_params(dict(), **{
-			'data-equal-message': self.message,
-			'data-equal-other': self.fieldname
+		return create_dict(**{
+			'data-equal-message': self.message or None,
+			'data-equal-other': self.fieldname or None
 		})
 
 
@@ -85,9 +83,7 @@ class Decimal(object):
 		pass
 	
 	def data_attrs(self):
-		return dict_update_filled_params(dict(), **{
-			'data-decimal-message': self.message
-		})
+		return create_dict(**{'data-decimal-message': self.message or None})
 
 class Integer(object):
 	css_class = 'validate-integer'
@@ -100,11 +96,9 @@ class Integer(object):
 		pass
 	
 	def data_attrs(self):
-		return dict_update_filled_params(dict(), **{
-			'data-integer-message': self.message
-		})
+		return create_dict(**{'data-integer-message': self.message or None})
 
-		
+
 class URLWithParams(wtvalidators.Regexp):
 	'''Validator for string representing URL with GET-parameters'''
 	
@@ -115,9 +109,7 @@ class URLWithParams(wtvalidators.Regexp):
 		super(URLWithParams, self).__init__(regex, re.IGNORECASE, message)
 		
 	def data_attrs(self):
-		return dict_update_filled_params(dict(), **{
-			'data-url-message': self.message,
-		})
+		return create_dict(**{'data-url-message': self.message or None})
 
 
 class URI(wtvalidators.Regexp):
@@ -180,11 +172,9 @@ class URI(wtvalidators.Regexp):
 				raise ValidationError(u'Похоже, что указанная ссылка битая')
 	
 	def data_attrs(self):
-		return dict_update_filled_params(dict(), **{
-			'data-url-message': self.message,
-		})
-		
-		
+		return create_dict(**{'data-url-message': self.message or None})
+
+
 class FileFormat(object):
 	def __init__(self, formats=('jpg', 'jpeg', 'gif', 'png'), message=None):
 		self.message = message

@@ -92,6 +92,9 @@
 		var valid = true;
 		this.each(function() {
 			var field = $(this);
+			if (field.val() == '') return;
+
+			// parseFloat may be incorrect here. Use "+"?
 			if (isNaN(parseFloat($.trim(field.val())))) {
 				error(field, field.data('decimalMessage'));
 				valid = false;
@@ -104,6 +107,8 @@
 		var valid = true;
 		this.each(function() {
 			var field = $(this);
+			if (field.val() == '') return;
+
 			if (isNaN(parseInt($.trim(field.val())))) {
 				error(field, field.data('integerMessage'));
 				valid = false;

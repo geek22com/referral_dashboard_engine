@@ -39,14 +39,6 @@ class NumberRange(wtvalidators.NumberRange):
 		})
 
 
-class NumberRangeOptional(NumberRange):
-	'''NumberRange validator which allows empty value'''
-	
-	def __call__(self, form, field):
-		if field.data is None: return
-		super(NumberRangeOptional, self).__call__(form, field)
-
-
 class Length(wtvalidators.Length):
 	css_class = 'validate-length'
 	
@@ -74,7 +66,6 @@ class Email(wtvalidators.Email):
 
 class Decimal(object):
 	css_class = 'validate-decimal'
-	field_flags = ('required', )
 	
 	def __init__(self, message=None):
 		self.message = message
@@ -87,7 +78,6 @@ class Decimal(object):
 
 class Integer(object):
 	css_class = 'validate-integer'
-	field_flags = ('required', )
 	
 	def __init__(self, message=None):
 		self.message = message

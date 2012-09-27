@@ -296,14 +296,15 @@ class SubOfferForm(Form):
 	payment_value = DecimalField(u'Размер выплаты', [
 		validators.NumberRange(min=0.00, message=u'Введите положительное число'),
 	], default=1.00)
-	cost2 = myfields.NullableDecimalField(u'', default=1.0)
+	cost2 = DecimalField(u'', [validators.Optional()], default=1.0)
 	reentrant = BooleanField(u'многократ. прохождение', default=True)
 	hold_days = IntegerField(u'Время холда', [
 		validators.NumberRange(min=0, max=180, message=u'Время холда должно быть в интервале от 0 до 180 дней'),
 		validators.Required(message=u'Введите время холда')
 	], default=30)
-	code = myfields.NullableTextField(u'Код', [
-		validators.Length(max=10, message=u'Код может быть длиной от 1 до 10 символов')
+	code = TextField(u'Код', [
+		validators.Length(max=10, message=u'Код может быть длиной от 1 до 10 символов'),
+		validators.Optional()
 	])
 	manual_code = BooleanField(u'указать код вручную', default=False)
 
@@ -470,11 +471,13 @@ class AdminOfferRequestDecisionForm(OfferRequestDecisionForm):
 
 
 class OfferGrantForm(Form):
-	back_url = myfields.NullableTextField(u'Back URL', [
-		validators.URI(message = u'Введите URL в формате http://*.*', verify_exists=False)
+	back_url = TextField(u'Back URL', [
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
+		validators.Optional()
 	])
-	postback_url = myfields.NullableTextField(u'Postback URL', [
-		validators.URI(message = u'Введите URL в формате http://*.*', verify_exists=False)
+	postback_url = TextField(u'Postback URL', [
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
+		validators.Optional()
 	])
 
 

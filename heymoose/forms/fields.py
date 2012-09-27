@@ -1,38 +1,11 @@
 # -*- coding: utf-8 -*-
-from wtforms.fields import TextField, IntegerField, DecimalField, FileField, SelectField, SelectMultipleField
+from wtforms.fields import TextField, FileField, SelectField, SelectMultipleField
 from PIL import Image
 from heymoose import resource as rc
 from heymoose.utils import swfheader, svgheader
 from heymoose.data.repos import regions_repo
 import widgets
 
-
-class NullableIntegerField(IntegerField):
-	def process_formdata(self, valuelist):
-		value = valuelist[0]
-		if value is None or value == '' or value == u'':
-			self.data = None
-			return
-		super(NullableIntegerField, self).process_formdata(valuelist)
-
-class NullableDecimalField(DecimalField):
-	def process_formdata(self, valuelist):
-		value = valuelist[0]
-		if value is None or value == '' or value == u'':
-			self.data = None
-			return
-		super(NullableDecimalField, self).process_formdata(valuelist)
-		
-class NullableTextField(TextField):
-	def process_formdata(self, valuelist):
-		super(NullableTextField, self).process_formdata(valuelist)
-		self.data = self.data or None
-		
-class NullableSelectField(SelectField):
-	def post_validate(self, form, validation_stopped):
-		super(NullableSelectField, self).post_validate(form, validation_stopped)
-		self.data = self.data or None
-		
 		
 class UnfilledTextField(TextField):
 	widget = widgets.UnfilledTextInput()

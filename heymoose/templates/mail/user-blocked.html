@@ -6,7 +6,7 @@
 
 {% block html %}
 <p>
-	Ваша учетная запись {{ user.email }} на сайте <a href="{{ root }}">{{ root|noproto }}</a>
+	Ваша учетная запись {{ user.email }} на сайте <a href="http://heymoose.com">heymoose.com</a>
 	была заблокирована администрацией.
 </p>
 {% if reason %}
@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block plain %}
-Ваша учетная запись {{ user.email }} на сайте {{ root }} была заблокирована администрацией.
+Ваша учетная запись {{ user.email }} на сайте http://heymoose.com была заблокирована администрацией.
 
 {% if reason %}
 Причина блокировки:

@@ -314,7 +314,7 @@ class Banner(IdentifiableModel):
 		u'application/svg+xml': u'SVG'
 	}
 	
-	_banners_path = app.config.get('BACKEND_BANNERS_PATH')
+	_banners_url = app.config.get('TRACKER_BANNERS_URL')
 	
 	@property
 	def size(self): return u'{0} x {1}'.format(self.width, self.height)
@@ -323,7 +323,7 @@ class Banner(IdentifiableModel):
 	def format(self): return self._mime_to_formats.get(self.mime_type, 'UNKNOWN')
 	
 	@property
-	def image_url(self): return os.path.join(self._banners_path, str(self.id))
+	def image_url(self): return os.path.join(self._banners_url, str(self.id))
 	
 	@property
 	def has_code(self): return 'image' in self.mime_type

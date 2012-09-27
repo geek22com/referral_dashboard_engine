@@ -7,8 +7,6 @@ SECRET_KEY = '47621c2a464441cb94918fa6853c1b0a'
 RESTAPI_SERVER = 'http://localhost:5468'
 USE_DATABASE = True
 
-SITE_ROOT = 'http://localhost:8989'
-
 # Restkit configuration
 RESTKIT_TIMEOUT = 5
 RESTKIT_MAX_TRIES = 1
@@ -23,9 +21,6 @@ DATETIME_FORMAT = '%d.%m.%Y %H:%M:%S'
 DATETIME_NOSEC_FORMAT = DATETIME_FORMAT[:-3]
 DATE_FORMAT = DATETIME_FORMAT.split(' ')[0]
 TIME_FORMAT = DATETIME_FORMAT.split(' ')[1]
-
-# Backend parameters
-APP_EMAIL = "ks.shilov@gmail.com"
 
 # MailJet API parameters
 MAILJET_API_KEY = '807acc36b2f4763cc4e16e8a7b3fa945'
@@ -73,10 +68,14 @@ ADMIN_TRANSACTIONS_PER_PAGE = 20
 REFERRAL_CRYPT_KEY = 'aGy3iRn7fRbIw4yM' # Must be 16 bytes long
 CONFIRM_CRYPT_KEY =  'gR7Bsvu46jE623Gg'
 
+# Backend parameters
 BACKEND_BASE_URL = 'http://localhost:5468'
 BACKEND_TIMEOUT = 15
 BACKEND_MAX_TRIES = 1
-BACKEND_BANNERS_PATH = '{0}/banners/local/'.format(BACKEND_BASE_URL)
+
+TRACKER_BASE_URL = BACKEND_BASE_URL
+TRACKER_API_URL = TRACKER_BASE_URL + '/api'
+TRACKER_BANNERS_URL = TRACKER_BASE_URL + '/banners/local/'
 
 # Mongo parameters
 MONGOALCHEMY_SERVER_AUTH = False

@@ -36,10 +36,9 @@ class User(IdentifiableModel):
 	block_reason = Field(types.String, 'block-reason')
 	register_time = Field(types.DateTime, 'register-time')
 	
-	developer_account = Field('Account', 'developer-account')
-	developer_account_not_confirmed = Field('Account', 'developer-account-not-confirmed')
-	customer_account = Field('Account', 'customer-account')
-	customer_secret = Field(types.String, 'customer-secret')
+	affiliate_account = Field('Account', 'affiliate-account')
+	affiliate_account_not_confirmed = Field('Account', 'affiliate-account-not-confirmed')
+	advertiser_account = Field('Account', 'advertiser-account')
 	
 	orders = FieldList('Order', 'orders/order')
 	apps = FieldList('App', 'apps/app')
@@ -53,7 +52,7 @@ class User(IdentifiableModel):
 	_ref_crypt_key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
 	
 	@property
-	def account(self): return self.developer_account or self.customer_account
+	def account(self): return self.affiliate_account or self.advertiser_account
 	
 	@property
 	def active(self): return self.confirmed and not self.blocked

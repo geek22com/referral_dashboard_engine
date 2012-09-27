@@ -54,7 +54,7 @@ def profile_balance(**kwargs):
 	form = forms.BalanceForm(request.form)
 	if request.method == 'POST' and form.validate():
 		url = robokassa.account_pay_url(
-			account_id=g.user.customer_account.id,
+			account_id=g.user.advertiser_account.id,
 			sum=round(form.amount.data, 2),
 			email=g.user.email)
 		return redirect(url)

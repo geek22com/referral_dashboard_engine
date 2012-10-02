@@ -107,7 +107,6 @@ def offers_new():
 def offers_info(id):
 	offer = visible_offer(id)
 	offer.overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id)
-	form = forms.OfferRequestForm(request.form)
 	if g.user.is_affiliate and not offer.grant and request.method == 'POST' and 'request' in request.form:
 		offer_grant = OfferGrant(offer=offer, affiliate=g.user)
 		rc.offer_grants.add(offer_grant)
@@ -187,8 +186,6 @@ def offers_info_actions_edit(id, sid):
 @template('cabinetcpa/offers/info/materials.html')
 def offers_info_materials(id):
 	offer = visible_offer(id)
-	for banner in offer.banners:
-		banner.form = forms.OfferBannerUrlForm(obj=banner)
 	form = forms.OfferBannerForm(request.form)
 	if offer.owned_by(g.user) and request.method == 'POST' and form.validate():
 		banner = Banner()

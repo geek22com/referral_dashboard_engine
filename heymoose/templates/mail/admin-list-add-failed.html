@@ -6,7 +6,7 @@
 
 {% block html %}
 Произошла ошибка при добавлении пользователя
-<a href="{{ root + url_for('admin.users_info', id=user.id) }}">{{ user.full_name }} ({{ user.email }})</a>
+<a href="{{ url_for('admin.users_info', id=user.id, _external=true) }}">{{ user.full_name }} ({{ user.email }})</a>
 в один или несколько списков рассылки. Для получения подробной информации см. лог.
 {% endblock %}
 

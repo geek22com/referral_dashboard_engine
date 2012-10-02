@@ -1,10 +1,8 @@
 dist/frontend-*.tar.gz tmp/frontend/
 dist/config.py etc/frontend
 dist/heymoose_manage usr/bin
-frontend_nginx.conf etc/nginx/conf.d
 heymoose_production.py usr/share/nginx/www/frontend_production
 uwsgi etc/init.d
 heymoose/static/* /usr/share/nginx/www/frontend_static/static
 heymoose/admin/static/* /usr/share/nginx/www/frontend_static/admin/static
 doc/*.pdf /usr/share/nginx/www/frontend_static/doc
-track/* /usr/share/nginx/www/frontend_static/track

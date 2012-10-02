@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from heymoose.db.models import Notification
 from heymoose.data.enums import OfferGrantState, Roles
+from heymoose.data.mongo.models import Notification
 from heymoose import resource as rc
 from flask import render_template_string
 from datetime import datetime

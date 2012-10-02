@@ -2,7 +2,7 @@
 from flask import request, redirect, flash, url_for, g
 from heymoose import app
 from heymoose.admin import blueprint as bp
-from heymoose.db.models import Notification
+from heymoose.data.mongo.models import Notification
 from heymoose.forms import forms
 from heymoose.notifications.base import notify_all, notify_all_affiliates, notify_all_advertisers
 from heymoose.views.decorators import template, paginated

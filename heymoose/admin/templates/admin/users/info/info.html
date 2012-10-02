@@ -37,10 +37,10 @@
 		<tr><th>Зарегистрирован</th><td>{{ user.register_time|datetimeformat }}</td></tr>
 		
 		{% if user.is_advertiser %}
-		<tr><th>Баланс</th><td>{{ user.customer_account.balance|currency }}</td></tr>
+		<tr><th>Баланс</th><td>{{ user.advertiser_account.balance|currency }}</td></tr>
 		{% else %}
-		<tr><th>Неподтвержденные средства</th><td>{{ user.developer_account_not_confirmed.balance|currency }}</td></tr>
-		<tr><th>Подтвержденные средства</th><td>{{ user.developer_account.balance|currency }}</td></tr>
+		<tr><th>Неподтвержденные средства</th><td>{{ user.affiliate_account_not_confirmed.balance|currency }}</td></tr>
+		<tr><th>Подтвержденные средства</th><td>{{ user.affiliate_account.balance|currency }}</td></tr>
 		{% endif %}
 	</tbody>
 </table>
@@ -73,7 +73,7 @@
 <h3>Реферальная программа</h3>
 <table class="key-value">
 	<tbody>
-		{% with ref = root + url_for('site.register_affiliate', ref=user.get_refcode()) %}
+		{% with ref = url_for('site.register_affiliate', ref=user.get_refcode(), _external=true) %}
 		<tr><th>Реферальная ссылка</th><td><a href="{{ ref }}">{{ ref }}</a></td></tr>
 		{% endwith %}
 		<tr>
@@ -106,7 +106,7 @@
 	{{ super() }}
 	<div id="login-block" class="modal" style="display: none;">
 		{% if not user.blocked %}
-		<form method="post" action="" class="validate">
+		<form method="post" action="" class="validate2">
 			<div class="modal-header">
 				<a href="#" class="close">×</a>
 				<h3>Блокировка учетной записи пользователя</h3>
@@ -124,7 +124,7 @@
 			</div>
 		</form>
 		{% else %}
-		<form method="post" action="" class="validate">
+		<form method="post" action="">
 			<div class="modal-header">
 				<a href="#" class="close">×</a>
 				<h3>Разблокировка учетной записи пользователя</h3>

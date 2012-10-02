@@ -36,24 +36,19 @@ class User(IdentifiableModel):
 	block_reason = Field(types.String, 'block-reason')
 	register_time = Field(types.DateTime, 'register-time')
 	
-	developer_account = Field('Account', 'developer-account')
-	developer_account_not_confirmed = Field('Account', 'developer-account-not-confirmed')
-	customer_account = Field('Account', 'customer-account')
-	customer_secret = Field(types.String, 'customer-secret')
+	affiliate_account = Field('Account', 'affiliate-account')
+	affiliate_account_not_confirmed = Field('Account', 'affiliate-account-not-confirmed')
+	advertiser_account = Field('Account', 'advertiser-account')
 	
-	orders = FieldList('Order', 'orders/order')
-	apps = FieldList('App', 'apps/app')
 	roles = FieldList(enums.Roles, 'roles/role')
-	
 	referrer = Field(types.Integer, 'referrer')
 	referrals = FieldList(types.String, 'referrals/referral')
 	revenue = Field(types.Decimal, 'revenue')
-	stats = Field('UserStat', 'stats')
 	
 	_ref_crypt_key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
 	
 	@property
-	def account(self): return self.developer_account or self.customer_account
+	def account(self): return self.affiliate_account or self.advertiser_account
 	
 	@property
 	def active(self): return self.confirmed and not self.blocked
@@ -111,10 +106,12 @@ class User(IdentifiableModel):
 class Account(IdentifiableModel):
 	balance = Field(types.Decimal, 'balance')
 
+
 class AccountingEntry(IdentifiableModel):
 	amount = Field(types.Decimal, 'amount')
 	event = Field(enums.AccountingEvents, 'event')
 	creation_time = Field(types.DateTime, 'creation-time')
+
 
 class Transaction(IdentifiableModel):
 	diff = Field(types.Decimal, 'diff')
@@ -129,55 +126,6 @@ class Transaction(IdentifiableModel):
 		if self.type == 'WITHDRAW_DELETED':
 			desc += u' ({0})'.format(self.description)
 		return desc
-
-
-class Order(IdentifiableModel):
-	offer_id = Field(types.Integer, 'offer-id')
-	type = Field(enums.OrderTypes, 'type')
-	
-	account = Field('Account', 'account')
-	user = Field('User', 'user')
-	stats = Field('OrderStat', 'stats')
-	
-	cpa = Field(types.Decimal, 'cpa')
-	title = Field(types.String, 'title')
-	url = Field(types.String, 'url')
-	video_url = Field(types.String, 'video-url')
-	description = Field(types.String, 'description')
-	banners = Field('Banner', 'banners')
-	
-	auto_approve = Field(types.Boolean, 'auto-approve')
-	reentrant = Field(types.Boolean, 'reentrant')
-	
-	male = Field(types.Boolean, 'male')
-	min_age = Field(types.Integer, 'min-age')
-	max_age = Field(types.Integer, 'max-age')
-	min_hour = Field(types.Integer, 'min-hour')
-	max_hour = Field(types.Integer, 'max-hour')
-	
-	city_filter_type = Field(enums.FilterTypes, 'city-filter-type')
-	cities = FieldSet('City', 'cities/city')
-	app_filter_type = Field(enums.FilterTypes, 'app-filter-type')
-	apps = FieldSet('App', 'apps/app')
-	
-	disabled = Field(types.Boolean, 'disabled')
-	paused = Field(types.Boolean, 'paused')
-	creation_time = Field(types.DateTime, 'creation-time')
-	
-class OrderStat(IdentifiableModel):
-	shows_overall = Field(types.Integer, 'shows-overall')
-	actions_overall = Field(types.Integer, 'actions-overall')
-
-class City(IdentifiableModel):
-	name = Field(types.String, 'name')
-	disabled = Field(types.Boolean, 'disabled')
-
-class App(IdentifiableModel):
-	pass
-
-class UserStat(IdentifiableModel):
-	payments = Field(types.Decimal, 'payments')
-	unpaid_actions = Field(types.Integer, 'unpaid-actions')
 
 
 class SubOffer(IdentifiableModel):
@@ -366,7 +314,7 @@ class Banner(IdentifiableModel):
 		u'application/svg+xml': u'SVG'
 	}
 	
-	_banners_path = app.config.get('BACKEND_BANNERS_PATH')
+	_banners_url = app.config.get('TRACKER_BANNERS_URL')
 	
 	@property
 	def size(self): return u'{0} x {1}'.format(self.width, self.height)
@@ -375,7 +323,7 @@ class Banner(IdentifiableModel):
 	def format(self): return self._mime_to_formats.get(self.mime_type, 'UNKNOWN')
 	
 	@property
-	def image_url(self): return os.path.join(self._banners_path, str(self.id))
+	def image_url(self): return os.path.join(self._banners_url, str(self.id))
 	
 	@property
 	def has_code(self): return 'image' in self.mime_type

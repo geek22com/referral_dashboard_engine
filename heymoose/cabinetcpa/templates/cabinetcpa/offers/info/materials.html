@@ -48,7 +48,7 @@
 				var sourceId = getFormValue('#sourceid');
 				var ulp = getFormValue('#ulp');
 				
-				var apiUrl = 'http://partner.heymoose.com/api';
+				var apiUrl = '{{ config.get("TRACKER_API_URL") -}}';
 				var params = '&offer_id=' + offerId + '&aff_id=' + affId
 					+ (bannerId ? '&banner_id=' + bannerId : '')
 					+ (subId ? '&sub_id=' + encodeURIComponent(subId) : '')

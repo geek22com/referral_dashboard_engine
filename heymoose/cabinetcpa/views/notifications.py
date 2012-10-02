@@ -2,7 +2,7 @@
 from flask import g, request, redirect
 from heymoose import app
 from heymoose.cabinetcpa import blueprint as bp
-from heymoose.db.models import Notification
+from heymoose.data.mongo.models import Notification
 from heymoose.views.decorators import template, paginated
 
 NOTIFICATIONS_PER_PAGE = app.config.get('NOTIFICATIONS_PER_PAGE', 10)

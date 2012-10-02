@@ -1,7 +1,6 @@
 from user import UserResource
 from account import AccountResource
 from withdrawal import WithdrawalResource
-from order import OrderResource
 from offer import OfferResource
 from offergrant import OfferGrantResource
 from offerstat import OfferStatResource
@@ -14,7 +13,6 @@ from public import PublicResource
 users = UserResource()
 accounts = AccountResource()
 withdrawals = WithdrawalResource()
-orders = OrderResource()
 offers = OfferResource()
 offer_grants = OfferGrantResource()
 offer_stats = OfferStatResource()

@@ -1,4 +1,4 @@
-UNSET = object()
+# -*- coding: utf-8 -*-
 
-def create_dict(**kwargs):
-	return dict([(key, value) for key, value in kwargs.iteritems() if value != UNSET])
+def create_dict(unset=None, **kwargs):
+	return dict([(key, value) for key, value in kwargs.iteritems() if value != unset])

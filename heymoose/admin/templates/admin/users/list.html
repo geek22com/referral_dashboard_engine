@@ -4,11 +4,6 @@
 {% set activetab = 'list' %}
 {% set content_fluid = true %}
 
-{% set users_config = {
-	'balance' : true,
-	'role' : true
-} %}
-
 {% block tabcontent %}
 
 {% set filter = request.args.get('filter', none) %}
@@ -32,7 +27,7 @@
 	<div style="clear: both;">
 		<strong>Всего: {{ count }}</strong>
 	</div>
-	{% call(head, user) user_macros.table(users, users_config) %}{% endcall %}
+	{% call(head, user) user_macros.table(users) %}{% endcall %}
 	{{ macros.paginate(pages, '.users_list', filter=filter) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">

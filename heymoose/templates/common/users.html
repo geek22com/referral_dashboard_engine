@@ -1,7 +1,6 @@
 {% import 'common/macros.html' as macros %}
 
-{% macro table(users, config) %}
-{% if config.get('scroll-x', false) %}<div class="autoscroll-area-x">{% endif %}
+{% macro table(users) %}
 {% if users %}
 	<table class="bordered-table zebra-striped nosort">
 		<thead>
@@ -10,8 +9,7 @@
 				<th class="header">E-mail</th>
 				<th class="header">Организация</th>
 				<th class="header">Имя</th>
-				{% if config.get('stat-payments', false) %}<th class="header right">Вклад, {{ currency_sign }}</th>{% endif %}
-				{% if config.get('role', false) %}<th class="header center">Роль</th>{% endif %}
+				<th class="header center">Роль</th>
 				<th class="header center">Зарегистрирован</th>
 				<th class="header center">Подтв.</th>
 				{{ caller(true, none) }}
@@ -27,19 +25,11 @@
 				<td>{{ user.organization|default('—', true) }}</td>
 				<td>{{ user.full_name|default('—', true) }}</td>
 				
-				{% if config.get('stat-payments', false) %}
-				<td class="right">
-					{% if user.stats %}{{ user.stats.payments|currency(False) }}{% else %}&mdash;{% endif %}
-				</td>
-				{% endif %}
-				
-				{% if config.get('role', false) %}
 				<td class="center">
 					{% for role in user.roles %}
 					<span class="label {{ role.label_class }}">{{ role.name }}</span>
 					{% endfor %}
 				</td>
-				{% endif %}
 				
 				<td class="center">{{ user.register_time|datetimeformat }}</td>
 				<td class="center">{{ macros.to_icon(user.confirmed) }}</td>
@@ -49,5 +39,4 @@
 		</tbody>
 	</table>
 {% endif %}
-{% if config.get('scroll-x', false) %}</div>{% endif %}
 {% endmacro %}

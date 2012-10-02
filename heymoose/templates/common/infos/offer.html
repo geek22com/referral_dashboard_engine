@@ -229,7 +229,7 @@
 
 {% if admin %}
 	<div id="modal-block" class="modal" style="display: none;">
-		<form method="post" action="" class="validate">
+		<form method="post" action="" class="validate2">
 			<div class="modal-header">
 				<a href="#" class="close">×</a>
 				<h3>{{ 'Блокировка оффера' if offer.approved else 'Уведомление о нарушении'}}</h3>
@@ -250,7 +250,7 @@
 	</div>
 	{% if not offer.approved %}
 	<div id="modal-unblock" class="modal" style="display: none;">
-		<form method="post" action="" class="validate">
+		<form method="post" action="" class="validate2">
 			<div class="modal-header">
 				<a href="#" class="close">×</a>
 				<h3>Разблокировка оффера</h3>

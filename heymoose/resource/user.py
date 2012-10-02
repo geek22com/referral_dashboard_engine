@@ -44,7 +44,7 @@ class UserResource(BackendResource):
 	def change_email(self, id, email):
 		self.path(id).path('email').put(email=email)
 	
-	def add_to_customer_account(self, id, amount):
+	def add_to_advertiser_account(self, id, amount):
 		self.path(id).path('customer-account').put(amount=amount)
 
 	def confirm(self, id):

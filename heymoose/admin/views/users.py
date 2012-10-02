@@ -6,8 +6,8 @@ from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.utils.convert import to_unixtime
 from heymoose.forms import forms
-from heymoose.db.models import UserInfo
 from heymoose.data.enums import Roles
+from heymoose.data.mongo.models import UserInfo
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
 
@@ -133,7 +133,7 @@ def users_info_balance(id, **kwargs):
 	form = forms.BalanceForm(request.form)
 	entries, count = rc.accounts.entries_list(user.account.id, **kwargs)
 	if user.is_advertiser and request.method == 'POST' and form.validate():
-		rc.users.add_to_customer_account(user.id, round(form.amount.data, 2))
+		rc.users.add_to_advertiser_account(user.id, round(form.amount.data, 2))
 		flash(u'Баланс успешно пополнен', 'success')
 		return redirect(request.url)
 	return dict(user=user, entries=entries, count=count, form=form)

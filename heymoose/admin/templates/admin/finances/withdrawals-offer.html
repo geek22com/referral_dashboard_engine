@@ -14,7 +14,6 @@
 {{ datetime_range.html(form, 'Показать заказы за период:') }}
 
 {% if debts %}
-	<strong>Всего не выплачено партнёрам {{ overall_debt.pending_amount|currency }}</strong>
 	<table class="bordered-table zebra-striped debts-table nosort">
 		<thead>
 			<tr>

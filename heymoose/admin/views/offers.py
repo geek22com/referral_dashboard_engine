@@ -320,7 +320,7 @@ def offers_info_sales(id, **kwargs):
 @paginated(DEBTS_PER_PAGE)
 def offers_info_finances(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
-	form = forms.DateTimeRangeForm(request.args)
+	form = forms.DebtFilterForm(request.args)
 	if request.method == 'POST':
 		if form.validate():
 			rc.withdrawals.withdraw(

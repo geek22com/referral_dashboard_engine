@@ -145,7 +145,7 @@ def users_info_balance(id, **kwargs):
 @paginated(DEBTS_PER_PAGE)
 def users_info_finances(id, **kwargs):
 	user = rc.users.get_by_id(id)
-	form = forms.DateTimeRangeForm(request.args)
+	form = forms.DebtFilterForm(request.args)
 	if form.validate():
 		kwargs.update(form.backend_args())
 		debts, count = rc.withdrawals.list_debts(aff_id=user.id, **kwargs)

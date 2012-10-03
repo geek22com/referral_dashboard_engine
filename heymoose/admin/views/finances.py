@@ -28,13 +28,9 @@ def finances_withdrawals_affiliate(**kwargs):
 @paginated(DEBTS_PER_PAGE)
 def finances_withdrawals_offer(**kwargs):
 	form = forms.DateTimeRangeForm(request.args)
-	if form.validate():
-		kwargs.update(form.backend_args())
-		debts, count = rc.withdrawals.list_ordered_by_offer(**kwargs)
-		overall_debt = rc.withdrawals.sum_ordered()
-	else:
-		debts, count, overall_debt = [], 0, None
-	return dict(debts=debts, count=count, overall_debt=overall_debt, form=form)
+	kwargs.update(form.backend_args())
+	debts, count = rc.withdrawals.list_ordered_by_offer(**kwargs) if form.validate() else ([], 0)
+	return dict(debts=debts, count=count, form=form)
 
 
 @bp.route('/finances/debts/')
@@ -42,7 +38,7 @@ def finances_withdrawals_offer(**kwargs):
 @sorted('pending', 'desc')
 @paginated(DEBTS_PER_PAGE)
 def finances_debts(**kwargs):
-	form = forms.DateTimeRangeForm(request.args)
+	form = forms.DebtFilterForm(request.args)
 	if form.validate():
 		kwargs.update(form.backend_args())
 		debts, count = rc.withdrawals.list_debts(**kwargs)

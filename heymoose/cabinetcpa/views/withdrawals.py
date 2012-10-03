@@ -38,5 +38,5 @@ def withdrawals_order(**kwargs):
 @template('cabinetcpa/withdrawals/history.html')
 @paginated(DEBTS_PER_PAGE)
 def withdrawals_history(**kwargs):
-	debts, count = rc.withdrawals.list_ordered_withdrawals(aff_id=g.user.id, **kwargs)
+	debts, count = rc.withdrawals.list_ordered_by_affiliate(aff_id=g.user.id, **kwargs)
 	return dict(debts=debts, count=count)

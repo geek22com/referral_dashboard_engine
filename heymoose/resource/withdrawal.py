@@ -5,10 +5,13 @@ from heymoose.data.models import Debt
 class WithdrawalResource(BackendResource):
 	base_path = '/withdrawals'
 
-	def list_ordered_withdrawals(self, **kwargs):
+	def list_ordered_by_affiliate(self, **kwargs):
 		return self.get(**kwargs).as_objlist(Debt, with_count=True)
 
-	def sum_ordered_withdrawals(self):
+	def list_ordered_by_offer(self, **kwargs):
+		return self.path('by_offer').get(**kwargs).as_objlist(Debt, with_count=True)
+
+	def sum_ordered(self):
 		return self.path('sum').get().as_obj(Debt)
 	
 	def list_debts(self, **kwargs):

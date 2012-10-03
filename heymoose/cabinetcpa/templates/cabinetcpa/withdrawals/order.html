@@ -1,20 +1,10 @@
-{% extends "cabinetcpa/layout.html" %}
+{% extends 'cabinetcpa/withdrawals/layout.html' %}
 {% import 'common/macros/lists.html' as lists with context %}
 
-{% block title %}Выплаты{% endblock %}
+{% set activetab = 'order' %}
 
-{% set activemenu = 'withdrawals' %}
+{% block tabcontent %}
 
-{% block breadcrumbs %}
-	{{ super() }}
-	{{ macros.breadcrumb('Выплаты', url_for('.withdrawals')) }}
-{% endblock %}
-
-{% block pageheader %}<h1>{{ self.title() }}</h1>{% endblock %}
-
-{% block content %}
-
-<h2>Заказ выплаты</h2>
 {% if overall_debt.available_for_order_amount > 1.00 %}
 	<div class="row">
 		<div class="span6">

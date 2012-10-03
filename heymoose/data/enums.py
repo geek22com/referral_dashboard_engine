@@ -79,6 +79,10 @@ class OfferActionDateKinds(Enum):
 	CREATION = e('CREATION', name=u'время создания')
 	CHANGE = e('CHANGE', name=u'время изменения')
 
+class DebtDateKinds(Enum):
+	CREATION = e('CREATION', name=u'время подтверждения действия')
+	ORDER = e('ORDER', name=u'время заказа выплаты')
+
 class WithdrawalBases(Enum):
 	AFFILIATE_REVENUE = e('AFFILIATE_REVENUE', name=u'Вознаграждение партнёра')
 	FEE = e('FEE', name=u'Комиссия системы')

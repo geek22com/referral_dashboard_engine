@@ -1,0 +1,44 @@
+{% extends "admin/finances/layout.html" %}
+{% import 'common/macros/lists.html' as lists with context %}
+{% import 'common/forms/datetime-range.html' as datetime_range %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ datetime_range.head() }}
+{% endblock %}
+
+{% set activetab = 'withdrawals-offer' %}
+
+{% block tabcontent %}
+
+{{ datetime_range.html(form, 'Показать заказы за период:') }}
+
+{% if debts %}
+	<table class="bordered-table zebra-striped debts-table nosort">
+		<thead>
+			<tr>
+				<th class="header center">Оффер</th>
+				<th class="header center">Заказано, руб.</th>
+				<th class="header center">Выплачено, руб.</th>
+				<th class="header center">К выплате, руб.</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for debt in debts %}
+			<tr>
+				<td><a href="{{ url_for('.offers_info_finances', id=debt.offer_id, date_kind='ORDER', **form.query_args()) }}">{{ debt.offer_name }}</a></td>
+				<td class="right">{{ debt.ordered_amount|currency(false) }}</td>
+				<td class="right">{{ debt.payed_out_amount|currency(false) }}</td>
+				<td class="right">{{ debt.pending_amount|currency(false) }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{{ lists.paginate(pages) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>Не было заказано ни одной выплаты.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

@@ -1,4 +1,5 @@
 from user import UserResource
+from userstat import UserStatResource
 from account import AccountResource
 from withdrawal import WithdrawalResource
 from offer import OfferResource
@@ -11,6 +12,7 @@ from error import ErrorResource
 from public import PublicResource
 
 users = UserResource()
+user_stats = UserStatResource()
 accounts = AccountResource()
 withdrawals = WithdrawalResource()
 offers = OfferResource()

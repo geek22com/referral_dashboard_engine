@@ -631,6 +631,20 @@ class DebtFilterForm(DateTimeRangeForm):
 		return args
 
 
+class UserFilterForm(DateTimeRangeForm):
+	active = BooleanField(u'только активные', default=True)
+
+	def query_args(self):
+		args = DateTimeRangeForm.query_args(self)
+		args.update(active=self.active.data)
+		return args
+
+	def backend_args(self):
+		args = DateTimeRangeForm.backend_args(self)
+		args.update(active=self.active.data)
+		return args
+
+
 class CategoryForm(Form):
 	group = myfields.CategoryGroupField(u'Родительская категория')
 	name = TextField(u'Название категории', [

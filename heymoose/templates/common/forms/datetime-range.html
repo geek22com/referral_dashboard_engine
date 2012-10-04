@@ -46,6 +46,19 @@
 						{{ forms.errors(form.requested) }}
 					</div>
 					{% endif %}
+					{% if form.active %}
+					<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.active) }}">
+						<ul class="inputs-list">
+							<li>
+								<label class="required">
+									{{ forms.field(form.active) }}
+									<span>только активные</span>
+								</label>
+							</li>
+						</ul>
+						{{ forms.errors(form.active) }}
+					</div>
+					{% endif %}
 					{% if form.expired %}
 					<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.expired) }}">
 						<ul class="inputs-list">

@@ -427,4 +427,15 @@ class Debt(models.ModelBase):
 		return self.basis == enums.WithdrawalBases.FEE
 
 
+class UserStat(models.ModelBase):
+	affiliate = Field('User', 'affiliate')
+	clicks = Field(types.Integer, 'clicks')
+	actions = Field(types.Integer, 'actions')
+	conversion = Field(types.Decimal, 'conversion', quantize='1.00')
+	canceled = Field(types.Integer, 'canceled')
+	approved = Field(types.Integer, 'approved')
+	not_confirmed = Field(types.Integer, 'not-confirmed')
+	rate = Field(types.Decimal, 'rate', quantize='1.00')
+
+
 registry.register_models_from_module(__name__)

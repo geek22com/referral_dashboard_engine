@@ -12,6 +12,7 @@ SUB_ID_STATS_PER_PAGE = app.config.get('SUB_ID_STATS_PER_PAGE', 20)
 SOURCE_ID_STATS_PER_PAGE = app.config.get('SOURCE_ID_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
+REFERRAL_STATS_PER_PAGE = app.config.get('REFERRAL_STATS_PER_PAGE', 20)
 SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 
 
@@ -90,6 +91,19 @@ def stats_keywords(**kwargs):
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_by_keywords(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
 	return dict(stats=stats, count=count, form=form)
+
+
+@bp.route('/stats/referral')
+@affiliate_only
+@template('cabinetcpa/stats/referral.html')
+@sorted('amount', 'desc')
+@paginated(REFERRAL_STATS_PER_PAGE)
+def stats_referral(**kwargs):
+	if 'source' in request.args:
+		kwargs.update(source=request.args.get('source'))
+	ref_stats, count = rc.user_stats.list_referrals(g.user.id, **kwargs)
+	return dict(ref_stats=ref_stats, count=count)
+
 
 @bp.route('/stats/suboffer')
 @template('cabinetcpa/stats/suboffer.html')

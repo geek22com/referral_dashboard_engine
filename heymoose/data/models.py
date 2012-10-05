@@ -438,4 +438,11 @@ class UserStat(models.ModelBase):
 	rate = Field(types.Decimal, 'rate', quantize='1.00')
 
 
+class ReferralStat(models.ModelBase):
+	id = Field(types.Integer, 'id')
+	email = Field(types.String, 'email')
+	source = Field(types.String, 'source')
+	amount = Field(types.Decimal, 'amount', quantize='1.00')
+
+
 registry.register_models_from_module(__name__)

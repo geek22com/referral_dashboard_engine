@@ -636,7 +636,7 @@ class UserFilterForm(DateTimeRangeForm):
 
 	def query_args(self):
 		args = DateTimeRangeForm.query_args(self)
-		args.update(active=self.active.data)
+		if self.active.data: args.update(active=u'y')
 		return args
 
 	def backend_args(self):

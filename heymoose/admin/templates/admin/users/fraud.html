@@ -15,17 +15,18 @@
 {{ datetime_range.html(form, 'Показать статистику за период:') }}
 
 {% if user_stats %}
+	{% with kwargs = form.query_args() %}
 	<table class="bordered-table zebra-striped">
 		<thead>
 			<tr>
-				<th {{ lists.sort_header('affiliate_email') }}>Партнёр</th>
-				<th {{ lists.sort_header('clicks') }}>Кликов</th>
-				<th {{ lists.sort_header('actions') }}>Действий</th>
-				<th {{ lists.sort_header('conversion') }}>Конверсия</th>
-				<th {{ lists.sort_header('not_confirmed') }}>Не подтверждено</th>
-				<th {{ lists.sort_header('approved') }}>Подтверждено</th>
-				<th {{ lists.sort_header('canceled') }}>Отклонено</th>
-				<th {{ lists.sort_header('rate') }}>Процент отклоненных</th>
+				<th {{ lists.sort_header('affiliate_email', **kwargs) }}>Партнёр</th>
+				<th {{ lists.sort_header('clicks', **kwargs) }}>Кликов</th>
+				<th {{ lists.sort_header('actions', **kwargs) }}>Действий</th>
+				<th {{ lists.sort_header('conversion', **kwargs) }}>Конверсия</th>
+				<th {{ lists.sort_header('not_confirmed', **kwargs) }}>Не подтверждено</th>
+				<th {{ lists.sort_header('approved', **kwargs) }}>Подтверждено</th>
+				<th {{ lists.sort_header('canceled', **kwargs) }}>Отклонено</th>
+				<th {{ lists.sort_header('rate', **kwargs) }}>Процент отклоненных</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -43,6 +44,8 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	{{ lists.paginate(pages, **kwargs) }}
+	{% endwith %}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Ничего не найдено.</p>

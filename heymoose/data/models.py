@@ -26,7 +26,7 @@ class User(IdentifiableModel):
 	last_name = Field(types.String, 'last-name')
 	organization = Field(types.String, 'organization')
 	phone = Field(types.String, 'phone')
-	source_url = Field(types.String, 'source-url')
+	source = Field(types.String, 'source')
 	messenger_type = Field(types.String, 'messenger-type')
 	messenger_uid = Field(types.String, 'messenger-uid')
 	wmr = Field(types.String, 'wmr')

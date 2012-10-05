@@ -26,7 +26,7 @@ class User(IdentifiableModel):
 	last_name = Field(types.String, 'last-name')
 	organization = Field(types.String, 'organization')
 	phone = Field(types.String, 'phone')
-	source_url = Field(types.String, 'source-url')
+	source = Field(types.String, 'source')
 	messenger_type = Field(types.String, 'messenger-type')
 	messenger_uid = Field(types.String, 'messenger-uid')
 	wmr = Field(types.String, 'wmr')
@@ -436,6 +436,20 @@ class UserStat(models.ModelBase):
 	approved = Field(types.Integer, 'approved')
 	not_confirmed = Field(types.Integer, 'not-confirmed')
 	rate = Field(types.Decimal, 'rate', quantize='1.00')
+
+
+class ReferralStat(models.ModelBase):
+	id = Field(types.Integer, 'id')
+	email = Field(types.String, 'email')
+	register_time = Field(types.DateTime, 'register_time')
+	source = Field(types.String, 'source')
+	amount = Field(types.Decimal, 'amount', quantize='1.00')
+
+
+class ReferralStatList(models.ModelBase):
+	count = Field(types.Integer, '@count')
+	sum = Field(types.Decimal, '@sum', quantize='1.00')
+	items = FieldList('ReferralStat', 'stat')
 
 
 registry.register_models_from_module(__name__)

@@ -1,0 +1,10 @@
+{% extends "cabinetcpa/stats/layout.html" %}
+{% import 'common/referrals.html' as referral_macros with context %}
+
+{% set activetab = 'referral' %}
+
+{% block tabcontent %}
+
+{{ referral_macros.html(ref_stats, sum) }}
+
+{% endblock %}

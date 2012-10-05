@@ -2,6 +2,25 @@
 
 {% set activetab = 'info' %}
 
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		.code-box, .code-box[readonly] {
+			background-color: #FFF;
+			cursor: text;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function() {
+			var refLink = "{{ url_for('site.register_affiliate', ref=g.user.get_refcode(), _external=true) -}}";
+			$('.gen-trigger').change(function() {
+				var source = $.trim($('#source').val());
+				$('#reflink-url').text(refLink + (source ? '&source=' + encodeURIComponent(source) : ''));
+			}).change();
+		})
+	</script>
+{% endblock %}
+
 {% block tabcontent %}
 {% with user = g.user %}
 
@@ -51,17 +70,38 @@
 <table class="key-value">
 	<tbody>
 		{% with ref = url_for('site.register_affiliate', ref=user.get_refcode(), _external=true) %}
-		<tr><th>Реферальная ссылка</th><td><a href="{{ ref }}">{{ ref }}</a></td></tr>
+		<tr>
+			<th>Реферальная ссылка</th>
+			<td>
+				<a href="#" data-controls-modal="modal-reflink" data-backdrop="true" data-keyboard="true">получить</a>
+				<div id="modal-reflink" class="modal" style="display: none;">
+					<div class="modal-header">
+						<a href="#" class="close">×</a>
+						<h3>Реферальная ссылка</h3>
+					</div>
+					<div class="modal-body">
+						<form class="stacked">
+							<div class="clearfix">
+								<label for="source">Источник</label>
+								<input type="text" id="source" class="source span4 gen-trigger" />
+								<span class="help-block">
+									Поле "Источник" позволяет разделять статистику по рефералам,
+									пришедшим с разных мест размещения реферальной ссылки.
+								</span>
+							</div>
+							<div class="clearfix">
+								<label for="reflink-url">Ссылка</label>
+								<textarea rows="3" id="reflink-url" class="span9 code-box" readonly="readonly"></textarea>
+							</div>
+						</form>
+					</div>
+				</div>
+			</td>
+		</tr>
 		{% endwith %}
 		<tr>
 			<th>Рефералы</th>
-			<td>
-				{% for referral in user.referrals %}
-				<p><a href="mailto:{{ referral }}">{{ referral }}</a></p>
-				{% else %}
-				(нет)
-				{% endfor %}
-			</td>
+			<td><a href="{{ url_for('.stats_referral') }}">список рефералов</a></td>
 		</tr>
 	</tbody>
 </table>

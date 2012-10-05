@@ -1,0 +1,47 @@
+{% import 'common/macros/lists.html' as lists with context %}
+
+{% macro html(ref_stats, sum) %}
+	{% if 'source' in request.args %}
+		<div class="alert-message block-message info">
+			Показана статистика для рефералов 
+			{% if request.args.source %}
+			из источника <b>{{ request.args.source }}</b>.
+			{% else %}
+			без источника.
+			{% endif %}
+			
+			<a href="{{ url_for(request.url_rule.endpoint) }}" style="float: right;">вернуться</a>
+		</div>
+	{% endif %}
+
+	{% if ref_stats %}
+		<strong>Всего рефералов {{ count }}. Суммарный доход: {{ sum|currency }}</strong>
+		<table class="bordered-table zebra-striped">
+			<thead>
+				<tr>
+					<th {{ lists.sort_header('email', **kwargs) }}>Партнёр</th>
+					<th {{ lists.sort_header('register_time', **kwargs) }}>Зарегистрирован</th>
+					<th {{ lists.sort_header('source', **kwargs) }}>Источник</th>
+					<th {{ lists.sort_header('amount', **kwargs) }}>Доход, руб.</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for ref_stat in ref_stats %}
+				<tr>
+					<td><a href="mailto:{{ ref_stat.email -}}">{{ ref_stat.email }}</a></td>
+					<td class="center">{{ ref_stat.register_time|datetimeformat }}</td>
+					<td>
+						<a href="{{ url_for(request.url_rule.endpoint, source=ref_stat.source or '') }}">{{ ref_stat.source if ref_stat.source else '(нет)' }}</a>
+					</td>
+					<td class="right">{{ ref_stat.amount|currency(false) }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{{ lists.paginate(pages, **kwargs) }}
+	{% else %}
+		<div class="clearfix alert-message block-message info">
+			<p><strong>Список пуст.</strong> Ничего не найдено.</p>
+		</div>
+	{% endif %}
+{% endmacro %}

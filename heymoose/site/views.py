@@ -116,6 +116,7 @@ def register_affiliate():
 		referrer = rc.users.get_by_id_safe(referrer_id) if referrer_id else None
 		if referrer and referrer.is_affiliate:
 			user.referrer = referrer_id
+		user.source = request.args.get('source')
 		rc.users.add(user)
 		user = rc.users.get_by_email_safe(user.email)
 		if user:

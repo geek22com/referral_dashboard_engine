@@ -441,6 +441,7 @@ class UserStat(models.ModelBase):
 class ReferralStat(models.ModelBase):
 	id = Field(types.Integer, 'id')
 	email = Field(types.String, 'email')
+	register_time = Field(types.DateTime, 'register_time')
 	source = Field(types.String, 'source')
 	amount = Field(types.Decimal, 'amount', quantize='1.00')
 

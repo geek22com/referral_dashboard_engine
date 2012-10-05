@@ -20,7 +20,8 @@
 			<thead>
 				<tr>
 					<th {{ lists.sort_header('email', **kwargs) }}>Партнёр</th>
-					<th class="center">Источник</th>
+					<th {{ lists.sort_header('register_time', **kwargs) }}>Зарегистрирован</th>
+					<th {{ lists.sort_header('source', **kwargs) }}>Источник</th>
 					<th {{ lists.sort_header('amount', **kwargs) }}>Доход, руб.</th>
 				</tr>
 			</thead>
@@ -28,6 +29,7 @@
 				{% for ref_stat in ref_stats %}
 				<tr>
 					<td><a href="mailto:{{ ref_stat.email -}}">{{ ref_stat.email }}</a></td>
+					<td class="center">{{ ref_stat.register_time|datetimeformat }}</td>
 					<td>
 						<a href="{{ url_for(request.url_rule.endpoint, source=ref_stat.source or '') }}">{{ ref_stat.source if ref_stat.source else '(нет)' }}</a>
 					</td>

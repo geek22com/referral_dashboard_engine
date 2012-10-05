@@ -23,6 +23,7 @@
 	<li id="subtab-affiliate"><a href="{{ url_for('.offers_info_stats_affiliate', id=offer.id) }}">По партнерам</a></li>
 	<li id="subtab-referer"><a href="{{ url_for('.offers_info_stats_referer', id=offer.id) }}">По реферерам</a></li>
 	<li id="subtab-keywords"><a href="{{ url_for('.offers_info_stats_keywords', id=offer.id) }}">По поисковым запросам</a></li>
+	<li id="subtab-fraud"><a href="{{ url_for('.offers_info_stats_fraud', id=offer.id) }}">Накрутки</a></li>
 </ul>
 
 {% block subtabcontent %}Раздел находится в разработке{% endblock %}

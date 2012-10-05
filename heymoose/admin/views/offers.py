@@ -419,3 +419,15 @@ def offers_info_stats_suboffer_keywords(id, **kwargs):
 	kwargs.update(keywords=request.args.get('keywords'), **form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer_by_keywords(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
 	return dict(offer=offer, stats=stats, count=count)
+
+
+@bp.route('/offers/<int:id>/stats/fraud')
+@template('admin/offers/info/stats/fraud.html')
+@sorted('rate', 'desc')
+@paginated(AFFILIATE_STATS_PER_PAGE)
+def offers_info_stats_fraud(id, **kwargs):
+	offer = rc.offers.get_by_id(id)
+	form = forms.UserFilterForm(request.args)
+	kwargs.update(form.backend_args())
+	user_stats, count = rc.user_stats.list_fraud(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
+	return dict(offer=offer, user_stats=user_stats, count=count, form=form)

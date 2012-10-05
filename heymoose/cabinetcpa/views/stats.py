@@ -101,8 +101,8 @@ def stats_keywords(**kwargs):
 def stats_referral(**kwargs):
 	if 'source' in request.args:
 		kwargs.update(source=request.args.get('source'))
-	ref_stats, count = rc.user_stats.list_referrals(g.user.id, **kwargs)
-	return dict(ref_stats=ref_stats, count=count)
+	ref_stats_list = rc.user_stats.list_referrals(g.user.id, **kwargs)
+	return dict(ref_stats=ref_stats_list.items, count=ref_stats_list.count, sum=ref_stats_list.sum)
 
 
 @bp.route('/stats/suboffer')

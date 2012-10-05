@@ -445,4 +445,10 @@ class ReferralStat(models.ModelBase):
 	amount = Field(types.Decimal, 'amount', quantize='1.00')
 
 
+class ReferralStatList(models.ModelBase):
+	count = Field(types.Integer, '@count')
+	sum = Field(types.Decimal, '@sum', quantize='1.00')
+	items = FieldList('ReferralStat', 'stat')
+
+
 registry.register_models_from_module(__name__)

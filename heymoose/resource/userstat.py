@@ -1,5 +1,5 @@
 from backend import BackendResource
-from heymoose.data.models import UserStat, ReferralStat
+from heymoose.data.models import UserStat, ReferralStatList
 
 class UserStatResource(BackendResource):
 	base_path = '/user-stats'
@@ -8,4 +8,4 @@ class UserStatResource(BackendResource):
 		return self.path('fraud').get(**kwargs).as_objlist(UserStat, with_count=True)
 
 	def list_referrals(self, aff_id, **kwargs):
-		return self.path(aff_id).path('referrals').get(**kwargs).as_objlist(ReferralStat, with_count=True)
+		return self.path(aff_id).path('referrals').get(**kwargs).as_obj(ReferralStatList)

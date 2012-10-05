@@ -1,19 +1,26 @@
 {% import 'common/macros/lists.html' as lists with context %}
 
-{% macro html(ref_stats) %}
-	{% if request.args.source %}
+{% macro html(ref_stats, sum) %}
+	{% if 'source' in request.args %}
 		<div class="alert-message block-message info">
-			Показана статистика для источника <b>{{ request.args.source }}</b>.
+			Показана статистика для рефералов 
+			{% if request.args.source %}
+			из источника <b>{{ request.args.source }}</b>.
+			{% else %}
+			без источника.
+			{% endif %}
+			
 			<a href="{{ url_for(request.url_rule.endpoint) }}" style="float: right;">вернуться</a>
 		</div>
 	{% endif %}
 
 	{% if ref_stats %}
+		<strong>Доход всего: {{ sum|currency }}</strong>
 		<table class="bordered-table zebra-striped">
 			<thead>
 				<tr>
-					<th {{ lists.sort_header('affiliate_email', **kwargs) }}>Партнёр</th>
-					<th {{ lists.sort_header('source', **kwargs) }}>Источник</th>
+					<th {{ lists.sort_header('email', **kwargs) }}>Партнёр</th>
+					<th class="center">Источник</th>
 					<th {{ lists.sort_header('amount', **kwargs) }}>Доход, руб.</th>
 				</tr>
 			</thead>
@@ -22,11 +29,7 @@
 				<tr>
 					<td><a href="mailto:{{ ref_stat.email -}}">{{ ref_stat.email }}</a></td>
 					<td>
-						{% if ref_stat.source %}
-						<a href="{{ url_for(request.url_rule.endpoint, source=ref_stat.source) }}">{{ ref_stat.source }}</a>
-						{% else %}
-						&mdash;
-						{% endif %}
+						<a href="{{ url_for(request.url_rule.endpoint, source=ref_stat.source or '') }}">{{ ref_stat.source if ref_stat.source else '(нет)' }}</a>
 					</td>
 					<td class="right">{{ ref_stat.amount|currency(false) }}</td>
 				</tr>

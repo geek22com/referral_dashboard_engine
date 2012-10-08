@@ -110,7 +110,7 @@
 	{% endblock %}
 	
 	<span class="status">
-		<a href="#" data-controls-modal="manager-modal" data-backdrop="true" data-keyboard="true">Ваш личный менеджер</a>
+		<a href="#" data-controls-modal="manager-modal" data-backdrop="true" data-keyboard="true">Служба поддержки</a>
 		{% if g.user.is_advertiser %}
 		<span class="divider">/</span>
 		Ваш ID: {{ g.user.id }}
@@ -179,24 +179,23 @@
 <div id="manager-modal" class="modal fade" style="display: none;">
 	<div class="modal-header">
 		<a href="#" class="close">×</a>
-		<h3>Информация о вашем менеджере</h3>
+		<h3>Служба поддержки</h3>
 	</div>
 	<div class="modal-body">
 		{% if g.user.is_advertiser %}
-			<p>Вашего личного менеджера зовут <strong>Юрий Иваницкий</strong>.</p>
+			<p>Служба поддержки рекламодателей:</p>
 			<address>
-				<strong>E-mail:</strong> <a href="mailto:iv@heymoose.com">iv@heymoose.com</a><br />
-				<strong>Телефон:</strong> +7 (916) 970-67-66<br />
+				<strong>E-mail:</strong> <a href="mailto:sales@heymoose.com">sales@heymoose.com</a><br />
+				<strong>Телефон:</strong> +7 (905) 710-19-92<br />
 			</address>
 		{% endif %}
 		{% if g.user.is_affiliate %}
-			<p>Вашего личного менеджера зовут <strong>Дмитрий Павлов</strong>.</p>
+			<p>Служба поддержки партнёров:</p>
 			<address>
-				<strong>E-mail:</strong> <a href="mailto:dmitriy.pavlov@heymoose.com">dmitriy.pavlov@heymoose.com</a><br />
-				<strong>Телефон:</strong> +7 (916) 082-20-87<br />
-				<strong>Skype:</strong> ragdar777<br />
-				<strong>ICQ:</strong> 604138937
+				<strong>E-mail:</strong> <a href="mailto:affiliate@heymoose.com">affiliate@heymoose.com</a><br />
+				<strong>Телефон:</strong> +7 (905) 710-19-92<br />
 			</address>
+			<p>Также вы можете задать любой вопрос на главной странице вашего личного кабинета.</p>
 		{% endif %}
 	</div>
 </div>

@@ -55,10 +55,15 @@
 								{{ forms.field(form.payment_type, class='span4') }}
 								{{ forms.errors(form.payment_type) }}
 							</div>
+							<div class="formfield clearfix inner-field {{ forms.css_errors(form.exclusive_only) }}" style="margin-top: 10px;">
+								{{ forms.field(form.exclusive_only) }}
+								{{ forms.label(form.exclusive_only, class='simple required') }}
+								{{ forms.errors(form.exclusive_only) }}
+							</div>
 							{% if form.active_only %}
 							<div class="formfield clearfix inner-field {{ forms.css_errors(form.active_only) }}" style="margin-top: 10px;">
 								{{ forms.field(form.active_only) }}
-								{{ forms.label(form.active_only, class='simple') }}
+								{{ forms.label(form.active_only, class='simple required') }}
 								{{ forms.errors(form.active_only) }}
 							</div>
 							{% endif %}

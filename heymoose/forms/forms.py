@@ -667,12 +667,14 @@ class OfferFilterForm(Form):
 	region = myfields.RegionsField(u'Регионы',
 		predefined=('RU', 'UA', 'BY', 'KZ', 'AM', 'AZ', 'KG', 'MD', 'TJ', 'TM', 'UZ')
 	)
+	exclusive_only = BooleanField(u'только эксклюзивные', default=False)
 	
 	def query_args(self):
-		return dict(
+		return create_dict(
 			payment_type=self.payment_type.data,
 			category=self.category.data,
-			region=self.region.data
+			region=self.region.data,
+			exclusive_only=u'y' if self.exclusive_only.data else None
 		)
 	
 	def backend_args(self):
@@ -682,15 +684,16 @@ class OfferFilterForm(Form):
 			pay_method=None if self.payment_type.data == 0 else
 				enums.PayMethods.CPC if self.payment_type.data == 1 else enums.PayMethods.CPA,
 			cpa_policy=None if self.payment_type.data in (0, 1) else
-				enums.CpaPolicies.FIXED if self.payment_type.data == 2 else enums.CpaPolicies.PERCENT
+				enums.CpaPolicies.FIXED if self.payment_type.data == 2 else enums.CpaPolicies.PERCENT,
+			exclusive=self.exclusive_only.data or None
 		)
 	
 	def has_filled_fields(self):
-		return self.region.data or self.category.data or self.payment_type.data > 0
+		return self.region.data or self.category.data or self.payment_type.data > 0 or self.exclusive_only.data
 
 
 class AdminOfferFilterForm(OfferFilterForm):
-	active_only = BooleanField(u'Только активные', default=False)
+	active_only = BooleanField(u'только активные', default=False)
 
 	def query_args(self):
 		args = super(AdminOfferFilterForm, self).query_args()

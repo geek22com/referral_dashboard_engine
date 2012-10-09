@@ -10,6 +10,9 @@
 # Python
 *.pyc
 
+# Flask
+*webassets-cache*
+
 # Debian Packaging
 debian
 frontend_deb.tar.gz

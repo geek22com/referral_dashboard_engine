@@ -125,19 +125,25 @@
 					{% endif %}
 				</td>
 				
-				{% if not offer.exclusive %}
-				<td>{{ offer.title }}</td>
 				<td>
+					{% if not offer.exclusive %}
+						{{ offer.title }}
+					{% else %}
+						Покупка товаров на эксклюзивных условиях
+					{% endif %}
+				</td>
+				
+				<td>
+					{% if offer.exclusive %}от{% endif %}
 					{{ offer.value(affiliate) }}
 					{% if not affiliate %}
 						<br /><span class="affiliate-value">(из них партнёру {{ offer.value(true, short=true) -}})</span>
 					{% endif %}
+					{% if offer.exclusive %}
+						<p><a href="{{ url_for('.offers_info', id=offer.id) }}">см. полное описание</a></p>
+					{% endif %}
 				</td>
-				{% else %}
-				<td>Покупка товаров на эксклюзивных условиях</td>
-				<td><a href="{{ url_for('.offers_info', id=offer.id) }}">см. полное описание</a></td>
-				{% endif %}
-				
+								
 				<td {{ rowspan }}>{{ offer.short_description|default('&mdash;', true)|safe }}</td>
 				<td class="right" {{ rowspan }}>
 					{% if offer.cr is not none %}{{ offer.cr|percent }}{% else %}(нет&nbsp;данных){% endif %}

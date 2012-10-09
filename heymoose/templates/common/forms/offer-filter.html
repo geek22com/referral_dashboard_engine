@@ -49,10 +49,19 @@
 							</div>
 							{{ forms.errors(form.region) }}
 						</div>
-						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.payment_type) }}">
-							{{ forms.label(form.payment_type, class='simple required') }}
-							{{ forms.field(form.payment_type, class='span4') }}
-							{{ forms.errors(form.payment_type) }}
+						<div class="span4">
+							<div class="formfield clearfix inner-field {{ forms.css_errors(form.payment_type) }}">
+								{{ forms.label(form.payment_type, class='simple required') }}
+								{{ forms.field(form.payment_type, class='span4') }}
+								{{ forms.errors(form.payment_type) }}
+							</div>
+							{% if form.active_only %}
+							<div class="formfield clearfix inner-field {{ forms.css_errors(form.active_only) }}" style="margin-top: 10px;">
+								{{ forms.field(form.active_only) }}
+								{{ forms.label(form.active_only, class='simple') }}
+								{{ forms.errors(form.active_only) }}
+							</div>
+							{% endif %}
 						</div>
 					</div>
 					<div class="right" style="margin-top: -30px;">

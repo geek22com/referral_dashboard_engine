@@ -24,7 +24,7 @@ DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
 @template('admin/offers/list.html')
 @paginated(OFFERS_PER_PAGE)
 def offers_list(**kwargs):
-	form = forms.OfferFilterForm(request.args)
+	form = forms.AdminOfferFilterForm(request.args)
 	kwargs.update(form.backend_args())
 	offers, count = rc.offers.list(**kwargs) if form.validate() else ([], 0)
 	return dict(offers=offers, count=count, form=form)

@@ -689,6 +689,23 @@ class OfferFilterForm(Form):
 		return self.region.data or self.category.data or self.payment_type.data > 0
 
 
+class AdminOfferFilterForm(OfferFilterForm):
+	active_only = BooleanField(u'Только активные', default=False)
+
+	def query_args(self):
+		args = super(AdminOfferFilterForm, self).query_args()
+		if self.active_only.data: args.update(active_only=u'y')
+		return args
+
+	def backend_args(self):
+		args = super(AdminOfferFilterForm, self).backend_args()
+		if self.active_only.data: args.update(approved=True, active=True)
+		return args
+
+	def has_filled_fields(self):
+		return super(AdminOfferFilterForm, self).has_filled_fields() or self.active_only.data
+
+
 class CatalogOfferFilterForm(OfferFilterForm):
 	offset = IntegerField(u'', [validators.NumberRange(min=0)], default=0)
 	exclusive = BooleanField(u'')

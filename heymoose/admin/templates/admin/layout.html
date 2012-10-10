@@ -3,14 +3,6 @@
 {% block posttitle %}Администрирование HeyMoose{% endblock %}
 
 {% block extrahead %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/redmond/jquery-ui-1.8.20.custom.css') }}" media="all" />
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/timepicker-addon.css') }}" media="all" />
-
-<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-ui.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.ui.datepicker-ru.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-ui-timepicker-addon.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='./js/categorized.list.js') }}"></script>
-
 {% set activemenu = activemenu|default('index') %}
 <script type="text/javascript">
 	$(function() {

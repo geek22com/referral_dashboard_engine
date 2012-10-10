@@ -21,6 +21,7 @@
 		<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" media="screen" />
 	{% endassets %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/icons.css') }}" media="screen" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/redmond/jquery-ui-1.8.20.custom.css') }}" media="all" />
 
 	<style type="text/css">
 		body { background: url({{ url_for('static', filename='./img/background.png') }}) repeat scroll 0 0 transparent; }
@@ -39,7 +40,6 @@
 			$('#topbar').dropdown();
 			$('li#menu-item-{{ activemenu }}').addClass('active');
 			
-			$('form.validate').validateForm(twitterValidateHandlers);
 			$('form.validate2').validateForm2(twitterValidateHandlers2);
 			
 			var datepickers = $('.datepicker');

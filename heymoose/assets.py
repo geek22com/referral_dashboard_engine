@@ -31,15 +31,20 @@ def configure_assets(app):
 	))
 	assets.register('cabinet_js', Bundle(
 		'js/jquery-latest.js',
+		'js/jquery-ui.min.js',
+		'js/jquery.ui.datepicker-ru.js',
+		'js/jquery-ui-timepicker-addon.js',
 		'js/jquery.form.js',
 		'js/bootstrap-dropdown.js',
 		'js/bootstrap-modal.js',
 		'js/bootstrap-alerts.js',
 		'js/wtvalidate2.js',
 		'js/wtvalidate2.twitter.js',
+		'js/categorized.list.js',
 		filters=['rjsmin'], output='js/cabinet.gen.js'
 	))
 	assets.register('cabinet_css', Bundle(
+		'css/timepicker-addon.css',
 		'css/bootstrap.min.css',
 		'css/bootstrap.hm.css',
 		'css/roundbox.css',

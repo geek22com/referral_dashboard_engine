@@ -452,4 +452,17 @@ class ReferralStatList(models.ModelBase):
 	items = FieldList('ReferralStat', 'stat')
 
 
+class Product(IdentifiableModel):
+	name = Field(types.String, 'name')
+	url = Field(types.String, 'url')
+	picture = Field(types.String, 'picture')
+	price = Field(types.Decimal, 'price', quantize='1.00')
+	currency_id = Field(types.String, 'currencyId')
+
+
+class YmlCatalog(models.ModelBase):
+	products = FieldList('Product', 'shop/offers/offer')
+
+
+
 registry.register_models_from_module(__name__)

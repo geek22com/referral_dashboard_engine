@@ -1,0 +1,54 @@
+{% extends "cabinetcpa/offers/layout.html" %}
+
+{% set activetab = 'products' %}
+
+{% block extrahead %}
+	{{ super() }}
+{% endblock %}
+
+{% block tabcontent %}
+
+<div class="row">
+	<div class="span4">
+		Привет
+	</div>
+	<div class="span11">
+		<div class="clearfix alert-message block-message info">
+			<p>
+				Ссылка на XML feed:
+				<a href="#">тут ссылка</a>
+			</p>
+		</div>
+
+		{% if products %}
+			<table class="bordered-table zebra-striped nosort">
+				<thead>
+					<tr>
+						<th class="center">Название</th>
+						<th class="center">Цена</th>
+						<th class="center">Партнерская ссылка</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for product in products %}
+					<tr>
+						<td>{{ product.name }}</td>
+						<td class="right">{{ product.price -}}&nbsp;{{ product.currency_id -}}</td>
+						<td><a href="{{ product.url -}}">{{ product.url }}</a></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% else %}
+			<div class="clearfix alert-message block-message info">
+				<p>
+					<strong>Список пуст.</strong>
+					Вы еще не добавили ни одного оффера. Вы можете сделать это прямо сейчас,
+					выбрав понравившийся вам оффер в нашем каталоге.
+				</p>
+			</div>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}

@@ -81,6 +81,15 @@ def offers_requested(**kwargs):
 	offers, count = rc.offers.list_requested(g.user.id, **kwargs)
 	return dict(offers=offers, count=count)
 
+
+@bp.route('/offers/products/')
+@affiliate_only
+@template('cabinetcpa/offers/products.html')
+def offers_products():
+	catalog = rc.products.feed(g.user.id)
+	return dict(products=catalog.products)
+
+
 @bp.route('/offers/new', methods=['GET', 'POST'])
 @advertiser_only
 @template('cabinetcpa/offers/new.html')

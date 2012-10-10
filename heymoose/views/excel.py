@@ -69,3 +69,32 @@ def users_to_xls(users):
 	wb.save(f)
 	f.seek(0)
 	return f
+
+
+def debts_to_xls(debts):
+	table = [
+		dict(title=u'Тип', getter=lambda d: d.basis.name, width=5000),
+		dict(title=u'ID оффера', getter=lambda d: d.offer_id),
+		dict(title=u'Название оффера', getter=lambda d: d.offer_name, width=5000),
+		dict(title=u'ID партнёра', getter=lambda d: d.user_id if not d.is_fee and d.user_id else None),
+		dict(title=u'Email партнёра', getter=lambda d: d.user_email if not d.is_fee and d.user_id else None, width=5000),
+		dict(title=u'WMR партнёра', getter=lambda d: d.user_wmr if not d.is_fee and d.user_id else None, width=5000),
+		dict(title=u'Оборот', getter=lambda d: d.income_amount, style=currency_style, width=4000),
+		dict(title=u'Долг', getter=lambda d: d.debt_amount, style=currency_style, width=4000),
+		dict(title=u'Заказано', getter=lambda d: d.ordered_amount, style=currency_style, width=4000),
+		dict(title=u'Выплачено', getter=lambda d: d.payed_out_amount, style=currency_style, width=4000),
+		dict(title=u'К выплате', getter=lambda d: d.pending_amount, style=currency_style, width=4000)
+	]
+	wb = xlwt.Workbook()
+	ws = wb.add_sheet(u'Финансы')
+	for i, col in enumerate(table):
+		ws.write(0, i, col.get('title'), bold_style)
+		if 'width' in col:
+			ws.col(i).width = col.get('width')
+	for i, debt in enumerate(debts):
+		for j, col in enumerate(table):
+			ws.write(i+1, j, col.get('getter')(debt), col.get('style', xlwt.Style.default_style))
+	f = cStringIO.StringIO()
+	wb.save(f)
+	f.seek(0)
+	return f

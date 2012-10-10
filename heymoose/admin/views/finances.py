@@ -1,7 +1,8 @@
-from flask import request, redirect, url_for
+from flask import request, redirect, url_for, send_file
 from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.data.enums import DebtDateKinds
+from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.admin import blueprint as bp
 
@@ -39,6 +40,10 @@ def finances_withdrawals_offer(**kwargs):
 @paginated(DEBTS_PER_PAGE)
 def finances_debts(**kwargs):
 	form = forms.DebtFilterForm(request.args)
+	if request.args.get('format') == 'xls' and form.validate():
+		debts, _ = rc.withdrawals.list_debts(offset=0, limit=999999, ordering='PENDING', direction='DESC',
+			**form.backend_args())
+		return send_file(excel.debts_to_xls(debts), as_attachment=True, attachment_filename='debts.xls')
 	if form.validate():
 		kwargs.update(form.backend_args())
 		debts, count = rc.withdrawals.list_debts(**kwargs)

@@ -14,6 +14,14 @@
 {% block tabcontent %}
 
 {{ datetime_range.html(form, 'Показать долг за период:') }}
+
+{% if debts %}
+<div class="well right">
+	<a href="{{ url_for(request.url_rule.endpoint, format='xls', **form.query_args()) }}"
+	 class="btn success">Выгрузить список в Excel</a>
+</div>
+{% endif %}
+
 {% call(place, debt) debts_list.html(debts, overall_debt, **form.query_args()) %}{% endcall %}
 
 {% endblock %}

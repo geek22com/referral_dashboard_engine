@@ -41,7 +41,10 @@
 		</li>
 	</script>
 	{% endraw %}
-	<script type="text/javascript" src="{{ url_for('static', filename='ak/js/catalog.js', nocache=nocache()) }}"></script>
+
+	{% assets 'site_catalog_js' %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
 {% endblock %}
 
 {% block inner_container %}

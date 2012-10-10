@@ -53,6 +53,10 @@ MAIL_SUPPRESS_SEND = not MAIL_ENABLED
 MAIL_FAIL_SILENTLY = False
 DEFAULT_MAIL_SENDER = MAIL_FROM_ADDRESS
 
+# Flask-Assets parameters
+ASSETS_DEBUG = True
+ASSETS_AUTO_BUILD = True
+
 # Encryption parameters
 REFERRAL_CRYPT_KEY = 'aGy3iRn7fRbIw4yM' # Must be 16 bytes long
 CONFIRM_CRYPT_KEY =  'gR7Bsvu46jE623Gg'

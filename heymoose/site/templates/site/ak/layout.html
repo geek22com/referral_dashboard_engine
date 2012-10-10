@@ -21,29 +21,21 @@
 		<link rel="shortcut icon" href="{{ icon_url }}" type="image/x-icon" />
 		<link rel="icon" href="{{ icon_url }}" type="image/x-icon" />
 		{% endwith %}
-		
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/default.css') }}" media="screen" />
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/icons.css') }}" media="screen" />
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/components.css') }}" media="screen" />
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/forms.css') }}" media="screen" />
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/jquery.fancybox.css') }}" media="screen" />
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/ui.notify.css') }}" media="screen" />
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/override.css') }}" media="screen" />
+
+		{% assets 'site_css' %}
+			<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" media="screen" />
+		{% endassets %}
 		
 		<!--[if lt IE 8 ]>
-			<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/ie.css') }}" media="screen" />
+		{% assets 'site_ie_css' %}
+			<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" media="screen" />
+		{% endassets %}
 		<![endif]-->
 		
-		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.min.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery-ui-1.8.22.custom.min.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.notify.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/slides.min.jquery.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.fancybox.pack.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.jcarousel.min.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/jquery.tmpl.min.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='js/wtvalidate2.js', nocache=nocache()) }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='ak/js/common.js', nocache=nocache()) }}"></script>
-		
+		{% assets 'site_js' %}
+			<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+		{% endassets %}
+
 		{# Google Analytics #}
 		<script type="text/javascript">
 			var _gaq = _gaq || [];

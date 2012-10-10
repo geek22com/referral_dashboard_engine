@@ -12,31 +12,25 @@
 		{% endblock %}
 	</title>
 	
-	<link rel="shortcut icon" href="{{ url_for('static', filename='./img/favicon.ico') }}" type="image/x-icon" />
-	<link rel="icon" href="{{ url_for('static', filename='./img/favicon.ico') }}" type="image/x-icon" />
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.min.css') }}" media="screen">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/bootstrap.hm.css', nocache=nocache()) }}" media="screen">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/roundbox.css', nocache=nocache()) }}" media="screen">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/lists.css', nocache=nocache()) }}" media="screen">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/forms.css', nocache=nocache()) }}" media="screen">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/pills-filter.css', nocache=nocache()) }}" media="screen">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/redactor-text.css', nocache=nocache()) }}" media="screen">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='./css/disqus.css', nocache=nocache()) }}" media="screen">
+	{% with icon_url = url_for('static', filename='./img/favicon.ico') %}
+	<link rel="shortcut icon" href="{{ icon_url }}" type="image/x-icon" />
+	<link rel="icon" href="{{ icon_url }}" type="image/x-icon" />
+	{% endwith %}
+
+	{% assets 'cabinet_css' %}
+		<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" media="screen" />
+	{% endassets %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ak/css/icons.css') }}" media="screen" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/redmond/jquery-ui-1.8.20.custom.css') }}" media="all" />
+
 	<style type="text/css">
 		body { background: url({{ url_for('static', filename='./img/background.png') }}) repeat scroll 0 0 transparent; }
 		.container.fluid { min-width: 940px; }
 	</style>
 	
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery-latest.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/jquery.form.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/bootstrap-dropdown.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/bootstrap-modal.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/bootstrap-alerts.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.js', nocache=nocache()) }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate.twitter.js', nocache=nocache()) }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate2.js', nocache=nocache()) }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='./js/wtvalidate2.twitter.js', nocache=nocache()) }}"></script>
+	{% assets 'cabinet_js' %}
+		<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+	{% endassets %}
 	
 	{% set activemenu = activemenu|default('index') %}
 	<script type="text/javascript">
@@ -46,7 +40,6 @@
 			$('#topbar').dropdown();
 			$('li#menu-item-{{ activemenu }}').addClass('active');
 			
-			$('form.validate').validateForm(twitterValidateHandlers);
 			$('form.validate2').validateForm2(twitterValidateHandlers2);
 			
 			var datepickers = $('.datepicker');

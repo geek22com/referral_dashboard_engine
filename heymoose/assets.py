@@ -15,6 +15,10 @@ def configure_assets(app):
 		'ak/js/common.js',
 		filters=['rjsmin'], output='ak/js/site.gen.js'
 	))
+	assets.register('site_catalog_js', Bundle(
+		'ak/js/catalog.js',
+		filters=['rjsmin'], output='ak/js/site.catalog.gen.js'
+	))
 	assets.register('site_css', Bundle(
 		'ak/css/default.css',
 		'ak/css/icons.css',
@@ -51,6 +55,7 @@ def configure_assets(app):
 		'css/lists.css',
 		'css/forms.css',
 		'css/pills-filter.css',
+		'css/newsitem.css',
 		'css/redactor-text.css',
 		'css/disqus.css',
 		output='css/cabinet.gen.css'

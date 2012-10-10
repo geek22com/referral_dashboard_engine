@@ -72,12 +72,15 @@ def offers_requests(**kwargs):
 @bp.route('/offers/categories/', methods=['GET', 'POST'])
 @template('admin/offers/categories.html')
 def offers_categories():
+	groups = rc.categories.list_groups()
 	form = forms.CategoryForm(request.form)
-	groups = form.group.groups
+	form.group.set_groups(groups)
 	for group in groups:
 		group.form = forms.CategoryForm(group=0, name=group.name)
+		group.form.group.set_groups(groups)
 		for category in group.categories:
-			category.form = forms.CategoryEditForm(group=group.id, name=category.name)
+			category.form = forms.CategoryForm(group=group.id, name=category.name)
+			category.form.group.set_groups(groups, empty=None)
 	if request.method == 'POST' and form.validate():
 		if form.group.data:
 			rc.categories.add(form.name.data, form.group.data)
@@ -89,7 +92,9 @@ def offers_categories():
 
 @bp.route('/offers/categories/<int:id>/', methods=['POST'])
 def offers_categories_update(id):
-	form = forms.CategoryEditForm(request.form)
+	groups = rc.categories.list_groups()
+	form = forms.CategoryForm(request.form)
+	form.group.set_groups(groups, empty=None)
 	if form.validate():
 		rc.categories.update(id, form.name.data, form.group.data)
 		flash(u'Категория успешно изменена', 'success')
@@ -99,7 +104,9 @@ def offers_categories_update(id):
 
 @bp.route('/offers/categories/groups/<int:id>/', methods=['POST'])
 def offers_categories_update_group(id):
+	groups = rc.categories.list_groups()
 	form = forms.CategoryForm(request.form)
+	form.group.set_groups(groups)
 	if form.validate():
 		rc.categories.update_group(id, form.name.data)
 		flash(u'Категория успешно изменена', 'success')

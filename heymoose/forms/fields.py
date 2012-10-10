@@ -184,9 +184,13 @@ class OfferField(SelectField):
 		return None
 
 class CategoryGroupField(SelectField):
-	def __init__(self, label=None, validators=None, empty=(0, u'(верхний уровень)'), **kwargs):
-		self.groups = rc.categories.list_groups()
-		choices = [(group.id, group.name) for group in self.groups]
+	def __init__(self, *args, **kwargs):
+		kwargs.update(coerce=int)
+		super(CategoryGroupField, self).__init__(*args, **kwargs)
+
+	def set_groups(self, groups, empty=(0, u'(верхний уровень)')):
+		self.groups = groups
+		choices = [(group.id, group.name) for group in groups]
 		if empty: choices.insert(0, empty)
-		super(CategoryGroupField, self).__init__(label, validators, int, choices, **kwargs)
+		self.choices = choices
 

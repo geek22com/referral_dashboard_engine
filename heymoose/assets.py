@@ -25,3 +25,7 @@ def configure_assets(app):
 		'ak/css/override.css',
 		output='ak/css/site.css'
 	))
+	assets.register('site_ie_css', Bundle(
+		'ak/css/ie.css',
+		output='ak/css/site.ie.css'
+	))

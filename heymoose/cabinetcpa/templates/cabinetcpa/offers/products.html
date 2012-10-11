@@ -1,16 +1,118 @@
 {% extends "cabinetcpa/offers/layout.html" %}
 
 {% set activetab = 'products' %}
+{% set content_fluid = true %}
 
 {% block extrahead %}
 	{{ super() }}
+	<style type="text/css">
+		table.product-info td, table.product-info th {
+			border: none;
+		}
+
+		.products-filter-wrapper {
+			overflow-x: auto;
+		}
+
+		.shops-list {
+			list-style: none;
+			margin-left: 0;
+		}
+
+		.shops-list > li {
+			color: #404040;
+			font-weight: bold;
+		}
+
+		.categories-list {
+			list-style: none;
+			margin-left: 18px;
+		}
+
+		.categories-list li {
+			color: #404040;
+		}
+
+		.collapsible.collapsed > .collapsible-content {
+			display: none;
+		}
+	</style>
+
+	<script type="text/javascript">
+		$(function() {
+			// Collapse all categories without checked inputs on load
+			$('.collapsible').each(function() {
+				if (!$(this).find('.collapsible > input:checked').length)
+					$(this).addClass('collapsed');
+			});
+
+			// Disable all inputs under checked inputs on load
+			$('.collapsible > input:checked')
+				.closest('.collapsible')
+				.find('.collapsible > input')
+				.attr('checked', true)
+				.attr('disabled', 'disabled');
+
+			$('.collapsible-toggle').click(function() {
+				$(this).closest('.collapsible').toggleClass('collapsed');
+				return false;
+			});
+
+			$('.collapsible > input').change(function() {
+				var checked = $(this).is(':checked');
+				var childInputs = $(this).closest('.collapsible').find('.collapsible > input');
+				childInputs.attr('checked', checked);
+				if (checked)
+					childInputs.attr('disabled', 'disabled');
+				else
+					childInputs.removeAttr('disabled');
+			});
+		})
+	</script>
 {% endblock %}
+
+{% macro categories_list(categories) %}
+	{% if categories %}
+	<ul class="categories-list collapsible-content">
+		{% for category in categories %}
+		<li class="category collapsible">
+			<input type="checkbox" name="c" value="{{ category.id }}" {{ 'checked="checked"' if '{0}'.format(category.id) in request.args.getlist('c') }} />
+			{% if category.children %}
+				<a href="#" class="collapsible-toggle">{{ category.name }}</a>
+			{% else %}
+				{{ category.name }}
+			{% endif %}
+			{{ categories_list(category.children) }}
+		</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+{% endmacro %}
 
 {% block tabcontent %}
 
 <div class="row">
-	<div class="span4">
-		Привет
+	<div class="span6 products-filter-wrapper">
+		<form method="get" action="">
+			<h3>Фильтр</h3>
+			<input type="submit" class="btn primary large span6" value="Применить" />
+			<h5>Название</h5>
+			<input type="text" name="q" class="span6" value="{{ request.args.get('q', '') }}" />
+			<h5>Магазины и категории</h5>
+			<ul class="shops-list">
+				{% for shop in shops %}
+				<li class="collapsible">
+					<input type="checkbox" name="s" value="{{ shop.id }}" {{ 'checked="checked"' if '{0}'.format(shop.id) in request.args.getlist('s') }} />
+					{% if shop.categories %}
+						<a href="#" class="collapsible-toggle">{{ shop.name }}</a>
+					{% else %}
+						{{ shop.name }}
+					{% endif %}
+					{{ categories_list(shop.categories_tree) }}
+				</li>
+				{% endfor %}
+			</ul>
+		</form>
 	</div>
 	<div class="span11">
 		<div class="clearfix alert-message block-message info">
@@ -32,9 +134,44 @@
 				<tbody>
 					{% for product in products %}
 					<tr>
-						<td>{{ product.name }}</td>
+						<td>
+							<a href="#" data-controls-modal="product-modal-{{ product.id -}}"
+							 data-backdrop="true" data-keyboard="true">{{ product.name }}</a>
+							<div id="product-modal-{{ product.id -}}" class="modal fade" style="display: none;">
+								<div class="modal-header">
+									<a href="#" class="close">×</a>
+									<h3>{{ product.name }}</h3>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="span3">
+											<img src="{{ product.picture -}}" alt="{{ product.name }}" width="160" />
+										</div>
+										<div class="span6">
+											<table class="condensed-table product-info">
+												<tbody>
+													{% if product.vendor %}
+														<tr><th>Производитель</th><td>{{ product.vendor }}</td></tr>
+													{% endif %}
+													{% if product.model or product.vendor_code %}
+														<tr><th>Модель</th><td>{{ product.model or product.vendor_code }}</td></tr>
+													{% endif %}
+													{% if product.price %}
+														<tr><th>Цена</th><td>{{ product.price }}&nbsp;{{ product.currency_id }}</td></tr>
+													{% endif %}
+													{% if product.url %}
+														<tr><th>Партнерская ссылка</th><td><a href="{{ product.url -}}">ссылка</a></td></tr>
+													{% endif %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+									{% if product.description %}<p>{{ product.description }}</p>{% endif %}
+								</div>
+							</div>
+						</td>
 						<td class="right">{{ product.price -}}&nbsp;{{ product.currency_id -}}</td>
-						<td><a href="{{ product.url -}}">{{ product.url }}</a></td>
+						<td><a href="{{ product.url -}}" target="_blank">{{ product.url }}</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>

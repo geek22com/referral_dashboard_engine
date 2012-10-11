@@ -87,7 +87,8 @@ def offers_requested(**kwargs):
 @template('cabinetcpa/offers/products.html')
 def offers_products():
 	catalog = rc.products.feed(g.user.id)
-	return dict(products=catalog.products)
+	shops = rc.products.categories(g.user.id)
+	return dict(products=catalog.products, shops=shops)
 
 
 @bp.route('/offers/new', methods=['GET', 'POST'])

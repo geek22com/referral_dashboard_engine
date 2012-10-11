@@ -454,15 +454,54 @@ class ReferralStatList(models.ModelBase):
 
 class Product(IdentifiableModel):
 	name = Field(types.String, 'name')
+	model = Field(types.String, 'model')
 	url = Field(types.String, 'url')
 	picture = Field(types.String, 'picture')
 	price = Field(types.Decimal, 'price', quantize='1.00')
 	currency_id = Field(types.String, 'currencyId')
+	category_id = Field(types.Integer, 'categoryId')
+	description = Field(types.String, 'description')
+	vendor = Field(types.String, 'vendor')
+	vendor_code = Field(types.String, 'vendorCode')
+	store = Field(types.Boolean, 'store')
+	pickup = Field(types.Boolean, 'pickup')
+	delivery = Field(types.Boolean, 'delivery')
 
 
 class YmlCatalog(models.ModelBase):
 	products = FieldList('Product', 'shop/offers/offer')
 
+
+class ShopCategory(IdentifiableModel):
+	parent_id = Field(types.Integer, '@parentId')
+	name = Field(types.String, '.')
+
+
+class Shop(IdentifiableModel):
+	name = Field(types.String, 'name')
+	categories = FieldList('ShopCategory', 'categories/category')
+
+	@property
+	def categories_dict(self):
+		if hasattr(self, '_categories_dict'):
+			return self._categories_dict
+		self._categories_dict = dict([(c.id, c) for c in self.categories])
+		return self._categories_dict
+
+	@property
+	def categories_tree(self):
+		if hasattr(self, '_categories_tree'):
+			return self._categories_tree
+		categories_dict = self.categories_dict
+		self._categories_tree = []
+		for category in self.categories:
+			category.children = []
+		for category in self.categories:
+			if category.parent_id:
+				categories_dict[category.parent_id].children.append(category)
+			else:
+				self._categories_tree.append(category)
+		return self._categories_tree
 
 
 registry.register_models_from_module(__name__)

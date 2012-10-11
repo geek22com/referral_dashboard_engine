@@ -86,7 +86,7 @@ def offers_requested(**kwargs):
 @affiliate_only
 @template('cabinetcpa/offers/products.html')
 def offers_products():
-	catalog = rc.products.feed(g.user.id)
+	catalog = rc.products.feed(g.user.id, key=g.user.secret_key, **request.args)
 	shops = rc.products.categories(g.user.id)
 	return dict(products=catalog.products, shops=shops)
 

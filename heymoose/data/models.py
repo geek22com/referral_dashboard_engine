@@ -44,6 +44,7 @@ class User(IdentifiableModel):
 	referrer = Field(types.Integer, 'referrer')
 	referrals = FieldList(types.String, 'referrals/referral')
 	revenue = Field(types.Decimal, 'revenue')
+	secret_key = Field(types.String, 'secret-key')
 	
 	_ref_crypt_key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
 	

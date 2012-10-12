@@ -468,6 +468,10 @@ class Product(IdentifiableModel):
 	pickup = Field(types.Boolean, 'pickup')
 	delivery = Field(types.Boolean, 'delivery')
 
+	offer_id = Field(types.Integer, 'param[@name="hm_offer_id"]')
+	offer_name = Field(types.String, 'param[@name="hm_offer_name"]')
+	original_url = Field(types.String, 'param[@name="hm_original_url"]')
+
 
 class YmlCatalog(models.ModelBase):
 	products = FieldList('Product', 'shop/offers/offer')

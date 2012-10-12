@@ -114,7 +114,7 @@
 			</ul>
 		</form>
 	</div>
-	<div class="span11">
+	<div style="margin-left: 380px;">
 		<div class="clearfix alert-message block-message info">
 			<p>
 				Ссылка на XML feed:
@@ -127,8 +127,9 @@
 				<thead>
 					<tr>
 						<th class="center">Название</th>
+						<th class="center">Магазин</th>
 						<th class="center">Цена</th>
-						<th class="center">Партнерская ссылка</th>
+						<th class="center"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -150,17 +151,30 @@
 										<div class="span6">
 											<table class="condensed-table product-info">
 												<tbody>
+													{% if product.offer_id and product.offer_name %}
+													<tr><th>Магазин</th><td><a href="{{ url_for('.offers_info', id=product.offer_id) }}" target="_blank">{{ product.offer_name }}</a></td></tr>
+													{% endif %}
 													{% if product.vendor %}
-														<tr><th>Производитель</th><td>{{ product.vendor }}</td></tr>
+													<tr><th>Производитель</th><td>{{ product.vendor }}</td></tr>
 													{% endif %}
 													{% if product.model or product.vendor_code %}
-														<tr><th>Модель</th><td>{{ product.model or product.vendor_code }}</td></tr>
+													<tr><th>Модель</th><td>{{ product.model or product.vendor_code }}</td></tr>
 													{% endif %}
 													{% if product.price %}
-														<tr><th>Цена</th><td>{{ product.price }}&nbsp;{{ product.currency_id }}</td></tr>
+													<tr><th>Цена</th><td>{{ product.price }}&nbsp;{{ product.currency_id }}</td></tr>
 													{% endif %}
-													{% if product.url %}
-														<tr><th>Партнерская ссылка</th><td><a href="{{ product.url -}}">ссылка</a></td></tr>
+													{% if product.original_url or product.url %}
+													<tr>
+														<th>Ссылки</th>
+														<td>
+															{% if product.original_url %}
+															<a href="{{ product.original_url -}}" target="_blank">страница товара</a>
+															{% endif %}
+															{% if product.url %}
+															<br /><a href="{{ product.url -}}">партнерская ссылка</a>
+															{% endif %}
+														</td>
+													</tr>
 													{% endif %}
 												</tbody>
 											</table>
@@ -170,8 +184,9 @@
 								</div>
 							</div>
 						</td>
+						<td><a href="{{ url_for('.offers_info', id=product.offer_id) }}" target="_blank">{{ product.offer_name }}</a></td>
 						<td class="right">{{ product.price -}}&nbsp;{{ product.currency_id -}}</td>
-						<td><a href="{{ product.url -}}" target="_blank">{{ product.url }}</a></td>
+						<td class="center"><a href="{{ product.url -}}" target="_blank">партнерская ссылка</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>

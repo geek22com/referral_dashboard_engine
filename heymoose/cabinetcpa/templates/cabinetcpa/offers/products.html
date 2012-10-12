@@ -10,7 +10,7 @@
 			border: none;
 		}
 
-		.products-filter-wrapper {
+		.categories-tree-wrapper {
 			overflow-x: auto;
 		}
 
@@ -92,34 +92,43 @@
 {% block tabcontent %}
 
 <div class="row">
-	<div class="span6 products-filter-wrapper">
+	<div class="span5">
 		<form method="get" action="">
-			<h3>Фильтр</h3>
-			<input type="submit" class="btn primary large span6" value="Применить" />
-			<h5>Название</h5>
-			<input type="text" name="q" class="span6" value="{{ request.args.get('q', '') }}" />
+			<input type="submit" class="btn primary span5" value="Применить фильтр" />
+			<div style="margin-top: 24px;">
+				<div>Фильтр по названию:</div>
+				<input type="text" name="q" class="span5" value="{{ request.args.get('q', '') }}" />
+			</div>
 			<h5>Магазины и категории</h5>
-			<ul class="shops-list">
-				{% for shop in shops %}
-				<li class="collapsible">
-					<input type="checkbox" name="s" value="{{ shop.id }}" {{ 'checked="checked"' if '{0}'.format(shop.id) in request.args.getlist('s') }} />
-					{% if shop.categories %}
-						<a href="#" class="collapsible-toggle">{{ shop.name }}</a>
-					{% else %}
-						{{ shop.name }}
-					{% endif %}
-					{{ categories_list(shop.categories_tree) }}
-				</li>
-				{% endfor %}
-			</ul>
+			<div class="categories-tree-wrapper">
+				<ul class="shops-list">
+					{% for shop in shops %}
+					<li class="collapsible">
+						<input type="checkbox" name="s" value="{{ shop.id }}" {{ 'checked="checked"' if '{0}'.format(shop.id) in request.args.getlist('s') }} />
+						{% if shop.categories %}
+							<a href="#" class="collapsible-toggle">{{ shop.name }}</a>
+						{% else %}
+							{{ shop.name }}
+						{% endif %}
+						{{ categories_list(shop.categories_tree) }}
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
 		</form>
 	</div>
-	<div style="margin-left: 380px;">
+	<div style="margin-left: 320px;">
 		<div class="clearfix alert-message block-message info">
+			{% with link = config.get('TRACKER_BASE_URL') + url_for('xml_feed',
+				q=request.args.get('q'),
+				s=request.args.getlist('s'),
+				c=request.args.getlist('c')
+			) %}
 			<p>
 				Ссылка на XML feed:
-				<a href="#">тут ссылка</a>
+				<a href="{{ link }}">{{ link }}</a>
 			</p>
+			{% endwith %}
 		</div>
 
 		{% if products %}
@@ -193,13 +202,20 @@
 			</table>
 		{% else %}
 			<div class="clearfix alert-message block-message info">
-				<p>
-					<strong>Список пуст.</strong>
-					Вы еще не добавили ни одного оффера. Вы можете сделать это прямо сейчас,
-					выбрав понравившийся вам оффер в нашем каталоге.
-				</p>
+				<p>Товаров не найдено.</p>
 			</div>
 		{% endif %}
+		<div class="pagination">
+			{% with current_page = request.args.get('p', 1)|int %}
+			<ul>
+				{% if current_page > 1 %}
+				<li class="prev"><a href="{{ url_for(request.url_rule.endpoint, **request.args|updated(p=current_page-1)) }}">&larr;</a></li>
+				{% endif %}
+				<li><a>Страница {{ current_page }}</a></li>
+				<li class="next"><a href="{{ url_for(request.url_rule.endpoint, **request.args|updated(p=current_page+1)) }}">&rarr;</a></li>
+			</ul>
+			{% endwith %}
+		</div>
 	</div>
 </div>
 

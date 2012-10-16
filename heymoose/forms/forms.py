@@ -142,7 +142,7 @@ class AdvertiserEditFormMixin(AdvertiserFormMixin):
 
 
 class AffiliateFormMixin:
-	organization = myfields.TextField(u'Название организации', [
+	organization = TextField(u'Название организации', [
 		validators.Length(max=200, message=u'Название организации не может быть длиннее 200 символов'),
 		validators.Optional()
 	])
@@ -153,8 +153,9 @@ class AffiliateFormMixin:
 
 
 class AffiliateEditFormMixin(AffiliateFormMixin):
-	wmr = myfields.TextField(u'Ваш WMR-кошелёк', [
-		validators.Required(message=u'Введите номер вашего WMR-кошелька')
+	wmr = TextField(u'Ваш WMR-кошелёк', [
+		validators.Required(message=u'Введите номер вашего WMR-кошелька'),
+		validators.Regexp('R\d{12}', message=u'Номер WMR-кошелька должен содержать букву R и 12 цифр')
 	])
 
 class AffiliateRegisterForm(CaptchaForm, UserRegisterFormMixin):

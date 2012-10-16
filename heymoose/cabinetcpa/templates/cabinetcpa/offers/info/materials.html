@@ -151,7 +151,7 @@
 {% endif %}
 
 {% if offer.banners %}
-	{% set colspan = 5 if advertiser_is_owner else 5 if affiliate_is_granted else 4 %}
+	{% set colspan = 5 if advertiser_is_owner or affiliate_is_granted else 4 %}
 	{% call(head, banner) materials_macros.table(offer.banners, colspan=colspan) %}
 		{% if head %}
 			{% if advertiser_is_owner %}

@@ -23,7 +23,7 @@
 </form>
 
 {% if offer.banners %}
-	{% call(head, banner) materials_macros.table(offer.banners) %}
+	{% call(head, banner) materials_macros.table(offer.banners, colspan=5) %}
 		{% if head %}
 		<th class="header minimal-width"></th>
 		{% else %}

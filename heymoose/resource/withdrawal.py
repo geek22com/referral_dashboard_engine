@@ -28,3 +28,6 @@ class WithdrawalResource(BackendResource):
 
 	def list_payments(self, **kwargs):
 		return self.path('payments').get(**kwargs).as_objlist(AffiliatePayment, with_count=True)
+
+	def list_payments_xml(self, **kwargs):
+		return self.path('masspayment').get(**kwargs).as_str()

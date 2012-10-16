@@ -8,31 +8,46 @@
 {% endblock %}
 
 {% set activetab = 'payments' %}
+{% set content_fluid = true %}
 
 {% block tabcontent %}
 
 {{ datetime_range.html(form, 'Показать выплаты за период:') }}
 
 {% if payments %}
+	<div class="well right">
+		<a href="{{ url_for('.finances_payments_xml', **form.query_args()) }}" target="_blank"
+		 class="btn success">Экспорт автовыплат в формат WebMoney MassPayment</a>
+	</div>
 	<table class="bordered-table zebra-striped debts-table nosort">
 		<thead>
 			<tr>
+				<th class="header center">Тип</th>
 				<th class="header center">Партнёр</th>
 				<th class="header center">Оффер</th>
 				<th class="header center">Сумма, руб.</th>
+				<th class="header center minimal-width">Авто</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for payment in payments %}
 			<tr>
+				<td class="center">{{ payment.basis.name }}</td>
 				<td><a href="{{ url_for('.users_info', id=payment.affiliate.id) }}">{{ payment.affiliate.email }}</a></td>
-				<td><a href="{{ url_for('.offers_info', id=payment.offer.id) }}">{{ payment.offer.name }}</a></td>
+				<td>
+					{% if payment.offer %}
+					<a href="{{ url_for('.offers_info', id=payment.offer.id) }}">{{ payment.offer.name }}</a>
+					{% else %}
+					&mdash;
+					{% endif %}
+				</td>
 				<td class="right">{{ payment.amount|currency(false) }}</td>
+				<td class="center">{{ macros.to_icon(payment.is_auto) }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
-	{{ lists.paginate(pages) }}
+	{{ lists.paginate(pages, **form.query_args()) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p>Не найдено ни одной выплаты.</p>

@@ -65,4 +65,6 @@ def finances_payments(**kwargs):
 
 @bp.route('/finances/payments/payments.xml')
 def finances_payments_xml():
-	pass
+	form = forms.PaymentFilterForm(request.args)
+	xml = rc.withdrawals.list_payments_xml(**form.backend_args())
+	return app.response_class(xml, mimetype='application/xml')

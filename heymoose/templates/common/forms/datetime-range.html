@@ -86,11 +86,11 @@
 						{{ forms.errors(form.state) }}
 					</div>
 					{% endif %}
-					{% if form.method %}
-					<div class="span5 formfield clearfix inner-field {{ forms.css_errors(form.method) }}">
+					{% if form.pay_method %}
+					<div class="span5 formfield clearfix inner-field {{ forms.css_errors(form.pay_method) }}">
 						<label class="simple required">с типом</label>
-						{{ forms.field(form.method, style='width: 150px;') }}
-						{{ forms.errors(form.method) }}
+						{{ forms.field(form.pay_method, style='width: 150px;') }}
+						{{ forms.errors(form.pay_method) }}
 					</div>
 					{% endif %}
 					<div class="span3">

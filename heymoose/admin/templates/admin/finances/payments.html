@@ -1,0 +1,42 @@
+{% extends "admin/finances/layout.html" %}
+{% import 'common/macros/lists.html' as lists with context %}
+{% import 'common/forms/datetime-range.html' as datetime_range %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ datetime_range.head() }}
+{% endblock %}
+
+{% set activetab = 'payments' %}
+
+{% block tabcontent %}
+
+{{ datetime_range.html(form, 'Показать выплаты за период:') }}
+
+{% if payments %}
+	<table class="bordered-table zebra-striped debts-table nosort">
+		<thead>
+			<tr>
+				<th class="header center">Партнёр</th>
+				<th class="header center">Оффер</th>
+				<th class="header center">Сумма, руб.</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for payment in payments %}
+			<tr>
+				<td><a href="{{ url_for('.users_info', id=payment.affiliate.id) }}">{{ payment.affiliate.email }}</a></td>
+				<td><a href="{{ url_for('.offers_info', id=payment.offer.id) }}">{{ payment.offer.name }}</a></td>
+				<td class="right">{{ payment.amount|currency(false) }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{{ lists.paginate(pages) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>Не найдено ни одной выплаты.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

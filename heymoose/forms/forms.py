@@ -631,6 +631,25 @@ class DebtFilterForm(DateTimeRangeForm):
 		return args
 
 
+class PaymentFilterForm(DateTimeRangeForm):
+	method = SelectField(u'Способ оплаты',
+		choices=[
+			(u'', u'(все)'),
+			(u'AUTO', u'автоматически'),
+			(u'MANUAL', u'вручную')
+		], default=u'')
+
+	def query_args(self):
+		args = DateTimeRangeForm.query_args(self)
+		args.update(method=self.method.data)
+		return args
+
+	def backend_args(self):
+		args = DateTimeRangeForm.backend_args(self)
+		args.update(method=self.method.data)
+		return args
+
+
 class UserFilterForm(DateTimeRangeForm):
 	active = BooleanField(u'только активные', default=True)
 

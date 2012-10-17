@@ -744,6 +744,10 @@ class CatalogOfferFilterForm(OfferFilterForm):
 		return args
 
 
+class AdminGroupsForm(Form):
+	groups = myfields.AdminGroupsField(u'Группы')
+
+
 class NewsItemForm(Form):
 	title = TextField(u'Заголовок', [
 		validators.Required(message=u'Введите заголовок новости'),

@@ -1,0 +1,25 @@
+{% extends "admin/users/info/layout.html" %}
+
+{% set activetab = 'groups' %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Группы', request.url) }}
+{% endblock %}
+
+{% block tabcontent %}
+
+<form method="post" action="" class="validate2">
+	<div class="span4 clearfix inner-field {{ forms.css_errors(form.groups) }}">
+		{{ forms.label(form.groups, class='simple') }}
+		<div class="checklist" style="height: 200px;">
+			{{ forms.field(form.groups, class='inputs-list') }}
+		</div>
+		{{ forms.errors(form.groups) }}
+	</div>
+	<div class="clearfix">
+		<input type="submit" class="btn primary" value="Сохранить">
+	</div>
+</form>
+
+{% endblock %}

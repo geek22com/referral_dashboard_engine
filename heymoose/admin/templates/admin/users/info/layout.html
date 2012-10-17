@@ -39,6 +39,9 @@
 	{% if user.is_advertiser or user.is_affiliate %}
 	<li id="tab-stats"><a href="{{ url_for('.users_info_stats_offer', id=user.id) }}">Статистика</a></li>
 	{% endif %}
+	{% if user.is_admin %}
+	<li id="tab-groups"><a href="{{ url_for('.users_info_groups', id=user.id) }}">Группы</a></li>
+	{% endif %}
 </ul>
 
 {% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}

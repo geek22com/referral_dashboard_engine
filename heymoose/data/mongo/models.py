@@ -60,9 +60,3 @@ class AdminPermissions(mongo.Document):
 	query_class = HeyMooseQuery
 	user_id = mongo.IntField()
 	groups = mongo.ListField(mongo.StringField(), default=[])
-	_all_groups = app.config.get('ADMIN_GROUPS')
-
-	def permissions(self):
-		permissions = set()
-		for group in self.groups:
-			permissions |= self._all_groups.get(group, set())

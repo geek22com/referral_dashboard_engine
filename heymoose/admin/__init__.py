@@ -12,7 +12,7 @@ def before_request():
 		return redirect(url_for('cabinetcpa.index'))
 
 	# Retreive admin permissions for current user
-	g.user.permissions = AdminPermissions.query.get_or_create(user_id=g.user.id).permissions()
+	g.user.admin_permissions = AdminPermissions.query.get_or_create(user_id=g.user.id)
 	
 	# For form validation
 	if request.method == 'POST' and request.files:

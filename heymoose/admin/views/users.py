@@ -2,13 +2,14 @@
 from flask import g, request, redirect, flash, url_for, session, send_file
 from heymoose import app, resource as rc
 from heymoose.admin import blueprint as bp
+from heymoose.admin.helpers import superadmin_required
 from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.utils.convert import to_unixtime
 from heymoose.forms import forms
 from heymoose.data.models import User
 from heymoose.data.enums import Roles
-from heymoose.data.mongo.models import UserInfo
+from heymoose.data.mongo.models import UserInfo, AdminPermissions
 from heymoose.mail import marketing as mmail
 from heymoose.mail import transactional as tmail
 
@@ -59,6 +60,7 @@ def users_fraud(**kwargs):
 
 
 @bp.route('/users/register/admin/', methods=['GET', 'POST'])
+@superadmin_required()
 @template('admin/users/register-admin.html')
 def users_register_admin():
 	form = forms.AdminRegisterForm(request.form)
@@ -186,6 +188,22 @@ def users_info_finances(id, **kwargs):
 	else:
 		debts, count, overall_debt = [], 0, None
 	return dict(user=user, debts=debts, count=count, overall_debt=overall_debt, form=form)
+
+
+@bp.route('/users/<int:id>/groups/', methods=['GET', 'POST'])
+@superadmin_required()
+@template('admin/users/info/groups.html')
+def users_info_groups(id):
+	user = rc.users.get_by_id(id)
+	permissions = AdminPermissions.query.get_or_create(user_id=user.id)
+	form = forms.AdminGroupsForm(request.form, obj=permissions)
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(permissions)
+		permissions.save()
+		flash(u'Группы успешно обновлены', 'success')
+		return redirect(request.url)
+	print user.permissions
+	return dict(user=user, form=form)
 
 
 @bp.route('/users/<int:id>/stats/offer/')

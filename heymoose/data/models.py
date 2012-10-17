@@ -47,6 +47,7 @@ class User(IdentifiableModel):
 	
 	_ref_crypt_key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
 	_superadmins = app.config.get('SUPER_ADMINS')
+	_admin_groups = app.config.get('ADMIN_GROUPS')
 	
 	@property
 	def account(self): return self.affiliate_account or self.advertiser_account
@@ -74,8 +75,18 @@ class User(IdentifiableModel):
 	@property
 	def is_superadmin(self): return self.email in self._superadmins
 
+	@property
+	def permissions(self):
+		if hasattr(self, '_permissions'):
+			return self._permissions
+		self._permissions = set()
+		if hasattr(self, 'admin_permissions'):
+			for group in self.admin_permissions.groups:
+				self._permissions |= self._admin_groups.get(group, set())
+		return self._permissions
+
 	def can(permission):
-		return self.is_superadmin or hasattr('permissions', self) and permission in self.permissions
+		return self.is_superadmin or permission in self.permissions
 	
 	def get_confirm_code(self):
 		m = hashlib.md5()

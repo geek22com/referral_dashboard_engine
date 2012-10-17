@@ -5,17 +5,20 @@ from heymoose.data.enums import DebtDateKinds
 from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.admin import blueprint as bp
+from heymoose.admin.helpers import superadmin_required
 
 
 FINANCES_PER_PAGE = app.config.get('FINANCES_PER_PAGE', 20)
 
 
 @bp.route('/finances/')
+@superadmin_required()
 def finances():
 	return redirect(url_for('.finances_withdrawals_affiliate'))
 
 
 @bp.route('/finances/withdrawals/affiliate/')
+@superadmin_required()
 @template('admin/finances/withdrawals-affiliate.html')
 @paginated(FINANCES_PER_PAGE)
 def finances_withdrawals_affiliate(**kwargs):
@@ -25,6 +28,7 @@ def finances_withdrawals_affiliate(**kwargs):
 
 
 @bp.route('/finances/withdrawals/offer/')
+@superadmin_required()
 @template('admin/finances/withdrawals-offer.html')
 @paginated(FINANCES_PER_PAGE)
 def finances_withdrawals_offer(**kwargs):
@@ -35,6 +39,7 @@ def finances_withdrawals_offer(**kwargs):
 
 
 @bp.route('/finances/debts/')
+@superadmin_required()
 @template('admin/finances/debts.html')
 @sorted('pending', 'desc')
 @paginated(FINANCES_PER_PAGE)
@@ -54,6 +59,7 @@ def finances_debts(**kwargs):
 
 
 @bp.route('/finances/payments/')
+@superadmin_required()
 @template('admin/finances/payments.html')
 @paginated(FINANCES_PER_PAGE)
 def finances_payments(**kwargs):
@@ -64,6 +70,7 @@ def finances_payments(**kwargs):
 
 
 @bp.route('/finances/payments/payments.xml')
+@superadmin_required()
 def finances_payments_xml():
 	form = forms.PaymentFilterForm(request.args)
 	xml = rc.withdrawals.list_payments_xml(**form.backend_args())

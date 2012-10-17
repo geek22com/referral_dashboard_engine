@@ -85,3 +85,11 @@ ROBOKASSA_PASS1 = 'appatit23843'
 ROBOKASSA_USER_PREFIX = 'shp'
 ROBOKASSA_DEFAULT_CURRENCY = 'WMRM'
 ROBOKASSA_WMID = '276669831570'
+
+# Admin permissions parameters
+SUPER_ADMINS = ['admin@heymoose.com']
+ADMIN_GROUPS = {
+	'finances': set(['view_finances', 'do_withdrawals']),
+	'affiliate_managers': set(['login_to_affiliate']),
+	'advertiser_managers': set(['login_to_advertiser'])
+}

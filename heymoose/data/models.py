@@ -46,6 +46,7 @@ class User(IdentifiableModel):
 	revenue = Field(types.Decimal, 'revenue')
 	
 	_ref_crypt_key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
+	_superadmins = app.config.get('SUPER_ADMINS')
 	
 	@property
 	def account(self): return self.affiliate_account or self.advertiser_account
@@ -70,6 +71,11 @@ class User(IdentifiableModel):
 	def is_advertiser(self): return enums.Roles.ADVERTISER in self.roles
 	@property
 	def is_admin(self): return enums.Roles.ADMIN in self.roles
+	@property
+	def is_superadmin(self): return self.email in self._superadmins
+
+	def can(permission):
+		return self.is_superadmin or hasattr('permissions', self) and permission in self.permissions
 	
 	def get_confirm_code(self):
 		m = hashlib.md5()

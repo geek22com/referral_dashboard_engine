@@ -158,6 +158,9 @@ class AffiliateEditFormMixin(AffiliateFormMixin):
 		validators.Regexp('R\d{12}', message=u'Номер WMR-кошелька должен содержать букву R и 12 цифр')
 	])
 
+class AdminRegisterForm(Form, UserRegisterFormMixin):
+	pass
+
 class AffiliateRegisterForm(CaptchaForm, UserRegisterFormMixin):
 	pass
 

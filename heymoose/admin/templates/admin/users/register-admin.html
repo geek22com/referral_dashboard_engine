@@ -1,0 +1,16 @@
+{% extends "admin/users/layout.html" %}
+
+{% set activetab = 'register-admin' %}
+
+{% block tabcontent %}
+
+<form method="post" action="" class="widelabels validate2">
+	{{ forms.singlefield(form.email, class='span8') }}
+	{{ forms.singlefield(form.password, class='span8') }}
+	{{ forms.singlefield(form.password2, class='span8') }}
+	<div class="input">
+		<input type="submit" class="btn primary" value="Добавить администратора">
+	</div>
+</form>
+
+{% endblock %}

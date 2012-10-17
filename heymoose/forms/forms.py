@@ -186,6 +186,10 @@ class AdminUserFormMixin:
 			validators.check_email_not_registered(self, self.email)
 
 
+class AdminAdminEditForm(Form, UserEditFormMixin, AdminUserFormMixin):
+	pass
+
+
 class AdminAffiliateEditForm(AffiliateEditForm, AdminUserFormMixin):
 	pass
 

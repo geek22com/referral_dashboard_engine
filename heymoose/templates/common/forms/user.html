@@ -23,23 +23,29 @@
 			<legend>Данные</legend>
 			{{ forms.singlefield(form.first_name, class='span10') }}
 			{{ forms.singlefield(form.last_name, class='span10') }}
+			{% if form.organization %}
 			{% call forms.singlefield_desc(form.organization, class='span10') %}
 			<span class="help-block">
 				Если вы являетесь представителем организации, пожалуйста,
 				заполните это поле.
 			</span>
 			{% endcall %}
-			{% if affiliate %}
+			{% endif %}
+			{% if form.wmr %}
 			{{ forms.singlefield(form.wmr, class='span10') }}
 			{% endif %}
 		</fieldset>
 		<fieldset>
 			<legend>Контакты</legend>
+			{% if form.phone %}
 			{{ forms.singlefield(form.phone, class='span10') }}
+			{% endif %}
 			{{ forms.singlefield(form.messenger_type, class='span4 messenger-type') }}
 			{{ forms.singlefield(form.messenger_uid, class='span4 messenger-uid') }}
-			{% if admin %}
+			{% if form.email %}
 			{{ forms.singlefield(form.email, class='span10') }}
+			{% endif %}
+			{% if form.confirmed %}
 			{{ forms.singlefield(form.confirmed) }}
 			{% endif %}
 		</fieldset>

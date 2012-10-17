@@ -27,14 +27,18 @@
 {% block content %}
 <ul class="tabs">
 	<li id="tab-info"><a href="{{ url_for('.users_info', id=user.id) }}">Общее</a></li>
+	{% if user.is_advertiser or user.is_affiliate %}
 	<li id="tab-offers"><a href="{{ url_for('.users_info_offers', id=user.id) }}">Офферы</a></li>
 	<li id="tab-balance"><a href="{{ url_for('.users_info_balance', id=user.id) }}">Операции со счетом</a></li>
+	{% endif %}
 	<li id="tab-edit"><a href="{{ url_for('.users_info_edit', id=user.id) }}">Редактировать</a></li>
 	<li id="tab-password"><a href="{{ url_for('.users_info_password_change', id=user.id) }}">Изменить пароль</a></li>
 	{% if user.is_affiliate %}
 	<li id="tab-finances"><a href="{{ url_for('.users_info_finances', id=user.id) }}">Финансы</a></li>
 	{% endif %}
+	{% if user.is_advertiser or user.is_affiliate %}
 	<li id="tab-stats"><a href="{{ url_for('.users_info_stats_offer', id=user.id) }}">Статистика</a></li>
+	{% endif %}
 </ul>
 
 {% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}

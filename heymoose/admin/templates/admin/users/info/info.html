@@ -38,7 +38,7 @@
 		
 		{% if user.is_advertiser %}
 		<tr><th>Баланс</th><td>{{ user.advertiser_account.balance|currency }}</td></tr>
-		{% else %}
+		{% elif user.is_affiliate %}
 		<tr><th>Неподтвержденные средства</th><td>{{ user.affiliate_account_not_confirmed.balance|currency }}</td></tr>
 		<tr><th>Подтвержденные средства</th><td>{{ user.affiliate_account.balance|currency }}</td></tr>
 		{% endif %}

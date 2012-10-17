@@ -6,6 +6,7 @@ from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.utils.convert import to_unixtime
 from heymoose.forms import forms
+from heymoose.data.models import User
 from heymoose.data.enums import Roles
 from heymoose.data.mongo.models import UserInfo
 from heymoose.mail import marketing as mmail
@@ -57,6 +58,25 @@ def users_fraud(**kwargs):
 	return dict(user_stats=user_stats, count=count, form=form)
 
 
+@bp.route('/users/register/admin/', methods=['GET', 'POST'])
+@template('admin/users/register-admin.html')
+def users_register_admin():
+	form = forms.AdminRegisterForm(request.form)
+	if request.method == 'POST' and form.validate():
+		user = User()
+		form.populate_obj(user)
+		rc.users.add(user)
+		user = rc.users.get_by_email_safe(user.email)
+		if user:
+			rc.users.add_role(user.id, Roles.ADMIN)
+			user.roles.append(Roles.ADMIN)
+			rc.users.confirm(user.id)
+			flash(u'Администратор успешно добавлен', 'success')
+			return redirect(url_for('.users_info', id=user.id))
+		flash(u'Произошла ошибка при регистрации администратора.', 'error')
+	return dict(form=form)
+
+
 @bp.route('/users/<int:id>/', methods=['GET', 'POST'])
 @template('admin/users/info/info.html')
 def users_info(id):
@@ -100,7 +120,9 @@ def users_info_offers(id, **kwargs):
 @template('admin/users/info/edit.html')
 def users_info_edit(id):
 	user = rc.users.get_by_id(id)
-	FormClass = forms.AdminAdvertiserEditForm if user.is_advertiser else forms.AdminAffiliateEditForm
+	FormClass = forms.AdminAdminEditForm if user.is_admin \
+		else forms.AdminAdvertiserEditForm if user.is_advertiser \
+		else forms.AdminAffiliateEditForm
 	form = FormClass(request.form, obj=user)	
 	if request.method == 'POST' and form.validate():
 		form.populate_obj(user)

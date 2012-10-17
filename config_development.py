@@ -89,7 +89,9 @@ ROBOKASSA_WMID = '276669831570'
 # Admin permissions parameters
 SUPER_ADMINS = ['admin@heymoose.com']
 ADMIN_GROUPS = {
-	'finances': set(['view_finances', 'do_withdrawals']),
-	'affiliate_managers': set(['login_to_affiliate']),
-	'advertiser_managers': set(['login_to_advertiser'])
+	u'Аккаунт-менеджеры': set(['view_finances', 'do_withdrawals']),
+	u'Поддержка рекламодателей': set(['login_to_affiliate']),
+	u'Поддержка партнёров': set(['login_to_advertiser']),
+	u'Анализ трафика': set([]),
+	u'PR': set([])
 }

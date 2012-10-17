@@ -2,7 +2,7 @@
 from flask import g, request, redirect, flash, url_for, session, send_file
 from heymoose import app, resource as rc
 from heymoose.admin import blueprint as bp
-from heymoose.admin.helpers import superadmin_required
+from heymoose.admin.helpers import superadmin_required, not_enough_permissions
 from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.utils.convert import to_unixtime
@@ -83,6 +83,8 @@ def users_register_admin():
 @template('admin/users/info/info.html')
 def users_info(id):
 	user = rc.users.get_by_id(id)
+	if user.is_admin and not g.user.is_superadmin:
+		return not_enough_permissions()
 	form = forms.UserBlockForm(request.form)
 	if request.method == 'POST':
 		if not user.blocked and form.validate():
@@ -202,7 +204,6 @@ def users_info_groups(id):
 		permissions.save()
 		flash(u'Группы успешно обновлены', 'success')
 		return redirect(request.url)
-	print user.permissions
 	return dict(user=user, form=form)
 
 

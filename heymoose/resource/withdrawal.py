@@ -1,5 +1,5 @@
 from backend import BackendResource
-from heymoose.data.models import Debt
+from heymoose.data.models import Debt, AffiliatePayment
 
 
 class WithdrawalResource(BackendResource):
@@ -25,3 +25,9 @@ class WithdrawalResource(BackendResource):
 	
 	def withdraw(self, **kwargs):
 		self.put(**kwargs)
+
+	def list_payments(self, **kwargs):
+		return self.path('payments').get(**kwargs).as_objlist(AffiliatePayment, with_count=True)
+
+	def list_payments_xml(self, **kwargs):
+		return self.path('masspayment').get(**kwargs).as_str()

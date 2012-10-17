@@ -60,6 +60,10 @@ class EqualTo(wtvalidators.EqualTo):
 		})
 
 
+class Regexp(wtvalidators.Regexp):
+	pass
+
+
 class Email(wtvalidators.Email):
 	pass
 		

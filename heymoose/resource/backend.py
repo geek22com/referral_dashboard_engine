@@ -30,7 +30,7 @@ class ResponseRenderer(object):
 	def as_xml(self): return etree.fromstring(self.response)
 	def as_xmlvalue(self, vtype): return vtype(self.as_xml().text)
 	def as_obj(self, model): return model(self.as_xml())
-	def as_str(self): return unicode(self.response)
+	def as_str(self): return str(self.response)
 	def as_int(self): return int(self.response)
 	def render(self, fun): return fun(self.response)
 	

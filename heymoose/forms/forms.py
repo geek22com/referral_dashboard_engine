@@ -142,7 +142,7 @@ class AdvertiserEditFormMixin(AdvertiserFormMixin):
 
 
 class AffiliateFormMixin:
-	organization = myfields.TextField(u'Название организации', [
+	organization = TextField(u'Название организации', [
 		validators.Length(max=200, message=u'Название организации не может быть длиннее 200 символов'),
 		validators.Optional()
 	])
@@ -153,8 +153,9 @@ class AffiliateFormMixin:
 
 
 class AffiliateEditFormMixin(AffiliateFormMixin):
-	wmr = myfields.TextField(u'Ваш WMR-кошелёк', [
-		validators.Required(message=u'Введите номер вашего WMR-кошелька')
+	wmr = TextField(u'Ваш WMR-кошелёк', [
+		validators.Required(message=u'Введите номер вашего WMR-кошелька'),
+		validators.Regexp('R\d{12}', message=u'Номер WMR-кошелька должен содержать букву R и 12 цифр')
 	])
 
 class AffiliateRegisterForm(CaptchaForm, UserRegisterFormMixin):
@@ -628,6 +629,25 @@ class DebtFilterForm(DateTimeRangeForm):
 	def backend_args(self):
 		args = DateTimeRangeForm.backend_args(self)
 		args.update(date_kind=self.date_kind.data)
+		return args
+
+
+class PaymentFilterForm(DateTimeRangeForm):
+	pay_method = SelectField(u'Способ оплаты',
+		choices=[
+			(u'', u'(все)'),
+			(u'AUTO', u'автоматически'),
+			(u'MANUAL', u'вручную')
+		], default=u'')
+
+	def query_args(self):
+		args = DateTimeRangeForm.query_args(self)
+		args.update(pay_method=self.pay_method.data)
+		return args
+
+	def backend_args(self):
+		args = DateTimeRangeForm.backend_args(self)
+		if self.pay_method.data: args.update(pay_method=self.pay_method.data)
 		return args
 
 

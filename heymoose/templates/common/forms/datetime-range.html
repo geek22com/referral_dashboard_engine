@@ -86,6 +86,13 @@
 						{{ forms.errors(form.state) }}
 					</div>
 					{% endif %}
+					{% if form.pay_method %}
+					<div class="span5 formfield clearfix inner-field {{ forms.css_errors(form.pay_method) }}">
+						<label class="simple required">с типом</label>
+						{{ forms.field(form.pay_method, style='width: 150px;') }}
+						{{ forms.errors(form.pay_method) }}
+					</div>
+					{% endif %}
 					<div class="span3">
 						<input type="submit" class="btn primary span3" value="Показать" />
 					</div>

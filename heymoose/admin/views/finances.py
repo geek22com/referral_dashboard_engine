@@ -7,7 +7,7 @@ from heymoose.views.decorators import template, sorted, paginated
 from heymoose.admin import blueprint as bp
 
 
-DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
+FINANCES_PER_PAGE = app.config.get('FINANCES_PER_PAGE', 20)
 
 
 @bp.route('/finances/')
@@ -17,7 +17,7 @@ def finances():
 
 @bp.route('/finances/withdrawals/affiliate/')
 @template('admin/finances/withdrawals-affiliate.html')
-@paginated(DEBTS_PER_PAGE)
+@paginated(FINANCES_PER_PAGE)
 def finances_withdrawals_affiliate(**kwargs):
 	debts, count = rc.withdrawals.list_ordered_by_affiliate(**kwargs)
 	overall_debt = rc.withdrawals.sum_ordered()
@@ -26,7 +26,7 @@ def finances_withdrawals_affiliate(**kwargs):
 
 @bp.route('/finances/withdrawals/offer/')
 @template('admin/finances/withdrawals-offer.html')
-@paginated(DEBTS_PER_PAGE)
+@paginated(FINANCES_PER_PAGE)
 def finances_withdrawals_offer(**kwargs):
 	form = forms.DateTimeRangeForm(request.args)
 	kwargs.update(form.backend_args())
@@ -37,7 +37,7 @@ def finances_withdrawals_offer(**kwargs):
 @bp.route('/finances/debts/')
 @template('admin/finances/debts.html')
 @sorted('pending', 'desc')
-@paginated(DEBTS_PER_PAGE)
+@paginated(FINANCES_PER_PAGE)
 def finances_debts(**kwargs):
 	form = forms.DebtFilterForm(request.args)
 	if request.args.get('format') == 'xls' and form.validate():
@@ -51,3 +51,20 @@ def finances_debts(**kwargs):
 	else:
 		debts, count, overall_debt = [], 0, None
 	return dict(debts=debts, count=count, overall_debt=overall_debt, form=form)
+
+
+@bp.route('/finances/payments/')
+@template('admin/finances/payments.html')
+@paginated(FINANCES_PER_PAGE)
+def finances_payments(**kwargs):
+	form = forms.PaymentFilterForm(request.args)
+	kwargs.update(form.backend_args())
+	payments, count = rc.withdrawals.list_payments(**kwargs) if form.validate() else ([], 0)
+	return dict(payments=payments, count=count, form=form)
+
+
+@bp.route('/finances/payments/payments.xml')
+def finances_payments_xml():
+	form = forms.PaymentFilterForm(request.args)
+	xml = rc.withdrawals.list_payments_xml(**form.backend_args())
+	return app.response_class(xml, mimetype='application/xml')

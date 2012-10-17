@@ -427,6 +427,18 @@ class Debt(models.ModelBase):
 		return self.basis == enums.WithdrawalBases.FEE
 
 
+class AffiliatePayment(models.ModelBase):
+	affiliate = Field('User', 'affiliate')
+	offer = Field('Offer', 'offer')
+	basis = Field(enums.WithdrawalBases, 'basis')
+	amount = Field(types.Decimal, 'amount', quantize='1.00')
+	pay_method = Field(types.String, 'pay-method')
+
+	@property
+	def is_auto(self):
+		return self.pay_method == 'AUTO'
+
+
 class UserStat(models.ModelBase):
 	affiliate = Field('User', 'affiliate')
 	clicks = Field(types.Integer, 'clicks')

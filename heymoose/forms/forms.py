@@ -9,7 +9,7 @@ from heymoose.filters import currency, currency_sign
 from heymoose.utils.times import begin_of_day, end_of_day, relativedelta
 from heymoose.utils.gen import generate_unique_filename, generate_uid
 from heymoose.utils.convert import to_unixtime, datetime_nosec_format
-from heymoose.utils.dicts import create_dict
+from heymoose.utils.lang import create_dict
 from flask import g
 from datetime import datetime
 import validators

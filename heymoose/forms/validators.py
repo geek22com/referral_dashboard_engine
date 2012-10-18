@@ -3,7 +3,7 @@ from wtforms import ValidationError
 from wtforms import validators as wtvalidators
 from heymoose import resource as rc
 from heymoose.utils.gen import check_password_hash
-from heymoose.utils.dicts import create_dict
+from heymoose.utils.lang import create_dict
 import re, urllib, urllib2
 
 

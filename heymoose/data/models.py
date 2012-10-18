@@ -2,9 +2,11 @@
 from base import models, types, registry
 from base.fields import Field, FieldList, FieldSet
 from heymoose import app
+from heymoose.utils.lang import cached_property
 from heymoose.utils.gen import generate_password_hash, aes_base16_encrypt, aes_base16_decrypt
 from repos import regions_repo
 from datetime import datetime
+from mongo.models import AdminPermissions
 import enums
 import os, hashlib, uuid
 
@@ -46,8 +48,6 @@ class User(IdentifiableModel):
 	revenue = Field(types.Decimal, 'revenue')
 	
 	_ref_crypt_key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
-	_superadmins = app.config.get('SUPER_ADMINS')
-	_admin_groups = app.config.get('ADMIN_GROUPS')
 	
 	@property
 	def account(self): return self.affiliate_account or self.advertiser_account
@@ -55,7 +55,7 @@ class User(IdentifiableModel):
 	@property
 	def active(self): return self.confirmed and not self.blocked
 	
-	@property
+	@cached_property
 	def full_name(self):
 		if self.first_name and self.last_name:
 			return u'{0} {1}'.format(self.first_name, self.last_name)
@@ -72,18 +72,20 @@ class User(IdentifiableModel):
 	def is_advertiser(self): return enums.Roles.ADVERTISER in self.roles
 	@property
 	def is_admin(self): return enums.Roles.ADMIN in self.roles
-	@property
-	def is_superadmin(self): return self.email in self._superadmins
+	
+	@cached_property
+	def is_superadmin(self):
+		superadmins = app.config.get('SUPER_ADMINS')
+		return self.email in superadmins
 
-	@property
+	@cached_property
 	def permissions(self):
-		if hasattr(self, '_permissions'):
-			return self._permissions
-		self._permissions = set()
-		if hasattr(self, 'admin_permissions'):
-			for group in self.admin_permissions.groups:
-				self._permissions |= self._admin_groups.get(group, set())
-		return self._permissions
+		groups = AdminPermissions.query.get_or_create(user_id=self.id).groups
+		all_groups = app.config.get('ADMIN_GROUPS')
+		permissions = set()
+		for group in groups:
+			permissions |= all_groups.get(group, set())
+		return permissions
 
 	def can(permission):
 		return self.is_superadmin or permission in self.permissions

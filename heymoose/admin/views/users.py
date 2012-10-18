@@ -83,8 +83,8 @@ def users_register_admin():
 @template('admin/users/info/info.html')
 def users_info(id):
 	user = rc.users.get_by_id(id)
-	if user.is_admin and not g.user.is_superadmin:
-		return not_enough_permissions()
+	#if user.is_admin and not g.user.is_superadmin:
+	#	return not_enough_permissions()
 	form = forms.UserBlockForm(request.form)
 	if request.method == 'POST':
 		if not user.blocked and form.validate():

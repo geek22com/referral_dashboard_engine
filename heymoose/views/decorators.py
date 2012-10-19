@@ -6,8 +6,21 @@ def template(template_name):
 	def decorator(f):
 		@wraps(f)
 		def wrapped(*args, **kwargs):
-			context = f(*args, **kwargs)
-			return render_template(template_name, **context) if isinstance(context, dict) else context
+			rv = f(*args, **kwargs)
+			return render_template(template_name, **rv) if isinstance(rv, dict) else rv
+		return wrapped
+	return decorator
+
+def context(provider):
+	def decorator(f):
+		@wraps(f)
+		def wrapped(*args, **kwargs):
+			additional_context = provider(*args, **kwargs)
+			kwargs.update(additional_context)
+			rv = f(*args, **kwargs)
+			if isinstance(rv, dict):
+				rv.update(additional_context)
+			return rv
 		return wrapped
 	return decorator
 
@@ -19,10 +32,10 @@ def sorted(default_order=None, default_direction=None, order_arg='ord', directio
 			direction = request.args.get(direction_arg, default_direction) if order else None
 			if order and direction:
 				kwargs.update(ordering=order.upper(), direction=direction.upper())
-			context = f(*args, **kwargs)
-			if isinstance(context, dict):
-				context.update(order=order, direction=direction)
-			return context
+			rv = f(*args, **kwargs)
+			if isinstance(rv, dict):
+				rv.update(order=order, direction=direction)
+			return rv
 		return wrapped
 	return decorator
 
@@ -32,10 +45,10 @@ def paginated(per_page=20, page_arg='page'):
 		def wrapped(*args, **kwargs):
 			page = current_page(page_arg)
 			offset, limit = page_limits(page, per_page)
-			context = f(*args, offset=offset, limit=limit, **kwargs)
-			if isinstance(context, dict):
-				pages = paginate(page, context.get('count', 0), per_page)
-				context.update(pages=pages)
-			return context
+			rv = f(*args, offset=offset, limit=limit, **kwargs)
+			if isinstance(rv, dict):
+				pages = paginate(page, rv.get('count', 0), per_page)
+				rv.update(pages=pages)
+			return rv
 		return wrapped
 	return decorator

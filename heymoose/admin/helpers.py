@@ -21,11 +21,13 @@ def superadmin_required(post=False):
 	return decorator
 
 
-def permission_required(permission, post=False):
+def permission_required(permission, post=False, trigger=None):
 	def decorator(f):
 		@wraps(f)
 		def wrapped(*args, **kwargs):
-			if (post or request.method != 'POST') and not g.user.can(permission):
+			triggered = trigger(*args, **kwargs) if trigger else True
+			check = request.method == 'POST' if post else True
+			if triggered and check and not g.user.can(permission):
 				not_enough_permissions()
 			return f(*args, **kwargs)
 		return wrapped

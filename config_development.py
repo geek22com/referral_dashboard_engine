@@ -91,7 +91,15 @@ SUPER_ADMINS = ['admin@heymoose.com']
 ADMIN_GROUPS = {
 	u'Аккаунт-менеджеры': set(['view_finances', 'do_withdrawals']),
 	u'Поддержка рекламодателей': set(['login_to_advertiser']),
-	u'Поддержка партнёров': set(['login_to_affiliate']),
+	u'Поддержка партнёров': set([
+		'view_fraud',
+		'view_affiliate',
+		'view_affiliate_offers',
+		'view_affiliate_finances',
+		'do_affiliate_edit',
+		'do_affiliate_login',
+		#'do_affiliate_block'
+	]),
 	u'Анализ трафика': set(['view_fraud']),
 	u'PR': set([])
 }

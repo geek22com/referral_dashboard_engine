@@ -87,7 +87,7 @@ class User(IdentifiableModel):
 			permissions |= all_groups.get(group, set())
 		return permissions
 
-	def can(permission):
+	def can(self, permission):
 		return self.is_superadmin or permission in self.permissions
 	
 	def get_confirm_code(self):

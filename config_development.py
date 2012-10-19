@@ -90,8 +90,8 @@ ROBOKASSA_WMID = '276669831570'
 SUPER_ADMINS = ['admin@heymoose.com']
 ADMIN_GROUPS = {
 	u'Аккаунт-менеджеры': set(['view_finances', 'do_withdrawals']),
-	u'Поддержка рекламодателей': set(['login_to_affiliate']),
-	u'Поддержка партнёров': set(['login_to_advertiser']),
-	u'Анализ трафика': set([]),
+	u'Поддержка рекламодателей': set(['login_to_advertiser']),
+	u'Поддержка партнёров': set(['login_to_affiliate']),
+	u'Анализ трафика': set(['view_fraud']),
 	u'PR': set([])
 }

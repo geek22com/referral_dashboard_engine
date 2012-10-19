@@ -26,6 +26,13 @@ SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
 
 
+def accessible_user(id):
+	user = rc.users.get_by_id(id)
+	if user.is_admin and not g.user.is_superadmin:
+		not_enough_permissions()
+	return user
+
+
 @bp.route('/users/')
 @template('admin/users/list.html')
 @paginated(USERS_PER_PAGE)
@@ -82,9 +89,7 @@ def users_register_admin():
 @bp.route('/users/<int:id>/', methods=['GET', 'POST'])
 @template('admin/users/info/info.html')
 def users_info(id):
-	user = rc.users.get_by_id(id)
-	#if user.is_admin and not g.user.is_superadmin:
-	#	return not_enough_permissions()
+	user = accessible_user(id)
 	form = forms.UserBlockForm(request.form)
 	if request.method == 'POST':
 		if not user.blocked and form.validate():

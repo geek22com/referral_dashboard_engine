@@ -6,7 +6,7 @@ from heymoose.data.models import SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
 from heymoose.notifications import notify
 from heymoose.views import excel
-from heymoose.views.decorators import template, sorted, paginated
+from heymoose.views.decorators import template, context, sorted, paginated
 from heymoose.admin import blueprint as bp
 from heymoose.admin.helpers import permission_required
 import base64
@@ -20,6 +20,9 @@ REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
 SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
+
+offer_context = context(lambda id: dict(offer=rc.offers.get_by_id(id)))
+
 
 @bp.route('/offers/')
 @template('admin/offers/list.html')
@@ -135,9 +138,9 @@ def offers_categories_delete_group(id):
 
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 @template('admin/offers/info/info.html')
+@offer_context
 @permission_required('do_offer_block', post=True)
-def offers_info(id):
-	offer = rc.offers.get_by_id(id)
+def offers_info(id, offer):
 	offer.overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id)
 	form = forms.OfferBlockForm(request.form)
 	if request.method == 'POST' and form.validate():
@@ -151,13 +154,13 @@ def offers_info(id):
 			if form.notify.data: notify.offer_unblocked(offer)
 			flash(u'Оффер разблокирован', 'success')
 		return redirect(request.url)
-	return dict(offer=offer, form=form)
+	return dict(form=form)
 
 @bp.route('/offers/<int:id>/edit', methods=['GET', 'POST'])
 @template('admin/offers/info/edit.html')
+@offer_context
 @permission_required('do_offer_edit')
-def offers_info_edit(id):
-	offer = rc.offers.get_by_id(id)
+def offers_info_edit(id, offer):
 	form = forms.AdminOfferEditForm(request.form, obj=offer)
 	if request.method == 'POST' and form.validate():
 		form.populate_obj(offer)
@@ -167,13 +170,13 @@ def offers_info_edit(id):
 			return redirect(url_for('.offers_info', id=offer.id))
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
-	return dict(offer=offer, form=form)
+	return dict(form=form)
 
 @bp.route('/offers/<int:id>/actions/', methods=['GET', 'POST'])
 @template('admin/offers/info/actions.html')
+@offer_context
 @permission_required('do_offer_edit', post=True)
-def offers_info_actions(id):
-	offer = rc.offers.get_by_id(id)
+def offers_info_actions(id, offer):
 	if offer.exclusive: abort(403)
 	form = forms.SubOfferForm(request.form)
 	if request.method == 'POST' and form.validate():
@@ -182,13 +185,13 @@ def offers_info_actions(id):
 		rc.offers.add_suboffer(id, suboffer)
 		flash(u'Действие успешно добавлено', 'success')
 		return redirect(request.url)
-	return dict(offer=offer, form=form)
+	return dict(form=form)
 
 @bp.route('/offers/<int:id>/actions/edit', methods=['GET', 'POST'])
 @template('admin/offers/info/actions-edit.html')
+@offer_context
 @permission_required('do_offer_edit')
-def offers_info_actions_main_edit(id):
-	offer = rc.offers.get_by_id(id)
+def offers_info_actions_main_edit(id, offer):
 	if offer.exclusive: abort(403)
 	form = forms.MainSubOfferForm(request.form, obj=offer)
 	form.offer_id = offer.id
@@ -200,13 +203,13 @@ def offers_info_actions_main_edit(id):
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.offers_info_actions', id=offer.id))
-	return dict(offer=offer, suboffer=offer, form=form)
+	return dict(suboffer=offer, form=form)
 
 @bp.route('/offers/<int:id>/actions/<int:sid>/edit', methods=['GET', 'POST'])
 @template('admin/offers/info/actions-edit.html')
+@offer_context
 @permission_required('do_offer_edit')
-def offers_info_actions_edit(id, sid):
-	offer = rc.offers.get_by_id(id)
+def offers_info_actions_edit(id, sid, offer):
 	if offer.exclusive: abort(403)
 	suboffer = offer.suboffer_by_id(sid)
 	if not suboffer: abort(404)
@@ -220,14 +223,14 @@ def offers_info_actions_edit(id, sid):
 		else:
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.offers_info_actions', id=offer.id))
-	return dict(offer=offer, suboffer=suboffer, form=form)
+	return dict(suboffer=suboffer, form=form)
 
 
 @bp.route('/offers/<int:id>/materials', methods=['GET', 'POST'])
 @template('admin/offers/info/materials.html')
+@offer_context
 @permission_required('do_offer_edit', post=True)
-def offers_info_materials(id):
-	offer = rc.offers.get_by_id(id)
+def offers_info_materials(id, offer):
 	form = forms.OfferBannerForm(request.form)
 	if request.method == 'POST' and form.validate():
 		banner = Banner()
@@ -236,12 +239,12 @@ def offers_info_materials(id):
 		rc.offers.add_banner(offer.id, banner, image_base64)
 		flash(u'Баннер успешно загружен', 'success')
 		return redirect(request.url)
-	return dict(offer=offer, form=form)
+	return dict(form=form)
 
 @bp.route('/offers/<int:id>/materials/<int:bid>/delete')
+@offer_context
 @permission_required('do_offer_edit')
-def offers_info_materials_delete(id, bid):
-	offer = rc.offers.get_by_id(id)
+def offers_info_materials_delete(id, bid, offer):
 	if not offer.banner_by_id(bid): abort(404)
 	rc.offers.delete_banner(id, bid)
 	flash(u'Баннер удален', 'success')
@@ -249,9 +252,9 @@ def offers_info_materials_delete(id, bid):
 
 @bp.route('/offers/<int:id>/materials/up/', methods=['GET', 'POST'])
 @template('admin/offers/info/materials-upload.html')
+@offer_context
 @permission_required('do_offer_edit')
-def offers_info_materials_upload(id):
-	offer = rc.offers.get_by_id(id)
+def offers_info_materials_upload(id, offer):
 	if request.method == 'POST':
 		form = forms.OfferBannerForm(request.form)
 		if form.validate():
@@ -263,16 +266,15 @@ def offers_info_materials_upload(id):
 			return jsonify(name=f.name)
 		else:
 			return jsonify(error=form.image.errors[0])
-	return dict(offer=offer)
+	return dict()
 
 
 @bp.route('/offers/<int:id>/requests', methods=['GET', 'POST'])
 @template('admin/offers/info/requests.html')
+@offer_context
 @permission_required('view_offer_requests')
 @paginated(OFFER_REQUESTS_PER_PAGE)
-def offers_info_requests(id, **kwargs):
-	offer = rc.offers.get_by_id(id)
-	
+def offers_info_requests(id, offer, **kwargs):
 	filter_args = {
 		None: dict(),
 		'new': dict(blocked=True, moderation=True),
@@ -308,15 +310,15 @@ def offers_info_requests(id, **kwargs):
 				if form.notify.data: notify.grant_rejected(grant, form.reason.data)
 				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
-	return dict(offer=offer, grants=grants, count=count, form=form)
+	return dict(grants=grants, count=count, form=form)
 
 @bp.route('/offers/<int:id>/sales/', methods=['GET', 'POST'])
 @template('admin/offers/info/sales.html')
+@offer_context
 @permission_required('view_offer_sales')
 @sorted('creation_time', 'desc')
 @paginated(OFFER_ACTIONS_PER_PAGE)
-def offers_info_sales(id, **kwargs):
-	offer = rc.offers.get_by_id(id)
+def offers_info_sales(id, offer, **kwargs):
 	if request.method == 'POST':
 		if 'approve' in request.form:
 			rc.actions.approve_by_ids(offer.id, request.form.getlist('id'))
@@ -336,15 +338,15 @@ def offers_info_sales(id, **kwargs):
 			return redirect(request.url)
 	else:
 		actions, count = rc.actions.list(offer.id, **kwargs) if form.validate() else ([], 0)
-	return dict(offer=offer, actions=actions, count=count, form=form)
+	return dict(actions=actions, count=count, form=form)
 
 @bp.route('/offers/<int:id>/finances/', methods=['GET', 'POST'])
 @template('admin/offers/info/finances.html')
+@offer_context
 @permission_required('view_offer_finances')
 @sorted('pending', 'desc')
 @paginated(DEBTS_PER_PAGE)
-def offers_info_finances(id, **kwargs):
-	offer = rc.offers.get_by_id(id)
+def offers_info_finances(id, offer, **kwargs):
 	form = forms.DebtFilterForm(request.args)
 	if request.method == 'POST':
 		if form.validate():
@@ -365,102 +367,102 @@ def offers_info_finances(id, **kwargs):
 		overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id, **kwargs)
 	else:
 		debts, count, overall_debt = [], 0, None
-	return dict(offer=offer, debts=debts, count=count, overall_debt=overall_debt, form=form)
+	return dict(debts=debts, count=count, overall_debt=overall_debt, form=form)
 
 @bp.route('/offers/<int:id>/stats/affiliate')
 @template('admin/offers/info/stats/affiliate.html')
+@offer_context
 @permission_required('view_offer_stats')
 @sorted('clicks_count', 'desc')
 @paginated(AFFILIATE_STATS_PER_PAGE)
-def offers_info_stats_affiliate(id, **kwargs):
-	offer = rc.offers.get_by_id(id)
+def offers_info_stats_affiliate(id, offer, **kwargs):
 	form = forms.DateTimeRangeForm(request.args)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_affiliate_by_offer(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
-	return dict(offer=offer, stats=stats, count=count, form=form)
+	return dict(stats=stats, count=count, form=form)
 
 @bp.route('/offers/<int:id>/stats/referer')
 @template('admin/offers/info/stats/referer.html')
+@offer_context
 @permission_required('view_offer_stats')
 @sorted('clicks_count', 'desc')
 @paginated(REFERER_STATS_PER_PAGE)
-def offers_info_stats_referer(id, **kwargs):
-	offer = rc.offers.get_by_id(id)
+def offers_info_stats_referer(id, offer, **kwargs):
 	form = forms.DateTimeRangeForm(request.args)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_by_referer(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
-	return dict(offer=offer, stats=stats, count=count, form=form)
+	return dict(stats=stats, count=count, form=form)
 
 @bp.route('/offers/<int:id>/stats/keywords')
 @template('admin/offers/info/stats/keywords.html')
+@offer_context
 @permission_required('view_offer_stats')
 @sorted('clicks_count', 'desc')
 @paginated(KEYWORDS_STATS_PER_PAGE)
-def offers_info_stats_keywords(id, **kwargs):
-	offer = rc.offers.get_by_id(id)
+def offers_info_stats_keywords(id, offer, **kwargs):
 	form = forms.DateTimeRangeForm(request.args)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_by_keywords(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
-	return dict(offer=offer, stats=stats, count=count, form=form)
+	return dict(stats=stats, count=count, form=form)
 
 @bp.route('/offers/<int:id>/stats/suboffer')
 @template('admin/offers/info/stats/suboffer.html')
+@offer_context
 @permission_required('view_offer_stats')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
-def offers_info_stats_suboffer(id, **kwargs):
-	offer = rc.offers.get_by_id(id)
+def offers_info_stats_suboffer(id, offer, **kwargs):
 	form = forms.DateTimeRangeForm(request.args)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
-	return dict(offer=offer, stats=stats, count=count, form=form)
+	return dict(stats=stats, count=count, form=form)
 
 @bp.route('/offers/<int:id>/stats/suboffer/affiliate')
 @template('admin/offers/info/stats/suboffer.html')
+@offer_context
 @permission_required('view_offer_stats')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
-def offers_info_stats_suboffer_affiliate(id, **kwargs):
-	offer = rc.offers.get_by_id(id)
+def offers_info_stats_suboffer_affiliate(id, offer, **kwargs):
 	affiliate = rc.users.get_by_id(request.args.get('aff_id'))
 	form = forms.DateTimeRangeForm(request.args)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer(offer_id=offer.id, aff_id=affiliate.id, **kwargs) if form.validate() else ([], 0)
-	return dict(offer=offer, stats=stats, count=count, affiliate=affiliate)
+	return dict(stats=stats, count=count, affiliate=affiliate)
 
 @bp.route('/offers/<int:id>/stats/suboffer/referer')
 @template('admin/offers/info/stats/suboffer.html')
+@offer_context
 @permission_required('view_offer_stats')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
-def offers_info_stats_suboffer_referer(id, **kwargs):
-	offer = rc.offers.get_by_id(id)
+def offers_info_stats_suboffer_referer(id, offer, **kwargs):
 	form = forms.DateTimeRangeForm(request.args)
 	kwargs.update(referer=request.args.get('referer'), **form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer_by_referer(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
-	return dict(offer=offer, stats=stats, count=count)
+	return dict(stats=stats, count=count)
 
 @bp.route('/offers/<int:id>/stats/suboffer/keywords')
 @template('admin/offers/info/stats/suboffer.html')
+@offer_context
 @permission_required('view_offer_stats')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
-def offers_info_stats_suboffer_keywords(id, **kwargs):
-	offer = rc.offers.get_by_id(id)
+def offers_info_stats_suboffer_keywords(id, offer, **kwargs):
 	form = forms.DateTimeRangeForm(request.args)
 	kwargs.update(keywords=request.args.get('keywords'), **form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer_by_keywords(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
-	return dict(offer=offer, stats=stats, count=count)
+	return dict(stats=stats, count=count)
 
 
 @bp.route('/offers/<int:id>/stats/fraud')
 @template('admin/offers/info/stats/fraud.html')
+@offer_context
 @permission_required('view_offer_stats')
 @sorted('rate', 'desc')
 @paginated(AFFILIATE_STATS_PER_PAGE)
-def offers_info_stats_fraud(id, **kwargs):
-	offer = rc.offers.get_by_id(id)
+def offers_info_stats_fraud(id, offer, **kwargs):
 	form = forms.UserFilterForm(request.args)
 	kwargs.update(form.backend_args())
 	user_stats, count = rc.user_stats.list_fraud(offer_id=offer.id, **kwargs) if form.validate() else ([], 0)
-	return dict(offer=offer, user_stats=user_stats, count=count, form=form)
+	return dict(user_stats=user_stats, count=count, form=form)

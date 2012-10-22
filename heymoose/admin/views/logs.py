@@ -2,11 +2,13 @@
 from flask import render_template, request
 from heymoose import app, resource as rc
 from heymoose.admin import blueprint as bp
+from heymoose.admin.helpers import superadmin_required
 from heymoose.utils.pagination import current_page, page_limits, paginate
 from heymoose.forms import forms
 
 
 @bp.route('/logs/errors')
+@superadmin_required()
 def logs_api():
 	form = forms.DateTimeRangeForm(request.args)
 	if form.validate():

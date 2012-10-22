@@ -235,7 +235,6 @@ def users_info_finances(id, user, **kwargs):
 @context(user_context_provider)
 @superadmin_required()
 def users_info_groups(id, user):
-	user = accessible_user(id)
 	permissions = AdminPermissions.query.get_or_create(user_id=user.id)
 	form = forms.AdminGroupsForm(request.form, obj=permissions)
 	if request.method == 'POST' and form.validate():

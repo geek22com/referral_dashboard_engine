@@ -61,6 +61,7 @@ all:
 	$(ENV_PY) manage.py assets build
 	$(ENV_PY) setup.py -q sdist
 	cp config_production.py dist/config.py
+	cp permissions.py dist/
 	cp manage.py dist/heymoose_manage
 
 clean:

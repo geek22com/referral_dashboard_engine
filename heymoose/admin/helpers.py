@@ -5,7 +5,7 @@ from heymoose.utils.web import force_redirect
 
 
 def not_enough_permissions():
-	flash(u'У вас недостаточно прав для совершения этого действия', 'danger')
+	flash(u'У вас недостаточно прав для совершения этого действия.', 'danger')
 	admin_index_url = url_for('.index')
 	force_redirect(request.referrer if request.referrer and admin_index_url in request.referrer else admin_index_url)
 

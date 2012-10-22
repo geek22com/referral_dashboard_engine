@@ -8,6 +8,7 @@ from heymoose.notifications import notify
 from heymoose.views import excel
 from heymoose.views.decorators import template, sorted, paginated
 from heymoose.admin import blueprint as bp
+from heymoose.admin.helpers import permission_required
 import base64
 
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
@@ -31,8 +32,9 @@ def offers_list(**kwargs):
 
 @bp.route('/offers/requests', methods=['GET', 'POST'])
 @template('admin/offers/requests.html')
+@permission_required('view_offer_requests')
 @paginated(OFFER_REQUESTS_PER_PAGE)
-def offers_requests(**kwargs):	
+def offers_requests(**kwargs):
 	filter_args = {
 		None: dict(),
 		'new': dict(blocked=True, moderation=True),
@@ -71,6 +73,7 @@ def offers_requests(**kwargs):
 
 @bp.route('/offers/categories/', methods=['GET', 'POST'])
 @template('admin/offers/categories.html')
+@permission_required('view_offer_categories')
 def offers_categories():
 	groups = rc.categories.list_groups()
 	form = forms.CategoryForm(request.form)
@@ -91,6 +94,7 @@ def offers_categories():
 	return dict(form=form, groups=groups)
 
 @bp.route('/offers/categories/<int:id>/', methods=['POST'])
+@permission_required('view_offer_categories', post=True)
 def offers_categories_update(id):
 	groups = rc.categories.list_groups()
 	form = forms.CategoryForm(request.form)
@@ -103,6 +107,7 @@ def offers_categories_update(id):
 	return redirect(url_for('.offers_categories'))
 
 @bp.route('/offers/categories/groups/<int:id>/', methods=['POST'])
+@permission_required('view_offer_categories', post=True)
 def offers_categories_update_group(id):
 	groups = rc.categories.list_groups()
 	form = forms.CategoryForm(request.form)
@@ -115,12 +120,14 @@ def offers_categories_update_group(id):
 	return redirect(url_for('.offers_categories'))
 
 @bp.route('/offers/categories/<int:id>/delete', methods=['POST'])
+@permission_required('view_offer_categories', post=True)
 def offers_categories_delete(id):
 	rc.categories.remove(id)
 	flash(u'Категория удалена', 'success')
 	return redirect(url_for('.offers_categories'))
 
 @bp.route('/offers/categories/groups/<int:id>/delete', methods=['POST'])
+@permission_required('view_offer_categories', post=True)
 def offers_categories_delete_group(id):
 	rc.categories.remove_group(id)
 	flash(u'Категория удалена', 'success')
@@ -128,6 +135,7 @@ def offers_categories_delete_group(id):
 
 @bp.route('/offers/<int:id>', methods=['GET', 'POST'])
 @template('admin/offers/info/info.html')
+@permission_required('do_offer_block', post=True)
 def offers_info(id):
 	offer = rc.offers.get_by_id(id)
 	offer.overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id)
@@ -147,6 +155,7 @@ def offers_info(id):
 
 @bp.route('/offers/<int:id>/edit', methods=['GET', 'POST'])
 @template('admin/offers/info/edit.html')
+@permission_required('do_offer_edit')
 def offers_info_edit(id):
 	offer = rc.offers.get_by_id(id)
 	form = forms.AdminOfferEditForm(request.form, obj=offer)
@@ -162,6 +171,7 @@ def offers_info_edit(id):
 
 @bp.route('/offers/<int:id>/actions/', methods=['GET', 'POST'])
 @template('admin/offers/info/actions.html')
+@permission_required('do_offer_edit', post=True)
 def offers_info_actions(id):
 	offer = rc.offers.get_by_id(id)
 	if offer.exclusive: abort(403)
@@ -176,6 +186,7 @@ def offers_info_actions(id):
 
 @bp.route('/offers/<int:id>/actions/edit', methods=['GET', 'POST'])
 @template('admin/offers/info/actions-edit.html')
+@permission_required('do_offer_edit')
 def offers_info_actions_main_edit(id):
 	offer = rc.offers.get_by_id(id)
 	if offer.exclusive: abort(403)
@@ -193,6 +204,7 @@ def offers_info_actions_main_edit(id):
 
 @bp.route('/offers/<int:id>/actions/<int:sid>/edit', methods=['GET', 'POST'])
 @template('admin/offers/info/actions-edit.html')
+@permission_required('do_offer_edit')
 def offers_info_actions_edit(id, sid):
 	offer = rc.offers.get_by_id(id)
 	if offer.exclusive: abort(403)
@@ -213,6 +225,7 @@ def offers_info_actions_edit(id, sid):
 
 @bp.route('/offers/<int:id>/materials', methods=['GET', 'POST'])
 @template('admin/offers/info/materials.html')
+@permission_required('do_offer_edit', post=True)
 def offers_info_materials(id):
 	offer = rc.offers.get_by_id(id)
 	form = forms.OfferBannerForm(request.form)
@@ -226,6 +239,7 @@ def offers_info_materials(id):
 	return dict(offer=offer, form=form)
 
 @bp.route('/offers/<int:id>/materials/<int:bid>/delete')
+@permission_required('do_offer_edit')
 def offers_info_materials_delete(id, bid):
 	offer = rc.offers.get_by_id(id)
 	if not offer.banner_by_id(bid): abort(404)
@@ -235,6 +249,7 @@ def offers_info_materials_delete(id, bid):
 
 @bp.route('/offers/<int:id>/materials/up/', methods=['GET', 'POST'])
 @template('admin/offers/info/materials-upload.html')
+@permission_required('do_offer_edit')
 def offers_info_materials_upload(id):
 	offer = rc.offers.get_by_id(id)
 	if request.method == 'POST':
@@ -253,10 +268,11 @@ def offers_info_materials_upload(id):
 
 @bp.route('/offers/<int:id>/requests', methods=['GET', 'POST'])
 @template('admin/offers/info/requests.html')
+@permission_required('view_offer_requests')
 @paginated(OFFER_REQUESTS_PER_PAGE)
 def offers_info_requests(id, **kwargs):
 	offer = rc.offers.get_by_id(id)
-		
+	
 	filter_args = {
 		None: dict(),
 		'new': dict(blocked=True, moderation=True),
@@ -296,6 +312,7 @@ def offers_info_requests(id, **kwargs):
 
 @bp.route('/offers/<int:id>/sales/', methods=['GET', 'POST'])
 @template('admin/offers/info/sales.html')
+@permission_required('view_offer_sales')
 @sorted('creation_time', 'desc')
 @paginated(OFFER_ACTIONS_PER_PAGE)
 def offers_info_sales(id, **kwargs):
@@ -323,6 +340,7 @@ def offers_info_sales(id, **kwargs):
 
 @bp.route('/offers/<int:id>/finances/', methods=['GET', 'POST'])
 @template('admin/offers/info/finances.html')
+@permission_required('view_offer_finances')
 @sorted('pending', 'desc')
 @paginated(DEBTS_PER_PAGE)
 def offers_info_finances(id, **kwargs):
@@ -351,6 +369,7 @@ def offers_info_finances(id, **kwargs):
 
 @bp.route('/offers/<int:id>/stats/affiliate')
 @template('admin/offers/info/stats/affiliate.html')
+@permission_required('view_offer_stats')
 @sorted('clicks_count', 'desc')
 @paginated(AFFILIATE_STATS_PER_PAGE)
 def offers_info_stats_affiliate(id, **kwargs):
@@ -362,6 +381,7 @@ def offers_info_stats_affiliate(id, **kwargs):
 
 @bp.route('/offers/<int:id>/stats/referer')
 @template('admin/offers/info/stats/referer.html')
+@permission_required('view_offer_stats')
 @sorted('clicks_count', 'desc')
 @paginated(REFERER_STATS_PER_PAGE)
 def offers_info_stats_referer(id, **kwargs):
@@ -373,6 +393,7 @@ def offers_info_stats_referer(id, **kwargs):
 
 @bp.route('/offers/<int:id>/stats/keywords')
 @template('admin/offers/info/stats/keywords.html')
+@permission_required('view_offer_stats')
 @sorted('clicks_count', 'desc')
 @paginated(KEYWORDS_STATS_PER_PAGE)
 def offers_info_stats_keywords(id, **kwargs):
@@ -384,6 +405,7 @@ def offers_info_stats_keywords(id, **kwargs):
 
 @bp.route('/offers/<int:id>/stats/suboffer')
 @template('admin/offers/info/stats/suboffer.html')
+@permission_required('view_offer_stats')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
 def offers_info_stats_suboffer(id, **kwargs):
@@ -395,6 +417,7 @@ def offers_info_stats_suboffer(id, **kwargs):
 
 @bp.route('/offers/<int:id>/stats/suboffer/affiliate')
 @template('admin/offers/info/stats/suboffer.html')
+@permission_required('view_offer_stats')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
 def offers_info_stats_suboffer_affiliate(id, **kwargs):
@@ -407,6 +430,7 @@ def offers_info_stats_suboffer_affiliate(id, **kwargs):
 
 @bp.route('/offers/<int:id>/stats/suboffer/referer')
 @template('admin/offers/info/stats/suboffer.html')
+@permission_required('view_offer_stats')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
 def offers_info_stats_suboffer_referer(id, **kwargs):
@@ -418,6 +442,7 @@ def offers_info_stats_suboffer_referer(id, **kwargs):
 
 @bp.route('/offers/<int:id>/stats/suboffer/keywords')
 @template('admin/offers/info/stats/suboffer.html')
+@permission_required('view_offer_stats')
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
 def offers_info_stats_suboffer_keywords(id, **kwargs):
@@ -430,6 +455,7 @@ def offers_info_stats_suboffer_keywords(id, **kwargs):
 
 @bp.route('/offers/<int:id>/stats/fraud')
 @template('admin/offers/info/stats/fraud.html')
+@permission_required('view_offer_stats')
 @sorted('rate', 'desc')
 @paginated(AFFILIATE_STATS_PER_PAGE)
 def offers_info_stats_fraud(id, **kwargs):

@@ -96,9 +96,10 @@ ADMIN_GROUPS = {
 		'view_affiliate',
 		'view_affiliate_offers',
 		'view_affiliate_finances',
+		'view_affiliate_referrals',
 		'do_affiliate_edit',
 		'do_affiliate_login',
-		#'do_affiliate_block'
+		'do_affiliate_block'
 	]),
 	u'Анализ трафика': set(['view_fraud']),
 	u'PR': set([])

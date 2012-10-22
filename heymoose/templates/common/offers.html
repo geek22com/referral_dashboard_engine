@@ -41,6 +41,7 @@
 {% macro table(offers, status=false, grant_status=false, user=none, admin=false) %}
 
 {% set affiliate = user.is_affiliate %}
+{% set admin = user.is_admin %}
 
 	<table class="bordered-table nosort offers-table">
 		<thead>
@@ -115,7 +116,7 @@
 						Дата запуска: {{ offer.launch_time|dateformat }}
 					</div>
 					{% endif %}
-					{% if admin %}
+					{% if admin and user.can('view_advertiser') %}
 					<div class="well small offer-advertiser">
 						<div><a href="{{ url_for('.users_info', id=offer.advertiser.id) }}"
 						 >{{ offer.advertiser.full_name or offer.advertiser.email }}</a></div>

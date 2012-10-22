@@ -1,10 +1,11 @@
 {% import 'common/macros.html' as macros %}
 {% import 'common/forms.html' as forms %}
 
-{% macro html(offer, user=none, admin=false, form=none) %}
+{% macro html(offer, user=none, form=none) %}
 
 {% set affiliate = user and user.is_affiliate %}
 {% set owner = user and user.is_advertiser and offer.owned_by(user) %}
+{% set admin = user.is_admin %}
 
 {% if admin or owner %}
 	{% if not offer.approved %}
@@ -83,7 +84,7 @@
 			</form>
 		</div>
 		{% endif %}
-		{% if admin %}
+		{% if admin and user.can('do_offer_block') %}
 			<div class="well center">
 				<a href="#" class="btn danger" data-controls-modal="modal-block"
 				 data-backdrop="true" data-keyboard="true"
@@ -134,7 +135,7 @@
 			</div>
 		</div>
 		
-		{% if (owner or admin) and offer.overall_debt %}
+		{% if (owner or (admin and user.can('view_offer_finances'))) and offer.overall_debt %}
 		<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">
 				Финансы
@@ -148,7 +149,7 @@
 		</div>
 		{% endif %}
 		
-		{% if admin %}
+		{% if admin and user.can('view_advertiser') %}
 		<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">
 				Рекламодатель

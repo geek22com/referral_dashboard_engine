@@ -2,9 +2,11 @@
 from base import models, types, registry
 from base.fields import Field, FieldList, FieldSet
 from heymoose import app
+from heymoose.utils.lang import cached_property
 from heymoose.utils.gen import generate_password_hash, aes_base16_encrypt, aes_base16_decrypt
 from repos import regions_repo
 from datetime import datetime
+from mongo.models import AdminPermissions
 import enums
 import os, hashlib, uuid
 
@@ -53,7 +55,7 @@ class User(IdentifiableModel):
 	@property
 	def active(self): return self.confirmed and not self.blocked
 	
-	@property
+	@cached_property
 	def full_name(self):
 		if self.first_name and self.last_name:
 			return u'{0} {1}'.format(self.first_name, self.last_name)
@@ -70,6 +72,23 @@ class User(IdentifiableModel):
 	def is_advertiser(self): return enums.Roles.ADVERTISER in self.roles
 	@property
 	def is_admin(self): return enums.Roles.ADMIN in self.roles
+	
+	@cached_property
+	def is_superadmin(self):
+		superadmins = app.config.get('SUPER_ADMINS')
+		return self.email in superadmins
+
+	@cached_property
+	def permissions(self):
+		groups = AdminPermissions.query.get_or_create(user_id=self.id).groups
+		all_groups = app.config.get('ADMIN_GROUPS')
+		permissions = set()
+		for group in groups:
+			permissions |= all_groups.get(group, set())
+		return permissions
+
+	def can(self, permission):
+		return self.is_superadmin or permission in self.permissions
 	
 	def get_confirm_code(self):
 		m = hashlib.md5()

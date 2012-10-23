@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from wtforms.fields import TextField, FileField, SelectField, SelectMultipleField
 from PIL import Image
-from heymoose import resource as rc
+from heymoose import app, resource as rc
 from heymoose.utils import swfheader, svgheader
 from heymoose.data.repos import regions_repo
 import widgets
@@ -140,6 +140,26 @@ class RegionsField(CheckboxListField):
 	
 	def populate_obj(self, obj, name):
 		setattr(obj, name, set(self.data))
+
+
+class AdminGroupsField(CheckboxListField):
+	_admin_groups = app.config.get('ADMIN_GROUPS')
+
+	def __init__(self, *args, **kwargs):
+		groups = self._admin_groups.keys()
+		groups.sort()
+		choices = [(group, group) for group in groups]
+		super(AdminGroupsField, self).__init__(*args, choices=choices, **kwargs)
+
+	def process_data(self, value):
+		try:
+			self.data = list(value)
+		except:
+			self.data = []
+	
+	def process_formdata(self, valuelist):
+		super(AdminGroupsField, self).process_formdata(valuelist)
+		self.data = self.data or []
 
 
 class CategoriesField(CategorizedCheckboxListField):

@@ -5,6 +5,6 @@
 
 {% block tabcontent %}
 
-{{ offer_macro.html(offer, admin=true, form=form) }}
+{{ offer_macro.html(offer, user=g.user, form=form) }}
 
 {% endblock %}

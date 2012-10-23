@@ -46,6 +46,7 @@
 	<li class="dropdown">
 		<a class="dropdown-toggle" href="#">{{ g.user.full_name or g.user.email }}</a>
 		<ul class="dropdown-menu">
+			<li><a href="{{ url_for('.users_info', id=g.user.id) }}">Профиль</a></li>
 			<li><a href="{{ url_for('site.logout') }}">Выйти</a></li>
 		</ul>
 	</li>

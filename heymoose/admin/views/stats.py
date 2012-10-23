@@ -3,6 +3,7 @@ from flask import request, abort
 from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.admin import blueprint as bp
+from heymoose.admin.helpers import superadmin_required
 from heymoose.views.decorators import template, sorted, paginated
 
 
@@ -14,6 +15,7 @@ SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 
 @bp.route('/stats/offer')
 @template('admin/stats/offer.html')
+@superadmin_required()
 @sorted('clicks_count', 'desc')
 @paginated(OFFER_STATS_PER_PAGE)
 def stats_offer(**kwargs):
@@ -24,6 +26,7 @@ def stats_offer(**kwargs):
 
 @bp.route('/stats/affiliate')
 @template('admin/stats/affiliate.html')
+@superadmin_required()
 @sorted('clicks_count', 'desc')
 @paginated(AFFILIATE_STATS_PER_PAGE)
 def stats_affiliate(**kwargs):
@@ -34,6 +37,7 @@ def stats_affiliate(**kwargs):
 
 @bp.route('/stats/advertiser')
 @template('admin/stats/advertiser.html')
+@superadmin_required()
 @sorted('clicks_count', 'desc')
 @paginated(ADVERTISER_STATS_PER_PAGE)
 def stats_advertiser(**kwargs):
@@ -44,6 +48,7 @@ def stats_advertiser(**kwargs):
 
 @bp.route('/stats/total')
 @template('admin/stats/total.html')
+@superadmin_required()
 def stats_total():
 	form = forms.DateTimeRangeForm(request.args)
 	stats = rc.offer_stats.total(**form.backend_args()) if form.validate() else []
@@ -51,6 +56,7 @@ def stats_total():
 
 @bp.route('/stats/suboffer')
 @template('admin/stats/suboffer.html')
+@superadmin_required()
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
 def stats_suboffer(**kwargs):
@@ -62,6 +68,7 @@ def stats_suboffer(**kwargs):
 
 @bp.route('/stats/suboffer/affiliate')
 @template('admin/stats/suboffer.html')
+@superadmin_required()
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
 def stats_suboffer_affiliate(**kwargs):
@@ -73,6 +80,7 @@ def stats_suboffer_affiliate(**kwargs):
 
 @bp.route('/stats/suboffer/advertiser')
 @template('admin/stats/suboffer.html')
+@superadmin_required()
 @sorted('leads_count', 'desc')
 @paginated(SUBOFFER_STATS_PER_PAGE)
 def stats_suboffer_advertiser(**kwargs):

@@ -36,9 +36,9 @@
 		{% endif %}
 		<tr><th>Зарегистрирован</th><td>{{ user.register_time|datetimeformat }}</td></tr>
 		
-		{% if user.is_advertiser %}
+		{% if user.is_advertiser and g.user.can('view_advertiser_finances') %}
 		<tr><th>Баланс</th><td>{{ user.advertiser_account.balance|currency }}</td></tr>
-		{% else %}
+		{% elif user.is_affiliate and g.user.can('view_affiliate_finances') %}
 		<tr><th>Неподтвержденные средства</th><td>{{ user.affiliate_account_not_confirmed.balance|currency }}</td></tr>
 		<tr><th>Подтвержденные средства</th><td>{{ user.affiliate_account.balance|currency }}</td></tr>
 		{% endif %}
@@ -69,7 +69,7 @@
 	</tbody>
 </table>
 
-{% if user.is_affiliate %}
+{% if user.is_affiliate and g.user.can('view_affiliate_referrals') %}
 <h3>Реферальная программа</h3>
 <table class="key-value">
 	<tbody>

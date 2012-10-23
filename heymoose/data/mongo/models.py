@@ -54,3 +54,9 @@ class Notification(mongo.Document):
 	date = mongo.DateTimeField()
 	read = mongo.BoolField(default=False)
 	notified = mongo.BoolField(default=False)
+
+
+class AdminPermissions(mongo.Document):
+	query_class = HeyMooseQuery
+	user_id = mongo.IntField()
+	groups = mongo.ListField(mongo.StringField(), default=[])

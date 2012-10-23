@@ -9,7 +9,7 @@ from heymoose.filters import currency, currency_sign
 from heymoose.utils.times import begin_of_day, end_of_day, relativedelta
 from heymoose.utils.gen import generate_unique_filename, generate_uid
 from heymoose.utils.convert import to_unixtime, datetime_nosec_format
-from heymoose.utils.dicts import create_dict
+from heymoose.utils.lang import create_dict
 from flask import g
 from datetime import datetime
 import validators
@@ -158,6 +158,9 @@ class AffiliateEditFormMixin(AffiliateFormMixin):
 		validators.Regexp('R\d{12}', message=u'Номер WMR-кошелька должен содержать букву R и 12 цифр')
 	])
 
+class AdminRegisterForm(Form, UserRegisterFormMixin):
+	pass
+
 class AffiliateRegisterForm(CaptchaForm, UserRegisterFormMixin):
 	pass
 
@@ -181,6 +184,10 @@ class AdminUserFormMixin:
 	def validate_email(self, field):
 		if hasattr(self, 'user') and self.user.email != self.email.data:
 			validators.check_email_not_registered(self, self.email)
+
+
+class AdminAdminEditForm(Form, UserEditFormMixin, AdminUserFormMixin):
+	pass
 
 
 class AdminAffiliateEditForm(AffiliateEditForm, AdminUserFormMixin):
@@ -735,6 +742,10 @@ class CatalogOfferFilterForm(OfferFilterForm):
 		args.update(offset=self.offset.data, limit=10)
 		if self.exclusive.data: args.update(exclusive=True)
 		return args
+
+
+class AdminGroupsForm(Form):
+	groups = myfields.AdminGroupsField(u'Группы')
 
 
 class NewsItemForm(Form):

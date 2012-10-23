@@ -369,6 +369,24 @@ def offers_info_finances(id, offer, **kwargs):
 		debts, count, overall_debt = [], 0, None
 	return dict(debts=debts, count=count, overall_debt=overall_debt, form=form)
 
+
+@bp.route('/offers/<int:id>/operations/', methods=['GET', 'POST'])
+@template('admin/offers/info/operations.html')
+@offer_context
+@permission_required('view_offer_operations')
+def offers_info_operations(id, offer):
+	if request.method == 'POST' and 'csv' in request.files:
+		transactions = [t.strip() for t in request.files['csv'].read().split()]
+		if 'approve' in request.form:
+			count = rc.actions.approve_by_transactions(offer.id, transactions)
+			flash(u'Подтверждено {0} действий'.format(count), 'success')
+		elif 'cancel' in request.form:
+			count = rc.actions.cancel_by_transactions(offer.id, transactions)
+			flash(u'Отменено {0} действий'.format(count), 'success')
+		return redirect(request.url)
+	return dict()
+
+
 @bp.route('/offers/<int:id>/stats/affiliate')
 @template('admin/offers/info/stats/affiliate.html')
 @offer_context

@@ -1,0 +1,20 @@
+{% extends "admin/offers/info/layout.html" %}
+
+{% set activetab = 'operations' %}
+
+{% block tabcontent %}
+
+<h2>Подтверждение и отмена действий по CSV-файлу</h2>
+<form method="post" action="" enctype="multipart/form-data">
+	<div class="clearfix">
+		<input type="file" name="csv" />
+	</div>
+	<div class="clearfix">
+		<input type="submit" name="approve" value="Подтвердить действия" class="btn success"
+		 onclick="return confirm('Выбранные действия будут ПОДТВЕРЖДЕНЫ. Продолжить?');" />
+		<input type="submit" name="cancel" value="Отменить действия" class="btn danger"
+		 onclick="return confirm('Выбранные действия будут ОТМЕНЕНЫ. Продолжить?');" />
+	</div>
+</form>
+
+{% endblock %}

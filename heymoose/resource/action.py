@@ -7,8 +7,11 @@ class ActionResource(BackendResource):
 	def approve_expired(self, **kwargs):
 		return self.put(**kwargs).as_int()
 	
+	def approve_by_transactions(self, offer_id, transactions):
+		return self.path('verify').put(offer_id=offer_id, transactions=transactions).as_int()
+
 	def cancel_by_transactions(self, offer_id, transactions):
-		return self.delete(offer_id=offer_id, transactions=transactions).as_int()
+		return self.path('verify').delete(offer_id=offer_id, transactions=transactions).as_int()
 	
 	def approve_by_ids(self, offer_id, ids):
 		self.path('by_id').put(offer_id=offer_id, id=ids)

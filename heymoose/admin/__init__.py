@@ -1,4 +1,5 @@
-from flask import Blueprint, g, abort, request, redirect, url_for
+# -*- coding: utf-8 -*-
+from flask import Blueprint, g, abort, request, redirect, url_for, flash
 from heymoose.data.mongo.models import Contact
 
 blueprint = Blueprint('admin', __name__, url_prefix='/admin', 
@@ -10,6 +11,10 @@ def before_request():
 		return redirect(url_for('site.login', back=request.url))
 	elif not g.user.is_admin:
 		return redirect(url_for('cabinetcpa.index'))
+
+	if g.user.blocked:
+		flash(u'Ваша учетная запись администратора заблокирована.', 'danger')
+		return redirect(url_for('site.logout'))
 	
 	# For form validation
 	if request.method == 'POST' and request.files:

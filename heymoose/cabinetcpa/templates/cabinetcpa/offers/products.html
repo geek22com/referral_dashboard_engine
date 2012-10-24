@@ -36,6 +36,21 @@
 		.collapsible.collapsed > .collapsible-content {
 			display: none;
 		}
+
+		.collapsible > .collapsible-toggle:after {
+			content: ' -';
+		}
+
+		.collapsible.collapsed > .collapsible-toggle:after {
+			content: ' +';
+		}
+
+		.collapsible > input[type="checkbox"] {
+			float: left;
+			margin-bottom: 0;
+			margin-top: 3px;
+			margin-right: 5px;
+		}
 	</style>
 
 	<script type="text/javascript">

@@ -98,3 +98,28 @@ def debts_to_xls(debts):
 	wb.save(f)
 	f.seek(0)
 	return f
+
+
+def grants_to_xls(grants):
+	table = [
+		dict(title=u'ID партнёра', getter=lambda g: g.affiliate.id),
+		dict(title=u'Email партнёра', getter=lambda g: g.affiliate.email, width=5000),
+		dict(title=u'ID оффера', getter=lambda g: g.offer.id),
+		dict(title=u'Название оффера', getter=lambda g: g.offer.name, width=5000),
+		dict(title=u'Состояние', getter=lambda g: g.state_description, width=5000),
+		dict(title=u'Причина', getter=lambda g: g.reason if g.blocked or g.rejected else None, width=5000)
+	]
+	wb = xlwt.Workbook()
+	ws = wb.add_sheet(u'Заявки')
+	for i, col in enumerate(table):
+		ws.write(0, i, col.get('title'), bold_style)
+		if 'width' in col:
+			ws.col(i).width = col.get('width')
+	for i, grant in enumerate(grants):
+		for j, col in enumerate(table):
+			ws.write(i+1, j, col.get('getter')(grant), col.get('style', xlwt.Style.default_style))
+	f = cStringIO.StringIO()
+	wb.save(f)
+	f.seek(0)
+	return f
+

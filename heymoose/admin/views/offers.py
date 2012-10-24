@@ -47,9 +47,13 @@ def offers_requests(**kwargs):
 		'approved': dict(state=OfferGrantState.APPROVED, blocked=False),
 		'rejected': dict(state=OfferGrantState.REJECTED, blocked=False),
 	}.get(request.args.get('filter', None), dict())
+
+	if request.args.get('format') == 'xls':
+		grants, _ = rc.offer_grants.list(full=True, offset=0, limit=999999, **filter_args)
+		return send_file(excel.grants_to_xls(grants), as_attachment=True, attachment_filename='requests.xls')
+
 	kwargs.update(filter_args)
 	grants, count = rc.offer_grants.list(full=True, **kwargs)
-	
 	form = forms.AdminOfferRequestDecisionForm(request.form)
 	if request.method == 'POST' and form.validate():
 		grant = rc.offer_grants.get_by_id(form.grant_id.data, full=True)
@@ -284,9 +288,13 @@ def offers_info_requests(id, offer, **kwargs):
 		'approved': dict(state=OfferGrantState.APPROVED, blocked=False),
 		'rejected': dict(state=OfferGrantState.REJECTED, blocked=False),
 	}.get(request.args.get('filter', None), dict())
+
+	if request.args.get('format') == 'xls':
+		grants, _ = rc.offer_grants.list(offer_id=offer.id, full=True, offset=0, limit=999999, **filter_args)
+		return send_file(excel.grants_to_xls(grants), as_attachment=True, attachment_filename='requests.xls')
+	
 	kwargs.update(filter_args)
 	grants, count = rc.offer_grants.list(offer_id=offer.id, full=True, **kwargs)
-	
 	form = forms.AdminOfferRequestDecisionForm(request.form)
 	if request.method == 'POST' and form.validate():
 		grant = rc.offer_grants.get_by_id(form.grant_id.data, full=True)

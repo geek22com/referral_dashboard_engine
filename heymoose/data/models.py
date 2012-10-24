@@ -318,6 +318,19 @@ class OfferGrant(IdentifiableModel):
 	@property
 	def admin_moderation(self): return self.blocked and not self.block_reason
 
+	@cached_property
+	def state_description(self):
+		if not self.blocked:
+			return self.state.name
+		elif self.block_reason:
+			return u'отклонена администрацией'
+		else:
+			return u'проверяется администрацией'
+
+	@cached_property
+	def reason(self):
+		return self.block_reason or self.reject_reason
+
 
 class Banner(IdentifiableModel):
 	width = Field(types.Integer, 'width')

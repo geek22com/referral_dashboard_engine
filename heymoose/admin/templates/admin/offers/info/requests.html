@@ -20,6 +20,10 @@
 	
 	<div style="clear: both;">
 	{% if grants %}
+		<div class="well right">
+			<a href="{{ url_for(request.url_rule.endpoint, id=offer.id, format='xls', filter=filter) }}"
+			 class="btn success">Выгрузить список в Excel</a>
+		</div>
 		{{ offer_macro.requests_table(grants, admin=true, form=form) }}
 		{{ macros.paginate(pages, '.offers_info_requests', id=offer.id, filter=filter) }}
 	{% else %}

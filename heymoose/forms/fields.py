@@ -120,8 +120,8 @@ class RegionsField(CheckboxListField):
 	exclude_by_name = ('None', 'none')
 	
 	def __init__(self, label=None, validators=None, predefined=[], **kwargs):
-		regions = regions_repo.as_list()
-		regions_dict = regions_repo.as_dict()
+		regions = regions_repo.list
+		regions_dict = regions_repo.dict
 		choices = [(code, regions_dict.get(code).country_name) for code in predefined]
 		choices += [(region.country_code, region.country_name)
 					for region in sorted(regions, key=lambda r: r.country_name)

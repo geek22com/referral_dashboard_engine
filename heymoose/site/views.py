@@ -187,8 +187,7 @@ def confirm(id, code):
 @bp.route('/catalog/')
 @template('site/ak/catalog.html')
 def catalog(**kwargs):
-	regions = regions_repo.as_list()
-	return dict(regions=regions)
+	return dict(regions=regions_repo.list)
 
 @bp.route('/catalog/page/')
 def catalog_page():

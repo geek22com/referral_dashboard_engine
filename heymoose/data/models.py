@@ -278,7 +278,7 @@ class Offer(SubOffer):
 	
 	@property
 	def regions_full(self):
-		regions_dict = regions_repo.as_dict()
+		regions_dict = regions_repo.dict
 		regions = [regions_dict.get(code) for code in self.regions if code in regions_dict] 
 		return sorted(regions, key=lambda r: r.country_name)
 	

@@ -11,6 +11,6 @@ def upload(filename):
 		abort(403)
 
 
-@app.route('/xml/feed/')
+@app.route('/products/feed/')
 def xml_feed():
 	abort(403)

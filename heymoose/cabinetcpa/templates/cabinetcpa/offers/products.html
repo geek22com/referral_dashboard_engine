@@ -120,13 +120,14 @@
 	<div style="margin-left: 320px;">
 		<div class="clearfix alert-message block-message info">
 			{% with link = config.get('TRACKER_BASE_URL') + url_for('xml_feed',
+				key=g.user.secret_key,
 				q=request.args.get('q'),
 				s=request.args.getlist('s'),
 				c=request.args.getlist('c')
 			) %}
 			<p>
 				Ссылка на XML feed:
-				<a href="{{ link }}">{{ link }}</a>
+				<a href="{{ link }}" target="_blank">{{ link }}</a>
 			</p>
 			{% endwith %}
 		</div>

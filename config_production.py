@@ -137,3 +137,28 @@ ADMIN_GROUPS = {
 		'view_advertiser_offers'
 	])
 }
+
+LOGGER_NAME = 'heymoose'
+LOGGING = {
+	'version' : 1,
+	'disable_existing_loggers' : False,
+	'formatters' : {
+		'common' : {
+			'format' : '%(asctime)s %(levelname)-7s %(message)s',
+			#'datefmt' : '%H:%M:%S'
+		},
+	},
+	'handlers' : {
+		'console' : {
+			'level' : 'DEBUG' if DEBUG else 'INFO',
+			'class' : 'logging.StreamHandler',
+			'formatter' : 'common'
+		},
+	},
+	'loggers' : {
+		'heymoose' : {
+			'handlers' : ['console'],
+			'level' : 'DEBUG' if DEBUG else 'INFO',
+		}
+	}
+}

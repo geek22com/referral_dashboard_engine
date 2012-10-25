@@ -9,5 +9,4 @@ def before_request():
 	g.params = {}
 	
 	if 'user_id' in session and '/static' not in request.url and '/upload' not in request.url:
-		print '\n'
 		g.user = users.get_by_id(int(session['user_id']))

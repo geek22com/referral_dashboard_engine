@@ -1,6 +1,7 @@
 from heymoose import app
 from restkit import Resource
 from restkit.errors import ResourceError, ResourceNotFound #@UnusedImport
+from restkit.util import make_uri
 from lxml import etree
 import urlparse, os
 
@@ -136,29 +137,28 @@ class BackendResource(Resource):
 			payload = params
 			params = {}
 
-		app.logger.debug('{resource} {method}: url={url} params={params} payload={payload}'.format(
-			resource=self.__class__.__name__, method=method, url=os.path.join(self.uri, path or ''),
-			params=self.loggable_dict(params), payload=self.loggable_dict(payload)
-		))
-		
 		try:
 			response = super(BackendResource, self).request(method, path, payload, headers, params_dict, **params)
+			app.logger.info('{status} {method:4} {resource}: {url} {payload}'.format(
+				status=response.status_int, method=method, resource=self.__class__.__name__,
+				url=response.final_url, payload=self.loggable_dict(payload) or ''
+			))
 		except ResourceError as e:
-			app.logger.error('{resource} request failed ({status}): {url}'.format(
-				resource=self.__class__.__name__,
-				status=e.status_int,
-				url=e.response.final_url), exc_info=True)
+			app.logger.error('{status} {method:4} {resource}: {url} {payload}'.format(
+				status=e.status_int, method=method, resource=self.__class__.__name__,
+				url=e.response.final_url, payload=self.loggable_dict(payload) or ''), exc_info=True)
 			raise
 		except Exception as e:
-			app.logger.error('{resource} request failed: {dict}'.format(
-				resource=self.__class__.__name__,
-				dict=e.__dict__), exc_info=True)
+			uri = make_uri(self.uri, path, charset=self.charset, safe=self.safe,
+				encode_keys=self.encode_keys, **self.make_params(params))
+			app.logger.error('{status} {method:4} {resource}: {url} {dict}'.format(
+				status='???', method=method, resource=self.__class__.__name__,
+				url=uri, dict=e.__dict__), exc_info=True)
 			raise
 		
 		resp = response.body_string()
 		if response.charset != 'utf8':
 			resp = resp.decode('utf8')
 		return ResponseRenderer(resp)
-		
 		
 		

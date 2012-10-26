@@ -40,6 +40,8 @@
 {% endblock %}
 
 {% block prebody %}
+
+{% block yandex_metrika %}
 <div style="display:none;" class="li_counter">
 	<!-- Yandex.Metrika counter -->
 	<script type="text/javascript">
@@ -65,6 +67,8 @@
 	<noscript><div><img src="//mc.yandex.ru/watch/8819377" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 	<!-- /Yandex.Metrika counter -->
 </div>
+{% endblock %}
+
 {% endblock %}
 
 {% block prebrand %}Личный кабинет {{ 'рекламодателя' if g.user.is_advertiser else 'партнёра' }}{% endblock %}

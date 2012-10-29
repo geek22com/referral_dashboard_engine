@@ -460,17 +460,28 @@ class Product(IdentifiableModel):
 	picture = Field(types.String, 'picture')
 	price = Field(types.Decimal, 'price', quantize='1.00')
 	currency_id = Field(types.String, 'currencyId')
-	category_id = Field(types.Integer, 'categoryId')
+	category_ids = FieldSet(types.Integer, 'categoryId')
 	description = Field(types.String, 'description')
 	vendor = Field(types.String, 'vendor')
 	vendor_code = Field(types.String, 'vendorCode')
 	store = Field(types.Boolean, 'store')
 	pickup = Field(types.Boolean, 'pickup')
 	delivery = Field(types.Boolean, 'delivery')
-
+	# Custom HeyMoose parameters
 	offer_id = Field(types.Integer, 'param[@name="hm_offer_id"]')
 	offer_name = Field(types.String, 'param[@name="hm_offer_name"]')
 	original_url = Field(types.String, 'param[@name="hm_original_url"]')
+	revenue = Field(types.Decimal, 'param[@name="hm_revenue"]', quantize='1.00')
+	revenue_unit = Field(enums.ProductRevenueUnits, 'param[@name="hm_revenue"]/@unit')
+	exclusive = Field(types.Boolean, 'param[@name="hm_exclusive"]')
+
+	@property
+	def price_string(self):
+		return u'{}&nbsp;{}'.format(self.price, self.currency_id)
+
+	@property
+	def revenue_string(self):
+		return u'{}&nbsp;{}'.format(self.revenue, self.revenue_unit.sign)
 
 
 class YmlCatalog(models.ModelBase):

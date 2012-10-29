@@ -82,6 +82,12 @@
 				else
 					childInputs.removeAttr('disabled');
 			});
+
+			// Load product pictures on modal show
+			$('.product-modal').bind('shown', function() {
+				var imgProductPicture = $(this).find('img.product-picture');
+				imgProductPicture.attr('src', imgProductPicture.data('src'));
+			});
 		})
 	</script>
 {% endblock %}
@@ -154,6 +160,7 @@
 						<th class="center">Название</th>
 						<th class="center">Магазин</th>
 						<th class="center">Цена</th>
+						<th class="center">Вознаграждение</th>
 						<th class="center"></th>
 					</tr>
 				</thead>
@@ -162,16 +169,17 @@
 					<tr>
 						<td>
 							<a href="#" data-controls-modal="product-modal-{{ product.id -}}"
-							 data-backdrop="true" data-keyboard="true">{{ product.name }}</a>
-							<div id="product-modal-{{ product.id -}}" class="modal fade" style="display: none;">
+							 data-backdrop="true" data-keyboard="true">{{ product.name|safe }}</a>
+							<div id="product-modal-{{ product.id -}}" class="modal product-modal fade" style="display: none;">
 								<div class="modal-header">
 									<a href="#" class="close">×</a>
-									<h3>{{ product.name }}</h3>
+									<h3>{{ product.name|safe }}</h3>
 								</div>
 								<div class="modal-body">
 									<div class="row">
-										<div class="span3">
-											<img src="{{ product.picture -}}" alt="{{ product.name }}" width="160" />
+										<div class="span3 product-picture-wrap center">
+											<img src="{{ url_for('static', filename='img/px/px.png') }}" width="160"
+											 data-src="{{ product.picture -}}" alt="{{ product.name }}" class="product-picture" />
 										</div>
 										<div class="span6">
 											<table class="condensed-table product-info">
@@ -186,7 +194,10 @@
 													<tr><th>Модель</th><td>{{ product.model or product.vendor_code }}</td></tr>
 													{% endif %}
 													{% if product.price %}
-													<tr><th>Цена</th><td>{{ product.price }}&nbsp;{{ product.currency_id }}</td></tr>
+													<tr><th>Цена</th><td>{{ product.price_string|safe }}</td></tr>
+													{% endif %}
+													{% if product.revenue %}
+													<tr><th>Вознаграждение</th><td>{{ product.revenue_string|safe }}</td></tr>
 													{% endif %}
 													{% if product.original_url or product.url %}
 													<tr>
@@ -210,7 +221,8 @@
 							</div>
 						</td>
 						<td><a href="{{ url_for('.offers_info', id=product.offer_id) }}" target="_blank">{{ product.offer_name }}</a></td>
-						<td class="right">{{ product.price -}}&nbsp;{{ product.currency_id -}}</td>
+						<td class="right">{{ product.price_string|safe }}</td>
+						<td class="right">{{ product.revenue_string|safe }}</td>
 						<td class="center"><a href="{{ product.url -}}" target="_blank">партнерская ссылка</a></td>
 					</tr>
 					{% endfor %}

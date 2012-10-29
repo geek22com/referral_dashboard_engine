@@ -4,7 +4,7 @@ from heymoose import app
 import smtplib
 
 enabled = app.config.get('MAIL_ENABLED')
-smtp_debug = app.config.get('MAIL_SMTP_DEBUG', False)
+smtp_debug = app.debug
 smtp_host = app.config.get('MAIL_SMTP_HOST')
 smtp_port = app.config.get('MAIL_SMTP_PORT')
 smtp_timeout = app.config.get('MAIL_SMTP_TIMEOUT')

@@ -45,9 +45,15 @@ def percent(value, sign=True, multiply=False):
 
 
 def updated(dictionary, **kwargs):
-	d = dictionary.copy()
-	for key, value in kwargs.iteritems():
-		d[key] = value
+	if hasattr(dictionary, 'to_dict'):
+		d = dictionary.to_dict(False)
+		for key in d:
+			value = d[key]
+			if len(value) == 1:
+				d[key] = value[0]
+	else:
+		d = dictionary
+	d.update(kwargs)
 	return d
 
 

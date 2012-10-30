@@ -3,6 +3,7 @@ from base import models, types, registry
 from base.fields import Field, FieldList, FieldSet
 from heymoose import app
 from heymoose.utils.lang import cached_property
+from heymoose.utils.templating import markup
 from heymoose.utils.gen import generate_password_hash, aes_base16_encrypt, aes_base16_decrypt
 from repos import regions_repo
 from datetime import datetime
@@ -525,10 +526,12 @@ class Product(IdentifiableModel):
 		return self.pictures[0] if self.pictures else None
 
 	@cached_property
+	@markup
 	def price_string(self):
 		return u'{}&nbsp;{}'.format(self.price, self.currency_id)
 
 	@cached_property
+	@markup
 	def revenue_string(self):
 		return u'{}&nbsp;{}'.format(self.revenue, self.revenue_unit.sign)
 
@@ -541,27 +544,21 @@ class ShopCategory(IdentifiableModel):
 class ShopCategoryContainerMixin:
 	categories = None
 
-	@property
+	@cached_property
 	def categories_dict(self):
-		if hasattr(self, '_categories_dict'):
-			return self._categories_dict
-		self._categories_dict = dict([(c.id, c) for c in self.categories])
-		return self._categories_dict
+		return dict([(c.id, c) for c in self.categories])
 
-	@property
+	@cached_property
 	def categories_tree(self):
-		if hasattr(self, '_categories_tree'):
-			return self._categories_tree
-		categories_dict = self.categories_dict
-		self._categories_tree = []
+		tree = []
 		for category in self.categories:
 			category.children = []
 		for category in self.categories:
 			if category.parent_id:
-				categories_dict[category.parent_id].children.append(category)
+				self.categories_dict[category.parent_id].children.append(category)
 			else:
-				self._categories_tree.append(category)
-		return self._categories_tree
+				tree.append(category)
+		return tree
 
 	def category_full_name(self, category_id):
 		parents = []

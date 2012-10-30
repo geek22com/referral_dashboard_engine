@@ -1,6 +1,6 @@
 from decimal import Decimal as _Decimal
 from datetime import datetime
-from jinja2 import Markup as _Markup
+from heymoose.utils.templating import Markup as _Markup
 import registry
 
 class TypeBase(object):

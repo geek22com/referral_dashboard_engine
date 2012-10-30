@@ -212,10 +212,10 @@
 													<tr><th>Модель</th><td>{{ product.model or product.vendor_code }}</td></tr>
 													{% endif %}
 													{% if product.price %}
-													<tr><th>Цена</th><td>{{ product.price_string|safe }}</td></tr>
+													<tr><th>Цена</th><td>{{ product.price_string }}</td></tr>
 													{% endif %}
 													{% if product.revenue %}
-													<tr><th>Вознаграждение</th><td>{{ product.revenue_string|safe }}</td></tr>
+													<tr><th>Вознаграждение</th><td>{{ product.revenue_string }}</td></tr>
 													{% endif %}
 													{% if product.original_url or product.url %}
 													<tr>
@@ -240,8 +240,8 @@
 						</td>
 						<td><a href="{{ url_for('.offers_info', id=product.offer_id) }}" target="_blank">{{ product.offer_name }}</a></td>
 						<td>{{ product_categories(catalog, product.category_ids) }}</td>
-						<td class="right">{{ product.price_string|safe }}</td>
-						<td class="right">{{ product.revenue_string|safe }}</td>
+						<td class="right">{{ product.price_string }}</td>
+						<td class="right">{{ product.revenue_string }}</td>
 						<td class="center"><a href="{{ product.url -}}" target="_blank">партнерская ссылка</a></td>
 					</tr>
 					{% endfor %}

@@ -124,6 +124,8 @@
 
 {% block tabcontent %}
 
+{% if shops %}
+
 <div class="row">
 	<div class="span5">
 		<form method="get" action="">
@@ -263,6 +265,21 @@
 		</div>
 	</div>
 </div>
+
+{% else %} {# shops #}
+
+<div class="clearfix alert-message block-message info">
+	<p>
+		<strong>Вы не сотрудничаете с магазинами.</strong>
+		Ве еще не начали сотрудничество с магазинами. Перейдите в каталог офферов и выберите
+		интересующие вас интернет-магазины.
+	</p>
+	<div class="alert-actions">
+		<a class="btn small" href="{{ url_for('.offers_all') }}">Перейти в каталог</a>
+	</div>
+</div>
+
+{% endif %} {# shops #}
 
 {% endblock %}
 

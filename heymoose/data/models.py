@@ -46,6 +46,7 @@ class User(IdentifiableModel):
 	referrer = Field(types.Integer, 'referrer')
 	referrals = FieldList(types.String, 'referrals/referral')
 	revenue = Field(types.Decimal, 'revenue')
+	secret_key = Field(types.String, 'secret-key')
 	
 	_ref_crypt_key = app.config.get('REFERRAL_CRYPT_KEY', 'qwertyui12345678')
 	
@@ -216,6 +217,7 @@ class Offer(SubOffer):
 	token_param_name = Field(types.String, 'token-param-name')
 	launch_time = Field(types.DateTime, 'launch-time')
 	allow_deeplink = Field(types.Boolean, 'allow-deeplink')
+	is_product_offer = Field(types.Boolean, 'is-product-offer')
 	
 	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
 	grant = Field('OfferGrant', 'grant')
@@ -494,6 +496,89 @@ class ReferralStatList(models.ModelBase):
 	count = Field(types.Integer, '@count')
 	sum = Field(types.Decimal, '@sum', quantize='1.00')
 	items = FieldList('ReferralStat', 'stat')
+
+
+class Product(IdentifiableModel):
+	name = Field(types.String, 'name')
+	model = Field(types.String, 'model')
+	url = Field(types.String, 'url')
+	picture = Field(types.String, 'picture')
+	price = Field(types.Decimal, 'price', quantize='1.00')
+	currency_id = Field(types.String, 'currencyId')
+	category_ids = FieldSet(types.Integer, 'categoryId')
+	description = Field(types.String, 'description')
+	vendor = Field(types.String, 'vendor')
+	vendor_code = Field(types.String, 'vendorCode')
+	store = Field(types.Boolean, 'store')
+	pickup = Field(types.Boolean, 'pickup')
+	delivery = Field(types.Boolean, 'delivery')
+	# Custom HeyMoose parameters
+	offer_id = Field(types.Integer, 'param[@name="hm_offer_id"]')
+	offer_name = Field(types.String, 'param[@name="hm_offer_name"]')
+	original_url = Field(types.String, 'param[@name="hm_original_url"]')
+	revenue = Field(types.Decimal, 'param[@name="hm_revenue"]', quantize='1.00')
+	revenue_unit = Field(enums.ProductRevenueUnits, 'param[@name="hm_revenue"]/@unit')
+	exclusive = Field(types.Boolean, 'param[@name="hm_exclusive"]')
+
+	@property
+	def price_string(self):
+		return u'{}&nbsp;{}'.format(self.price, self.currency_id)
+
+	@property
+	def revenue_string(self):
+		return u'{}&nbsp;{}'.format(self.revenue, self.revenue_unit.sign)
+
+
+class ShopCategory(IdentifiableModel):
+	parent_id = Field(types.Integer, '@parentId')
+	name = Field(types.String, '.')
+
+
+class ShopCategoryContainerMixin:
+	categories = None
+
+	@property
+	def categories_dict(self):
+		if hasattr(self, '_categories_dict'):
+			return self._categories_dict
+		self._categories_dict = dict([(c.id, c) for c in self.categories])
+		return self._categories_dict
+
+	@property
+	def categories_tree(self):
+		if hasattr(self, '_categories_tree'):
+			return self._categories_tree
+		categories_dict = self.categories_dict
+		self._categories_tree = []
+		for category in self.categories:
+			category.children = []
+		for category in self.categories:
+			if category.parent_id:
+				categories_dict[category.parent_id].children.append(category)
+			else:
+				self._categories_tree.append(category)
+		return self._categories_tree
+
+	def category_full_name(self, category_id):
+		parents = []
+		category = self.categories_dict.get(category_id)
+		while category:
+			parents.insert(0, category.name)
+			category = self.categories_dict.get(category.parent_id)
+		return u' / '.join(parents)
+
+	def categories_full_names(self, category_ids):
+		return [self.category_full_name(id) for id in category_ids]
+
+
+class YmlCatalog(models.ModelBase, ShopCategoryContainerMixin):
+	products = FieldList('Product', 'shop/offers/offer')
+	categories = FieldList('ShopCategory', 'shop/categories/category')
+
+
+class Shop(IdentifiableModel, ShopCategoryContainerMixin):
+	name = Field(types.String, 'name')
+	categories = FieldList('ShopCategory', 'categories/category')
 
 
 registry.register_models_from_module(__name__)

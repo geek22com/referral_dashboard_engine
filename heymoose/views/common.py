@@ -9,3 +9,8 @@ def upload(filename):
 		return send_from_directory(app.config.get('UPLOAD_PATH', ''), filename)
 	else:
 		abort(403)
+
+
+@app.route('/products/feed/')
+def xml_feed():
+	abort(403)

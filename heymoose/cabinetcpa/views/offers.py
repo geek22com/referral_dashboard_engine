@@ -81,6 +81,16 @@ def offers_requested(**kwargs):
 	offers, count = rc.offers.list_requested(g.user.id, **kwargs)
 	return dict(offers=offers, count=count)
 
+
+@bp.route('/offers/products/')
+@affiliate_only
+@template('cabinetcpa/offers/products.html')
+def offers_products():
+	catalog = rc.products.feed(g.user.secret_key, **request.args)
+	shops = rc.products.categories(g.user.id)
+	return dict(catalog=catalog, shops=shops)
+
+
 @bp.route('/offers/new', methods=['GET', 'POST'])
 @advertiser_only
 @template('cabinetcpa/offers/new.html')
@@ -134,7 +144,7 @@ def offers_info_edit(id):
 @template('cabinetcpa/offers/info/actions.html')
 def offers_info_actions(id):
 	offer = visible_offer(id)
-	if offer.exclusive: abort(403)
+	if offer.is_product_offer: abort(403)
 	form = forms.SubOfferForm(request.form)
 	if offer.owned_by(g.user) and request.method == 'POST' and form.validate():
 		suboffer = SubOffer()
@@ -149,7 +159,7 @@ def offers_info_actions(id):
 @template('cabinetcpa/offers/info/actions-edit.html')
 def offers_info_actions_main_edit(id):
 	offer = my_offer(id)
-	if offer.exclusive: abort(403)
+	if offer.is_product_offer: abort(403)
 	form = forms.MainSubOfferForm(request.form, obj=offer)
 	form.offer_id = offer.id
 	if request.method == 'POST' and form.validate():
@@ -167,7 +177,7 @@ def offers_info_actions_main_edit(id):
 @template('cabinetcpa/offers/info/actions-edit.html')
 def offers_info_actions_edit(id, sid):
 	offer = my_offer(id)
-	if offer.exclusive: abort(403)
+	if offer.is_product_offer: abort(403)
 	suboffer = offer.suboffer_by_id(sid)
 	if not suboffer: abort(404)
 	form = forms.SubOfferForm(request.form, obj=suboffer)

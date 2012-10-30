@@ -10,6 +10,7 @@ from region import RegionResource
 from action import ActionResource
 from error import ErrorResource
 from public import PublicResource
+from product import ProductResource
 
 users = UserResource()
 user_stats = UserStatResource()
@@ -23,3 +24,4 @@ regions = RegionResource()
 actions = ActionResource()
 errors = ErrorResource()
 pub = PublicResource()
+products = ProductResource()

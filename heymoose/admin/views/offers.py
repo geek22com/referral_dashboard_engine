@@ -181,7 +181,7 @@ def offers_info_edit(id, offer):
 @offer_context
 @permission_required('do_offer_edit', post=True)
 def offers_info_actions(id, offer):
-	if offer.exclusive: abort(403)
+	if offer.is_product_offer: abort(403)
 	form = forms.SubOfferForm(request.form)
 	if request.method == 'POST' and form.validate():
 		suboffer = SubOffer()
@@ -196,7 +196,7 @@ def offers_info_actions(id, offer):
 @offer_context
 @permission_required('do_offer_edit')
 def offers_info_actions_main_edit(id, offer):
-	if offer.exclusive: abort(403)
+	if offer.is_product_offer: abort(403)
 	form = forms.MainSubOfferForm(request.form, obj=offer)
 	form.offer_id = offer.id
 	if request.method == 'POST' and form.validate():
@@ -214,7 +214,7 @@ def offers_info_actions_main_edit(id, offer):
 @offer_context
 @permission_required('do_offer_edit')
 def offers_info_actions_edit(id, sid, offer):
-	if offer.exclusive: abort(403)
+	if offer.is_product_offer: abort(403)
 	suboffer = offer.suboffer_by_id(sid)
 	if not suboffer: abort(404)
 	form = forms.AdminSubOfferEditForm(request.form, obj=suboffer)

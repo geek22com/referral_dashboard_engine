@@ -28,7 +28,7 @@
 <ul class="tabs">
 	<li id="tab-info"><a href="{{ url_for('.offers_info', id=offer.id) }}">Общее</a></li>
 	<li id="tab-edit"><a href="{{ url_for('.offers_info_edit', id=offer.id) }}">Редактировать</a></li>
-	{% if not offer.exclusive %}
+	{% if not offer.is_product_offer %}
 	<li id="tab-actions"><a href="{{ url_for('.offers_info_actions', id=offer.id) }}">Действия</a></li>
 	{% endif %}
 	<li id="tab-materials"><a href="{{ url_for('.offers_info_materials', id=offer.id) }}">Материалы</a></li>

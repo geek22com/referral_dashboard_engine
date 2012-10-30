@@ -1,0 +1,286 @@
+{% extends "cabinetcpa/offers/layout.html" %}
+
+{% set activetab = 'products' %}
+{% set content_fluid = true %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		table.product-info td, table.product-info th {
+			border: none;
+		}
+
+		.categories-tree-wrapper {
+			overflow-x: auto;
+		}
+
+		.shops-list {
+			list-style: none;
+			margin-left: 0;
+		}
+
+		.shops-list > li {
+			color: #404040;
+			font-weight: bold;
+		}
+
+		.categories-list {
+			list-style: none;
+			margin-left: 18px;
+		}
+
+		.categories-list li {
+			color: #404040;
+		}
+
+		.collapsible.collapsed > .collapsible-content {
+			display: none;
+		}
+
+		.collapsible > .collapsible-toggle:after {
+			content: ' -';
+		}
+
+		.collapsible.collapsed > .collapsible-toggle:after {
+			content: ' +';
+		}
+
+		.collapsible > input[type="checkbox"] {
+			float: left;
+			margin-bottom: 0;
+			margin-top: 3px;
+			margin-right: 5px;
+		}
+	</style>
+
+	<script type="text/javascript">
+		$(function() {
+			// Collapse all categories without checked inputs on load
+			$('.collapsible').each(function() {
+				if (!$(this).find('.collapsible > input:checked').length)
+					$(this).addClass('collapsed');
+			});
+
+			// Disable all inputs under checked inputs on load
+			$('.collapsible > input:checked')
+				.closest('.collapsible')
+				.find('.collapsible > input')
+				.attr('checked', true)
+				.attr('disabled', 'disabled');
+
+			$('.collapsible-toggle').click(function() {
+				$(this).closest('.collapsible').toggleClass('collapsed');
+				return false;
+			});
+
+			$('.collapsible > input').change(function() {
+				var checked = $(this).is(':checked');
+				var childInputs = $(this).closest('.collapsible').find('.collapsible > input');
+				childInputs.attr('checked', checked);
+				if (checked)
+					childInputs.attr('disabled', 'disabled');
+				else
+					childInputs.removeAttr('disabled');
+			});
+
+			// Load product pictures on modal show
+			$('.product-modal').bind('shown', function() {
+				var imgProductPicture = $(this).find('img.product-picture');
+				imgProductPicture.attr('src', imgProductPicture.data('src'));
+			});
+		})
+	</script>
+{% endblock %}
+
+{% macro categories_list(categories) %}
+	{% if categories %}
+	<ul class="categories-list collapsible-content">
+		{% for category in categories %}
+		<li class="category collapsible">
+			<input type="checkbox" name="c" value="{{ category.id }}" {{ 'checked="checked"' if '{0}'.format(category.id) in request.args.getlist('c') }} />
+			{% if category.children %}
+				<a href="#" class="collapsible-toggle">{{ category.name }}</a>
+			{% else %}
+				{{ category.name }}
+			{% endif %}
+			{{ categories_list(category.children) }}
+		</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+{% endmacro %}
+
+{% macro product_categories(catalog, ids) %}
+	{% with category_names = catalog.categories_full_names(ids) %}
+		{% if category_names|length > 1 %}
+			<ul class="dashed-list">
+				{% for category_name in category_names %}<li>{{ category_name }}</li>{% endfor %}
+			</ul>
+		{% else %}
+			{{ category_names[0] }}
+		{% endif %}
+	{% endwith %}
+{% endmacro %}
+
+{% block tabcontent %}
+
+{% if shops %}
+
+<div class="row">
+	<div class="span5">
+		<form method="get" action="">
+			<input type="submit" class="btn primary span5" value="Применить фильтр" />
+			<div style="margin-top: 24px;">
+				<div>Фильтр по названию:</div>
+				<input type="text" name="q" class="span5" value="{{ request.args.get('q', '') }}" />
+			</div>
+			<h5>Магазины и категории</h5>
+			<div class="categories-tree-wrapper">
+				<ul class="shops-list">
+					{% for shop in shops %}
+					<li class="collapsible">
+						<input type="checkbox" name="s" value="{{ shop.id }}" {{ 'checked="checked"' if '{0}'.format(shop.id) in request.args.getlist('s') }} />
+						{% if shop.categories %}
+							<a href="#" class="collapsible-toggle">{{ shop.name }}</a>
+						{% else %}
+							{{ shop.name }}
+						{% endif %}
+						{{ categories_list(shop.categories_tree) }}
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</form>
+	</div>
+	<div style="margin-left: 320px;">
+		<div class="clearfix alert-message block-message info">
+			{% with link = config.get('TRACKER_BASE_URL') + url_for('xml_feed',
+				key=g.user.secret_key,
+				q=request.args.get('q'),
+				s=request.args.getlist('s'),
+				c=request.args.getlist('c')
+			) %}
+			<p>
+				Ссылка на XML feed:
+				<a href="{{ link }}" target="_blank">{{ link }}</a>
+			</p>
+			{% endwith %}
+		</div>
+
+		{% if catalog.products %}
+			<table class="bordered-table zebra-striped nosort">
+				<thead>
+					<tr>
+						<th class="center">Название</th>
+						<th class="center">Магазин</th>
+						<th class="center">Категории</th>
+						<th class="center">Цена</th>
+						<th class="center">Вознаграждение</th>
+						<th class="center"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for product in catalog.products %}
+					<tr>
+						<td>
+							<a href="#" data-controls-modal="product-modal-{{ product.id -}}"
+							 data-backdrop="true" data-keyboard="true">{{ product.name|safe }}</a>
+							<div id="product-modal-{{ product.id -}}" class="modal product-modal fade" style="display: none;">
+								<div class="modal-header">
+									<a href="#" class="close">×</a>
+									<h3>{{ product.name|safe }}</h3>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="span3 product-picture-wrap center">
+											<img src="{{ url_for('static', filename='img/px/px.png') }}" width="160"
+											 data-src="{{ product.picture -}}" alt="{{ product.name }}" class="product-picture" />
+										</div>
+										<div class="span6">
+											<table class="condensed-table product-info">
+												<tbody>
+													{% if product.offer_id and product.offer_name %}
+													<tr><th>Магазин</th><td><a href="{{ url_for('.offers_info', id=product.offer_id) }}" target="_blank">{{ product.offer_name }}</a></td></tr>
+													{% endif %}
+													{% if product.category_ids %}
+													<tr><th>Категории</th><td>{{ product_categories(catalog, product.category_ids) }}</td></tr>
+													{% endif %}
+													{% if product.vendor %}
+													<tr><th>Производитель</th><td>{{ product.vendor }}</td></tr>
+													{% endif %}
+													{% if product.model or product.vendor_code %}
+													<tr><th>Модель</th><td>{{ product.model or product.vendor_code }}</td></tr>
+													{% endif %}
+													{% if product.price %}
+													<tr><th>Цена</th><td>{{ product.price_string|safe }}</td></tr>
+													{% endif %}
+													{% if product.revenue %}
+													<tr><th>Вознаграждение</th><td>{{ product.revenue_string|safe }}</td></tr>
+													{% endif %}
+													{% if product.original_url or product.url %}
+													<tr>
+														<th>Ссылки</th>
+														<td>
+															{% if product.original_url %}
+															<a href="{{ product.original_url -}}" target="_blank">страница товара</a>
+															{% endif %}
+															{% if product.url %}
+															<br /><a href="{{ product.url -}}">партнерская ссылка</a>
+															{% endif %}
+														</td>
+													</tr>
+													{% endif %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+									{% if product.description %}<p>{{ product.description|safe }}</p>{% endif %}
+								</div>
+							</div>
+						</td>
+						<td><a href="{{ url_for('.offers_info', id=product.offer_id) }}" target="_blank">{{ product.offer_name }}</a></td>
+						<td>{{ product_categories(catalog, product.category_ids) }}</td>
+						<td class="right">{{ product.price_string|safe }}</td>
+						<td class="right">{{ product.revenue_string|safe }}</td>
+						<td class="center"><a href="{{ product.url -}}" target="_blank">партнерская ссылка</a></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% else %}
+			<div class="clearfix alert-message block-message info">
+				<p>Товаров не найдено.</p>
+			</div>
+		{% endif %}
+		<div class="pagination">
+			{% with current_page = request.args.get('p', 1)|int %}
+			<ul>
+				{% if current_page > 1 %}
+				<li class="prev"><a href="{{ url_for(request.url_rule.endpoint, **request.args|updated(p=current_page-1)) }}">&larr;</a></li>
+				{% endif %}
+				<li><a>Страница {{ current_page }}</a></li>
+				<li class="next"><a href="{{ url_for(request.url_rule.endpoint, **request.args|updated(p=current_page+1)) }}">&rarr;</a></li>
+			</ul>
+			{% endwith %}
+		</div>
+	</div>
+</div>
+
+{% else %} {# shops #}
+
+<div class="clearfix alert-message block-message info">
+	<p>
+		<strong>Вы не сотрудничаете с магазинами.</strong>
+		Ве еще не начали сотрудничество с магазинами. Перейдите в каталог офферов и выберите
+		интересующие вас интернет-магазины.
+	</p>
+	<div class="alert-actions">
+		<a class="btn small" href="{{ url_for('.offers_all') }}">Перейти в каталог</a>
+	</div>
+</div>
+
+{% endif %} {# shops #}
+
+{% endblock %}
+
+{% block yandex_metrika %}{% endblock %}

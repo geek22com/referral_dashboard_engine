@@ -87,3 +87,7 @@ class WithdrawalBases(Enum):
 	AFFILIATE_REVENUE = e('AFFILIATE_REVENUE', name=u'Вознаграждение партнёра')
 	FEE = e('FEE', name=u'Комиссия системы')
 	MLM = e('MLM', name=u'Реферальная программа')
+
+class ProductRevenueUnits(Enum):
+	FIXED = e('fixed', sign=u'руб.')
+	PERCENT = e('percent', sign=u'%')

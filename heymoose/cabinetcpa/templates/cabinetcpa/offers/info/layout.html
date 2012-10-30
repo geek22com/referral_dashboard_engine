@@ -30,7 +30,7 @@
 	{% if g.user.is_advertiser and offer.owned_by(g.user) %}
 	<li id="tab-edit"><a href="{{ url_for('.offers_info_edit', id=offer.id) }}">Редактировать</a></li>
 	{% endif %}
-	{% if not offer.exclusive %}
+	{% if not offer.is_product_offer %}
 	<li id="tab-actions"><a href="{{ url_for('.offers_info_actions', id=offer.id) }}">Действия</a></li>
 	{% endif %}
 	<li id="tab-materials"><a href="{{ url_for('.offers_info_materials', id=offer.id) }}">Рекламные материалы</a></li>

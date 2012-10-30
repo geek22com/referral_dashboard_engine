@@ -126,20 +126,20 @@
 				</td>
 				
 				<td>
-					{% if not offer.exclusive %}
+					{% if not offer.is_product_offer %}
 						{{ offer.title }}
 					{% else %}
-						Покупка товаров на эксклюзивных условиях
+						Покупка товаров в интернет-магазине.
 					{% endif %}
 				</td>
 				
 				<td>
-					{% if offer.exclusive %}от{% endif %}
+					{% if offer.is_product_offer %}от{% endif %}
 					{{ offer.value(affiliate) }}
 					{% if not affiliate %}
 						<br /><span class="affiliate-value">(из них партнёру {{ offer.value(true, short=true) -}})</span>
 					{% endif %}
-					{% if offer.exclusive %}
+					{% if offer.is_product_offer %}
 						<p><a href="{{ url_for('.offers_info', id=offer.id) }}">см. полное описание</a></p>
 					{% endif %}
 				</td>
@@ -190,7 +190,7 @@
 					{% endif %}
 				</td>
 			</tr>
-			{% if not offer.exclusive %}
+			{% if not offer.is_product_offer %}
 			{% for suboffer in offer.active_suboffers %}
 			<tr class="subrow">
 				<td>{{ suboffer.title }}</td>

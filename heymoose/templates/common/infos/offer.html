@@ -172,7 +172,7 @@
 
 		<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">
-				{% if not offer.exclusive %}
+				{% if not offer.is_product_offer %}
 					<a href="{{ url_for('.offers_info_actions', id=offer.id) }}" class="roundbox-header-link">подробно &raquo;</a>
 				{% endif %}
 				Оплата за действия
@@ -181,14 +181,14 @@
 				<dl class="stacked inscribed">
 					{% for suboffer in offer.all_suboffers if suboffer.active %}
 					<dt>
-						{% if not offer.exclusive %}
+						{% if not offer.is_product_offer %}
 							{{ suboffer.title }}
 						{% else %}
-							Покупка товара на эксклюзивных условиях
+							Покупка товара в интернет-магазине
 						{% endif %}
 					</dt>
 					<dd>
-						{% if offer.exclusive %}от{% endif %}
+						{% if offer.is_product_offer %}от{% endif %}
 						{{ suboffer.value(affiliate) }}
 						{% if not affiliate %}<br />(из них партнёру {{ suboffer.value(true, short=true) -}}){% endif %}
 					</dd>

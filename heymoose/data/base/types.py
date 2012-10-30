@@ -1,5 +1,6 @@
 from decimal import Decimal as _Decimal
 from datetime import datetime
+from jinja2 import Markup as _Markup
 import registry
 
 class TypeBase(object):
@@ -47,6 +48,10 @@ class String(PrimitiveType):
 			raise ValueError(u'Too short string')
 		if self.max is not None and len(value) > self.max:
 			raise ValueError(u'Too long string')
+
+
+class Markup(String):
+	type_class = _Markup
 
 
 class Boolean(PrimitiveType):

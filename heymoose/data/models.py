@@ -520,15 +520,15 @@ class Product(IdentifiableModel):
 	revenue_unit = Field(enums.ProductRevenueUnits, 'param[@name="hm_revenue"]/@unit')
 	exclusive = Field(types.Boolean, 'param[@name="hm_exclusive"]')
 
-	@property
+	@cached_property
 	def picture(self):
 		return self.pictures[0] if self.pictures else None
 
-	@property
+	@cached_property
 	def price_string(self):
 		return u'{}&nbsp;{}'.format(self.price, self.currency_id)
 
-	@property
+	@cached_property
 	def revenue_string(self):
 		return u'{}&nbsp;{}'.format(self.revenue, self.revenue_unit.sign)
 

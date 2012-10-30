@@ -502,7 +502,7 @@ class Product(IdentifiableModel):
 	name = Field(types.String, 'name')
 	model = Field(types.String, 'model')
 	url = Field(types.String, 'url')
-	picture = Field(types.String, 'picture')
+	pictures = FieldList(types.String, 'picture')
 	price = Field(types.Decimal, 'price', quantize='1.00')
 	currency_id = Field(types.String, 'currencyId')
 	category_ids = FieldSet(types.Integer, 'categoryId')
@@ -519,6 +519,10 @@ class Product(IdentifiableModel):
 	revenue = Field(types.Decimal, 'param[@name="hm_revenue"]', quantize='1.00')
 	revenue_unit = Field(enums.ProductRevenueUnits, 'param[@name="hm_revenue"]/@unit')
 	exclusive = Field(types.Boolean, 'param[@name="hm_exclusive"]')
+
+	@property
+	def picture(self):
+		return self.pictures[0] if self.pictures else None
 
 	@property
 	def price_string(self):

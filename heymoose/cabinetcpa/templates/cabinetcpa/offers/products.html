@@ -110,6 +110,18 @@
 	{% endif %}
 {% endmacro %}
 
+{% macro product_categories(catalog, ids) %}
+	{% with category_names = catalog.categories_full_names(ids) %}
+		{% if category_names|length > 1 %}
+			<ul class="dashed-list">
+				{% for category_name in category_names %}<li>{{ category_name }}</li>{% endfor %}
+			</ul>
+		{% else %}
+			{{ category_names[0] }}
+		{% endif %}
+	{% endwith %}
+{% endmacro %}
+
 {% block tabcontent %}
 
 <div class="row">
@@ -153,19 +165,20 @@
 			{% endwith %}
 		</div>
 
-		{% if products %}
+		{% if catalog.products %}
 			<table class="bordered-table zebra-striped nosort">
 				<thead>
 					<tr>
 						<th class="center">Название</th>
 						<th class="center">Магазин</th>
+						<th class="center">Категории</th>
 						<th class="center">Цена</th>
 						<th class="center">Вознаграждение</th>
 						<th class="center"></th>
 					</tr>
 				</thead>
 				<tbody>
-					{% for product in products %}
+					{% for product in catalog.products %}
 					<tr>
 						<td>
 							<a href="#" data-controls-modal="product-modal-{{ product.id -}}"
@@ -186,6 +199,9 @@
 												<tbody>
 													{% if product.offer_id and product.offer_name %}
 													<tr><th>Магазин</th><td><a href="{{ url_for('.offers_info', id=product.offer_id) }}" target="_blank">{{ product.offer_name }}</a></td></tr>
+													{% endif %}
+													{% if product.category_ids %}
+													<tr><th>Категории</th><td>{{ product_categories(catalog, product.category_ids) }}</td></tr>
 													{% endif %}
 													{% if product.vendor %}
 													<tr><th>Производитель</th><td>{{ product.vendor }}</td></tr>
@@ -216,11 +232,12 @@
 											</table>
 										</div>
 									</div>
-									{% if product.description %}<p>{{ product.description }}</p>{% endif %}
+									{% if product.description %}<p>{{ product.description|safe }}</p>{% endif %}
 								</div>
 							</div>
 						</td>
 						<td><a href="{{ url_for('.offers_info', id=product.offer_id) }}" target="_blank">{{ product.offer_name }}</a></td>
+						<td>{{ product_categories(catalog, product.category_ids) }}</td>
 						<td class="right">{{ product.price_string|safe }}</td>
 						<td class="right">{{ product.revenue_string|safe }}</td>
 						<td class="center"><a href="{{ product.url -}}" target="_blank">партнерская ссылка</a></td>

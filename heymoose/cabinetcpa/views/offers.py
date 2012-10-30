@@ -88,7 +88,7 @@ def offers_requested(**kwargs):
 def offers_products():
 	catalog = rc.products.feed(g.user.secret_key, **request.args)
 	shops = rc.products.categories(g.user.id)
-	return dict(products=catalog.products, shops=shops)
+	return dict(catalog=catalog, shops=shops)
 
 
 @bp.route('/offers/new', methods=['GET', 'POST'])

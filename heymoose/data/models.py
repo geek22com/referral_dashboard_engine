@@ -484,18 +484,13 @@ class Product(IdentifiableModel):
 		return u'{}&nbsp;{}'.format(self.revenue, self.revenue_unit.sign)
 
 
-class YmlCatalog(models.ModelBase):
-	products = FieldList('Product', 'shop/offers/offer')
-
-
 class ShopCategory(IdentifiableModel):
 	parent_id = Field(types.Integer, '@parentId')
 	name = Field(types.String, '.')
 
 
-class Shop(IdentifiableModel):
-	name = Field(types.String, 'name')
-	categories = FieldList('ShopCategory', 'categories/category')
+class ShopCategoryContainerMixin:
+	categories = None
 
 	@property
 	def categories_dict(self):
@@ -518,6 +513,27 @@ class Shop(IdentifiableModel):
 			else:
 				self._categories_tree.append(category)
 		return self._categories_tree
+
+	def category_full_name(self, category_id):
+		parents = []
+		category = self.categories_dict.get(category_id)
+		while category:
+			parents.insert(0, category.name)
+			category = self.categories_dict.get(category.parent_id)
+		return u' / '.join(parents)
+
+	def categories_full_names(self, category_ids):
+		return [self.category_full_name(id) for id in category_ids]
+
+
+class YmlCatalog(models.ModelBase, ShopCategoryContainerMixin):
+	products = FieldList('Product', 'shop/offers/offer')
+	categories = FieldList('ShopCategory', 'shop/categories/category')
+
+
+class Shop(IdentifiableModel, ShopCategoryContainerMixin):
+	name = Field(types.String, 'name')
+	categories = FieldList('ShopCategory', 'categories/category')
 
 
 registry.register_models_from_module(__name__)

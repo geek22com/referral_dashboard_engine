@@ -107,9 +107,9 @@
 	
 	<span class="status">
 		<a href="#" data-controls-modal="manager-modal" data-backdrop="true" data-keyboard="true">Служба поддержки</a>
-		{% if g.user.is_advertiser %}
 		<span class="divider">/</span>
 		Ваш ID: {{ g.user.id }}
+		{% if g.user.is_advertiser %}
 		<span class="divider">/</span>
 		Ваш баланс: {{ g.user.advertiser_account.balance|currency }}
 		{% else %}

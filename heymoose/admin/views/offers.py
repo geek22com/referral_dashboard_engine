@@ -21,7 +21,7 @@ KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
 SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
 
-offer_context = context(lambda id: dict(offer=rc.offers.get_by_id(id)))
+offer_context = context(lambda id, **kwargs: dict(offer=rc.offers.get_by_id(id)))
 
 
 @bp.route('/offers/')

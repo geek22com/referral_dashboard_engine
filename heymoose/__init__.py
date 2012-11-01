@@ -13,6 +13,10 @@ def configure(app):
 	from logging.config import dictConfig
 	dictConfig(app.config.get('LOGGING'))
 
+def configure_mail(app):
+	from heymoose.mail.flaskext import Mail
+	app.mail = Mail(app)
+
 def app_init_basic(app):
 	configure(app)
 
@@ -20,8 +24,13 @@ def app_init_assets(app):
 	configure(app)
 	configure_assets(app)
 
+def app_init_mail(app):
+	configure(app)
+	configure_mail(app)
+
 def app_init_web(app):
 	configure(app)
+	configure_mail(app)
 	configure_assets(app)
 	# Import handlers and filters
 	import handlers, filters, forms.filters

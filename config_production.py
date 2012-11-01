@@ -19,15 +19,10 @@ MAILJET_ADVERTISERS_LIST_ID = 31042
 MAILJET_AFFILIATES_LIST_ID = 31043
 MAILJET_COUNTDOWN_LIST_ID = 86028
 
-# Mail sending parameters
-MAIL_ENABLED = True
-MAIL_SMTP_PORT = 25
-MAIL_ADMINS = ['admin@heymoose.com']
-
 # Flask-Mail parameters
-MAIL_SUPPRESS_SEND = not MAIL_ENABLED
-MAIL_PORT = MAIL_SMTP_PORT
-MAIL_USE_SSL = False
+MAIL_SUPPRESS_SEND = False
+MAIL_PORT = 25
+MAIL_ADMINS = ['admin@heymoose.com']
 
 # Flask-Assets parameters
 ASSETS_DEBUG = False

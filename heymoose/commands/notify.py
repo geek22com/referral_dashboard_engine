@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from heymoose import app, app_init_basic
+from heymoose import app, app_init_mail
 from heymoose.commands import manager
 import pymongo
 
@@ -16,13 +16,12 @@ NOTIFICATION_TEMPLATE = u'''
 
 @manager.command
 def notify():
-	app_init_basic(app)
+	app_init_mail(app)
 	from pymongo import Connection
 	from jinja2 import Template
 	from collections import defaultdict
 	from datetime import datetime
 	from heymoose import resource as rc
-	from heymoose.mail.flaskext import Mail
 	from heymoose.utils.convert import datetime_format
 	
 	app.logger.info('Started at {0}'.format(datetime.now().strftime(datetime_format)))
@@ -44,8 +43,7 @@ def notify():
 		return
 	
 	template = Template(NOTIFICATION_TEMPLATE)
-	mail = Mail(app)
-	with mail.connect() as conn:
+	with app.mail.connect() as conn:
 		for user_id, unread in unread_by_user.iteritems():
 			if user_id in unnotified_user_ids:
 				user = rc.users.get_by_id(user_id)

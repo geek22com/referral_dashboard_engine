@@ -14,15 +14,3 @@
 <p><i>{{ reason }}</i></p>
 {% endif %}
 {% endblock %}
-
-{% block plain %}
-Учетная запись пользователя {{ user.full_name }} ({{ user.email }}) была заблокирована
-администратором {{ admin.full_name }} ({{ admin.email }}).
-
-{% if reason %}
-Причина блокировки:
-/////
-{{ reason }}
-/////
-{% endif %}
-{% endblock %}

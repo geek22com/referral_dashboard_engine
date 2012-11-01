@@ -86,9 +86,10 @@ def offers_requested(**kwargs):
 @affiliate_only
 @template('cabinetcpa/offers/products.html')
 def offers_products():
-	catalog = rc.products.feed(g.user.secret_key, **request.args)
+	'''catalog = rc.products.feed(g.user.secret_key, **request.args)
 	shops = rc.products.categories(g.user.id)
-	return dict(catalog=catalog, shops=shops)
+	return dict(catalog=catalog, shops=shops)'''
+	return redirect(url_for('.offers_requested'))
 
 
 @bp.route('/offers/new', methods=['GET', 'POST'])

@@ -27,6 +27,7 @@ MAIL_ADMINS = ['admin@heymoose.com']
 # Flask-Mail parameters
 MAIL_SUPPRESS_SEND = not MAIL_ENABLED
 MAIL_PORT = MAIL_SMTP_PORT
+MAIL_USE_SSL = False
 
 # Flask-Assets parameters
 ASSETS_DEBUG = False

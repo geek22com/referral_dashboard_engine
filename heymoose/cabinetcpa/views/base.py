@@ -16,7 +16,8 @@ def index_affiliate():
 	user_notifications_query = Notification.query.filter(Notification.user_id == g.user.id)
 	notifications = user_notifications_query.descending(Notification.date).limit(5).all()
 	news = NewsItem.query.filter(NewsItem.active == True).descending(NewsItem.date).limit(3).all()
-	return dict(stats=stats, grants=grants, notifications=notifications, news=news)
+	referral_offer = rc.offers.get_referral_offer() if request.args.get('registered') == '1' else None
+	return dict(stats=stats, grants=grants, notifications=notifications, news=news, referral_offer=referral_offer)
 
 @template('cabinetcpa/index-advertiser.html')
 def index_advertiser():

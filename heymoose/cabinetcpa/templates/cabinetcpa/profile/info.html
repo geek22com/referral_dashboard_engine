@@ -69,36 +69,12 @@
 <h3>Реферальная программа</h3>
 <table class="key-value">
 	<tbody>
-		{% with ref = url_for('site.register_affiliate', ref=user.get_refcode(), _external=true) %}
+		{% if referral_offer %}
 		<tr>
-			<th>Реферальная ссылка</th>
-			<td>
-				<a href="#" data-controls-modal="modal-reflink" data-backdrop="true" data-keyboard="true">получить</a>
-				<div id="modal-reflink" class="modal" style="display: none;">
-					<div class="modal-header">
-						<a href="#" class="close">×</a>
-						<h3>Реферальная ссылка</h3>
-					</div>
-					<div class="modal-body">
-						<form class="stacked">
-							<div class="clearfix">
-								<label for="source">Источник</label>
-								<input type="text" id="source" class="source span4 gen-trigger" />
-								<span class="help-block">
-									Поле "Источник" позволяет разделять статистику по рефералам,
-									пришедшим с разных мест размещения реферальной ссылки.
-								</span>
-							</div>
-							<div class="clearfix">
-								<label for="reflink-url">Ссылка</label>
-								<textarea rows="3" id="reflink-url" class="span9 code-box" readonly="readonly"></textarea>
-							</div>
-						</form>
-					</div>
-				</div>
-			</td>
+			<th>Реферальная программа</th>
+			<td><a href="{{ url_for('.offers_info', id=referral_offer.id) -}}">Реферальная программа HeyMoose!</a></td>
 		</tr>
-		{% endwith %}
+		{% endif %}
 		<tr>
 			<th>Рефералы</th>
 			<td><a href="{{ url_for('.stats_referral') }}">список рефералов</a></td>

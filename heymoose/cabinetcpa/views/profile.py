@@ -14,7 +14,8 @@ ACCOUNTING_ENTRIES_PER_PAGE = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
 @bp.route('/profile')
 @template('cabinetcpa/profile/info.html')
 def profile():
-	return dict()
+	referral_offer = resource.offers.get_referral_offer()
+	return dict(referral_offer=referral_offer)
 
 @bp.route('/profile/sendmail', methods=['POST'])
 def profile_sendmail():

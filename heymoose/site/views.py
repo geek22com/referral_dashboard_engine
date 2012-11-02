@@ -127,7 +127,7 @@ def register_affiliate():
 			tmail.user_confirm_email(user)
 			flash(u'Вы успешно зарегистрированы. На указанный электронный адрес'
 				u' было выслано письмо с подтверждением.', 'success')
-			return redirect(url_for('.gateway', registered=1))
+			return redirect(url_for('.gateway', registered=user.referral_code))
 		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
 	return dict(form=form)
 

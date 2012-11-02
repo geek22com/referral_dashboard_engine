@@ -15,15 +15,3 @@
 оставил свои контакты.
 {% endif %}
 {% endblock %}
-
-{% block plain %}
-Пользователь {{ contact.name }} ({{ contact.email }}) {% if contact.phone %}({{ contact.phone }}){% endif %}
-{% if contact.desc %}
-оставил новое сообщение:
-/////
-{{ contact.desc }}
-/////
-{% else %}
-оставил свои контакты.
-{% endif %}
-{% endblock %}

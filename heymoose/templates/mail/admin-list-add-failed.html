@@ -9,8 +9,3 @@
 <a href="{{ url_for('admin.users_info', id=user.id, _external=true) }}">{{ user.full_name }} ({{ user.email }})</a>
 в один или несколько списков рассылки. Для получения подробной информации см. лог.
 {% endblock %}
-
-{% block plain %}
-Произошла ошибка при добавлении пользователя {{ user.full_name }} ({{ user.email }}) в один или несколько
-списков рассылки. Для получения подробной информации см. лог.
-{% endblock %}

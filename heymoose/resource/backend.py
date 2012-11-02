@@ -139,19 +139,19 @@ class BackendResource(Resource):
 
 		try:
 			response = super(BackendResource, self).request(method, path, payload, headers, params_dict, **params)
-			app.logger.info('{status} {method:4} {resource}: {url} {payload}'.format(
+			app.logger.info('{status} {method:6} {resource}: {url} {payload}'.format(
 				status=response.status_int, method=method, resource=self.__class__.__name__,
 				url=response.final_url, payload=self.loggable_dict(payload) or ''
 			))
 		except ResourceError as e:
-			app.logger.error('{status} {method:4} {resource}: {url} {payload}'.format(
+			app.logger.error('{status} {method:6} {resource}: {url} {payload}'.format(
 				status=e.status_int, method=method, resource=self.__class__.__name__,
 				url=e.response.final_url, payload=self.loggable_dict(payload) or ''), exc_info=True)
 			raise
 		except Exception as e:
 			uri = make_uri(self.uri, path, charset=self.charset, safe=self.safe,
 				encode_keys=self.encode_keys, **self.make_params(params))
-			app.logger.error('{status} {method:4} {resource}: {url} {dict}'.format(
+			app.logger.error('{status} {method:6} {resource}: {url} {dict}'.format(
 				status='???', method=method, resource=self.__class__.__name__,
 				url=uri, dict=e.__dict__), exc_info=True)
 			raise

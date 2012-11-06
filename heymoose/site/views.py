@@ -70,7 +70,7 @@ def gateway():
 	elif g.user.is_admin:
 		return redirect(url_for('admin.index'))
 	elif g.user.is_affiliate or g.user.is_advertiser:
-		return redirect(url_for('cabinetcpa.index'))
+		return redirect(url_for('cabinetcpa.index', **request.args))
 	else:
 		app.logger.error('Shit happened: registered user has unknown role')
 		return redirect(url_for('.index'))
@@ -127,7 +127,7 @@ def register_affiliate():
 			tmail.user_confirm_email(user)
 			flash(u'Вы успешно зарегистрированы. На указанный электронный адрес'
 				u' было выслано письмо с подтверждением.', 'success')
-			return redirect(url_for('.gateway'))
+			return redirect(url_for('.gateway', registered=user.referral_code))
 		flash(u'Произошла ошибка при регистрации. Обратитесь к администрации.', 'error')
 	return dict(form=form)
 

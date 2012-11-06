@@ -24,7 +24,13 @@ class OfferResource(BackendResource):
 	
 	def get_by_id(self, id, **kwargs):
 		return self.path(id).get(**kwargs).as_obj(Offer)
-	
+
+	def get_referral_offer(self, **kwargs):
+		try:
+			return self.path('referral').get(**kwargs).as_obj(Offer)
+		except:
+			return None
+
 	def list(self, **kwargs):
 		return self.get(**kwargs).as_objlist(Offer, with_count=True)
 	

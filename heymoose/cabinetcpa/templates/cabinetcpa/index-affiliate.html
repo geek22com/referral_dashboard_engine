@@ -36,6 +36,14 @@
 
 
 {% block content %}
+	{% if referral_offer %}
+		{# Pixel for referral offer #}
+		{% with api_url = config.get('TRACKER_API_URL') %}
+		<img src="{{ api_url -}}?method=reportAction&transaction_id={{ g.user.id -}}&advertiser_id={{ referral_offer.advertiser.id -}}&offer={{ referral_offer.code -}}"
+		alt="" style="width: 0; height: 0; position: absolute;" />
+		{% endwith %}
+	{% endif %}
+
 	<div class="row">
 		<div class="span4">
 			<div class="page-header">

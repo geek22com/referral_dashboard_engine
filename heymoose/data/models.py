@@ -96,6 +96,12 @@ class User(IdentifiableModel):
 		m = hashlib.md5()
 		m.update('hey{0}moose{1}confirm'.format(self.id, self.email))
 		return m.hexdigest()
+
+	@cached_property
+	def referral_code(self):
+		m = hashlib.md5()
+		m.update('hey{0}moose{1}referral'.format(self.id, self.email))
+		return m.hexdigest()
 	
 	def check_confirm_code(self, code):
 		return code == self.get_confirm_code()

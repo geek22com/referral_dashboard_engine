@@ -276,6 +276,10 @@
 							{{ forms.field(g.affiliate_form.password) }}
 							{{ forms.field(g.affiliate_form.password2) }}
 							{{ forms.field(g.affiliate_form.captcha) }}
+							{% with accept_label = 'Я согласен с <a href="' + url_for('.agreement')
+							   + '" target="_blank">правилами использования системы HeyMoose</a>' %}
+							{{ forms.field(g.affiliate_form.accept, style='margin-left: 10px;', label=accept_label|safe) }}
+							{% endwith %}
 							{{ g.affiliate_form.ch() }}
 							<li class="b-fields-list__item b-fields-list__item-nolabel">
 								<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"

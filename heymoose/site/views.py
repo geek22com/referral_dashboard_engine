@@ -38,6 +38,11 @@ def advertisers():
 def affiliates():
 	return dict(form=forms.AffiliateRegisterForm())
 
+@bp.route('/agreement/')
+@template('site/ak/agreement.html')
+def agreement():
+	return dict()
+
 @bp.route('/<any(en,de,fr,it):lang>/')
 def lang_index(lang):
 	return render_template('site/hm/{0}/index.html'.format(lang), lang=lang)

@@ -1,24 +1,22 @@
 {% macro field(fld, required_sign=false, label=none) %}
-	{% if fld|classname not in ('BooleanField', ) %}
-		{% set css_class = ' '.join([
-			(kwargs.pop('class', '') or kwargs.pop('class_', '')),
-			'b-field-input',
-			'b-field-error' if fld.errors else ''
-		]) %}
-		<li class="b-fields-list__item b-field">
+	{% set css_class = ' '.join([
+		(kwargs.pop('class', '') or kwargs.pop('class_', '')),
+		'b-field-input',
+		'b-field-error' if fld.errors else ''
+	]) %}
+	<li class="b-fields-list__item b-field">
+		{% if fld|classname not in ('BooleanField', ) %}
 			<label for="{{ fld.id }}">
 				{{ label or fld.label.text }}
 				{% if required_sign and fld.flags.required %}<span class="b-field-required">*</span>{% endif %}
 			</label>
 			{{ fld|formfield(class=css_class, **kwargs) }}
-			{% for error in fld.errors %}
-			<div class="b-field-error-text">{{ error }}</div>
-			{% endfor %}
-		</li>
-	{% else %}
-		<li class="b-fields-list__item b-field">
-			{{ fld|formfield(**kwargs) }}
+		{% else %}
+			{{ fld|formfield(class=css_class, **kwargs) }}
 			<label for="{{ fld.id }}" class="b-field-label-after">{{ label or fld.label.text }}</label>
-		</li>
-	{% endif %}
+		{% endif %}
+		{% for error in fld.errors %}
+		<div class="b-field-error-text">{{ error }}</div>
+		{% endfor %}
+	</li>
 {% endmacro %}

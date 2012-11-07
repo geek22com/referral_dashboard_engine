@@ -162,7 +162,9 @@ class AdminRegisterForm(Form, UserRegisterFormMixin):
 	pass
 
 class AffiliateRegisterForm(CaptchaForm, UserRegisterFormMixin):
-	pass
+	accept = BooleanField(u'Я согласен с условиями использования системы HeyMoose', [
+		validators.Required(message=u'Необходимо принять правила')
+	], default=False)
 
 class AdvertiserRegisterForm(CaptchaForm, UserRegisterFormMixin, AdvertiserFormMixin):
 	pass

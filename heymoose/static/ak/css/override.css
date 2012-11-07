@@ -28,6 +28,10 @@ input[type=checkbox] {
 	color: #AD0000;
 }
 
+.b-field-label-after {
+	display: inline;
+}
+
 .b-fields-list_lines .b-field-label-after {
 	display: inline;
 	float: none;

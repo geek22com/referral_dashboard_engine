@@ -38,6 +38,10 @@
 						{{ forms.field(form.password, required_sign=false) }}
 						{{ forms.field(form.password2, required_sign=false) }}
 						{{ forms.field(form.captcha, required_sign=false) }}
+						{% with accept_label = 'Я согласен с <a href="' + url_for('.agreement')
+						   + '" target="_blank">правилами использования системы HeyMoose</a>' %}
+						{{ forms.field(form.accept, label=accept_label|safe) }}
+						{% endwith %}
 						{{ form.ch() }}
 						<li class="b-fields-list__item b-fields-list__item-submit">
 							<input type="submit" class="b-btn-sudmit" value="Зарегистрироваться"

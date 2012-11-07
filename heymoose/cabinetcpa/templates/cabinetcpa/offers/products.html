@@ -1,4 +1,5 @@
 {% extends "cabinetcpa/offers/layout.html" %}
+{% import 'common/macros/lists.html' as lists with context %}
 
 {% set activetab = 'products' %}
 {% set content_fluid = true %}
@@ -142,6 +143,7 @@
 						<input type="checkbox" name="s" value="{{ shop.id }}" {{ 'checked="checked"' if '{0}'.format(shop.id) in request.args.getlist('s') }} />
 						{% if shop.categories %}
 							<a href="#" class="collapsible-toggle">{{ shop.name }}</a>
+							{% if shop.yml_url %}<a href="{{ shop.yml_url }}">YML</a>{% endif %}
 						{% else %}
 							{{ shop.name }}
 						{% endif %}
@@ -158,12 +160,40 @@
 				key=g.user.secret_key,
 				q=request.args.get('q'),
 				s=request.args.getlist('s'),
-				c=request.args.getlist('c')
+				c=request.args.getlist('c'),
+				offset=offset,
+				limit=limit
 			) %}
 			<p>
 				Ссылка на XML feed:
 				<a href="{{ link }}" target="_blank">{{ link }}</a>
+				<a href="#" data-controls-modal="link-modal" data-backdrop="true" data-keyboard="true">(что это?)</a>
 			</p>
+			<div id="link-modal" class="modal link-modal fade" style="display: none;">
+				<div class="modal-header">
+					<a href="#" class="close">×</a>
+					<h3>Ссылка на XML-feed</h3>
+				</div>
+				<div class="modal-body">
+					<p>
+						С помощью данной ссылки вы можете делать выгрузки товаров тех интернет-магазинов, с которыми
+						вы сотрудничаете, осуществляя при этом фильтрацию по магазинам, категориям товаров в них и
+						названиям товаров. В ссылке принимаются следующие параметры:
+					</p>
+					<ul class="dashed-list">
+						<li><strong>key</strong> &mdash; ваш уникальный ключ партнера для доступа к выгрузке;</li>
+						<li><strong>s</strong> &mdash; идентификатор магазина в системе HeyMoose (может быть несколько);</li>
+						<li><strong>c</strong> &mdash; идентификатор категории товаров в системе HeyMoose (может быть несколько);</li>
+						<li><strong>q</strong> &mdash; строка фильтрации по названиям товаров;</li>
+						<li><strong>offset</strong> &mdash; с какой позиции делать выгрузку (начиная с 0);</li>
+						<li><strong>limit</strong> &mdash; сколько позиций участвует в выгрузке (максимум 1000).</li>
+					</ul>
+					<p>
+						С помощью параметров <strong>offset</strong> и <strong>limit</strong> можно легко реализовать постраничную
+						загрузку товаров, а также последовательно получить все товары выгрузки, если их требуется больше 1000.
+					</p>
+				</div>
+			</div>
 			{% endwith %}
 		</div>
 
@@ -252,17 +282,7 @@
 				<p>Товаров не найдено.</p>
 			</div>
 		{% endif %}
-		<div class="pagination">
-			{% with current_page = request.args.get('p', 1)|int %}
-			<ul>
-				{% if current_page > 1 %}
-				<li class="prev"><a href="{{ url_for(request.url_rule.endpoint, **request.args|updated(p=current_page-1)) }}">&larr;</a></li>
-				{% endif %}
-				<li><a>Страница {{ current_page }}</a></li>
-				<li class="next"><a href="{{ url_for(request.url_rule.endpoint, **request.args|updated(p=current_page+1)) }}">&rarr;</a></li>
-			</ul>
-			{% endwith %}
-		</div>
+		{{ lists.paginate(pages, **request.args) }}
 	</div>
 </div>
 

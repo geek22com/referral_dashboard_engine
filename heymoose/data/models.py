@@ -585,6 +585,7 @@ class YmlCatalog(models.ModelBase, ShopCategoryContainerMixin):
 
 class Shop(IdentifiableModel, ShopCategoryContainerMixin):
 	name = Field(types.String, 'name')
+	yml_url = Field(types.String, 'yml-url')
 	categories = FieldList('ShopCategory', 'categories/category')
 
 

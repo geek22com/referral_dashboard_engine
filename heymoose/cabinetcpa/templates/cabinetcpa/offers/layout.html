@@ -31,9 +31,9 @@
 	<li id="tab-list"><a href="{{ url_for('.offers_requested') }}">Мои офферы</a></li>
 	{% endif %}
 	<li id="tab-all"><a href="{{ url_for('.offers_all') }}">Каталог офферов</a></li>
-	{#{% if g.user.is_affiliate %}
+	{% if g.user.is_affiliate %}
 	<li id="tab-products"><a href="{{ url_for('.offers_products') }}">Каталог товаров</a></li>
-	{% endif %}#}
+	{% endif %}
 	{% if g.user.is_advertiser %}
 	<li id="tab-new"><a href="{{ url_for('.offers_new') }}">Создать оффер</a></li>
 	{% endif %}

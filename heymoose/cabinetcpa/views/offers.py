@@ -14,6 +14,7 @@ import base64
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 OFFER_REQUESTS_PER_PAGE = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
 OFFER_ACTIONS_PER_PAGE = app.config.get('OFFER_ACTIONS_PER_PAGE', 20)
+PRODUCTS_PER_PAGE = app.config.get('PRODUCTS_PER_PAGE', 20)
 
 def existing_offer(id):
 	return rc.offers.get_by_id(id)
@@ -85,11 +86,12 @@ def offers_requested(**kwargs):
 @bp.route('/offers/products/')
 @affiliate_only
 @template('cabinetcpa/offers/products.html')
-def offers_products():
-	'''catalog = rc.products.feed(g.user.secret_key, **request.args)
+@paginated(PRODUCTS_PER_PAGE)
+def offers_products(offset, limit):
+	catalog = rc.products.feed(g.user.secret_key, offset=offset, limit=limit, **request.args)
+	catalog_size = rc.products.feed_size(g.user.secret_key, **request.args)
 	shops = rc.products.categories(g.user.id)
-	return dict(catalog=catalog, shops=shops)'''
-	return redirect(url_for('.offers_requested'))
+	return dict(catalog=catalog, shops=shops, count=catalog_size, offset=offset, limit=limit)
 
 
 @bp.route('/offers/new', methods=['GET', 'POST'])

@@ -461,6 +461,10 @@ class AdminOfferEditForm(OfferEditForm):
 		validators.NumberRange(min=0.00, max=100.00, message=u'Конверсия может быть от 0% до 100%'),
 	])
 	showcase = BooleanField(u'Отображать в витрине', default=False)
+	yml_url = TextField(u'Ссылка на YML-каталог', [
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
+		validators.Optional()
+	])
 
 
 class OfferRequestDecisionForm(Form):

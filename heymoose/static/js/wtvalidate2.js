@@ -4,6 +4,7 @@
 		this.each(function() {
 			var field = $(this);			
 			if (field.is('ul') && !field.find(':checked').length ||
+				field.attr('type') == 'checkbox' && !field.is(':checked') ||
 				!field.is('ul') && $.trim(field.val()) == '') {
 				error(field, field.data('requiredMessage'));
 				valid = false;

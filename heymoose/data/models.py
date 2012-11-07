@@ -225,6 +225,7 @@ class Offer(SubOffer):
 	launch_time = Field(types.DateTime, 'launch-time')
 	allow_deeplink = Field(types.Boolean, 'allow-deeplink')
 	is_product_offer = Field(types.Boolean, 'is-product-offer')
+	yml_url = Field(types.String, 'yml-url')
 	
 	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
 	grant = Field('OfferGrant', 'grant')
@@ -506,7 +507,6 @@ class ReferralStatList(models.ModelBase):
 
 
 class Product(IdentifiableModel):
-	name = Field(types.String, 'name')
 	model = Field(types.String, 'model')
 	url = Field(types.String, 'url')
 	pictures = FieldList(types.String, 'picture')
@@ -520,6 +520,7 @@ class Product(IdentifiableModel):
 	pickup = Field(types.Boolean, 'pickup')
 	delivery = Field(types.Boolean, 'delivery')
 	# Custom HeyMoose parameters
+	name = Field(types.String, 'param[@name="hm_name"]')
 	offer_id = Field(types.Integer, 'param[@name="hm_offer_id"]')
 	offer_name = Field(types.String, 'param[@name="hm_offer_name"]')
 	original_url = Field(types.String, 'param[@name="hm_original_url"]')

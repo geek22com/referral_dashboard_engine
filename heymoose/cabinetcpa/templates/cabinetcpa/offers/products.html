@@ -52,6 +52,23 @@
 			margin-top: 3px;
 			margin-right: 5px;
 		}
+
+		.shop-links {
+			height: 18px;
+			font-weight: normal;
+			/*background-color: #F5F5F5;*/
+			float: right;
+			display: none;
+		}
+
+		.shop-links a {
+			font-size: 10px;
+			text-decoration: underline;
+		}
+
+		.collapsible:hover .shop-links {
+			display: inherit;
+		}
 	</style>
 
 	<script type="text/javascript">
@@ -143,7 +160,10 @@
 						<input type="checkbox" name="s" value="{{ shop.id }}" {{ 'checked="checked"' if '{0}'.format(shop.id) in request.args.getlist('s') }} />
 						{% if shop.categories %}
 							<a href="#" class="collapsible-toggle">{{ shop.name }}</a>
-							{% if shop.yml_url %}<a href="{{ shop.yml_url }}">YML</a>{% endif %}
+							<span class="shop-links">
+								<a href="{{ url_for('.offers_info', id=shop.id) }}" target="_blank">Оффер</a>
+								{% if shop.yml_url %}<a href="{{ shop.yml_url }}" target="_blank" class="yml-link">YML-каталог</a>{% endif %}
+							</span>
 						{% else %}
 							{{ shop.name }}
 						{% endif %}

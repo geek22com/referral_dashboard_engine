@@ -197,6 +197,15 @@
 				</dl>
 			</div>
 		</div>
+
+		{% if offer.yml_url %}
+		<div class="roundbox roundbox--primary roundbox--shadowed">
+			<div class="roundbox-header">Товары</div>
+			<div class="roundbox-content">
+				<a href="{{ offer.yml_url }}" target="_blank">Ссылка на YML-каталог</a>
+			</div>
+		</div>
+		{% endif %}
 		
 		<div class="roundbox roundbox--primary roundbox--shadowed">
 			<div class="roundbox-header">Категории</div>

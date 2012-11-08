@@ -84,7 +84,7 @@
 					<tr>
 						<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
 						<td class="right">{{ stat.clicks }}</td>
-						<td class="right">{{ stat.leads + stat.sales }}</td>
+						<td class="right">{{ stat.leads }}</td>
 						<td class="right">{% if stat.cr %}{{ stat.cr if stat.cr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
 						<td class="right">{{ stat.not_confirmed_revenue }}</td>
 						<td class="right green">{{ stat.confirmed_revenue }}</td>

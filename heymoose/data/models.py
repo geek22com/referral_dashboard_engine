@@ -408,7 +408,6 @@ class OverallOfferStat(models.ModelBase):
 	shows = Field(types.Integer, 'shows')
 	clicks = Field(types.Integer, 'clicks')
 	leads = Field(types.Integer, 'leads')
-	sales = Field(types.Integer, 'sales')
 	confirmed_revenue = Field(types.Decimal, 'confirmed-revenue', quantize='1.00')
 	not_confirmed_revenue = Field(types.Decimal, 'not-confirmed-revenue', quantize='1.00')
 	cancelled_revenue = Field(types.Decimal, 'canceled-revenue', quantize='1.00')

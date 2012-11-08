@@ -40,7 +40,7 @@
 				{{ caller('first-header', none, **kwargs) }}
 				<th rowspan="2" style="min-width: 70px;" {{ lists.sort_header('shows_count', **kwargs) }}>Показы</th>
 				<th rowspan="2" style="min-width: 70px;" {{ lists.sort_header('clicks_count', **kwargs) }}>Клики</th>
-				<th class="header center nosort" colspan="2">Выполненные действия</th>
+				<th rowspan="2" style="min-width: 80px;" {{ lists.sort_header('leads_count', **kwargs) }}>Действия</th>
 				<th rowspan="2" style="min-width: 70px;" {{ lists.sort_header('ctr', **kwargs) }}>CTR</th>
 				<th rowspan="2" style="min-width: 70px;" {{ lists.sort_header('cr', **kwargs) }}>CR</th>
 				<th rowspan="2" style="min-width: 80px;" {{ lists.sort_header('ecpc', **kwargs) }}>eCPC,&nbsp;{{ currency_sign -}}</th>
@@ -48,9 +48,6 @@
 				<th class="header center nosort" colspan="3">Финансы,&nbsp;{{ currency_sign -}}</th>
 			</tr>
 			<tr class="subrow">
-				<th style="min-width: 70px;" {{ lists.sort_header('leads_count', **kwargs) }}>Лиды</th>
-				<th style="min-width: 70px;" {{ lists.sort_header('sales_count', **kwargs) }}>Продажи</th>
-				
 				<th style="min-width: 70px;" {{ lists.sort_header('canceled_revenue', 'red', **kwargs) }}>Откл.</th>
 				<th style="min-width: 70px;" {{ lists.sort_header('not_confirmed_revenue', **kwargs) }}>Неподтв.</th>
 				<th style="min-width: 70px;" {{ lists.sort_header('confirmed_revenue', 'green', **kwargs) }}>Подтв.</th>
@@ -74,18 +71,6 @@
 				</td>
 				{% else %}
 				<td class="right">{{ stat.leads }}</td>
-				{% endif %}
-				
-				{% if suboffer_stats and stat.sales %}
-				<td class="right suboffer-stats">
-					<div class="relative-container">
-						<img src="{{ url_for('static', filename='img/selector-search.gif') }}" alt="" class="icon-zoom" />
-						<a href="{{ caller('suboffer-stats-url', stat, **kwargs) -}}"
-						 class="suboffer-stats-link">{{ stat.sales }}</a>
-					</div>
-				</td>
-				{% else %}
-				<td class="right">{{ stat.sales }}</td>
 				{% endif %}
 				
 				<td class="right">{% if stat.ctr %}{{ stat.ctr if stat.ctr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>

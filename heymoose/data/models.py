@@ -596,4 +596,15 @@ class BlackListSite(IdentifiableModel):
 	comment = Field(types.String, 'comment')
 
 
+class SiteStat(models.ModelBase):
+	affiliate = Field('User', 'affiliate')
+	referer = Field(types.String, 'referer')
+	first_period_show_count = Field(types.Integer, 'first-period-show-count')
+	second_period_show_count = Field(types.Integer, 'second-period-show-count')
+	show_count_diff = Field(types.Integer, 'show-count-diff')
+	first_period_click_count = Field(types.Integer, 'first-period-click-count')
+	second_period_click_count = Field(types.Integer, 'second-period-click-count')
+	click_count_diff = Field(types.Integer, 'click-count-diff')
+
+
 registry.register_models_from_module(__name__)

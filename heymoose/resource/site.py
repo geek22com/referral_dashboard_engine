@@ -1,5 +1,5 @@
 from backend import BackendResource, extractor
-from heymoose.data.models import BlackListSite
+from heymoose.data.models import BlackListSite, SiteStat
 
 
 class SiteResource(BackendResource):
@@ -24,3 +24,6 @@ class SiteResource(BackendResource):
 
 	def blacklist(self, **kwargs):
 		return self.path('blacklist').get(**kwargs).as_objlist(BlackListSite, with_count=True)
+
+	def list_stats(self, **kwargs):
+		return self.path('stats').get(**kwargs).as_objlist(SiteStat, with_count=True)

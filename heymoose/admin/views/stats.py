@@ -10,6 +10,7 @@ from heymoose.views.decorators import template, sorted, paginated
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
 AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 ADVERTISER_STATS_PER_PAGE = app.config.get('ADVERTISER_STATS_PER_PAGE', 20)
+SITE_STATS_PER_PAGE = app.config.get('SITE_STATS_PER_PAGE', 20)
 SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 
 
@@ -44,6 +45,17 @@ def stats_advertiser(**kwargs):
 	form = forms.DateTimeRangeForm(request.args)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_advertiser(**kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count, form=form)
+
+@bp.route('/stats/site/')
+@template('admin/stats/site.html')
+@superadmin_required()
+@sorted('second_period_click_count', 'asc')
+@paginated(SITE_STATS_PER_PAGE)
+def stats_site(**kwargs):
+	form = forms.DoubleDateTimeRangeForm(request.args)
+	kwargs.update(form.backend_args())
+	stats, count = rc.sites.list_stats(**kwargs) if form.validate() else ([], 0)
 	return dict(stats=stats, count=count, form=form)
 
 @bp.route('/stats/total')

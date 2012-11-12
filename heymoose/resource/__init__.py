@@ -11,6 +11,7 @@ from action import ActionResource
 from error import ErrorResource
 from public import PublicResource
 from product import ProductResource
+from site import SiteResource
 
 users = UserResource()
 user_stats = UserStatResource()
@@ -25,3 +26,4 @@ actions = ActionResource()
 errors = ErrorResource()
 pub = PublicResource()
 products = ProductResource()
+sites = SiteResource()

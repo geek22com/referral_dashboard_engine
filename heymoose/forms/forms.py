@@ -750,6 +750,22 @@ class CatalogOfferFilterForm(OfferFilterForm):
 		return args
 
 
+class BlackListSiteForm(Form):
+	host = TextField(u'Хост', [validators.Required(message=u'Введите хост')])
+	sub_domain_mask = TextField(u'Маска поддоменов')
+	path_mask = TextField(u'Маска пути')
+	comment = TextField(u'Комментарий')
+
+	def populate_sub_domain_mask(self, obj, name):
+		obj.sub_domain_mask = self.sub_domain_mask.data or None
+
+	def populate_path_mask(self, obj, name):
+		obj.path_mask = self.path_mask.data or None
+
+	def populate_comment(self, obj, name):
+		obj.comment = self.comment.data or None
+
+
 class AdminGroupsForm(Form):
 	groups = myfields.AdminGroupsField(u'Группы')
 

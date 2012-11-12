@@ -537,9 +537,9 @@ class DateTimeRangeForm(Form):
 
 
 class DoubleDateTimeRangeForm(Form):
-	first_period_from = datetime_range_field(u'с', default=lambda: begin_of_day(datetime.now()) + relativedelta(months=-2, days=+1))
-	first_period_to = datetime_range_field(u'по', default=lambda: begin_of_day(datetime.now()) + relativedelta(months=-1, days=+1))
-	second_period_from = datetime_range_field(u'с', default=lambda: begin_of_day(datetime.now()) + relativedelta(months=-1, days=+1))
+	first_period_from = datetime_range_field(u'с', default=lambda: begin_of_day(datetime.now()) + relativedelta(weeks=-2, days=+1))
+	first_period_to = datetime_range_field(u'по', default=lambda: begin_of_day(datetime.now()) + relativedelta(weeks=-1, days=+1))
+	second_period_from = datetime_range_field(u'с', default=lambda: begin_of_day(datetime.now()) + relativedelta(weeks=-1, days=+1))
 	second_period_to = datetime_range_field(u'по', default=lambda: begin_of_day(datetime.now()) + relativedelta(days=+1))
 	
 	def range_args(self):

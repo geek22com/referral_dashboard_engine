@@ -1,0 +1,87 @@
+{% extends "admin/fraud/layout.html" %}
+{% import 'common/macros/lists.html' as lists with context %}
+
+{% macro site_form(form, site_id=none) %}
+	<form method="post" action="" class="validate2">
+		<div class="formfield clearfix {{ forms.css_errors(form.host) }}">
+			http://www.
+			{{ forms.field(form.sub_domain_mask, class='span3', placeholder='маска поддоменов') }}
+			.
+			{{ forms.field(form.host, class='span2', placeholder='хост') }}
+			/
+			{{ forms.field(form.path_mask, class='span3', placeholder='маска пути') }}
+			{{ forms.errors(form.host) }}
+		</div>
+		{{ forms.singlefield(form.comment, class='span6') }}
+		{% if site_id %}
+			<input type="hidden" name="id" value="{{ site_id -}}" />
+		{% endif %}
+		<div class="center">
+			<input type="submit" value="Сохранить" class="btn success" />
+		</div>
+	</form>
+{% endmacro %}
+
+{% set activetab = 'sites-blacklist' %}
+
+{% block extrahead %}
+	{{ super() }}
+{% endblock %}
+
+{% block tabcontent %}
+
+<div class="well right">
+	<a href="#" data-controls-modal="site-modal" data-backdrop="true" data-keyboard="true" class="btn success">Добавить площадку</a>
+	<div id="site-modal" class="modal fade" style="display: none;">
+		<div class="modal-header">
+			<a href="#" class="close">×</a>
+			<h3>Добавление площадки в черный список</h3>
+		</div>
+		<div class="modal-body">
+			{{ site_form(form) }}
+		</div>
+	</div>
+</div>
+
+{% if sites %}
+	<table class="bordered-table zebra-striped nosort">
+		<thead>
+			<tr>
+				<th class="center">Маска поддоменов</th>
+				<th class="center">Хост</th>
+				<th class="center">Маска пути</th>
+				<th class="center">Комментарий</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for site in sites %}
+			<tr>
+				<td class="center">{{ site.sub_domain_mask or '&mdash;'|safe }}</td>
+				<td class="center">{{ site.host }}</td>
+				<td class="center">{{ site.path_mask or '&mdash;'|safe }}</td>
+				<td>{{ site.comment or '&mdash;'|safe }}</td>
+				<td class="center">
+					<a href="#" data-controls-modal="site-modal-{{ site.id -}}" data-backdrop="true" data-keyboard="true">изменить</a>
+					<div id="site-modal-{{ site.id -}}" class="modal fade" style="display: none;">
+						<div class="modal-header">
+							<a href="#" class="close">×</a>
+							<h3>Изменение площадки</h3>
+						</div>
+						<div class="modal-body">
+							{{ site_form(site.form, site_id=site.id) }}
+						</div>
+					</div>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{{ lists.paginate(pages) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> В черный список не было добавлено ни одной площадки.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

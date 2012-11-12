@@ -51,7 +51,7 @@
 				<th class="center">Хост</th>
 				<th class="center">Маска пути</th>
 				<th class="center">Комментарий</th>
-				<th></th>
+				<th colspan="2"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -72,6 +72,10 @@
 							{{ site_form(site.form, site_id=site.id) }}
 						</div>
 					</div>
+				</td>
+				<td class="center">
+					<a href="{{ url_for('.fraud_sites_blacklist_remove', id=site.id) }}" class="danger"
+					 onclick="return confirm('Удалить площадку из черного списка?');">удалить</a>
 				</td>
 			</tr>
 			{% endfor %}

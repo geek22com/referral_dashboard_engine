@@ -57,3 +57,9 @@ def fraud_sites_blacklist(**kwargs):
 	return dict(sites=sites, count=count, form=form)
 
 
+@bp.route('/fraud/sites/blacklist/<int:id>/remove/')
+def fraud_sites_blacklist_remove(id):
+	site = rc.sites.blacklist_get(id)
+	rc.sites.blacklist_remove(site.id)
+	flash(u'Площадка удалена из черного списка', 'success')
+	return redirect(url_for('.fraud_sites_blacklist'))

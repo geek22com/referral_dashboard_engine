@@ -515,13 +515,15 @@ class BalanceForm(Form):
 	], description=currency_sign, places=2)
 
 
+def datetime_range_field(label, **kwargs):
+	return DateTimeField(label, format='%d.%m.%Y %H:%M', validators=[
+		validators.Required(message=u'Введите время')
+	], **kwargs)
+
+
 class DateTimeRangeForm(Form):
-	dt_from = DateTimeField(u'с', format='%d.%m.%Y %H:%M', validators=[
-		validators.Required(message=u'Введите время')
-	], default=lambda: begin_of_day(datetime.now()) + relativedelta(months=-1, days=+1))
-	dt_to = DateTimeField(u'по', format='%d.%m.%Y %H:%M', validators=[
-		validators.Required(message=u'Введите время')
-	], default=lambda: end_of_day(datetime.now()))
+	dt_from = datetime_range_field(u'с', default=lambda: begin_of_day(datetime.now()) + relativedelta(months=-1, days=+1))
+	dt_to = datetime_range_field(u'по', default=lambda: end_of_day(datetime.now()))
 	
 	def range_args(self):
 		return {'from' : to_unixtime(self.dt_from.data, True), 'to' : to_unixtime(self.dt_to.data, True)}
@@ -532,6 +534,32 @@ class DateTimeRangeForm(Form):
 	def query_args(self):
 		return dict(dt_from=self.dt_from.data.strftime(datetime_nosec_format),
 			dt_to=self.dt_to.data.strftime(datetime_nosec_format))
+
+
+class DoubleDateTimeRangeForm(Form):
+	first_period_from = datetime_range_field(u'с', default=lambda: begin_of_day(datetime.now()) + relativedelta(months=-2, days=+1))
+	first_period_to = datetime_range_field(u'по', default=lambda: begin_of_day(datetime.now()) + relativedelta(months=-1, days=+1))
+	second_period_from = datetime_range_field(u'с', default=lambda: begin_of_day(datetime.now()) + relativedelta(months=-1, days=+1))
+	second_period_to = datetime_range_field(u'по', default=lambda: begin_of_day(datetime.now()) + relativedelta(days=+1))
+	
+	def range_args(self):
+		return dict(
+			first_period_from=to_unixtime(self.first_period_from.data, True),
+			first_period_to=to_unixtime(self.first_period_to.data, True),
+			second_period_from=to_unixtime(self.second_period_from.data, True),
+			second_period_to=to_unixtime(self.second_period_to.data, True)
+		)
+	
+	def backend_args(self):
+		return self.range_args()
+	
+	def query_args(self):
+		return dict(
+			first_period_from=self.first_period_from.data.strftime(datetime_nosec_format),
+			first_period_to=self.first_period_to.data.strftime(datetime_nosec_format),
+			second_period_from=self.second_period_from.data.strftime(datetime_nosec_format),
+			second_period_to=self.second_period_to.data.strftime(datetime_nosec_format)
+		)
 
 
 class OfferStatsFilterForm(DateTimeRangeForm):

@@ -1,0 +1,49 @@
+{% import 'common/forms.html' as forms %}
+
+{% macro head() %}
+	<script type="text/javascript">
+		$(function() {
+			$('.datetimepicker').datetimepicker({showButtonPanel: false});
+		})
+	</script>
+{% endmacro %}
+
+{% macro html(form, title) %}
+	<div class="well">
+		<form method="get" action="" class="validate2">
+			<div class="clearfix" style="margin-bottom: 0;">
+				<div class="row">
+					<div class="span4" style="line-height: 28px;">
+						<label class="simple required">{{ title }}</label>
+					</div>
+					<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.first_period_from) }}">
+						<label class="simple required">с</label>
+						{{ forms.field(form.first_period_from, class='datetimepicker', style='width: 130px;') }}
+						{{ forms.errors(form.first_period_from) }}
+					</div>
+					<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.first_period_to) }}">
+						<label class="simple required">по</label>
+						{{ forms.field(form.first_period_to, class='datetimepicker', style='width: 130px;') }}
+						{{ forms.errors(form.first_period_to) }}
+					</div>
+				</div>
+				<div class="row" style="margin-top: 10px;">
+					<div class="span4" style="line-height: 28px;">
+						<label class="simple required">и</label>
+					</div>
+					<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.second_period_from) }}">
+						<label class="simple required">с</label>
+						{{ forms.field(form.second_period_from, class='datetimepicker', style='width: 130px;') }}
+						{{ forms.errors(form.second_period_from) }}
+					</div>
+					<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.second_period_to) }}">
+						<label class="simple required">по</label>
+						{{ forms.field(form.second_period_to, class='datetimepicker', style='width: 130px;') }}
+						{{ forms.errors(form.second_period_to) }}
+					</div>
+				</div>
+			</div>
+			<input type="submit" class="btn primary span3" style="margin-top: 10px;" value="Показать" />
+		</form>
+	</div>
+{% endmacro %}

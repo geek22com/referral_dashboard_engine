@@ -1,0 +1,63 @@
+{% extends "admin/stats/layout.html" %}
+{% import 'common/forms/double-datetime-range.html' as double_datetime_range with context %}
+{% import 'common/macros/lists.html' as lists with context %}
+
+{% set activetab = 'site' %}
+{% set content_fluid = true %}
+
+{% block tabcontent %}
+
+{{ double_datetime_range.html(form, 'Сравнить площадки за периоды') }}
+
+{% if stats %}
+	{% with kwargs = form.query_args() %}
+	<table class="bordered-table zebra-striped stats-table">
+		<thead>
+			<tr>
+				<th rowspan="2" style="min-width: 70px;" {{ lists.sort_header('affiliate_email', **kwargs) }}>Партнёр</th>
+				<th rowspan="2" style="min-width: 70px;" {{ lists.sort_header('referer', **kwargs) }}>URL</th>
+				<th class="center" colspan="3">Показы</th>
+				<th class="center" colspan="3">Клики</th>
+			</tr>
+			<tr class="subrow">
+				<th style="min-width: 70px;" {{ lists.sort_header('first_period_show_count', **kwargs) }}>Было</th>
+				<th style="min-width: 70px;" {{ lists.sort_header('second_period_show_count', **kwargs) }}>Стало</th>
+				<th style="min-width: 70px;" {{ lists.sort_header('show_count_diff', **kwargs) }}>Разница</th>
+
+				<th style="min-width: 70px;" {{ lists.sort_header('first_period_click_count', **kwargs) }}>Было</th>
+				<th style="min-width: 70px;" {{ lists.sort_header('second_period_click_count', **kwargs) }}>Стало</th>
+				<th style="min-width: 70px;" {{ lists.sort_header('click_count_diff', **kwargs) }}>Разница</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for stat in stats %}
+			<tr>
+				<td><a href="{{ url_for('.users_info', id=stat.affiliate.id) }}">{{ stat.affiliate.email }}</a></td>
+				<td style="max-width: 500px; overflow: hidden;">
+					{% if stat.referer.startswith('http') %}
+						<a href="{{ stat.referer -}}" target="_blank">{{ stat.referer }}</a>
+					{% else %}
+						{{ stat.referer }}
+					{% endif %}
+				</td>
+
+				<td class="right">{{ stat.first_period_show_count }}</td>
+				<td class="right">{{ stat.second_period_show_count }}</td>
+				<td class="right">{{ stat.show_count_diff }}</td>
+
+				<td class="right">{{ stat.first_period_click_count }}</td>
+				<td class="right">{{ stat.second_period_click_count }}</td>
+				<td class="right">{{ stat.click_count_diff }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{{ lists.paginate(pages, **kwargs) }}
+	{% endwith %}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p>Нет данных.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

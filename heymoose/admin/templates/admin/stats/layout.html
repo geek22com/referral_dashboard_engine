@@ -32,6 +32,7 @@
 	<li id="tab-offer"><a href="{{ url_for('.stats_offer') }}">По офферам</a></li>
 	<li id="tab-affiliate"><a href="{{ url_for('.stats_affiliate') }}">По партнёрам</a></li>
 	<li id="tab-advertiser"><a href="{{ url_for('.stats_advertiser') }}">По рекламодателям</a></li>
+	<li id="tab-site"><a href="{{ url_for('.stats_site') }}">По площадкам</a></li>
 	<li id="tab-total"><a href="{{ url_for('.stats_total') }}">Суммарная</a></li>
 	{% if '.stats_suboffer' in request.url_rule.endpoint %}
 	<li id="tab-suboffer"><a href="#">По действиям</a></li>

@@ -34,10 +34,10 @@
 			<tr>
 				<td><a href="{{ url_for('.users_info', id=stat.affiliate.id) }}">{{ stat.affiliate.email }}</a></td>
 				<td style="max-width: 500px; overflow: hidden;">
-					{% if stat.referer.startswith('http') %}
+					{% if stat.referer and stat.referer.startswith('http') %}
 						<a href="{{ stat.referer -}}" target="_blank">{{ stat.referer }}</a>
 					{% else %}
-						{{ stat.referer }}
+						{{ stat.referer or '&mdash;'|safe }}
 					{% endif %}
 				</td>
 

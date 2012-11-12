@@ -66,19 +66,6 @@ def users_list(**kwargs):
 	count = rc.users.count(**kwargs)
 	return dict(users=users, count=count)
 
-
-@bp.route('/users/fraud/')
-@permission_required('view_fraud')
-@template('admin/users/fraud.html')
-@sorted('rate', 'desc')
-@paginated(USERS_PER_PAGE)
-def users_fraud(**kwargs):
-	form = forms.UserFilterForm(request.args)
-	kwargs.update(form.backend_args())
-	user_stats, count = rc.user_stats.list_fraud(**kwargs) if form.validate() else ([], 0)
-	return dict(user_stats=user_stats, count=count, form=form)
-
-
 @bp.route('/users/register/admin/', methods=['GET', 'POST'])
 @superadmin_required()
 @template('admin/users/register-admin.html')

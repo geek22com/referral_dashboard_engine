@@ -750,6 +750,12 @@ class CatalogOfferFilterForm(OfferFilterForm):
 		return args
 
 
+class BlackListSiteForm(Form):
+	host = TextField(u'Хост', [validators.Required(message=u'Введите хост')])
+	subdomain_mask = TextField(u'Маска поддоменов')
+	path_mask = TextField(u'Маска пути')
+
+
 class AdminGroupsForm(Form):
 	groups = myfields.AdminGroupsField(u'Группы')
 

@@ -589,4 +589,10 @@ class Shop(IdentifiableModel, ShopCategoryContainerMixin):
 	categories = FieldList('ShopCategory', 'categories/category')
 
 
+class BlackListSite(IdentifiableModel):
+	host = Field(types.String, 'host')
+	subdomain_mask = Field(types.String, 'subdomain-mask')
+	path_mask = Field(types.String, 'path-mask')
+
+
 registry.register_models_from_module(__name__)

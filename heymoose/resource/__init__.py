@@ -7,6 +7,7 @@ from offergrant import OfferGrantResource
 from offerstat import OfferStatResource
 from category import CategoryResource
 from region import RegionResource
+from banner import BannerResource
 from action import ActionResource
 from error import ErrorResource
 from public import PublicResource
@@ -22,6 +23,7 @@ offer_grants = OfferGrantResource()
 offer_stats = OfferStatResource()
 categories = CategoryResource()
 regions = RegionResource()
+banners = BannerResource()
 actions = ActionResource()
 errors = ErrorResource()
 pub = PublicResource()

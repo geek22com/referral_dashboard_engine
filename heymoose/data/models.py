@@ -217,7 +217,6 @@ class Offer(SubOffer):
 	account = Field('Account', 'account')
 	regions = FieldSet(types.String, 'regions/region')
 	categories = FieldSet('Category', 'categories/category')
-	banners = FieldList('Banner', 'banners/banner')
 	approved = Field(types.Boolean, 'approved')
 	block_reason = Field(types.String, 'block-reason')
 	cookie_ttl = Field(types.Integer, 'cookie-ttl')
@@ -270,12 +269,6 @@ class Offer(SubOffer):
 		for suboffer in self.all_suboffers:
 			if suboffer.id == suboffer_id:
 				return suboffer
-		return None
-	
-	def banner_by_id(self, banner_id):
-		for banner in self.banners:
-			if banner.id == banner_id:
-				return banner
 		return None
 	
 	@property

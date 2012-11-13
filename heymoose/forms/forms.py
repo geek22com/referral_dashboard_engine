@@ -295,7 +295,7 @@ class SiteForm(Form):
 
 class SubOfferForm(Form):
 	title = TextField(u'Описание', [
-		validators.Length(min=1, max=50, message=u'Описание должно иметь длину от 1 до 50 символов'),
+		validators.Length(min=1, max=250, message=u'Описание должно иметь длину от 1 до 250 символов'),
 		validators.Required(message=u'Введите описание действия')
 	])
 	payment_type = SelectField(u'Тип оплаты', choices=[

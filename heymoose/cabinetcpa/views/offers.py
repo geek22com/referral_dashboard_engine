@@ -14,6 +14,7 @@ import base64
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 OFFER_REQUESTS_PER_PAGE = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
 OFFER_ACTIONS_PER_PAGE = app.config.get('OFFER_ACTIONS_PER_PAGE', 20)
+OFFER_BANNERS_PER_PAGE = app.config.get('OFFER_BANNERS_PER_PAGE', 20)
 PRODUCTS_PER_PAGE = app.config.get('PRODUCTS_PER_PAGE', 20)
 
 def existing_offer(id):
@@ -197,26 +198,23 @@ def offers_info_actions_edit(id, sid):
 
 @bp.route('/offers/<int:id>/materials', methods=['GET', 'POST'])
 @template('cabinetcpa/offers/info/materials.html')
-def offers_info_materials(id):
+@paginated(OFFER_BANNERS_PER_PAGE)
+def offers_info_materials(id, **kwargs):
 	offer = visible_offer(id)
 	form = forms.OfferBannerForm(request.form)
-	if offer.owned_by(g.user) and request.method == 'POST' and form.validate():
-		banner = Banner()
-		form.populate_obj(banner)
-		image_base64 = base64.encodestring(request.files['image'].stream.read())
-		rc.offers.add_banner(offer.id, banner, image_base64)
-		flash(u'Баннер успешно загружен', 'success')
+	if offer.owned_by(g.user) and request.method == 'POST':
+		if 'id' in request.form:
+			rc.banners.remove_by_ids(offer.id, request.form.getlist('id'))
+			flash(u'Баннеры успешно удалены', 'success')
+	 	elif form.validate():
+			banner = Banner()
+			form.populate_obj(banner)
+			image_base64 = base64.encodestring(request.files['image'].stream.read())
+			rc.offers.add_banner(offer.id, banner, image_base64)
+			flash(u'Баннер успешно загружен', 'success')
 		return redirect(request.url)
-	return dict(offer=offer, form=form)
-
-@bp.route('/offers/<int:id>/materials/<int:bid>/delete')
-@advertiser_only
-def offers_info_materials_delete(id, bid):
-	offer = my_offer(id)
-	if not offer.banner_by_id(bid): abort(404)
-	rc.offers.delete_banner(id, bid)
-	flash(u'Баннер удален', 'success')
-	return redirect(url_for('.offers_info_materials', id=id))
+	banners, count = rc.banners.list(offer_id=offer.id, **kwargs)
+	return dict(offer=offer, banners=banners, count=count, form=form)
 
 @bp.route('/offers/<int:id>/materials/up/', methods=['GET', 'POST'])
 @advertiser_only

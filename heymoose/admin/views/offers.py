@@ -15,6 +15,7 @@ OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 OFFER_REQUESTS_PER_PAGE = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
 OFFER_ACTIONS_PER_PAGE = app.config.get('OFFER_ACTIONS_PER_PAGE', 20)
+OFFER_BANNERS_PER_PAGE = app.config.get('OFFER_BANNERS_PER_PAGE', 20)
 AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
@@ -230,29 +231,26 @@ def offers_info_actions_edit(id, sid, offer):
 	return dict(suboffer=suboffer, form=form)
 
 
-@bp.route('/offers/<int:id>/materials', methods=['GET', 'POST'])
+@bp.route('/offers/<int:id>/materials/', methods=['GET', 'POST'])
 @template('admin/offers/info/materials.html')
 @offer_context
 @permission_required('do_offer_edit', post=True)
-def offers_info_materials(id, offer):
+@paginated(OFFER_BANNERS_PER_PAGE)
+def offers_info_materials(id, offer, **kwargs):
 	form = forms.OfferBannerForm(request.form)
-	if request.method == 'POST' and form.validate():
-		banner = Banner()
-		form.populate_obj(banner)
-		image_base64 = base64.encodestring(request.files['image'].stream.read())
-		rc.offers.add_banner(offer.id, banner, image_base64)
-		flash(u'Баннер успешно загружен', 'success')
+	if request.method == 'POST':
+		if 'id' in request.form:
+			rc.banners.remove_by_ids(offer.id, request.form.getlist('id'))
+			flash(u'Баннеры успешно удалены', 'success')
+		elif form.validate():
+			banner = Banner()
+			form.populate_obj(banner)
+			image_base64 = base64.encodestring(request.files['image'].stream.read())
+			rc.offers.add_banner(offer.id, banner, image_base64)
+			flash(u'Баннер успешно загружен', 'success')
 		return redirect(request.url)
-	return dict(form=form)
-
-@bp.route('/offers/<int:id>/materials/<int:bid>/delete')
-@offer_context
-@permission_required('do_offer_edit')
-def offers_info_materials_delete(id, bid, offer):
-	if not offer.banner_by_id(bid): abort(404)
-	rc.offers.delete_banner(id, bid)
-	flash(u'Баннер удален', 'success')
-	return redirect(url_for('.offers_info_materials', id=id))
+	banners, count = rc.banners.list(offer_id=offer.id, **kwargs)
+	return dict(banners=banners, count=count, form=form)
 
 @bp.route('/offers/<int:id>/materials/up/', methods=['GET', 'POST'])
 @template('admin/offers/info/materials-upload.html')

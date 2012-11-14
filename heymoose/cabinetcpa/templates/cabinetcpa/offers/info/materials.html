@@ -107,10 +107,10 @@
 	</script>
 {% endblock %}
 
-{% block tabcontent %}
-
 {% set advertiser_is_owner = g.user.is_advertiser and offer.owned_by(g.user) %}
 {% set affiliate_is_granted = g.user.is_affiliate and offer.grant and offer.grant.approved %}
+
+{% block tabcontent %}
 
 {% if advertiser_is_owner %}
 	<form method="post" action="" class="widelabels validate2" enctype="multipart/form-data">
@@ -150,36 +150,46 @@
 	{% endif %}
 {% endif %}
 
-{% if offer.banners %}
-	{% set colspan = 5 if advertiser_is_owner or affiliate_is_granted else 4 %}
-	{% call(head, banner) materials_macros.table(offer.banners, colspan=colspan) %}
-		{% if head %}
-			{% if advertiser_is_owner %}
-			<th class="header minimal-width"></th>
-			{% endif %}
-			{% if affiliate_is_granted %}
-			<th class="header minimal-width"></th>
-			{% endif %}
-		{% else %}
-			{% if advertiser_is_owner %}
-			<td>
-				<a href="{{ url_for('.offers_info_materials_delete', id=offer.id, bid=banner.id)}}"
-				 class="danger" onclick="return confirm('Удалить баннер?');">удалить</a>
-			</td>
-			{% endif %}
-			{% if affiliate_is_granted %}
-			<td>
-				{% if banner.has_code %}
-				<a href="#" data-controls-modal="modal-code" data-backdrop="true" data-keyboard="true"
-				class="code-trigger" data-banner-id="{{ banner.id }}" data-banner-url="{{ banner.image_url}}"
-				data-banner-width="{{ banner.width }}" data-banner-height="{{ banner.height }}">получить&nbsp;код</a>
+{% if banners %}
+	{% if advertiser_is_owner %}
+	<form method="post" action="">
+		<div class="well right">
+			<input type="submit" value="Удалить выбранные баннеры" class="btn danger banner-action"
+			 onclick="return confirm('Удалить выбранные баннеры?');" />
+		</div>
+		<div class="data-list" data-action-class="banner-action">
+			{% call(head, banner) materials_macros.table(banners, colspan=5) %}
+				{% if head %}
+				<th class="center minimal-width">
+					<input type="checkbox" class="data-list-select-all-checkbox" />
+				</th>
 				{% else %}
-				&mdash;
+				<td class="center">
+					<input type="checkbox" class="data-list-item-checkbox" name="id" value="{{ banner.id -}}" />
+				</td>
 				{% endif %}
-			</td>
+			{% endcall %}
+		</div>
+	</form>
+	{% elif affiliate_is_granted %}
+		{% call(head, banner) materials_macros.table(banners, colspan=5) %}
+			{% if head %}
+				<th class="header minimal-width"></th>
+			{% else %}
+				<td>
+					{% if banner.has_code %}
+					<a href="#" data-controls-modal="modal-code" data-backdrop="true" data-keyboard="true"
+					class="code-trigger" data-banner-id="{{ banner.id }}" data-banner-url="{{ banner.image_url}}"
+					data-banner-width="{{ banner.width }}" data-banner-height="{{ banner.height }}">получить&nbsp;код</a>
+					{% else %}
+					&mdash;
+					{% endif %}
+				</td>
 			{% endif %}
-		{% endif %}
-	{% endcall %}
+		{% endcall %}
+	{% else %}
+		{% call(head, banner) materials_macros.table(banners, colspan=4) %}{% endcall %}
+	{% endif %}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Еще не было добавлено никаких материалов.</p>
@@ -190,7 +200,8 @@
 
 {% block postbody %}
 	{{ super() }}
-	<div id="modal-code" class="modal" style="display: none;">
+	{% if affiliate_is_granted %}
+	<div id="modal-code" class="modal fade" style="display: none;">
 		<div class="modal-header">
 			<a href="#" class="close">×</a>
 			<h3>Партнерская ссылка</h3>
@@ -259,4 +270,5 @@
 			</form>
 		</div>
 	</div>
+	{% endif %}
 {% endblock %}

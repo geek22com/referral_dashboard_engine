@@ -45,6 +45,7 @@ def configure_assets(app):
 		'js/wtvalidate2.js',
 		'js/wtvalidate2.twitter.js',
 		'js/categorized.list.js',
+		'js/data-list.js',
 		filters=['rjsmin'], output='js/cabinet.gen.js'
 	))
 	assets.register('cabinet_css', Bundle(

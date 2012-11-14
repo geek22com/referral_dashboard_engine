@@ -24,16 +24,25 @@
 </form>
 
 {% if banners %}
-	{% call(head, banner) materials_macros.table(banners, colspan=5) %}
-		{% if head %}
-		<th class="header minimal-width"></th>
-		{% else %}
-		<td>
-			<a href="{{ url_for('.offers_info_materials_delete', id=offer.id, bid=banner.id)}}"
-			 class="danger" onclick="return confirm('Удалить баннер?');">удалить</a>
-		</td>
-		{% endif %}
-	{% endcall %}
+	<form method="post" action="">
+		<div class="well right">
+			<input type="submit" value="Удалить выбранные баннеры" class="btn danger banner-action"
+			 onclick="return confirm('Удалить выбранные баннеры?');" />
+		</div>
+		<div class="data-list" data-action-class="banner-action">
+			{% call(head, banner) materials_macros.table(banners, colspan=5) %}
+				{% if head %}
+				<th class="center minimal-width">
+					<input type="checkbox" class="data-list-select-all-checkbox" />
+				</th>
+				{% else %}
+				<td class="center">
+					<input type="checkbox" class="data-list-item-checkbox" name="id" value="{{ banner.id -}}" />
+				</td>
+				{% endif %}
+			{% endcall %}
+		</div>
+	</form>
 	{{ lists.paginate(pages, id=offer.id) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">

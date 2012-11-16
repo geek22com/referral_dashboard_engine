@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import request, flash, g, redirect, url_for, abort, jsonify, send_file
+from flask import g, redirect, url_for
 from heymoose import app, resource as rc
 from heymoose.views import excel
 from heymoose.views.decorators import template, paginated
@@ -8,6 +8,7 @@ from heymoose.cabinetcpa.decorators import affiliate_only
 
 
 CASHBACKS_PER_PAGE = app.config.get('CASHBACKS_PER_PAGE', 20)
+CASHBACK_INVITES_PER_PAGE = app.config.get('CASHBACK_INVITES_PER_PAGE', 20)
 
 
 @bp.route('cabinetcpa/cashback/')
@@ -23,3 +24,12 @@ def cashback():
 def cashback_list(**kwargs):
 	cashbacks, count = rc.cashbacks.list(g.user.id, **kwargs)
 	return dict(cashbacks=cashbacks, count=count)
+
+
+@bp.route('cabinetcpa/cashback/invites/')
+@affiliate_only
+@template('cabinetcpa/cashback/invites.html')
+@paginated(CASHBACK_INVITES_PER_PAGE)
+def cashback_invites(**kwargs):
+	invites, count = rc.cashbacks.list_invites(g.user.id, **kwargs)
+	return dict(invites=invites, count=count)

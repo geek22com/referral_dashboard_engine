@@ -1,0 +1,32 @@
+{% extends "cabinetcpa/cashback/layout.html" %}
+
+{% set activetab = 'invites' %}
+
+{% block tabcontent %}
+
+{% if invites %}
+	<table class="bordered-table zebra-striped">
+		<thead>
+			<tr>
+				<th class="center">Время</th>
+				<th class="center">Пригласивший</th>
+				<th class="center">Приглашенный</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for invite in invites %}
+			<tr>
+				<td class="center">{{ invite.date|datetimeformat }}</td>
+				<td>{{ invite.referrer }}</td>
+				<td>{{ invite.referral }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Не было совершено ни одного приглашения по CashBack.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

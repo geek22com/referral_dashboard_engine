@@ -12,13 +12,13 @@ CASHBACK_INVITES_PER_PAGE = app.config.get('CASHBACK_INVITES_PER_PAGE', 20)
 INFINITE_LIMIT = dict(offset=0, limit=999999)
 
 
-@bp.route('cabinetcpa/cashback/')
+@bp.route('/cashback/')
 @affiliate_only
 def cashback():
 	return redirect(url_for('.cashback_list'))
 
 
-@bp.route('cabinetcpa/cashback/list/')
+@bp.route('/cashback/list/')
 @affiliate_only
 @template('cabinetcpa/cashback/list.html')
 @paginated(CASHBACKS_PER_PAGE)
@@ -30,7 +30,7 @@ def cashback_list(**kwargs):
 	return dict(cashbacks=cashbacks, count=count)
 
 
-@bp.route('cabinetcpa/cashback/invites/')
+@bp.route('/cashback/invites/')
 @affiliate_only
 @template('cabinetcpa/cashback/invites.html')
 @paginated(CASHBACK_INVITES_PER_PAGE)

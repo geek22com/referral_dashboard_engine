@@ -1,0 +1,34 @@
+{% extends "cabinetcpa/cashback/layout.html" %}
+
+{% set activetab = 'list' %}
+
+{% block tabcontent %}
+
+{% if cashbacks %}
+	<table class="bordered-table zebra-striped">
+		<thead>
+			<tr>
+				<th class="center">Время</th>
+				<th class="center">ID</th>
+				<th class="center">Оффер</th>
+				<th class="center">Вознаграждение партнёра, руб.</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for cashback in cashbacks %}
+			<tr>
+				<td class="center">{{ cashback.date|datetimeformat }}</td>
+				<td>{{ cashback.target }}</td>
+				<td><a href="{{ url_for('.offers_info', id=cashback.offer.id) }}">{{ cashback.offer.name }}</a></td>
+				<td class="right">{{ cashback.affiliate_revenue|currency }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Не было совершено ни одного CashBack.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

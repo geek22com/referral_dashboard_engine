@@ -600,4 +600,11 @@ class SiteStat(models.ModelBase):
 	click_count_diff = Field(types.Integer, 'click-count-diff')
 
 
+class CashBack(models.ModelBase):
+	target = Field(types.String, 'target')
+	date = Field(types.DateTime, 'date')
+	offer = Field('Offer', 'offer')
+	affiliate_revenue = Field(types.Decimal, 'affiliate-revenue', quantize='1.00')
+
+
 registry.register_models_from_module(__name__)

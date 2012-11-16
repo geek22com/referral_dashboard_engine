@@ -13,6 +13,7 @@ from error import ErrorResource
 from public import PublicResource
 from product import ProductResource
 from site import SiteResource
+from cashback import CashBackResource
 
 users = UserResource()
 user_stats = UserStatResource()
@@ -29,3 +30,4 @@ errors = ErrorResource()
 pub = PublicResource()
 products = ProductResource()
 sites = SiteResource()
+cashbacks = CashBackResource()

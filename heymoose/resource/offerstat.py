@@ -45,6 +45,9 @@ class OfferStatResource(BackendResource):
 	
 	def list_by_keywords(self, **kwargs):
 		return self.path('keywords').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
+
+	def list_by_cashback(self, **kwargs):
+		return self.path('cashbacks').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
 	
 	def list_suboffer(self, **kwargs):
 		return self.path('suboffers').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
@@ -66,6 +69,9 @@ class OfferStatResource(BackendResource):
 	
 	def list_suboffer_by_keywords(self, **kwargs):
 		return self.path('suboffers').path('keywords').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
+
+	def list_suboffer_by_cashback(self, **kwargs):
+		return self.path('suboffers').path('cashback').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
 	
 	def total(self, **kwargs):
 		return self.path('total').get(**kwargs).as_obj(TotalStat)

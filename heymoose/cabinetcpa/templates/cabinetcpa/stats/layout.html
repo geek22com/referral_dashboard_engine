@@ -37,6 +37,7 @@
 	<li id="tab-referer"><a href="{{ url_for('.stats_referer') }}">По реферерам</a></li>
 	<li id="tab-keywords"><a href="{{ url_for('.stats_keywords') }}">По поисковым запросам</a></li>
 	<li id="tab-referral"><a href="{{ url_for('.stats_referral') }}">По рефералам</a></li>
+	<li id="tab-cashback"><a href="{{ url_for('.stats_cashback') }}">По CashBack</a></li>
 	{% endif %}
 	{% if '.stats_suboffer' in request.url_rule.endpoint %}
 	<li id="tab-suboffer"><a href="#">По действиям</a></li>

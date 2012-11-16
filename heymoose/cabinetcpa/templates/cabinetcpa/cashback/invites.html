@@ -5,6 +5,9 @@
 {% block tabcontent %}
 
 {% if invites %}
+	<div class="well right">
+		<a href="{{ url_for(request.url_rule.endpoint, format='xls') }}" class="btn primary">Выгрузить список в Excel</a>
+	</div>
 	<table class="bordered-table zebra-striped">
 		<thead>
 			<tr>

@@ -4,6 +4,13 @@
 
 {% block tabcontent %}
 
+{# <div class="clearfix alert-message block-message success">
+	<p>
+		Некоторые рекламодатели предоставляют партнерам возможность поощрять своих пользователей за выполнение действий по офферам, то есть осуществлять частичный возврат средств или <b>CashBack</b>. В партнерской ссылке для таких офферов существует дополнительный параметр <b>cashback</b>, значением которого может быть идентификатор (наример, email) пользователя, который сотрудничает с Вами по схеме CashBack.
+
+	</p>
+</div> #}
+
 {% if cashbacks %}
 	<div class="well right">
 		<a href="{{ url_for(request.url_rule.endpoint, format='xls') }}" class="btn primary">Выгрузить список в Excel</a>

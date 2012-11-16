@@ -34,7 +34,8 @@
 			var affId = '{{ g.user.id }}';
 			
 			function getFormValue(id) {
-				return $.trim($(id).val());
+				var input = $(id);
+				return input ? $.trim(input.val()) : '';
 			}
 			
 			function updateCodes() {
@@ -252,14 +253,18 @@
 								<label for="sourceid">SourceID</label>
 								<input type="text" id="sourceid" class="sourceid span80 gen-trigger" />
 							</div>
+							{% if offer.allow_deeplink %}
 							<div class="span160">
 								<label for="ulp">ULP (deeplink)</label>
 								<input type="text" id="ulp" class="ulp span160 gen-trigger" />
 							</div>
+							{% endif %}
+							{% if offer.allow_cashback %}
 							<div class="span160">
 								<label for="ulp">CashBack</label>
 								<input type="text" id="cashback" class="cashback span160 gen-trigger" />
 							</div>
+							{% endif %}
 						</div>
 						<div class="right">
 							<a href="#" class="dotted-link code-settings-clear">очистить</a>

@@ -237,7 +237,7 @@ class EmailNotifyForm(Form):
 
 class UserBlockForm(EmailNotifyForm):
 	reason = TextAreaField(u'Причина', [
-		validators.Length(max=500, message=(u'Причина должна быть длиной не более 500 символов'))
+		validators.Required(message=u'Введите причину блокировки.')
 	])
 
 class OfferBlockForm(Form):

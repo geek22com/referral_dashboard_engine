@@ -320,6 +320,12 @@
 					{{ forms.errors(form.allow_deeplink) }}
 				</div>
 			</div>
+			<div class="input">
+				<div class="formfield clearfix {{ forms.css_errors(form.allow_cashback) }}">
+					{{ forms.field(form.allow_cashback) }} {{ forms.label(form.allow_cashback, class='simple') }}
+					{{ forms.errors(form.allow_cashback) }}
+				</div>
+			</div>
 		</fieldset>
 		
 		<fieldset>

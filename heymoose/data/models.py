@@ -223,6 +223,7 @@ class Offer(SubOffer):
 	token_param_name = Field(types.String, 'token-param-name')
 	launch_time = Field(types.DateTime, 'launch-time')
 	allow_deeplink = Field(types.Boolean, 'allow-deeplink')
+	allow_cashback = Field(types.Boolean, 'allow-cashback')
 	is_product_offer = Field(types.Boolean, 'is-product-offer')
 	yml_url = Field(types.String, 'yml-url')
 	

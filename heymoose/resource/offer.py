@@ -51,7 +51,7 @@ class OfferResource(BackendResource):
 			required='''advertiser_id pay_method name description short_description url site_url
 				title code hold_days cookie_ttl launch_time'''.split(),
 			optional='''cpa_policy cost cost2 percent allow_negative_balance auto_approve reentrant
-				logo_filename categories regions allow_deeplink'''.split()
+				logo_filename categories regions allow_deeplink allow_cashback'''.split()
 		)
 		params.update(balance=balance)
 		params.update(kwargs)
@@ -61,7 +61,7 @@ class OfferResource(BackendResource):
 		params = self.extractor.extract(offer,
 			updated='''pay_method cpa_policy cost cost2 percent title code hold_days auto_approve reentrant
 				name description short_description cr url site_url cookie_ttl categories regions allow_negative_balance
-				showcase logo_filename token_param_name launch_time allow_deeplink yml_url'''.split()
+				showcase logo_filename token_param_name launch_time allow_deeplink allow_cashback yml_url'''.split()
 		)
 		params.update(kwargs)
 		self.path(offer.id).put(**params)

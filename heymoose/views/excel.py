@@ -123,3 +123,46 @@ def grants_to_xls(grants):
 	f.seek(0)
 	return f
 
+
+def cashbacks_to_xls(cashbacks):
+	table = [
+		dict(title=u'Время', getter=lambda c: c.date, style=datetime_style, width=5000),
+		dict(title=u'ID', getter=lambda c: c.target, width=5000),
+		dict(title=u'ID оффера', getter=lambda c: c.offer.id),
+		dict(title=u'Название оффера', getter=lambda c: c.offer.name, width=5000),
+		dict(title=u'Вознаграждение партнёра', getter=lambda c: c.affiliate_revenue, style=currency_style)
+	]
+	wb = xlwt.Workbook()
+	ws = wb.add_sheet(u'CashBack')
+	for i, col in enumerate(table):
+		ws.write(0, i, col.get('title'), bold_style)
+		if 'width' in col:
+			ws.col(i).width = col.get('width')
+	for i, cashback in enumerate(cashbacks):
+		for j, col in enumerate(table):
+			ws.write(i+1, j, col.get('getter')(cashback), col.get('style', xlwt.Style.default_style))
+	f = cStringIO.StringIO()
+	wb.save(f)
+	f.seek(0)
+	return f
+
+
+def cashback_invites_to_xls(invites):
+	table = [
+		dict(title=u'Время', getter=lambda i: i.date, style=datetime_style, width=5000),
+		dict(title=u'Пригласивший', getter=lambda i: i.referrer, width=5000),
+		dict(title=u'Приглашенный', getter=lambda i: i.referral, width=5000)
+	]
+	wb = xlwt.Workbook()
+	ws = wb.add_sheet(u'Приглашения по CashBack')
+	for i, col in enumerate(table):
+		ws.write(0, i, col.get('title'), bold_style)
+		if 'width' in col:
+			ws.col(i).width = col.get('width')
+	for i, invite in enumerate(invites):
+		for j, col in enumerate(table):
+			ws.write(i+1, j, col.get('getter')(invite), col.get('style', xlwt.Style.default_style))
+	f = cStringIO.StringIO()
+	wb.save(f)
+	f.seek(0)
+	return f

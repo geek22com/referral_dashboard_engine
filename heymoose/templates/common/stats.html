@@ -188,3 +188,15 @@
 		{% endif %}
 	{% endcall %}
 {% endmacro %}
+
+{% macro table_by_cashback(stats, suboffer_stats_rule=none) %}
+	{% call(place, stat) table_base(stats, **kwargs) %}
+		{% if place == 'first-header' %}
+			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Клиент</th>
+		{% elif place == 'first' %}
+			<td>{{ stat.name or '&mdash;'|safe }}</td>
+		{% elif place == 'suboffer-stats-url' %}
+			{{ url_for(suboffer_stats_rule, cashback=stat.name, **kwargs) -}}
+		{% endif %}
+	{% endcall %}
+{% endmacro %}

@@ -1,0 +1,112 @@
+{% extends "cabinetcpa/cashback/layout.html" %}
+
+{% set activetab = 'invites' %}
+
+{% block extrahead %}
+	{{ super() }}
+	<style type="text/css">
+		.code-box, .code-box[readonly] {
+			background-color: #FFF;
+			cursor: text;
+		}
+	</style>
+	<script type="text/javascript">
+		$(function() {
+			var affId = '{{ g.user.id -}}';
+			var apiUrl = '{{ config.get("TRACKER_API_URL") -}}';
+			
+			function getFormValue(id) {
+				var input = $(id);
+				return input ? encodeURIComponent($.trim(input.val())) : '';
+			}
+			
+			$('.gen-trigger').change(function() {
+				var referrer = getFormValue('#referrer');
+				var ulp = getFormValue('#ulp');
+
+				if (referrer && ulp) {
+					var inviteLink = apiUrl + '?method=cashbackInvite'
+						+ '&aff_id=' + affId
+						+ '&referrer=' + referrer
+						+ '&ulp=' + ulp;
+					$('#invite-link').text(inviteLink);
+				} else {
+					$('#invite-link').text('Заполните все поля!');
+				}
+			}).change();
+		})
+	</script>
+{% endblock %}
+
+{% block tabcontent %}
+
+<div class="clearfix alert-message block-message success">
+	<p>
+		Вы можете дать возможность вашим клиентам приглашать других людей для сотрудничества
+		с Вами по схеме CashBack. Пользователям, пригласившим Ваших новых клиентов, Вы можете
+		выплачивать повышенную CashBack-сумму. Для получения ссылки-приглашения для Вашего
+		клиента нажмите кнопку ниже.
+	</p>
+	<div class="alert-actions">
+		<a class="btn small" href="#" data-controls-modal="modal-invite-link"
+		 data-backdrop="true" data-keyboard="true">Получить приглашение</a>
+	</div>
+</div>
+
+{% if invites %}
+	<div class="well right">
+		<a href="{{ url_for(request.url_rule.endpoint, format='xls') }}" class="btn primary">Выгрузить список в Excel</a>
+	</div>
+	<table class="bordered-table zebra-striped">
+		<thead>
+			<tr>
+				<th class="center">Время</th>
+				<th class="center">Пригласивший</th>
+				<th class="center">Приглашенный</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for invite in invites %}
+			<tr>
+				<td class="center">{{ invite.date|datetimeformat }}</td>
+				<td>{{ invite.referrer }}</td>
+				<td>{{ invite.referral }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Не было совершено ни одного приглашения по CashBack.</p>
+	</div>
+{% endif %}
+
+{% endblock %}
+
+{% block postbody %}
+	{{ super() }}
+	<div id="modal-invite-link" class="modal fade" style="display: none;">
+		<div class="modal-header">
+			<a href="#" class="close">×</a>
+			<h3>Ссылка-приглашение</h3>
+		</div>
+		<div class="modal-body">
+			<form class="stacked">
+				<div class="clearfix row">
+					<div class="span4">
+						<label for="referrer">Клиент</label>
+						<input type="text" id="referrer" class="referrer span4 gen-trigger" />
+					</div>
+					<div class="span5">
+						<label for="ulp">Перенаправить на адрес</label>
+						<input type="text" id="ulp" class="ulp span5 gen-trigger" />
+					</div>
+				</div>
+				<div class="clearfix code-box-container click-url-container">
+					<label for="invite-link">Ссылка-приглашение</label>
+					<textarea rows="4" id="invite-link" class="span9 code-box" readonly="readonly"></textarea>
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}

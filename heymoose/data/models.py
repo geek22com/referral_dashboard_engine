@@ -223,6 +223,7 @@ class Offer(SubOffer):
 	token_param_name = Field(types.String, 'token-param-name')
 	launch_time = Field(types.DateTime, 'launch-time')
 	allow_deeplink = Field(types.Boolean, 'allow-deeplink')
+	allow_cashback = Field(types.Boolean, 'allow-cashback')
 	is_product_offer = Field(types.Boolean, 'is-product-offer')
 	yml_url = Field(types.String, 'yml-url')
 	
@@ -598,6 +599,19 @@ class SiteStat(models.ModelBase):
 	first_period_click_count = Field(types.Integer, 'first-period-click-count')
 	second_period_click_count = Field(types.Integer, 'second-period-click-count')
 	click_count_diff = Field(types.Integer, 'click-count-diff')
+
+
+class Cashback(models.ModelBase):
+	target = Field(types.String, 'target')
+	date = Field(types.DateTime, 'date')
+	offer = Field('Offer', 'offer')
+	affiliate_revenue = Field(types.Decimal, 'affiliate-revenue', quantize='1.00')
+
+
+class CashbackInvite(models.ModelBase):
+	referrer = Field(types.String, 'referrer')
+	referral = Field(types.String, 'referral')
+	date = Field(types.DateTime, 'date')
 
 
 registry.register_models_from_module(__name__)

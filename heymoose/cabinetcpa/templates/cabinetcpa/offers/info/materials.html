@@ -19,6 +19,10 @@
 		.span220 {
 			width: 225px;
 		}
+
+		.span160 {
+			width: 176px;
+		}
 		
 		.code-settings-body {
 			margin-top: 10px;
@@ -30,7 +34,8 @@
 			var affId = '{{ g.user.id }}';
 			
 			function getFormValue(id) {
-				return $.trim($(id).val());
+				var input = $(id);
+				return input ? $.trim(input.val()) : '';
 			}
 			
 			function updateCodes() {
@@ -48,6 +53,7 @@
 				var subId4 = getFormValue('#subid4');
 				var sourceId = getFormValue('#sourceid');
 				var ulp = getFormValue('#ulp');
+				var cashBack = getFormValue('#cashback');
 				
 				var apiUrl = '{{ config.get("TRACKER_API_URL") -}}';
 				var params = '&offer_id=' + offerId + '&aff_id=' + affId
@@ -57,10 +63,13 @@
 					+ (subId2 ? '&sub_id2=' + encodeURIComponent(subId2) : '')
 					+ (subId3 ? '&sub_id3=' + encodeURIComponent(subId3) : '')
 					+ (subId4 ? '&sub_id4=' + encodeURIComponent(subId4) : '')
-					+ (sourceId ? '&source_id=' + encodeURIComponent(sourceId) : ''); 
+					+ (sourceId ? '&source_id=' + encodeURIComponent(sourceId) : '');
 				
 				var trackingUrl = apiUrl + '?method=track' + params;
-				var clickUrl = apiUrl + '?method=click' + params + (ulp ? '&ulp=' + encodeURIComponent(ulp) : '');
+				var clickUrl = apiUrl + '?method=click' + params
+					+ (ulp ? '&ulp=' + encodeURIComponent(ulp) : '')
+					+ (cashBack ? '&cashback=' + encodeURIComponent(cashBack) : '');
+				
 				var pixelCode = '<img src="' + trackingUrl +
 					'" alt="" style="width: 0; height: 0; position: absolute;" />';
 				var bannerCode = '<a href="' + clickUrl + '"><img src="' + bannerUrl
@@ -240,14 +249,22 @@
 							</div>
 						</div>
 						<div class="clearfix row">
-							<div class="span220">
+							<div class="span80">
 								<label for="sourceid">SourceID</label>
-								<input type="text" id="sourceid" class="sourceid span220 gen-trigger" />
+								<input type="text" id="sourceid" class="sourceid span80 gen-trigger" />
 							</div>
-							<div class="span220">
+							{% if offer.allow_deeplink %}
+							<div class="span160">
 								<label for="ulp">ULP (deeplink)</label>
-								<input type="text" id="ulp" class="ulp span220 gen-trigger" />
+								<input type="text" id="ulp" class="ulp span160 gen-trigger" />
 							</div>
+							{% endif %}
+							{% if offer.allow_cashback %}
+							<div class="span160">
+								<label for="cashback">CashBack</label>
+								<input type="text" id="cashback" class="cashback span160 gen-trigger" />
+							</div>
+							{% endif %}
 						</div>
 						<div class="right">
 							<a href="#" class="dotted-link code-settings-clear">очистить</a>

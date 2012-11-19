@@ -13,6 +13,7 @@ SOURCE_ID_STATS_PER_PAGE = app.config.get('SOURCE_ID_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
 REFERRAL_STATS_PER_PAGE = app.config.get('REFERRAL_STATS_PER_PAGE', 20)
+CASHBACK_STATS_PER_PAGE = app.config.get('CASHBACK_STATS_PER_PAGE', 20)
 SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 
 
@@ -93,7 +94,7 @@ def stats_keywords(**kwargs):
 	return dict(stats=stats, count=count, form=form)
 
 
-@bp.route('/stats/referral')
+@bp.route('/stats/referral/')
 @affiliate_only
 @template('cabinetcpa/stats/referral.html')
 @sorted('amount', 'desc')
@@ -103,6 +104,18 @@ def stats_referral(**kwargs):
 		kwargs.update(source=request.args.get('source'))
 	ref_stats_list = rc.user_stats.list_referrals(g.user.id, **kwargs)
 	return dict(ref_stats=ref_stats_list.items, count=ref_stats_list.count, sum=ref_stats_list.sum)
+
+
+@bp.route('/stats/cashback/')
+@affiliate_only
+@template('cabinetcpa/stats/cashback.html')
+@sorted('clicks_count', 'desc')
+@paginated(CASHBACK_STATS_PER_PAGE)
+def stats_cashback(**kwargs):
+	form = forms.DateTimeRangeForm(request.args)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_by_cashback(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count, form=form)
 
 
 @bp.route('/stats/suboffer')
@@ -191,4 +204,17 @@ def stats_suboffer_keywords(**kwargs):
 	form.offer.set_offers(offers)
 	kwargs.update(keywords=request.args.get('keywords'), **form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer_by_keywords(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count, offer=form.offer.selected)
+
+@bp.route('/stats/suboffer/cashback')
+@affiliate_only
+@template('cabinetcpa/stats/suboffer.html')
+@sorted('leads_count', 'desc')
+@paginated(SUBOFFER_STATS_PER_PAGE)
+def stats_suboffer_cashback(**kwargs):
+	offers, _ = rc.offers.list_requested(g.user.id, offset=0, limit=100000)
+	form = forms.CabinetStatsForm(request.args)
+	form.offer.set_offers(offers)
+	kwargs.update(cashback=request.args.get('cashback'), **form.backend_args())
+	stats, count = rc.offer_stats.list_suboffer_by_cashback(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
 	return dict(stats=stats, count=count, offer=form.offer.selected)

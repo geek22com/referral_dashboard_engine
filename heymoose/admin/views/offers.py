@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import request, flash, redirect, url_for, abort, jsonify, send_file
+from flask import g, request, flash, redirect, url_for, abort, jsonify, send_file
 from heymoose import app, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import SubOffer, Banner

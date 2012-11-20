@@ -1,12 +1,12 @@
-from base import notify_user, notify_offer_affiliates
+from base import notify_user, notify_users
 import templates
 
-def offer_blocked(offer, reason):
-	notify_offer_affiliates(offer, templates.OFFER_BLOCKED)
+def offer_blocked(affiliates, offer, reason):
+	notify_users(affiliates, templates.OFFER_BLOCKED, offer=offer)
 	notify_user(offer.advertiser, templates.OFFER_BLOCKED, offer=offer, reason=reason)
 
-def offer_unblocked(offer):
-	notify_offer_affiliates(offer, templates.OFFER_UNBLOCKED)
+def offer_unblocked(affiliates, offer):
+	notify_users(affiliates, templates.OFFER_UNBLOCKED, offer=offer)
 	notify_user(offer.advertiser, templates.OFFER_UNBLOCKED, offer=offer)
 
 def grant_approved(grant):

@@ -5,6 +5,7 @@ from heymoose.forms import forms
 from heymoose.data.models import SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
 from heymoose.notifications import notify
+from heymoose.mail import transactional as mail
 from heymoose.views import excel
 from heymoose.views.decorators import template, context, sorted, paginated
 from heymoose.admin import blueprint as bp
@@ -149,14 +150,22 @@ def offers_info(id, offer):
 	offer.overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id)
 	form = forms.OfferBlockForm(request.form)
 	if request.method == 'POST' and form.validate():
+		grants, _ = rc.offer_grants.list(offer_id=offer.id, state=OfferGrantState.APPROVED, blocked=False, offset=0, limit=999999)
+		affiliates = [grant.affiliate for grant in grants]
 		action = request.form.get('action')
 		if action == 'block':
 			rc.offers.block(offer.id, form.reason.data)
-			if form.notify.data: notify.offer_blocked(offer, form.reason.data)
+			if form.notify.data:
+				notify.offer_blocked(affiliates, offer, form.reason.data)
+				mail.users_offer_blocked(affiliates, offer)
+			mail.admin_offer_blocked(offer, g.user, form.reason.data)
 			flash(u'Оффер заблокирован', 'success')
 		elif action == 'unblock':
 			rc.offers.unblock(offer.id)
-			if form.notify.data: notify.offer_unblocked(offer)
+			if form.notify.data:
+				notify.offer_unblocked(affiliates, offer)
+				mail.users_offer_unblocked(affiliates, offer)
+			mail.admin_offer_unblocked(offer, g.user)
 			flash(u'Оффер разблокирован', 'success')
 		return redirect(request.url)
 	return dict(form=form)

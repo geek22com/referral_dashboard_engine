@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from heymoose.data.enums import OfferGrantState, Roles
+from heymoose.data.enums import Roles
 from heymoose.data.mongo.models import Notification
 from heymoose import resource as rc
 from flask import render_template_string
@@ -30,9 +30,3 @@ def notify_user(user, template, **kwargs):
 def notify_admin(template, **kwargs):
 	text = render_template_string(template, **kwargs)
 	create_notification(0, text)
-
-def notify_offer_affiliates(offer, template, **kwargs):
-	grants, _ = rc.offer_grants.list(offer_id=offer.id,
-		state=OfferGrantState.APPROVED, blocked=False, offset=0, limit=999999)
-	affiliates = [grant.affiliate for grant in grants]
-	notify_users(affiliates, template, offer=offer, **kwargs)

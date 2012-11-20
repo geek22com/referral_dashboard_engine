@@ -21,6 +21,16 @@ def admin_user_blocked(user, admin, reason):
 	app.mail.send_message(subject=subject, html=html, recipients=admins)
 
 
+def admin_offer_blocked(offer, admin, reason):
+	subject, html = render.mail_from_template('mail/admin-offer-blocked.html', offer=offer, admin=admin, reason=reason)
+	app.mail.send_message(subject=subject, html=html, recipients=admins)
+
+
+def admin_offer_unblocked(offer, admin):
+	subject, html = render.mail_from_template('mail/admin-offer-unblocked.html', offer=offer, admin=admin)
+	app.mail.send_message(subject=subject, html=html, recipients=admins)
+
+
 # User emails
 	
 def user_confirm_email(user):
@@ -52,3 +62,18 @@ def user_grant_blocked(offer, affiliate, reason):
 	subject, html = render.mail_from_template('mail/user-grant-blocked.html', offer=offer, reason=reason)
 	app.mail.send_message(subject=subject, html=html, recipients=[affiliate.email])
 
+
+# Multiple users emails
+
+def users_offer_blocked(affiliates, offer):
+	subject, html = render.mail_from_template('mail/user-offer-blocked.html', offer=offer)
+	with app.mail.connect() as connection:
+		for affiliate in affiliates:
+			connection.send_message(subject=subject, html=html, recipients=[affiliate.email])
+
+
+def users_offer_unblocked(affiliates, offer):
+	subject, html = render.mail_from_template('mail/user-offer-unblocked.html', offer=offer)
+	with app.mail.connect() as connection:
+		for affiliate in affiliates:
+			connection.send_message(subject=subject, html=html, recipients=[affiliate.email])

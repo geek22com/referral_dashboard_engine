@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from flask import render_template, g, redirect, url_for, request, flash, session, jsonify, abort
-from heymoose import app, resource as rc
+from heymoose import app, signals, resource as rc
 from heymoose.site import blueprint as bp
 from heymoose.forms import forms
 from heymoose.utils.gen import check_password_hash
 from heymoose.views.decorators import template
-from heymoose.mail import marketing as mmail, transactional as tmail
+from heymoose.mail import marketing as mmail
 from heymoose.data.models import User
 from heymoose.data.enums import Roles
 from heymoose.data.repos import regions_repo
@@ -63,7 +63,7 @@ def contacts():
 		contact = Contact(date=datetime.now(), partner=False)
 		form.populate_obj(contact)
 		contact.save()
-		tmail.admin_feedback_added(contact)
+		signals.new_feedback.send(app, contact=contact)
 		flash(u'Спасибо, мы обязательно с вами свяжемся!', 'success')
 		return redirect(url_for('.contacts'))
 	return dict(form=form)
@@ -97,7 +97,7 @@ def register_advertiser():
 			rc.users.add_role(user.id, Roles.ADVERTISER)
 			user.roles.append(Roles.ADVERTISER)
 			session['user_id'] = user.id
-			tmail.user_confirm_email(user)
+			signals.confirmation_email_requested.send(app, user=user)
 			flash(u'Вы успешно зарегистрированы. На указанный электронный адрес'
 				u' было выслано письмо с подтверждением.', 'success')
 			return redirect(url_for('.gateway'))
@@ -129,7 +129,7 @@ def register_affiliate():
 			user.roles.append(Roles.AFFILIATE)
 			session['user_id'] = user.id
 			session['ref'] = ''
-			tmail.user_confirm_email(user)
+			signals.confirmation_email_requested.send(app, user=user)
 			flash(u'Вы успешно зарегистрированы. На указанный электронный адрес'
 				u' было выслано письмо с подтверждением.', 'success')
 			return redirect(url_for('.gateway', registered=user.referral_code))
@@ -173,7 +173,7 @@ def password():
 		if user is not None and not user.is_admin:
 			new_password = user.generate_password()
 			rc.users.update(user)
-			tmail.user_restore_password(user, new_password)
+			signals.password_restore_requested.send(app, user=user, password=new_password)
 			flash(u'Новый пароль выслан на указанный электронный адрес', 'success')
 			return redirect(url_for('.index'))
 		else:

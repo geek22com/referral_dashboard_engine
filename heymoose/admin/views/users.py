@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import g, request, redirect, flash, url_for, session, send_file
-from heymoose import app, resource as rc
+from heymoose import app, signals, resource as rc
 from heymoose.admin import blueprint as bp
 from heymoose.admin.helpers import permission_required, superadmin_required, not_enough_permissions
 from heymoose.views import excel
@@ -11,7 +11,6 @@ from heymoose.data.models import User
 from heymoose.data.enums import Roles
 from heymoose.data.mongo.models import UserInfo, AdminPermissions
 from heymoose.mail import marketing as mmail
-from heymoose.mail import transactional as tmail
 
 
 USERS_PER_PAGE = app.config.get('USERS_PER_PAGE', 20)
@@ -98,9 +97,7 @@ def users_info(id, user):
 	if request.method == 'POST':
 		if not user.blocked and form.validate():
 			rc.users.block(user.id, form.reason.data)
-			if form.mail.data:
-				tmail.user_blocked(user, form.reason.data)
-			tmail.admin_user_blocked(user, g.user, form.reason.data)
+			signals.user_blocked.send(app, user=user, admin=g.user, reason=form.reason.data, notify_user=form.mail.data)
 			flash(u'Учетная запись заблокирована', 'success')
 			return redirect(url_for('.users_info', id=user.id))
 		elif user.blocked:
@@ -175,7 +172,7 @@ def users_info_password_change(id, user):
 @permission_required_on_advertiser('do_advertiser_edit')
 @permission_required_on_affiliate('do_affiliate_edit')
 def users_info_lists_add(id, user):
-	if mmail.lists_add_user(user, mail_if_failed=False):
+	if mmail.lists_add_user(user):
 		flash(u'Пользователь добавлен в списки рассылки', 'success')
 	else:
 		flash(u'Ошибка при добавлении пользователя в списки рассылки', 'error')

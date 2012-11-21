@@ -86,12 +86,12 @@
 		{% endif %}
 		{% if admin and user.can('do_offer_block') %}
 			<div class="well center">
+				{% if offer.approved %}
 				<a href="#" class="btn danger" data-controls-modal="modal-block"
-				 data-backdrop="true" data-keyboard="true"
-				 >{{ 'Заблокировать оффер' if offer.approved else 'Уведомление о нарушении'}}</a>
-				{% if not offer.approved %}
+				 data-backdrop="true" data-keyboard="true">Заблокировать оффер</a>
+				{% else %}
 				<a href="#" class="btn success" data-controls-modal="modal-unblock"
-				 data-backdrop="true" data-keyboard="true" style="margin-top: 10px;">Разблокировать оффер</a>
+				 data-backdrop="true" data-keyboard="true">Разблокировать оффер</a>
 				{% endif %}
 			</div>
 		{% endif %}
@@ -246,11 +246,12 @@
 </div>
 
 {% if admin %}
+	{% if offer.approved %}
 	<div id="modal-block" class="modal" style="display: none;">
 		<form method="post" action="" class="validate2">
 			<div class="modal-header">
 				<a href="#" class="close">×</a>
-				<h3>{{ 'Блокировка оффера' if offer.approved else 'Уведомление о нарушении'}}</h3>
+				<h3>Блокировка оффера</h3>
 			</div>
 			<div class="modal-body">
 				<fieldset>
@@ -262,11 +263,11 @@
 				</fieldset>
 			</div>
 			<div class="modal-footer">
-				<input type="submit" class="btn primary" value="{{ 'Заблокировать' if offer.approved else 'Уведомить'}}" />
+				<input type="submit" class="btn primary" value="Заблокировать" />
 			</div>
 		</form>
 	</div>
-	{% if not offer.approved %}
+	{% else %}
 	<div id="modal-unblock" class="modal" style="display: none;">
 		<form method="post" action="" class="validate2">
 			<div class="modal-header">

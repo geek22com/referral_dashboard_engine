@@ -254,7 +254,7 @@ def offers_info_requests(id, **kwargs):
 	if request.method == 'POST' and form.validate():
 		grant = rc.offer_grants.get_by_id(form.grant_id.data, full=True)
 		if grant and grant.offer.id == offer.id and not grant.blocked:
-			signal_args = dict(grant=grant, notify=form.notify.data, reason=form.reason.data)
+			signal_args = dict(grant=grant, notify=True, reason=form.reason.data)
 			action = form.action.data
 			if action == 'approve' and not grant.approved:
 				rc.offer_grants.approve(grant.id)

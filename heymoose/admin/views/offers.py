@@ -4,7 +4,6 @@ from heymoose import app, signals, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
-from heymoose.notifications import notify
 from heymoose.views import excel
 from heymoose.views.decorators import template, context, sorted, paginated
 from heymoose.admin import blueprint as bp
@@ -301,23 +300,23 @@ def offers_info_requests(id, offer, **kwargs):
 	if request.method == 'POST' and form.validate():
 		grant = rc.offer_grants.get_by_id(form.grant_id.data, full=True)
 		if grant and grant.offer.id == offer.id:
+			signal_args = dict(grant=grant, notify=form.notify.data, reason=form.reason.data)
 			action = form.action.data
 			if action == 'unblock':
 				rc.offer_grants.unblock(grant.id)
-				grant.blocked = False
-				if form.notify.data and grant.approved: notify.grant_approved(grant)
+				signals.grant_approved.send(app, **signal_args)
 				flash(u'Заявка разблокирована', 'success')
 			elif action == 'block':
 				rc.offer_grants.block(grant.id, form.reason.data)
-				if form.notify.data: notify.grant_blocked(grant, form.reason.data)
+				signals.grant_blocked.send(app, **signal_args)
 				flash(u'Заявка заблокирована', 'success')
 			elif action == 'approve' and not grant.approved:
 				rc.offer_grants.approve(grant.id)
-				if form.notify.data and not grant.blocked: notify.grant_approved(grant)
+				signals.grant_approved.send(app, **signal_args)
 				flash(u'Заявка утверждена', 'success')
 			elif action == 'reject' and not grant.rejected:
 				rc.offer_grants.reject(grant.id, form.reason.data)
-				if form.notify.data: notify.grant_rejected(grant, form.reason.data)
+				signals.grant_rejected.send(app, **signal_args)
 				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
 	return dict(grants=grants, count=count, form=form)

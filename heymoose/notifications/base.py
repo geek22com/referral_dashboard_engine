@@ -5,8 +5,8 @@ from heymoose import resource as rc
 from flask import render_template_string
 from datetime import datetime
 
-def create_notification(id, text):
-	Notification(user_id=id, body=text, date=datetime.now()).save()
+def create_notification(id, text, notified=False):
+	Notification(user_id=id, body=text, date=datetime.now(), notified=notified).save()
 
 def notify_all(text, **kwargs):
 	users = rc.users.list(offset=0, limit=999999, **kwargs)
@@ -19,13 +19,13 @@ def notify_all_affiliates(text, **kwargs):
 def notify_all_advertisers(text, **kwargs):
 	notify_all(text, role=Roles.ADVERTISER, **kwargs)
 
-def notify_users(users, template, **kwargs):
+def notify_users(users, template, notified=False, **kwargs):
 	text = render_template_string(template, **kwargs)
 	for user in users:
-		create_notification(user.id, text)
+		create_notification(user.id, text, notified=notified)
 
-def notify_user(user, template, **kwargs):
-	notify_users([user], template, **kwargs)
+def notify_user(user, template, notified=False, **kwargs):
+	notify_users([user], template, notified=notified, **kwargs)
 
 def notify_admin(template, **kwargs):
 	text = render_template_string(template, **kwargs)

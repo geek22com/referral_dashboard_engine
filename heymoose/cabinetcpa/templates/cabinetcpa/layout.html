@@ -79,6 +79,7 @@
 	<li id="menu-item-index"><a href="{{ url_for('.index') }}">Главная</a></li>
 	<li id="menu-item-offers"><a href="{{ url_for('.offers_requested' if g.user.is_affiliate else '.offers_list') }}">Офферы</a></li>
 	{% if g.user.is_affiliate %}
+	<li id="menu-item-sites"><a href="{{ url_for('.sites_list') }}">Площадки</a></li>
 	<li id="menu-item-cashback"><a href="{{ url_for('.cashback') }}">CashBack</a></li>
 	{% endif %}
 	<li id="menu-item-stats"><a href="{{ url_for('.stats_offer') }}">Статистика</a></li>

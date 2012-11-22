@@ -95,3 +95,8 @@ class ProductRevenueUnits(Enum):
 class SiteTypes(Enum):
 	WEB_SITE = e('WEB_SITE', name=u'Веб-сайт')
 	SOCIAL_NETWORK = e('SOCIAL_NETWORK', name=u'Страница или группа в социальной сети')
+
+class AdminStates(Enum):
+	MODERATION = e('MODERATION', name=u'на модерации', tristate=None, message_class='info')
+	APPROVED = e('APPROVED', name=u'подтверждено', tristate=True, message_class='error')
+	BLOCKED = e('BLOCKED', name=u'заблокировано', tristate=False, message_class='success')

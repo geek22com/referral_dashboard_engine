@@ -22,6 +22,23 @@ class IdentifiableModel(models.ModelBase):
 		return hash(self.id)
 
 
+class ModeratableModelMixin:
+	admin_state = Field(types.Boolean, 'admin-state')
+	admin_comment = Field(types.String, 'admin-comment')
+
+	@cached_property
+	def is_moderating(self):
+		return self.admin_state == enums.AdminStates.MODERATION
+
+	@cached_property
+	def is_approved(self):
+		return self.admin_state == enums.AdminStates.APPROVED
+
+	@cached_property
+	def is_blocked(self):
+		return self.admin_state == enums.AdminStates.BLOCKED
+
+
 class User(IdentifiableModel):
 	email = Field(types.String, 'email')
 	password_hash = Field(types.String, 'password-hash')
@@ -614,17 +631,24 @@ class CashbackInvite(models.ModelBase):
 	date = Field(types.DateTime, 'date')
 
 
-class Site(IdentifiableModel):
+class Site(IdentifiableModel, ModeratableModelMixin):
 	affiliate = Field('User', 'affiliate')
 	name = Field(types.String, 'name')
 	description = Field(types.String, 'description')
 	type = Field(enums.SiteTypes, 'type')
 	url = Field(types.String, 'url')
-	stats_url = Field(types.String, 'stats-url')
-	hosts_count = Field(types.Integer, 'hosts-count')
-	members_count = Field(types.Integer, 'members-count')
-	approved = Field(types.Boolean, 'approved')
+	stats_url = Field(types.String, 'stats_url')
+	hosts_count = Field(types.Integer, 'hosts_count')
+	members_count = Field(types.Integer, 'members_count')
 	creation_time = Field(types.DateTime, 'creation-time')
+
+	@cached_property
+	def admin_state_description(self):
+		return {
+			enums.AdminStates.MODERATION: u'Площадка проверяется администрацией',
+			enums.AdminStates.APPROVED: u'Площадка одобрена администрацией',
+			enums.AdminStates.BLOCKED: u'Площадка заблокирована администрацией'
+		}.get(self.admin_state, u'Неизвестно')
 
 
 registry.register_models_from_module(__name__)

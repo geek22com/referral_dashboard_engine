@@ -18,14 +18,14 @@
 		<tbody>
 			{% for site in sites %}
 			<tr>
-				<td><a href="#">{{ site.name }}</a></td>
+				<td><a href="{{ url_for('.sites_info', id=site.id) }}">{{ site.name }}</a></td>
 				<td>{{ site.type.name }}</td>
 				{% if admin %}
 				<td><a href="{{ url_for('.users_info', id=site.affiliate.id) }}">{{ site.affiliate.name }}</a></td>
 				{% endif %}
 				<td>{% if site.url %}<a href="{{ site.url -}}" target="_blank">{{ site.url }}</a>{% else %}&mdash;{% endif %}</td>
 				<td class="center">{{ site.creation_time|datetimeformat }}</td>
-				<td class="center">{{ macros.to_icon(site.approved) }}</td>
+				<td class="center">{{ macros.to_icon(site.admin_state.tristate) }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

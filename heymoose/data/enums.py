@@ -98,5 +98,5 @@ class SiteTypes(Enum):
 
 class AdminStates(Enum):
 	MODERATION = e('MODERATION', name=u'на модерации', tristate=None, message_class='info')
-	APPROVED = e('APPROVED', name=u'подтверждено', tristate=True, message_class='error')
-	BLOCKED = e('BLOCKED', name=u'заблокировано', tristate=False, message_class='success')
+	APPROVED = e('APPROVED', name=u'подтверждено', tristate=True, message_class='success')
+	BLOCKED = e('BLOCKED', name=u'заблокировано', tristate=False, message_class='error')

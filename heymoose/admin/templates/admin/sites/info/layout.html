@@ -1,0 +1,35 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Площадка &laquo;{{ site.name }}&raquo;{% endblock %}
+
+{% set activemenu = 'sites' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{% set activetab = activetab|default('info') %}
+	<script type="text/javascript">
+		$(function() {
+			$('li#tab-{{ activetab }}').addClass('active');
+		})
+	</script>
+{% endblock %}
+
+{% block breadcrumbs %}
+	{{ super() }}
+	{{ macros.breadcrumb('Площадки', url_for('.sites_list')) }}
+	{{ macros.breadcrumb(self.title(), request.url) }}
+{% endblock %}
+
+{% block pageheader %}
+<h1>{{ self.title() }}</h1>
+{% endblock %}
+
+{% block content %}
+<ul class="tabs">
+	<li id="tab-info"><a href="{{ url_for('.sites_info', id=site.id) }}">Описание</a></li>
+	<li id="tab-moderation"><a href="{{ url_for('.sites_info_moderation', id=site.id) }}">Модерация</a></li>
+</ul>
+
+{% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}
+{% endblock %}
+

@@ -1,0 +1,30 @@
+{% macro html(site) %}
+
+<div class="clearfix alert-message block-message {{ site.admin_state.message_class }}">
+	<p>{{ site.admin_state_description }}</p>
+	{% if site.admin_comment %}
+		<p>Комментарий администрации: <i>{{ site.admin_comment }}</i></p>
+	{% endif %}
+</div>
+
+<table class="key-value">
+	<tbody>
+		<tr><th>Название</th><td>{{ site.name }}</td></tr>
+		<tr><th>Тип</th><td>{{ site.type.name }}</td></tr>
+		{% if site.url %}
+		<tr><th>Адрес</th><td><a href="{{ site.url }}" target="_blank">{{ site.url }}</a></td></tr>
+		{% endif %}
+		{% if site.stats_url %}
+		<tr><th>Статистика</th><td><a href="{{ site.stats_url }}" target="_blank">{{ site.stats_url }}</a></td></tr>
+		{% endif %}
+		{% if site.hosts_count %}
+		<tr><th>Количество хостов</th><td>{{ site.hosts_count }}</td></tr>
+		{% endif %}
+		{% if site.members_count %}
+		<tr><th>Количество подписчиков</th><td>{{ site.members_count }}</td></tr>
+		{% endif %}
+		<tr><th>Описание</th><td><p>{{ site.description }}</p></td></tr>
+	</tbody>
+</table>
+
+{% endmacro %}

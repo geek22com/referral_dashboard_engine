@@ -11,6 +11,9 @@ class SiteResource(BackendResource):
 			required='aff_id type name description'.split(),
 			optional='url stats_url hosts_count members_count'.split())
 
+	def extract_site_moderation_params(self, site):
+		return self.extractor.extract(site, required=['admin_state'], optional=['admin_comment'])
+
 	def get_by_id(self, id, **kwargs):
 		return self.path(id).get(**kwargs).as_obj(Site)
 
@@ -22,6 +25,9 @@ class SiteResource(BackendResource):
 
 	def update(self, site):
 		self.path(site.id).put(**self.extract_site_params(site))
+
+	def moderate(self, site):
+		self.path(site.id).path('moderate').put(**self.extract_site_moderation_params(site))
 
 	def extract_blacklist_site_params(self, site):
 		return self.extractor.extract(site, required=['host'], optional=['sub_domain_mask', 'path_mask', 'comment'])

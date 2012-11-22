@@ -1,0 +1,10 @@
+{% extends "admin/sites/info/layout.html" %}
+{% import 'common/forms/moderation.html' as moderation_form %}
+
+{% set activetab = 'moderation' %}
+
+{% block tabcontent %}
+
+{{ moderation_form.html(form) }}
+
+{% endblock %}

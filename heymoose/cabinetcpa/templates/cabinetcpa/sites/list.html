@@ -1,11 +1,20 @@
 {% extends "cabinetcpa/sites/layout.html" %}
-{% import 'common/sites.html' as site_macros %}
+{% import 'common/sites.html' as site_macros with context %}
 
 {% set content_fluid = true %}
 {% set activetab = 'list' %}
 
 {% block tabcontent %}
 
-{{ site_macros.table(null) }}
+{% if sites %}
+	{{ site_macros.table(sites) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Вы еще не добавили ни одной площадки.</p>
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.sites_new') }}">Добавить площадку</a>
+		</div>
+	</div>
+{% endif %}
 
 {% endblock %}

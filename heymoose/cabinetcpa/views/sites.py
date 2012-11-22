@@ -17,7 +17,7 @@ SITES_PER_PAGE = app.config.get('SITES_PER_PAGE', 20)
 @sorted('creation_time', 'desc')
 @paginated(SITES_PER_PAGE)
 def sites_list(**kwargs):
-	sites, count = rc.sites.list(**kwargs)
+	sites, count = rc.sites.list(aff_id=g.user.id, **kwargs)
 	return dict(sites=sites, count=count)
 
 

@@ -8,7 +8,7 @@ class SiteResource(BackendResource):
 
 	def extract_site_params(self, site):
 		return self.extractor.extract(site,
-			required='aff_id type name'.split(),
+			required='aff_id type name description'.split(),
 			optional='url stats_url hosts_count members_count'.split())
 
 	def get_by_id(id, **kwargs):

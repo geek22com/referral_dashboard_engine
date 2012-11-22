@@ -284,9 +284,11 @@ class WebSiteForm(SiteForm):
 class SocialSiteForm(SiteForm):
 	url = TextField(u'Адрес площадки', [
 		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
-		validators.Optional()
+		validators.Required(message=u'Введите адрес площадки')
 	])
-	members_count = IntegerField(u'Количество подписчиков')
+	members_count = IntegerField(u'Количество подписчиков', [
+		validators.Required(message=u'Введите количество подписчиков')
+	])
 
 def site_form_by_type(site_type, *form_args, **form_kwargs):
 	return {

@@ -5,10 +5,12 @@ from heymoose.data.models import Site
 from heymoose.forms import forms
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import affiliate_only
-from heymoose.views.decorators import template, sorted, paginated
+from heymoose.views.decorators import template, context, sorted, paginated
 
 
 SITES_PER_PAGE = app.config.get('SITES_PER_PAGE', 20)
+
+site_context = context(lambda id, **kwargs: dict(site=rc.sites.get_by_id(id)))
 
 
 @bp.route('/sites/')
@@ -39,11 +41,21 @@ def sites_new():
 
 @bp.route('/sites/<int:id>/')
 @affiliate_only
-def sites_info(id):
-	return render_template('cabinetcpa/sites/info/info.html', site=site)
+@template('cabinetcpa/sites/info/info.html')
+@site_context
+def sites_info(id, site):
+	return dict()
 
 
-@bp.route('/sites/<int:id>/edit/')
+@bp.route('/sites/<int:id>/edit/', methods=['GET', 'POST'])
 @affiliate_only
-def sites_info_edit(id):
-	return render_template('cabinetcpa/sites/info/edit.html', site=site)
+@template('cabinetcpa/sites/info/edit.html')
+@site_context
+def sites_info_edit(id, site):
+	form = forms.site_form_by_type(site.type, request.form, obj=site)
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(site)
+		rc.sites.update(site)
+		flash(u'Площадка успешно изменена', 'success')
+		return redirect(url_for('.sites_info', id=site.id))
+	return dict(form=form)

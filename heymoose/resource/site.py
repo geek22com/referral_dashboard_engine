@@ -11,7 +11,7 @@ class SiteResource(BackendResource):
 			required='aff_id type name description'.split(),
 			optional='url stats_url hosts_count members_count'.split())
 
-	def get_by_id(id, **kwargs):
+	def get_by_id(self, id, **kwargs):
 		return self.path(id).get(**kwargs).as_obj(Site)
 
 	def list(self, **kwargs):
@@ -21,7 +21,7 @@ class SiteResource(BackendResource):
 		self.post(**self.extract_site_params(site))
 
 	def update(self, site):
-		self.put(**self.extract_site_params(site))
+		self.path(site.id).put(**self.extract_site_params(site))
 
 	def extract_blacklist_site_params(self, site):
 		return self.extractor.extract(site, required=['host'], optional=['sub_domain_mask', 'path_mask', 'comment'])

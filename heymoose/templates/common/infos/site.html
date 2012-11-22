@@ -1,4 +1,4 @@
-{% macro html(site) %}
+{% macro html(site, admin=false) %}
 
 <div class="clearfix alert-message block-message {{ site.admin_state.message_class }}">
 	<p>{{ site.admin_state_description }}</p>
@@ -6,6 +6,18 @@
 		<p>Комментарий администрации: <i>{{ site.admin_comment }}</i></p>
 	{% endif %}
 </div>
+
+<table class="key-value">
+	<tbody>
+		<tr>
+			<th>Партнёр</th>
+			<td>
+				<a href="{{ url_for('.users_info', id=site.affiliate.id) }}">{{ site.affiliate.email }}</a>
+				{% if site.affiliate.blocked %}<span class="label important">заблокирован</span>{% endif %}
+			</td>
+		</tr>
+	</tbody>
+</table>
 
 <table class="key-value">
 	<tbody>

@@ -12,6 +12,7 @@
 				{% endif %}
 				<th class="center">Адрес</th>
 				<th {{ lists.sort_header('creation_time', **kwargs) }}>Добавлена</th>
+				<th {{ lists.sort_header('last_change_time', **kwargs) }}>Изменена</th>
 				<th style="width: 60px;" {{ lists.sort_header('approved', **kwargs) }}>Подтв.</th>
 			</tr>
 		</thead>
@@ -20,11 +21,12 @@
 			<tr>
 				<td><a href="{{ url_for('.sites_info', id=site.id) }}">{{ site.name }}</a></td>
 				<td>{{ site.type.name }}</td>
-				{% if admin %}
-				<td><a href="{{ url_for('.users_info', id=site.affiliate.id) }}">{{ site.affiliate.email }}</a></td>
-				{% endif %}
+				{% with aff = site.affiliate if admin %}
+				<td><a href="{{ url_for('.users_info', id=aff.id) }}" class="{{ aff.css_status }}">{{ aff.email }}</a></td>
+				{% endwith %}
 				<td>{% if site.url %}<a href="{{ site.url -}}" target="_blank">{{ site.url }}</a>{% else %}&mdash;{% endif %}</td>
 				<td class="center">{{ site.creation_time|datetimeformat }}</td>
+				<td class="center">{{ site.last_change_time|datetimeformat }}</td>
 				<td class="center">{{ macros.to_icon(site.admin_state.tristate) }}</td>
 			</tr>
 			{% endfor %}

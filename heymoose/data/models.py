@@ -146,6 +146,10 @@ class User(IdentifiableModel):
 		self.change_password(new_password)
 		return new_password
 
+	@cached_property
+	def css_status(self):
+		return u'danger' if self.blocked else u''
+
 
 class Account(IdentifiableModel):
 	balance = Field(types.Decimal, 'balance')
@@ -641,6 +645,7 @@ class Site(IdentifiableModel, ModeratableModelMixin):
 	hosts_count = Field(types.Integer, 'hosts_count')
 	members_count = Field(types.Integer, 'members_count')
 	creation_time = Field(types.DateTime, 'creation-time')
+	last_change_time = Field(types.DateTime, 'last-change-time')
 
 	@cached_property
 	def admin_state_description(self):

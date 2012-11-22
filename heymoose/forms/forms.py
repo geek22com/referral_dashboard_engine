@@ -803,6 +803,11 @@ class AdminGroupsForm(Form):
 	groups = myfields.AdminGroupsField(u'Группы')
 
 
+class ModerationForm(Form):
+	admin_state = SelectField(u'Статус', choices=enums.AdminStates.tuples('name'))
+	admin_comment = TextAreaField(u'Комментарий администрации')
+
+
 class NewsItemForm(Form):
 	title = TextField(u'Заголовок', [
 		validators.Required(message=u'Введите заголовок новости'),

@@ -1,0 +1,13 @@
+{% import 'common/forms.html' as forms %}
+
+{% macro html(form) %}
+	<form method="post" action="" class="widelabels validate2">
+		<fieldset>
+			{{ forms.singlefield(form.admin_state, class='span4') }}
+			{{ forms.singlefield(form.admin_comment, class='span10', rows=5) }}
+		</fieldset>
+		<div class="actions">
+			<input class="btn large primary" type="submit" value="Подтвердить" />
+		</div>
+	</form>
+{% endmacro %}

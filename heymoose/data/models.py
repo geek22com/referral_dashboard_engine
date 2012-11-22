@@ -23,7 +23,7 @@ class IdentifiableModel(models.ModelBase):
 
 
 class ModeratableModelMixin:
-	admin_state = Field(types.Boolean, 'admin-state')
+	admin_state = Field(enums.AdminStates, 'admin-state')
 	admin_comment = Field(types.String, 'admin-comment')
 
 	@cached_property

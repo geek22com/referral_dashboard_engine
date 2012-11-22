@@ -18,6 +18,15 @@
 		{% if site.url %}
 		<tr><th>Адрес</th><td><a href="{{ site.url }}" target="_blank">{{ site.url }}</a></td></tr>
 		{% endif %}
+		{% if site.stats_url %}
+		<tr><th>Статистика</th><td><a href="{{ site.stats_url }}" target="_blank">{{ site.stats_url }}</a></td></tr>
+		{% endif %}
+		{% if site.hosts_count %}
+		<tr><th>Количество хостов</th><td>{{ site.hosts_count }}</td></tr>
+		{% endif %}
+		{% if site.members_count %}
+		<tr><th>Количество подписчиков</th><td>{{ site.members_count }}</td></tr>
+		{% endif %}
 		<tr><th>Описание</th><td><p>{{ site.description }}</p></td></tr>
 	</tbody>
 </table>

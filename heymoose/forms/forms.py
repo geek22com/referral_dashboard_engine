@@ -264,33 +264,35 @@ class SiteForm(Form):
 		validators.Length(min=1, max=100, message=u'Название должно иметь длину от 1 до 100 символов'),
 		validators.Required(message=u'Введите название площадки')
 	])
-	url = TextField(u'Адрес площадки', [
-		validators.Required(message=u'Введите URL'),
-		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False)
-	], default=u'http://')
-	language = SelectField(u'Язык площадки', default=u'', choices=[
-		(u'', u'(не указывать)'),
-		(u'1', u'Русский'),
-		(u'2', u'Английский'),
-		(u'3', u'Немецкий')
-	])
-	uniqs = IntegerField(u'уникальных посетителей', [
-		validators.Integer(message=u'Введите число'),
-		validators.NumberRange(min=0, message=u'Укажите неотрицательное целое число')
-	])
-	views = IntegerField(u'просмотров', [
-		validators.Integer(message=u'Введите число'),
-		validators.NumberRange(min=0, message=u'Укажите неотрицательное целое число')
-	])
 	description = TextAreaField(u'Описание площадки', [
-		validators.Length(min=100, message=u'Описание площадки должно содержать минимум 100 символов'),
 		validators.Required(message=u'Введите описание площадки')
 	])
-	categories = myfields.CategoriesField(u'Категории', default=True)
-	regions = myfields.CheckboxListField(u'Регионы', [
-		validators.Required(message=u'Выберите хотя бы один регион')
-	], choices=enums.Regions.tuples('name'), coerce=int, default=(enums.Regions.RUSSIA,))
-	comment = TextAreaField(u'Комментарий для администрации')
+
+class WebSiteForm(SiteForm):
+	url = TextField(u'Адрес площадки', [
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
+		validators.Required(message=u'Введите адрес площадки')
+	])
+	stats_url = TextField(u'Адрес статистики по площадке', [
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
+		validators.Required(message=u'Введите адрес статистики по площадке')
+	])
+	hosts_count = IntegerField(u'Количество хостов', [
+		validators.Required(message=u'Введите количество хостов')
+	])
+
+class SocialSiteForm(SiteForm):
+	url = TextField(u'Адрес площадки', [
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
+		validators.Optional()
+	])
+	members_count = IntegerField(u'Количество подписчиков')
+
+def site_form_by_type(site_type, *form_args, **form_kwargs):
+	return {
+		enums.SiteTypes.WEB_SITE: WebSiteForm,
+		enums.SiteTypes.SOCIAL_NETWORK: SocialSiteForm
+	}[site_type](*form_args, **form_kwargs)
 
 
 class SubOfferForm(Form):

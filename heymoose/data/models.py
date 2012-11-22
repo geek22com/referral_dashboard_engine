@@ -614,4 +614,14 @@ class CashbackInvite(models.ModelBase):
 	date = Field(types.DateTime, 'date')
 
 
+class Site(IdentifiableModel):
+	affiliate = Field('User', 'affiliate')
+	name = Field(types.String, 'name')
+	type = Field(enums.SiteTypes, 'type')
+	url = Field(types.String, 'url')
+	stats_url = Field(types.String, 'stats-url')
+	hosts_count = Field(types.Integer, 'hosts-count')
+	members_count = Field(types.Integer, 'members-count')
+
+
 registry.register_models_from_module(__name__)

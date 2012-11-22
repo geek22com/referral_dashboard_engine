@@ -91,3 +91,7 @@ class WithdrawalBases(Enum):
 class ProductRevenueUnits(Enum):
 	FIXED = e('fixed', sign=u'руб.')
 	PERCENT = e('percent', sign=u'%')
+
+class SiteTypes(Enum):
+	WEB_SITE = e('WEB_SITE', name=u'Веб-сайт')
+	SOCIAL_NETWORK = e('SOCIAL_NETWORK', name=u'Страница или группа в социальной сети')

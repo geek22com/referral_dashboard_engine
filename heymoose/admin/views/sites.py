@@ -13,7 +13,7 @@ site_context = context(lambda id, **kwargs: dict(site=rc.sites.get_by_id(id)))
 
 @bp.route('/sites/')
 @template('admin/sites/list.html')
-@sorted('creation_time', 'desc')
+@sorted('last_change_time', 'desc')
 @paginated(SITES_PER_PAGE)
 def sites_list(**kwargs):
 	sites, count = rc.sites.list(**kwargs)

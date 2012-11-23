@@ -21,9 +21,11 @@
 			<tr>
 				<td><a href="{{ url_for('.sites_info', id=site.id) }}">{{ site.name }}</a></td>
 				<td>{{ site.type.name }}</td>
-				{% with aff = site.affiliate if admin %}
-				<td><a href="{{ url_for('.users_info', id=aff.id) }}" class="{{ aff.css_status }}">{{ aff.email }}</a></td>
-				{% endwith %}
+				{% if admin %}
+				<td>
+					<a href="{{ url_for('.users_info', id=site.affiliate.id) }}" class="{{ site.affiliate.css_status }}">{{ site.affiliate.email }}</a>
+				</td>
+				{% endif %}
 				<td>{% if site.url %}<a href="{{ site.url -}}" target="_blank">{{ site.url }}</a>{% else %}&mdash;{% endif %}</td>
 				<td class="center">{{ site.creation_time|datetimeformat }}</td>
 				<td class="center">{{ site.last_change_time|datetimeformat }}</td>

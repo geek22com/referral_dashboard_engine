@@ -10,8 +10,8 @@ from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
 import base64
 
+
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
-OFFER_REQUESTS_PER_PAGE = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
 OFFER_ACTIONS_PER_PAGE = app.config.get('OFFER_ACTIONS_PER_PAGE', 20)
 OFFER_BANNERS_PER_PAGE = app.config.get('OFFER_BANNERS_PER_PAGE', 20)
 PRODUCTS_PER_PAGE = app.config.get('PRODUCTS_PER_PAGE', 20)
@@ -255,11 +255,3 @@ def offers_info_sales(id, offer, **kwargs):
 	else:
 		actions, count = rc.actions.list(offer.id, **kwargs) if form.validate() else ([], 0)
 	return dict(actions=actions, count=count, form=form)
-
-
-@bp.route('/offers/<int:id>/stats')
-@template('cabinetcpa/offers/info/stats.html')
-@visible_offer_context
-def offers_info_stats(id, offer):
-	return dict()
-

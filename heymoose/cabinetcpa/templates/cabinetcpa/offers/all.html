@@ -17,7 +17,7 @@
 {{ offer_filter_macros.html(form) }}
 
 {% if offers %}
-	{{ offer_macros.table(offers, grant_status=g.user.is_affiliate, user=g.user) }}
+	{{ offer_macros.table(offers, user=g.user) }}
 	{{ lists.paginate(pages, **form.query_args()) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">

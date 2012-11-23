@@ -17,7 +17,7 @@
 {% block tabcontent %}
 
 {% if offers %}
-	{{ offer_macros.table(offers, status=user.is_advertiser, grant_status=user.is_affiliate, user=user) }}
+	{{ offer_macros.table(offers, status=true, user=user) }}
 	{{ macros.paginate(pages, '.users_info_offers', id=user.id) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">

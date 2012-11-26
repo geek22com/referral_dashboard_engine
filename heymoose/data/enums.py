@@ -97,6 +97,6 @@ class SiteTypes(Enum):
 	SOCIAL_NETWORK = e('SOCIAL_NETWORK', name=u'Страница или группа в социальной сети')
 
 class AdminStates(Enum):
-	MODERATION = e('MODERATION', name=u'на модерации', tristate=None, message_class='info')
-	APPROVED = e('APPROVED', name=u'подтверждено', tristate=True, message_class='success')
-	BLOCKED = e('BLOCKED', name=u'заблокировано', tristate=False, message_class='error')
+	MODERATION = e('MODERATION', name=u'на модерации', tristate=None, message_class='info', link_class='danger')
+	APPROVED = e('APPROVED', name=u'подтверждено', tristate=True, message_class='success', link_class='')
+	BLOCKED = e('BLOCKED', name=u'заблокировано', tristate=False, message_class='error', link_class='danger')

@@ -38,7 +38,10 @@
 		<p>В данный момент оффер размещен на {{ offer.placements_count }} Ваших площадках.</p>
 		{% endif %}
 		<div class="alert-actions">
-			<a class="btn small" href="{{ url_for('.offers_info_placements', id=offer.id) }}">Управление размещениями</a>	
+			<a class="btn small" href="{{ url_for('.offers_info_placements', id=offer.id) }}">Управление размещениями</a>
+			{% if offer.placements_count %}
+			<a class="btn small" href="{{ url_for('.offers_info_materials', id=offer.id) }}">Получить партнерскую ссылку</a>
+			{% endif %}
 		</div>
 	</div>
 {% endif %}

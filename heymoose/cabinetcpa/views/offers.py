@@ -213,7 +213,9 @@ def offers_info_materials(id, offer, **kwargs):
 			flash(u'Баннер успешно загружен', 'success')
 		return redirect(request.url)
 	banners, count = rc.banners.list(offer_id=offer.id, **kwargs)
-	return dict(banners=banners, count=count, form=form)
+	placements, _ = rc.placements.list(aff_id=g.user.id, offer_id=offer.id, **INFINITE_LIMITS)
+	placements = [placement for placement in placements if placement.is_active]
+	return dict(banners=banners, count=count, form=form, placements=placements)
 
 
 @bp.route('/offers/<int:id>/materials/up/', methods=['GET', 'POST'])

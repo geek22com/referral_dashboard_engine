@@ -11,7 +11,6 @@ from heymoose.admin.helpers import permission_required
 import base64
 
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
-OFFER_REQUESTS_PER_PAGE = app.config.get('OFFER_REQUESTS_PER_PAGE', 20)
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
 OFFER_ACTIONS_PER_PAGE = app.config.get('OFFER_ACTIONS_PER_PAGE', 20)
 OFFER_BANNERS_PER_PAGE = app.config.get('OFFER_BANNERS_PER_PAGE', 20)
@@ -33,50 +32,6 @@ def offers_list(**kwargs):
 	offers, count = rc.offers.list(**kwargs) if form.validate() else ([], 0)
 	return dict(offers=offers, count=count, form=form)
 
-@bp.route('/offers/requests', methods=['GET', 'POST'])
-@template('admin/offers/requests.html')
-@permission_required('view_offer_requests')
-@paginated(OFFER_REQUESTS_PER_PAGE)
-def offers_requests(**kwargs):
-	filter_args = {
-		None: dict(),
-		'new': dict(blocked=True, moderation=True),
-		'blocked': dict(blocked=True, moderation=False),
-		'unblocked': dict(blocked=False),
-		'moderation': dict(state=OfferGrantState.MODERATION, blocked=False),
-		'approved': dict(state=OfferGrantState.APPROVED, blocked=False),
-		'rejected': dict(state=OfferGrantState.REJECTED, blocked=False),
-	}.get(request.args.get('filter', None), dict())
-
-	if request.args.get('format') == 'xls':
-		grants, _ = rc.offer_grants.list(full=True, offset=0, limit=999999, **filter_args)
-		return send_file(excel.grants_to_xls(grants), as_attachment=True, attachment_filename='requests.xls')
-
-	kwargs.update(filter_args)
-	grants, count = rc.offer_grants.list(full=True, **kwargs)
-	form = forms.AdminOfferRequestDecisionForm(request.form)
-	if request.method == 'POST' and form.validate():
-		grant = rc.offer_grants.get_by_id(form.grant_id.data, full=True)
-		signal_args = dict(grant=grant, notify=form.notify.data, reason=form.reason.data)
-		action = form.action.data
-		if action == 'unblock':
-			rc.offer_grants.unblock(grant.id)
-			signals.grant_approved.send(app, **signal_args)
-			flash(u'Заявка разблокирована', 'success')
-		elif action == 'block':
-			rc.offer_grants.block(grant.id, form.reason.data)
-			signals.grant_blocked.send(app, **signal_args)
-			flash(u'Заявка заблокирована', 'success')
-		elif action == 'approve' and not grant.approved:
-			rc.offer_grants.approve(grant.id)
-			signals.grant_approved.send(app, **signal_args)
-			flash(u'Заявка утверждена', 'success')
-		elif action == 'reject' and not grant.rejected:
-			rc.offer_grants.reject(grant.id, form.reason.data)
-			signals.grant_rejected.send(app, **signal_args)
-			flash(u'Заявка отклонена', 'success')
-		return redirect(request.url)
-	return dict(grants=grants, count=count, form=form)
 
 @bp.route('/offers/categories/', methods=['GET', 'POST'])
 @template('admin/offers/categories.html')
@@ -273,53 +228,6 @@ def offers_info_materials_upload(id, offer):
 			return jsonify(error=form.image.errors[0])
 	return dict()
 
-
-@bp.route('/offers/<int:id>/requests', methods=['GET', 'POST'])
-@template('admin/offers/info/requests.html')
-@offer_context
-@permission_required('view_offer_requests')
-@paginated(OFFER_REQUESTS_PER_PAGE)
-def offers_info_requests(id, offer, **kwargs):
-	filter_args = {
-		None: dict(),
-		'new': dict(blocked=True, moderation=True),
-		'blocked': dict(blocked=True, moderation=False),
-		'unblocked': dict(blocked=False),
-		'moderation': dict(state=OfferGrantState.MODERATION, blocked=False),
-		'approved': dict(state=OfferGrantState.APPROVED, blocked=False),
-		'rejected': dict(state=OfferGrantState.REJECTED, blocked=False),
-	}.get(request.args.get('filter', None), dict())
-
-	if request.args.get('format') == 'xls':
-		grants, _ = rc.offer_grants.list(offer_id=offer.id, full=True, offset=0, limit=999999, **filter_args)
-		return send_file(excel.grants_to_xls(grants), as_attachment=True, attachment_filename='requests.xls')
-	
-	kwargs.update(filter_args)
-	grants, count = rc.offer_grants.list(offer_id=offer.id, full=True, **kwargs)
-	form = forms.AdminOfferRequestDecisionForm(request.form)
-	if request.method == 'POST' and form.validate():
-		grant = rc.offer_grants.get_by_id(form.grant_id.data, full=True)
-		if grant and grant.offer.id == offer.id:
-			signal_args = dict(grant=grant, notify=form.notify.data, reason=form.reason.data)
-			action = form.action.data
-			if action == 'unblock':
-				rc.offer_grants.unblock(grant.id)
-				signals.grant_approved.send(app, **signal_args)
-				flash(u'Заявка разблокирована', 'success')
-			elif action == 'block':
-				rc.offer_grants.block(grant.id, form.reason.data)
-				signals.grant_blocked.send(app, **signal_args)
-				flash(u'Заявка заблокирована', 'success')
-			elif action == 'approve' and not grant.approved:
-				rc.offer_grants.approve(grant.id)
-				signals.grant_approved.send(app, **signal_args)
-				flash(u'Заявка утверждена', 'success')
-			elif action == 'reject' and not grant.rejected:
-				rc.offer_grants.reject(grant.id, form.reason.data)
-				signals.grant_rejected.send(app, **signal_args)
-				flash(u'Заявка отклонена', 'success')
-			return redirect(request.url)
-	return dict(grants=grants, count=count, form=form)
 
 @bp.route('/offers/<int:id>/sales/', methods=['GET', 'POST'])
 @template('admin/offers/info/sales.html')

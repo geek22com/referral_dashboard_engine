@@ -1,0 +1,10 @@
+{% extends "cabinetcpa/offers/info/layout.html" %}
+{% import 'common/forms/placement.html' as placement_form %}
+
+{% set activetab = 'placements' %}
+
+{% block tabcontent %}
+
+{{ placement_form.html(form) }}
+
+{% endblock %}

@@ -42,10 +42,16 @@ def advertiser_offer(id):
 	if not offer.owned_by(g.user): abort(404)
 	return offer
 
+def offer_placement(pid, offer):
+	placement = rc.placements.get_by_id(pid)
+	if placement.offer != offer: abort(404)
+	return placement
+
 
 offer_context = context(lambda id, **kwargs: dict(offer=existing_offer(id)))
 visible_offer_context = context(lambda id, **kwargs: dict(offer=visible_offer(id)))
 advertiser_offer_context = context(lambda id, **kwargs: dict(offer=advertiser_offer(id)))
+offer_placement_context = context(lambda pid, offer, **kwargs: dict(placement=offer_placement(pid, offer)))
 
 
 @bp.route('/offers/')
@@ -276,3 +282,28 @@ def offers_info_placements(id, offer, **kwargs):
 		flash(u'Размещение успешно создано', 'success')
 		return redirect(request.url)
 	return dict(form=form, placements=placements)
+
+
+@bp.route('/offers/<int:id>/placements/<int:pid>/edit/', methods=['GET', 'POST'])
+@affiliate_only
+@template('cabinetcpa/offers/info/placements-edit.html')
+@visible_offer_context
+@offer_placement_context
+def offers_info_placements_edit(id, pid, offer, placement):
+	form = forms.PlacementEditForm(request.form, obj=placement)
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(placement)
+		rc.placements.update(placement)
+		flash(u'Размещение успешно изменено', 'success')
+		return redirect(url_for('.offers_info_placements', id=offer.id))
+	return dict(form=form)
+
+
+@bp.route('/offers/<int:id>/placements/<int:pid>/delete/')
+@affiliate_only
+@visible_offer_context
+@offer_placement_context
+def offers_info_placements_delete(id, pid, offer, placement):
+	rc.placements.remove(placement)
+	flash(u'Размещение удалено', 'success')
+	return redirect(url_for('.offers_info_placements', id=offer.id))

@@ -70,3 +70,9 @@
 		</div>
 	</div>
 {% endmacro %}
+
+{% macro hinted_datetime(value) %}
+	{% with date = value|dateformat, time = value|timeformat %}
+	<span title="{{ date }} {{ time }}">{{ date }}</span>
+	{% endwith %}
+{% endmacro %}

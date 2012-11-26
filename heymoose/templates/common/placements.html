@@ -1,0 +1,36 @@
+{% import 'common/macros.html' as macros %}
+
+{% macro table(placements, affiliate=false, offer=false) %}
+	<table class="bordered-table zebra-striped">
+		<thead>
+			<tr>
+				{% if affiliate %}
+				<th class="center">Партнёр</th>
+				{% endif %}
+				<th class="center">Площадка</th>
+				<th class="center">Back URL</th>
+				<th class="center">Postback URL</th>
+				<th class="center">Создано</th>
+				<th class="center">Изменено</th>
+				<th class="center minimal-width">Подтв.</th>
+				{{ caller(true, none) }}
+			</tr>
+		</thead>
+		<tbody>
+			{% for placement in placements %}
+			<tr>
+				{% if affiliate %}
+				<td><a href="{{ url_for('.users_info', id=placement.affiliate.id) }}">{{ placement.affiliate.email }}</a></td>
+				{% endif %}
+				<td><a href="{{ url_for('.sites_info', id=placement.site.id) }}">{{ placement.site.name }}</a></td>
+				<td>{{ placement.back_url or '&mdash;'|safe }}</td>
+				<td>{{ placement.postback_url or '&mdash;'|safe }}</td>
+				<td class="center">{{ macros.hinted_datetime(placement.creation_time) }}</td>
+				<td class="center">{{ macros.hinted_datetime(placement.last_change_time) }}</td>
+				<td class="center">{{ macros.to_icon(placement.is_approved) }}</td>
+				{{ caller(false, placement) }}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endmacro %}

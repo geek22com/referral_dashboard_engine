@@ -46,7 +46,7 @@
 				<td>{{ placement.postback_url or '&mdash;'|safe }}</td>
 				<td class="center">{{ macros.hinted_datetime(placement.creation_time) }}</td>
 				<td class="center">{{ macros.hinted_datetime(placement.last_change_time) }}</td>
-				<td class="center">{{ macros.to_icon(placement.is_active) }}</td>
+				<td class="center">{{ macros.to_icon(placement.is_approved) }}</td>
 				<td class="center">
 					<a href="{{ url_for('.offers_info_placements_edit', id=offer.id, pid=placement.id) }}"><img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="изменить" title="изменить"></a>
 					<a href="{{ url_for('.offers_info_placements_delete', id=offer.id, pid=placement.id) }}" onclick="return confirm('Удалить размещение?');"><img src="{{ url_for('static', filename='img/icon_deletelink.gif') }}" alt="удалить" title="удалить"></a>
@@ -60,7 +60,7 @@
 	</div>
 {% else %}
 	<div class="clearfix alert-message block-message info">
-		<p><strong>Список пуст.</strong> Не было добавлено ни одного размещения.</p>
+		<p><strong>Список пуст.</strong> Не найдено размещений на активных площадках.</p>
 	</div>
 {% endif %}
 

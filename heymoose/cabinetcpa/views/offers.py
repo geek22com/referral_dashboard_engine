@@ -214,7 +214,7 @@ def offers_info_materials(id, offer, **kwargs):
 		return redirect(request.url)
 	banners, count = rc.banners.list(offer_id=offer.id, **kwargs)
 	placements, _ = rc.placements.list(aff_id=g.user.id, offer_id=offer.id, **INFINITE_LIMITS)
-	placements = [placement for placement in placements if placement.is_active]
+	placements = [placement for placement in placements if placement.is_approved]
 	return dict(banners=banners, count=count, form=form, placements=placements)
 
 

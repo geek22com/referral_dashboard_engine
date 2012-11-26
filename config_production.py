@@ -31,6 +31,6 @@ ASSETS_AUTO_BUILD = False
 # Backend parameters
 BACKEND_TIMEOUT = 60
 TRACKER_BASE_URL = 'http://partner.heymoose.com'
-TRACKER_API_URL = TRACKER_BASE_URL + '/api'
+TRACKER_API_URL = 'http://track.heymoose.com'
 TRACKER_BANNERS_URL = TRACKER_BASE_URL + '/pub/banners/'
 

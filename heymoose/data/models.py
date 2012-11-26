@@ -667,5 +667,9 @@ class Placement(IdentifiableModel, ModeratableModelMixin):
 	creation_time = Field(types.DateTime, 'creation-time')
 	last_change_time = Field(types.DateTime, 'last-change-time')
 
+	@cached_property
+	def is_active(self):
+		return self.is_approved and self.site.is_approved
+
 
 registry.register_models_from_module(__name__)

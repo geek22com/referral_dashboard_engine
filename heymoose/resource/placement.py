@@ -14,6 +14,9 @@ class PlacementResource(BackendResource):
 	def extract_placement_moderation_params(self, placement):
 		return self.extractor.extract(placement, required=['admin_state'], optional=['admin_comment'])
 
+	def get_by_id(self, placement_id, **kwargs):
+		return self.path(placement_id).get(**kwargs).as_obj(Placement)
+
 	def list(self, **kwargs):
 		return self.get(**kwargs).as_objlist(Placement, with_count=True)
 
@@ -22,6 +25,9 @@ class PlacementResource(BackendResource):
 
 	def update(self, placement):
 		self.path(placement.id).put(**self.extract_placement_params(placement))
+
+	def remove(self, placement):
+		self.path(placement.id).delete()
 
 	def moderate(self, placement):
 		self.path(placement.id).path('moderate').put(**self.extract_placement_moderation_params(placement))

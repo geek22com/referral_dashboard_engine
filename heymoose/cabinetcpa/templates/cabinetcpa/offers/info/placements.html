@@ -48,8 +48,8 @@
 				<td class="center">{{ macros.hinted_datetime(placement.last_change_time) }}</td>
 				<td class="center">{{ macros.to_icon(placement.admin_state.tristate) }}</td>
 				<td class="center">
-					<a href="#"><img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="изменить" title="изменить"></a>
-					<a href="#"><img src="{{ url_for('static', filename='img/icon_deletelink.gif') }}" alt="удалить" title="удалить"></a>
+					<a href="{{ url_for('.offers_info_placements_edit', id=offer.id, pid=placement.id) }}"><img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="изменить" title="изменить"></a>
+					<a href="{{ url_for('.offers_info_placements_delete', id=offer.id, pid=placement.id) }}" onclick="return confirm('Удалить размещение?');"><img src="{{ url_for('static', filename='img/icon_deletelink.gif') }}" alt="удалить" title="удалить"></a>
 				</td>
 			</tr>
 			{% endfor %}

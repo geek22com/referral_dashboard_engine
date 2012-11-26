@@ -1,4 +1,5 @@
 {% extends "cabinetcpa/offers/info/layout.html" %}
+{% import 'common/placements.html' as placement_macros %}
 
 {% set activetab = 'placements' %}
 
@@ -26,35 +27,16 @@
 {% endif %}
 
 {% if placements %}
-	<table class="bordered-table zebra-striped">
-		<thead>
-			<tr>
-				<th class="center">Площадка</th>
-				<th class="center">Back URL</th>
-				<th class="center">Postback URL</th>
-				<th class="center">Создано</th>
-				<th class="center">Изменено</th>
-				<th class="center minimal-width">Подтв.</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for placement in placements %}
-			<tr>
-				<td><a href="{{ url_for('.sites_info', id=placement.site.id) }}">{{ placement.site.name }}</a></td>
-				<td>{{ placement.back_url or '&mdash;'|safe }}</td>
-				<td>{{ placement.postback_url or '&mdash;'|safe }}</td>
-				<td class="center">{{ macros.hinted_datetime(placement.creation_time) }}</td>
-				<td class="center">{{ macros.hinted_datetime(placement.last_change_time) }}</td>
-				<td class="center">{{ macros.to_icon(placement.is_approved) }}</td>
-				<td class="center">
-					<a href="{{ url_for('.offers_info_placements_edit', id=offer.id, pid=placement.id) }}"><img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="изменить" title="изменить"></a>
-					<a href="{{ url_for('.offers_info_placements_delete', id=offer.id, pid=placement.id) }}" onclick="return confirm('Удалить размещение?');"><img src="{{ url_for('static', filename='img/icon_deletelink.gif') }}" alt="удалить" title="удалить"></a>
-				</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	{% call(head, placement) placement_macros.table(placements) %}
+		{% if head %}
+			<th></th>
+		{% else %}
+			<td class="center">
+				<a href="{{ url_for('.offers_info_placements_edit', id=offer.id, pid=placement.id) }}"><img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="изменить" title="изменить"></a>
+				<a href="{{ url_for('.offers_info_placements_delete', id=offer.id, pid=placement.id) }}" onclick="return confirm('Удалить размещение?');"><img src="{{ url_for('static', filename='img/icon_deletelink.gif') }}" alt="удалить" title="удалить"></a>
+			</td>
+		{% endif %}
+	{% endcall %}
 	<div class="right">
 		<a href="{{ url_for('.offers_info_materials', id=offer.id) }}" class="btn small">Получить партнерскую ссылку</a>
 	</div>

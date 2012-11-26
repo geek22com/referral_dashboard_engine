@@ -13,6 +13,7 @@ import base64
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
 OFFER_ACTIONS_PER_PAGE = app.config.get('OFFER_ACTIONS_PER_PAGE', 20)
+OFFER_PLACEMENTS_PER_PAGE = app.config.get('OFFER_PLACEMENTS_PER_PAGE', 20)
 OFFER_BANNERS_PER_PAGE = app.config.get('OFFER_BANNERS_PER_PAGE', 20)
 AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
@@ -187,6 +188,29 @@ def offers_info_actions_edit(id, sid, offer):
 			flash(u'Вы не изменили ни одного поля', 'warning')
 		return redirect(url_for('.offers_info_actions', id=offer.id))
 	return dict(suboffer=suboffer, form=form)
+
+
+@bp.route('/offers/<int:id>/placements/')
+@template('admin/offers/info/placements.html')
+@offer_context
+@paginated(OFFER_PLACEMENTS_PER_PAGE)
+def offers_info_placements(id, offer, **kwargs):
+	placements, count = rc.placements.list(offer_id=offer.id)
+	return dict(placements=placements, count=count)
+
+
+@bp.route('/offers/<int:id>/placements/<int:pid>/moderation/', methods=['GET', 'POST'])
+@template('admin/offers/info/placements-moderation.html')
+@offer_context
+def offers_info_placements_moderation(id, pid, offer, **kwargs):
+	placement = rc.placements.get_by_id(pid)
+	form = forms.ModerationForm(request.form, obj=placement)
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(placement)
+		rc.placements.moderate(placement)
+		flash(u'Размещение успешно изменено', 'success')
+		return redirect(url_for('.offers_info_placements', id=offer.id))
+	return dict(form=form)
 
 
 @bp.route('/offers/<int:id>/materials/', methods=['GET', 'POST'])

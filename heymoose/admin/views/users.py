@@ -16,6 +16,7 @@ from heymoose.mail import transactional as tmail
 
 USERS_PER_PAGE = app.config.get('USERS_PER_PAGE', 20)
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
+PLACEMENTS_PER_PAGE = app.config.get('PLACEMENTS_PER_PAGE', 20)
 ACCOUNTING_ENTRIES_PER_PAGE = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
 SUB_ID_STATS_PER_PAGE = app.config.get('SUB_ID_STATS_PER_PAGE', 20)
@@ -26,7 +27,7 @@ SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
 
 
-def user_context_provider(id):
+def user_context_provider(id, **kwargs):
 	user = rc.users.get_by_id(id)
 	if user.is_admin and user.id != g.user.id and not g.user.is_superadmin:
 		not_enough_permissions()
@@ -132,6 +133,31 @@ def users_info_offers(id, user, **kwargs):
 	else:
 		offers, count = rc.offers.list_requested(user.id, **kwargs)
 	return dict(offers=offers, count=count)
+
+
+@bp.route('/users/<int:id>/placements/')
+@template('admin/users/info/placements.html')
+@context(user_context_provider)
+@permission_required('view_affiliate_placements')
+@paginated(PLACEMENTS_PER_PAGE)
+def users_info_placements(id, user, **kwargs):
+	placements, count = rc.placements.list(aff_id=user.id)
+	return dict(placements=placements, count=count)
+
+
+@bp.route('/users/<int:id>/placements/<int:pid>/moderation/', methods=['GET', 'POST'])
+@template('admin/users/info/placements-moderation.html')
+@context(user_context_provider)
+@permission_required('view_affiliate_placements')
+def users_info_placements_moderation(id, pid, user, **kwargs):
+	placement = rc.placements.get_by_id(pid)
+	form = forms.ModerationForm(request.form, obj=placement)
+	if request.method == 'POST' and form.validate():
+		form.populate_obj(placement)
+		rc.placements.moderate(placement)
+		flash(u'Размещение успешно изменено', 'success')
+		return redirect(url_for('.users_info_placements', id=user.id))
+	return dict(form=form)
 
 
 @bp.route('/users/<int:id>/edit/', methods=['GET', 'POST'])

@@ -8,6 +8,9 @@
 				<th class="center">Партнёр</th>
 				{% endif %}
 				<th class="center">Площадка</th>
+				{% if offer %}
+				<th class="center">Оффер</th>
+				{% endif %}
 				<th class="center">Back URL</th>
 				<th class="center">Postback URL</th>
 				<th class="center">Создано</th>
@@ -23,6 +26,9 @@
 				<td><a href="{{ url_for('.users_info', id=placement.affiliate.id) }}">{{ placement.affiliate.email }}</a></td>
 				{% endif %}
 				<td><a href="{{ url_for('.sites_info', id=placement.site.id) }}">{{ placement.site.name }}</a></td>
+				{% if offer %}
+				<td><a href="{{ url_for('.offers_info', id=placement.offer.id) }}">{{ placement.offer.name }}</a></td>
+				{% endif %}
 				<td>{{ placement.back_url or '&mdash;'|safe }}</td>
 				<td>{{ placement.postback_url or '&mdash;'|safe }}</td>
 				<td class="center">{{ macros.hinted_datetime(placement.creation_time) }}</td>

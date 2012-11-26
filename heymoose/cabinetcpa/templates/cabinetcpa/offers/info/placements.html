@@ -1,0 +1,64 @@
+{% extends "cabinetcpa/offers/info/layout.html" %}
+
+{% set activetab = 'placements' %}
+
+{% block tabcontent %}
+
+{% if form.site.sites %}
+	<div class="well">
+		<form method="post" action="">
+			<b>Добавить размещение на площадке</b>
+			{{ form.site(class='span6') }}
+			<input type="submit" class="btn success" value="Добавить" />
+		</form>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		{% if not placements %}
+		<p>Для размещения рекламного предложения у Вас должна быть хотя бы одна активная площадка.</p>	
+		{% else %}
+		<p>Уже созданы размещения на всех Ваших активных площадках.</p>
+		{% endif %}
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.sites_new') }}">Добавить новую площадку</a>	
+		</div>
+	</div>
+{% endif %}
+
+{% if placements %}
+	<table class="bordered-table zebra-striped">
+		<thead>
+			<tr>
+				<th class="center">Площадка</th>
+				<th class="center">Back URL</th>
+				<th class="center">Postback URL</th>
+				<th class="center">Создано</th>
+				<th class="center">Изменено</th>
+				<th class="center minimal-width">Подтв.</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for placement in placements %}
+			<tr>
+				<td><a href="{{ url_for('.sites_info', id=placement.site.id) }}">{{ placement.site.name }}</a></td>
+				<td>{{ placement.back_url or '&mdash;'|safe }}</td>
+				<td>{{ placement.postback_url or '&mdash;'|safe }}</td>
+				<td class="center">{{ placement.creation_time|datetimeformat }}</td>
+				<td class="center">{{ placement.last_change_time|datetimeformat }}</td>
+				<td class="center">{{ macros.to_icon(placement.admin_state.tristate) }}</td>
+				<td class="center">
+					<a href="#"><img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="изменить" title="изменить"></a>
+					<a href="#"><img src="{{ url_for('static', filename='img/icon_deletelink.gif') }}" alt="удалить" title="удалить"></a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Не было добавлено ни одного размещения.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

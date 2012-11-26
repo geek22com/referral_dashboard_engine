@@ -2,7 +2,7 @@
 from flask import request, flash, g, redirect, url_for, abort, jsonify, send_file
 from heymoose import app, resource as rc
 from heymoose.forms import forms
-from heymoose.data.models import Offer, OfferGrant, SubOffer, Banner
+from heymoose.data.models import Offer, OfferGrant, SubOffer, Banner, Placement
 from heymoose.data.enums import OfferGrantState
 from heymoose.notifications import notify
 from heymoose.views import excel
@@ -16,6 +16,8 @@ OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
 OFFER_ACTIONS_PER_PAGE = app.config.get('OFFER_ACTIONS_PER_PAGE', 20)
 OFFER_BANNERS_PER_PAGE = app.config.get('OFFER_BANNERS_PER_PAGE', 20)
 PRODUCTS_PER_PAGE = app.config.get('PRODUCTS_PER_PAGE', 20)
+
+INFINITE_LIMITS = dict(offset=0, limit=999999)
 
 
 def existing_offer(id):
@@ -53,7 +55,6 @@ advertiser_offer_context = context(lambda id, **kwargs: dict(offer=advertiser_of
 def offers_all(**kwargs):
 	form = forms.OfferFilterForm(request.args)
 	kwargs.update(form.backend_args())
-	if g.user.is_affiliate: kwargs.update(aff_id=g.user.id)
 	offers, count = rc.offers.list(approved=True, active=True, launched=True, **kwargs) if form.validate() else ([], 0)
 	return dict(offers=offers, count=count, form=form)
 
@@ -256,3 +257,22 @@ def offers_info_sales(id, offer, **kwargs):
 	else:
 		actions, count = rc.actions.list(offer.id, **kwargs) if form.validate() else ([], 0)
 	return dict(actions=actions, count=count, form=form)
+
+
+@bp.route('/offers/<int:id>/placements/', methods=['GET', 'POST'])
+@affiliate_only
+@template('cabinetcpa/offers/info/placements.html')
+@visible_offer_context
+def offers_info_placements(id, offer, **kwargs):
+	existing_site_ids = [placement.site.id for placement in offer.placements]
+	sites, _ = rc.sites.list(aff_id=g.user.id, **INFINITE_LIMITS)
+	sites = [site for site in sites if site.is_approved and site.id not in existing_site_ids]
+	form = forms.PlacementForm(request.form)
+	form.site.set_sites(sites, empty=None)
+	if request.method == 'POST' and form.validate():
+		placement = Placement(affiliate=g.user, offer=offer)
+		form.populate_obj(placement)
+		rc.placements.add(placement)
+		flash(u'Размещение успешно создано', 'success')
+		return redirect(request.url)
+	return dict(form=form, placements=offer.placements)

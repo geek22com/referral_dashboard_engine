@@ -203,6 +203,25 @@ class OfferField(SelectField):
 				return offer
 		return None
 
+
+class SiteField(SelectField):
+	def set_sites(self, sites, empty=(0, u'(все)')):
+		self.sites = sites
+		choices = [(site.id, site.name) for site in sites]
+		if empty: choices.insert(0, empty)
+		self.choices = choices
+
+	def populate_obj(self, obj, name):
+		setattr(obj, name, self.selected)
+	
+	@property
+	def selected(self):
+		for site in self.sites:
+			if self.data == site.id:
+				return site
+		return None
+
+
 class CategoryGroupField(SelectField):
 	def __init__(self, *args, **kwargs):
 		kwargs.update(coerce=int)

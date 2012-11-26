@@ -13,6 +13,7 @@ from error import ErrorResource
 from public import PublicResource
 from product import ProductResource
 from site import SiteResource
+from placement import PlacementResource
 from cashback import CashbackResource
 
 users = UserResource()
@@ -30,4 +31,5 @@ errors = ErrorResource()
 pub = PublicResource()
 products = ProductResource()
 sites = SiteResource()
+placements = PlacementResource()
 cashbacks = CashbackResource()

@@ -30,12 +30,12 @@
 
 {% if affiliate and offer.visible %}
 	<div class="clearfix alert-message block-message info">
-		{% if not offer.placements %}
+		{% if not offer.placements_count %}
 		<p>Чтобы начать сотрудничать с рекламной кампанией, разместите оффер на одной из своих площадок.</p>
-		{% elif offer.placements|length == 1 %}
+		{% elif offer.placements_count == 1 %}
 		<p>В данный момент оффер размещен на одной Вашей площадке.</p>
 		{% else %}
-		<p>В данный момент оффер размещен на {{ offer.placements|length }} Ваших площадках.</p>
+		<p>В данный момент оффер размещен на {{ offer.placements_count }} Ваших площадках.</p>
 		{% endif %}
 		<div class="alert-actions">
 			<a class="btn small" href="{{ url_for('.offers_info_placements', id=offer.id) }}">Управление размещениями</a>	

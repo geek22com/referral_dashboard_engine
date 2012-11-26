@@ -251,7 +251,7 @@ class Offer(SubOffer):
 	yml_url = Field(types.String, 'yml-url')
 	
 	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
-	placements = FieldList('Placement', 'placements/placement')
+	placements_count = Field(types.Integer, 'placements-count')
 	
 	_logos_dir = app.config.get('OFFER_LOGOS_DIR')
 	_women_categories_ids = app.config.get('WOMEN_CATEGORIES')

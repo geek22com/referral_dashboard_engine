@@ -44,8 +44,8 @@
 				<td><a href="{{ url_for('.sites_info', id=placement.site.id) }}">{{ placement.site.name }}</a></td>
 				<td>{{ placement.back_url or '&mdash;'|safe }}</td>
 				<td>{{ placement.postback_url or '&mdash;'|safe }}</td>
-				<td class="center">{{ placement.creation_time|datetimeformat }}</td>
-				<td class="center">{{ placement.last_change_time|datetimeformat }}</td>
+				<td class="center">{{ macros.hinted_datetime(placement.creation_time) }}</td>
+				<td class="center">{{ macros.hinted_datetime(placement.last_change_time) }}</td>
 				<td class="center">{{ macros.to_icon(placement.admin_state.tristate) }}</td>
 				<td class="center">
 					<a href="#"><img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="изменить" title="изменить"></a>

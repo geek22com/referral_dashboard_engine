@@ -29,7 +29,7 @@ def visible_offer(id):
 	if offer is granted for this affiliate or if it is visible. Otherwise returns 404.
 	'''
 	offer = existing_offer(id)
-	if offer.visible or (g.user.is_advertiser and offer.owned_by(g.user)) or (g.user.is_affiliate and offer.placements):
+	if offer.visible or (g.user.is_advertiser and offer.owned_by(g.user)) or (g.user.is_affiliate and offer.placements_count):
 		return offer
 	abort(404)
 
@@ -263,7 +263,8 @@ def offers_info_sales(id, offer, **kwargs):
 @template('cabinetcpa/offers/info/placements.html')
 @visible_offer_context
 def offers_info_placements(id, offer, **kwargs):
-	existing_site_ids = [placement.site.id for placement in offer.placements]
+	placements, _ = rc.placements.list(aff_id=g.user.id, offer_id=offer.id, **INFINITE_LIMITS)
+	existing_site_ids = [placement.site.id for placement in placements]
 	sites, _ = rc.sites.list(aff_id=g.user.id, **INFINITE_LIMITS)
 	sites = [site for site in sites if site.is_approved and site.id not in existing_site_ids]
 	form = forms.PlacementForm(request.form)
@@ -274,4 +275,4 @@ def offers_info_placements(id, offer, **kwargs):
 		rc.placements.add(placement)
 		flash(u'Размещение успешно создано', 'success')
 		return redirect(request.url)
-	return dict(form=form, placements=offer.placements)
+	return dict(form=form, placements=placements)

@@ -27,7 +27,15 @@
 				<td>{{ placement.postback_url or '&mdash;'|safe }}</td>
 				<td class="center">{{ macros.hinted_datetime(placement.creation_time) }}</td>
 				<td class="center">{{ macros.hinted_datetime(placement.last_change_time) }}</td>
-				<td class="center">{{ macros.to_icon(placement.is_approved) }}</td>
+				<td class="center">
+					{% if placement.admin_comment %}
+					<span class="hint" title="{{ placement.admin_comment }}" style="cursor: help;">
+						{{ macros.to_icon(placement.is_approved) }}
+					</span>
+					{% else %}
+						{{ macros.to_icon(placement.is_approved) }}
+					{% endif %}
+				</td>
 				{{ caller(false, placement) }}
 			</tr>
 			{% endfor %}

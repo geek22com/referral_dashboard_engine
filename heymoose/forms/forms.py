@@ -297,6 +297,22 @@ def site_form_by_type(site_type, *form_args, **form_kwargs):
 	}[site_type](*form_args, **form_kwargs)
 
 
+class PlacementForm(Form):
+	site = myfields.SiteField(u'Площадка', [
+		validators.Required(message=u'Выберите площадку')
+	], coerce=int)
+
+class PlacementEditForm(Form):
+	back_url = TextField(u'Back URL', [
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
+		validators.Optional()
+	])
+	postback_url = TextField(u'Postback URL', [
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
+		validators.Optional()
+	])
+
+
 class SubOfferForm(Form):
 	title = TextField(u'Описание', [
 		validators.Length(min=1, max=250, message=u'Описание должно иметь длину от 1 до 250 символов'),
@@ -487,17 +503,6 @@ class AdminOfferRequestDecisionForm(OfferRequestDecisionForm):
 		validators.Length(max=500, message=u'Причина должна быть длиной не более 500 символов')
 	], default=u'Ваш способ продвижения не подходит для данной рекламной кампании')
 	notify = BooleanField(u'уведомить партнёра', default=True)
-
-
-class OfferGrantForm(Form):
-	back_url = TextField(u'Back URL', [
-		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
-		validators.Optional()
-	])
-	postback_url = TextField(u'Postback URL', [
-		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
-		validators.Optional()
-	])
 
 
 class OfferBannerForm(Form):

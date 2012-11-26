@@ -16,6 +16,8 @@ class IdentifiableModel(models.ModelBase):
 	id = Field(types.Integer, '@id', readonly=True)
 	
 	def __cmp__(self, other):
+		if not other:
+			return 1
 		return self.id - other.id
 	
 	def __hash__(self):
@@ -249,7 +251,7 @@ class Offer(SubOffer):
 	yml_url = Field(types.String, 'yml-url')
 	
 	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
-	grant = Field('OfferGrant', 'grant')
+	placements = FieldList('Placement', 'placements/placement')
 	
 	_logos_dir = app.config.get('OFFER_LOGOS_DIR')
 	_women_categories_ids = app.config.get('WOMEN_CATEGORIES')
@@ -654,6 +656,16 @@ class Site(IdentifiableModel, ModeratableModelMixin):
 			enums.AdminStates.APPROVED: u'Площадка одобрена администрацией',
 			enums.AdminStates.BLOCKED: u'Площадка заблокирована администрацией'
 		}.get(self.admin_state, u'Неизвестно')
+
+
+class Placement(IdentifiableModel, ModeratableModelMixin):
+	affiliate = Field('User', 'affiliate')
+	site = Field('Site', 'site')
+	offer = Field('Offer', 'offer')
+	back_url = Field(types.String, 'back-url')
+	postback_url = Field(types.String, 'postback-url')
+	creation_time = Field(types.DateTime, 'creation-time')
+	last_change_time = Field(types.DateTime, 'last-change-time')
 
 
 registry.register_models_from_module(__name__)

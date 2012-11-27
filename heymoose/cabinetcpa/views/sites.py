@@ -34,7 +34,7 @@ def sites_new():
 		site = Site(affiliate=g.user, type=site_type)
 		form.populate_obj(site)
 		rc.sites.add(site)
-		flash(u'Площадка успешно добавлена', 'success')
+		flash(u'Площадка успешно добавлена. Она станет акивной после проверки администрацией.', 'success')
 		return redirect(url_for('.sites_list'))
 	return dict(form=form)
 

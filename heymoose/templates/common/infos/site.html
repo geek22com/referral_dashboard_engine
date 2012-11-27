@@ -37,7 +37,9 @@
 		{% if site.members_count %}
 		<tr><th>Количество подписчиков</th><td>{{ site.members_count }}</td></tr>
 		{% endif %}
+		{% if site.description %}
 		<tr><th>Описание</th><td><p>{{ site.description }}</p></td></tr>
+		{% endif %}
 	</tbody>
 </table>
 

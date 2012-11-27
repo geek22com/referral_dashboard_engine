@@ -27,8 +27,8 @@
 				</td>
 				{% endif %}
 				<td>{% if site.url %}<a href="{{ site.url -}}" target="_blank">{{ site.url }}</a>{% else %}&mdash;{% endif %}</td>
-				<td class="center">{{ site.creation_time|datetimeformat }}</td>
-				<td class="center">{{ site.last_change_time|datetimeformat }}</td>
+				<td class="center">{{ macros.hinted_datetime(site.creation_time) }}</td>
+				<td class="center">{{ macros.hinted_datetime(site.last_change_time) }}</td>
 				<td class="center">{{ macros.to_icon(site.admin_state.tristate) }}</td>
 			</tr>
 			{% endfor %}

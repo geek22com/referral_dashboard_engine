@@ -33,6 +33,9 @@ class OfferStatResource(BackendResource):
 	
 	def list_affiliate_by_offer(self, **kwargs):
 		return self.path('affiliates').path('offer').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
+
+	def list_by_site(self, **kwargs):
+		return self.path('sites').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
 	
 	def list_by_sub_id(self, **kwargs):
 		return self.path('sub_ids').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
@@ -57,6 +60,9 @@ class OfferStatResource(BackendResource):
 	
 	def list_suboffer_by_advertiser(self, **kwargs):
 		return self.path('suboffers').path('advertiser').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
+
+	def list_suboffer_by_site(self, **kwargs):
+		return self.path('suboffers').path('site').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)
 	
 	def list_suboffer_by_sub_id(self, **kwargs):
 		return self.path('suboffers').path('sub_id').get(**kwargs).as_objlist(OverallOfferStat, with_count=True)

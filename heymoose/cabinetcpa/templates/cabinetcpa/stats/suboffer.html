@@ -16,6 +16,7 @@
 	Показана статистика
 	{% if offer %}для оффера <a href="{{ url_for('.offers_info', id=offer.id) }}">{{ offer.name }}</a>{% endif %}
 	{% if affiliate %}для партнера <b>{{ affiliate.id }}</b>{% endif %}
+	{% if args.site_id %}для площадки <b>{{ args.site_id }}</b>{% endif %}
 	{% if args.sub_id %}для SubID <b>{{ args.sub_id }}</b>{% endif %}
 	{% if args.source_id %}для SourceID <b>{{ args.source_id }}</b>{% endif %}
 	{% if args.referer %}для реферера <b>{{ args.referer }}</b>{% endif %}

@@ -13,7 +13,7 @@
 				<th class="center">Адрес</th>
 				<th {{ lists.sort_header('creation_time', **kwargs) }}>Добавлена</th>
 				<th {{ lists.sort_header('last_change_time', **kwargs) }}>Изменена</th>
-				<th style="width: 60px;" {{ lists.sort_header('approved', **kwargs) }}>Подтв.</th>
+				<th style="width: 60px;" {{ lists.sort_header('admin_state', **kwargs) }}>Подтв.</th>
 			</tr>
 		</thead>
 		<tbody>

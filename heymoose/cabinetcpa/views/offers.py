@@ -285,7 +285,7 @@ def offers_info_placements(id, offer, **kwargs):
 	placements, _ = rc.placements.list(aff_id=g.user.id, offer_id=offer.id, **INFINITE_LIMITS)
 	existing_site_ids = [placement.site.id for placement in placements]
 	sites, _ = rc.sites.list(aff_id=g.user.id, **INFINITE_LIMITS)
-	sites = [site for site in sites if site.is_approved and site.id not in existing_site_ids]
+	sites = [site for site in sites if site.is_approved and site.type.enabled and site.id not in existing_site_ids]
 	form = forms.PlacementForm(request.form)
 	form.site.set_sites(sites, empty=None)
 	if request.method == 'POST' and form.validate():

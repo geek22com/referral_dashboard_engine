@@ -93,9 +93,9 @@ class ProductRevenueUnits(Enum):
 	PERCENT = e('percent', sign=u'%')
 
 class SiteTypes(Enum):
-	GRANT = e('GRANT', name=u'Площадка по умолчанию', can_edit=False)
-	WEB_SITE = e('WEB_SITE', name=u'Веб-сайт', can_edit=True)
-	SOCIAL_NETWORK = e('SOCIAL_NETWORK', name=u'Страница или группа в социальной сети', can_edit=True)
+	GRANT = e('GRANT', name=u'Площадка по умолчанию', enabled=False)
+	WEB_SITE = e('WEB_SITE', name=u'Веб-сайт', enabled=True)
+	SOCIAL_NETWORK = e('SOCIAL_NETWORK', name=u'Страница или группа в социальной сети', enabled=True)
 
 class AdminStates(Enum):
 	MODERATION = e('MODERATION', name=u'на модерации', tristate=None, message_class='info', link_class='danger')

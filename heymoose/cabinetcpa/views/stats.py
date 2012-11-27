@@ -7,6 +7,7 @@ from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import affiliate_only, advertiser_only
 
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
+SITE_STATS_PER_PAGE = app.config.get('SITE_STATS_PER_PAGE', 20)
 AFFILIATE_STATS_PER_PAGE = app.config.get('AFFILIATE_STATS_PER_PAGE', 20)
 SUB_ID_STATS_PER_PAGE = app.config.get('SUB_ID_STATS_PER_PAGE', 20)
 SOURCE_ID_STATS_PER_PAGE = app.config.get('SOURCE_ID_STATS_PER_PAGE', 20)
@@ -26,6 +27,18 @@ def stats_offer(**kwargs):
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_user(g.user, **kwargs) if form.validate() else ([], 0)
 	return dict(stats=stats, count=count, form=form)
+
+@bp.route('/stats/site')
+@affiliate_only
+@template('cabinetcpa/stats/site.html')
+@sorted('clicks_count', 'desc')
+@paginated(SITE_STATS_PER_PAGE)
+def stats_site(**kwargs):
+	form = forms.DateTimeRangeForm(request.args)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_by_site(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count, form=form)
+
 
 @bp.route('/stats/affiliate')
 @advertiser_only
@@ -136,6 +149,19 @@ def stats_suboffer(**kwargs):
 		kwargs.update(for_advertiser=True)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer(**kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count, offer=form.offer.selected)
+
+@bp.route('/stats/suboffer/site')
+@affiliate_only
+@template('cabinetcpa/stats/suboffer.html')
+@sorted('leads_count', 'desc')
+@paginated(SUBOFFER_STATS_PER_PAGE)
+def stats_suboffer_site(**kwargs):
+	offers, _ = rc.offers.list_requested(g.user.id, offset=0, limit=100000)
+	form = forms.CabinetStatsForm(request.args)
+	form.offer.set_offers(offers)
+	kwargs.update(site_id=request.args.get('site_id'), **form.backend_args())
+	stats, count = rc.offer_stats.list_suboffer_by_site(aff_id=g.user.id, **kwargs) if form.validate() else ([], 0)
 	return dict(stats=stats, count=count, offer=form.offer.selected)
 
 @bp.route('/stats/suboffer/affiliate')

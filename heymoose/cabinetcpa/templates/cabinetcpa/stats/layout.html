@@ -32,6 +32,7 @@
 	<li id="tab-affiliate"><a href="{{ url_for('.stats_affiliate') }}">По партнёрам</a></li>
 	{% endif %}
 	{% if g.user.is_affiliate %}
+	<li id="tab-site"><a href="{{ url_for('.stats_site') }}">По площадкам</a></li>
 	<li id="tab-sub-id"><a href="{{ url_for('.stats_sub_id') }}">По SubID</a></li>
 	<li id="tab-source-id"><a href="{{ url_for('.stats_source_id') }}">По SourceID</a></li>
 	<li id="tab-referer"><a href="{{ url_for('.stats_referer') }}">По реферерам</a></li>

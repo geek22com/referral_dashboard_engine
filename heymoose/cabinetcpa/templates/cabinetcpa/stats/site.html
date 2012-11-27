@@ -1,0 +1,20 @@
+{% extends "cabinetcpa/stats/layout.html" %}
+
+{% set content_fluid = true %}
+{% set activetab = 'site' %}
+
+{% block extrahead %}
+	{{ super() }}
+	{{ datetime_range.head() }}
+{% endblock %}
+
+{% block tabcontent %}
+
+{{ datetime_range.html(form, 'Показать статистику за время:') }}
+{{ stat_macros.table_by_site(stats,
+	suboffer_stats=true,
+	suboffer_stats_rule='.stats_suboffer_site',
+	**form.query_args())
+}}
+
+{% endblock %}

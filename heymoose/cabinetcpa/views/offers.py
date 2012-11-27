@@ -8,6 +8,7 @@ from heymoose.views import excel
 from heymoose.views.decorators import template, context, paginated, sorted
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
+from heymoose.utils.lang import create_dict
 import base64
 
 
@@ -87,10 +88,20 @@ def offers_requested(**kwargs):
 @template('cabinetcpa/offers/products.html')
 @paginated(PRODUCTS_PER_PAGE)
 def offers_products(offset, limit):
-	catalog = rc.products.feed(g.user.secret_key, offset=offset, limit=limit, **request.args)
-	catalog_size = rc.products.feed_size(g.user.secret_key, **request.args)
-	shops = rc.products.categories(g.user.id)
-	return dict(catalog=catalog, shops=shops, count=catalog_size, offset=offset, limit=limit)
+	feed_args = create_dict(
+		key=g.user.secret_key,
+		q=request.args.get('q') or None,
+		s=request.args.getlist('s'),
+		c=request.args.getlist('c'),
+		site=request.args.get('site') or None,
+		offset=offset,
+		limit=limit
+	)
+	catalog = rc.products.feed(**feed_args)
+	catalog_size = rc.products.feed_size(**feed_args)
+	shops = rc.products.categories(g.user.id, site=request.args.get('site'))
+	sites = filter(lambda x: x.is_approved, rc.sites.list(aff_id=g.user.id, **INFINITE_LIMITS)[0])
+	return dict(catalog=catalog, shops=shops, count=catalog_size, sites=sites, feed_args=feed_args)
 
 
 @bp.route('/offers/new/', methods=['GET', 'POST'])

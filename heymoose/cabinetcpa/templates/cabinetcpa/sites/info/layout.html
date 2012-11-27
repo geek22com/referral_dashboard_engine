@@ -27,7 +27,7 @@
 {% block content %}
 <ul class="tabs">
 	<li id="tab-info"><a href="{{ url_for('.sites_info', id=site.id) }}">Описание</a></li>
-	{% if site.type.can_edit %}
+	{% if site.type.enabled %}
 	<li id="tab-edit"><a href="{{ url_for('.sites_info_edit', id=site.id) }}">Редактировать</a></li>
 	{% endif %}
 </ul>

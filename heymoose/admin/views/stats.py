@@ -50,9 +50,20 @@ def stats_advertiser(**kwargs):
 @bp.route('/stats/site/')
 @template('admin/stats/site.html')
 @superadmin_required()
-@sorted('second_period_click_count', 'asc')
+@sorted('clicks_count', 'desc')
 @paginated(SITE_STATS_PER_PAGE)
 def stats_site(**kwargs):
+	form = forms.DateTimeRangeForm(request.args)
+	kwargs.update(form.backend_args())
+	stats, count = rc.offer_stats.list_by_site(**kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count, form=form)
+
+@bp.route('/stats/site/periods/')
+@template('admin/stats/site-periods.html')
+@superadmin_required()
+@sorted('second_period_click_count', 'asc')
+@paginated(SITE_STATS_PER_PAGE)
+def stats_site_periods(**kwargs):
 	form = forms.DoubleDateTimeRangeForm(request.args)
 	kwargs.update(form.backend_args())
 	stats, count = rc.sites.list_stats(**kwargs) if form.validate() else ([], 0)
@@ -101,3 +112,14 @@ def stats_suboffer_advertiser(**kwargs):
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_suboffer_by_advertiser(adv_id=advertiser.id, **kwargs) if form.validate() else ([], 0)
 	return dict(stats=stats, count=count, advertiser=advertiser)
+
+@bp.route('/stats/suboffer/site')
+@template('admin/stats/suboffer.html')
+@sorted('leads_count', 'desc')
+@paginated(SUBOFFER_STATS_PER_PAGE)
+def stats_suboffer_site(**kwargs):
+	site = rc.sites.get_by_id(request.args.get('site_id'))
+	form = forms.DateTimeRangeForm(request.args)
+	kwargs.update(site_id=site.id, **form.backend_args())
+	stats, count = rc.offer_stats.list_suboffer_by_site(**kwargs) if form.validate() else ([], 0)
+	return dict(stats=stats, count=count, site=site)

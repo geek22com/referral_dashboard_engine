@@ -100,7 +100,7 @@ def offers_products(offset, limit):
 	)
 	catalog = rc.products.feed(**feed_args)
 	catalog_size = rc.products.feed_size(**feed_args)
-	shops = rc.products.categories(g.user.id, site=request.args.get('site'))
+	shops = rc.products.categories(g.user.id, site_id=request.args.get('site'))
 	sites = filter(lambda x: x.is_approved, rc.sites.list(aff_id=g.user.id, **INFINITE_LIMITS)[0])
 	return dict(catalog=catalog, shops=shops, count=catalog_size, sites=sites, feed_args=feed_args)
 

@@ -141,8 +141,6 @@
 
 {% block tabcontent %}
 
-{% if shops %}
-
 <div class="row">
 	<div class="span5">
 		<form method="get" action="">
@@ -152,7 +150,7 @@
 				<select name="site" class="span5">
 					<option value="">(нет)</option>
 					{% for site in sites %}
-					<option value="{{ site.id }}" {{ 'selected="selected"' if request.args.site == site.id }}>{{ site.name }}</option>
+					<option value="{{ site.id }}" {{ 'selected="selected"' if request.args.get('site', '0')|int == site.id }}>{{ site.name }}</option>
 					{% endfor %}
 				</select>
 			</div>
@@ -161,6 +159,7 @@
 				<input type="text" name="q" class="span5" value="{{ request.args.get('q', '') }}" />
 			</div>
 			<h5>Магазины и категории</h5>
+			{% if shops %}
 			<div class="categories-tree-wrapper">
 				<ul class="shops-list">
 					{% for shop in shops %}
@@ -180,6 +179,19 @@
 					{% endfor %}
 				</ul>
 			</div>
+			{% else %}
+			<div class="clearfix alert-message block-message info">
+				<p>
+					{% if request.args.site %}
+					<strong>Нет размещений на площадке.</strong>
+					Для получения товарной выгрузки необходимо создать размещения интересующих Вас офферов интернет-магазинов на выбранной площадке.
+					{% else %}
+					<strong>Нет размещений.</strong>
+					Для получения товарной выгрузки необходимо создать размещение оффера интернет-магазина на одной из Ваших площадок.
+					{% endif %}
+				</p>
+			</div>
+			{% endif %}
 		</form>
 	</div>
 	<div style="margin-left: 320px;">
@@ -307,21 +319,6 @@
 		{{ lists.paginate(pages, **request.args) }}
 	</div>
 </div>
-
-{% else %} {# shops #}
-
-<div class="clearfix alert-message block-message info">
-	<p>
-		<strong>Вы не сотрудничаете с магазинами.</strong>
-		Ве еще не начали сотрудничество с магазинами. Перейдите в каталог офферов и выберите
-		интересующие вас интернет-магазины.
-	</p>
-	<div class="alert-actions">
-		<a class="btn small" href="{{ url_for('.offers_all') }}">Перейти в каталог</a>
-	</div>
-</div>
-
-{% endif %} {# shops #}
 
 {% endblock %}
 

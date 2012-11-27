@@ -76,3 +76,9 @@
 	<span title="{{ date }} {{ time }}">{{ date }}</span>
 	{% endwith %}
 {% endmacro %}
+
+{% macro moderation_state(obj, tristate=false) %}	
+	<span {% if obj.admin_comment %}class="hint" title="{{ obj.admin_comment }}" style="cursor: help;"{% endif %}>
+		{{ to_icon(obj.admin_state.tristate if tristate else obj.is_approved) }}
+	</span>
+{% endmacro %}

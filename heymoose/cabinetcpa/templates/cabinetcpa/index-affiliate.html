@@ -101,6 +101,7 @@
 				<li><strong><a href="{{ url_for('.offers_all') }}">Каталог офферов</a></strong></li>
 				<li><strong><a href="{{ url_for('.offers_products') }}">Каталог товаров</a></strong></li>
 				<li><a href="{{ url_for('.offers_requested') }}">Мои офферы</a></li>
+				<li><a href="{{ url_for('.sites_list') }}">Мои площадки</a></li>
 				<li><a href="{{ url_for('.stats_offer') }}">Моя статистика</a></li>
 				<li><a href="{{ url_for('.withdrawals') }}">Мои выплаты</a></li>
 				<li><a href="{{ url_for('.notifications') }}">Мои уведомления</a></li>
@@ -112,7 +113,7 @@
 				Лучшие офферы за месяц
 				<a href="{{ url_for('.stats_offer') }}" class="more-link">подробно &raquo;</a>
 			</h5>
-			{% if stats %}
+			{% if offer_stats %}
 			<table class="bordered-table zebra-striped condensed-table nosort">
 				<thead>
 					<tr>
@@ -128,7 +129,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for stat in stats %}
+					{% for stat in offer_stats %}
 					<tr>
 						<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
 						<td class="right">{{ stat.clicks }}</td>
@@ -154,6 +155,53 @@
 				</p>
 				<div class="alert-actions">
 					<a class="btn small" href="{{ url_for('.offers_all') }}">Перейти в каталог рекламных предложений</a>
+				</div>
+			</div>
+			{% endif %}
+
+			<h5>
+				Лучшие площадки за месяц
+				<a href="{{ url_for('.stats_site') }}" class="more-link">подробно &raquo;</a>
+			</h5>
+			{% if site_stats %}
+			<table class="bordered-table zebra-striped condensed-table nosort">
+				<thead>
+					<tr>
+						<th class="header center" rowspan="2">Площадка</th>
+						<th class="header center" rowspan="2">Клики</th>
+						<th class="header center" rowspan="2">Действия</th>
+						<th class="header center" rowspan="2">CR</th>
+						<th class="header center" colspan="2">Финансы, руб.</th>
+					</tr>
+					<tr class="subrow">
+						<th class="header center">Неподтв.</th>
+						<th class="header center">Подтв.</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for stat in site_stats %}
+					<tr>
+						<td><a href="{{ url_for('.sites_info', id=stat.id) }}">{{ stat.name }}</a></td>
+						<td class="right">{{ stat.clicks }}</td>
+						<td class="right">{{ stat.leads }}</td>
+						<td class="right">{% if stat.cr %}{{ stat.cr if stat.cr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
+						<td class="right">{{ stat.not_confirmed_revenue }}</td>
+						<td class="right green">{{ stat.confirmed_revenue }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% else %}
+			<div class="clearfix alert-message block-message info">
+				<p>
+					{% if has_sites %}
+					<strong>Нет данных.</strong> За месяц не было активности по Вашим рекламным площадкам.
+					{% else %}
+					<strong>Нет данных.</strong> Вы еще не зарегистрировали в системе ни одной площадки.
+					{% endif %}
+				</p>
+				<div class="alert-actions">
+					<a class="btn small" href="{{ url_for('.sites_new') }}">Добавить рекламную площадку</a>
 				</div>
 			</div>
 			{% endif %}

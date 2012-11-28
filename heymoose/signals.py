@@ -13,7 +13,3 @@ new_feedback = _signals.signal('new-feedback')
 
 offer_blocked = _signals.signal('offer-blocked')
 offer_unblocked = _signals.signal('offer-unblocked')
-
-grant_approved = _signals.signal('grant-approved')
-grant_rejected = _signals.signal('grant-rejected')
-grant_blocked = _signals.signal('grant-blocked')

@@ -69,21 +69,3 @@ def offer_unblocked(app, affiliates=None, notify_affiliates=False, **kwargs):
 		if notify_affiliates:
 			message = message_from_template('mail/user-offer-unblocked.html', kwargs)
 			for affiliate in affiliates: connection.send(message_to_recipient(message, affiliate.email))
-
-
-@signals.grant_approved.connect
-def grant_approved(app, notify=False, **kwargs):
-	if notify:
-		send_from_template(app.mail, 'mail/user-grant-approved.html', kwargs, recipients=[kwargs['grant'].affiliate.email])
-
-
-@signals.grant_rejected.connect
-def grant_rejected(app, notify=False, **kwargs):
-	if notify:
-		send_from_template(app.mail, 'mail/user-grant-rejected.html', kwargs, recipients=[kwargs['grant'].affiliate.email])
-
-
-@signals.grant_blocked.connect
-def grant_blocked(app, notify=False, **kwargs):
-	if notify:
-		send_from_template(app.mail, 'mail/user-grant-blocked.html', kwargs, recipients=[kwargs['grant'].affiliate.email])

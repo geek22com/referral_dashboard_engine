@@ -13,3 +13,7 @@ def offer_blocked(app, affiliates, notify_affiliates=False, **kwargs):
 def offer_unblocked(app, affiliates, notify_affiliates=False, **kwargs):
 	notify_users(affiliates, templates.OFFER_UNBLOCKED, notified=notify_affiliates, **kwargs)
 	notify_user(kwargs['offer'].advertiser, templates.OFFER_UNBLOCKED, **kwargs)
+
+@signals.site_moderated.connect
+def site_moderated(app, site, **kwargs):
+	notify_user(site.affiliate, templates.SITE_MODERATED, site=site)

@@ -96,6 +96,17 @@ class SiteTypes(Enum):
 	GRANT = e('GRANT', name=u'Площадка по умолчанию', enabled=False)
 	WEB_SITE = e('WEB_SITE', name=u'Веб-сайт', enabled=True)
 	SOCIAL_NETWORK = e('SOCIAL_NETWORK', name=u'Страница или группа в социальной сети', enabled=True)
+	CONTEXT = e('CONTEXT', name=u'Контекстная реклама', enabled=True)
+	MAIL = e('MAIL', name=u'Почтовые рассылки', enabled=True)
+	DOORWAY = e('DOORWAY', name=u'Сеть дорвеев', enabled=True)
+	ARBITRAGE = e('ARBITRAGE', name=u'Арбитраж', enabled=True)
+
+class ContextSystems(Enum):
+	YANDEX_DIRECT = e('YANDEX_DIRECT', name=u'Яндекс.Директ')
+	GOOGLE_ADWORDS = e('GOOGLE_ADWORDS', name=u'Google AdWords')
+	YAHOO = e('YAHOO', name=u'Yahoo!')
+	BEGUN = e('BEGUN', name=u'Бегун')
+	OTHER = e('OTHER', name=u'другая')
 
 class AdminStates(Enum):
 	MODERATION = e('MODERATION', name=u'на модерации', tristate=None, message_class='info', link_class='danger')

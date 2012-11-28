@@ -646,6 +646,7 @@ class Site(IdentifiableModel, ModeratableModelMixin):
 	stats_url = Field(types.String, 'stats_url')
 	hosts_count = Field(types.Integer, 'hosts_count')
 	members_count = Field(types.Integer, 'members_count')
+	context_system = Field(enums.ContextSystems, 'context_system')
 	creation_time = Field(types.DateTime, 'creation-time')
 	last_change_time = Field(types.DateTime, 'last-change-time')
 

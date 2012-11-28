@@ -2,6 +2,7 @@
 from flask import g, request, redirect, url_for, flash
 from heymoose import app, resource as rc
 from heymoose.data.models import Site
+from heymoose.data.enums import SiteTypes
 from heymoose.forms import forms
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import affiliate_only
@@ -28,7 +29,7 @@ def sites_list(**kwargs):
 @template('cabinetcpa/sites/new.html')
 def sites_new():
 	site_type = request.args.get('type', '').upper()
-	if not site_type: return dict()
+	if not site_type: return dict(types=SiteTypes.values())
 	form = forms.site_form_by_type(site_type, request.form)
 	if request.method == 'POST' and form.validate():
 		site = Site(affiliate=g.user, type=site_type)
@@ -36,7 +37,7 @@ def sites_new():
 		rc.sites.add(site)
 		flash(u'Площадка успешно добавлена. Она станет акивной после проверки администрацией.', 'success')
 		return redirect(url_for('.sites_list'))
-	return dict(form=form)
+	return dict(form=form, site_type=SiteTypes.of(site_type))
 
 
 @bp.route('/sites/<int:id>/')

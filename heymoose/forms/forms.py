@@ -268,11 +268,13 @@ class SiteForm(Form):
 		validators.Required(message=u'Введите описание площадки')
 	])
 
-class WebSiteForm(SiteForm):
+class SiteFormUrlMixin:
 	url = TextField(u'Адрес площадки', [
 		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
 		validators.Required(message=u'Введите адрес площадки')
 	])
+
+class WebSiteForm(SiteForm, SiteFormUrlMixin):
 	stats_url = TextField(u'Адрес статистики по площадке', [
 		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
 		validators.Required(message=u'Введите адрес статистики по площадке')
@@ -281,19 +283,33 @@ class WebSiteForm(SiteForm):
 		validators.Required(message=u'Введите количество хостов')
 	])
 
-class SocialSiteForm(SiteForm):
-	url = TextField(u'Адрес площадки', [
-		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
-		validators.Required(message=u'Введите адрес площадки')
-	])
+class SocialSiteForm(SiteForm, SiteFormUrlMixin):
 	members_count = IntegerField(u'Количество подписчиков', [
 		validators.Required(message=u'Введите количество подписчиков')
 	])
 
+class ContextSiteForm(SiteForm):
+	context_system = SelectField(u'Контекстная система', [
+		validators.Required(message=u'Выберите контекстную систему')
+	], choices=enums.ContextSystems.tuples('name'))
+
+class MailSiteForm(SiteForm):
+	pass
+
+class DoorwaySiteForm(WebSiteForm):
+	pass
+
+class ArbitrageSiteForm(SiteForm):
+	pass
+
 def site_form_by_type(site_type, *form_args, **form_kwargs):
 	return {
 		enums.SiteTypes.WEB_SITE: WebSiteForm,
-		enums.SiteTypes.SOCIAL_NETWORK: SocialSiteForm
+		enums.SiteTypes.SOCIAL_NETWORK: SocialSiteForm,
+		enums.SiteTypes.CONTEXT: ContextSiteForm,
+		enums.SiteTypes.MAIL: MailSiteForm,
+		enums.SiteTypes.DOORWAY: DoorwaySiteForm,
+		enums.SiteTypes.ARBITRAGE: ArbitrageSiteForm
 	}[site_type](*form_args, **form_kwargs)
 
 

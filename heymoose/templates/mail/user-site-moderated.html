@@ -1,0 +1,28 @@
+{% extends "mail/layout-user.html" %}
+
+{% set state_changed = site.is_dirty('admin_state') %}
+{% set approved = state_changed and site.is_approved %}
+{% set blocked = state_changed and (site.is_blocked or site.is_moderating) %}
+
+{% block subject %}
+	{% if approved -%}Площадка теперь активна:{% elif blocked -%}Площадка заблокирована:{% else -%}Площадка{% endif %} {{ site.name }}
+{% endblock %}
+
+{% block html %}
+{% if state_changed %}
+<p>
+	Ваша площадка <a href="{{ url_for('cabinetcpa.sites_info', id=site.id, _external=true) }}">{{ site.name }}</a>
+	{% if approved %}
+		теперь активна.
+	{% elif blocked %}
+		была заблокирована. Все Ваши размещения на этой площадке теперь неактивны. Пожалуйста, проверьте свои партнерские ссылки.
+	{% endif %}
+</p>
+{% endif %}
+{% if site.admin_comment %}
+<p>
+	<i>Комментарий администрации:</i>
+	{{ site.admin_comment }}
+</p>
+{% endif %}
+{% endblock %}

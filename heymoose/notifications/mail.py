@@ -69,3 +69,8 @@ def offer_unblocked(app, affiliates=None, notify_affiliates=False, **kwargs):
 		if notify_affiliates:
 			message = message_from_template('mail/user-offer-unblocked.html', kwargs)
 			for affiliate in affiliates: connection.send(message_to_recipient(message, affiliate.email))
+
+
+@signals.site_moderated.connect
+def site_moderated(app, site, **kwargs):
+	send_from_template(app.mail, 'mail/user-site-moderated.html', dict(site=site), recipients=[site.affiliate.email])

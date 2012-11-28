@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import g, request, redirect, url_for, flash
-from heymoose import app, resource as rc
+from heymoose import app, signals, resource as rc
 from heymoose.forms import forms
 from heymoose.admin import blueprint as bp
 from heymoose.views.decorators import template, context, sorted, paginated
@@ -35,6 +35,8 @@ def sites_info_moderation(id, site):
 	if request.method == 'POST' and form.validate():
 		form.populate_obj(site)
 		rc.sites.moderate(site)
+		if site.updated():
+			signals.site_moderated.send(app, site=site)
 		flash(u'Площадка успешно изменена', 'success')
 		return redirect(url_for('.sites_info', id=site.id))
 	return dict(form=form)

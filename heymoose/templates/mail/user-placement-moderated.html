@@ -1,0 +1,17 @@
+{% extends "mail/layout-user.html" %}
+
+{% set state_changed = placement.is_dirty('admin_state') %}
+{% set approved = state_changed and placement.is_approved %}
+{% set blocked = state_changed and (placement.is_blocked or placement.is_moderating) %}
+
+{% block subject %}
+	Размещение оффера "{{ placement.offer.name }}" на площадке "{{ placement.site.name }}" {% if approved %}активно{% elif blocked -%}заблокировано{% else -%}обновлено{% endif %}
+{% endblock %}
+
+{% block html %}
+<p>
+	Размещение оффера <a href="{{ url_for('cabinetcpa.offers_info', id=placement.offer.id, _external=true) }}">{{ placement.offer.name }}</a>
+	на площадке <a href="{{ url_for('cabinetcpa.sites_info', id=placement.site.id, _external=true) }}">{{ placement.site.name }}</a>
+	{% if approved %}активно.{% elif blocked -%}заблокировано. Пожалуйста, проверьте свои партнерские ссылки.{% else -%}обновлено.{% endif %}
+</p>
+{% endblock %}

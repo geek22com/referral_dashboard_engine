@@ -74,3 +74,8 @@ def offer_unblocked(app, affiliates=None, notify_affiliates=False, **kwargs):
 @signals.site_moderated.connect
 def site_moderated(app, site, **kwargs):
 	send_from_template(app.mail, 'mail/user-site-moderated.html', dict(site=site), recipients=[site.affiliate.email])
+
+
+@signals.placement_moderated.connect
+def placement_moderated(app, placement, **kwargs):
+	send_from_template(app.mail, 'mail/user-placement-moderated.html', dict(placement=placement), recipients=[placement.affiliate.email])

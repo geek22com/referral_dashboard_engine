@@ -208,6 +208,8 @@ def offers_info_placements_moderation(id, pid, offer, **kwargs):
 	if request.method == 'POST' and form.validate():
 		form.populate_obj(placement)
 		rc.placements.moderate(placement)
+		if placement.updated():
+			signals.placement_moderated.send(app, placement=placement)
 		flash(u'Размещение успешно изменено', 'success')
 		return redirect(url_for('.offers_info_placements', id=offer.id))
 	return dict(form=form)

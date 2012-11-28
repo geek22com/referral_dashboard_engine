@@ -15,3 +15,4 @@ offer_blocked = _signals.signal('offer-blocked')
 offer_unblocked = _signals.signal('offer-unblocked')
 
 site_moderated = _signals.signal('site-moderated')
+placement_moderated = _signals.signal('placement-moderated')

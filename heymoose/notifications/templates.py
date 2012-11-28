@@ -31,3 +31,13 @@ SITE_MODERATED = u'''
 		Был обновлен комментарий администрации к вашей площадке <a href="{{ site_url }}">{{ site.name }}</a>.
 	{% endif %}
 '''
+
+PLACEMENT_MODERATED = u'''
+	{% set state_changed = placement.is_dirty('admin_state') %}
+	{% set approved = state_changed and placement.is_approved %}
+	{% set blocked = state_changed and (placement.is_blocked or placement.is_moderating) %}
+
+	Размещение оффера <a href="{{ url_for('cabinetcpa.offers_info', id=placement.offer.id, _external=true) }}">{{ placement.offer.name }}</a>
+	на площадке <a href="{{ url_for('cabinetcpa.sites_info', id=placement.site.id, _external=true) }}">{{ placement.site.name }}</a>
+	{% if approved %}активно.{% elif blocked -%}заблокировано. Пожалуйста, проверьте свои партнерские ссылки.{% else -%}обновлено.{% endif %}
+'''

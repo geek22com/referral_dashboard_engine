@@ -33,7 +33,55 @@
 	</style>
 {% endblock %}
 
-
+{% block precontent %}
+	{% if not g.user.confirmed or not g.user.wmr or not has_sites or not has_placements %}
+		<div class="clearfix alert-message block-message success" style="background-color: #BFE7BF;">
+			<h2>Добро пожаловать в систему HeyMoose!</h2>
+			<p>
+				<strong>Для того, чтобы начать пользоваться системой, Вам осталось проделать несколько простых действий:</strong>
+			</p>
+			{% if not g.user.confirmed %}
+			<div class="clearfix alert-message block-message success">
+				<p>
+					Пожалуйста, подтвердите Ваш почтовый ящик. Если почтовый ящик не будет подтвержден в течение двух недель, Ваша учетная запись будет заблокирована. Если Вы не получили письмо со ссылкой на подтверждение регистрации, Вы можете запросить повторную отправку письма, нажав кнопку ниже.
+				</p>
+				<div class="alert-actions right">
+					<a href="{{ url_for('.profile_sendmail') }}" class="btn small span4 center">Выслать письмо повторно</a>
+				</div>
+			</div>
+			{% endif %}
+			{% if not g.user.wmr %}
+			<div class="clearfix alert-message block-message success">
+				<p>
+					Для совершения выплат нам необходим номер вашего WMR-кошелька в системе WebMoney. Пожалуйста, заполните его в Вашем профиле. Чтобы перейти к редактированию профиля, нажмите кнопку ниже.
+				</p>
+				<div class="alert-actions right">
+					<a class="btn small span4 center" href="{{ url_for('.profile_edit') }}">Ввести номер WMR-кошелька</a>
+				</div>
+			</div>
+			{% endif %}
+			{% if not has_sites %}
+			<div class="clearfix alert-message block-message success">
+				<p>
+					Зарегистрируйте в системе одну из Ваших площадок или другой способ продвижения Вами рекламных предложений. В дальнейшем Вы сможете просматривать статистику по Вашим площадкам, и видеть, какая из них приносит Вам больший доход.
+				</p>
+				<div class="alert-actions right">
+					<a class="btn small span4 center" href="{{ url_for('.sites_new') }}">Добавить площадку</a>
+				</div>
+			</div>
+			{% elif not has_placements %}
+			<div class="clearfix alert-message block-message success">
+				<p>
+					Выберите одно из рекламных предложений в нашем каталоге офферов, и создайте размещение этого оффера на одной из созданных Вами площадок. Размещение позволит Вам сгенерировать партнерскую ссылку, ведущую на сайт рекламодателя, с помощью которой мы будем отслеживать пользователей, перешедших с Вашей рекламной площадки.
+				</p>
+				<div class="alert-actions right">
+					<a class="btn small span4 center" href="{{ url_for('.offers_all') }}">Перейти в каталог офферов</a>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	{% endif %}
+{% endblock %}
 
 {% block content %}
 	{% if referral_offer %}

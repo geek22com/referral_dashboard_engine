@@ -28,7 +28,22 @@
 	</style>
 {% endblock %}
 
-
+{% block precontent %}
+	{% if not g.user.confirmed %}
+		<div class="clearfix alert-message block-message info">
+			<p>
+				<strong>Ваш электронный адрес не подтвержден.</strong>
+				Пожалуйста, подтвердите ваш почтовый ящик. Если почтовый ящик не будет
+				подтвержден в течение двух недель, ваша учетная запись будет заблокирована. 
+				Если вы не получили письмо со ссылкой на подтверждение регистрации, 
+				вы можете запросить повторную отправку письма, нажав кнопку ниже.
+			</p>
+			<div class="alert-actions right">
+				<a href="{{ url_for('.profile_sendmail') }}" class="btn small span4 center">Выслать письмо повторно</a>
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}
 
 {% block content %}
 	<div class="row">

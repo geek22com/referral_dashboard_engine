@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from flask import g, request, redirect, url_for, flash
+<<<<<<< HEAD
 from heymoose import app, signals, resource as rc
+=======
+from heymoose import app, resource as rc
+>>>>>>> ef9f1ba9e328ea84813906f9438265deb6d6a683
 from heymoose.forms import forms
 from heymoose.admin import blueprint as bp
 from heymoose.views.decorators import template, context, sorted, paginated

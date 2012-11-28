@@ -1,0 +1,16 @@
+{% extends "mail/layout-admin.html" %}
+
+{% block subject %}
+Рекламная кампания заблокирована: {{ offer.name }}
+{% endblock %}
+
+{% block html %}
+<p>
+	Рекламная кампания <a href="{{ url_for('admin.offers_info', id=offer.id, _external=true) }}">{{ offer.name }}</a>
+	была заблокирована администратором <a href="{{ url_for('admin.users_info', id=admin.id, _external=true) }}">{{ admin.email }}</a>.
+</p>
+{% if reason %}
+<p>Причина блокировки:</p>
+<p><i>{{ reason }}</i></p>
+{% endif %}
+{% endblock %}

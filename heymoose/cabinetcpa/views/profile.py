@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from flask import render_template, g, redirect, url_for, abort, request, flash
-from heymoose import app, resource
+from heymoose import app, signals, resource
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only
 from heymoose.forms import forms
 from heymoose.utils import robokassa
 from heymoose.views.decorators import template, paginated
-from heymoose.mail import transactional as mail
+
 
 ACCOUNTING_ENTRIES_PER_PAGE = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
 
@@ -19,7 +19,7 @@ def profile():
 
 @bp.route('/profile/sendmail', methods=['POST'])
 def profile_sendmail():
-	mail.user_confirm_email(g.user)
+	signals.confirmation_email_requested.send(app, user=g.user)
 	flash(u'Письмо выслано повторно', 'success')
 	return redirect(url_for('.profile'))
 

@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from flask import request, flash, g, redirect, url_for, abort, jsonify, send_file
-from heymoose import app, resource as rc
+from heymoose import app, signals, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import Offer, OfferGrant, SubOffer, Banner
 from heymoose.data.enums import OfferGrantState
-from heymoose.notifications import notify
 from heymoose.views import excel
 from heymoose.views.decorators import template, paginated, sorted
 from heymoose.cabinetcpa import blueprint as bp
@@ -255,14 +254,15 @@ def offers_info_requests(id, **kwargs):
 	if request.method == 'POST' and form.validate():
 		grant = rc.offer_grants.get_by_id(form.grant_id.data, full=True)
 		if grant and grant.offer.id == offer.id and not grant.blocked:
+			signal_args = dict(grant=grant, notify=True, reason=form.reason.data)
 			action = form.action.data
 			if action == 'approve' and not grant.approved:
 				rc.offer_grants.approve(grant.id)
-				notify.grant_approved(grant)
+				signals.grant_approved.send(app, **signal_args)
 				flash(u'Заявка утверждена', 'success')
 			elif action == 'reject' and not grant.rejected:
 				rc.offer_grants.reject(grant.id, form.reason.data)
-				notify.grant_rejected(grant, form.reason.data)
+				signals.grant_rejected.send(app, **signal_args)
 				flash(u'Заявка отклонена', 'success')
 			return redirect(request.url)
 	return dict(offer=offer, grants=grants, count=count, form=form)

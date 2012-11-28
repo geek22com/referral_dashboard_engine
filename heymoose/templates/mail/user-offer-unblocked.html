@@ -1,0 +1,12 @@
+{% extends "mail/layout-user.html" %}
+
+{% block subject %}
+Рекламная кампания активна: {{ offer.name }}
+{% endblock %}
+
+{% block html %}
+<p>
+	Рекламная кампания <a href="{{ url_for('cabinetcpa.offers_info', id=offer.id, _external=true) }}">{{ offer.name }}</a>
+	вновь активна.
+</p>
+{% endblock %}

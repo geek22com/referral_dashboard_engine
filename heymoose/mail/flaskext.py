@@ -90,6 +90,7 @@ class Connection(object):
             self.host.sendmail(message.sender, message.send_to, message.as_string())
         else:
             self.app.logger.info(u'Mail sending is suppressed. Message:\n{0}'.format(message.html or message.body))
+            #self.app.logger.info(u'Mail sending is suppressed')
 
         self.num_emails += 1
 

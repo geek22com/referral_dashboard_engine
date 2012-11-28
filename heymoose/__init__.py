@@ -32,8 +32,9 @@ def app_init_web(app):
 	configure(app)
 	configure_mail(app)
 	configure_assets(app)
-	# Import handlers and filters
+	# Moudle initialization by import
 	import handlers, filters, forms.filters
+	from notifications import mail, internal
 	# Import and register views and blueprints
 	from views import common
 	from heymoose import site, admin, cabinetcpa

@@ -23,6 +23,10 @@
 			{% if form.members_count %}
 			{{ forms.singlefield(form.members_count, class='span4') }}
 			{% endif %}
+
+			{% if form.context_system %}
+			{{ forms.singlefield(form.context_system, class='span4') }}
+			{% endif %}
 			
 			{{ forms.singlefield(form.description, class='span10', rows=5) }}
 		</fieldset>

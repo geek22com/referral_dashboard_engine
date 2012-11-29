@@ -20,7 +20,8 @@ INFINITE_LIMITS = dict(offset=0, limit=999999)
 
 
 def existing_offer(id):
-	return rc.offers.get_by_id(id, aff_id=g.user.id if g.user.is_affiliate else None)
+	args = dict(aff_id=g.user.id) if g.user.is_affiliate else dict()
+	return rc.offers.get_by_id(id, **args)
 
 def visible_offer(id):
 	'''

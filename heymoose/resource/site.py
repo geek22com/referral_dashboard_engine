@@ -9,7 +9,7 @@ class SiteResource(BackendResource):
 	def extract_site_params(self, site):
 		return self.extractor.extract(site,
 			required='aff_id type name description'.split(),
-			optional='url stats_url hosts_count members_count context_system'.split())
+			optional='url stats_url stats_description hosts_count members_count context_system'.split())
 
 	def extract_site_moderation_params(self, site):
 		return self.extractor.extract(site, required=['admin_state'], optional=['admin_comment'])

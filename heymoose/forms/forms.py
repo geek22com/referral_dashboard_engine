@@ -279,6 +279,9 @@ class WebSiteForm(SiteForm, SiteFormUrlMixin):
 		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
 		validators.Required(message=u'Введите адрес статистики по площадке')
 	])
+	stats_description = TextAreaField(u'Доступ к статистике', [
+		validators.Required(message=u'Введите описание доступа к статистике')
+	])
 	hosts_count = IntegerField(u'Количество хостов', [
 		validators.Required(message=u'Введите количество хостов')
 	])

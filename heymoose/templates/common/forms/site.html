@@ -13,7 +13,19 @@
 			{% endif %}
 
 			{% if form.stats_url %}
-			{{ forms.singlefield(form.stats_url, class='span10') }}
+			{% call forms.singlefield_desc(form.stats_url, class='span10') %}
+			<span class="help-block">
+				По данному URL должна находиться статистика минимум за месяц по Вашей площадке. Обычно, это статистика на сервисах Яндекс.Метрика, Google Analytics или LiveInternet.
+			</span>
+			{% endcall %}
+			{% endif %}
+
+			{% if form.stats_description %}
+			{% call forms.singlefield_desc(form.stats_description, class='span10', rows=2) %}
+			<span class="help-block">
+				Опишите здесь, каким образом можно получить доступ к статистике, расположенной по указанному Вами адресу. Как правило, это логин и пароль. Также вы можете предоставить гостевой доступ аккаунту <b>{{ g.config.get('YANDEX_METRIKA_ACCOUNT') }}</b> в Яндекс.Метрике или аккаунту <b>{{ g.config.get('GOOGLE_ANALYTICS_ACCOUNT') }}</b> в Google Analytics.
+			</span>
+			{% endcall %}
 			{% endif %}
 
 			{% if form.hosts_count %}
@@ -28,7 +40,11 @@
 			{{ forms.singlefield(form.context_system, class='span4') }}
 			{% endif %}
 			
-			{{ forms.singlefield(form.description, class='span10', rows=5) }}
+			{% call forms.singlefield_desc(form.description, class='span10', rows=5) %}
+			<span class="help-block">
+				Приведите описание площадки или выбранного способа продвижения рекламных предложений. Большим плюсом является описание опыта работы в других партнерских сетях (подкрепленного статистикой), если он есть.
+			</span>
+			{% endcall %}
 		</fieldset>
 		<div class="actions">
 			<input class="btn large primary" type="submit" value="Подтвердить" />

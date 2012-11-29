@@ -607,6 +607,7 @@ class Site(IdentifiableModel, ModeratableModelMixin):
 	type = Field(enums.SiteTypes, 'type')
 	url = Field(types.String, 'url')
 	stats_url = Field(types.String, 'stats_url')
+	stats_description = Field(types.String, 'stats_description')
 	hosts_count = Field(types.Integer, 'hosts_count')
 	members_count = Field(types.Integer, 'members_count')
 	context_system = Field(enums.ContextSystems, 'context_system')

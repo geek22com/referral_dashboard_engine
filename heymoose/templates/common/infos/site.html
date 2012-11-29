@@ -31,6 +31,9 @@
 		{% if site.stats_url %}
 		<tr><th>Статистика</th><td><a href="{{ site.stats_url }}" target="_blank">{{ site.stats_url }}</a></td></tr>
 		{% endif %}
+		{% if site.stats_description %}
+		<tr><th>Доступ к статистике</th><td><p>{{ site.stats_description }}</p></td></tr>
+		{% endif %}
 		{% if site.hosts_count %}
 		<tr><th>Количество хостов</th><td>{{ site.hosts_count }}</td></tr>
 		{% endif %}

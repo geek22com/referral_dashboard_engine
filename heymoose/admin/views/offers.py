@@ -105,7 +105,7 @@ def offers_info(id, offer):
 	offer.overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id)
 	form = forms.OfferBlockForm(request.form)
 	if request.method == 'POST' and form.validate():
-		placements = rc.placements.list(offer_id=offer.id, **INFINITE_LIMITS)
+		placements, _ = rc.placements.list(offer_id=offer.id, **INFINITE_LIMITS)
 		affiliates = [placement.affiliate for placement in placements if not placement.affiliate.blocked]
 		signal_args = dict(offer=offer, admin=g.user, affiliates=affiliates, reason=form.reason.data,
 			notify_affiliates=form.notify.data, notify_advertiser=form.notify.data)

@@ -3,7 +3,6 @@ from flask import g, request, flash, redirect, url_for, abort, jsonify, send_fil
 from heymoose import app, signals, resource as rc
 from heymoose.forms import forms
 from heymoose.data.models import SubOffer, Banner
-from heymoose.data.enums import OfferGrantState
 from heymoose.views import excel
 from heymoose.views.decorators import template, context, sorted, paginated
 from heymoose.admin import blueprint as bp
@@ -20,6 +19,8 @@ REFERER_STATS_PER_PAGE = app.config.get('REFERER_STATS_PER_PAGE', 20)
 KEYWORDS_STATS_PER_PAGE = app.config.get('KEYWORDS_STATS_PER_PAGE', 20)
 SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 DEBTS_PER_PAGE = app.config.get('DEBTS_PER_PAGE', 20)
+
+INFINITE_LIMITS = dict(offset=0, limit=999999)
 
 offer_context = context(lambda id, **kwargs: dict(offer=rc.offers.get_by_id(id)))
 
@@ -104,8 +105,8 @@ def offers_info(id, offer):
 	offer.overall_debt = rc.withdrawals.overall_debt(offer_id=offer.id)
 	form = forms.OfferBlockForm(request.form)
 	if request.method == 'POST' and form.validate():
-		grants, _ = rc.offer_grants.list(offer_id=offer.id, state=OfferGrantState.APPROVED, blocked=False, offset=0, limit=999999)
-		affiliates = [grant.affiliate for grant in grants]
+		placements = rc.placements.list(offer_id=offer.id, **INFINITE_LIMITS)
+		affiliates = [placement.affiliate for placement in placements if not placement.affiliate.blocked]
 		signal_args = dict(offer=offer, admin=g.user, affiliates=affiliates, reason=form.reason.data,
 			notify_affiliates=form.notify.data, notify_advertiser=form.notify.data)
 		action = request.form.get('action')

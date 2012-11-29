@@ -2,8 +2,7 @@
 from flask import request, flash, g, redirect, url_for, abort, jsonify, send_file
 from heymoose import app, signals, resource as rc
 from heymoose.forms import forms
-from heymoose.data.models import Offer, OfferGrant, SubOffer, Banner, Placement
-from heymoose.data.enums import OfferGrantState
+from heymoose.data.models import Offer, SubOffer, Banner, Placement
 from heymoose.views import excel
 from heymoose.views.decorators import template, context, paginated, sorted
 from heymoose.cabinetcpa import blueprint as bp
@@ -27,7 +26,7 @@ def visible_offer(id):
 	'''
 	For both advertisers and affiliates. For advertiser returns offer only if it is his offer
 	or if this offer is visible (approved, active, launched). For affiliate returns offer only
-	if offer is granted for this affiliate or if it is visible. Otherwise returns 404.
+	if affiliate has this offer placements or if it is visible. Otherwise returns 404.
 	'''
 	offer = existing_offer(id)
 	if offer.visible or (g.user.is_advertiser and offer.owned_by(g.user)) or (g.user.is_affiliate and offer.placements_count):

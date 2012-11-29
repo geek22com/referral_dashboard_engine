@@ -322,43 +322,6 @@ class Offer(SubOffer):
 		)
 
 
-class OfferGrant(IdentifiableModel):
-	offer = Field('Offer', 'offer')
-	affiliate = Field('User', 'affiliate')
-	back_url = Field(types.String, 'back-url')
-	postback_url = Field(types.String, 'postback-url')
-	message = Field(types.String, 'message')
-	state = Field(enums.OfferGrantState, 'state')
-	blocked = Field(types.Boolean, 'blocked')
-	reject_reason = Field(types.String, 'reject-reason')
-	block_reason = Field(types.String, 'block-reason')
-	
-	@property
-	def approved(self): return not self.blocked and self.state == enums.OfferGrantState.APPROVED
-	
-	@property
-	def rejected(self): return not self.blocked and self.state == enums.OfferGrantState.REJECTED
-	
-	@property
-	def moderation(self): return not self.blocked and self.state == enums.OfferGrantState.MODERATION
-	
-	@property
-	def admin_moderation(self): return self.blocked and not self.block_reason
-
-	@cached_property
-	def state_description(self):
-		if not self.blocked:
-			return self.state.name
-		elif self.block_reason:
-			return u'отклонена администрацией'
-		else:
-			return u'проверяется администрацией'
-
-	@cached_property
-	def reason(self):
-		return self.block_reason or self.reject_reason
-
-
 class Banner(IdentifiableModel):
 	width = Field(types.Integer, 'width')
 	height = Field(types.Integer, 'height')

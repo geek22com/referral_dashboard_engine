@@ -20,7 +20,7 @@ SUBOFFER_STATS_PER_PAGE = app.config.get('SUBOFFER_STATS_PER_PAGE', 20)
 @sorted('clicks_count', 'desc')
 @paginated(OFFER_STATS_PER_PAGE)
 def stats_offer(**kwargs):
-	form = forms.OfferStatsFilterForm(request.args)
+	form = forms.DateTimeRangeForm(request.args)
 	kwargs.update(form.backend_args())
 	stats, count = rc.offer_stats.list_all(**kwargs) if form.validate() else ([], 0)
 	return dict(stats=stats, count=count, form=form)

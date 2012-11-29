@@ -506,21 +506,6 @@ class AdminOfferEditForm(OfferEditForm):
 	])
 
 
-class OfferRequestDecisionForm(Form):
-	action = HiddenField()
-	grant_id = HiddenField()
-	reason = TextAreaField(u'Причина', [
-		validators.Length(max=500, message=u'Причина должна быть длиной не более 500 символов')
-	])
-
-
-class AdminOfferRequestDecisionForm(OfferRequestDecisionForm):
-	reason = TextAreaField(u'Причина', [
-		validators.Length(max=500, message=u'Причина должна быть длиной не более 500 символов')
-	], default=u'Ваш способ продвижения не подходит для данной рекламной кампании')
-	notify = BooleanField(u'уведомить партнёра', default=True)
-
-
 class OfferBannerForm(Form):
 	image = myfields.BannerField(u'Выберите изображение', [
 		validators.FileRequired(message=u'Выберите файл на диске'),
@@ -586,20 +571,6 @@ class DoubleDateTimeRangeForm(Form):
 			second_period_from=self.second_period_from.data.strftime(datetime_nosec_format),
 			second_period_to=self.second_period_to.data.strftime(datetime_nosec_format)
 		)
-
-
-class OfferStatsFilterForm(DateTimeRangeForm):
-	requested = BooleanField(u'только с заявками', default=False)
-	
-	def query_args(self):
-		args = DateTimeRangeForm.query_args(self)
-		if self.requested.data:	args.update(requested=u'y')
-		return args
-	
-	def backend_args(self):
-		args = DateTimeRangeForm.backend_args(self)
-		args.update(granted=self.requested.data)
-		return args
 
 
 class CabinetStatsForm(DateTimeRangeForm):

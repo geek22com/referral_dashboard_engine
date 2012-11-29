@@ -65,11 +65,6 @@ class Regions(Enum):
 	GERMANY = e('GERMANY', code=u'DE', name=u'Германия')
 	CSI = e('CSI', code=u'CSI', name=u'СНГ')
 
-class OfferGrantState(Enum):
-	MODERATION = e('MODERATION', name=u'на рассмотрении рекламодателем')
-	APPROVED = e('APPROVED', name=u'подтверждена')
-	REJECTED = e('REJECTED', name=u'отклонена рекламодателем')
-
 class OfferActionStates(Enum):
 	NOT_APPROVED = e('NOT_APPROVED', name=u'не подтверждено', css_class=u'black')
 	APPROVED = e('APPROVED', name=u'подтверждено', css_class=u'green')

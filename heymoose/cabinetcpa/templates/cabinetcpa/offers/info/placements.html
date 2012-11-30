@@ -1,0 +1,49 @@
+{% extends "cabinetcpa/offers/info/layout.html" %}
+{% import 'common/placements.html' as placement_macros %}
+
+{% set activetab = 'placements' %}
+
+{% block tabcontent %}
+
+{% if form.site.sites %}
+	<div class="well">
+		<form method="post" action="">
+			<b>Добавить размещение на площадке</b>
+			{{ form.site(class='span6') }}
+			<input type="submit" class="btn success" value="Добавить" />
+		</form>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		{% if not placements %}
+		<p>Для размещения рекламного предложения у Вас должна быть хотя бы одна активная площадка.</p>	
+		{% else %}
+		<p>Уже созданы размещения на всех Ваших активных площадках.</p>
+		{% endif %}
+		<div class="alert-actions">
+			<a class="btn small" href="{{ url_for('.sites_new') }}">Добавить новую площадку</a>	
+		</div>
+	</div>
+{% endif %}
+
+{% if placements %}
+	{% call(head, placement) placement_macros.table(placements) %}
+		{% if head %}
+			<th></th>
+		{% else %}
+			<td class="center">
+				<a href="{{ url_for('.offers_info_placements_edit', id=offer.id, pid=placement.id) }}"><img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="изменить" title="изменить"></a>
+				<a href="{{ url_for('.offers_info_placements_delete', id=offer.id, pid=placement.id) }}" onclick="return confirm('Удалить размещение?');"><img src="{{ url_for('static', filename='img/icon_deletelink.gif') }}" alt="удалить" title="удалить"></a>
+			</td>
+		{% endif %}
+	{% endcall %}
+	<div class="right">
+		<a href="{{ url_for('.offers_info_materials', id=offer.id) }}" class="btn small">Получить партнерскую ссылку</a>
+	</div>
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Не найдено размещений на активных площадках.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

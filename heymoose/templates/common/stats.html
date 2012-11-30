@@ -105,6 +105,18 @@
 	{% endcall %}
 {% endmacro %}
 
+{% macro table_by_site(stats, suboffer_stats_rule=none) %}
+	{% call(place, stat) table_base(stats, **kwargs) %}
+		{% if place == 'first-header' %}
+			<th rowspan="2" {{ lists.sort_header('descr', **kwargs) }}>Площадка</th>
+		{% elif place == 'first' %}
+			<td><a href="{{ url_for('.sites_info', id=stat.id) }}">{{ stat.name }}</a></td>
+		{% elif place == 'suboffer-stats-url' %}
+			{{ url_for(suboffer_stats_rule, site_id=stat.id, **kwargs) -}}
+		{% endif %}
+	{% endcall %}
+{% endmacro %}
+
 {% macro table_by_affiliate(stats, suboffer_stats_rule=none) %}
 	{% call(place, stat) table_base(stats, **kwargs) %}
 		{% if place == 'first-header' %}

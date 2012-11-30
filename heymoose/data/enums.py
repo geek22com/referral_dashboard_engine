@@ -65,11 +65,6 @@ class Regions(Enum):
 	GERMANY = e('GERMANY', code=u'DE', name=u'Германия')
 	CSI = e('CSI', code=u'CSI', name=u'СНГ')
 
-class OfferGrantState(Enum):
-	MODERATION = e('MODERATION', name=u'на рассмотрении рекламодателем')
-	APPROVED = e('APPROVED', name=u'подтверждена')
-	REJECTED = e('REJECTED', name=u'отклонена рекламодателем')
-
 class OfferActionStates(Enum):
 	NOT_APPROVED = e('NOT_APPROVED', name=u'не подтверждено', css_class=u'black')
 	APPROVED = e('APPROVED', name=u'подтверждено', css_class=u'green')
@@ -91,3 +86,24 @@ class WithdrawalBases(Enum):
 class ProductRevenueUnits(Enum):
 	FIXED = e('fixed', sign=u'руб.')
 	PERCENT = e('percent', sign=u'%')
+
+class SiteTypes(Enum):
+	GRANT = e('GRANT', name=u'Площадка по умолчанию', enabled=False)
+	WEB_SITE = e('WEB_SITE', name=u'Веб-сайт', enabled=True)
+	SOCIAL_NETWORK = e('SOCIAL_NETWORK', name=u'Страница или группа в социальной сети', enabled=True)
+	CONTEXT = e('CONTEXT', name=u'Контекстная реклама', enabled=True)
+	MAIL = e('MAIL', name=u'Почтовые рассылки', enabled=True)
+	DOORWAY = e('DOORWAY', name=u'Сеть дорвеев', enabled=True)
+	ARBITRAGE = e('ARBITRAGE', name=u'Арбитраж', enabled=True)
+
+class ContextSystems(Enum):
+	YANDEX_DIRECT = e('YANDEX_DIRECT', name=u'Яндекс.Директ')
+	GOOGLE_ADWORDS = e('GOOGLE_ADWORDS', name=u'Google AdWords')
+	YAHOO = e('YAHOO', name=u'Yahoo!')
+	BEGUN = e('BEGUN', name=u'Бегун')
+	OTHER = e('OTHER', name=u'другая')
+
+class AdminStates(Enum):
+	MODERATION = e('MODERATION', name=u'на модерации', tristate=None, message_class='info', link_class='danger')
+	APPROVED = e('APPROVED', name=u'подтверждено', tristate=True, message_class='success', link_class='')
+	BLOCKED = e('BLOCKED', name=u'заблокировано', tristate=False, message_class='error', link_class='danger')

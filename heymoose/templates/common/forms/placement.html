@@ -1,0 +1,16 @@
+{% import 'common/forms.html' as forms %}
+
+{% macro html(form) %}
+	<form method="post" action="" class="widelabels validate2">
+		<div class="input">
+			<span class="help-block">* Поля, выделенные <b>жирным шрифтом</b>, обязательны для заполнения.</span>
+		</div>
+		<fieldset>
+			{{ forms.singlefield(form.back_url, class='span8') }}
+			{{ forms.singlefield(form.postback_url, class='span8') }}
+		</fieldset>
+		<div class="actions">
+			<input class="btn large primary" type="submit" value="Подтвердить" />
+		</div>
+	</form>
+{% endmacro %}

@@ -264,33 +264,72 @@ class SiteForm(Form):
 		validators.Length(min=1, max=100, message=u'Название должно иметь длину от 1 до 100 символов'),
 		validators.Required(message=u'Введите название площадки')
 	])
-	url = TextField(u'Адрес площадки', [
-		validators.Required(message=u'Введите URL'),
-		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False)
-	], default=u'http://')
-	language = SelectField(u'Язык площадки', default=u'', choices=[
-		(u'', u'(не указывать)'),
-		(u'1', u'Русский'),
-		(u'2', u'Английский'),
-		(u'3', u'Немецкий')
-	])
-	uniqs = IntegerField(u'уникальных посетителей', [
-		validators.Integer(message=u'Введите число'),
-		validators.NumberRange(min=0, message=u'Укажите неотрицательное целое число')
-	])
-	views = IntegerField(u'просмотров', [
-		validators.Integer(message=u'Введите число'),
-		validators.NumberRange(min=0, message=u'Укажите неотрицательное целое число')
-	])
 	description = TextAreaField(u'Описание площадки', [
-		validators.Length(min=100, message=u'Описание площадки должно содержать минимум 100 символов'),
 		validators.Required(message=u'Введите описание площадки')
 	])
-	categories = myfields.CategoriesField(u'Категории', default=True)
-	regions = myfields.CheckboxListField(u'Регионы', [
-		validators.Required(message=u'Выберите хотя бы один регион')
-	], choices=enums.Regions.tuples('name'), coerce=int, default=(enums.Regions.RUSSIA,))
-	comment = TextAreaField(u'Комментарий для администрации')
+
+class SiteFormUrlMixin:
+	url = TextField(u'Адрес площадки', [
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
+		validators.Required(message=u'Введите адрес площадки')
+	])
+
+class WebSiteForm(SiteForm, SiteFormUrlMixin):
+	stats_url = TextField(u'Адрес статистики по площадке', [
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
+		validators.Required(message=u'Введите адрес статистики по площадке')
+	])
+	stats_description = TextAreaField(u'Доступ к статистике', [
+		validators.Required(message=u'Введите описание доступа к статистике')
+	])
+	hosts_count = IntegerField(u'Количество хостов', [
+		validators.Required(message=u'Введите количество хостов')
+	])
+
+class SocialSiteForm(SiteForm, SiteFormUrlMixin):
+	members_count = IntegerField(u'Количество подписчиков', [
+		validators.Required(message=u'Введите количество подписчиков')
+	])
+
+class ContextSiteForm(SiteForm):
+	context_system = SelectField(u'Контекстная система', [
+		validators.Required(message=u'Выберите контекстную систему')
+	], choices=enums.ContextSystems.tuples('name'))
+
+class MailSiteForm(SiteForm):
+	pass
+
+class DoorwaySiteForm(WebSiteForm):
+	pass
+
+class ArbitrageSiteForm(SiteForm):
+	pass
+
+def site_form_by_type(site_type, *form_args, **form_kwargs):
+	return {
+		enums.SiteTypes.WEB_SITE: WebSiteForm,
+		enums.SiteTypes.SOCIAL_NETWORK: SocialSiteForm,
+		enums.SiteTypes.CONTEXT: ContextSiteForm,
+		enums.SiteTypes.MAIL: MailSiteForm,
+		enums.SiteTypes.DOORWAY: DoorwaySiteForm,
+		enums.SiteTypes.ARBITRAGE: ArbitrageSiteForm
+	}[site_type](*form_args, **form_kwargs)
+
+
+class PlacementForm(Form):
+	site = myfields.SiteField(u'Площадка', [
+		validators.Required(message=u'Выберите площадку')
+	], coerce=int)
+
+class PlacementEditForm(Form):
+	back_url = TextField(u'Back URL', [
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
+		validators.Optional()
+	])
+	postback_url = TextField(u'Postback URL', [
+		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
+		validators.Optional()
+	])
 
 
 class SubOfferForm(Form):
@@ -470,32 +509,6 @@ class AdminOfferEditForm(OfferEditForm):
 	])
 
 
-class OfferRequestDecisionForm(Form):
-	action = HiddenField()
-	grant_id = HiddenField()
-	reason = TextAreaField(u'Причина', [
-		validators.Length(max=500, message=u'Причина должна быть длиной не более 500 символов')
-	])
-
-
-class AdminOfferRequestDecisionForm(OfferRequestDecisionForm):
-	reason = TextAreaField(u'Причина', [
-		validators.Length(max=500, message=u'Причина должна быть длиной не более 500 символов')
-	], default=u'Ваш способ продвижения не подходит для данной рекламной кампании')
-	notify = BooleanField(u'уведомить партнёра', default=True)
-
-
-class OfferGrantForm(Form):
-	back_url = TextField(u'Back URL', [
-		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
-		validators.Optional()
-	])
-	postback_url = TextField(u'Postback URL', [
-		validators.URI(message=u'Введите URL в формате http://*.*', verify_exists=False),
-		validators.Optional()
-	])
-
-
 class OfferBannerForm(Form):
 	image = myfields.BannerField(u'Выберите изображение', [
 		validators.FileRequired(message=u'Выберите файл на диске'),
@@ -561,20 +574,6 @@ class DoubleDateTimeRangeForm(Form):
 			second_period_from=self.second_period_from.data.strftime(datetime_nosec_format),
 			second_period_to=self.second_period_to.data.strftime(datetime_nosec_format)
 		)
-
-
-class OfferStatsFilterForm(DateTimeRangeForm):
-	requested = BooleanField(u'только с заявками', default=False)
-	
-	def query_args(self):
-		args = DateTimeRangeForm.query_args(self)
-		if self.requested.data:	args.update(requested=u'y')
-		return args
-	
-	def backend_args(self):
-		args = DateTimeRangeForm.backend_args(self)
-		args.update(granted=self.requested.data)
-		return args
 
 
 class CabinetStatsForm(DateTimeRangeForm):
@@ -797,6 +796,14 @@ class BlackListSiteForm(Form):
 
 class AdminGroupsForm(Form):
 	groups = myfields.AdminGroupsField(u'Группы')
+
+
+class ModerationForm(Form):
+	admin_state = SelectField(u'Статус', choices=enums.AdminStates.tuples('name'))
+	admin_comment = TextAreaField(u'Комментарий администрации')
+
+	def populate_admin_comment(self, obj, name):
+		obj.admin_comment = self.admin_comment.data or None
 
 
 class NewsItemForm(Form):

@@ -141,17 +141,25 @@
 
 {% block tabcontent %}
 
-{% if shops %}
-
 <div class="row">
 	<div class="span5">
 		<form method="get" action="">
 			<input type="submit" class="btn primary span5" value="Применить фильтр" />
 			<div style="margin-top: 24px;">
+				<div>Фильтр по площадке:</div>
+				<select name="site" class="span5">
+					<option value="">(нет)</option>
+					{% for site in sites %}
+					<option value="{{ site.id }}" {{ 'selected="selected"' if request.args.get('site', '0')|int == site.id }}>{{ site.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div style="margin-top: 10px;">
 				<div>Фильтр по названию:</div>
 				<input type="text" name="q" class="span5" value="{{ request.args.get('q', '') }}" />
 			</div>
 			<h5>Магазины и категории</h5>
+			{% if shops %}
 			<div class="categories-tree-wrapper">
 				<ul class="shops-list">
 					{% for shop in shops %}
@@ -171,18 +179,24 @@
 					{% endfor %}
 				</ul>
 			</div>
+			{% else %}
+			<div class="clearfix alert-message block-message info">
+				<p>
+					{% if request.args.site %}
+					<strong>Нет размещений на площадке.</strong>
+					Для получения товарной выгрузки необходимо создать размещения интересующих Вас офферов интернет-магазинов на выбранной площадке.
+					{% else %}
+					<strong>Нет размещений.</strong>
+					Для получения товарной выгрузки необходимо создать размещение оффера интернет-магазина на одной из Ваших площадок.
+					{% endif %}
+				</p>
+			</div>
+			{% endif %}
 		</form>
 	</div>
 	<div style="margin-left: 320px;">
 		<div class="clearfix alert-message block-message info">
-			{% with link = config.get('TRACKER_BASE_URL') + url_for('xml_feed',
-				key=g.user.secret_key,
-				q=request.args.get('q'),
-				s=request.args.getlist('s'),
-				c=request.args.getlist('c'),
-				offset=offset,
-				limit=limit
-			) %}
+			{% with link = config.get('TRACKER_BASE_URL') + url_for('xml_feed', **feed_args) %}
 			<p>
 				Ссылка на XML feed:
 				<a href="{{ link }}" target="_blank">{{ link }}</a>
@@ -204,6 +218,7 @@
 						<li><strong>s</strong> &mdash; идентификатор магазина в системе HeyMoose (может быть несколько);</li>
 						<li><strong>c</strong> &mdash; идентификатор категории товаров в системе HeyMoose (может быть несколько);</li>
 						<li><strong>q</strong> &mdash; строка фильтрации по названиям товаров;</li>
+						<li><strong>site</strong> &mdash; идентификатор площадки в системе HeyMoose;</li>
 						<li><strong>offset</strong> &mdash; с какой позиции делать выгрузку (начиная с 0);</li>
 						<li><strong>limit</strong> &mdash; сколько позиций участвует в выгрузке (максимум 1000).</li>
 					</ul>
@@ -304,21 +319,6 @@
 		{{ lists.paginate(pages, **request.args) }}
 	</div>
 </div>
-
-{% else %} {# shops #}
-
-<div class="clearfix alert-message block-message info">
-	<p>
-		<strong>Вы не сотрудничаете с магазинами.</strong>
-		Ве еще не начали сотрудничество с магазинами. Перейдите в каталог офферов и выберите
-		интересующие вас интернет-магазины.
-	</p>
-	<div class="alert-actions">
-		<a class="btn small" href="{{ url_for('.offers_all') }}">Перейти в каталог</a>
-	</div>
-</div>
-
-{% endif %} {# shops #}
 
 {% endblock %}
 

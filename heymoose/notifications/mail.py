@@ -71,19 +71,11 @@ def offer_unblocked(app, affiliates=None, notify_affiliates=False, **kwargs):
 			for affiliate in affiliates: connection.send(message_to_recipient(message, affiliate.email))
 
 
-@signals.grant_approved.connect
-def grant_approved(app, notify=False, **kwargs):
-	if notify:
-		send_from_template(app.mail, 'mail/user-grant-approved.html', kwargs, recipients=[kwargs['grant'].affiliate.email])
+@signals.site_moderated.connect
+def site_moderated(app, site, **kwargs):
+	send_from_template(app.mail, 'mail/user-site-moderated.html', dict(site=site), recipients=[site.affiliate.email])
 
 
-@signals.grant_rejected.connect
-def grant_rejected(app, notify=False, **kwargs):
-	if notify:
-		send_from_template(app.mail, 'mail/user-grant-rejected.html', kwargs, recipients=[kwargs['grant'].affiliate.email])
-
-
-@signals.grant_blocked.connect
-def grant_blocked(app, notify=False, **kwargs):
-	if notify:
-		send_from_template(app.mail, 'mail/user-grant-blocked.html', kwargs, recipients=[kwargs['grant'].affiliate.email])
+@signals.placement_moderated.connect
+def placement_moderated(app, placement, **kwargs):
+	send_from_template(app.mail, 'mail/user-placement-moderated.html', dict(placement=placement), recipients=[placement.affiliate.email])

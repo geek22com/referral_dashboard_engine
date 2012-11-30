@@ -7,59 +7,47 @@
 		</div>
 		<fieldset>
 			{{ forms.singlefield(form.name, class='span10') }}
+
+			{% if form.url %}
 			{{ forms.singlefield(form.url, class='span10') }}
-			{{ forms.singlefield(form.language, class='span4') }}
-			
-			<div class="clearfix">
-				<label class="required">Посещаемость</label>
-				<div class="input">
-					<div class="row">
-						<div class="span6 formfield clearfix inner-field {{ forms.css_errors(form.uniqs) }}">
-							{{ forms.field(form.uniqs, class='span2') }}
-							{{ forms.label(form.uniqs, class='simple') }}
-							{{ forms.errors(form.uniqs) }}
-						</div>
-						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.views) }}">
-							{{ forms.field(form.views, class='span2') }}
-							{{ forms.label(form.views, class='simple') }}
-							{{ forms.errors(form.views) }}
-						</div>
-					</div>
-				</div>
-			</div>
+			{% endif %}
+
+			{% if form.stats_url %}
+			{% call forms.singlefield_desc(form.stats_url, class='span10') %}
+			<span class="help-block">
+				По данному URL должна находиться статистика минимум за месяц по Вашей площадке. Обычно, это статистика на сервисах Яндекс.Метрика, Google Analytics или LiveInternet.
+			</span>
+			{% endcall %}
+			{% endif %}
+
+			{% if form.stats_description %}
+			{% call forms.singlefield_desc(form.stats_description, class='span10', rows=2) %}
+			<span class="help-block">
+				Опишите здесь, каким образом можно получить доступ к статистике, расположенной по указанному Вами адресу. Как правило, это логин и пароль. Также вы можете предоставить гостевой доступ аккаунту <b>{{ g.config.get('YANDEX_METRIKA_ACCOUNT') }}</b> в Яндекс.Метрике или аккаунту <b>{{ g.config.get('GOOGLE_ANALYTICS_ACCOUNT') }}</b> в Google Analytics.
+			</span>
+			{% endcall %}
+			{% endif %}
+
+			{% if form.hosts_count %}
+			{{ forms.singlefield(form.hosts_count, class='span4') }}
+			{% endif %}
+
+			{% if form.members_count %}
+			{{ forms.singlefield(form.members_count, class='span4') }}
+			{% endif %}
+
+			{% if form.context_system %}
+			{{ forms.singlefield(form.context_system, class='span4') }}
+			{% endif %}
 			
 			{% call forms.singlefield_desc(form.description, class='span10', rows=5) %}
 			<span class="help-block">
-				Минимум 100 символов. Данный текст будет виден рекламодателю.
+				Приведите описание площадки или выбранного способа продвижения рекламных предложений. Большим плюсом является описание опыта работы в других партнерских сетях (подкрепленного статистикой), если он есть.
 			</span>
 			{% endcall %}
-			
-			<div class="clearfix">
-				<div class="input">
-					<div class="row">
-						<div class="span6 formfield clearfix inner-field {{ forms.css_errors(form.categories) }}">
-							{{ forms.label(form.categories, class='simple') }}
-							<div class="checklist" style="height: 200px;">
-								{{ forms.field(form.categories, class='inputs-list categorized') }}
-							</div>
-							{{ forms.errors(form.categories) }}
-						</div>
-						<div class="span4 formfield clearfix inner-field {{ forms.css_errors(form.regions) }}">
-							{{ forms.label(form.regions, class='simple') }}
-							<div class="checklist" style="height: 200px;">
-								{{ forms.field(form.regions, class='inputs-list') }}
-							</div>
-							{{ forms.errors(form.regions) }}
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			{{ forms.singlefield(form.comment, class='span10', rows=5) }}
-			
-			<div class="actions">
-				<input class="btn large primary" type="submit" value="Добавить площадку" />
-			</div>
 		</fieldset>
+		<div class="actions">
+			<input class="btn large primary" type="submit" value="Подтвердить" />
+		</div>
 	</form>
 {% endmacro %}

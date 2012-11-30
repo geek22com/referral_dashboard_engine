@@ -1,8 +1,10 @@
 {% macro to_icon(value) -%}
-	{% if not value %}
+	{% if value %}
+		<img src="{{ url_for('static', filename='./img/icon-yes.gif') }}" alt="да" />
+	{% elif value == false %}
 		<img src="{{ url_for('static', filename='./img/icon-no.gif') }}" alt="нет" />
 	{% else %}
-		<img src="{{ url_for('static', filename='./img/icon-yes.gif') }}" alt="да" />
+		<img src="{{ url_for('static', filename='./img/icon-unknown.gif') }}" alt="неизвестно" />
 	{% endif %}
 {% endmacro -%}
 
@@ -67,4 +69,16 @@
 			</ul>
 		</div>
 	</div>
+{% endmacro %}
+
+{% macro hinted_datetime(value) %}
+	{% with date = value|dateformat, time = value|timeformat %}
+	<span title="{{ date }} {{ time }}">{{ date }}</span>
+	{% endwith %}
+{% endmacro %}
+
+{% macro moderation_state(obj, tristate=false) %}	
+	<span {% if obj.admin_comment %}class="hint" title="{{ obj.admin_comment }}" style="cursor: help;"{% endif %}>
+		{{ to_icon(obj.admin_state.tristate if tristate else obj.is_approved) }}
+	</span>
 {% endmacro %}

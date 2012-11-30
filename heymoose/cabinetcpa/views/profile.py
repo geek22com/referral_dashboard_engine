@@ -17,7 +17,7 @@ def profile():
 	referral_offer = resource.offers.get_referral_offer()
 	return dict(referral_offer=referral_offer)
 
-@bp.route('/profile/sendmail', methods=['POST'])
+@bp.route('/profile/sendmail')
 def profile_sendmail():
 	signals.confirmation_email_requested.send(app, user=g.user)
 	flash(u'Письмо выслано повторно', 'success')

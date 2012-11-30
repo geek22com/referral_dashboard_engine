@@ -62,6 +62,8 @@ TRACKER_BANNERS_URL = TRACKER_BASE_URL + '/banners/local/'
 # Business logic parameters
 CURRENCY_SIGN = u'руб.'
 WOMEN_CATEGORIES = (43, 44, 45, 46, 47)
+YANDEX_METRIKA_ACCOUNT = u'heymoose@yandex.ru'
+GOOGLE_ANALYTICS_ACCOUNT = u'affiliate@heymoose.com'
 
 # Robokassa parameters
 ROBOKASSA_REQUEST_URL = 'https://merchant.roboxchange.com/Index.aspx' # 'http://test.robokassa.ru/Index.aspx'

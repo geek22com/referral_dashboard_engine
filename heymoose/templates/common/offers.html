@@ -38,7 +38,7 @@
 </script>
 {% endmacro %}
 
-{% macro table(offers, status=false, grant_status=false, user=none, admin=false) %}
+{% macro table(offers, status=false, user=none) %}
 
 {% set affiliate = user.is_affiliate %}
 {% set admin = user.is_admin %}
@@ -68,37 +68,14 @@
 					<div class="offer-status" style="padding-bottom: 5px;">
 						{% if not offer.approved %}
 							{% if offer.block_reason %}
-							<span class="label important">заблокирован</span>
+							<span class="label important">отключен администрацией</span>
 							{% else %}
-							<span class="label info">на модерации</span>
+							<span class="label info">проверяется администрацией</span>
 							{% endif %}
 						{% elif not offer.active %}
-						<span class="label danger">приостановлен</span>
+						<span class="label danger">отключен рекламодателем</span>
 						{% else %}
 						<span class="label success">активен</span>
-						{% endif %}
-					</div>
-					{% endif %}
-					{% if grant_status and offer.grant %}
-					<div class="offer-grant-status" style="padding-bottom: 5px;">
-						{% if not offer.approved %}
-							<span class="label important">оффер отключен администрацией</span>
-						{% elif not offer.active %}
-							<span class="label important">оффер отключен рекламодателем</span>
-						{% elif offer.grant.blocked %}
-							{% if offer.grant.block_reason %}
-							<span class="label important">заявка заблокирована администрацией</span>
-							{% else %}
-							<span class="label info">заявка в рассмотрении</span>
-							{% endif %}
-						{% else %}
-							{% if offer.grant.moderation %}
-							<span class="label info">заявка в рассмотрении</span>
-							{% elif offer.grant.approved %}
-							<span class="label success">сотрудничество</span>
-							{% elif offer.grant.rejected %}
-							<span class="label important">заявка отклонена</span>
-							{% endif %}
 						{% endif %}
 					</div>
 					{% endif %}
@@ -118,10 +95,12 @@
 					{% endif %}
 					{% if admin and user.can('view_advertiser') %}
 					<div class="well small offer-advertiser">
-						<div><a href="{{ url_for('.users_info', id=offer.advertiser.id) }}"
-						 >{{ offer.advertiser.full_name or offer.advertiser.email }}</a></div>
-						{#<div><a href="mailto:{{ offer.advertiser.email -}}">{{ offer.advertiser.email }}</a></div>#}
-						{% if offer.advertiser.organization %}<div>{{ offer.advertiser.organization }}</div>{% endif %}
+						<div>
+							<a href="{{ url_for('.users_info', id=offer.advertiser.id) }}">{{ offer.advertiser.full_name or offer.advertiser.email }}</a>
+						</div>
+						{% if offer.advertiser.organization %}
+						<div>{{ offer.advertiser.organization }}</div>
+						{% endif %}
 					</div>
 					{% endif %}
 				</td>
@@ -205,173 +184,6 @@
 			{% endfor %}
 			{% endif %}
 			
-			{% endfor %}
-		</tbody>
-	</table>
-{% endmacro %}
-
-{% macro requests_table(requests, offer=false, admin=false, form=none) %}
-	<table class="bordered-table nosort offer-grants-table">
-		<thead>
-			<tr>
-				<th class="header">Партнер</th>
-				{% if offer %}<th class="header center">Оффер</th>{% endif %}
-				<th class="header">Состояние</th>
-				{% if not admin %}
-				<th class="header center minimal-width" colspan="2">Действия</th>
-				{% else %}
-				<th class="header center minimal-width" colspan="2">Действия рекламодателя</th>
-				<th class="header center minimal-width" colspan="2">Действия администратора</th>
-				{% endif %}
-			</tr>
-		</thead>
-		<tbody>
-			{% for request in requests %}
-			<tr>
-				<td>
-					{% if admin %}
-					<a href="{{ url_for('.users_info', id=request.affiliate.id) }}"
-					 >{{ request.affiliate.full_name or request.affiliate.email }}</a>
-					{% else %}
-					{{ request.affiliate.id }}
-					{% endif %}
-				</td>
-				
-				{% if offer %}
-				<td>
-					<a href="{{ url_for('.offers_info', id=request.offer.id) }}">{{ request.offer.name }}</a>
-				</td>
-				{% endif %}
-				
-				<td>
-					{% if not request.blocked %}
-						{{ request.state.name }}
-						{% if request.rejected and request.reject_reason %}
-							по причине:<br /><i>{{ request.reject_reason }}</i>
-						{% endif %}
-					{% else %}
-						{% if request.block_reason %}
-						заблокирована администрацией по причине:<br /><i>{{ request.block_reason }}</i>
-						{% else %}
-						проверяется администрацией
-						{% endif %}
-					{% endif %}
-				</td>
-				
-				{% if request.blocked %}
-				<td colspan="2" class="center">&mdash;</td>
-				{% else %}
-					{% set colspan = 1 if request.moderation else 2 %}
-					{% if not request.approved %}
-					<td colspan="{{ colspan }}" class="center">
-						<a href="#" class="success" data-controls-modal="modal-approve-{{ request.id -}}"
-				 		 data-backdrop="true" data-keyboard="true">разрешить</a>
-				 		<div id="modal-approve-{{ request.id -}}" class="modal" style="display: none;">
-							<form method="post" action="" class="validate2">
-								<div class="modal-header">
-									<a href="#" class="close">×</a>
-									<h3>Подтверждение заявки</h3>
-								</div>
-								<div class="modal-body">
-									<p>Подтвердить заявку?</p>
-									{{ form.grant_id(value=request.id) }}
-									{{ form.action(value='approve') }}
-									{% if admin %}
-									{{ form.notify() }} уведомить партнёра
-									{% endif %}
-								</div>
-								<div class="modal-footer">
-									<input type="submit" class="btn primary" value="Подтвердить" />
-								</div>
-							</form>
-						</div>
-					</td>
-					{% endif %}
-					{% if not request.rejected %}
-					<td colspan="{{ colspan }}" class="center">
-						<a href="#" class="danger" data-controls-modal="modal-reject-{{ request.id -}}"
-				 		 data-backdrop="true" data-keyboard="true">отклонить</a>
-						<div id="modal-reject-{{ request.id -}}" class="modal" style="display: none;">
-							<form method="post" action="" class="validate2">
-								<div class="modal-header">
-									<a href="#" class="close">×</a>
-									<h3>Отклонение заявки</h3>
-								</div>
-								<div class="modal-body">
-									<fieldset>
-										{{ form.grant_id(value=request.id) }}
-										{{ form.action(value='reject') }}
-										{{ forms.singlefield(form.reason, class='span6', rows=6) }}
-										{% if admin %}
-										<div class="input">
-										{{ form.notify() }} уведомить партнёра
-										</div>
-										{% endif %}
-									</fieldset>
-								</div>
-								<div class="modal-footer">
-									<input type="submit" class="btn primary" value="Отклонить" />
-								</div>
-							</form>
-						</div>
-					</td>
-					{% endif %}
-				{% endif %}
-				
-				{% if admin %}
-					{% set colspan = 1 if request.blocked else 2 %}
-					{% if request.blocked %}
-					<td colspan="{{ colspan }}" class="center">
-						<a href="#" class="success" data-controls-modal="modal-unblock-{{ request.id -}}"
-				 		 data-backdrop="true" data-keyboard="true">разблокировать</a>
-				 		<div id="modal-unblock-{{ request.id -}}" class="modal" style="display: none;">
-							<form method="post" action="" class="validate2">
-								<div class="modal-header">
-									<a href="#" class="close">×</a>
-									<h3>Разблокирование заявки</h3>
-								</div>
-								<div class="modal-body">
-									<p>Разблокировать заявку?</p>
-									{{ form.grant_id(value=request.id) }}
-									{{ form.action(value='unblock') }}
-									{% if request.state == 'APPROVED' %}
-									{{ form.notify() }} уведомить партнёра
-									{% endif %}
-								</div>
-								<div class="modal-footer">
-									<input type="submit" class="btn primary" value="Разблокировать" />
-								</div>
-							</form>
-						</div>
-					</td>
-					{% endif %}
-					<td colspan="{{ colspan }}" class="center">
-						<a href="#" class="danger" data-controls-modal="modal-block-{{ request.id -}}"
-				 		 data-backdrop="true" data-keyboard="true">заблокировать</a>
-						<div id="modal-block-{{ request.id -}}" class="modal" style="display: none;">
-							<form method="post" action="" class="validate2">
-								<div class="modal-header">
-									<a href="#" class="close">×</a>
-									<h3>Блокировка заявки</h3>
-								</div>
-								<div class="modal-body">
-									<fieldset>
-										{{ form.grant_id(value=request.id) }}
-										{{ form.action(value='block') }}
-										{{ forms.singlefield(form.reason, class='span6', rows=6) }}
-										<div class="input">
-										{{ form.notify() }} уведомить партнёра
-										</div>
-									</fieldset>
-								</div>
-								<div class="modal-footer">
-									<input type="submit" class="btn primary" value="Заблокировать" />
-								</div>
-							</form>
-						</div>
-					</td>
-				{% endif %}
-			</tr>
 			{% endfor %}
 		</tbody>
 	</table>

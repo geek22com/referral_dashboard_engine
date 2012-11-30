@@ -1,81 +1,10 @@
 {% extends "cabinetcpa/sites/info/layout.html" %}
+{% import 'common/infos/site.html' as site_info %}
 
 {% set activetab = 'info' %}
 
 {% block tabcontent %}
 
-<table class="key-value">
-	<tbody>
-		<tr><th>Название</th><td>Моя площадка</td></tr>
-		<tr><th>Адрес</th><td><a href="http://ya.ru?id={{ site.id }}" target="_blank">http://ya.ru?id={{ site.id -}}</a></td></tr>
-		<tr><th>Язык</th><td>русский</td></tr>
-		<tr><th>Описание</th>
-			<td>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac massa enim, et convallis
-					tellus. Aenean interdum sem ut metus gravida vitae molestie ligula sodales. Proin ultrices,
-					lorem nec pharetra rhoncus, orci risus congue erat, eu consequat lacus sapien eget justo.
-					Sed hendrerit metus eget est pellentesque accumsan. Vivamus a mauris velit, id viverra lacus.
-					Donec tincidunt leo viverra felis mollis auctor. Pellentesque vel orci eu leo sollicitudin
-					gravida nec id felis. Vestibulum leo risus, sollicitudin eget rhoncus in, ullamcorper in erat.
-					Curabitur dolor diam, consectetur ut dapibus quis, malesuada sed odio. Aliquam dapibus varius
-					eleifend. Morbi sit amet vestibulum enim. Sed adipiscing condimentum risus, nec tincidunt eros
-					ultricies a. 
-				</p>
-			</td>
-		</tr>
-		<tr><th>Комментарий для администрации</th>
-			<td>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac massa enim, et convallis
-					tellus. Aenean interdum sem ut metus gravida vitae molestie ligula sodales. Proin ultrices,
-					lorem nec pharetra rhoncus, orci risus congue erat, eu consequat lacus sapien eget justo.
-					Sed hendrerit metus eget est pellentesque accumsan. Vivamus a mauris velit, id viverra lacus.
-					Donec tincidunt leo viverra felis mollis auctor. Pellentesque vel orci eu leo sollicitudin
-					gravida nec id felis. Vestibulum leo risus, sollicitudin eget rhoncus in, ullamcorper in erat.
-					Curabitur dolor diam, consectetur ut dapibus quis, malesuada sed odio. Aliquam dapibus varius
-					eleifend. Morbi sit amet vestibulum enim. Sed adipiscing condimentum risus, nec tincidunt eros
-					ultricies a. 
-				</p>
-			</td>
-		</tr>
-	</tbody>
-</table>
-
-<h3>Посещаемость</h3>
-<table class="key-value">
-	<tbody>
-		<tr><th>Уникальных посетителей</th><td>1000</td></tr>
-		<tr><th>Просмотров</th><td>100000</td></tr>
-	</tbody>
-</table>
-
-<h3>Регионы и категории</h3>
-<table class="key-value">
-	<tbody>
-		<tr><th>Регионы</th><td>Россия, СНГ, Германия, Италия, Франция, Фареры</td></tr>
-		<tr><th>Категории</th>
-			<td>
-				<ul class="toplevel-list toplevel-list--no-bottom-margin">
-					<li>
-						Страхование и финансы
-						<ul class="dashed-list">
-							<li>Авто-страхование</li>
-							<li>Кредитные карты</li>
-						</ul>
-					</li>
-					<li>
-						Компьютеры и электроника
-						<ul class="dashed-list">
-							<li>Мобильные портативные устройства для станков с ЧПУ</li>
-							<li>Фототехника</li>
-							<li>Компьютеры и ноутбуки</li>
-						</ul>
-					</li>
-				</ul>
-			</td>
-		</tr>
-	</tbody>
-</table>
+{{ site_info.html(site) }}
 
 {% endblock %}

@@ -16,10 +16,29 @@ class IdentifiableModel(models.ModelBase):
 	id = Field(types.Integer, '@id', readonly=True)
 	
 	def __cmp__(self, other):
+		if not other:
+			return 1
 		return self.id - other.id
 	
 	def __hash__(self):
 		return hash(self.id)
+
+
+class ModeratableModelMixin:
+	admin_state = Field(enums.AdminStates, 'admin-state')
+	admin_comment = Field(types.String, 'admin-comment')
+
+	@cached_property
+	def is_moderating(self):
+		return self.admin_state == enums.AdminStates.MODERATION
+
+	@cached_property
+	def is_approved(self):
+		return self.admin_state == enums.AdminStates.APPROVED
+
+	@cached_property
+	def is_blocked(self):
+		return self.admin_state == enums.AdminStates.BLOCKED
 
 
 class User(IdentifiableModel):
@@ -129,6 +148,10 @@ class User(IdentifiableModel):
 		self.change_password(new_password)
 		return new_password
 
+	@cached_property
+	def css_status(self):
+		return u'danger' if self.blocked else u''
+
 
 class Account(IdentifiableModel):
 	balance = Field(types.Decimal, 'balance')
@@ -228,7 +251,7 @@ class Offer(SubOffer):
 	yml_url = Field(types.String, 'yml-url')
 	
 	suboffers = FieldList('SubOffer', 'suboffers/suboffer')
-	grant = Field('OfferGrant', 'grant')
+	placements_count = Field(types.Integer, 'placements-count')
 	
 	_logos_dir = app.config.get('OFFER_LOGOS_DIR')
 	_women_categories_ids = app.config.get('WOMEN_CATEGORIES')
@@ -297,43 +320,6 @@ class Offer(SubOffer):
 			os.path.join(host_url, u'api'), self.id, aff_id,
 			u'&banner_id={0}'.format(banner_id) if banner_id else u''
 		)
-
-
-class OfferGrant(IdentifiableModel):
-	offer = Field('Offer', 'offer')
-	affiliate = Field('User', 'affiliate')
-	back_url = Field(types.String, 'back-url')
-	postback_url = Field(types.String, 'postback-url')
-	message = Field(types.String, 'message')
-	state = Field(enums.OfferGrantState, 'state')
-	blocked = Field(types.Boolean, 'blocked')
-	reject_reason = Field(types.String, 'reject-reason')
-	block_reason = Field(types.String, 'block-reason')
-	
-	@property
-	def approved(self): return not self.blocked and self.state == enums.OfferGrantState.APPROVED
-	
-	@property
-	def rejected(self): return not self.blocked and self.state == enums.OfferGrantState.REJECTED
-	
-	@property
-	def moderation(self): return not self.blocked and self.state == enums.OfferGrantState.MODERATION
-	
-	@property
-	def admin_moderation(self): return self.blocked and not self.block_reason
-
-	@cached_property
-	def state_description(self):
-		if not self.blocked:
-			return self.state.name
-		elif self.block_reason:
-			return u'отклонена администрацией'
-		else:
-			return u'проверяется администрацией'
-
-	@cached_property
-	def reason(self):
-		return self.block_reason or self.reject_reason
 
 
 class Banner(IdentifiableModel):
@@ -612,6 +598,39 @@ class CashbackInvite(models.ModelBase):
 	referrer = Field(types.String, 'referrer')
 	referral = Field(types.String, 'referral')
 	date = Field(types.DateTime, 'date')
+
+
+class Site(IdentifiableModel, ModeratableModelMixin):
+	affiliate = Field('User', 'affiliate')
+	name = Field(types.String, 'name')
+	description = Field(types.String, 'description')
+	type = Field(enums.SiteTypes, 'type')
+	url = Field(types.String, 'url')
+	stats_url = Field(types.String, 'stats_url')
+	stats_description = Field(types.String, 'stats_description')
+	hosts_count = Field(types.Integer, 'hosts_count')
+	members_count = Field(types.Integer, 'members_count')
+	context_system = Field(enums.ContextSystems, 'context_system')
+	creation_time = Field(types.DateTime, 'creation-time')
+	last_change_time = Field(types.DateTime, 'last-change-time')
+
+	@cached_property
+	def admin_state_description(self):
+		return {
+			enums.AdminStates.MODERATION: u'Площадка проверяется администрацией',
+			enums.AdminStates.APPROVED: u'Площадка одобрена администрацией',
+			enums.AdminStates.BLOCKED: u'Площадка заблокирована администрацией'
+		}.get(self.admin_state, u'Неизвестно')
+
+
+class Placement(IdentifiableModel, ModeratableModelMixin):
+	affiliate = Field('User', 'affiliate')
+	site = Field('Site', 'site')
+	offer = Field('Offer', 'offer')
+	back_url = Field(types.String, 'back-url')
+	postback_url = Field(types.String, 'postback-url')
+	creation_time = Field(types.DateTime, 'creation-time')
+	last_change_time = Field(types.DateTime, 'last-change-time')
 
 
 registry.register_models_from_module(__name__)

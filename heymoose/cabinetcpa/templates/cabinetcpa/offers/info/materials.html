@@ -30,9 +30,7 @@
 	</style>
 	<script type="text/javascript">
 		$(function() {
-			var offerId = '{{ offer.id }}';
-			var affId = '{{ g.user.id }}';
-			
+
 			function getFormValue(id) {
 				var input = $(id);
 				return input ? $.trim(input.val()) : '';
@@ -46,6 +44,7 @@
 					var bannerHeight = $(document).data('bannerHeight');
 				}
 				
+				var placement = getFormValue('#placement');
 				var subId  = getFormValue('#subid');
 				var subId1 = getFormValue('#subid1');
 				var subId2 = getFormValue('#subid2');
@@ -55,22 +54,24 @@
 				var ulp = getFormValue('#ulp');
 				var cashBack = getFormValue('#cashback');
 				
+				var params = [];
+				if (bannerId) params.push('banner_id=' + bannerId);
+				if (subId) params.push('sub_id=' + encodeURIComponent(subId));
+				if (subId1) params.push('sub_id1=' + encodeURIComponent(subId1));
+				if (subId2) params.push('sub_id2=' + encodeURIComponent(subId2));
+				if (subId3) params.push('sub_id3=' + encodeURIComponent(subId3));
+				if (subId4) params.push('sub_id4=' + encodeURIComponent(subId4));
+				if (sourceId) params.push('source_id=' + encodeURIComponent(sourceId));
+
 				var apiUrl = '{{ config.get("TRACKER_API_URL") -}}';
-				var params = '&offer_id=' + offerId + '&aff_id=' + affId
-					+ (bannerId ? '&banner_id=' + bannerId : '')
-					+ (subId ? '&sub_id=' + encodeURIComponent(subId) : '')
-					+ (subId1 ? '&sub_id1=' + encodeURIComponent(subId1) : '')
-					+ (subId2 ? '&sub_id2=' + encodeURIComponent(subId2) : '')
-					+ (subId3 ? '&sub_id3=' + encodeURIComponent(subId3) : '')
-					+ (subId4 ? '&sub_id4=' + encodeURIComponent(subId4) : '')
-					+ (sourceId ? '&source_id=' + encodeURIComponent(sourceId) : '');
+				var showUrl = apiUrl + '/show/' + placement + (params.length ? '?' + params.join('&') : '');
+
+				if (ulp) params.push('&ulp=' + encodeURIComponent(ulp));
+				if (cashBack) params.push('&cashback=' + encodeURIComponent(cashBack));
+
+				var clickUrl = apiUrl + '/click/' + placement + (params.length ? '?' + params.join('&') : '');
 				
-				var trackingUrl = apiUrl + '?method=track' + params;
-				var clickUrl = apiUrl + '?method=click' + params
-					+ (ulp ? '&ulp=' + encodeURIComponent(ulp) : '')
-					+ (cashBack ? '&cashback=' + encodeURIComponent(cashBack) : '');
-				
-				var pixelCode = '<img src="' + trackingUrl +
+				var pixelCode = '<img src="' + showUrl +
 					'" alt="" style="width: 0; height: 0; position: absolute;" />';
 				var bannerCode = '<a href="' + clickUrl + '"><img src="' + bannerUrl
 					+ '" alt="" width="' + bannerWidth + '" height="' + bannerHeight
@@ -97,10 +98,10 @@
 			});
 			
 			$('.code-trigger').click(function() {
-				$(document).data('bannerId', $(this).data('bannerId'));
-				$(document).data('bannerUrl', $(this).data('bannerUrl'));
-				$(document).data('bannerWidth', $(this).data('bannerWidth'));
-				$(document).data('bannerHeight', $(this).data('bannerHeight'));
+				$(document).data('bannerId', $(this).data('bannerId') || '');
+				$(document).data('bannerUrl', $(this).data('bannerUrl') || '');
+				$(document).data('bannerWidth', $(this).data('bannerWidth') || '');
+				$(document).data('bannerHeight', $(this).data('bannerHeight') || '');
 				
 				$('.code-box-container').hide();
 				if ($(this).data('bannerId')) {
@@ -118,7 +119,7 @@
 {% endblock %}
 
 {% set advertiser_is_owner = g.user.is_advertiser and offer.owned_by(g.user) %}
-{% set affiliate_is_granted = g.user.is_affiliate and offer.grant and offer.grant.approved %}
+{% set affiliate_is_granted = g.user.is_affiliate and placements %}
 
 {% block tabcontent %}
 
@@ -142,20 +143,25 @@
 {% endif %}
 
 {% if g.user.is_affiliate %}
-	{% if affiliate_is_granted %}
-		<div class="clearfix alert-message block-message success">
+	{% if placements %}
+		<div class="clearfix alert-message block-message info">
 			<p>
-				Вы сотрудничаете с данной кампанией, и можете получить коды баннеров ниже.
-				Если вы не желаете использовать баннеры, вы можете получить код ссылки отдельно.
+				У Вас имеются активные размещения данной рекламной кампании. Коды баннеров Вы можете получить ниже. Если вы не желаете использовать баннеры, вы можете получить код партнерской ссылки отдельно.
 			</p>
 			<div class="alert-actions">
 				<a class="btn small code-trigger" href="#" data-controls-modal="modal-code"
-				 data-backdrop="true" data-keyboard="true">Получить код ссылки</a>
+				 data-backdrop="true" data-keyboard="true">Получить код партнерской ссылки</a>
 			</div>
 		</div>
 	{% else %}
 		<div class="clearfix alert-message block-message info">
-			<p>Получить коды баннеров можно только после начала сотрудничества с данной кампанией.</p>
+			<p>
+				Для того, чтобы получить партнерскую ссылку для данной рекламной кампании, у Вас должны быть активные
+				размещения этой кампании на Ваших площадках.	
+			</p>
+			<div class="alert-actions">
+				<a href="{{ url_for('.offers_info_placements', id=offer.id) }}">Управление размещениями</a>
+			</div>
 		</div>
 	{% endif %}
 {% endif %}
@@ -270,6 +276,14 @@
 							<a href="#" class="dotted-link code-settings-clear">очистить</a>
 						</div>
 					</div>
+				</div>
+				<div class="clearfix placement-container">
+					<label for="placement">Выберите размещение</label>
+					<select id="placement" class="span9 gen-trigger">
+						{% for placement in placements %}
+						<option value="{{ placement.id }}">{{ placement.site.name }}</option>
+						{% endfor %}
+					</select>
 				</div>
 				<div class="clearfix code-box-container click-url-container" style="display: none;">
 					<label for="click-url">Прямая ссылка</label>

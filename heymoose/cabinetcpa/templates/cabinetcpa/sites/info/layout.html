@@ -1,23 +1,23 @@
 {% extends "cabinetcpa/layout.html" %}
 
-{% block title %}Площадка &laquo;Моя площадка&raquo;{% endblock %}
+{% block title %}Площадка &laquo;{{ site.name }}&raquo;{% endblock %}
 
 {% set activemenu = 'sites' %}
 
 {% block extrahead %}
-{{ super() }}
-{% set activetab = activetab|default('info') %}
-<script type="text/javascript">
-	$(function() { 
-		$('li#tab-{{ activetab }}').addClass('active');
-	})
-</script>
+	{{ super() }}
+	{% set activetab = activetab|default('info') %}
+	<script type="text/javascript">
+		$(function() { 
+			$('li#tab-{{ activetab }}').addClass('active');
+		})
+	</script>
 {% endblock %}
 
 {% block breadcrumbs %}
 	{{ super() }}
 	{{ macros.breadcrumb('Площадки', url_for('.sites_list')) }}
-	{{ macros.breadcrumb(self.title(), url_for('.sites_info', id=site.id)) }}
+	{{ macros.breadcrumb(self.title(), request.url) }}
 {% endblock %}
 
 {% block pageheader %}
@@ -27,8 +27,9 @@
 {% block content %}
 <ul class="tabs">
 	<li id="tab-info"><a href="{{ url_for('.sites_info', id=site.id) }}">Описание</a></li>
+	{% if site.type.enabled %}
 	<li id="tab-edit"><a href="{{ url_for('.sites_info_edit', id=site.id) }}">Редактировать</a></li>
-	<li id="tab-stats"><a href="{{ url_for('.sites_info_stats', id=site.id) }}">Статистика</a></li>
+	{% endif %}
 </ul>
 
 {% block tabcontent %}<p>Раздел находится в разработке.</p>{% endblock %}

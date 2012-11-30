@@ -1,0 +1,25 @@
+{% extends "admin/users/info/layout.html" %}
+{% import 'common/placements.html' as placement_macros %}
+
+{% set activetab = 'placements' %}
+{% set content_fluid = true %}
+
+{% block tabcontent %}
+
+{% if placements %}
+	{% call(head, placement) placement_macros.table(placements, offer=true) %}
+		{% if head %}
+			<th></th>
+		{% else %}
+			<td class="center">
+				<a href="{{ url_for('.users_info_placements_moderation', id=user.id, pid=placement.id) }}"><img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="модерация" title="модерация"></a>
+			</td>
+		{% endif %}
+	{% endcall %}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Не найдено размещений пользователя.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

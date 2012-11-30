@@ -33,19 +33,6 @@
 						{{ forms.field(form.dt_to, class='datetimepicker', style='width: 130px;') }}
 						{{ forms.errors(form.dt_to) }}
 					</div>
-					{% if form.requested %}
-					<div class="span2 formfield clearfix inner-field {{ forms.css_errors(form.requested) }}">
-						<ul class="inputs-list">
-							<li>
-								<label class="required">
-									{{ forms.field(form.requested) }}
-									<span>только с заявками</span>
-								</label>
-							</li>
-						</ul>
-						{{ forms.errors(form.requested) }}
-					</div>
-					{% endif %}
 					{% if form.active %}
 					<div class="span3 formfield clearfix inner-field {{ forms.css_errors(form.active) }}">
 						<ul class="inputs-list">

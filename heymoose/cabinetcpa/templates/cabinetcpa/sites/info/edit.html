@@ -1,3 +1,15 @@
 {% extends "cabinetcpa/sites/info/layout.html" %}
+{% import 'common/forms/site.html' as site_form with context %}
 
 {% set activetab = 'edit' %}
+
+{% block tabcontent %}
+	<div class="alert-message block-message warning">
+		<p>
+			<strong>Внимание!</strong> После редактирования площадка снова отправится на модерацию, и будет активирована только после проверки администрацией. Во время модерации все Ваши размещения на этой площадке будут неактивны.
+		</p>
+	</div>
+	<div class="form-container">
+		{{ site_form.html(form) }}
+	</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "admin/sites/info/layout.html" %}
+{% import 'common/infos/site.html' as site_info %}
+
+{% set activetab = 'info' %}
+
+{% block tabcontent %}
+
+{{ site_info.html(site, admin=true) }}
+
+{% endblock %}

@@ -79,6 +79,7 @@
 	<li id="menu-item-index"><a href="{{ url_for('.index') }}">Главная</a></li>
 	<li id="menu-item-offers"><a href="{{ url_for('.offers_requested' if g.user.is_affiliate else '.offers_list') }}">Офферы</a></li>
 	{% if g.user.is_affiliate %}
+	<li id="menu-item-sites"><a href="{{ url_for('.sites_list') }}">Площадки</a></li>
 	<li id="menu-item-cashback"><a href="{{ url_for('.cashback') }}">CashBack</a></li>
 	{% endif %}
 	<li id="menu-item-stats"><a href="{{ url_for('.stats_offer') }}">Статистика</a></li>
@@ -123,38 +124,6 @@
 		{% endif %}
 	</span>
 </ul>
-{% endblock %}
-
-{% block precontent %}
-	{% if not g.user.confirmed %}
-		<div class="clearfix alert-message block-message info">
-			<p>
-				<strong>Ваш электронный адрес не подтвержден.</strong>
-				Пожалуйста, подтвердите ваш почтовый ящик. Если почтовый ящик не будет
-				подтвержден в течение двух недель, ваша учетная запись будет заблокирована. 
-				Если вы не получили письмо со ссылкой на подтверждение регистрации, 
-				вы можете запросить повторную отправку письма, нажав кнопку ниже.
-			</p>
-			<div class="alert-actions">
-				<form method="post" action="{{ url_for('.profile_sendmail') }}" class="inline">
-					<input type="submit" class="btn small span4" style="font-weight: bold;" value="Выслать письмо повторно" />
-				</form>
-			</div>
-		</div>
-	{% endif %}
-	{% if g.user.is_affiliate and not g.user.wmr and 'profile/edit' not in request.url %}
-		<div class="clearfix alert-message block-message warning">
-			<p>
-				<strong>Не заполнен номер WMR-кошелька.</strong>
-				Для совершения выплат нам необходим номер вашего WMR-кошелька в системе
-				WebMoney. Пожалуйста, заполните его в вашем профиле. Чтобы перейти
-				к редактированию профиля, нажмите кнопку ниже.
-			</p>
-			<div class="alert-actions">
-				<a class="btn small" href="{{ url_for('.profile_edit') }}">Ввести номер WMR-кошелька</a>
-			</div>
-		</div>
-	{% endif %}
 {% endblock %}
 
 {% block footer_signs %}

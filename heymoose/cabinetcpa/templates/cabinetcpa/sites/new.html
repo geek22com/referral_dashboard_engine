@@ -1,12 +1,24 @@
 {% extends "cabinetcpa/sites/layout.html" %}
-{% import 'common/forms/site.html' as site_form %}
+{% import 'common/forms/site.html' as site_form with context %}
 
 {% set activetab = 'new' %}
 
 {% block tabcontent %}
+	{% if not site_type %}
+		<div class="center">
+			<h2 style="margin-bottom: 20px;">Выберите тип площадки</h2>
 
-<div class="form-container">
-	{{ site_form.html(form) }}
-</div>
-
+			{% for type in types if type.enabled %}
+			<p><a href="{{ url_for(request.url_rule.endpoint, type=type.lower()) }}" class="btn large span8">{{ type.name }}</a></p>
+			{% endfor %}
+		</div>
+	{% else %}
+		<div class="clearfix center">
+			<h2>{{ site_type.name }}</h2>
+			<a href="{{ url_for(request.url_rule.endpoint) }}" style="margin: 20px;">&laquo; выбрать другой тип площадки</a>
+		</div>
+		<div class="form-container" style="margin-top: 20px;">
+			{{ site_form.html(form) }}
+		</div>
+	{% endif %}
 {% endblock %}

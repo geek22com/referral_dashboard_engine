@@ -15,16 +15,11 @@ def offer_unblocked(app, affiliates, notify_affiliates=False, **kwargs):
 	notify_user(kwargs['offer'].advertiser, templates.OFFER_UNBLOCKED, **kwargs)
 
 
-@signals.grant_approved.connect
-def grant_approved(app, notify=False, **kwargs):
-	notify_user(kwargs['grant'].affiliate, templates.GRANT_APPROVED, notified=notify, **kwargs)
+@signals.site_moderated.connect
+def site_moderated(app, site, **kwargs):
+	notify_user(site.affiliate, templates.SITE_MODERATED, site=site)
 
 
-@signals.grant_rejected.connect
-def grant_rejected(app, notify=False, **kwargs):
-	notify_user(kwargs['grant'].affiliate, templates.GRANT_REJECTED, notified=notify, **kwargs)
-
-
-@signals.grant_blocked.connect
-def grant_blocked(app, notify=False, **kwargs):
-	notify_user(kwargs['grant'].affiliate, templates.GRANT_BLOCKED, notified=notify, **kwargs)
+@signals.placement_moderated.connect
+def placement_moderated(app, placement, **kwargs):
+	notify_user(placement.affiliate, templates.PLACEMENT_MODERATED, placement=placement)

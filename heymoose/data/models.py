@@ -387,10 +387,15 @@ class OverallOfferStat(models.ModelBase):
 	exclusive = Field(types.Boolean, 'exclusive')
 	shows = Field(types.Integer, 'shows')
 	clicks = Field(types.Integer, 'clicks')
-	leads = Field(types.Integer, 'leads')
+	
+	not_confirmed_action_count = Field(types.Integer, 'not-confirmed-action-count')
+	confirmed_action_count = Field(types.Integer, 'confirmed-action-count')
+	cancelled_action_count = Field(types.Integer, 'canceled-action-count')
+
 	confirmed_revenue = Field(types.Decimal, 'confirmed-revenue', quantize='1.00')
 	not_confirmed_revenue = Field(types.Decimal, 'not-confirmed-revenue', quantize='1.00')
 	cancelled_revenue = Field(types.Decimal, 'canceled-revenue', quantize='1.00')
+	
 	ctr = Field(types.Decimal, 'ctr', quantize='1.00')
 	cr = Field(types.Decimal, 'cr', quantize='1.00')
 	ecpc = Field(types.Decimal, 'ecpc', quantize='1.00')

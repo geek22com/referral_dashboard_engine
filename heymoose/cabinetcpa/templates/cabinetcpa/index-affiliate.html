@@ -119,11 +119,13 @@
 					<tr>
 						<th class="header center" rowspan="2">Оффер</th>
 						<th class="header center" rowspan="2">Клики</th>
-						<th class="header center" rowspan="2">Действия</th>
 						<th class="header center" rowspan="2">CR</th>
+						<th class="header center" colspan="2">Действия</th>
 						<th class="header center" colspan="2">Финансы, руб.</th>
 					</tr>
 					<tr class="subrow">
+						<th class="header center">Неподтв.</th>
+						<th class="header center">Подтв.</th>
 						<th class="header center">Неподтв.</th>
 						<th class="header center">Подтв.</th>
 					</tr>
@@ -133,8 +135,9 @@
 					<tr>
 						<td><a href="{{ url_for('.offers_info', id=stat.id) }}">{{ stat.name }}</a></td>
 						<td class="right">{{ stat.clicks }}</td>
-						<td class="right">{{ stat.leads }}</td>
 						<td class="right">{% if stat.cr %}{{ stat.cr if stat.cr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
+						<td class="right">{{ stat.not_confirmed_action_count }}</td>
+						<td class="right green">{{ stat.confirmed_action_count }}</td>
 						<td class="right">{{ stat.not_confirmed_revenue }}</td>
 						<td class="right green">{{ stat.confirmed_revenue }}</td>
 					</tr>
@@ -169,11 +172,13 @@
 					<tr>
 						<th class="header center" rowspan="2">Площадка</th>
 						<th class="header center" rowspan="2">Клики</th>
-						<th class="header center" rowspan="2">Действия</th>
 						<th class="header center" rowspan="2">CR</th>
+						<th class="header center" colspan="2">Действия</th>
 						<th class="header center" colspan="2">Финансы, руб.</th>
 					</tr>
 					<tr class="subrow">
+						<th class="header center">Неподтв.</th>
+						<th class="header center">Подтв.</th>
 						<th class="header center">Неподтв.</th>
 						<th class="header center">Подтв.</th>
 					</tr>
@@ -183,8 +188,9 @@
 					<tr>
 						<td><a href="{{ url_for('.sites_info', id=stat.id) }}">{{ stat.name }}</a></td>
 						<td class="right">{{ stat.clicks }}</td>
-						<td class="right">{{ stat.leads }}</td>
 						<td class="right">{% if stat.cr %}{{ stat.cr if stat.cr <= 100 else 'более&nbsp;100'|safe -}}&nbsp;%{% else %}&mdash;{% endif %}</td>
+						<td class="right">{{ stat.not_confirmed_action_count }}</td>
+						<td class="right green">{{ stat.confirmed_action_count }}</td>
 						<td class="right">{{ stat.not_confirmed_revenue }}</td>
 						<td class="right green">{{ stat.confirmed_revenue }}</td>
 					</tr>

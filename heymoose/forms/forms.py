@@ -800,10 +800,12 @@ class AdminGroupsForm(Form):
 
 class ModerationForm(Form):
 	admin_state = SelectField(u'Статус', choices=enums.AdminStates.tuples('name'))
-	admin_comment = TextAreaField(u'Комментарий администрации')
 
-	def populate_admin_comment(self, obj, name):
-		obj.admin_comment = self.admin_comment.data or None
+
+class SiteCommentForm(Form):
+	text = TextAreaField(u'Комментарий', [
+		validators.Required(message=u'Введите текст комментария'),
+	])
 
 
 class NewsItemForm(Form):

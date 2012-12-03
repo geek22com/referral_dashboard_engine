@@ -3,8 +3,13 @@
 
 {% set activetab = 'info' %}
 
+{% block extrahead %}
+	{{ super() }}
+	{{ site_info.head() }}
+{% endblock %}
+
 {% block tabcontent %}
 
-{{ site_info.html(site) }}
+{{ site_info.html(site, comments, form) }}
 
 {% endblock %}

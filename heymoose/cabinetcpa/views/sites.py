@@ -3,6 +3,7 @@ from flask import g, request, redirect, url_for, flash, abort
 from heymoose import app, resource as rc
 from heymoose.data.models import Site
 from heymoose.data.enums import SiteTypes
+from heymoose.data.mongo import actions as mongo
 from heymoose.forms import forms
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import affiliate_only
@@ -46,12 +47,18 @@ def sites_new():
 	return dict(form=form, site_type=SiteTypes.of(site_type))
 
 
-@bp.route('/sites/<int:id>/')
+@bp.route('/sites/<int:id>/', methods=['GET', 'POST'])
 @affiliate_only
 @template('cabinetcpa/sites/info/info.html')
 @site_context
 def sites_info(id, site):
-	return dict()
+	form = forms.SiteCommentForm(request.form)
+	if request.method == 'POST' and form.validate():
+		mongo.site_comments_post(site, form.text.data)
+		flash(u'Комментарий успешно добавлен', 'success')
+		return redirect(request.url)
+	comments = mongo.site_comments_list(site)
+	return dict(form=form, comments=comments)
 
 
 @bp.route('/sites/<int:id>/edit/', methods=['GET', 'POST'])

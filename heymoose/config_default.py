@@ -46,6 +46,7 @@ ASSETS_AUTO_BUILD = True
 # Flask-MongoAlchemy parameters
 MONGOALCHEMY_SERVER_AUTH = False
 MONGOALCHEMY_DATABASE = 'heymoose'
+MONGO_DBNAME = MONGOALCHEMY_DATABASE
 
 # Encryption parameters
 REFERRAL_CRYPT_KEY = 'aGy3iRn7fRbIw4yM' # Must be 16 bytes long

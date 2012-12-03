@@ -11,8 +11,8 @@
 				<th {{ lists.sort_header('affiliate_name', **kwargs) }}>Партнёр</th>
 				{% endif %}
 				<th class="center">Адрес</th>
-				<th {{ lists.sort_header('creation_time', **kwargs) }}>Добавлена</th>
-				<th {{ lists.sort_header('last_change_time', **kwargs) }}>Изменена</th>
+				<th style="min-width: 90px;" {{ lists.sort_header('creation_time', **kwargs) }}>Добавлена</th>
+				<th style="min-width: 90px;" {{ lists.sort_header('last_change_time', **kwargs) }}>Изменена</th>
 				<th style="width: 60px;" {{ lists.sort_header('admin_state', **kwargs) }}>Подтв.</th>
 			</tr>
 		</thead>

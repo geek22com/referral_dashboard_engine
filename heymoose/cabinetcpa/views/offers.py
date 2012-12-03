@@ -8,6 +8,7 @@ from heymoose.views.decorators import template, context, paginated, sorted
 from heymoose.cabinetcpa import blueprint as bp
 from heymoose.cabinetcpa.decorators import advertiser_only, affiliate_only
 from heymoose.utils.lang import create_dict
+from heymoose.utils.web import force_redirect
 import base64
 
 
@@ -23,7 +24,10 @@ def existing_offer(id):
 	args = dict(aff_id=g.user.id) if g.user.is_affiliate else dict()
 	return rc.offers.get_by_id(id, **args)
 
-def visible_offer(id):
+def offer_context_provider(id, **kwargs):
+	return dict(offer=existing_offer(id))
+
+def visible_offer_context_provider(id, **kwargs):
 	'''
 	For both advertisers and affiliates. For advertiser returns offer only if it is his offer
 	or if this offer is visible (approved, active, launched). For affiliate returns offer only
@@ -31,28 +35,31 @@ def visible_offer(id):
 	'''
 	offer = existing_offer(id)
 	if offer.visible or (g.user.is_advertiser and offer.owned_by(g.user)) or (g.user.is_affiliate and offer.placements_count):
-		return offer
-	abort(404)
+		return dict(offer=offer)
+	flash(u'Рекламное предложение недоступно', 'danger')
+	force_redirect(url_for('.offers_requested' if g.user.is_affiliate else '.offers_list'))
 
-def advertiser_offer(id):
+def advertiser_offer_context_provider(id, **kwargs):
 	'''
 	For advertisers only. Returns offer if it is owned by current advetiser.
 	Otherwise returns 404.
 	'''
 	offer = existing_offer(id)
-	if not offer.owned_by(g.user): abort(404)
-	return offer
+	if not offer.owned_by(g.user):
+		abort(404)
+	return dict(offer=offer)
 
-def offer_placement(pid, offer):
+def offer_placement_context_provider(pid, offer, **kwargs):
 	placement = rc.placements.get_by_id(pid)
-	if placement.offer != offer: abort(404)
-	return placement
+	if placement.offer != offer or placement.affiliate != g.user:
+		abort(404)
+	return dict(placement=placement)
 
 
-offer_context = context(lambda id, **kwargs: dict(offer=existing_offer(id)))
-visible_offer_context = context(lambda id, **kwargs: dict(offer=visible_offer(id)))
-advertiser_offer_context = context(lambda id, **kwargs: dict(offer=advertiser_offer(id)))
-offer_placement_context = context(lambda pid, offer, **kwargs: dict(placement=offer_placement(pid, offer)))
+offer_context = context(offer_context_provider)
+visible_offer_context = context(visible_offer_context_provider)
+advertiser_offer_context = context(advertiser_offer_context_provider)
+offer_placement_context = context(offer_placement_context_provider)
 
 
 @bp.route('/offers/')

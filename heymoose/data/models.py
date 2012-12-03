@@ -622,6 +622,9 @@ class Site(IdentifiableModel, ModeratableModelMixin):
 			enums.AdminStates.BLOCKED: u'Площадка заблокирована администрацией'
 		}.get(self.admin_state, u'Неизвестно')
 
+	def owned_by(self, user):
+		return self.affiliate.id == user.id
+
 
 class Placement(IdentifiableModel, ModeratableModelMixin):
 	affiliate = Field('User', 'affiliate')

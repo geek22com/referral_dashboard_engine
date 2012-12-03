@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import g, request, redirect, url_for, flash
+from flask import g, request, redirect, url_for, flash, abort
 from heymoose import app, resource as rc
 from heymoose.data.models import Site
 from heymoose.data.enums import SiteTypes
@@ -11,7 +11,13 @@ from heymoose.views.decorators import template, context, sorted, paginated
 
 SITES_PER_PAGE = app.config.get('SITES_PER_PAGE', 20)
 
-site_context = context(lambda id, **kwargs: dict(site=rc.sites.get_by_id(id)))
+def site_context_provider(id, **kwargs):
+	site = rc.sites.get_by_id(id)
+	if not site.owned_by(g.user):
+		abort(404)
+	return dict(site=site)
+
+site_context = context(site_context_provider)
 
 
 @bp.route('/sites/')

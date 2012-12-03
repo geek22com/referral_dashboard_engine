@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import g, request, redirect, url_for, flash, abort
-from heymoose import app, resource as rc
+from heymoose import app, signals, resource as rc
 from heymoose.data.models import Site
 from heymoose.data.enums import SiteTypes
 from heymoose.data.mongo import actions as mongo
@@ -55,6 +55,7 @@ def sites_info(id, site):
 	form = forms.SiteCommentForm(request.form)
 	if request.method == 'POST' and form.validate():
 		mongo.site_comments_post(site, form.text.data)
+		signals.site_commented_by_affiliate.send(app, site=site, comment=form.text.data)
 		flash(u'Комментарий успешно добавлен', 'success')
 		return redirect(request.url)
 	comments = mongo.site_comments_list(site)

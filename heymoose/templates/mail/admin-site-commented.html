@@ -1,0 +1,12 @@
+{% extends "mail/layout-admin.html" %}
+
+{% block subject %}
+	Новый комментарий к площадке <a href="{{ url_for('cabinetcpa.sites_info', id=site.id, _external=true) }}">{{ site.name }}</a>
+{% endblock %}
+
+{% block html %}
+<p>
+	Партнером <a href="{{ url_for('admin.users_info', id=site.affiliate.id, _external=true) }}">{{ site.affiliate.email }}</a> был оставлен новый комментарий к площадке <a href="{{ url_for('admin.sites_info', id=site.id, _external=true) }}">{{ site.name }}</a>. Текст комментария:
+</p>
+{{ comment|safe }}
+{% endblock %}

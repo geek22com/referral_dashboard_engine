@@ -28,6 +28,7 @@ def sites_info(id, site):
 	form = forms.SiteCommentForm(request.form)
 	if request.method == 'POST' and form.validate():
 		mongo.site_comments_post(site, form.text.data, admin=True)
+		signals.site_commented_by_admin.send(app, site=site, comment=form.text.data)
 		flash(u'Комментарий успешно добавлен', 'success')
 		return redirect(request.url)
 	comments = mongo.site_comments_list(site)

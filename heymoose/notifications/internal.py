@@ -22,4 +22,9 @@ def site_moderated(app, site, **kwargs):
 
 @signals.placement_moderated.connect
 def placement_moderated(app, placement, **kwargs):
-	notify_user(placement.affiliate, templates.PLACEMENT_MODERATED, placement=placement)
+	notify_user(placement.affiliate, templates.PLACEMENT_MODERATED, notified=True, placement=placement)
+
+
+@signals.site_commented_by_admin.connect
+def site_commented_by_admin(app, site, comment, **kwargs):
+	notify_user(site.affiliate, templates.SITE_COMMENTED, notified=True, site=site, comment=comment)

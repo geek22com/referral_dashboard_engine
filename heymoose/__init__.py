@@ -17,6 +17,10 @@ def configure_mail(app):
 	from heymoose.mail.flaskext import Mail
 	app.mail = Mail(app)
 
+def configure_mongo(app):
+	from flask.ext.pymongo import PyMongo
+	app.mongo = PyMongo(app)
+
 def app_init_basic(app):
 	configure(app)
 
@@ -30,6 +34,7 @@ def app_init_mail(app):
 
 def app_init_web(app):
 	configure(app)
+	configure_mongo(app)
 	configure_mail(app)
 	configure_assets(app)
 	# Moudle initialization by import

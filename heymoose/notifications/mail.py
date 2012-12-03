@@ -79,3 +79,14 @@ def site_moderated(app, site, **kwargs):
 @signals.placement_moderated.connect
 def placement_moderated(app, placement, **kwargs):
 	send_from_template(app.mail, 'mail/user-placement-moderated.html', dict(placement=placement), recipients=[placement.affiliate.email])
+
+
+@signals.site_commented_by_admin.connect
+def site_commented_by_admin(app, site, comment, **kwargs):
+	send_from_template(app.mail, 'mail/user-site-commented.html', dict(site=site, comment=comment), recipients=[site.affiliate.email])
+
+
+@signals.site_commented_by_affiliate.connect
+def site_commented_by_affiliate(app, site, comment, **kwargs):
+	send_from_template(app.mail, 'mail/admin-site-commented.html', dict(site=site, comment=comment), recipients=admins)
+

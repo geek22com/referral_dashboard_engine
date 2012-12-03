@@ -200,22 +200,6 @@ def offers_info_placements(id, offer, **kwargs):
 	return dict(placements=placements, count=count)
 
 
-@bp.route('/offers/<int:id>/placements/<int:pid>/moderation/', methods=['GET', 'POST'])
-@template('admin/offers/info/placements-moderation.html')
-@offer_context
-def offers_info_placements_moderation(id, pid, offer, **kwargs):
-	placement = rc.placements.get_by_id(pid)
-	form = forms.ModerationForm(request.form, obj=placement)
-	if request.method == 'POST' and form.validate():
-		form.populate_obj(placement)
-		rc.placements.moderate(placement)
-		if placement.updated():
-			signals.placement_moderated.send(app, placement=placement)
-		flash(u'Размещение успешно изменено', 'success')
-		return redirect(url_for('.offers_info_placements', id=offer.id))
-	return dict(form=form)
-
-
 @bp.route('/offers/<int:id>/materials/', methods=['GET', 'POST'])
 @template('admin/offers/info/materials.html')
 @offer_context

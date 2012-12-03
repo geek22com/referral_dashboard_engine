@@ -40,3 +40,8 @@ PLACEMENT_MODERATED = u'''
 	на площадке <a href="{{ url_for('cabinetcpa.sites_info', id=placement.site.id, _external=true) }}">{{ placement.site.name }}</a>
 	{% if approved %}активно.{% elif blocked -%}заблокировано. Пожалуйста, проверьте свои партнерские ссылки.{% else -%}обновлено.{% endif %}
 '''
+
+SITE_COMMENTED = u'''
+	Новый комментарий к Вашей площадке
+	<a href="{{ url_for('cabinetcpa.sites_info', id=site.id, _external=true) }}">{{ site.name }}</a>.
+'''

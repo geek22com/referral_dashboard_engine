@@ -3,8 +3,20 @@
 
 {% set activetab = 'info' %}
 
+{% block extrahead %}
+	{{ super() }}
+	{{ site_info.head() }}
+{% endblock %}
+
 {% block tabcontent %}
 
-{{ site_info.html(site, admin=true) }}
+<div class="well">
+	<form method="post" action="{{ url_for('.sites_info_moderation', id=site.id) }}">
+		{{ moderation_form.admin_state(class='span6') }}
+		<input type="submit" class="btn primary" value="Подтвердить" />
+	</form>
+</div>
+
+{{ site_info.html(site, comments, form, admin=true) }}
 
 {% endblock %}

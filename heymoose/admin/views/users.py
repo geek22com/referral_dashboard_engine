@@ -142,23 +142,6 @@ def users_info_placements(id, user, **kwargs):
 	return dict(placements=placements, count=count)
 
 
-@bp.route('/users/<int:id>/placements/<int:pid>/moderation/', methods=['GET', 'POST'])
-@template('admin/users/info/placements-moderation.html')
-@context(user_context_provider)
-@permission_required('view_affiliate_placements')
-def users_info_placements_moderation(id, pid, user, **kwargs):
-	placement = rc.placements.get_by_id(pid)
-	form = forms.ModerationForm(request.form, obj=placement)
-	if request.method == 'POST' and form.validate():
-		form.populate_obj(placement)
-		rc.placements.moderate(placement)
-		if placement.updated():
-			signals.placement_moderated.send(app, placement=placement)
-		flash(u'Размещение успешно изменено', 'success')
-		return redirect(url_for('.users_info_placements', id=user.id))
-	return dict(form=form)
-
-
 @bp.route('/users/<int:id>/edit/', methods=['GET', 'POST'])
 @template('admin/users/info/edit.html')
 @context(user_context_provider)

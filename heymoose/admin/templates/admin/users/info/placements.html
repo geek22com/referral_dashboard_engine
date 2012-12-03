@@ -12,7 +12,11 @@
 			<th></th>
 		{% else %}
 			<td class="center">
-				<a href="{{ url_for('.users_info_placements_moderation', id=user.id, pid=placement.id) }}"><img src="{{ url_for('static', filename='img/icon_changelink.gif') }}" alt="модерация" title="модерация"></a>
+				{% if placement.is_approved %}
+					<a href="{{ url_for('.placements_info_block', id=placement.id, back=request.url) }}"><img src="{{ url_for('static', filename='img/lock.gif') }}" alt="заблокировать" title="заблокировать" onclick="return confirm('Заблокировать размещение?');"></a>
+				{% else %}
+					<a href="{{ url_for('.placements_info_unblock', id=placement.id, back=request.url) }}"><img src="{{ url_for('static', filename='img/unlock.gif') }}" alt="разблокировать" title="разблокировать" onclick="return confirm('Разблокировать размещение?');"></a>
+				{% endif %}
 			</td>
 		{% endif %}
 	{% endcall %}

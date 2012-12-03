@@ -1,6 +1,8 @@
 flask==0.8
 wtforms==0.6.3
-flask-mongoalchemy==0.5.3
+mongoalchemy==0.13.3
+flask-mongoalchemy==0.5.4
+flask-pymongo==0.1.3
 flask-script==0.3.3
 flask-assets==0.7
 uwsgi==1.1.2

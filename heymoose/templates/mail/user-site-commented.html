@@ -1,7 +1,7 @@
 {% extends "mail/layout-user.html" %}
 
 {% block subject %}
-	Новый комментарий к Вашей площадке <a href="{{ url_for('cabinetcpa.sites_info', id=site.id, _external=true) }}">{{ site.name }}</a>
+	Новый комментарий к Вашей площадке "{{ site.name }}"
 {% endblock %}
 
 {% block html %}

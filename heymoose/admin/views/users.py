@@ -15,6 +15,7 @@ from heymoose.mail import marketing as mmail
 
 USERS_PER_PAGE = app.config.get('USERS_PER_PAGE', 20)
 OFFERS_PER_PAGE = app.config.get('OFFERS_PER_PAGE', 10)
+SITES_PER_PAGE = app.config.get('SITES_PER_PAGE', 20)
 PLACEMENTS_PER_PAGE = app.config.get('PLACEMENTS_PER_PAGE', 20)
 ACCOUNTING_ENTRIES_PER_PAGE = app.config.get('ACCOUNTING_ENTRIES_PER_PAGE', 20)
 OFFER_STATS_PER_PAGE = app.config.get('OFFER_STATS_PER_PAGE', 20)
@@ -132,13 +133,23 @@ def users_info_offers(id, user, **kwargs):
 	return dict(offers=offers, count=count)
 
 
+@bp.route('/users/<int:id>/sites/')
+@template('admin/users/info/sites.html')
+@context(user_context_provider)
+@permission_required('view_affiliate_sites')
+@paginated(SITES_PER_PAGE)
+def users_info_sites(id, user, **kwargs):
+	sites, count = rc.sites.list(aff_id=user.id, **kwargs)
+	return dict(sites=sites, count=count)
+
+
 @bp.route('/users/<int:id>/placements/')
 @template('admin/users/info/placements.html')
 @context(user_context_provider)
 @permission_required('view_affiliate_placements')
 @paginated(PLACEMENTS_PER_PAGE)
 def users_info_placements(id, user, **kwargs):
-	placements, count = rc.placements.list(aff_id=user.id)
+	placements, count = rc.placements.list(aff_id=user.id, **kwargs)
 	return dict(placements=placements, count=count)
 
 

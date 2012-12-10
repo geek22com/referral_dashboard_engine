@@ -1,0 +1,17 @@
+{% extends "admin/users/info/layout.html" %}
+{% import 'common/sites.html' as site_macros with context %}
+
+{% set activetab = 'sites' %}
+{% set content_fluid = true %}
+
+{% block tabcontent %}
+
+{% if sites %}
+	{{ site_macros.table(sites, id=user.id) }}
+{% else %}
+	<div class="clearfix alert-message block-message info">
+		<p><strong>Список пуст.</strong> Пользователь еще не добавил ни одной площадки.</p>
+	</div>
+{% endif %}
+
+{% endblock %}

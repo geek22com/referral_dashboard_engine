@@ -778,6 +778,16 @@ class CatalogOfferFilterForm(OfferFilterForm):
 		return args
 
 
+class SiteFilterForm(Form):
+	admin_state = SelectField(u'Состояние', choices=[(u'', u'(все)')] + enums.AdminStates.tuples('name'), default=u'')
+
+	def query_args(self):
+		return dict(admin_state=self.admin_state.data)
+
+	def backend_args(self):
+		return dict(admin_state=self.admin_state.data) if self.admin_state.data else dict()
+
+
 class BlackListSiteForm(Form):
 	host = TextField(u'Хост', [validators.Required(message=u'Введите хост')])
 	sub_domain_mask = TextField(u'Маска поддоменов')

@@ -17,8 +17,10 @@ site_context = context(lambda id, **kwargs: dict(site=rc.sites.get_by_id(id)))
 @sorted('last_change_time', 'desc')
 @paginated(SITES_PER_PAGE)
 def sites_list(**kwargs):
-	sites, count = rc.sites.list(**kwargs)
-	return dict(sites=sites, count=count)
+	form = forms.SiteFilterForm(request.args)
+	kwargs.update(form.backend_args())
+	sites, count = rc.sites.list(**kwargs) if form.validate() else ([], 0)
+	return dict(sites=sites, count=count, form=form)
 
 
 @bp.route('/sites/<int:id>/', methods=['GET', 'POST'])

@@ -6,8 +6,16 @@
 
 {% block tabcontent %}
 
+<div class="well">
+	<form method="get" action="" class="validate2">
+		{{ forms.label(form.admin_state, class='simple required') }}
+		{{ forms.field(form.admin_state, class='span4') }}
+		<input type="submit" class="btn primary" value="Применить">
+	</form>
+</div>
+
 {% if sites %}
-	{{ site_macros.table(sites, admin=true) }}
+	{{ site_macros.table(sites, admin=true, **form.query_args()) }}
 {% else %}
 	<div class="clearfix alert-message block-message info">
 		<p><strong>Список пуст.</strong> Не было добавлено ни одной площадки.</p>
